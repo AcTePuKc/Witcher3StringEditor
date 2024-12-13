@@ -30,9 +30,16 @@ namespace Witcher3StringEditor
 
         private static bool IsDarkMode()
         {
-            var settings = new UISettings();
-            var foreground = settings.GetColorValue(UIColorType.Foreground);
-            return IsColorLight(foreground);
+            if (OperatingSystem.IsOSPlatformVersionAtLeast("Windows", 10, 0, 10240))
+            {
+                var settings = new UISettings();
+                var foreground = settings.GetColorValue(UIColorType.Foreground);
+                return IsColorLight(foreground);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private static bool IsColorLight(Windows.UI.Color color)
