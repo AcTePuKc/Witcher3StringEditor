@@ -44,7 +44,7 @@ namespace Witcher3StringEditor
 
         private static bool IsColorLight(Windows.UI.Color color)
         {
-            return (((5 * color.G) + (2 * color.R) + color.B) > (8 * 128));
+            return ((5 * color.G) + (2 * color.R) + color.B) > (8 * 128);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
