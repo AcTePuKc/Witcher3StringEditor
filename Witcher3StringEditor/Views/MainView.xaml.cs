@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Controls;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Helpers;
 using System.Windows;
-using Windows.UI.ViewManagement;
 using Witcher3StringEditor.ViewModels;
 
 namespace Witcher3StringEditor
@@ -25,26 +23,6 @@ namespace Witcher3StringEditor
             InitializeComponent();
             DataGrid.SearchHelper.AllowFiltering = true;
             DataContext = Ioc.Default.GetService<MainViewModel>();
-            ThemeManager.Current.ApplicationTheme = IsDarkMode() == true ? ApplicationTheme.Dark : ApplicationTheme.Light;
-        }
-
-        private static bool IsDarkMode()
-        {
-            if (OperatingSystem.IsOSPlatformVersionAtLeast("Windows", 10, 0, 10240))
-            {
-                var settings = new UISettings();
-                var foreground = settings.GetColorValue(UIColorType.Foreground);
-                return IsColorLight(foreground);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private static bool IsColorLight(Windows.UI.Color color)
-        {
-            return ((5 * color.G) + (2 * color.R) + color.B) > (8 * 128);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
