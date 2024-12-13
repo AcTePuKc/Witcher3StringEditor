@@ -1,0 +1,71 @@
+﻿<Window
+    x:Class="Witcher3StringEditor.Dialogs.Views.EditDataDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:local="clr-namespace:Witcher3StringEditor.Dialogs.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+    xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
+    Title="{Binding Title}"
+    Width="800"
+    Height="600"
+    d:DataContext="{d:DesignInstance Type=vm:EditDataDialogViewModel}"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:WindowHelper.SystemBackdropType="Mica"
+    ui:WindowHelper.UseModernWindowStyle="True"
+    ResizeMode="NoResize"
+    mc:Ignorable="d">
+    <Grid>
+        <Border Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBox ui:ControlHelper.Header="ID" Text="{Binding W3Item.StrID}" />
+                <TextBox
+                    Grid.Row="2"
+                    ui:ControlHelper.Header="Key(Hex)"
+                    Text="{Binding W3Item.KeyHex}" />
+                <TextBox
+                    Grid.Row="4"
+                    ui:ControlHelper.Header="Key(String)"
+                    Text="{Binding W3Item.KeyName}" />
+                <TextBox
+                    Grid.Row="6"
+                    ui:ControlHelper.Header="Text"
+                    Text="{Binding W3Item.Text}"
+                    TextWrapping="WrapWithOverflow" />
+                <Grid Grid.Row="8" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Width="100"
+                        HorizontalAlignment="Right"
+                        Command="{Binding SubmitCommand}"
+                        Content="{lex:Loc SubmitBtnTxt}" />
+                    <Button
+                        Grid.Column="2"
+                        Width="100"
+                        HorizontalAlignment="Left"
+                        Command="{Binding CancelCommand}"
+                        Content="{lex:Loc CancelBtnTxt}" />
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

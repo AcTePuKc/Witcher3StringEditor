@@ -1,0 +1,55 @@
+using CommunityToolkit.Mvvm.DependencyInjection;
+using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using Microsoft.Extensions.DependencyInjection;
+using Resourcer;
+using Serilog;
+using Serilog.Events;
+using Syncfusion.Licensing;
+using System.Diagnostics;
+using System.Reactive;
+using System.Windows;
+using Witcher3StringEditor.Core;
+using Witcher3StringEditor.Dialogs.ViewModels;
+using Witcher3StringEditor.Dialogs.Views;
+using Witcher3StringEditor.ViewModels;
+using WPFLocalizeExtension.Engine;
+
+namespace Witcher3StringEditor
+{
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
+    {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            var observer = new AnonymousObserver<LogEvent>(e => LogManger.Log(e));
+            Log.Logger = new LoggerConfiguration().WriteTo.File(".\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.Debug().WriteTo.Observers(e => e.Subscribe(observer)).Enrich.FromLogContext().CreateLogger();
+            SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
+            var viewLocator = new StrongViewLocator();
+            viewLocator.Register<EditDataDialogViewModel, EditDataDialog>();
+            viewLocator.Register<DeleteDataDialogViewModel, DeleteDataDialog>();
+            viewLocator.Register<BackupDialogViewModel, BackupDialog>();
+            viewLocator.Register<SaveDialogViewModel, SaveDialog>();
+            viewLocator.Register<LogDialogViewModel, LogDialog>();
+            viewLocator.Register<SettingDialogViewModel, SettingsDialog>();
+            Ioc.Default.ConfigureServices(
+                new ServiceCollection()
+                    .AddLogging(b => b.AddSerilog())
+                    .AddSingleton<IDialogService>(new DialogService(new DialogManager(viewLocator), Ioc.Default.GetService))
+                    .AddTransient<MainViewModel>()
+                    .BuildServiceProvider());
+
+            string currentProcessName = Process.GetCurrentProcess().ProcessName;
+            var processesByName = Process.GetProcessesByName(currentProcessName);
+            if (processesByName.Length > 1)
+            {
+                Environment.Exit(0);
+            }
+
+            LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
+        }
+    }
+}
