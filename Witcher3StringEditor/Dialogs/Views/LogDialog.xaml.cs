@@ -31,6 +31,7 @@ namespace Witcher3StringEditor.Dialogs.Views
 
         private void DataGrid_Loaded(object sender, RoutedEventArgs e)
         {
+            DataGridScrollToEnd();
             DataGrid.View.CollectionChanged += (s, e) => DataGridScrollToEnd();
         }
 
