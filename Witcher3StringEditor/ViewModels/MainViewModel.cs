@@ -38,7 +38,6 @@ namespace Witcher3StringEditor.ViewModels
             {
                 AddCommand.NotifyCanExecuteChanged();
                 ShowSaveDialogCommand.NotifyCanExecuteChanged();
-                OpenWorkingFolderCommand.NotifyCanExecuteChanged();
             };
         }
 
