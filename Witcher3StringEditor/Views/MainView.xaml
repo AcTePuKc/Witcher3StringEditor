@@ -137,6 +137,11 @@
                     <ui:FontIcon Glyph="&#xe768;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <ui:AppBarButton Command="{Binding OpenNexusModsCommand}" Label="Nexus Mods">
+                <ui:AppBarButton.Icon>
+                    <ui:FontIcon Glyph="&#xe71b;" />
+                </ui:AppBarButton.Icon>
+            </ui:AppBarButton>
             <ui:AppBarButton Command="{Binding ShowAboutCommand}" Label="{lex:Loc About}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe946;" />

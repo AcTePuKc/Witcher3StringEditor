@@ -280,5 +280,11 @@ namespace Witcher3StringEditor.ViewModels
         }
 
         private bool CanOpenWorkingFolder() => Directory.Exists(OutputFolder);
+
+        [RelayCommand]
+        private static void OpenNexusMods()
+        {
+            Process.Start("explorer.exe", "https://www.nexusmods.com/witcher3/mods/10032");
+        }
     }
 }
