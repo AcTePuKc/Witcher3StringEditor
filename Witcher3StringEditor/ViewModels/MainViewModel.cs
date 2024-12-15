@@ -22,9 +22,11 @@ namespace Witcher3StringEditor.ViewModels
 {
     internal partial class MainViewModel : ObservableObject
     {
-        private string outputFolder = string.Empty;
-
         private readonly IDialogService dialogService;
+
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
+        private string outputFolder = string.Empty;
 
         public ObservableCollection<W3ItemModel> W3Items { get; set; } = [];
 
@@ -36,6 +38,7 @@ namespace Witcher3StringEditor.ViewModels
             {
                 AddCommand.NotifyCanExecuteChanged();
                 ShowSaveDialogCommand.NotifyCanExecuteChanged();
+                OpenWorkingFolderCommand.NotifyCanExecuteChanged();
             };
         }
 
@@ -81,7 +84,7 @@ namespace Witcher3StringEditor.ViewModels
                     W3Items.Add(new W3ItemModel(item));
                 }
 
-                outputFolder = Path.GetDirectoryName(storageFile.LocalPath) ?? string.Empty;
+                OutputFolder = Path.GetDirectoryName(storageFile.LocalPath) ?? string.Empty;
             }
         }
 
@@ -142,7 +145,7 @@ namespace Witcher3StringEditor.ViewModels
         [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]
         private async Task ShowSaveDialog()
         {
-            var dialogViewModel = new SaveDialogViewModel(W3Items, outputFolder);
+            var dialogViewModel = new SaveDialogViewModel(W3Items, OutputFolder);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
         }
 
@@ -269,5 +272,13 @@ namespace Witcher3StringEditor.ViewModels
             var timestamp = RetrieveTimestamp();
             return DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal).ToLocalTime();
         }
+
+        [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
+        private void OpenWorkingFolder()
+        {
+            Process.Start("explorer.exe", OutputFolder);
+        }
+
+        private bool CanOpenWorkingFolder() => Directory.Exists(OutputFolder);
     }
 }

@@ -127,6 +127,11 @@
                     <ui:FontIcon Glyph="&#xe713;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <ui:AppBarButton Command="{Binding OpenWorkingFolderCommand}" Label="{lex:Loc OpenWorkingFolderBtnLabel}">
+                <ui:AppBarButton.Icon>
+                    <ui:FontIcon Glyph="&#xec50;" />
+                </ui:AppBarButton.Icon>
+            </ui:AppBarButton>
             <ui:AppBarButton Command="{Binding PlayGameCommand}" Label="{lex:Loc PlayBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe768;" />

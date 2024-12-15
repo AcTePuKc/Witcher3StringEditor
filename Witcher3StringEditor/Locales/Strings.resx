@@ -297,4 +297,7 @@
   <data name="IsOff" xml:space="preserve">
     <value>Off</value>
   </data>
+  <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
+    <value>Open Working Folder</value>
+  </data>
 </root>

@@ -297,4 +297,7 @@
   <data name="IsOff" xml:space="preserve">
     <value>关</value>
   </data>
+  <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
+    <value>打开工作目录</value>
+  </data>
 </root>
