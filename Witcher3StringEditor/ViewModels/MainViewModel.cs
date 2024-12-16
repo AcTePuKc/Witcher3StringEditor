@@ -269,7 +269,7 @@ namespace Witcher3StringEditor.ViewModels
         public static DateTime RetrieveTimestampAsDateTime()
         {
             var timestamp = RetrieveTimestamp();
-            return DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal).ToLocalTime();
+            return timestamp == string.Empty ? new DateTime() : DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal).ToLocalTime();
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
