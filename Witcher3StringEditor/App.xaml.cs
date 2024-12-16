@@ -37,7 +37,7 @@ public partial class App
         viewLocator.Register<SettingDialogViewModel, SettingsDialog>();
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
-                .AddLogging(b => b.AddSerilog())
+                .AddLogging(builder  => builder.AddSerilog())
                 .AddSingleton<IDialogService>(new DialogService(new DialogManager(viewLocator), Ioc.Default.GetService))
                 .AddTransient<MainViewModel>()
                 .BuildServiceProvider());
