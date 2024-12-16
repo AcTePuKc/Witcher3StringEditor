@@ -1,8 +1,7 @@
-﻿namespace Witcher3StringEditor.Core.Common
+﻿namespace Witcher3StringEditor.Core.Common;
+
+public enum FileType
 {
-    public enum FileType
-    {
-        csv = 0,
-        w3Strings = 1
-    }
+    csv = 0,
+    w3Strings = 1
 }

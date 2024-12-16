@@ -35,20 +35,18 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid x:Name="AppTitleBar" Height="48">
+        <Grid Height="48">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="IconColumn" Width="*" />
-                <ColumnDefinition x:Name="TitleColumn" Width="*" />
-                <ColumnDefinition x:Name="LeftDragColumn" Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock
-                x:Name="TitleBarTextBlock"
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 Text="{lex:Loc AppTitle}" />
             <ui:AutoSuggestBox
-                x:Name="TitleBarSearchBox"
                 Grid.Column="1"
                 VerticalAlignment="Center"
                 PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"

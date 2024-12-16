@@ -1,76 +1,68 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel;
+using System.IO;
+using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using System.ComponentModel;
-using System.IO;
-using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using MessageBoxButton = System.Windows.MessageBoxButton;
+using MessageBoxImage = System.Windows.MessageBoxImage;
 
-namespace Witcher3StringEditor.Dialogs.ViewModels
+namespace Witcher3StringEditor.Dialogs.ViewModels;
+
+internal partial class SettingDialogViewModel(SettingsModel settings) : ObservableObject, IModalDialogViewModel
 {
-    internal partial class SettingDialogViewModel(SettingsModel settings) : ObservableObject, IModalDialogViewModel
+    private readonly IDialogService dialogService = Ioc.Default.GetRequiredService<IDialogService>();
+
+    [ObservableProperty] private SettingsModel settingsModel = settings;
+
+    public bool? DialogResult => true;
+
+    [RelayCommand]
+    private async Task SetW3StringsPath()
     {
-        public bool? DialogResult => true;
-
-        [ObservableProperty]
-        private SettingsModel settingsModel = settings;
-
-        private readonly IDialogService dialogService = Ioc.Default.GetRequiredService<IDialogService>();
-
-        [RelayCommand]
-        private async Task SetW3StringsPath()
+        var dialogSettings = new OpenFileDialogSettings
         {
-            var dialogSettings = new OpenFileDialogSettings
-            {
-                Filters = [new FileFilter("w3strings.exe", ".exe")],
-                Title = Strings.SelectW3Strings,
-                SuggestedFileName = "w3strings"
-            };
-            var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
-            if (storageFile is { Name: "w3strings.exe" })
-            {
-                SettingsModel.W3StringsPath = storageFile.LocalPath;
-            }
+            Filters = [new FileFilter("w3strings.exe", ".exe")],
+            Title = Strings.SelectW3Strings,
+            SuggestedFileName = "w3strings"
+        };
+        var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
+        if (storageFile is { Name: "w3strings.exe" }) SettingsModel.W3StringsPath = storageFile.LocalPath;
+    }
+
+    [RelayCommand]
+    private async Task SetGameExePath()
+    {
+        var dialogSettings = new OpenFileDialogSettings
+        {
+            Filters = [new FileFilter("witcher3.exe", ".exe")],
+            Title = Strings.SelectGameExe,
+            SuggestedFileName = "witcher3"
+        };
+        var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
+        if (storageFile is { Name: "witcher3.exe" }) SettingsModel.GameExePath = storageFile.LocalPath;
+    }
+
+    [RelayCommand]
+    private async Task WindowClosingCancel(CancelEventArgs cancelEvent)
+    {
+        if (Path.GetFileName(SettingsModel.GameExePath) != "witcher3.exe"
+            || Path.GetFileName(SettingsModel.W3StringsPath) != "w3strings.exe")
+        {
+            cancelEvent.Cancel = true;
+
+            if (await MessageBox.ShowAsync(Strings.PleaseCheckSettings, Strings.Warning, MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes) Environment.Exit(0);
         }
-
-        [RelayCommand]
-        private async Task SetGameExePath()
+        else
         {
-            var dialogSettings = new OpenFileDialogSettings
-            {
-                Filters = [new FileFilter("witcher3.exe", ".exe")],
-                Title = Strings.SelectGameExe,
-                SuggestedFileName = "witcher3"
-            };
-            var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
-            if (storageFile is { Name: "witcher3.exe" })
-            {
-                SettingsModel.GameExePath = storageFile.LocalPath;
-            }
-        }
-
-        [RelayCommand]
-        private async Task WindowClosingCancel(CancelEventArgs cancelEvent)
-        {
-            if (Path.GetFileName(SettingsModel.GameExePath) != "witcher3.exe"
-                || Path.GetFileName(SettingsModel.W3StringsPath) != "w3strings.exe")
-            {
-                cancelEvent.Cancel = true;
-
-                if (await MessageBox.ShowAsync(Strings.PleaseCheckSettings, Strings.Warning, System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                {
-                    Environment.Exit(0);
-                }
-            }
-            else
-            {
-                ConfigureManger.Save(SettingsModel);
-            }
+            ConfigureManger.Save(SettingsModel);
         }
     }
 }

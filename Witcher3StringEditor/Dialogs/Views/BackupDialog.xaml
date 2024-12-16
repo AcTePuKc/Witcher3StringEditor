@@ -67,7 +67,7 @@
                     </sf:SfDataGrid.Columns>
                 </sf:SfDataGrid>
                 <Button
-                    Grid.Row="2"
+                    Grid.Row="2" Grid.Column="0"
                     HorizontalAlignment="Right"
                     Command="{Binding RestoreCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=DataGrid}"
@@ -75,7 +75,8 @@
                     <Button.Style>
                         <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}" Value="{x:Null}">
+                                <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}"
+                                             Value="{x:Null}">
                                     <Setter Property="IsEnabled" Value="False" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -92,7 +93,8 @@
                     <Button.Style>
                         <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}" Value="{x:Null}">
+                                <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}"
+                                             Value="{x:Null}">
                                     <Setter Property="IsEnabled" Value="False" />
                                 </DataTrigger>
                             </Style.Triggers>
