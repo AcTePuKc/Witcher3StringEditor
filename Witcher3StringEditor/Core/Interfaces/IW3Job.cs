@@ -7,9 +7,9 @@ namespace Witcher3StringEditor.Core.Interfaces
     {
         public W3Language Language { get; set; }
 
-        public int IDSpace { get; set; }
+        public int IdSpace { get; set; }
 
-        public bool IsIgnoreIDSpaceCheck { get; set; }
+        public bool IsIgnoreIdSpaceCheck { get; set; }
 
         public FileType FileType { get; set; }
 

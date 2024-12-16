@@ -16,7 +16,7 @@ namespace Witcher3StringEditor.Core
         {
             if (Path.GetExtension(path) == ".csv")
             {
-                return DeserializeCSV(path);
+                return DeserializeCsv(path);
             }
             else if (Path.GetExtension(path) == ".w3strings")
             {
@@ -32,18 +32,21 @@ namespace Witcher3StringEditor.Core
             }
         }
 
-        private static IEnumerable<IW3Item> DeserializeCSV(string path)
+        private static IEnumerable<IW3Item> DeserializeCsv(string path)
         {
-            foreach (var line in File.ReadAllLines(path))
-            {
-                if (line.StartsWith(';'))
-                    continue;
-                var parts = line.Split("|");
-                if (parts.Length == 4)
+            return (from line in File.ReadAllLines(path)
+                where !line.StartsWith(';')
+                select line.Split("|")
+                into parts
+                where parts.Length == 4
+                select new W3Item()
                 {
-                    yield return new W3Item() { StrID = parts[0].Trim(), KeyHex = parts[1], KeyName = parts[2], Text = parts[3] };
-                }
-            }
+                    StrID = parts[0]
+                        .Trim(),
+                    KeyHex = parts[1],
+                    KeyName = parts[2],
+                    Text = parts[3]
+                });
         }
 
         private static async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
@@ -68,7 +71,7 @@ namespace Witcher3StringEditor.Core
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
             await process.WaitForExitAsync();
-            return process.ExitCode == 0 ? DeserializeCSV($"{path}.csv") : [];
+            return process.ExitCode == 0 ? DeserializeCsv($"{path}.csv") : [];
         }
 
         private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
@@ -89,22 +92,22 @@ namespace Witcher3StringEditor.Core
 
         public static async Task<bool> Serialize(IW3Job w3Job)
         {
-            if (w3Job.FileType == Common.FileType.W3Strings)
+            if (w3Job.FileType == Common.FileType.w3Strings)
             {
                 return await SerializeW3Strings(w3Job);
             }
             else
             {
-                return await SerializeCSV(w3Job);
+                return await SerializeCsv(w3Job);
             }
         }
 
-        private static async Task<bool> SerializeCSV(IW3Job w3Job, string folder)
+        private static async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($";meta[language={LanguageHelper.Get(w3Job.Language)}]");
             stringBuilder.AppendLine($"; id      |key(hex)|key(str)| text");
-            w3Job.W3Items.ForEach(x => stringBuilder.AppendLine($"{x.StrID}|{x.KeyHex}|{x.KeyName}|{x.Text}"));
+            w3Job.W3Items.ForEach(x => stringBuilder.AppendLine($"{x.StrId}|{x.KeyHex}|{x.KeyName}|{x.Text}"));
             var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
             if (File.Exists(csvPath))
                 BackupManger.Backup(csvPath);
@@ -112,7 +115,7 @@ namespace Witcher3StringEditor.Core
             return true;
         }
 
-        private static async Task<bool> SerializeCSV(IW3Job w3Job) => await SerializeCSV(w3Job, w3Job.Path);
+        private static async Task<bool> SerializeCsv(IW3Job w3Job) => await SerializeCsv(w3Job, w3Job.Path);
 
         private static async Task<bool> SerializeW3Strings(IW3Job w3Job)
         {
@@ -120,7 +123,7 @@ namespace Witcher3StringEditor.Core
             var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
             var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
 
-            if (await SerializeCSV(w3Job, tempFolder))
+            if (await SerializeCsv(w3Job, tempFolder))
             {
                 using var process = new Process();
                 process.EnableRaisingEvents = true;
@@ -131,9 +134,9 @@ namespace Witcher3StringEditor.Core
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     FileName = ConfigureManger.Load().W3StringsPath,
-                    Arguments = w3Job.IsIgnoreIDSpaceCheck
+                    Arguments = w3Job.IsIgnoreIdSpaceCheck
                         ? Parser.Default.FormatCommandLine(new W3Options() { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
-                        : Parser.Default.FormatCommandLine(new W3Options() { Encode = csvPath, IdSpace = w3Job.IDSpace })
+                        : Parser.Default.FormatCommandLine(new W3Options() { Encode = csvPath, IdSpace = w3Job.IdSpace })
                 };
                 process.ErrorDataReceived += Process_ErrorDataReceived;
                 process.OutputDataReceived += Process_OutputDataReceived;

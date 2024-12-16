@@ -29,7 +29,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
                 W3Items = w3ItemModels,
                 FileType = ConfigureManger.Load().PreferredFileType,
                 Language = ConfigureManger.Load().PreferredLanguage,
-                IDSpace = FindIDSpace(w3ItemModels.First())
+                IdSpace = FindIdSpace(w3ItemModels.First())
             };
         }
 
@@ -58,15 +58,15 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
             RequestClose?.Invoke(this, EventArgs.Empty);
         }
 
-        private static int FindIDSpace(W3ItemModel w3Item)
+        private static int FindIdSpace(W3ItemModel w3Item)
         {
             // 使用 Match 方法尝试匹配输入字符串
-            var match = IDSpaceRegex().Match(w3Item.StrID);
+            var match = IdSpaceRegex().Match(w3Item.StrId);
             if (match.Success)
             {
                 // 如果匹配成功，则提取捕获组中的值
-                string foundIDSpace = match.Groups[1].Value;
-                return int.Parse(foundIDSpace);
+                var foundIdSpace = match.Groups[1].Value;
+                return int.Parse(foundIdSpace);
             }
             else
             {
@@ -75,6 +75,6 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
         }
 
         [GeneratedRegex(@"^211(\d{4})\d{3}$")]
-        private static partial Regex IDSpaceRegex();
+        private static partial Regex IdSpaceRegex();
     }
 }

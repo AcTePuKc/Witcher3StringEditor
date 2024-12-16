@@ -32,7 +32,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
                 SuggestedFileName = "w3strings"
             };
             var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
-            if (storageFile != null && storageFile.Name == "w3strings.exe")
+            if (storageFile is { Name: "w3strings.exe" })
             {
                 SettingsModel.W3StringsPath = storageFile.LocalPath;
             }
@@ -48,7 +48,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
                 SuggestedFileName = "witcher3"
             };
             var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
-            if (storageFile != null && storageFile.Name == "witcher3.exe")
+            if (storageFile is { Name: "witcher3.exe" })
             {
                 SettingsModel.GameExePath = storageFile.LocalPath;
             }

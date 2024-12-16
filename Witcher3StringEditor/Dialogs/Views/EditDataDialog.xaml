@@ -32,7 +32,7 @@
                     <RowDefinition Height="10" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBox ui:ControlHelper.Header="ID" Text="{Binding W3Item.StrID}" />
+                <TextBox ui:ControlHelper.Header="ID" Text="{Binding W3Item.StrId}" />
                 <TextBox
                     Grid.Row="2"
                     ui:ControlHelper.Header="Key(Hex)"

@@ -6,9 +6,9 @@ namespace Witcher3StringEditor.Core.Helper
     {
         public static string Get(W3Language language) => Get(Enum.GetName(language) ?? "en");
 
-        public static string Get(string key) => languages[key];
+        private static string Get(string key) => Languages[key];
 
-        private static readonly Dictionary<string, string> languages = new()
+        private static readonly Dictionary<string, string> Languages = new()
         {
             { "ar", "cleartext" },
             { "br", "cleartext" },

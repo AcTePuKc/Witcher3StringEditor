@@ -8,10 +8,10 @@ namespace Witcher3StringEditor.Core
 {
     public static class BackupManger
     {
-        private static readonly string storePath = ".\\Backup\\History.json";
+        private const string StorePath = ".\\Backup\\History.json";
         public static ObservableCollection<BackupItem> BackupItems { get; } = new(Retrieve());
 
-        public static string ComputeSha256Hash(string filePath)
+        private static string ComputeSha256Hash(string filePath)
         {
             using var sha256 = SHA256.Create();
             using var stream = File.OpenRead(filePath);
@@ -69,14 +69,14 @@ namespace Witcher3StringEditor.Core
         private static void Store()
         {
             var json = JsonConvert.SerializeObject(BackupItems);
-            File.WriteAllText(storePath, json);
+            File.WriteAllText(StorePath, json);
         }
 
         private static IList<BackupItem> Retrieve()
         {
-            if (File.Exists(storePath))
+            if (File.Exists(StorePath))
             {
-                var json = File.ReadAllText(storePath);
+                var json = File.ReadAllText(StorePath);
                 var items = JsonConvert.DeserializeObject<IList<BackupItem>>(json);
                 return items ?? [];
             }

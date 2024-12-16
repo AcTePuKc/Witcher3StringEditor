@@ -25,8 +25,8 @@
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
             </Style>
             <x:Array x:Key="FileTypeArray" Type="c:FileType">
-                <c:FileType>CSV</c:FileType>
-                <c:FileType>W3Strings</c:FileType>
+                <c:FileType>csv</c:FileType>
+                <c:FileType>w3Strings</c:FileType>
             </x:Array>
             <x:Array x:Key="W3LanguageArray" Type="c:W3Language">
                 <c:W3Language>ar</c:W3Language>
@@ -105,7 +105,7 @@
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Setter Property="IsEnabled" Value="False" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.W3Strings}">
+                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.w3Strings}">
                                         <Setter Property="Visibility" Value="Visible" />
                                         <Setter Property="IsEnabled" Value="True" />
                                     </DataTrigger>
@@ -116,7 +116,7 @@
                         <ui:ToggleSwitch
                             x:Name="IgnoreIDSpaceCheckSwitch"
                             Grid.Column="2"
-                            IsOn="{Binding W3Job.IsIgnoreIDSpaceCheck}"
+                            IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
                             OffContent="{lex:Loc IsOff}"
                             OnContent="{lex:Loc IsOn}" />
                         <ui:NumberBox
@@ -127,7 +127,7 @@
                             Minimum="1"
                             SmallChange="1"
                             SpinButtonPlacementMode="Inline"
-                            Value="{Binding W3Job.IDSpace}">
+                            Value="{Binding W3Job.IdSpace}">
                             <ui:NumberBox.Style>
                                 <Style TargetType="ui:NumberBox">
                                     <Style.Triggers>

@@ -46,14 +46,10 @@ namespace Witcher3StringEditor.Views
 
         private void DataGrid_QueryRowHeight(object sender, QueryRowHeightEventArgs e)
         {
-            if (DataGrid.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out autoHeight))
-            {
-                if (autoHeight > 30)
-                {
-                    e.Height = autoHeight;
-                    e.Handled = true;
-                }
-            }
+            if (!DataGrid.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out autoHeight)) return;
+            if (!(autoHeight > 30)) return;
+            e.Height = autoHeight;
+            e.Handled = true;
         }
 
         private void DataGrid_CurrentCellEndEdit(object sender, CurrentCellEndEditEventArgs e)

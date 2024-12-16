@@ -10,10 +10,10 @@ namespace Witcher3StringEditor.Models
         private W3Language language;
 
         [ObservableProperty]
-        private int iDSpace;
+        private int idSpace;
 
         [ObservableProperty]
-        private bool isIgnoreIDSpaceCheck;
+        private bool isIgnoreIdSpaceCheck;
 
         [ObservableProperty]
         private FileType fileType;

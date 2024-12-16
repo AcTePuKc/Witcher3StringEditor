@@ -19,14 +19,10 @@ namespace Witcher3StringEditor.Dialogs.Views
 
         private void DataGrid_QueryRowHeight(object sender, QueryRowHeightEventArgs e)
         {
-            if (DataGrid.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out autoHeight))
-            {
-                if (autoHeight > 24)
-                {
-                    e.Height = autoHeight;
-                    e.Handled = true;
-                }
-            }
+            if (!DataGrid.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out autoHeight)) return;
+            if (!(autoHeight > 24)) return;
+            e.Height = autoHeight;
+            e.Handled = true;
         }
     }
 }

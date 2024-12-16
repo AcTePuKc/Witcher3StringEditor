@@ -2,7 +2,7 @@
 {
     public enum FileType
     {
-        CSV = 0,
-        W3Strings = 1
+        csv = 0,
+        w3Strings = 1
     }
 }

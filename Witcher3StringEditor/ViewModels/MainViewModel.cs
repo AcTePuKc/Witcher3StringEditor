@@ -106,7 +106,7 @@ namespace Witcher3StringEditor.ViewModels
             var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
             if (result == true && dialogViewModel.W3Item != null)
             {
-                var first = W3Items.First(x => x.ID == w3Item.ID);
+                var first = W3Items.First(x => x.Id == w3Item.Id);
                 var index = W3Items.IndexOf(first);
                 W3Items[index] = dialogViewModel.W3Item;
             }
@@ -201,10 +201,7 @@ namespace Witcher3StringEditor.ViewModels
         [RelayCommand]
         private static void SfDataGridDragEnter(DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effects = DragDropEffects.Copy;
-            else
-                e.Effects = DragDropEffects.None;
+            e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
 
             e.Handled = true;
         }
@@ -214,10 +211,7 @@ namespace Witcher3StringEditor.ViewModels
         {
             // 可选：提供视觉反馈
             // 注意: 在某些情况下，你可能需要转换坐标系
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effects = DragDropEffects.Copy;
-            else
-                e.Effects = DragDropEffects.None;
+            e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
 
             e.Handled = true;
         }
@@ -253,7 +247,7 @@ namespace Witcher3StringEditor.ViewModels
             await MessageBox.ShowAsync($"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}; {os}\n{Strings.Runtime}: {runtime}", Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        public static string RetrieveTimestamp()
+        private static string RetrieveTimestamp()
         {
             var attribute = Assembly.GetExecutingAssembly()
                 .GetCustomAttributesData()
@@ -262,7 +256,7 @@ namespace Witcher3StringEditor.ViewModels
             return attribute.ConstructorArguments.First().Value as string ?? string.Empty;
         }
 
-        public static DateTime RetrieveTimestampAsDateTime()
+        private static DateTime RetrieveTimestampAsDateTime()
         {
             var timestamp = RetrieveTimestamp();
             return timestamp == string.Empty ? new DateTime() : DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal).ToLocalTime();

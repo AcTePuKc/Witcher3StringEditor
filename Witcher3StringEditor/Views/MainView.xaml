@@ -182,7 +182,7 @@
                     Width="100"
                     AllowResizing="True"
                     HeaderText="ID"
-                    MappingName="StrID"
+                    MappingName="StrId"
                     MinimumWidth="50"
                     TextAlignment="Center" />
                 <sf:GridTextColumn

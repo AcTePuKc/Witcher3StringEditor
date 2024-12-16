@@ -8,7 +8,7 @@ namespace Witcher3StringEditor.Models
     {
         [ObservableProperty]
         [Display(Name = "ID")]
-        private string strID;
+        private string strId;
 
         [ObservableProperty]
         [Display(Name = "Key(Hex)")]
@@ -23,7 +23,7 @@ namespace Witcher3StringEditor.Models
 
         public W3ItemModel(IW3Item w3Item)
         {
-            StrID = w3Item.StrID;
+            StrId = w3Item.StrID;
             KeyHex = w3Item.KeyHex;
             KeyName = w3Item.KeyName;
             Text = w3Item.Text;
@@ -31,13 +31,13 @@ namespace Witcher3StringEditor.Models
 
         public W3ItemModel()
         {
-            StrID = string.Empty;
+            StrId = string.Empty;
             KeyHex = string.Empty;
             KeyName = string.Empty;
             Text = string.Empty;
         }
 
-        public Guid ID { get; } = Guid.NewGuid();
+        public Guid Id { get; } = Guid.NewGuid();
 
         public object Clone() => MemberwiseClone();
     }

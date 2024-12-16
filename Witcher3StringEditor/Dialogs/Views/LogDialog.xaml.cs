@@ -19,24 +19,19 @@ namespace Witcher3StringEditor.Dialogs.Views
 
         private void DataGrid_QueryRowHeight(object sender, QueryRowHeightEventArgs e)
         {
-            if (DataGrid.GridColumnSizer.GetAutoRowHeight(e.RowIndex, new GridRowSizingOptions(), out autoHeight))
-            {
-                if (autoHeight > 30)
-                {
-                    e.Height = autoHeight;
-                    e.Handled = true;
-                }
-            }
+            if (!DataGrid.GridColumnSizer.GetAutoRowHeight(e.RowIndex, new GridRowSizingOptions(), out autoHeight))
+                return;
+            if (!(autoHeight > 30)) return;
+            e.Height = autoHeight;
+            e.Handled = true;
         }
 
         private void DataGrid_Loaded(object sender, RoutedEventArgs e)
         {
             var lastItem = DataGrid.View.Records.LastOrDefault();
-            if (lastItem != null)
-            {
-                var rowIndex = DataGrid.ResolveToRowIndex(lastItem);
-                DataGrid.ScrollInView(new RowColumnIndex(rowIndex, 0));
-            }
+            if (lastItem == null) return;
+            var rowIndex = DataGrid.ResolveToRowIndex(lastItem);
+            DataGrid.ScrollInView(new RowColumnIndex(rowIndex, 0));
         }
     }
 }

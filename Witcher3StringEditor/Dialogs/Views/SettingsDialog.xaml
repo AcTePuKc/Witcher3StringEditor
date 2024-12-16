@@ -28,8 +28,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <x:Array x:Key="FileTypeArray" Type="c:FileType">
-                <c:FileType>CSV</c:FileType>
-                <c:FileType>W3Strings</c:FileType>
+                <c:FileType>csv</c:FileType>
+                <c:FileType>w3Strings</c:FileType>
             </x:Array>
             <x:Array x:Key="W3LanguageArray" Type="c:W3Language">
                 <c:W3Language>ar</c:W3Language>
