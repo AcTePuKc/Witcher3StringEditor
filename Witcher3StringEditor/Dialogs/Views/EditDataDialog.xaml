@@ -32,19 +32,19 @@
                     <RowDefinition Height="10" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBox ui:ControlHelper.Header="ID" Text="{Binding W3Item.StrId}" />
+                <TextBox ui:ControlHelper.Header="ID" Text="{Binding W3Item.StrId, FallbackValue=''}" />
                 <TextBox
                     Grid.Row="2"
                     ui:ControlHelper.Header="Key(Hex)"
-                    Text="{Binding W3Item.KeyHex}" />
+                    Text="{Binding W3Item.KeyHex, FallbackValue=''}" />
                 <TextBox
                     Grid.Row="4"
                     ui:ControlHelper.Header="Key(String)"
-                    Text="{Binding W3Item.KeyName}" />
+                    Text="{Binding W3Item.KeyName, FallbackValue=''}" />
                 <TextBox
                     Grid.Row="6"
                     ui:ControlHelper.Header="Text"
-                    Text="{Binding W3Item.Text}"
+                    Text="{Binding W3Item.Text, FallbackValue=''}"
                     TextWrapping="WrapWithOverflow" />
                 <Grid Grid.Row="8" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
