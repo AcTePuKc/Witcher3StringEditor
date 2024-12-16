@@ -1,6 +1,6 @@
 ﻿namespace Witcher3StringEditor.Models
 {
-    public record class BackupItem
+    public record BackupItem
     {
         public required string FileName { get; init; }
         public required string Hash { get; init; }

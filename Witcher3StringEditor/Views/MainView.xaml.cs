@@ -5,12 +5,12 @@ using Syncfusion.UI.Xaml.Grid.Helpers;
 using System.Windows;
 using Witcher3StringEditor.ViewModels;
 
-namespace Witcher3StringEditor
+namespace Witcher3StringEditor.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainView : Window
+    public partial class MainView
     {
         //To get the calculated height from GetAutoRowHeight method.
         private double autoHeight = double.NaN;

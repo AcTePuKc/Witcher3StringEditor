@@ -1,12 +1,11 @@
 ﻿using Syncfusion.UI.Xaml.Grid;
-using System.Windows;
 
 namespace Witcher3StringEditor.Dialogs.Views
 {
     /// <summary>
     /// DeleteDataDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class DeleteDataDialog : Window
+    public partial class DeleteDataDialog
     {
         //To get the calculated height from GetAutoRowHeight method.
         private double autoHeight = double.NaN;
@@ -19,7 +18,7 @@ namespace Witcher3StringEditor.Dialogs.Views
             InitializeComponent();
         }
 
-        private void DataGrid_QueryRowHeight(object sender, Syncfusion.UI.Xaml.Grid.QueryRowHeightEventArgs e)
+        private void DataGrid_QueryRowHeight(object sender, QueryRowHeightEventArgs e)
         {
             if (DataGrid.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out autoHeight))
             {

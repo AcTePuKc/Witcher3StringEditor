@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="Witcher3StringEditor.MainView"
+    x:Class="Witcher3StringEditor.Views.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -206,6 +206,6 @@
             HorizontalAlignment="Center"
             PageSize="30"
             Source="{Binding W3Items, Mode=TwoWay}" />
-        <sf:GridFilterControl />
+        <sf:GridFilterControl Grid.Row="0" />
     </Grid>
 </Window>

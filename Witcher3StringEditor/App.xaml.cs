@@ -6,7 +6,6 @@ using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
-using System.Diagnostics;
 using System.Reactive;
 using System.Windows;
 using Witcher3StringEditor.Core;
@@ -20,13 +19,13 @@ namespace Witcher3StringEditor
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var observer = new AnonymousObserver<LogEvent>(e => LogManger.Log(e));
+            var observer = new AnonymousObserver<LogEvent>(LogManger.Log);
             Log.Logger = new LoggerConfiguration().WriteTo.File(".\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
-                .WriteTo.Debug().WriteTo.Observers(e => e.Subscribe(observer)).Enrich.FromLogContext().CreateLogger();
+                .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext().CreateLogger();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
             var viewLocator = new StrongViewLocator();
             viewLocator.Register<EditDataDialogViewModel, EditDataDialog>();

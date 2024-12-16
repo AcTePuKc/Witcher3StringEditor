@@ -22,13 +22,14 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
 
         public SaveDialogViewModel(IEnumerable<W3ItemModel> w3Items, string path)
         {
+            var w3ItemModels = w3Items.ToList();
             W3Job = new W3Job
             {
                 Path = path,
-                W3Items = w3Items,
+                W3Items = w3ItemModels,
                 FileType = ConfigureManger.Load().PreferredFileType,
                 Language = ConfigureManger.Load().PreferredLanguage,
-                IDSpace = FindIDSpace(w3Items.First())
+                IDSpace = FindIDSpace(w3ItemModels.First())
             };
         }
 

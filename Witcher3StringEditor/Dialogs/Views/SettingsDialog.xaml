@@ -69,14 +69,14 @@
             IsReadOnly="True"
             Text="{Binding SettingsModel.W3StringsPath}" />
         <Button
-            Grid.Column="2"
+            Grid.Row="0" Grid.Column="2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding SetW3StringsPathCommand}">
             <ui:FontIcon Glyph="&#xe71e;" />
         </Button>
         <TextBox
-            Grid.Row="2"
+            Grid.Row="2" Grid.Column="0"
             ui:ControlHelper.PlaceholderText="{lex:Loc GameExePath}"
             IsReadOnly="True"
             Text="{Binding SettingsModel.GameExePath}" />
@@ -88,7 +88,7 @@
             Command="{Binding SetGameExePathCommand}">
             <ui:FontIcon Glyph="&#xe71e;" />
         </Button>
-        <StackPanel Grid.Row="4" Orientation="Horizontal">
+        <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal">
             <TextBlock VerticalAlignment="Center" Text="{lex:Loc PreferredFiletype}" />
             <ComboBox
                 Margin="10,0"

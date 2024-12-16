@@ -122,20 +122,18 @@ namespace Witcher3StringEditor.Core
 
             if (await SerializeCSV(w3Job, tempFolder))
             {
-                using var process = new Process
+                using var process = new Process();
+                process.EnableRaisingEvents = true;
+                process.StartInfo = new ProcessStartInfo
                 {
-                    EnableRaisingEvents = true,
-                    StartInfo = new ProcessStartInfo
-                    {
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        FileName = ConfigureManger.Load().W3StringsPath,
-                        Arguments = w3Job.IsIgnoreIDSpaceCheck == true
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    FileName = ConfigureManger.Load().W3StringsPath,
+                    Arguments = w3Job.IsIgnoreIDSpaceCheck
                         ? Parser.Default.FormatCommandLine(new W3Options() { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
                         : Parser.Default.FormatCommandLine(new W3Options() { Encode = csvPath, IdSpace = w3Job.IDSpace })
-                    }
                 };
                 process.ErrorDataReceived += Process_ErrorDataReceived;
                 process.OutputDataReceived += Process_OutputDataReceived;

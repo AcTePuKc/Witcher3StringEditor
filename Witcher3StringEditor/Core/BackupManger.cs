@@ -35,7 +35,7 @@ namespace Witcher3StringEditor.Core
                 BackupTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
             };
 
-            BackupItems?.Add(backupItem);
+            BackupItems.Add(backupItem);
 
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
 
@@ -44,41 +44,35 @@ namespace Witcher3StringEditor.Core
 
         public static void Restore(BackupItem backupItem)
         {
-            if (backupItem != null)
+            if (File.Exists(backupItem.OrginPath))
             {
-                if (File.Exists(backupItem.OrginPath))
-                {
-                    File.Delete(backupItem.OrginPath);
-                }
+                File.Delete(backupItem.OrginPath);
+            }
 
-                if (File.Exists(backupItem.BackupPath))
-                {
-                    File.Copy(backupItem.BackupPath, backupItem.OrginPath);
-                }
+            if (File.Exists(backupItem.BackupPath))
+            {
+                File.Copy(backupItem.BackupPath, backupItem.OrginPath);
             }
         }
 
         public static void Delete(BackupItem backupItem)
         {
-            if (backupItem != null)
+            if (File.Exists(backupItem.BackupPath))
             {
-                if (File.Exists(backupItem.BackupPath))
-                {
-                    File.Delete(backupItem.BackupPath);
-                    BackupItems?.Remove(backupItem);
-                }
-
-                Store();
+                File.Delete(backupItem.BackupPath);
+                BackupItems.Remove(backupItem);
             }
+
+            Store();
         }
 
-        public static void Store()
+        private static void Store()
         {
             var json = JsonConvert.SerializeObject(BackupItems);
             File.WriteAllText(storePath, json);
         }
 
-        public static IList<BackupItem> Retrieve()
+        private static IList<BackupItem> Retrieve()
         {
             if (File.Exists(storePath))
             {

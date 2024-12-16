@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using System.Collections.ObjectModel;
 using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Locales;

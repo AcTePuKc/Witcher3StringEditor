@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommandLine;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
@@ -34,7 +35,7 @@ namespace Witcher3StringEditor.ViewModels
         {
             this.dialogService = dialogService;
 
-            W3Items.CollectionChanged += (sender, e) =>
+            W3Items.CollectionChanged += (_, _) =>
             {
                 AddCommand.NotifyCanExecuteChanged();
                 ShowSaveDialogCommand.NotifyCanExecuteChanged();
@@ -101,16 +102,13 @@ namespace Witcher3StringEditor.ViewModels
         [RelayCommand]
         private async Task Edit(W3ItemModel w3Item)
         {
-            if (w3Item != null)
+            var dialogViewModel = new EditDataDialogViewModel(w3Item);
+            var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
+            if (result == true && dialogViewModel.W3Item != null)
             {
-                var dialogViewModel = new EditDataDialogViewModel(w3Item);
-                var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
-                if (result == true && dialogViewModel.W3Item != null)
-                {
-                    var first = W3Items.First(x => x.ID == w3Item.ID);
-                    var index = W3Items.IndexOf(first);
-                    W3Items[index] = dialogViewModel.W3Item;
-                }
+                var first = W3Items.First(x => x.ID == w3Item.ID);
+                var index = W3Items.IndexOf(first);
+                W3Items[index] = dialogViewModel.W3Item;
             }
         }
 
@@ -124,9 +122,9 @@ namespace Witcher3StringEditor.ViewModels
                 var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
                 if (result == true)
                 {
-                    for (var i = 0; i < w3Items.Length; i++)
+                    foreach (var t in w3Items)
                     {
-                        W3Items.Remove(w3Items[i]);
+                        W3Items.Remove(t);
                     }
                 }
             }
@@ -158,7 +156,7 @@ namespace Witcher3StringEditor.ViewModels
         [RelayCommand]
         private async Task ShowSettingsDialog()
         {
-            var settings = ConfigureManger.Load() ?? new SettingsModel();
+            var settings = ConfigureManger.Load();
             var dialogViewModel = new SettingDialogViewModel(settings);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
         }
@@ -167,16 +165,14 @@ namespace Witcher3StringEditor.ViewModels
         private static async Task PlayGame()
         {
             var filename = ConfigureManger.Load().GameExePath;
-            using var process = new Process
+            using var process = new Process();
+            process.EnableRaisingEvents = true;
+            process.StartInfo = new ProcessStartInfo
             {
-                EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = filename,
-                    WorkingDirectory = Path.GetDirectoryName(filename),
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true
-                }
+                FileName = filename,
+                WorkingDirectory = Path.GetDirectoryName(filename),
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
             };
             process.ErrorDataReceived += Process_ErrorDataReceived;
             process.OutputDataReceived += Process_OutputDataReceived;
@@ -231,9 +227,9 @@ namespace Witcher3StringEditor.ViewModels
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                var file = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+                var file = e.Data.GetData(DataFormats.FileDrop).Cast<IEnumerable<string>>().ToArray()[0];
                 var ext = Path.GetExtension(file);
-                if (ext == ".csv" || ext == ".w3strings")
+                if (ext is ".csv" or ".w3strings")
                 {
                     if (W3Items.Any())
                         W3Items.Clear();

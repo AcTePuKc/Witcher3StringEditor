@@ -7,7 +7,7 @@ namespace Witcher3StringEditor.Dialogs.Views
     /// <summary>
     /// LogDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class LogDialog : Window
+    public partial class LogDialog
     {
         //To get the calculated height from GetAutoRowHeight method.
         private double autoHeight = double.NaN;

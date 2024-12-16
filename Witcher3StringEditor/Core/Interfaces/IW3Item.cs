@@ -1,6 +1,6 @@
 ﻿namespace Witcher3StringEditor.Core.Interfaces
 {
-    public partial interface IW3Item
+    public interface IW3Item
     {
         public string StrID { get; set; }
 
