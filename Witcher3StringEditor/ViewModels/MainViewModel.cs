@@ -242,7 +242,7 @@ namespace Witcher3StringEditor.ViewModels
         {
             var buildTime = RetrieveTimestampAsDateTime();
             var runtime = RuntimeInformation.FrameworkDescription;
-            var version = ThisAssembly.AssemblyInformationalVersion;
+            var version = ThisAssembly.AssemblyInformationalVersion.Trim();
             var os = $"{RuntimeInformation.OSDescription}({RuntimeInformation.OSArchitecture})";
             await MessageBox.ShowAsync($"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}; {os}\n{Strings.Runtime}: {runtime}", Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
         }
