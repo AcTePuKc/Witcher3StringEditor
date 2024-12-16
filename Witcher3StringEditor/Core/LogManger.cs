@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using Serilog.Events;
+﻿using Serilog.Events;
+using System.Collections.ObjectModel;
 
 namespace Witcher3StringEditor.Core;
 

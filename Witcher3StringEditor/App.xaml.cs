@@ -1,5 +1,3 @@
-using System.Reactive;
-using System.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
@@ -8,6 +6,8 @@ using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
+using System.Reactive;
+using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;

@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
-using System.IO;
-using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using System.ComponentModel;
+using System.IO;
+using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;

@@ -9,6 +9,7 @@ internal partial class DeleteDataDialogViewModel(IEnumerable<W3ItemModel> w3Item
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public IEnumerable<W3ItemModel> W3Items { get; } = w3Items;
+
     public event EventHandler? RequestClose;
 
     public bool? DialogResult { get; private set; }

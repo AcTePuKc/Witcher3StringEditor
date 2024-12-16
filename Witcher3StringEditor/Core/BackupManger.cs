@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Security.Cryptography;
-using Newtonsoft.Json;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Core;

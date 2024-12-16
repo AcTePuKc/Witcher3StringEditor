@@ -1,5 +1,5 @@
-﻿using System.IO;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.IO;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Core;

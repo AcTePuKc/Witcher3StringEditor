@@ -1,18 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Witcher3StringEditor.Core.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 
 public partial class W3ItemModel : ObservableObject, ICloneable
 {
-    [ObservableProperty] [Display(Name = "Key(Hex)")]
+    [ObservableProperty]
+    [Display(Name = "Key(Hex)")]
     private string keyHex;
 
-    [ObservableProperty] [Display(Name = "Key(String)")]
+    [ObservableProperty]
+    [Display(Name = "Key(String)")]
     private string keyName;
 
-    [ObservableProperty] [Display(Name = "ID")]
+    [ObservableProperty]
+    [Display(Name = "ID")]
     private string strId;
 
     [ObservableProperty] private string text;

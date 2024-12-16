@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HanumanInstitute.MvvmDialogs;
 using Serilog.Events;
+using System.Collections.ObjectModel;
 using Witcher3StringEditor.Core;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;

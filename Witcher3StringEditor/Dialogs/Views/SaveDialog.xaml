@@ -85,11 +85,15 @@
                     </Grid.RowDefinitions>
                     <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetLanguage}" />
                     <ComboBox
-                        Grid.Row="0" Grid.Column="2"
+                        Grid.Row="0"
+                        Grid.Column="2"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{StaticResource W3LanguageArray}"
                         SelectedValue="{Binding W3Job.Language}" />
-                    <Grid Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0">
+                    <Grid
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="10" />
@@ -105,8 +109,7 @@
                                 <Setter Property="Visibility" Value="Collapsed" />
                                 <Setter Property="IsEnabled" Value="False" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}"
-                                                 Value="{x:Static c:FileType.w3Strings}">
+                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.w3Strings}">
                                         <Setter Property="Visibility" Value="Visible" />
                                         <Setter Property="IsEnabled" Value="True" />
                                     </DataTrigger>
@@ -116,13 +119,15 @@
                         <TextBlock VerticalAlignment="Center" Text="{lex:Loc IgnoreIDSpaceCheck}" />
                         <ui:ToggleSwitch
                             x:Name="IgnoreIdSpaceCheckSwitch"
-                            Grid.Row="0" Grid.Column="2"
+                            Grid.Row="0"
+                            Grid.Column="2"
                             IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
                             OffContent="{lex:Loc IsOff}"
                             OnContent="{lex:Loc IsOn}" />
                         <ui:NumberBox
                             Grid.Row="2"
-                            Grid.ColumnSpan="3" Grid.Column="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
                             ui:ControlHelper.Header="{lex:Loc IDSpace}"
                             Maximum="9999"
                             Minimum="1"
@@ -132,9 +137,7 @@
                             <ui:NumberBox.Style>
                                 <Style TargetType="ui:NumberBox">
                                     <Style.Triggers>
-                                        <DataTrigger
-                                            Binding="{Binding ElementName=IgnoreIdSpaceCheckSwitch, Path=IsOn}"
-                                            Value="True">
+                                        <DataTrigger Binding="{Binding ElementName=IgnoreIdSpaceCheckSwitch, Path=IsOn}" Value="True">
                                             <Setter Property="IsEnabled" Value="False" />
                                             <Setter Property="Visibility" Value="Hidden" />
                                             <Setter Property="Height" Value="0" />

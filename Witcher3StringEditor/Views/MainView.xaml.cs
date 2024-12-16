@@ -1,8 +1,8 @@
-﻿using System.Windows;
-using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using iNKORE.UI.WPF.Modern.Controls;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Helpers;
+using System.Windows;
 using Witcher3StringEditor.ViewModels;
 
 namespace Witcher3StringEditor.Views;

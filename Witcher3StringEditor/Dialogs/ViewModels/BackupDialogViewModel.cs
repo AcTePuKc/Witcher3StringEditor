@@ -1,7 +1,7 @@
-﻿using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
+using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
@@ -12,6 +12,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 internal partial class BackupDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public event EventHandler? RequestClose;
+
     public bool? DialogResult => true;
 
     [RelayCommand]

@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Text;
-using CommandLine;
+﻿using CommandLine;
 using Serilog;
 using Syncfusion.Data.Extensions;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
 using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Helper;
 using Witcher3StringEditor.Core.Implements;
@@ -28,18 +28,18 @@ public static class W3Serializer
     private static IEnumerable<IW3Item> DeserializeCsv(string path)
     {
         return from line in File.ReadAllLines(path)
-            where !line.StartsWith(';')
-            select line.Split("|")
+               where !line.StartsWith(';')
+               select line.Split("|")
             into parts
-            where parts.Length == 4
-            select new W3Item
-            {
-                StrId = parts[0]
-                    .Trim(),
-                KeyHex = parts[1],
-                KeyName = parts[2],
-                Text = parts[3]
-            };
+               where parts.Length == 4
+               select new W3Item
+               {
+                   StrId = parts[0]
+                       .Trim(),
+                   KeyHex = parts[1],
+                   KeyName = parts[2],
+                   Text = parts[3]
+               };
     }
 
     private static async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
