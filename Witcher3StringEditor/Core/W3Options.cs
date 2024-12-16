@@ -2,18 +2,18 @@
 
 namespace Witcher3StringEditor.Core
 {
-    internal class W3Options
+    internal record W3Options
     {
         [Option('d')]
-        public string Decode { get; set; } = string.Empty;
+        public string Decode { get; init; } = string.Empty;
 
         [Option('e')]
-        public string Encode { get; set; } = string.Empty;
+        public string Encode { get; init; } = string.Empty;
 
         [Option('i')]
-        public int IdSpace { get; set; }
+        public int IdSpace { get; init; }
 
         [Option("force-ignore-id-space-check-i-know-what-i-am-doing")]
-        public bool IsIgnoreIdSpaceCheck { get; set; }
+        public bool IsIgnoreIdSpaceCheck { get; init; }
     }
 }
