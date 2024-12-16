@@ -42,12 +42,12 @@ namespace Witcher3StringEditor
                     .AddTransient<MainViewModel>()
                     .BuildServiceProvider());
 
-            string currentProcessName = Process.GetCurrentProcess().ProcessName;
-            var processesByName = Process.GetProcessesByName(currentProcessName);
-            if (processesByName.Length > 1)
-            {
-                Environment.Exit(0);
-            }
+            //string currentProcessName = Process.GetCurrentProcess().ProcessName;
+            //var processesByName = Process.GetProcessesByName(currentProcessName);
+            //if (processesByName.Length > 1)
+            //{
+            //    Environment.Exit(0);
+            //}
 
             LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
         }
