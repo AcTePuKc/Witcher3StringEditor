@@ -35,18 +35,18 @@ namespace Witcher3StringEditor.Core
         private static IEnumerable<IW3Item> DeserializeCsv(string path)
         {
             return (from line in File.ReadAllLines(path)
-                where !line.StartsWith(';')
-                select line.Split("|")
+                    where !line.StartsWith(';')
+                    select line.Split("|")
                 into parts
-                where parts.Length == 4
-                select new W3Item()
-                {
-                    StrID = parts[0]
-                        .Trim(),
-                    KeyHex = parts[1],
-                    KeyName = parts[2],
-                    Text = parts[3]
-                });
+                    where parts.Length == 4
+                    select new W3Item()
+                    {
+                        StrID = parts[0]
+                            .Trim(),
+                        KeyHex = parts[1],
+                        KeyName = parts[2],
+                        Text = parts[3]
+                    });
         }
 
         private static async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
