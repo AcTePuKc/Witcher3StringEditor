@@ -14,7 +14,7 @@ internal partial class W3Job : ObservableObject, IW3Job
 
     [ObservableProperty] private W3Language language;
 
-    public string Path { get; init; } = string.Empty;
+    public required string Path { get; init; }
 
-    public IEnumerable<W3ItemModel> W3Items { get; set; } = [];
+    public required IEnumerable<W3ItemModel> W3Items { get; init; }
 }

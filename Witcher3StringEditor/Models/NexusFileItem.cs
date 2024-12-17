@@ -1,6 +1,6 @@
 ﻿namespace Witcher3StringEditor.Models;
 
-public class NexusFileItem
+public record NexusFileItem(Version Version)
 {
-    public required Version Version { get; set; }
+    public Version Version { get; } = Version;
 }

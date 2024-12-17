@@ -278,9 +278,9 @@ internal partial class MainViewModel : ObservableObject
 
     private static async Task<bool> CheckUpdate()
     {
-        var httpClient = new HttpClient();
+        using var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Add("apikey", Resourcer.Resource.AsString("..\\NexusApiKey.txt"));
-        var httpResponse = await httpClient.GetAsync("https://api.nexusmods.com/v1/games/witcher3/mods/10032/files.json?category=main");
+        using var httpResponse = await httpClient.GetAsync("https://api.nexusmods.com/v1/games/witcher3/mods/10032/files.json?category=main");
         if (!httpResponse.IsSuccessStatusCode) return false;
         var content = await httpResponse.Content.ReadAsStringAsync();
         var json = JsonConvert.DeserializeObject<NexusResponse>(content);

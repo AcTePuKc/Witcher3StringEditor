@@ -1,7 +1,6 @@
 ﻿namespace Witcher3StringEditor.Models;
 
-public class NexusResponse
+public record NexusResponse(List<NexusFileItem> Files)
 {
-    public required List<NexusFileItem> Files { get; set; }
-
+    public List<NexusFileItem> Files { get; } = Files;
 }

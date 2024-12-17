@@ -37,17 +37,10 @@ public partial class App
         viewLocator.Register<SettingDialogViewModel, SettingsDialog>();
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
-                .AddLogging(builder  => builder.AddSerilog())
+                .AddLogging(builder => builder.AddSerilog())
                 .AddSingleton<IDialogService>(new DialogService(new DialogManager(viewLocator), Ioc.Default.GetService))
                 .AddTransient<MainViewModel>()
                 .BuildServiceProvider());
-
-        //string currentProcessName = Process.GetCurrentProcess().ProcessName;
-        //var processesByName = Process.GetProcessesByName(currentProcessName);
-        //if (processesByName.Length > 1)
-        //{
-        //    Environment.Exit(0);
-        //}
 
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
     }

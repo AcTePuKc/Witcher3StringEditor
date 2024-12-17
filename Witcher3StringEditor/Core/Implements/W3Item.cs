@@ -2,10 +2,10 @@
 
 namespace Witcher3StringEditor.Core.Implements;
 
-internal class W3Item : IW3Item
+public record W3Item : IW3Item
 {
-    public string StrId { get; init; } = string.Empty;
-    public string KeyHex { get; set; } = string.Empty;
-    public string KeyName { get; set; } = string.Empty;
-    public string Text { get; set; } = string.Empty;
+    public required string StrId { get; init; }
+    public required string KeyHex { get; init; }
+    public required string KeyName { get; init; }
+    public required string Text { get; init; }
 }
