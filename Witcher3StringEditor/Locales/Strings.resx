@@ -1,308 +1,306 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <!-- 
-      Microsoft ResX Schema 
-      
-      Version 2.0
-      
-      The primary goals of this format is to allow a simple XML format 
-      that is mostly human readable. The generation and parsing of the 
-      various data types are done through the TypeConverter classes 
-      associated with the data types.
-      
-      Example:
-      
-      ... ado.net/XML headers & schema ...
-      <resheader name="resmimetype">text/microsoft-resx</resheader>
-      <resheader name="version">2.0</resheader>
-      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-          <value>[base64 mime encoded serialized .NET Framework object]</value>
-      </data>
-      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-          <comment>This is a comment</comment>
-      </data>
-                  
-      There are any number of "resheader" rows that contain simple 
-      name/value pairs.
-      
-      Each data row contains a name, and value. The row also contains a 
-      type or mimetype. Type corresponds to a .NET class that support 
-      text/value conversion through the TypeConverter architecture. 
-      Classes that don't support this are serialized and stored with the 
-      mimetype set.
-      
-      The mimetype is used for serialized objects, and tells the 
-      ResXResourceReader how to depersist the object. This is currently not 
-      extensible. For a given mimetype the value must be set accordingly:
-      
-      Note - application/x-microsoft.net.object.binary.base64 is the format 
-      that the ResXResourceWriter will generate, however the reader can 
-      read any of the formats listed below.
-      
-      mimetype: application/x-microsoft.net.object.binary.base64
-      value   : The object must be serialized with 
-              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-              : and then encoded with base64 encoding.
-      
-      mimetype: application/x-microsoft.net.object.soap.base64
-      value   : The object must be serialized with 
-              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-              : and then encoded with base64 encoding.
-  
-      mimetype: application/x-microsoft.net.object.bytearray.base64
-      value   : The object must be serialized into a byte array 
-              : using a System.ComponentModel.TypeConverter
-              : and then encoded with base64 encoding.
-      -->
-    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
-                xmlns="">
-        <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
-        <xsd:element name="root" msdata:IsDataSet="true">
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
             <xsd:complexType>
-                <xsd:choice maxOccurs="unbounded">
-                    <xsd:element name="metadata">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
-                            </xsd:sequence>
-                            <xsd:attribute name="name" use="required" type="xsd:string"/>
-                            <xsd:attribute name="type" type="xsd:string"/>
-                            <xsd:attribute name="mimetype" type="xsd:string"/>
-                            <xsd:attribute ref="xml:space"/>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="assembly">
-                        <xsd:complexType>
-                            <xsd:attribute name="alias" type="xsd:string"/>
-                            <xsd:attribute name="name" type="xsd:string"/>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="data">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
-                            </xsd:sequence>
-                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
-                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
-                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
-                            <xsd:attribute ref="xml:space"/>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="resheader">
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
-                            </xsd:sequence>
-                            <xsd:attribute name="name" type="xsd:string" use="required"/>
-                        </xsd:complexType>
-                    </xsd:element>
-                </xsd:choice>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
-        </xsd:element>
-    </xsd:schema>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>2.0</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
-    </resheader>
-    <data name="AppTitle" xml:space="preserve">
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
     <value>Witcher 3 String Editor</value>
   </data>
-    <data name="OpenFileBtnLabel" xml:space="preserve">
+  <data name="OpenFileBtnLabel" xml:space="preserve">
     <value>Open File</value>
   </data>
-    <data name="SearchBoxPlaceholderText" xml:space="preserve">
+  <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>Search</value>
   </data>
-    <data name="AddBtnLabel" xml:space="preserve">
+  <data name="AddBtnLabel" xml:space="preserve">
     <value>Add Data</value>
   </data>
-    <data name="EditBtnLabel" xml:space="preserve">
+  <data name="EditBtnLabel" xml:space="preserve">
     <value>Edit Data</value>
   </data>
-    <data name="DeleteBtnLabel" xml:space="preserve">
+  <data name="DeleteBtnLabel" xml:space="preserve">
     <value>Delete Data</value>
   </data>
-    <data name="SaveBtnLabel" xml:space="preserve">
+  <data name="SaveBtnLabel" xml:space="preserve">
     <value>Save</value>
   </data>
-    <data name="BackupBtnLabel" xml:space="preserve">
+  <data name="BackupBtnLabel" xml:space="preserve">
     <value>Backup</value>
   </data>
-    <data name="LogBtnLabel" xml:space="preserve">
+  <data name="LogBtnLabel" xml:space="preserve">
     <value>Log</value>
   </data>
-    <data name="SettingsBtnLabel" xml:space="preserve">
+  <data name="SettingsBtnLabel" xml:space="preserve">
     <value>Settings</value>
   </data>
-    <data name="PlayBtnLabel" xml:space="preserve">
+  <data name="PlayBtnLabel" xml:space="preserve">
     <value>Play Game</value>
   </data>
-    <data name="AllSupportedFormat" xml:space="preserve">
+  <data name="AllSupportedFormat" xml:space="preserve">
     <value>All Supported Format</value>
   </data>
-    <data name="TextFile" xml:space="preserve">
+  <data name="TextFile" xml:space="preserve">
     <value>Text File</value>
   </data>
-    <data name="Witcher3StringsFile" xml:space="preserve">
+  <data name="Witcher3StringsFile" xml:space="preserve">
     <value>Witcher3 Strings File</value>
   </data>
-    <data name="EditDialogTitle" xml:space="preserve">
+  <data name="EditDialogTitle" xml:space="preserve">
     <value>Edit</value>
   </data>
-    <data name="AddDialogTitle" xml:space="preserve">
+  <data name="AddDialogTitle" xml:space="preserve">
     <value>Add</value>
   </data>
-    <data name="SubmitBtnTxt" xml:space="preserve">
+  <data name="SubmitBtnTxt" xml:space="preserve">
     <value>Submit</value>
   </data>
-    <data name="CancelBtnTxt" xml:space="preserve">
+  <data name="CancelBtnTxt" xml:space="preserve">
     <value>Cancel</value>
   </data>
-    <data name="DeleteDialogTitle" xml:space="preserve">
+  <data name="DeleteDialogTitle" xml:space="preserve">
     <value>Delete</value>
   </data>
-    <data name="DeleteDialogMessage" xml:space="preserve">
+  <data name="DeleteDialogMessage" xml:space="preserve">
     <value>You Are Deleting These Record(s):</value>
   </data>
-    <data name="DeleteBtnTxt" xml:space="preserve">
+  <data name="DeleteBtnTxt" xml:space="preserve">
     <value>Delete</value>
   </data>
-    <data name="TargetFiletype" xml:space="preserve">
+  <data name="TargetFiletype" xml:space="preserve">
     <value>Target Filetype</value>
   </data>
-    <data name="TargetLanguage" xml:space="preserve">
+  <data name="TargetLanguage" xml:space="preserve">
     <value>Target Language</value>
   </data>
-    <data name="IDSpace" xml:space="preserve">
+  <data name="IDSpace" xml:space="preserve">
     <value>ID Space</value>
   </data>
-    <data name="IgnoreIDSpaceCheck" xml:space="preserve">
+  <data name="IgnoreIDSpaceCheck" xml:space="preserve">
     <value>Ignore ID Space Check    </value>
   </data>
-    <data name="SaveBtnTxt" xml:space="preserve">
+  <data name="SaveBtnTxt" xml:space="preserve">
     <value>Save</value>
   </data>
-    <data name="BackupDialogTitle" xml:space="preserve">
+  <data name="BackupDialogTitle" xml:space="preserve">
     <value>Backup</value>
   </data>
-    <data name="Filename" xml:space="preserve">
+  <data name="Filename" xml:space="preserve">
     <value>Filename</value>
   </data>
-    <data name="Hash" xml:space="preserve">
+  <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
-    <data name="OrginPath" xml:space="preserve">
+  <data name="OrginPath" xml:space="preserve">
     <value>Orgin Path</value>
   </data>
-    <data name="BackupPath" xml:space="preserve">
+  <data name="BackupPath" xml:space="preserve">
     <value>Backup Path</value>
   </data>
-    <data name="BackupTime" xml:space="preserve">
+  <data name="BackupTime" xml:space="preserve">
     <value>Backup Time</value>
   </data>
-    <data name="CloseBtnTxt" xml:space="preserve">
+  <data name="CloseBtnTxt" xml:space="preserve">
     <value>Close</value>
   </data>
-    <data name="RestoreBtnTxt" xml:space="preserve">
+  <data name="RestoreBtnTxt" xml:space="preserve">
     <value>Restore</value>
   </data>
-    <data name="LogDialogTitle" xml:space="preserve">
+  <data name="LogDialogTitle" xml:space="preserve">
     <value>Log</value>
   </data>
-    <data name="LogTime" xml:space="preserve">
+  <data name="LogTime" xml:space="preserve">
     <value>Log Time</value>
   </data>
-    <data name="LogLevel" xml:space="preserve">
+  <data name="LogLevel" xml:space="preserve">
     <value>Log Level</value>
   </data>
-    <data name="LogMessage" xml:space="preserve">
+  <data name="LogMessage" xml:space="preserve">
     <value>Log Message</value>
   </data>
-    <data name="SettingsDialogTitle" xml:space="preserve">
+  <data name="SettingsDialogTitle" xml:space="preserve">
     <value>Settings</value>
   </data>
-    <data name="W3StringsPath" xml:space="preserve">
+  <data name="W3StringsPath" xml:space="preserve">
     <value>Please Select w3strings.exe</value>
   </data>
-    <data name="GameExePath" xml:space="preserve">
+  <data name="GameExePath" xml:space="preserve">
     <value>Please Select witcher3.exe</value>
   </data>
-    <data name="PreferredFiletype" xml:space="preserve">
+  <data name="PreferredFiletype" xml:space="preserve">
     <value>Preferred Filetype</value>
   </data>
-    <data name="PreferredLanguage" xml:space="preserve">
+  <data name="PreferredLanguage" xml:space="preserve">
     <value>Preferred Language</value>
   </data>
-    <data name="BackupRestoreMessage" xml:space="preserve">
+  <data name="BackupRestoreMessage" xml:space="preserve">
     <value>This Operation Will Overwrite The File And Cannot Be Undone</value>
   </data>
-    <data name="Warning" xml:space="preserve">
+  <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
-    <data name="BackupDeleteMessage" xml:space="preserve">
+  <data name="BackupDeleteMessage" xml:space="preserve">
     <value>This Operation Will Delete The File And Cannot Be Undone</value>
   </data>
-    <data name="SaveSuccess" xml:space="preserve">
+  <data name="SaveSuccess" xml:space="preserve">
     <value>Save Success</value>
   </data>
-    <data name="SaveResult" xml:space="preserve">
+  <data name="SaveResult" xml:space="preserve">
     <value>Save Result</value>
   </data>
-    <data name="SaveFailure" xml:space="preserve">
+  <data name="SaveFailure" xml:space="preserve">
     <value>Save Failure</value>
   </data>
-    <data name="SelectW3Strings" xml:space="preserve">
+  <data name="SelectW3Strings" xml:space="preserve">
     <value>Select w3strings.exe</value>
   </data>
-    <data name="SelectGameExe" xml:space="preserve">
+  <data name="SelectGameExe" xml:space="preserve">
     <value>Select witcher3.exe</value>
   </data>
-    <data name="PleaseCheckSettings" xml:space="preserve">
+  <data name="PleaseCheckSettings" xml:space="preserve">
     <value>You Have Not Completed The Initialization. Click Yes to Exit,Otherwise Click No To Continue With The Initialization.</value>
   </data>
-    <data name="SaveDialogTitle" xml:space="preserve">
+  <data name="SaveDialogTitle" xml:space="preserve">
     <value>Save</value>
   </data>
-    <data name="Version" xml:space="preserve">
+  <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>
-    <data name="BuildTime" xml:space="preserve">
+  <data name="BuildTime" xml:space="preserve">
     <value>Build Time</value>
   </data>
-    <data name="Runtime" xml:space="preserve">
+  <data name="Runtime" xml:space="preserve">
     <value>Runtime</value>
   </data>
-    <data name="OS" xml:space="preserve">
+  <data name="OS" xml:space="preserve">
     <value>OS</value>
   </data>
-    <data name="About" xml:space="preserve">
+  <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
-    <data name="IsOn" xml:space="preserve">
+  <data name="IsOn" xml:space="preserve">
     <value>On</value>
   </data>
-    <data name="IsOff" xml:space="preserve">
+  <data name="IsOff" xml:space="preserve">
     <value>Off</value>
   </data>
-    <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
+  <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
     <value>Open Working Folder</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update Available</value>
   </data>
 </root>

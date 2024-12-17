@@ -31,6 +31,9 @@ internal partial class MainViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
+    [ObservableProperty]
+    private bool isUpdateAvailable;
+
     public MainViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
@@ -63,6 +66,8 @@ internal partial class MainViewModel : ObservableObject
             var dialogViewModel = new SettingDialogViewModel(newSettings);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
         }
+
+        IsUpdateAvailable = await CheckUpdate();
     }
 
     [RelayCommand]
