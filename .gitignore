@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /Witcher3StringEditor/License.txt
 /.idea/.idea.Witcher3StringEditor/.idea
 *.yaml
+/Witcher3StringEditor/NexusApiKey.txt
