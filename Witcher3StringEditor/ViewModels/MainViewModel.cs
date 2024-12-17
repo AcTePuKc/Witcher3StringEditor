@@ -1,15 +1,14 @@
-﻿using CommandLine;
+﻿using AngleSharp;
+using CommandLine;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using Newtonsoft.Json;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -278,14 +277,9 @@ internal partial class MainViewModel : ObservableObject
 
     private static async Task<bool> CheckUpdate()
     {
-        using var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Add("apikey", Resourcer.Resource.AsString("..\\NexusApiKey.txt"));
-        using var httpResponse = await httpClient.GetAsync("https://api.nexusmods.com/v1/games/witcher3/mods/10032/files.json?category=main");
-        if (!httpResponse.IsSuccessStatusCode) return false;
-        var content = await httpResponse.Content.ReadAsStringAsync();
-        var json = JsonConvert.DeserializeObject<NexusResponse>(content);
-        if (json == null) return false;
-        var files = json.Files;
-        return files.Any(file => new Version(ThisAssembly.AssemblyFileVersion) < file.Version);
+        var context = BrowsingContext.New(Configuration.Default.WithDefaultLoader());
+        var document = await context.OpenAsync("https://www.nexusmods.com/witcher3/mods/10032");
+        var element = document.QuerySelector("#pagetitle>ul.stats.clearfix>li.stat-version>div>div.stat");
+        return element != null && new Version(element.InnerHtml) > new Version(ThisAssembly.AssemblyFileVersion);
     }
 }
