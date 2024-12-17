@@ -12,36 +12,38 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="License.txt"/>
+        <None Remove="License.txt" />
+        <None Remove="NexusApiKey.txt" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="License.txt"/>
+        <EmbeddedResource Include="License.txt" />
+        <EmbeddedResource Include="NexusApiKey.txt" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.9.1"/>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
-        <PackageReference Include="HanumanInstitute.MvvmDialogs.Wpf" Version="2.1.0"/>
-        <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.9.30"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0"/>
-        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135"/>
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="HanumanInstitute.MvvmDialogs.Wpf" Version="2.1.0" />
+        <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.9.30" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
         <PackageReference Include="Nerdbank.GitVersioning" Version="3.7.112">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Resourcer.Fody" Version="1.8.1">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0"/>
-        <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0"/>
-        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0"/>
-        <PackageReference Include="Serilog.Sinks.Observable" Version="3.0.0"/>
-        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="28.1.33"/>
-        <PackageReference Include="System.Reactive" Version="6.0.1"/>
-        <PackageReference Include="Timestamp" Version="1.0.2"/>
-        <PackageReference Include="WPFLocalizeExtension" Version="3.10.0"/>
+        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+        <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+        <PackageReference Include="Serilog.Sinks.Observable" Version="3.0.0" />
+        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="28.1.33" />
+        <PackageReference Include="System.Reactive" Version="6.0.1" />
+        <PackageReference Include="Timestamp" Version="1.0.2" />
+        <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
     </ItemGroup>
 
     <ItemGroup>
