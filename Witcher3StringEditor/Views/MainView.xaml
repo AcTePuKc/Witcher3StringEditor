@@ -158,6 +158,8 @@
             AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
             CurrentCellEndEdit="DataGrid_CurrentCellEndEdit"
+            DragEnter="DataGrid_DragEnterOrLeave"
+            DragLeave="DataGrid_DragEnterOrLeave"
             HeaderRowHeight="25"
             ItemsSource="{Binding PagedSource, ElementName=DataPager, Mode=TwoWay}"
             NavigationMode="Cell"
@@ -165,12 +167,6 @@
             RowHeight="30"
             SelectionMode="Extended">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="DragEnter">
-                    <i:InvokeCommandAction Command="{Binding SfDataGridDragEnterCommand}" PassEventArgsToCommand="True" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="DragOver">
-                    <i:InvokeCommandAction Command="{Binding SfDataGridDragOverCommand}" PassEventArgsToCommand="True" />
-                </i:EventTrigger>
                 <i:EventTrigger EventName="Drop">
                     <i:InvokeCommandAction Command="{Binding SfDataGridDropCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>

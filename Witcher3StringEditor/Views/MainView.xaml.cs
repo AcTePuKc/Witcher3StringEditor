@@ -54,4 +54,11 @@ public partial class MainView
         DataGrid.InvalidateRowHeight(e.RowColumnIndex.RowIndex);
         DataGrid.GetVisualContainer().InvalidateMeasureInfo();
     }
+
+    private void DataGrid_DragEnterOrLeave(object sender, DragEventArgs e)
+    {
+        e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
+
+        e.Handled = true;
+    }
 }

@@ -193,24 +193,6 @@ internal partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private static void SfDataGridDragEnter(DragEventArgs e)
-    {
-        e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
-
-        e.Handled = true;
-    }
-
-    [RelayCommand]
-    private static void SfDataGridDragOver(DragEventArgs e)
-    {
-        // 可选：提供视觉反馈
-        // 注意: 在某些情况下，你可能需要转换坐标系
-        e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
-
-        e.Handled = true;
-    }
-
-    [RelayCommand]
     private async Task SfDataGridDrop(DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop))
