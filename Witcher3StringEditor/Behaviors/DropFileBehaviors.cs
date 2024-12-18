@@ -8,13 +8,13 @@ namespace Witcher3StringEditor.Behaviors
     {
         public string[] Data
         {
-            get { return (string[])GetValue(DataProperty); }
-            set { SetValue(DataProperty, value); }
+            get => (string[])GetValue(DataProperty);
+            set => SetValue(DataProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(string[]), typeof(DropFileBehaviors), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Data), typeof(string[]), typeof(DropFileBehaviors), new PropertyMetadata(null));
 
         protected override void OnAttached()
         {
