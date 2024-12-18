@@ -11,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
@@ -27,11 +26,14 @@ internal partial class MainViewModel : ObservableObject
     private readonly IDialogService dialogService;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
-    private string outputFolder = string.Empty;
+    private bool isUpdateAvailable;
 
     [ObservableProperty]
-    private bool isUpdateAvailable;
+    private string[] dropFileData = [];
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
+    private string outputFolder = string.Empty;
 
     public MainViewModel(IDialogService dialogService)
     {
@@ -193,11 +195,11 @@ internal partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task SfDataGridDrop(DragEventArgs e)
+    private async Task DropFile()
     {
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        if (DropFileData.Length != 0)
         {
-            var file = e.Data.GetData(DataFormats.FileDrop).Cast<IEnumerable<string>>().ToArray()[0];
+            var file = DropFileData[0];
             var ext = Path.GetExtension(file);
             if (ext is ".csv" or ".w3strings")
             {
@@ -206,8 +208,6 @@ internal partial class MainViewModel : ObservableObject
                 foreach (var item in await W3Serializer.Deserialize(file)) W3Items.Add(new W3ItemModel(item));
             }
         }
-
-        e.Handled = true;
     }
 
     [RelayCommand]
