@@ -166,7 +166,7 @@
             RowHeight="30"
             SelectionMode="Extended">
             <i:Interaction.Behaviors>
-                <b:DropFileBehaviors Data="{Binding DropFileData, Mode=TwoWay}" />
+                <b:DropFileBehavior Data="{Binding DropFileData, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
