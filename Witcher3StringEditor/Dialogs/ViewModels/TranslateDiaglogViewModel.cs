@@ -4,6 +4,7 @@ using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
+using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Models;
 
@@ -21,7 +22,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
             = new(Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft)));
 
         [ObservableProperty]
-        private Language toLanguage = Language.GetLanguage("zh-CN");
+        private Language toLanguage;
 
         [ObservableProperty]
         private TranslateItemModel currentTranslateItemModel;
@@ -42,6 +43,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
             w3ItemModels = w3Items.ToArray();
             var itemModel = w3ItemModels.First();
             CurrentTranslateItemModel = new TranslateItemModel() { Id = itemModel.Id, Text = itemModel.Text };
+            ToLanguage = Language.GetLanguage("zh-CN");
         }
 
         [RelayCommand]

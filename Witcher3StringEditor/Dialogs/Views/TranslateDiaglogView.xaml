@@ -60,7 +60,7 @@
                     HorizontalAlignment="Stretch"
                     DisplayMemberPath="NativeName"
                     ItemsSource="{Binding Languages}"
-                    SelectedValue="{Binding ToLanguage}" />
+                    SelectedValue="{Binding ToLanguage, Mode=TwoWay}" />
                 <Button
                     Grid.Column="1"
                     Command="{Binding TranslateCommand}"
