@@ -26,7 +26,7 @@ public static class BackupManger
             FileName = Path.GetFileName(path),
             Hash = ComputeSha256Hash(path),
             OrginPath = path,
-            BackupPath = Path.Combine($".\\Backup\\{Guid.NewGuid()}"),
+            BackupPath = Path.Combine($".\\Backup\\{Guid.NewGuid():N}.bak"),
             BackupTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
         };
 

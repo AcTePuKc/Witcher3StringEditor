@@ -23,7 +23,7 @@ internal partial class BackupDialogViewModel : ObservableObject, IModalDialogVie
     }
 
     [RelayCommand]
-    private static async Task DeleteAsync(BackupItem backupItem)
+    private static async Task Delete(BackupItem backupItem)
     {
         if (await MessageBox.ShowAsync(Strings.BackupDeleteMessage, Strings.Warning, MessageBoxButton.YesNo,
                 MessageBoxImage.Warning) == MessageBoxResult.Yes) BackupManger.Delete(backupItem);
