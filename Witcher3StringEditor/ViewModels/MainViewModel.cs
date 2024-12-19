@@ -232,7 +232,7 @@ internal partial class MainViewModel : ObservableObject
         var version = ThisAssembly.AssemblyInformationalVersion.Trim();
         var os = $"{RuntimeInformation.OSDescription}({RuntimeInformation.OSArchitecture})";
         await MessageBox.ShowAsync(
-            $"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}; {os}\n{Strings.Runtime}: {runtime}",
+            $"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}",
             Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
