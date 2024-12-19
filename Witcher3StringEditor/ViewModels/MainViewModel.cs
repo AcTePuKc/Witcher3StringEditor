@@ -53,6 +53,12 @@ internal partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowLoaded()
     {
+        await CheckSettings();
+        IsUpdateAvailable = await CheckUpdate();
+    }
+
+    private async Task CheckSettings()
+    {
         var settings = ConfigureManger.Load();
         var newSettings = new SettingsModel();
         if (settings == newSettings)
@@ -69,8 +75,6 @@ internal partial class MainViewModel : ObservableObject
             var dialogViewModel = new SettingDialogViewModel(newSettings);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
         }
-
-        IsUpdateAvailable = await CheckUpdate();
     }
 
     [RelayCommand]
