@@ -5,11 +5,15 @@ namespace Witcher3StringEditor.Models;
 
 public partial class SettingsModel : ObservableObject
 {
-    [ObservableProperty] private string gameExePath = string.Empty;
+    [ObservableProperty] 
+    private string gameExePath = string.Empty;
 
-    [ObservableProperty] private FileType preferredFileType;
+    [ObservableProperty] 
+    private FileType preferredFileType;
 
-    [ObservableProperty] private W3Language preferredLanguage;
+    [ObservableProperty] 
+    private W3Language preferredLanguage;
 
-    [ObservableProperty] private string w3StringsPath = string.Empty;
+    [ObservableProperty] 
+    private string w3StringsPath = string.Empty;
 }

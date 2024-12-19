@@ -82,7 +82,10 @@ internal partial class MainViewModel : ObservableObject
     {
         if (W3Items.Any())
         {
-            if (await MessageBox.ShowAsync(Strings.ExitQuestionMessage, Strings.ExitQuestionCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if (await MessageBox.ShowAsync(Strings.ExitQuestionMessage,
+                                           Strings.ExitQuestionCaption,
+                                           MessageBoxButton.YesNo,
+                                           MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 e.Cancel = true;
             }
