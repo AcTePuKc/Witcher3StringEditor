@@ -9,5 +9,5 @@ public record BackupItem
 
     public required string BackupPath { get; init; }
 
-    public required string BackupTime { get; init; }
+    public required DateTime BackupTime { get; init; }
 }
