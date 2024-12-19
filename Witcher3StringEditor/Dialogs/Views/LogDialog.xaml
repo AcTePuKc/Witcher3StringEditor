@@ -26,7 +26,6 @@
             ColumnSizer="AutoWithLastColumnFill"
             HeaderRowHeight="25"
             ItemsSource="{Binding LogEventsogEvents}"
-            QueryRowHeight="DataGrid_QueryRowHeight"
             RowHeight="30">
             <i:Interaction.Behaviors>
                 <b:SfDataGridSizeChangedBehavior />
