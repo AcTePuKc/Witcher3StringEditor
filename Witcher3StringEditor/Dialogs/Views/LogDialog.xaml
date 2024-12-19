@@ -33,12 +33,12 @@
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
-                    Width="170"
+                    Width="200"
                     HeaderText="{lex:Loc LogTime}"
                     MappingName="Timestamp"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
-                    Width="90"
+                    Width="100"
                     HeaderText="{lex:Loc LogLevel}"
                     MappingName="Level"
                     TextAlignment="Center" />
