@@ -39,10 +39,11 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         CurrentTranslateItemModel = new TranslateItemModel { Id = itemModel.Id, Text = itemModel.Text };
     }
 
-    public TranslateDiaglogViewModel(IEnumerable<W3ItemModel> w3Items)
+    public TranslateDiaglogViewModel(IEnumerable<W3ItemModel> w3Items,int index)
     {
         w3ItemModels = w3Items.ToArray();
-        var itemModel = w3ItemModels.First();
+        IndexOfItems = index;
+        var itemModel = w3ItemModels[IndexOfItems];
         CurrentTranslateItemModel = new TranslateItemModel { Id = itemModel.Id, Text = itemModel.Text };
         var language = ConfigureManger.Load().PreferredLanguage;
         ToLanguage = language switch

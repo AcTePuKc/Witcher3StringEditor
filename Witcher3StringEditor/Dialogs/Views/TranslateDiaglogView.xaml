@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-    xmlns:local="clr-namespace:Witcher3StringEditor.Dialogs.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
@@ -21,7 +20,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -39,65 +41,55 @@
             Text="{lex:Loc TranslatedTxt}" />
         <TextBox
             Grid.Row="2"
+            Grid.RowSpan="3"
             Grid.Column="0"
             IsReadOnly="True"
             Text="{Binding CurrentTranslateItemModel.Text}"
             TextWrapping="WrapWithOverflow" />
-        <Grid Grid.Row="2" Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="0,0,0,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <ComboBox
-                    x:Name="comboBox"
-                    Grid.Row="0"
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Stretch"
-                    DisplayMemberPath="NativeName"
-                    ItemsSource="{Binding Languages}"
-                    SelectedValue="{Binding ToLanguage, Mode=TwoWay}" />
-                <Button
-                    Grid.Column="1"
-                    Command="{Binding TranslateCommand}"
-                    Content="{lex:Loc TranslateBtnContent}" />
-            </Grid>
-            <TextBox
-                Grid.Row="2"
-                Text="{Binding CurrentTranslateItemModel.TranslatedText}"
-                TextWrapping="WrapWithOverflow" />
-        </Grid>
-        <Grid
-            Grid.Row="3"
-            Grid.ColumnSpan="3"
-            Margin="0,10,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <ComboBox
+            Grid.Row="2"
+            Grid.Column="2"
+            HorizontalAlignment="Stretch"
+            DisplayMemberPath="NativeName"
+            ItemsSource="{Binding Languages}"
+            SelectedValue="{Binding ToLanguage, Mode=TwoWay}" />
+        <TextBox
+            Grid.Row="4"
+            Grid.Column="2"
+            Text="{Binding CurrentTranslateItemModel.TranslatedText}"
+            TextWrapping="WrapWithOverflow" />
+        <StackPanel
+            Grid.Row="6" Grid.Column="0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
             <Button
-                Grid.Row="0"
-                Grid.Column="0"
+                Width="90"
                 HorizontalAlignment="Right"
                 Command="{Binding PreviousCommand}"
                 Content="{lex:Loc PreviousBtnContent}" />
             <Button
-                Grid.Row="0"
-                Grid.Column="1"
-                HorizontalAlignment="Center"
+                Width="90"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Right"
+                Command="{Binding TranslateCommand}"
+                Content="{lex:Loc TranslateBtnContent}" />
+        </StackPanel>
+        <StackPanel
+            Grid.Row="6"
+            Grid.Column="2"
+            HorizontalAlignment="Left"
+            Orientation="Horizontal">
+            <Button
+                Width="90"
+                HorizontalAlignment="Left"
                 Command="{Binding SaveCommand}"
                 Content="{lex:Loc SaveBtnContent}" />
             <Button
-                Grid.Row="0"
-                Grid.Column="2"
+                Width="90"
+                Margin="10,0,0,0"
                 HorizontalAlignment="Left"
                 Command="{Binding NextCommand}"
                 Content="{lex:Loc NextBtnContent}" />
-        </Grid>
+        </StackPanel>
     </Grid>
 </Window>
