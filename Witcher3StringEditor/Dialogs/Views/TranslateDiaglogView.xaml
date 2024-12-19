@@ -84,6 +84,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 HorizontalAlignment="Right"
+                Command="{Binding PreviousCommand}"
                 Content="{lex:Loc PreviousBtnContent}" />
             <Button
                 Grid.Row="0"
@@ -95,6 +96,7 @@
                 Grid.Row="0"
                 Grid.Column="2"
                 HorizontalAlignment="Left"
+                Command="{Binding NextCommand}"
                 Content="{lex:Loc NextBtnContent}" />
         </Grid>
     </Grid>

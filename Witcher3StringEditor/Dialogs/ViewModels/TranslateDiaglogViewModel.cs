@@ -9,17 +9,16 @@ using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels
 {
-    public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
+    public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogViewModel
     {
         public bool? DialogResult => true;
 
-        public event EventHandler? RequestClose;
+        private readonly W3ItemModel[] w3ItemModels;
 
-        private readonly MicrosoftTranslator translator = new MicrosoftTranslator();
+        private readonly MicrosoftTranslator translator = new();
 
-        private readonly IEnumerable<W3ItemModel> w3ItemModels;
-
-        public ObservableCollection<Language> Languages { get; set; } = new(Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft)));
+        public ObservableCollection<Language> Languages { get; set; } 
+            = new(Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft)));
 
         [ObservableProperty]
         private Language toLanguage = Language.GetLanguage("zh-CN");
@@ -27,9 +26,20 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
         [ObservableProperty]
         private TranslateItemModel currentTranslateItemModel;
 
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
+        [NotifyCanExecuteChangedFor(nameof(NextCommand))]
+        private int indexOfItems = 0;
+
+        partial void OnIndexOfItemsChanged(int value)
+        {
+            var itemModel = w3ItemModels[value];
+            CurrentTranslateItemModel = new TranslateItemModel() { Id = itemModel.Id, Text = itemModel.Text };
+        }
+
         public TranslateDiaglogViewModel(IEnumerable<W3ItemModel> w3Items)
         {
-            w3ItemModels = w3Items;
+            w3ItemModels = w3Items.ToArray();
             var itemModel = w3ItemModels.First();
             CurrentTranslateItemModel = new TranslateItemModel() { Id = itemModel.Id, Text = itemModel.Text };
         }
@@ -45,6 +55,22 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
         private void Save()
         {
             w3ItemModels.Where(x => x.Id == CurrentTranslateItemModel.Id).First().Text = CurrentTranslateItemModel.TranslatedText;
+        }
+
+        private bool CanPrevious() => IndexOfItems > 0;
+
+        private bool CanNext() => IndexOfItems < w3ItemModels.Length - 1;
+
+        [RelayCommand(CanExecute = nameof(CanPrevious))]
+        private void Previous()
+        {
+            IndexOfItems -= 1;
+        }
+
+        [RelayCommand(CanExecute = nameof(CanNext))]
+        private void Next()
+        {
+            IndexOfItems += 1;
         }
     }
 }
