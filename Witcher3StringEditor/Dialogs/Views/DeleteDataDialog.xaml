@@ -51,7 +51,7 @@
                         <sf:GridTextColumn
                             Width="100"
                             HeaderText="ID"
-                            MappingName="StrID"
+                            MappingName="StrId"
                             TextAlignment="Center" />
                         <sf:GridTextColumn
                             Width="100"
