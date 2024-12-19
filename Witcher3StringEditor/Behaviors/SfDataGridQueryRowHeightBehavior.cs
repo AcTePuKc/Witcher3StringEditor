@@ -12,12 +12,12 @@ internal class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
 
     protected override void OnAttached()
     {
-        AssociatedObject.QueryRowHeight += AssociatedObject_QueryRowHeight; ;
+        AssociatedObject.QueryRowHeight += AssociatedObject_QueryRowHeight;
     }
 
     protected override void OnDetaching()
     {
-        AssociatedObject.QueryRowHeight -= AssociatedObject_QueryRowHeight; ;
+        AssociatedObject.QueryRowHeight -= AssociatedObject_QueryRowHeight;
     }
 
     private void AssociatedObject_QueryRowHeight(object? sender, QueryRowHeightEventArgs e)
