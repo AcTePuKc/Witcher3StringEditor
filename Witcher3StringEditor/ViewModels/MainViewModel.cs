@@ -279,8 +279,9 @@ internal partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task ShowTranslateDialog()
+    private async Task ShowTranslateDialog(IEnumerable<object> w3Items)
     {
-        dialogService.ShowDialog<TranslateDiaglogViewModel>(this, new TranslateDiaglogViewModel());
+        var diaglogViewModel = new TranslateDiaglogViewModel(w3Items.Cast<W3ItemModel>());
+        await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 }
