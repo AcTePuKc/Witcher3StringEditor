@@ -12,7 +12,7 @@ public static class LogManger
         LogEvents.Add(logEvent);
     }
 
-    public static ObservableCollection<LogEvent> GetLogs()
+    public static ObservableCollection<LogEvent> GetLogEvents()
     {
         return LogEvents;
     }

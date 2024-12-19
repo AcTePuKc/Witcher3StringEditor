@@ -8,6 +8,6 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 internal partial class LogDialogViewModel : ObservableObject, IModalDialogViewModel
 {
-    public ObservableCollection<LogEvent> LogEventsogEvents { get; } = LogManger.GetLogs();
+    public ObservableCollection<LogEvent> LogEventsogEvents { get; } = LogManger.GetLogEvents();
     public bool? DialogResult => true;
 }
