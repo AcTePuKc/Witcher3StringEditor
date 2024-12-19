@@ -31,7 +31,7 @@ public static class BackupManger
         };
 
         BackupItems.Add(backupItem);
-        UpdateHistoryItems();
+        UpdateHistoryItems(BackupItems);
 
         if (!Directory.Exists("Backup"))
             Directory.CreateDirectory("Backup");
@@ -44,7 +44,7 @@ public static class BackupManger
         var folder = Path.GetDirectoryName(backupItem.OrginPath);
         if (folder == null) return;
         if (!Directory.Exists(folder))
-            Directory.CreateDirectory(folder);
+            _ = Directory.CreateDirectory(folder);
         File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
     }
 
@@ -52,13 +52,13 @@ public static class BackupManger
     {
         if (File.Exists(backupItem.BackupPath))
             File.Delete(backupItem.BackupPath);
-        BackupItems.Remove(backupItem);
-        UpdateHistoryItems();
+        if (BackupItems.Remove(backupItem))
+            UpdateHistoryItems(BackupItems);
     }
 
-    private static void UpdateHistoryItems()
+    private static void UpdateHistoryItems(IEnumerable<BackupItem> backups)
     {
-        var json = JsonConvert.SerializeObject(BackupItems);
+        var json = JsonConvert.SerializeObject(backups);
         File.WriteAllText(HistoryPath, json);
     }
 
