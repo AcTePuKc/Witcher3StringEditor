@@ -3,15 +3,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:local="clr-namespace:Witcher3StringEditor.Dialogs.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="TranslateDiaglogView"
+    Title="{lex:Loc TranslateDialogTitle}"
     Width="800"
-    Height="450"
+    Height="800"
     d:DataContext="{d:DesignInstance Type=vm:TranslateDiaglogViewModel}"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
     mc:Ignorable="d">
@@ -38,7 +40,9 @@
         <TextBox
             Grid.Row="2"
             Grid.Column="0"
-            IsReadOnly="True" />
+            IsReadOnly="True"
+            Text="{Binding CurrentTranslateItemModel.Text}"
+            TextWrapping="WrapWithOverflow" />
         <Grid Grid.Row="2" Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -56,16 +60,16 @@
                     HorizontalAlignment="Stretch"
                     DisplayMemberPath="NativeName"
                     ItemsSource="{Binding Languages}"
-                    SelectedValue="{Binding ToLanguage}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}" CommandParameter="{Binding SelectedItem, ElementName=comboBox}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ComboBox>
-                <Button Grid.Column="1" Content="Translate" />
+                    SelectedValue="{Binding ToLanguage}" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding TranslateCommand}"
+                    Content="{lex:Loc TranslateBtnContent}" />
             </Grid>
-            <TextBox Grid.Row="2" />
+            <TextBox
+                Grid.Row="2"
+                Text="{Binding CurrentTranslateItemModel.TranslatedText}"
+                TextWrapping="WrapWithOverflow" />
         </Grid>
         <Grid
             Grid.Row="3"
@@ -80,17 +84,18 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 HorizontalAlignment="Right"
-                Content="Prev" />
+                Content="{lex:Loc PreviousBtnContent}" />
             <Button
                 Grid.Row="0"
                 Grid.Column="1"
                 HorizontalAlignment="Center"
-                Content="Save" />
+                Command="{Binding SaveCommand}"
+                Content="{lex:Loc SaveBtnContent}" />
             <Button
                 Grid.Row="0"
                 Grid.Column="2"
                 HorizontalAlignment="Left"
-                Content="Next" />
+                Content="{lex:Loc NextBtnContent}" />
         </Grid>
     </Grid>
 </Window>

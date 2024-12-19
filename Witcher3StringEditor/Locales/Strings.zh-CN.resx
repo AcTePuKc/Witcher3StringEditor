@@ -309,4 +309,22 @@
   <data name="ExitQuestionCaption" xml:space="preserve">
     <value>退出</value>
   </data>
+  <data name="TranslateBtnLabel" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="TranslateDialogTitle" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="PreviousBtnContent" xml:space="preserve">
+    <value>上一个</value>
+  </data>
+  <data name="NextBtnContent" xml:space="preserve">
+    <value>下一个</value>
+  </data>
+  <data name="TranslateBtnContent" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="SaveBtnContent" xml:space="preserve">
+    <value>保存</value>
+  </data>
 </root>

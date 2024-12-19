@@ -112,7 +112,7 @@
             <ui:AppBarButton
                 Command="{Binding ShowTranslateDialogCommand}"
                 CommandParameter="{Binding SelectedItems, ElementName=DataGrid}"
-                Label="Translate">
+                Label="{lex:Loc TranslateBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe774;" />
                 </ui:AppBarButton.Icon>
