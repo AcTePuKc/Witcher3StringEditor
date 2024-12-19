@@ -62,7 +62,7 @@ internal partial class SettingDialogViewModel(SettingsModel settings) : Observab
         }
         else
         {
-            ConfigureManger.Save(SettingsModel);
+            ConfigurationManager.SaveConfiguration(SettingsModel);
         }
     }
 }

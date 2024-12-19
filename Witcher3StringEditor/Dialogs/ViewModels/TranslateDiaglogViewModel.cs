@@ -45,7 +45,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         IndexOfItems = index;
         var itemModel = w3ItemModels[IndexOfItems];
         CurrentTranslateItemModel = new TranslateItemModel { Id = itemModel.Id, Text = itemModel.Text };
-        var language = ConfigureManger.Load().PreferredLanguage;
+        var language = ConfigurationManager.LoadConfiguration().PreferredLanguage;
         ToLanguage = language switch
         {
             W3Language.br => Language.GetLanguage("pt"),

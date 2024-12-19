@@ -3,11 +3,17 @@ using System.Collections.ObjectModel;
 
 namespace Witcher3StringEditor.Core;
 
-public static class LogManger
+public static class LogManager
 {
-    private static ObservableCollection<LogEvent> LogEvents { get; } = [];
+    private static readonly ObservableCollection<LogEvent> _logEvents = [];
 
-    public static void Log(LogEvent logEvent) => LogEvents.Add(logEvent);
+    public static void RecordLogEvent(LogEvent logEvent)
+    {
+        _logEvents.Add(logEvent);
+    }
 
-    public static ObservableCollection<LogEvent> GetLogEvents() => LogEvents;
+    public static ObservableCollection<LogEvent> RetrieveLogEvents()
+    {
+        return _logEvents;
+    }
 }
