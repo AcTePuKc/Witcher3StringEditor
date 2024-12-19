@@ -17,5 +17,6 @@ public enum W3Language
     kr = 12,
     pl = 13,
     ru = 14,
-    zh = 15
+    zh = 15,
+    tr = 16
 }

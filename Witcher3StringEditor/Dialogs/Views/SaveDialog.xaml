@@ -45,6 +45,7 @@
                 <c:W3Language>pl</c:W3Language>
                 <c:W3Language>ru</c:W3Language>
                 <c:W3Language>zh</c:W3Language>
+                <c:W3Language>tr</c:W3Language>
             </x:Array>
         </ResourceDictionary>
     </Window.Resources>

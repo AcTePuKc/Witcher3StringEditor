@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Witcher3StringEditor.Core.Common;
-using Witcher3StringEditor.Core.Helper;
 using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
 
@@ -18,7 +17,7 @@ public static class W3Serializer
         if (Path.GetExtension(path) == ".csv") return DeserializeCsv(path);
 
         if (Path.GetExtension(path) != ".w3strings") return [];
-        var folder = FileHelper.CreateRandomTempDirectory();
+        var folder = CreateRandomTempDirectory();
         var filename = Path.GetFileName(path);
         var newPath = Path.Combine(folder, filename);
         File.Copy(path, newPath);
@@ -87,7 +86,16 @@ public static class W3Serializer
     private static async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
     {
         var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine($";meta[language={LanguageHelper.Get(w3Job.Language)}]");
+        var lang = w3Job.Language 
+            is not W3Language.ar
+            and not W3Language.br
+            and not W3Language.cn
+            and not W3Language.esmx
+            and not W3Language.kr
+            and not W3Language.tr
+            ? Enum.GetName(w3Job.Language) ?? "en"
+            : "cleartext";
+        stringBuilder.AppendLine($";meta[language={lang}]");
         stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
         w3Job.W3Items.ForEach(x => stringBuilder.AppendLine($"{x.StrId}|{x.KeyHex}|{x.KeyName}|{x.Text}"));
         var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
@@ -104,7 +112,7 @@ public static class W3Serializer
 
     private static async Task<bool> SerializeW3Strings(IW3Job w3Job)
     {
-        var tempFolder = FileHelper.CreateRandomTempDirectory();
+        var tempFolder = CreateRandomTempDirectory();
         var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
 
@@ -134,5 +142,22 @@ public static class W3Serializer
             BackupManger.Backup(w3StringsPath);
         File.Copy(tempW3StringsPath, w3StringsPath, true);
         return true;
+    }
+
+    private static string CreateRandomTempDirectory()
+    {
+        string tempPath;
+
+        do
+        {
+            // Generate a random directory name using Guid to ensure uniqueness.
+            var randomDirName = Guid.NewGuid().ToString("N"); // Remove hyphens for a cleaner name.
+            tempPath = Path.Combine(Path.GetTempPath(), randomDirName);
+        } while (Directory.Exists(tempPath)); // Ensure the directory does not already exist.
+
+        // Create the directory.
+        Directory.CreateDirectory(tempPath);
+
+        return tempPath;
     }
 }
