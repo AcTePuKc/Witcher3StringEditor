@@ -1,15 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Witcher3StringEditor.Dialogs.Models
+namespace Witcher3StringEditor.Dialogs.Models;
+
+public partial class TranslateItemModel : ObservableObject
 {
-    public partial class TranslateItemModel : ObservableObject
-    {
 
-        public required Guid Id { get; set; }
+    public required Guid Id { get; init; }
 
-        public required string Text { get; set; }
+    public required string Text { get; set; }
 
-        [ObservableProperty]
-        private string translatedText = string.Empty;
-    }
+    [ObservableProperty]
+    private string translatedText = string.Empty;
 }
