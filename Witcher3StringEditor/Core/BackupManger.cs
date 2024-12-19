@@ -21,9 +21,6 @@ public static class BackupManger
 
     public static void Backup(string path)
     {
-        if (!Directory.Exists("Backup"))
-            Directory.CreateDirectory("Backup");
-
         var backupItem = new BackupItem
         {
             FileName = Path.GetFileName(path),
@@ -34,10 +31,11 @@ public static class BackupManger
         };
 
         BackupItems.Add(backupItem);
-
-        File.Copy(backupItem.OrginPath, backupItem.BackupPath);
-
         UpdateHistoryItems();
+
+        if (!Directory.Exists("Backup"))
+            Directory.CreateDirectory("Backup");
+        File.Copy(backupItem.OrginPath, backupItem.BackupPath);
     }
 
     public static void Restore(BackupItem backupItem)
@@ -53,11 +51,8 @@ public static class BackupManger
     public static void Delete(BackupItem backupItem)
     {
         if (File.Exists(backupItem.BackupPath))
-        {
             File.Delete(backupItem.BackupPath);
-            BackupItems.Remove(backupItem);
-        }
-
+        BackupItems.Remove(backupItem);
         UpdateHistoryItems();
     }
 
@@ -71,7 +66,6 @@ public static class BackupManger
     {
         if (!File.Exists(HistoryPath)) return [];
         var json = File.ReadAllText(HistoryPath);
-        var items = JsonConvert.DeserializeObject<IEnumerable<BackupItem>>(json);
-        return items ?? [];
+        return JsonConvert.DeserializeObject<IEnumerable<BackupItem>>(json) ?? [];
     }
 }
