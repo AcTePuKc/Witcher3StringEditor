@@ -277,4 +277,10 @@ internal partial class MainViewModel : ObservableObject
         var element = document.QuerySelector("#pagetitle>ul.stats.clearfix>li.stat-version>div>div.stat");
         return element != null && new Version(element.InnerHtml) > new Version(ThisAssembly.AssemblyFileVersion);
     }
+
+    [RelayCommand]
+    private async Task ShowTranslateDialog()
+    {
+        dialogService.ShowDialog<TranslateDiaglogViewModel>(this, new TranslateDiaglogViewModel());
+    }
 }

@@ -1,0 +1,80 @@
+﻿<Window
+    x:Class="Witcher3StringEditor.Dialogs.Views.TranslateDiaglogView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Witcher3StringEditor.Dialogs.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+    xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
+    Title="TranslateDiaglogView"
+    Width="800"
+    Height="450"
+    d:DataContext="{d:DesignInstance Type=vm:TranslateDiaglogViewModel}"
+    ui:WindowHelper.SystemBackdropType="Mica"
+    ui:WindowHelper.UseModernWindowStyle="True"
+    mc:Ignorable="d">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="O" />
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="2"
+            Text="N" />
+        <TextBox
+            Grid.Row="2"
+            Grid.Column="0"
+            IsReadOnly="True" />
+        <Grid Grid.Row="2" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ComboBox
+                Grid.Row="0"
+                Margin="10"
+                HorizontalAlignment="Stretch"
+                DisplayMemberPath="NativeName"
+                ItemsSource="{Binding Languages}" />
+            <TextBox Grid.Row="1" />
+        </Grid>
+        <Grid
+            Grid.Row="3"
+            Grid.ColumnSpan="3"
+            Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Row="0"
+                Grid.Column="0"
+                HorizontalAlignment="Right"
+                Content="Prev" />
+            <Button
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                Content="Save" />
+            <Button
+                Grid.Row="0"
+                Grid.Column="2"
+                HorizontalAlignment="Left"
+                Content="Next" />
+        </Grid>
+    </Grid>
+</Window>
