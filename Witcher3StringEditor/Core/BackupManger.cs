@@ -41,9 +41,12 @@ public static class BackupManger
 
     public static void Restore(BackupItem backupItem)
     {
-        if (File.Exists(backupItem.OrginPath)) File.Delete(backupItem.OrginPath);
-
-        if (File.Exists(backupItem.BackupPath)) File.Copy(backupItem.BackupPath, backupItem.OrginPath);
+        if (!File.Exists(backupItem.BackupPath)) return;
+        var folder = Path.GetDirectoryName(backupItem.OrginPath);
+        if (folder == null) return;
+        if (!Directory.Exists(folder)) 
+            Directory.CreateDirectory(folder);
+        File.Copy(backupItem.BackupPath,backupItem.OrginPath,true);
     }
 
     public static void Delete(BackupItem backupItem)
