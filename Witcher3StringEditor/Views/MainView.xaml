@@ -19,7 +19,6 @@
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
-    SizeChanged="Window_SizeChanged"
     WindowChrome.IsHitTestVisibleInChrome="True"
     WindowState="Maximized"
     mc:Ignorable="d">
@@ -178,14 +177,15 @@
             AllowResizingColumns="True"
             AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
-            CurrentCellEndEdit="DataGrid_CurrentCellEndEdit"
             HeaderRowHeight="25"
             ItemsSource="{Binding PagedSource, ElementName=DataPager, Mode=TwoWay}"
             NavigationMode="Cell"
-            QueryRowHeight="DataGrid_QueryRowHeight"
             RowHeight="30"
             SelectionMode="Extended">
             <i:Interaction.Behaviors>
+                <b:SfDataGridSizeChangedBehavior />
+                <b:SfDataGridQueryRowHeightBehavior />
+                <b:SfDataGridCurrentCellEndEditBehavior />
                 <b:DropFileBehavior Data="{Binding DropFileData, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
             <i:Interaction.Triggers>

@@ -59,7 +59,8 @@
             Text="{Binding CurrentTranslateItemModel.TranslatedText}"
             TextWrapping="WrapWithOverflow" />
         <StackPanel
-            Grid.Row="6" Grid.Column="0"
+            Grid.Row="6"
+            Grid.Column="0"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
             <Button
