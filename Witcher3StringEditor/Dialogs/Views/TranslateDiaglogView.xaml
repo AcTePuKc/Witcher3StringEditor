@@ -32,11 +32,11 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
-            Text="O" />
+            Text="{lex:Loc SrcTxt}" />
         <TextBlock
             Grid.Row="0"
             Grid.Column="2"
-            Text="N" />
+            Text="{lex:Loc TranslatedTxt}" />
         <TextBox
             Grid.Row="2"
             Grid.Column="0"

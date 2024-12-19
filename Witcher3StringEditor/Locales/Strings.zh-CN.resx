@@ -327,4 +327,10 @@
   <data name="SaveBtnContent" xml:space="preserve">
     <value>保存</value>
   </data>
+  <data name="SrcTxt" xml:space="preserve">
+    <value>原文</value>
+  </data>
+  <data name="TranslatedTxt" xml:space="preserve">
+    <value>译文</value>
+  </data>
 </root>
