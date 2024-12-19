@@ -5,11 +5,13 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
@@ -68,6 +70,18 @@ internal partial class MainViewModel : ObservableObject
         }
 
         IsUpdateAvailable = await CheckUpdate();
+    }
+
+    [RelayCommand]
+    private async Task WindowClosing(CancelEventArgs e)
+    {
+        if (W3Items.Any())
+        {
+            if (await MessageBox.ShowAsync(Strings.ExitQuestionMessage, Strings.ExitQuestionCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 
     [RelayCommand]

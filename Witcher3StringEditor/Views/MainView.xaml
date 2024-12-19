@@ -27,6 +27,9 @@
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
         </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding WindowClosingCommand}" PassEventArgsToCommand="True" />
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>

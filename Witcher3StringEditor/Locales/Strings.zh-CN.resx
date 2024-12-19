@@ -303,4 +303,10 @@
   <data name="UpdateAvailable" xml:space="preserve">
     <value>检测到新版本</value>
   </data>
+  <data name="ExitQuestionMessage" xml:space="preserve">
+    <value>您确认要退出吗？</value>
+  </data>
+  <data name="ExitQuestionCaption" xml:space="preserve">
+    <value>退出</value>
+  </data>
 </root>

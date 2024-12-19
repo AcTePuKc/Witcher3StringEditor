@@ -303,4 +303,10 @@
   <data name="UpdateAvailable" xml:space="preserve">
     <value>Update Available</value>
   </data>
+  <data name="ExitQuestionMessage" xml:space="preserve">
+    <value>Are You Sure You Want To Exit?</value>
+  </data>
+  <data name="ExitQuestionCaption" xml:space="preserve">
+    <value>Exit</value>
+  </data>
 </root>

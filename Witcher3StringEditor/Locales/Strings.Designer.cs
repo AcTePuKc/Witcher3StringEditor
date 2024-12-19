@@ -241,6 +241,24 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Exit 的本地化字符串。
+        /// </summary>
+        internal static string ExitQuestionCaption {
+            get {
+                return ResourceManager.GetString("ExitQuestionCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Are You Sure You Want To Exit? 的本地化字符串。
+        /// </summary>
+        internal static string ExitQuestionMessage {
+            get {
+                return ResourceManager.GetString("ExitQuestionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Filename 的本地化字符串。
         /// </summary>
         internal static string Filename {
