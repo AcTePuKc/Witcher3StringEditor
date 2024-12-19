@@ -8,8 +8,8 @@ namespace Witcher3StringEditor.Core;
 
 public static class BackupManger
 {
-    private const string StorePath = ".\\Backup\\History.json";
-    public static ObservableCollection<BackupItem> BackupItems { get; } = new(Retrieve());
+    private const string HistoryPath = ".\\Backup\\History.json";
+    public static ObservableCollection<BackupItem> BackupItems { get; } = new(GetHistoryItems());
 
     private static string ComputeSha256Hash(string filePath)
     {
@@ -21,7 +21,8 @@ public static class BackupManger
 
     public static void Backup(string path)
     {
-        if (!Directory.Exists("Backup")) Directory.CreateDirectory("Backup");
+        if (!Directory.Exists("Backup"))
+            Directory.CreateDirectory("Backup");
 
         var backupItem = new BackupItem
         {
@@ -36,7 +37,7 @@ public static class BackupManger
 
         File.Copy(backupItem.OrginPath, backupItem.BackupPath);
 
-        Store();
+        UpdateHistoryItems();
     }
 
     public static void Restore(BackupItem backupItem)
@@ -44,9 +45,9 @@ public static class BackupManger
         if (!File.Exists(backupItem.BackupPath)) return;
         var folder = Path.GetDirectoryName(backupItem.OrginPath);
         if (folder == null) return;
-        if (!Directory.Exists(folder)) 
+        if (!Directory.Exists(folder))
             Directory.CreateDirectory(folder);
-        File.Copy(backupItem.BackupPath,backupItem.OrginPath,true);
+        File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
     }
 
     public static void Delete(BackupItem backupItem)
@@ -57,20 +58,20 @@ public static class BackupManger
             BackupItems.Remove(backupItem);
         }
 
-        Store();
+        UpdateHistoryItems();
     }
 
-    private static void Store()
+    private static void UpdateHistoryItems()
     {
         var json = JsonConvert.SerializeObject(BackupItems);
-        File.WriteAllText(StorePath, json);
+        File.WriteAllText(HistoryPath, json);
     }
 
-    private static IList<BackupItem> Retrieve()
+    private static IEnumerable<BackupItem> GetHistoryItems()
     {
-        if (!File.Exists(StorePath)) return [];
-        var json = File.ReadAllText(StorePath);
-        var items = JsonConvert.DeserializeObject<IList<BackupItem>>(json);
+        if (!File.Exists(HistoryPath)) return [];
+        var json = File.ReadAllText(HistoryPath);
+        var items = JsonConvert.DeserializeObject<IEnumerable<BackupItem>>(json);
         return items ?? [];
     }
 }
