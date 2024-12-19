@@ -35,6 +35,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <sf:SfDataGrid
+                    x:Name="DataGrid"
                     Grid.ColumnSpan="3"
                     AutoGenerateColumns="False"
                     ColumnSizer="Star"
