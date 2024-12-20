@@ -12,7 +12,6 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Witcher3StringEditor.Core;
-using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
