@@ -3,12 +3,10 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Text.RegularExpressions;
-using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
-using Witcher3StringEditor.Locales;
-using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

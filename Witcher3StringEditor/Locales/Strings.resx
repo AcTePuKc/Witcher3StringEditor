@@ -247,7 +247,7 @@
     <value>Preferred Language</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
-    <value>This Operation Will Overwrite The File And Cannot Be Undone</value>
+    <value>This Operation Will Overwrite The File And Can't Be Undone</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>

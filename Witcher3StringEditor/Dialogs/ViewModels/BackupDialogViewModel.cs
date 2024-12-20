@@ -1,13 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
-using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
-using Witcher3StringEditor.Locales;
-using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -24,15 +23,21 @@ internal partial class BackupDialogViewModel : ObservableObject, IModalDialogVie
     [RelayCommand]
     private async Task Restore(BackupItem backupItem)
     {
-        if (await MessageBox.ShowAsync(Strings.BackupRestoreMessage, Strings.Warning, MessageBoxButton.YesNo,
-                MessageBoxImage.Warning) == MessageBoxResult.Yes) backupManger.Restore(backupItem);
+        var message = new BackupActionMessage(BackupActionType.Restore);
+        if (await WeakReferenceMessenger.Default.Send(message))
+        {
+            backupManger.Restore(backupItem);
+        }
     }
 
     [RelayCommand]
     private async Task Delete(BackupItem backupItem)
     {
-        if (await MessageBox.ShowAsync(Strings.BackupDeleteMessage, Strings.Warning, MessageBoxButton.YesNo,
-                MessageBoxImage.Warning) == MessageBoxResult.Yes) backupManger.Delete(backupItem);
+        var message = new BackupActionMessage(BackupActionType.Delete);
+        if (await WeakReferenceMessenger.Default.Send(message))
+        {
+            backupManger.Delete(backupItem);
+        }
     }
 
     [RelayCommand]
