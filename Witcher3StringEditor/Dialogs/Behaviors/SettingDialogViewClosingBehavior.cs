@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xaml.Behaviors;
-using System.IO;
 using System.Windows;
 using Witcher3StringEditor.Core;
-using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Dialogs.Validators;
+using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Locales;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
@@ -24,14 +25,22 @@ internal class SettingDialogViewClosingBehavior : Behavior<SettingsDialog>
 
     private void AssociatedObject_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
-        if (AssociatedObject.DataContext is not Settings settings) return;
-        if (Path.GetFileName(settings.GameExePath) != "witcher3.exe"
-            || Path.GetFileName(settings.W3StringsPath) != "w3strings.exe")
+        if (AssociatedObject.DataContext is not SettingDialogViewModel viewModel) return;
+        var settings = viewModel.Settings;
+        var validationRules = new SettingsValidator();
+        var result = validationRules.Validate(settings);
+        if (!result.IsValid)
         {
             e.Cancel = true;
 
-            if (MessageBox.Show(Strings.PleaseCheckSettings, Strings.Warning, MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning) == MessageBoxResult.Yes) Environment.Exit(0);
+            if (MessageBox.Show(Strings.PleaseCheckSettings,
+                    Strings.Warning,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) ==
+                MessageBoxResult.Yes)
+            {
+                Environment.Exit(0);
+            }
         }
         else
         {

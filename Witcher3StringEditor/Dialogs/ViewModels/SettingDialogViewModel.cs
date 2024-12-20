@@ -12,7 +12,8 @@ internal partial class SettingDialogViewModel(Settings settings) : ObservableObj
 {
     private readonly IDialogService dialogService = Ioc.Default.GetRequiredService<IDialogService>();
 
-    [ObservableProperty] private Settings settingsModel = settings;
+    [ObservableProperty]
+    private Settings settings = settings;
 
     public bool? DialogResult => true;
 
@@ -26,7 +27,7 @@ internal partial class SettingDialogViewModel(Settings settings) : ObservableObj
             SuggestedFileName = "w3strings"
         };
         var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
-        if (storageFile is { Name: "w3strings.exe" }) SettingsModel.W3StringsPath = storageFile.LocalPath;
+        if (storageFile is { Name: "w3strings.exe" }) Settings.W3StringsPath = storageFile.LocalPath;
     }
 
     [RelayCommand]
@@ -39,6 +40,6 @@ internal partial class SettingDialogViewModel(Settings settings) : ObservableObj
             SuggestedFileName = "witcher3"
         };
         var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
-        if (storageFile is { Name: "witcher3.exe" }) SettingsModel.GameExePath = storageFile.LocalPath;
+        if (storageFile is { Name: "witcher3.exe" }) Settings.GameExePath = storageFile.LocalPath;
     }
 }
