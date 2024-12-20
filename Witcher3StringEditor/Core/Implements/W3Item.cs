@@ -2,7 +2,7 @@
 
 namespace Witcher3StringEditor.Core.Implements;
 
-public record W3Item : IW3Item
+internal record W3Item : IW3Item
 {
     public required string StrId { get; init; }
     public required string KeyHex { get; init; }

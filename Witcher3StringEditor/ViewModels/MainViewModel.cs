@@ -59,7 +59,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private async Task CheckSettings()
     {
-        var settings = SettingsManager.LoadConfiguration();
+        var settings = SettingsManager.Load<Settings>();
         var newSettings = new Settings();
         if (settings == newSettings)
         {
@@ -164,7 +164,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
-        var settings = SettingsManager.LoadConfiguration();
+        var settings = SettingsManager.Load<Settings>();
         var dialogViewModel = new SettingDialogViewModel(settings);
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
@@ -172,7 +172,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private static async Task PlayGame()
     {
-        var filename = SettingsManager.LoadConfiguration().GameExePath;
+        var filename = SettingsManager.Load<Settings>().GameExePath;
         using var process = new Process();
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo

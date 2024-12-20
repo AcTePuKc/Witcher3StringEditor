@@ -33,7 +33,7 @@ internal class SettingDialogViewClosingBehavior : Behavior<SettingsDialog>
         }
         else
         {
-            SettingsManager.SaveConfiguration(settings);
+            SettingsManager.Save(settings);
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Core;
 
@@ -47,7 +48,7 @@ public static class W3Serializer
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo
         {
-            FileName = SettingsManager.LoadConfiguration().W3StringsPath,
+            FileName = SettingsManager.Load<Settings>().W3StringsPath,
             Arguments = Parser.Default.FormatCommandLine(new W3Options
             {
                 Decode = path
@@ -125,7 +126,7 @@ public static class W3Serializer
             RedirectStandardOutput = true,
             UseShellExecute = false,
             CreateNoWindow = true,
-            FileName = SettingsManager.LoadConfiguration().W3StringsPath,
+            FileName = SettingsManager.Load<Settings>().W3StringsPath,
             Arguments = w3Job.IsIgnoreIdSpaceCheck
                 ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
                 : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })

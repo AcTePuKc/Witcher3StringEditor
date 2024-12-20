@@ -1,22 +1,21 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
-using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Core;
 
 public sealed class SettingsManager
 {
-    public static Settings LoadConfiguration()
+    public static T Load<T>() where T : new()
     {
         if (File.Exists("Config.json"))
         {
             var json = File.ReadAllText("Config.json");
-            return JsonConvert.DeserializeObject<Settings>(json) ?? new Settings();
+            return JsonConvert.DeserializeObject<T>(json) ?? new T();
         }
-        return new Settings();
+        return new T();
     }
 
-    public static void SaveConfiguration(Settings settings)
+    public static void Save<T>(T settings)
     {
         var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
         File.WriteAllText("Config.json", json);

@@ -21,8 +21,8 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
         {
             Path = path,
             W3Items = w3Items,
-            FileType = SettingsManager.LoadConfiguration().PreferredFileType,
-            Language = SettingsManager.LoadConfiguration().PreferredLanguage,
+            FileType = SettingsManager.Load<Settings>().PreferredFileType,
+            Language = SettingsManager.Load<Settings>().PreferredLanguage,
             IdSpace = FindIdSpace(w3Items.First())
         };
     }
