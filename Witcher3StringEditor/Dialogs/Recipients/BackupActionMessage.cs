@@ -2,7 +2,7 @@
 
 namespace Witcher3StringEditor.Dialogs.Recipients;
 
-public class BackupActionMessage(BackupActionType BackupAction) : AsyncRequestMessage<bool>
+public class BackupActionMessage(BackupActionType backupAction) : AsyncRequestMessage<bool>
 {
-    public BackupActionType BackupAction { get; init; } = BackupAction;
+    public BackupActionType BackupAction { get; } = backupAction;
 }

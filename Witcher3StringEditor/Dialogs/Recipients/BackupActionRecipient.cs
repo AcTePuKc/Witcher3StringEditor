@@ -9,11 +9,11 @@ namespace Witcher3StringEditor.Dialogs.Recipients;
 
 public class BackupActionRecipient : IRecipient<BackupActionMessage>
 {
-    public bool Response { get; set; }
+    public bool Response { get; private set; }
 
     public void Receive(BackupActionMessage message)
     {
-        Response = MessageBox.Show(message.BackupAction == BackupActionType.Restore ?
+        Response = MessageBox.Show(message.BackupAction == BackupActionType.restore ?
             Strings.BackupRestoreMessage : Strings.BackupDeleteMessage, Strings.Warning,
             MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
     }

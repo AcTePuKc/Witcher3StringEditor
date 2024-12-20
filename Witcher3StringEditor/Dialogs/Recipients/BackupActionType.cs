@@ -2,5 +2,5 @@
 
 public enum BackupActionType
 {
-    Restore = 0, Delete = 1
+    restore = 0, delete = 1
 }

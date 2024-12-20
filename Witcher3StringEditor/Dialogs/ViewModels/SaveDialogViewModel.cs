@@ -19,13 +19,14 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
 
     public SaveDialogViewModel(IEnumerable<IW3Item> w3Items, string path)
     {
+        IEnumerable<IW3Item> items = w3Items as IW3Item[] ?? w3Items.ToArray();
         W3Job = new W3Job
         {
             Path = path,
-            W3Items = w3Items,
+            W3Items = items,
             FileType = settingsManager.Load<Settings>().PreferredFileType,
             Language = settingsManager.Load<Settings>().PreferredLanguage,
-            IdSpace = FindIdSpace(w3Items.First())
+            IdSpace = FindIdSpace(items.First())
         };
 
         var settings = settingsManager.Load<Settings>();

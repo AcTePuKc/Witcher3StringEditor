@@ -1,15 +1,14 @@
-﻿namespace Witcher3StringEditor.Core.Interfaces
+﻿namespace Witcher3StringEditor.Core.Interfaces;
+
+public interface IBackupItem
 {
-    public interface IBackupItem
-    {
-        public string FileName { get; init; }
+    public string FileName { get; init; }
 
-        public string Hash { get; init; }
+    public string Hash { get; init; }
 
-        public string OrginPath { get; init; }
+    public string OrginPath { get; init; }
 
-        public string BackupPath { get; init; }
+    public string BackupPath { get; init; }
 
-        public DateTime BackupTime { get; init; }
-    }
+    public DateTime BackupTime { get; init; }
 }

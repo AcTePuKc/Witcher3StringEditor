@@ -209,7 +209,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private static async Task ShowAbout()
+    private static void ShowAbout()
     {
         var buildTime = RetrieveTimestampAsDateTime();
         var runtime = RuntimeInformation.FrameworkDescription;

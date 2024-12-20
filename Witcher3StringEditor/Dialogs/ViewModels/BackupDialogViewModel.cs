@@ -23,7 +23,7 @@ internal partial class BackupDialogViewModel : ObservableObject, IModalDialogVie
     [RelayCommand]
     private async Task Restore(BackupItem backupItem)
     {
-        var message = new BackupActionMessage(BackupActionType.Restore);
+        var message = new BackupActionMessage(BackupActionType.restore);
         if (await WeakReferenceMessenger.Default.Send(message))
         {
             backupManger.Restore(backupItem);
@@ -33,7 +33,7 @@ internal partial class BackupDialogViewModel : ObservableObject, IModalDialogVie
     [RelayCommand]
     private async Task Delete(BackupItem backupItem)
     {
-        var message = new BackupActionMessage(BackupActionType.Delete);
+        var message = new BackupActionMessage(BackupActionType.delete);
         if (await WeakReferenceMessenger.Default.Send(message))
         {
             backupManger.Delete(backupItem);
