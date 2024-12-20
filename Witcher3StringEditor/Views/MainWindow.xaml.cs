@@ -7,13 +7,13 @@ namespace Witcher3StringEditor.Views;
 /// <summary>
 ///     Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainView
+public partial class MainWindow
 {
-    public MainView()
+    public MainWindow()
     {
         InitializeComponent();
         DataGrid.SearchHelper.AllowFiltering = true;
-        DataContext = Ioc.Default.GetService<MainViewModel>();
+        DataContext = Ioc.Default.GetService<MainWindowViewModel>();
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

@@ -40,7 +40,7 @@ public partial class App
             new ServiceCollection()
                 .AddLogging(builder => builder.AddSerilog())
                 .AddSingleton<IDialogService>(new DialogService(new DialogManager(viewLocator), Ioc.Default.GetService))
-                .AddTransient<MainViewModel>()
+                .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
 #if DEBUG
         Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");

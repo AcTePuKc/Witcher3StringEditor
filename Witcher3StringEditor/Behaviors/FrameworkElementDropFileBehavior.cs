@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace Witcher3StringEditor.Behaviors;
 
-internal class DropFileBehavior : Behavior<FrameworkElement>
+internal class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
 {
     public string[] Data
     {
@@ -14,7 +14,7 @@ internal class DropFileBehavior : Behavior<FrameworkElement>
 
     // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty DataProperty =
-        DependencyProperty.Register(nameof(Data), typeof(string[]), typeof(DropFileBehavior), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(Data), typeof(string[]), typeof(FrameworkElementDropFileBehavior), new PropertyMetadata(null));
 
     protected override void OnAttached()
     {

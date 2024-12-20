@@ -47,7 +47,7 @@ public static class W3Serializer
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo
         {
-            FileName = ConfigurationManager.LoadConfiguration().W3StringsPath,
+            FileName = SettingsManager.LoadConfiguration().W3StringsPath,
             Arguments = Parser.Default.FormatCommandLine(new W3Options
             {
                 Decode = path
@@ -125,7 +125,7 @@ public static class W3Serializer
             RedirectStandardOutput = true,
             UseShellExecute = false,
             CreateNoWindow = true,
-            FileName = ConfigurationManager.LoadConfiguration().W3StringsPath,
+            FileName = SettingsManager.LoadConfiguration().W3StringsPath,
             Arguments = w3Job.IsIgnoreIdSpaceCheck
                 ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
                 : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })

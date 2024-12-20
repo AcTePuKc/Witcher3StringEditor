@@ -2,6 +2,7 @@
     x:Class="Witcher3StringEditor.Dialogs.Views.SettingsDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:c="clr-namespace:Witcher3StringEditor.Core.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -20,11 +21,9 @@
     ui:WindowHelper.UseModernWindowStyle="True"
     ResizeMode="NoResize"
     mc:Ignorable="d">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding WindowClosingCancelCommand}" PassEventArgsToCommand="True" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    <i:Interaction.Behaviors>
+        <b:SettingDialogViewClosingBehavior />
+    </i:Interaction.Behaviors>
     <Window.Resources>
         <ResourceDictionary>
             <x:Array x:Key="FileTypeArray" Type="c:FileType">

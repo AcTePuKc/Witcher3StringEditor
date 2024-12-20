@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Security.Cryptography;
-using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Core;
 

@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Witcher3StringEditor.Core.Common;
 
-namespace Witcher3StringEditor.Models;
+namespace Witcher3StringEditor.Dialogs.Models;
 
-public partial class SettingsModel : ObservableObject
+public partial class Settings : ObservableObject
 {
     [ObservableProperty] 
     private string gameExePath = string.Empty;

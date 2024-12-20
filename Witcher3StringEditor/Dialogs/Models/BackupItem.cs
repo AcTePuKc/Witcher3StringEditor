@@ -1,4 +1,4 @@
-﻿namespace Witcher3StringEditor.Models;
+﻿namespace Witcher3StringEditor.Dialogs.Models;
 
 public record BackupItem
 {

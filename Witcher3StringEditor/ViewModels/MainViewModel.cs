@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Witcher3StringEditor.Core;
+using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
@@ -23,7 +24,7 @@ using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.ViewModels;
 
-internal partial class MainViewModel : ObservableObject
+internal partial class MainWindowViewModel : ObservableObject
 {
     private readonly IDialogService dialogService;
 
@@ -37,7 +38,7 @@ internal partial class MainViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
-    public MainViewModel(IDialogService dialogService)
+    public MainWindowViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
 
@@ -59,8 +60,8 @@ internal partial class MainViewModel : ObservableObject
 
     private async Task CheckSettings()
     {
-        var settings = ConfigurationManager.LoadConfiguration();
-        var newSettings = new SettingsModel();
+        var settings = SettingsManager.LoadConfiguration();
+        var newSettings = new Settings();
         if (settings == newSettings)
         {
             var dialogViewModel = new SettingDialogViewModel(newSettings);
@@ -74,21 +75,6 @@ internal partial class MainViewModel : ObservableObject
             newSettings.W3StringsPath = File.Exists(settings.W3StringsPath) ? settings.W3StringsPath : string.Empty;
             var dialogViewModel = new SettingDialogViewModel(newSettings);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
-        }
-    }
-
-    [RelayCommand]
-    private async Task WindowClosing(CancelEventArgs e)
-    {
-        if (W3Items.Any())
-        {
-            if (await MessageBox.ShowAsync(Strings.ExitQuestionMessage,
-                                           Strings.ExitQuestionCaption,
-                                           MessageBoxButton.YesNo,
-                                           MessageBoxImage.Question) == MessageBoxResult.No)
-            {
-                e.Cancel = true;
-            }
         }
     }
 
@@ -179,7 +165,7 @@ internal partial class MainViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
-        var settings = ConfigurationManager.LoadConfiguration();
+        var settings = SettingsManager.LoadConfiguration();
         var dialogViewModel = new SettingDialogViewModel(settings);
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
@@ -187,7 +173,7 @@ internal partial class MainViewModel : ObservableObject
     [RelayCommand]
     private static async Task PlayGame()
     {
-        var filename = ConfigurationManager.LoadConfiguration().GameExePath;
+        var filename = SettingsManager.LoadConfiguration().GameExePath;
         using var process = new Process();
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo

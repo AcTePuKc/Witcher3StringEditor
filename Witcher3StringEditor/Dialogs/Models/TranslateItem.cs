@@ -2,7 +2,7 @@
 
 namespace Witcher3StringEditor.Dialogs.Models;
 
-public partial class TranslateItemModel : ObservableObject
+public partial class TranslateItem : ObservableObject
 {
 
     public required Guid Id { get; init; }

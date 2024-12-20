@@ -26,7 +26,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private Language toLanguage;
 
     [ObservableProperty]
-    private TranslateItemModel currentTranslateItemModel;
+    private TranslateItem currentTranslateItemModel;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
@@ -36,7 +36,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     partial void OnIndexOfItemsChanged(int value)
     {
         var itemModel = w3ItemModels[value];
-        CurrentTranslateItemModel = new TranslateItemModel { Id = itemModel.Id, Text = itemModel.Text };
+        CurrentTranslateItemModel = new TranslateItem { Id = itemModel.Id, Text = itemModel.Text };
     }
 
     public TranslateDiaglogViewModel(IEnumerable<W3ItemModel> w3Items,int index)
@@ -44,8 +44,8 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         w3ItemModels = w3Items.ToArray();
         IndexOfItems = index;
         var itemModel = w3ItemModels[IndexOfItems];
-        CurrentTranslateItemModel = new TranslateItemModel { Id = itemModel.Id, Text = itemModel.Text };
-        var language = ConfigurationManager.LoadConfiguration().PreferredLanguage;
+        CurrentTranslateItemModel = new TranslateItem { Id = itemModel.Id, Text = itemModel.Text };
+        var language = SettingsManager.LoadConfiguration().PreferredLanguage;
         ToLanguage = language switch
         {
             W3Language.br => Language.GetLanguage("pt"),

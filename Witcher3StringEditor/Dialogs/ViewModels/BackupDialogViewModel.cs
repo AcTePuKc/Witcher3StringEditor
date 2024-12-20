@@ -3,8 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using System.Windows;
 using Witcher3StringEditor.Core;
+using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Models;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;

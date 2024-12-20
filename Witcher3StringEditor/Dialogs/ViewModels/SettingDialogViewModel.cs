@@ -3,23 +3,16 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using System.ComponentModel;
-using System.IO;
-using System.Windows;
-using Witcher3StringEditor.Core;
+using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Models;
-using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
-using MessageBoxButton = System.Windows.MessageBoxButton;
-using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-internal partial class SettingDialogViewModel(SettingsModel settings) : ObservableObject, IModalDialogViewModel
+internal partial class SettingDialogViewModel(Settings settings) : ObservableObject, IModalDialogViewModel
 {
     private readonly IDialogService dialogService = Ioc.Default.GetRequiredService<IDialogService>();
 
-    [ObservableProperty] private SettingsModel settingsModel = settings;
+    [ObservableProperty] private Settings settingsModel = settings;
 
     public bool? DialogResult => true;
 
@@ -47,22 +40,5 @@ internal partial class SettingDialogViewModel(SettingsModel settings) : Observab
         };
         var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
         if (storageFile is { Name: "witcher3.exe" }) SettingsModel.GameExePath = storageFile.LocalPath;
-    }
-
-    [RelayCommand]
-    private async Task WindowClosingCancel(CancelEventArgs cancelEvent)
-    {
-        if (Path.GetFileName(SettingsModel.GameExePath) != "witcher3.exe"
-            || Path.GetFileName(SettingsModel.W3StringsPath) != "w3strings.exe")
-        {
-            cancelEvent.Cancel = true;
-
-            if (await MessageBox.ShowAsync(Strings.PleaseCheckSettings, Strings.Warning, MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning) == MessageBoxResult.Yes) Environment.Exit(0);
-        }
-        else
-        {
-            ConfigurationManager.SaveConfiguration(SettingsModel);
-        }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Models;
 
-namespace Witcher3StringEditor.Models;
+namespace Witcher3StringEditor.Dialogs.Models;
 
 internal partial class W3Job : ObservableObject, IW3Job
 {

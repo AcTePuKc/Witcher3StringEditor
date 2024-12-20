@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
@@ -22,8 +23,8 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
         {
             Path = path,
             W3Items = w3ItemModels,
-            FileType = ConfigurationManager.LoadConfiguration().PreferredFileType,
-            Language = ConfigurationManager.LoadConfiguration().PreferredLanguage,
+            FileType = SettingsManager.LoadConfiguration().PreferredFileType,
+            Language = SettingsManager.LoadConfiguration().PreferredLanguage,
             IdSpace = FindIdSpace(w3ItemModels.First())
         };
     }
