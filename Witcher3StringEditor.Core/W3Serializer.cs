@@ -1,8 +1,6 @@
 ﻿using CommandLine;
 using Serilog;
-using Syncfusion.Data.Extensions;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Implements;
@@ -97,7 +95,8 @@ public class W3Serializer(string wstrings)
             : "cleartext";
         stringBuilder.AppendLine($";meta[language={lang}]");
         stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
-        w3Job.W3Items.ForEach(x => stringBuilder.AppendLine($"{x.StrId}|{x.KeyHex}|{x.KeyName}|{x.Text}"));
+        foreach (var item in w3Job.W3Items)
+            stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
         var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         if (File.Exists(csvPath))
             BackupManger.Instance.Backup(csvPath);

@@ -61,4 +61,12 @@
         </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Core\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Witcher3StringEditor.Core\Witcher3StringEditor.Core.csproj" />
+    </ItemGroup>
+
 </Project>
