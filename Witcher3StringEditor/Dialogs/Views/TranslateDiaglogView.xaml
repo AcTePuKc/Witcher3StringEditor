@@ -44,7 +44,7 @@
             Grid.RowSpan="3"
             Grid.Column="0"
             IsReadOnly="True"
-            Text="{Binding CurrentTranslateItemModel.Text}"
+            Text="{Binding CurrentTranslateItemModel.Text, FallbackValue=''}"
             TextWrapping="WrapWithOverflow" />
         <ComboBox
             Grid.Row="2"
@@ -56,7 +56,7 @@
         <TextBox
             Grid.Row="4"
             Grid.Column="2"
-            Text="{Binding CurrentTranslateItemModel.TranslatedText}"
+            Text="{Binding CurrentTranslateItemModel.TranslatedText, FallbackValue=''}"
             TextWrapping="WrapWithOverflow" />
         <StackPanel
             Grid.Row="6"

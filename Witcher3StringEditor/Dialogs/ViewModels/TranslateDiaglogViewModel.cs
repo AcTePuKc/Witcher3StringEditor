@@ -35,7 +35,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
 
     partial void OnIndexOfItemsChanged(int value)
     {
-        var item = w3Items.ElementAt(indexOfItems);
+        var item = w3Items.ElementAt(value);
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
     }
 
@@ -60,6 +60,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [RelayCommand]
     private async Task Translate()
     {
+        if (CurrentTranslateItemModel == null) return;
         var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage);
         CurrentTranslateItemModel.TranslatedText = result.Translation;
     }
@@ -67,6 +68,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [RelayCommand]
     private void Save()
     {
+        if (CurrentTranslateItemModel == null) return;
         w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
     }
 
