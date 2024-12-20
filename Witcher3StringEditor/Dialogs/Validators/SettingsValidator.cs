@@ -1,8 +1,8 @@
-﻿using FluentValidation;
-using System.IO;
+﻿using System.IO;
+using FluentValidation;
 using Witcher3StringEditor.Dialogs.Models;
 
-namespace Witcher3StringEditor.Core.Validators
+namespace Witcher3StringEditor.Dialogs.Validators
 {
     public partial class SettingsValidator : AbstractValidator<Settings>
     {
