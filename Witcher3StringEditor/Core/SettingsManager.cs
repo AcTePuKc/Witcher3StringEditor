@@ -3,21 +3,18 @@ using System.IO;
 
 namespace Witcher3StringEditor.Core;
 
-public sealed class SettingsManager
+public class SettingsManager(string path)
 {
-    public static T Load<T>() where T : new()
+    public T Load<T>() where T : new()
     {
-        if (File.Exists("Config.json"))
-        {
-            var json = File.ReadAllText("Config.json");
-            return JsonConvert.DeserializeObject<T>(json) ?? new T();
-        }
-        return new T();
+        if (!File.Exists(path)) return new T();
+        var json = File.ReadAllText(path);
+        return JsonConvert.DeserializeObject<T>(json) ?? new T();
     }
 
-    public static void Save<T>(T settings)
+    public void Save<T>(T settings)
     {
         var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
-        File.WriteAllText("Config.json", json);
+        File.WriteAllText(path, json);
     }
 }

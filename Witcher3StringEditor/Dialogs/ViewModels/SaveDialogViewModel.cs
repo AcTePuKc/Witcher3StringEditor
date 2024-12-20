@@ -14,6 +14,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
     private readonly W3Serializer serializer;
+    private readonly SettingsManager settingsManager = new("Config.json");
 
     [ObservableProperty] private IW3Job w3Job;
 
@@ -23,12 +24,12 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
         {
             Path = path,
             W3Items = w3Items,
-            FileType = SettingsManager.Load<Settings>().PreferredFileType,
-            Language = SettingsManager.Load<Settings>().PreferredLanguage,
+            FileType = settingsManager.Load<Settings>().PreferredFileType,
+            Language = settingsManager.Load<Settings>().PreferredLanguage,
             IdSpace = FindIdSpace(w3Items.First())
         };
 
-        var settings = SettingsManager.Load<Settings>();
+        var settings = settingsManager.Load<Settings>();
         serializer = new W3Serializer(settings.W3StringsPath);
     }
 

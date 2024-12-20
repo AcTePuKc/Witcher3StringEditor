@@ -25,6 +25,7 @@ namespace Witcher3StringEditor.ViewModels;
 internal partial class MainWindowViewModel : ObservableObject
 {
     private W3Serializer? serializer;
+    private readonly SettingsManager settingsManager = new("Config.json");
 
     private readonly IDialogService dialogService;
 
@@ -56,13 +57,13 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         await CheckSettings();
         IsUpdateAvailable = await CheckUpdate();
-        var settings = SettingsManager.Load<Settings>();
+        var settings = settingsManager.Load<Settings>();
         serializer = new W3Serializer(settings.W3StringsPath);
     }
 
     private async Task CheckSettings()
     {
-        var settings = SettingsManager.Load<Settings>();
+        var settings = settingsManager.Load<Settings>();
         var validations = new SettingsValidator();
         var result = await validations.ValidateAsync(settings);
         if (!result.IsValid)
@@ -158,21 +159,20 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
-        var settings = SettingsManager.Load<Settings>();
+        var settings = settingsManager.Load<Settings>();
         var dialogViewModel = new SettingDialogViewModel(settings);
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 
     [RelayCommand]
-    private static async Task PlayGame()
+    private async Task PlayGame()
     {
-        var filename = SettingsManager.Load<Settings>().GameExePath;
         using var process = new Process();
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo
         {
-            FileName = filename,
-            WorkingDirectory = Path.GetDirectoryName(filename),
+            FileName = settingsManager.Load<Settings>().GameExePath,
+            WorkingDirectory = Path.GetDirectoryName((string?)settingsManager.Load<Settings>().GameExePath),
             RedirectStandardError = true,
             RedirectStandardOutput = true
         };

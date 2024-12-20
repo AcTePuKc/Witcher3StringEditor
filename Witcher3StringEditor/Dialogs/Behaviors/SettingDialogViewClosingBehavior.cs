@@ -2,14 +2,16 @@
 using System.IO;
 using System.Windows;
 using Witcher3StringEditor.Core;
+using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
 internal class SettingDialogViewClosingBehavior : Behavior<SettingsDialog>
 {
+    private readonly SettingsManager settingsManager = new("Config.json");
+
     protected override void OnAttached()
     {
         AssociatedObject.Closing += AssociatedObject_Closing;
@@ -33,7 +35,7 @@ internal class SettingDialogViewClosingBehavior : Behavior<SettingsDialog>
         }
         else
         {
-            SettingsManager.Save(settings);
+            settingsManager.Save(settings);
         }
     }
 }

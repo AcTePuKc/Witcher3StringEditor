@@ -16,7 +16,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     public bool? DialogResult => true;
 
     private readonly IEnumerable<W3ItemModel> w3ItemModels;
-
+    private readonly SettingsManager settingsManager = new("Config.json");
     private readonly MicrosoftTranslator translator = new();
 
     public ObservableCollection<Language> Languages { get; }
@@ -45,7 +45,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         w3ItemModels = w3Items;
         var itemModel = w3ItemModels.ElementAt(IndexOfItems);
         CurrentTranslateItemModel = new TranslateItem { Id = itemModel.Id, Text = itemModel.Text };
-        var language = SettingsManager.Load<Settings>().PreferredLanguage;
+        var language = settingsManager.Load<Settings>().PreferredLanguage;
         ToLanguage = language switch
         {
             W3Language.br => Language.GetLanguage("pt"),
