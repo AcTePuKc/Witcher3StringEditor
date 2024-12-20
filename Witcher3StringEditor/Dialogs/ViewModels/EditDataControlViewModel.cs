@@ -6,12 +6,12 @@ using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-internal partial class EditDataDialogViewModel(W3ItemModel? w3Item = null)
+internal partial class EditDataDialogViewModel(W3Item? w3Item = null)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public string Title { get; } = w3Item == null ? Strings.AddDialogTitle : Strings.EditDialogTitle;
 
-    public W3ItemModel? W3Item { get; } = w3Item != null ? (W3ItemModel)w3Item.Clone() : new W3ItemModel();
+    public W3Item? W3Item { get; } = w3Item != null ? (W3Item)w3Item.Clone() : new W3Item();
 
     public event EventHandler? RequestClose;
 

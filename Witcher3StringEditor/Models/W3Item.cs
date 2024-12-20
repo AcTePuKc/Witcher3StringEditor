@@ -4,7 +4,7 @@ using Witcher3StringEditor.Core.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 
-public partial class W3ItemModel : ObservableObject, IW3Item, ICloneable
+public partial class W3Item : ObservableObject, IW3Item, ICloneable
 {
     [ObservableProperty]
     [Display(Name = "Key(Hex)")]
@@ -20,7 +20,7 @@ public partial class W3ItemModel : ObservableObject, IW3Item, ICloneable
 
     [ObservableProperty] private string text;
 
-    public W3ItemModel(IW3Item w3Item)
+    public W3Item(IW3Item w3Item)
     {
         StrId = w3Item.StrId;
         KeyHex = w3Item.KeyHex;
@@ -28,7 +28,7 @@ public partial class W3ItemModel : ObservableObject, IW3Item, ICloneable
         Text = w3Item.Text;
     }
 
-    public W3ItemModel()
+    public W3Item()
     {
         StrId = string.Empty;
         KeyHex = string.Empty;

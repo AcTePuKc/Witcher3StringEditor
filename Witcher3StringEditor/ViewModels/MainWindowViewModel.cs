@@ -50,7 +50,7 @@ internal partial class MainWindowViewModel : ObservableObject
         };
     }
 
-    public ObservableCollection<W3ItemModel> W3Items { get; set; } = [];
+    public ObservableCollection<W3Item> W3Items { get; set; } = [];
 
     [RelayCommand]
     private async Task WindowLoaded()
@@ -90,7 +90,7 @@ internal partial class MainWindowViewModel : ObservableObject
             if (serializer == null) return;
             if (W3Items.Any()) W3Items.Clear();
             foreach (var item in await serializer.Deserialize(storageFile.LocalPath))
-                W3Items.Add(new W3ItemModel(item));
+                W3Items.Add(new W3Item(item));
             OutputFolder = Path.GetDirectoryName(storageFile.LocalPath) ?? string.Empty;
         }
     }
@@ -104,7 +104,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task Edit(W3ItemModel w3Item)
+    private async Task Edit(W3Item w3Item)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
         var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
@@ -119,7 +119,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task Delete(IEnumerable<object> items)
     {
-        var w3Items = items.Cast<W3ItemModel>().ToArray();
+        var w3Items = items.Cast<W3Item>().ToArray();
         if (w3Items.Length != 0)
         {
             var dialogViewModel = new DeleteDataDialogViewModel(w3Items);
@@ -205,7 +205,7 @@ internal partial class MainWindowViewModel : ObservableObject
             {
                 if (serializer == null) return;
                 if (W3Items.Any()) W3Items.Clear();
-                foreach (var item in await serializer.Deserialize(file)) W3Items.Add(new W3ItemModel(item));
+                foreach (var item in await serializer.Deserialize(file)) W3Items.Add(new W3Item(item));
             }
         }
     }
@@ -268,7 +268,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowTranslateDialog(object item)
     {
-        if (item is not W3ItemModel w3Item) return;
+        if (item is not W3Item w3Item) return;
         var index = W3Items.IndexOf(w3Item);
         var diaglogViewModel = new TranslateDiaglogViewModel(W3Items, index);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
