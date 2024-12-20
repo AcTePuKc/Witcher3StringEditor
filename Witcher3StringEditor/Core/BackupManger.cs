@@ -46,12 +46,11 @@ public class BackupManger
             BackupTime = DateTime.Now
         };
 
-        BackupItems.Add(backupItem);
-        UpdateHistoryItems(BackupItems, jsonPath);
-
         if (!Directory.Exists(backupPath))
             Directory.CreateDirectory(backupPath);
         File.Copy(backupItem.OrginPath, backupItem.BackupPath);
+        BackupItems.Add(backupItem);
+        UpdateHistoryItems(BackupItems, jsonPath);
     }
 
     public void Restore(IBackupItem backupItem)
