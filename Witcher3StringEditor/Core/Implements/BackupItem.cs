@@ -1,6 +1,8 @@
-﻿namespace Witcher3StringEditor.Dialogs.Models;
+﻿using Witcher3StringEditor.Core.Interfaces;
 
-public record BackupItem
+namespace Witcher3StringEditor.Core.Implements;
+
+public record BackupItem : IBackupItem
 {
     public required string FileName { get; init; }
     public required string Hash { get; init; }

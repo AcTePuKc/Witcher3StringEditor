@@ -14,7 +14,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
     private readonly W3Serializer serializer;
-    private readonly SettingsManager settingsManager = new("Config.json");
+    private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
     [ObservableProperty] private IW3Job w3Job;
 

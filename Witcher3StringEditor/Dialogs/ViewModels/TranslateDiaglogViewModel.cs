@@ -16,7 +16,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     public bool? DialogResult => true;
 
     private readonly IEnumerable<W3Item> w3ItemModels;
-    private readonly SettingsManager settingsManager = new("Config.json");
+    private readonly SettingsManager settingsManager = SettingsManager.Instance;
     private readonly MicrosoftTranslator translator = new();
 
     public ObservableCollection<Language> Languages { get; }

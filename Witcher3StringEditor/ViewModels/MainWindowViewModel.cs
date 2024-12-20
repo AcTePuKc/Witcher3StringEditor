@@ -25,7 +25,7 @@ namespace Witcher3StringEditor.ViewModels;
 internal partial class MainWindowViewModel : ObservableObject
 {
     private W3Serializer? serializer;
-    private readonly SettingsManager settingsManager = new("Config.json");
+    private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
     private readonly IDialogService dialogService;
 

@@ -39,7 +39,7 @@
                     Grid.ColumnSpan="3"
                     AutoGenerateColumns="False"
                     ColumnSizer="Star"
-                    ItemsSource="{x:Static core:BackupManger.BackupItems}"
+                    ItemsSource="{Binding BackupItems}"
                     NavigationMode="Row">
                     <i:Interaction.Behaviors>
                         <b:SfDataGridSizeChangedBehavior />

@@ -100,7 +100,7 @@ public class W3Serializer(string wstrings)
         w3Job.W3Items.ForEach(x => stringBuilder.AppendLine($"{x.StrId}|{x.KeyHex}|{x.KeyName}|{x.Text}"));
         var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         if (File.Exists(csvPath))
-            BackupManger.Backup(csvPath);
+            BackupManger.Instance.Backup(csvPath);
         await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
         return true;
     }
@@ -139,7 +139,7 @@ public class W3Serializer(string wstrings)
         if (process.ExitCode != 0) return false;
         var tempW3StringsPath = $"{csvPath}.w3strings";
         if (File.Exists(w3StringsPath))
-            BackupManger.Backup(w3StringsPath);
+            BackupManger.Instance.Backup(w3StringsPath);
         File.Copy(tempW3StringsPath, w3StringsPath, true);
         return true;
     }

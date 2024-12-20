@@ -23,7 +23,7 @@ public partial class App
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        var observer = new AnonymousObserver<LogEvent>(LogManager.RecordLogEvent);
+        var observer = new AnonymousObserver<LogEvent>(LogManager.Instance.RecordLogEvent);
         Log.Logger = new LoggerConfiguration().WriteTo.File(".\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
             .CreateLogger();

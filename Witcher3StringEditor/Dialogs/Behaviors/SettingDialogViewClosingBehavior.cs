@@ -11,7 +11,7 @@ namespace Witcher3StringEditor.Dialogs.Behaviors;
 
 internal class SettingDialogViewClosingBehavior : Behavior<SettingsDialog>
 {
-    private readonly SettingsManager settingsManager = new("Config.json");
+    private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
     protected override void OnAttached()
     {

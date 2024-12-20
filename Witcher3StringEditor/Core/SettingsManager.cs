@@ -3,8 +3,17 @@ using System.IO;
 
 namespace Witcher3StringEditor.Core;
 
-public class SettingsManager(string path)
+public class SettingsManager
 {
+    private readonly string path;
+
+    private static readonly Lazy<SettingsManager> LazyInstance
+        = new(static () => new SettingsManager("Config.json"));
+
+    private SettingsManager(string path) => this.path = path;
+
+    public static SettingsManager Instance => LazyInstance.Value;
+
     public T Load<T>() where T : new()
     {
         if (!File.Exists(path)) return new T();
