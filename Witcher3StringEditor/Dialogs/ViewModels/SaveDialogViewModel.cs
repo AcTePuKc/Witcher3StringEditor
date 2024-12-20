@@ -42,7 +42,7 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
     private async Task Save()
     {
         var result = await serializer.Serialize(W3Job);
-        WeakReferenceMessenger.Default.Send(new SaveResult(result));
+        WeakReferenceMessenger.Default.Send(new SaveResultMessage(result));
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
