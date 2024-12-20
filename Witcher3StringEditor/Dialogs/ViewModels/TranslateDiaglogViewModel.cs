@@ -5,9 +5,9 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
 using Witcher3StringEditor.Core;
+using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Models;
-using Witcher3StringEditor.Core.Common;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -15,7 +15,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
 {
     public bool? DialogResult => true;
 
-    private readonly W3ItemModel[] w3ItemModels;
+    private readonly IEnumerable<W3ItemModel> w3ItemModels;
 
     private readonly MicrosoftTranslator translator = new();
 
@@ -35,15 +35,15 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
 
     partial void OnIndexOfItemsChanged(int value)
     {
-        var itemModel = w3ItemModels[value];
+        var itemModel = w3ItemModels.ElementAt(value);
         CurrentTranslateItemModel = new TranslateItem { Id = itemModel.Id, Text = itemModel.Text };
     }
 
-    public TranslateDiaglogViewModel(IEnumerable<W3ItemModel> w3Items,int index)
+    public TranslateDiaglogViewModel(IEnumerable<W3ItemModel> w3Items, int index)
     {
-        w3ItemModels = w3Items.ToArray();
         IndexOfItems = index;
-        var itemModel = w3ItemModels[IndexOfItems];
+        w3ItemModels = w3Items;
+        var itemModel = w3ItemModels.ElementAt(IndexOfItems);
         CurrentTranslateItemModel = new TranslateItem { Id = itemModel.Id, Text = itemModel.Text };
         var language = SettingsManager.LoadConfiguration().PreferredLanguage;
         ToLanguage = language switch
@@ -74,7 +74,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
 
     private bool CanPrevious() => IndexOfItems > 0;
 
-    private bool CanNext() => IndexOfItems < w3ItemModels.Length - 1;
+    private bool CanNext() => IndexOfItems < w3ItemModels.Count() - 1;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
     private void Previous()

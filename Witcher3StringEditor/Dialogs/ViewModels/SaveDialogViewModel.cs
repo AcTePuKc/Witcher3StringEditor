@@ -7,7 +7,6 @@ using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Models;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -16,16 +15,15 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
 {
     [ObservableProperty] private IW3Job w3Job;
 
-    public SaveDialogViewModel(IEnumerable<W3ItemModel> w3Items, string path)
+    public SaveDialogViewModel(IEnumerable<IW3Item> w3Items, string path)
     {
-        var w3ItemModels = w3Items.ToList();
         W3Job = new W3Job
         {
             Path = path,
-            W3Items = w3ItemModels,
+            W3Items = w3Items,
             FileType = SettingsManager.LoadConfiguration().PreferredFileType,
             Language = SettingsManager.LoadConfiguration().PreferredLanguage,
-            IdSpace = FindIdSpace(w3ItemModels.First())
+            IdSpace = FindIdSpace(w3Items.First())
         };
     }
 
@@ -56,7 +54,7 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
 
-    private static int FindIdSpace(W3ItemModel w3Item)
+    private static int FindIdSpace(IW3Item w3Item)
     {
         // 使用 Match 方法尝试匹配输入字符串
         var match = IdSpaceRegex().Match(w3Item.StrId);

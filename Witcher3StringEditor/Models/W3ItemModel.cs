@@ -4,7 +4,7 @@ using Witcher3StringEditor.Core.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 
-public partial class W3ItemModel : ObservableObject, ICloneable
+public partial class W3ItemModel : ObservableObject, IW3Item, ICloneable
 {
     [ObservableProperty]
     [Display(Name = "Key(Hex)")]

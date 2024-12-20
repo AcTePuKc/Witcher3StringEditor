@@ -15,5 +15,5 @@ public interface IW3Job
 
     public string Path { get; }
 
-    public IEnumerable<W3ItemModel> W3Items { get; }
+    public IEnumerable<IW3Item> W3Items { get; }
 }
