@@ -12,13 +12,13 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
 using MessageBoxImage = System.Windows.MessageBoxImage;
-using SettingsValidator = Witcher3StringEditor.Dialogs.Validators.SettingsValidator;
 
 namespace Witcher3StringEditor.ViewModels;
 

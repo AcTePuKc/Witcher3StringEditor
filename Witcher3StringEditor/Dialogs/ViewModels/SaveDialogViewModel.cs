@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -41,14 +42,7 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
     private async Task Save()
     {
         var result = await serializer.Serialize(W3Job);
-
-        if (result)
-            await MessageBox.ShowAsync(Strings.SaveSuccess, Strings.SaveResult, MessageBoxButton.OK,
-                MessageBoxImage.Information);
-        else
-            await MessageBox.ShowAsync(Strings.SaveFailure, Strings.SaveResult, MessageBoxButton.OK,
-                MessageBoxImage.Information);
-
+        WeakReferenceMessenger.Default.Send(new SaveResult(result));
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
