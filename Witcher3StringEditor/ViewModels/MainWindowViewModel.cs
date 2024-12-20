@@ -90,10 +90,8 @@ internal partial class MainWindowViewModel : ObservableObject
         if (storageFile != null)
         {
             if (W3Items.Any()) W3Items.Clear();
-
             foreach (var item in await W3Serializer.Deserialize(storageFile.LocalPath))
                 W3Items.Add(new W3ItemModel(item));
-
             OutputFolder = Path.GetDirectoryName(storageFile.LocalPath) ?? string.Empty;
         }
     }
@@ -128,8 +126,8 @@ internal partial class MainWindowViewModel : ObservableObject
             var dialogViewModel = new DeleteDataDialogViewModel(w3Items);
             var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
             if (result == true)
-                foreach (var t in w3Items)
-                    W3Items.Remove(t);
+                foreach (var item in w3Items)
+                    W3Items.Remove(item);
         }
     }
 
