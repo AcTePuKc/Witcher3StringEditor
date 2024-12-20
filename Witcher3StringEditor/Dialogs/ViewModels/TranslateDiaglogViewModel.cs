@@ -15,7 +15,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
 {
     public bool? DialogResult => true;
 
-    private readonly IEnumerable<W3Item> w3ItemModels;
+    private readonly IEnumerable<W3Item> w3Items;
     private readonly SettingsManager settingsManager = SettingsManager.Instance;
     private readonly MicrosoftTranslator translator = new();
 
@@ -26,7 +26,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private Language toLanguage;
 
     [ObservableProperty]
-    private TranslateItem currentTranslateItemModel;
+    private TranslateItem? currentTranslateItemModel;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
@@ -35,16 +35,14 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
 
     partial void OnIndexOfItemsChanged(int value)
     {
-        var itemModel = w3ItemModels.ElementAt(value);
-        CurrentTranslateItemModel = new TranslateItem { Id = itemModel.Id, Text = itemModel.Text };
+        var item = w3Items.ElementAt(indexOfItems);
+        CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
     }
 
     public TranslateDiaglogViewModel(IEnumerable<W3Item> w3Items, int index)
     {
+        this.w3Items = w3Items;
         IndexOfItems = index;
-        w3ItemModels = w3Items;
-        var itemModel = w3ItemModels.ElementAt(IndexOfItems);
-        CurrentTranslateItemModel = new TranslateItem { Id = itemModel.Id, Text = itemModel.Text };
         var language = settingsManager.Load<Settings>().PreferredLanguage;
         ToLanguage = language switch
         {
@@ -69,12 +67,12 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [RelayCommand]
     private void Save()
     {
-        w3ItemModels.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+        w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
     }
 
     private bool CanPrevious() => IndexOfItems > 0;
 
-    private bool CanNext() => IndexOfItems < w3ItemModels.Count() - 1;
+    private bool CanNext() => IndexOfItems < w3Items.Count() - 1;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
     private void Previous()
