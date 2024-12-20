@@ -1,6 +1,7 @@
 ﻿using AngleSharp;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
@@ -16,9 +17,6 @@ using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
-using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
-using MessageBoxButton = System.Windows.MessageBoxButton;
-using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -217,9 +215,8 @@ internal partial class MainWindowViewModel : ObservableObject
         var runtime = RuntimeInformation.FrameworkDescription;
         var version = ThisAssembly.AssemblyInformationalVersion.Trim();
         var os = $"{RuntimeInformation.OSDescription}({RuntimeInformation.OSArchitecture})";
-        await MessageBox.ShowAsync(
-            $"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}",
-            Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
+        var message = $"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}";
+        WeakReferenceMessenger.Default.Send(message);
     }
 
     private static string RetrieveTimestamp()

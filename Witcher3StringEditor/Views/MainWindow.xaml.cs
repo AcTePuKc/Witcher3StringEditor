@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Messaging;
 using iNKORE.UI.WPF.Modern.Controls;
+using Witcher3StringEditor.Recipients;
 using Witcher3StringEditor.ViewModels;
 
 namespace Witcher3StringEditor.Views;
@@ -9,11 +11,15 @@ namespace Witcher3StringEditor.Views;
 /// </summary>
 public partial class MainWindow
 {
+    private readonly AboutInformationRecipient recipient;
+
     public MainWindow()
     {
         InitializeComponent();
         DataGrid.SearchHelper.AllowFiltering = true;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+        recipient = new AboutInformationRecipient();
+        WeakReferenceMessenger.Default.Register(recipient);
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
