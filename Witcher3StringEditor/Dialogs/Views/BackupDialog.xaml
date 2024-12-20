@@ -19,6 +19,7 @@
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
+    Closed="Window_Closed"
     mc:Ignorable="d">
     <Grid>
         <Border Padding="10">

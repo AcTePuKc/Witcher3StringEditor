@@ -10,6 +10,7 @@
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.ViewModels"
+    Closed="Window_Closed"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"

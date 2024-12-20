@@ -14,10 +14,15 @@ public partial class BackupDialog
     {
         InitializeComponent();
         recipient = new BackupActionRecipient();
-        WeakReferenceMessenger.Default.Register<BackupActionRecipient,BackupActionMessage>(recipient: recipient,(r,m)=>
+        WeakReferenceMessenger.Default.Register<BackupActionRecipient, BackupActionMessage>(recipient: recipient, (r, m) =>
         {
             r.Receive(m);
             m.Reply(r.Response);
         });
+    }
+
+    private void Window_Closed(object sender, EventArgs e)
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(recipient);
     }
 }

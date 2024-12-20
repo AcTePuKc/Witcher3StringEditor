@@ -31,4 +31,9 @@ public partial class MainWindow
     {
         if (string.IsNullOrEmpty(sender.Text)) DataGrid.SearchHelper.ClearSearch();
     }
+
+    private void Window_Closed(object sender, EventArgs e)
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    }
 }

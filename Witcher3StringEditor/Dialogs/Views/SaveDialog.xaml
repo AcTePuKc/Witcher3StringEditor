@@ -17,6 +17,7 @@
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
+    Closed="Window_Closed"
     ResizeMode="NoResize"
     mc:Ignorable="d">
     <Window.Resources>
