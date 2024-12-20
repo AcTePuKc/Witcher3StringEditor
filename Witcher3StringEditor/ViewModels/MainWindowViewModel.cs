@@ -1,5 +1,4 @@
 ﻿using AngleSharp;
-using CommandLine;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
@@ -273,7 +272,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowTranslateDialog(object item)
     {
-        var w3Item = item.Cast<W3ItemModel>();
+        if (item is not W3ItemModel w3Item) return;
         var index = W3Items.IndexOf(w3Item);
         var diaglogViewModel = new TranslateDiaglogViewModel(W3Items, index);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
