@@ -13,6 +13,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
+    private readonly W3Serializer serializer;
+
     [ObservableProperty] private IW3Job w3Job;
 
     public SaveDialogViewModel(IEnumerable<IW3Item> w3Items, string path)
@@ -25,6 +27,9 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
             Language = SettingsManager.Load<Settings>().PreferredLanguage,
             IdSpace = FindIdSpace(w3Items.First())
         };
+
+        var settings = SettingsManager.Load<Settings>();
+        serializer = new W3Serializer(settings.W3StringsPath);
     }
 
     public event EventHandler? RequestClose;
@@ -34,7 +39,7 @@ internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewM
     [RelayCommand]
     private async Task Save()
     {
-        var result = await W3Serializer.Serialize(W3Job);
+        var result = await serializer.Serialize(W3Job);
 
         if (result)
             await MessageBox.ShowAsync(Strings.SaveSuccess, Strings.SaveResult, MessageBoxButton.OK,

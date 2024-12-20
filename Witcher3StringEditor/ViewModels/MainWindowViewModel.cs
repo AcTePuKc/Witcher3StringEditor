@@ -11,6 +11,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Witcher3StringEditor.Core;
+using Witcher3StringEditor.Core.Validators;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
@@ -23,6 +24,8 @@ namespace Witcher3StringEditor.ViewModels;
 
 internal partial class MainWindowViewModel : ObservableObject
 {
+    private W3Serializer? serializer;
+
     private readonly IDialogService dialogService;
 
     [ObservableProperty]
@@ -53,24 +56,18 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         await CheckSettings();
         IsUpdateAvailable = await CheckUpdate();
+        var settings = SettingsManager.Load<Settings>();
+        serializer = new W3Serializer(settings.W3StringsPath);
     }
 
     private async Task CheckSettings()
     {
         var settings = SettingsManager.Load<Settings>();
-        var newSettings = new Settings();
-        if (settings == newSettings)
+        var validations = new SettingsValidator();
+        var result = await validations.ValidateAsync(settings);
+        if (!result.IsValid)
         {
-            var dialogViewModel = new SettingDialogViewModel(newSettings);
-            await dialogService.ShowDialogAsync(this, dialogViewModel);
-        }
-        else if (!File.Exists(settings.GameExePath) || !File.Exists(settings.W3StringsPath))
-        {
-            newSettings.PreferredFileType = settings.PreferredFileType;
-            newSettings.PreferredLanguage = settings.PreferredLanguage;
-            newSettings.GameExePath = File.Exists(settings.GameExePath) ? settings.GameExePath : string.Empty;
-            newSettings.W3StringsPath = File.Exists(settings.W3StringsPath) ? settings.W3StringsPath : string.Empty;
-            var dialogViewModel = new SettingDialogViewModel(newSettings);
+            var dialogViewModel = new SettingDialogViewModel(settings);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
         }
     }
@@ -89,8 +86,9 @@ internal partial class MainWindowViewModel : ObservableObject
 
         if (storageFile != null)
         {
+            if (serializer == null) return;
             if (W3Items.Any()) W3Items.Clear();
-            foreach (var item in await W3Serializer.Deserialize(storageFile.LocalPath))
+            foreach (var item in await serializer.Deserialize(storageFile.LocalPath))
                 W3Items.Add(new W3ItemModel(item));
             OutputFolder = Path.GetDirectoryName(storageFile.LocalPath) ?? string.Empty;
         }
@@ -205,9 +203,9 @@ internal partial class MainWindowViewModel : ObservableObject
             var ext = Path.GetExtension(file);
             if (ext is ".csv" or ".w3strings")
             {
-                if (W3Items.Any())
-                    W3Items.Clear();
-                foreach (var item in await W3Serializer.Deserialize(file)) W3Items.Add(new W3ItemModel(item));
+                if (serializer == null) return;
+                if (W3Items.Any()) W3Items.Clear();
+                foreach (var item in await serializer.Deserialize(file)) W3Items.Add(new W3ItemModel(item));
             }
         }
     }

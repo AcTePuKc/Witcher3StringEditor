@@ -7,13 +7,12 @@ using System.Text;
 using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
-using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Core;
 
-public static class W3Serializer
+public class W3Serializer(string wstrings)
 {
-    public static async Task<IEnumerable<IW3Item>> Deserialize(string path)
+    public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
         if (Path.GetExtension(path) == ".csv") return DeserializeCsv(path);
 
@@ -42,13 +41,13 @@ public static class W3Serializer
                };
     }
 
-    private static async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
+    private async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
     {
         using var process = new Process();
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo
         {
-            FileName = SettingsManager.Load<Settings>().W3StringsPath,
+            FileName = wstrings,
             Arguments = Parser.Default.FormatCommandLine(new W3Options
             {
                 Decode = path
@@ -77,7 +76,7 @@ public static class W3Serializer
         if (e.Data != null) Log.Information(e.Data);
     }
 
-    public static async Task<bool> Serialize(IW3Job w3Job)
+    public async Task<bool> Serialize(IW3Job w3Job)
     {
         if (w3Job.FileType == FileType.w3Strings) return await SerializeW3Strings(w3Job);
 
@@ -87,7 +86,7 @@ public static class W3Serializer
     private static async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
     {
         var stringBuilder = new StringBuilder();
-        var lang = w3Job.Language 
+        var lang = w3Job.Language
             is not W3Language.ar
             and not W3Language.br
             and not W3Language.cn
@@ -111,7 +110,7 @@ public static class W3Serializer
         return await SerializeCsv(w3Job, w3Job.Path);
     }
 
-    private static async Task<bool> SerializeW3Strings(IW3Job w3Job)
+    private async Task<bool> SerializeW3Strings(IW3Job w3Job)
     {
         var tempFolder = CreateRandomTempDirectory();
         var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
@@ -126,7 +125,7 @@ public static class W3Serializer
             RedirectStandardOutput = true,
             UseShellExecute = false,
             CreateNoWindow = true,
-            FileName = SettingsManager.Load<Settings>().W3StringsPath,
+            FileName = wstrings,
             Arguments = w3Job.IsIgnoreIdSpaceCheck
                 ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
                 : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
