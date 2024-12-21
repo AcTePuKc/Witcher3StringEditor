@@ -189,4 +189,7 @@
   <data name="UpdateAvailable" xml:space="preserve">
     <value>检测到新版本</value>
   </data>
+  <data name="RecentBtnLabel" xml:space="preserve">
+    <value>最近打开的文件</value>
+  </data>
 </root>

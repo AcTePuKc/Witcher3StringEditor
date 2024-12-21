@@ -261,4 +261,19 @@
   <data name="IdSpaceToolTip" xml:space="preserve">
     <value>The Range Of The Id Space Is A Four-Digit Integer From 0000-9999. The Program Automatically Detects The Id Space And Displays It As a Minus One When There Is An Error In The Detection. The Result Are For Reference Only.</value>
   </data>
+  <data name="RecentDialogTitle" xml:space="preserve">
+    <value>Recent</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="OpenedTime" xml:space="preserve">
+    <value>Opened Time</value>
+  </data>
+  <data name="IsPin" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="RecentItemDeletingMessgae" xml:space="preserve">
+    <value>This Operation Will Delete The Record(s) And Cannot Be Undone</value>
+  </data>
 </root>

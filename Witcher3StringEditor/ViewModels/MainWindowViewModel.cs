@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -267,6 +268,13 @@ internal partial class MainWindowViewModel : ObservableObject
         if (item is not W3Item w3Item) return;
         var index = W3Items.IndexOf(w3Item);
         var diaglogViewModel = new TranslateDiaglogViewModel(W3Items, index);
+        await dialogService.ShowDialogAsync(this, diaglogViewModel);
+    }
+
+    [RelayCommand]
+    private async Task ShowRecentDialog()
+    {
+        var diaglogViewModel = new RecentDialogViewModel();
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 }

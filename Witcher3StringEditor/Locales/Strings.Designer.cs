@@ -196,6 +196,15 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Recent 的本地化字符串。
+        /// </summary>
+        internal static string RecentBtnLabel {
+            get {
+                return ResourceManager.GetString("RecentBtnLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Runtime 的本地化字符串。
         /// </summary>
         internal static string Runtime {
@@ -246,6 +255,15 @@ namespace Witcher3StringEditor.Locales {
         internal static string TranslateBtnLabel {
             get {
                 return ResourceManager.GetString("TranslateBtnLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update Available 的本地化字符串。
+        /// </summary>
+        internal static string UpdateAvailable {
+            get {
+                return ResourceManager.GetString("UpdateAvailable", resourceCulture);
             }
         }
         

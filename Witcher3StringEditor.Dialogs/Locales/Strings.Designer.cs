@@ -241,6 +241,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Pin 的本地化字符串。
+        /// </summary>
+        internal static string IsPin {
+            get {
+                return ResourceManager.GetString("IsPin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Log 的本地化字符串。
         /// </summary>
         internal static string LogDialogTitle {
@@ -286,11 +295,29 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Opened Time 的本地化字符串。
+        /// </summary>
+        internal static string OpenedTime {
+            get {
+                return ResourceManager.GetString("OpenedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Orgin Path 的本地化字符串。
         /// </summary>
         internal static string OrginPath {
             get {
                 return ResourceManager.GetString("OrginPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Path 的本地化字符串。
+        /// </summary>
+        internal static string Path {
+            get {
+                return ResourceManager.GetString("Path", resourceCulture);
             }
         }
         
@@ -327,6 +354,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string PreviousBtnContent {
             get {
                 return ResourceManager.GetString("PreviousBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Recent 的本地化字符串。
+        /// </summary>
+        internal static string RecentDialogTitle {
+            get {
+                return ResourceManager.GetString("RecentDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 This Operation Will Delete The Record(s) And Cannot Be Undone 的本地化字符串。
+        /// </summary>
+        internal static string RecentItemDeletingMessgae {
+            get {
+                return ResourceManager.GetString("RecentItemDeletingMessgae", resourceCulture);
             }
         }
         
