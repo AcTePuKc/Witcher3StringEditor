@@ -1,6 +1,6 @@
 ﻿namespace Witcher3StringEditor.Dialogs.Recipients;
 
-public enum BackupActionType
+internal enum BackupActionType
 {
     restore = 0, delete = 1
 }

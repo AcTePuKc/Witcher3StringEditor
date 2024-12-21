@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
-public class SfDataGridAutoScrollToEndBehavior : Behavior<SfDataGrid>
+internal class SfDataGridAutoScrollToEndBehavior : Behavior<SfDataGrid>
 {
     protected override void OnAttached()
     {

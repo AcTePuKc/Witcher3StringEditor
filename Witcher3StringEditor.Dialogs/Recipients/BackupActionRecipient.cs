@@ -7,7 +7,7 @@ using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.Dialogs.Recipients;
 
-public class BackupActionRecipient : IRecipient<BackupActionMessage>
+internal class BackupActionRecipient : IRecipient<BackupActionMessage>
 {
     public bool Response { get; private set; }
 
