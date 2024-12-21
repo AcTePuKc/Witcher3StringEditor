@@ -10,9 +10,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+    xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc RecentDialogTitle}"
     Width="800"
     Height="450"
+    d:DataContext="{d:DesignInstance Type=vm:RecentDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
@@ -36,25 +38,42 @@
     </Window.Resources>
     <Grid Margin="10">
         <sf:SfDataGrid
+            x:Name="sfDataGrid"
             AllowDeleting="True"
             AutoGenerateColumns="False"
-            ColumnSizer="AutoWithLastColumnFill">
+            ColumnSizer="AutoWithLastColumnFill"
+            ItemsSource="{Binding RecentItems}"
+            SelectionMode="Extended">
             <i:Interaction.Behaviors>
                 <b:SfDataGridSizeChangedBehavior />
                 <b:SfDataGridQueryRowHeightBehavior />
                 <b:SfDataGridRecordDeletingBehavior />
             </i:Interaction.Behaviors>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="CellDoubleTapped">
+                    <i:InvokeCommandAction Command="{Binding ReOpenCommand}" CommandParameter="{Binding SelectedItem, ElementName=sfDataGrid}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <sf:SfDataGrid.Columns>
-                <sf:GridTextColumn Width="150" HeaderText="{lex:Loc FileName}" />
-                <sf:GridDateTimeColumn Width="150" HeaderText="{lex:Loc OpenedTime}" />
-                <sf:GridTemplateColumn Width="100" HeaderText="{lex:Loc IsPin}">
+                <sf:GridTextColumn
+                    Width="150"
+                    HeaderText="{lex:Loc FileName}"
+                    MappingName="FileName" />
+                <sf:GridDateTimeColumn
+                    Width="150"
+                    HeaderText="{lex:Loc OpenedTime}"
+                    MappingName="OpenedTime" />
+                <sf:GridTemplateColumn
+                    Width="100"
+                    HeaderText="{lex:Loc IsPin}"
+                    MappingName="IsPin">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox Template="{StaticResource PinCheckBoxTemplate}" />
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
-                <sf:GridTextColumn HeaderText="{lex:Loc Path}" />
+                <sf:GridTextColumn HeaderText="{lex:Loc Path}" MappingName="FilePath" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
     </Grid>

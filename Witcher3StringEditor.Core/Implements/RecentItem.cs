@@ -2,9 +2,11 @@
 
 namespace Witcher3StringEditor.Core.Implements
 {
-    internal class RecentItem(string fileName, DateTime openedTime, bool isPin) : IRecentItem
+    internal class RecentItem(string path, DateTime openedTime, bool isPin) : IRecentItem
     {
-        public string FileName { get; } = fileName;
+        public string FileName => Path.GetFileName(FilePath);
+
+        public string FilePath { get; } = path;
 
         public DateTime OpenedTime { get; set; } = openedTime;
 

@@ -4,7 +4,9 @@
     {
         public string FileName { get; }
 
-        public DateTime OpenedTime { get; }
+        public string FilePath { get; }
+
+        public DateTime OpenedTime { get; set; }
 
         public bool IsPin { get; set; }
     }
