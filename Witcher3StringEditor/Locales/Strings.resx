@@ -186,4 +186,7 @@
   <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
     <value>Open Working Folder</value>
   </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update Available</value>
+  </data>
 </root>

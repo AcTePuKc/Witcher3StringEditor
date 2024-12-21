@@ -252,4 +252,10 @@
   <data name="PreferredLanguage" xml:space="preserve">
     <value>默认目标语言</value>
   </data>
+  <data name="IsOn" xml:space="preserve">
+    <value>开</value>
+  </data>
+  <data name="IsOff" xml:space="preserve">
+    <value>关</value>
+  </data>
 </root>

@@ -252,4 +252,10 @@
   <data name="PreferredLanguage" xml:space="preserve">
     <value>Preferred Language</value>
   </data>
+  <data name="IsOn" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="IsOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
 </root>
