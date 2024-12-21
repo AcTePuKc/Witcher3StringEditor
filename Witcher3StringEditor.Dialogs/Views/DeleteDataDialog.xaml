@@ -15,7 +15,7 @@
     Height="450"
     d:DataContext="{d:DesignInstance Type=vm:DeleteDataDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -74,13 +74,13 @@
                     Grid.Column="0"
                     HorizontalAlignment="Right"
                     Command="{Binding DeleteCommand}"
-                    Content="{lex:Loc DeleteBtnTxt}" />
+                    Content="{lex:Loc DeleteBtnContent}" />
                 <Button
                     Grid.Row="4"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Command="{Binding CancelCommand}"
-                    Content="{lex:Loc CancelBtnTxt}" />
+                    Content="{lex:Loc CancelBtnContent}" />
             </Grid>
         </Border>
     </Grid>

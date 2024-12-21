@@ -16,7 +16,6 @@ using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.ViewModels;
 

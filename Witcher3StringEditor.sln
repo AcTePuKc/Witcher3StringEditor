@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor", "Wit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Core", "Witcher3StringEditor.Core\Witcher3StringEditor.Core.csproj", "{AFB4AB98-29ED-489E-AF21-607EBE5F1159}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Dialogs", "Witcher3StringEditor.Dialogs\Witcher3StringEditor.Dialogs.csproj", "{76496957-6B95-426C-8068-82C837192198}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AFB4AB98-29ED-489E-AF21-607EBE5F1159}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFB4AB98-29ED-489E-AF21-607EBE5F1159}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFB4AB98-29ED-489E-AF21-607EBE5F1159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76496957-6B95-426C-8068-82C837192198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76496957-6B95-426C-8068-82C837192198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76496957-6B95-426C-8068-82C837192198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76496957-6B95-426C-8068-82C837192198}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

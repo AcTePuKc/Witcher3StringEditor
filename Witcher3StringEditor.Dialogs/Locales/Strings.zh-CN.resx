@@ -117,73 +117,139 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>关于</value>
+  <data name="PleaseCheckSettings" xml:space="preserve">
+    <value>您尚未完成初始化。请点击是退出程序，或者点击否继续完成初始化。</value>
   </data>
-  <data name="AllSupportedFormat" xml:space="preserve">
-    <value>所有支持的格式</value>
+  <data name="Warning" xml:space="preserve">
+    <value>警告</value>
   </data>
-  <data name="TextFile" xml:space="preserve">
-    <value>文本文件</value>
+  <data name="BackupRestoreMessage" xml:space="preserve">
+    <value>此操作将覆盖当前所在路径的文件且操作无法撤销</value>
   </data>
-  <data name="Witcher3StringsFile" xml:space="preserve">
-    <value>巫师3字符串文件</value>
+  <data name="BackupDeleteMessage" xml:space="preserve">
+    <value>此操作将删除备份文件且操作无法撤销</value>
   </data>
-  <data name="Version" xml:space="preserve">
-    <value>版本</value>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>保存成功</value>
   </data>
-  <data name="BuildTime" xml:space="preserve">
-    <value>编译时间</value>
+  <data name="SaveFailure" xml:space="preserve">
+    <value>保存失败</value>
   </data>
-  <data name="OS" xml:space="preserve">
-    <value>操作系统</value>
+  <data name="SaveResult" xml:space="preserve">
+    <value>保存结果</value>
   </data>
-  <data name="Runtime" xml:space="preserve">
-    <value>运行时</value>
+  <data name="AddDialogTitle" xml:space="preserve">
+    <value>添加</value>
   </data>
-  <data name="ExitQuestionMessage" xml:space="preserve">
-    <value>您确认要退出吗？</value>
+  <data name="EditDialogTitle" xml:space="preserve">
+    <value>编辑</value>
   </data>
-  <data name="ExitQuestionCaption" xml:space="preserve">
-    <value>退出</value>
+  <data name="SelectW3Strings" xml:space="preserve">
+    <value>选择w3strings.exe</value>
   </data>
-  <data name="OpenFileBtnLabel" xml:space="preserve">
-    <value>打开文件</value>
+  <data name="SelectGameExe" xml:space="preserve">
+    <value>选择witcher3.exe</value>
   </data>
-  <data name="AppTitle" xml:space="preserve">
-    <value>巫师3字符串编辑器</value>
+  <data name="SubmitBtnContent" xml:space="preserve">
+    <value>提交</value>
   </data>
-  <data name="SearchBoxPlaceholderText" xml:space="preserve">
-    <value>搜索</value>
+  <data name="CancelBtnContent" xml:space="preserve">
+    <value>取消</value>
   </data>
-  <data name="AddBtnLabel" xml:space="preserve">
-    <value>添加数据</value>
+  <data name="DeleteDialogTitle" xml:space="preserve">
+    <value>删除</value>
   </data>
-  <data name="EditBtnLabel" xml:space="preserve">
-    <value>编辑数据</value>
+  <data name="DeleteDialogMessage" xml:space="preserve">
+    <value>您正在删除以下数据：</value>
   </data>
-  <data name="DeleteBtnLabel" xml:space="preserve">
-    <value>删除数据</value>
+  <data name="DeleteBtnContent" xml:space="preserve">
+    <value>删除</value>
   </data>
-  <data name="SaveBtnLabel" xml:space="preserve">
-    <value>保存</value>
-  </data>
-  <data name="BackupBtnLabel" xml:space="preserve">
-    <value>备份</value>
-  </data>
-  <data name="LogBtnLabel" xml:space="preserve">
-    <value>日志</value>
-  </data>
-  <data name="SettingsBtnLabel" xml:space="preserve">
-    <value>设置</value>
-  </data>
-  <data name="PlayBtnLabel" xml:space="preserve">
-    <value>运行游戏</value>
-  </data>
-  <data name="TranslateBtnLabel" xml:space="preserve">
+  <data name="TranslateDialogTitle" xml:space="preserve">
     <value>翻译</value>
   </data>
-  <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
-    <value>打开工作目录</value>
+  <data name="PreviousBtnContent" xml:space="preserve">
+    <value>上一个</value>
+  </data>
+  <data name="NextBtnContent" xml:space="preserve">
+    <value>下一个</value>
+  </data>
+  <data name="TranslateBtnContent" xml:space="preserve">
+    <value>翻译</value>
+  </data>
+  <data name="SaveBtnContent" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="SrcTxt" xml:space="preserve">
+    <value>原文</value>
+  </data>
+  <data name="TranslatedTxt" xml:space="preserve">
+    <value>译文</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="TargetFiletype" xml:space="preserve">
+    <value>目标文件类型</value>
+  </data>
+  <data name="TargetLanguage" xml:space="preserve">
+    <value>目标语言</value>
+  </data>
+  <data name="IgnoreIDSpaceCheck" xml:space="preserve">
+    <value>跳过ID空间检查</value>
+  </data>
+  <data name="IDSpace" xml:space="preserve">
+    <value>ID空间</value>
+  </data>
+  <data name="BackupDialogTitle" xml:space="preserve">
+    <value>备份</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>文件名</value>
+  </data>
+  <data name="Hash" xml:space="preserve">
+    <value>哈希值</value>
+  </data>
+  <data name="OrginPath" xml:space="preserve">
+    <value>原文件路径</value>
+  </data>
+  <data name="BackupPath" xml:space="preserve">
+    <value>备份文件路径</value>
+  </data>
+  <data name="BackupTime" xml:space="preserve">
+    <value>备份时间</value>
+  </data>
+  <data name="RestoreBtnContent" xml:space="preserve">
+    <value>恢复</value>
+  </data>
+  <data name="CloseBtnContent" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="LogDialogTitle" xml:space="preserve">
+    <value>日志</value>
+  </data>
+  <data name="LogTime" xml:space="preserve">
+    <value>日志时间</value>
+  </data>
+  <data name="LogLevel" xml:space="preserve">
+    <value>日志级别</value>
+  </data>
+  <data name="LogMessage" xml:space="preserve">
+    <value>日志消息</value>
+  </data>
+  <data name="SettingsDialogTitle" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="W3StringsPath" xml:space="preserve">
+    <value>请选择w3strings.exe</value>
+  </data>
+  <data name="GameExePath" xml:space="preserve">
+    <value>请选择witcher3.exe</value>
+  </data>
+  <data name="PreferredFileType" xml:space="preserve">
+    <value>默认目标文件类型</value>
+  </data>
+  <data name="PreferredLanguage" xml:space="preserve">
+    <value>默认目标语言</value>
   </data>
 </root>

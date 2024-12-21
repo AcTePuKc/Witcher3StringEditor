@@ -13,7 +13,7 @@
     Height="350"
     d:DataContext="{d:DesignInstance Type=vm:SaveDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -162,13 +162,13 @@
                 Width="75"
                 HorizontalAlignment="Right"
                 Command="{Binding SaveCommand}"
-                Content="{lex:Loc SaveBtnTxt}" />
+                Content="{lex:Loc SaveBtnContent}" />
             <Button
                 Grid.Column="2"
                 Width="75"
                 HorizontalAlignment="Left"
                 Command="{Binding CancelCommand}"
-                Content="{lex:Loc CancelBtnTxt}" />
+                Content="{lex:Loc CancelBtnContent}" />
         </Grid>
     </Grid>
 </Window>

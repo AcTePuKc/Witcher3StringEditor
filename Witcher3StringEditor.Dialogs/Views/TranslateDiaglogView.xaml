@@ -11,7 +11,7 @@
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:TranslateDiaglogViewModel}"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"

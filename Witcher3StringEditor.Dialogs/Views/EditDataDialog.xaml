@@ -12,7 +12,7 @@
     Height="600"
     d:DataContext="{d:DesignInstance Type=vm:EditDataDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -55,13 +55,13 @@
                         Width="100"
                         HorizontalAlignment="Right"
                         Command="{Binding SubmitCommand}"
-                        Content="{lex:Loc SubmitBtnTxt}" />
+                        Content="{lex:Loc SubmitBtnContent}" />
                     <Button
                         Grid.Column="2"
                         Width="100"
                         HorizontalAlignment="Left"
                         Command="{Binding CancelCommand}"
-                        Content="{lex:Loc CancelBtnTxt}" />
+                        Content="{lex:Loc CancelBtnContent}" />
                 </Grid>
             </Grid>
         </Border>

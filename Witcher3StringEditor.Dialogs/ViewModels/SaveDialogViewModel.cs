@@ -10,7 +10,7 @@ using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-internal partial class SaveDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
+public partial class SaveDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
     private readonly W3Serializer serializer;
     private readonly SettingsManager settingsManager = SettingsManager.Instance;

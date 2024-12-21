@@ -15,7 +15,7 @@
     Height="600"
     d:DataContext="{d:DesignInstance Type=vm:BackupDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -47,7 +47,7 @@
                     </i:Interaction.Behaviors>
                     <sf:SfDataGrid.Columns>
                         <sf:GridTextColumn
-                            HeaderText="{lex:Loc Filename}"
+                            HeaderText="{lex:Loc FileName}"
                             MappingName="FileName"
                             TextAlignment="Center" />
                         <sf:GridTextColumn
@@ -77,7 +77,7 @@
                     HorizontalAlignment="Right"
                     Command="{Binding RestoreCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=DataGrid}"
-                    Content="{lex:Loc RestoreBtnTxt}">
+                    Content="{lex:Loc RestoreBtnContent}">
                     <Button.Style>
                         <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
                             <Style.Triggers>
@@ -94,7 +94,7 @@
                     HorizontalAlignment="Center"
                     Command="{Binding DeleteCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=DataGrid}"
-                    Content="{lex:Loc DeleteBtnTxt}">
+                    Content="{lex:Loc DeleteBtnContent}">
                     <Button.Style>
                         <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
                             <Style.Triggers>
@@ -110,7 +110,7 @@
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Command="{Binding CloseCommand}"
-                    Content="{lex:Loc CloseBtnTxt}" />
+                    Content="{lex:Loc CloseBtnContent}" />
             </Grid>
         </Border>
     </Grid>

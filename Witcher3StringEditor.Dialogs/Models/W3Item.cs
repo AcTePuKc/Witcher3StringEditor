@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Witcher3StringEditor.Core.Interfaces;
 
-namespace Witcher3StringEditor.Models;
+namespace Witcher3StringEditor.Dialogs.Models;
 
 public partial class W3Item : ObservableObject, IW3Item, ICloneable
 {

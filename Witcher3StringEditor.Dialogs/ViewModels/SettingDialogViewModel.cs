@@ -4,11 +4,11 @@ using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Witcher3StringEditor.Dialogs.Models;
-using Witcher3StringEditor.Locales;
+using Witcher3StringEditor.Dialogs.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-internal partial class SettingDialogViewModel(Settings settings) : ObservableObject, IModalDialogViewModel
+public partial class SettingDialogViewModel(Settings settings) : ObservableObject, IModalDialogViewModel
 {
     private readonly IDialogService dialogService = Ioc.Default.GetRequiredService<IDialogService>();
 

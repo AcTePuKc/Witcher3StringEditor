@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Dialogs.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-internal partial class EditDataDialogViewModel(W3Item? w3Item = null)
+public partial class EditDataDialogViewModel(W3Item? w3Item = null)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public string Title { get; } = w3Item == null ? Strings.AddDialogTitle : Strings.EditDialogTitle;

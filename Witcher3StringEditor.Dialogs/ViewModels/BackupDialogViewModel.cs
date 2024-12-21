@@ -10,7 +10,7 @@ using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-internal partial class BackupDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
+public partial class BackupDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
     private readonly BackupManger backupManger = BackupManger.Instance;
 

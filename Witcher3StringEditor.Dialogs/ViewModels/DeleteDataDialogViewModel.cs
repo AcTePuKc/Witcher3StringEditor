@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-internal partial class DeleteDataDialogViewModel(IEnumerable<W3Item> w3Items)
+public partial class DeleteDataDialogViewModel(IEnumerable<W3Item> w3Items)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public IEnumerable<W3Item> W3Items { get; } = w3Items;

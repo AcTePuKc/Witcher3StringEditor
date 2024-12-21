@@ -22,8 +22,6 @@
     <ItemGroup>
         <PackageReference Include="AngleSharp" Version="1.1.2" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="FluentValidation" Version="11.11.0" />
-        <PackageReference Include="GTranslate" Version="2.2.8" />
         <PackageReference Include="HanumanInstitute.MvvmDialogs.Wpf" Version="2.1.0" />
         <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.9.30" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
@@ -45,26 +43,27 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Locales\Strings.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Strings.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Locales\Strings.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Core\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Witcher3StringEditor.Core\Witcher3StringEditor.Core.csproj" />
+      <ProjectReference Include="..\Witcher3StringEditor.Dialogs\Witcher3StringEditor.Dialogs.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Locales\Strings.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Strings.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Locales\Strings.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
-using Witcher3StringEditor.Locales;
+using Witcher3StringEditor.Dialogs.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;

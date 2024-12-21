@@ -6,7 +6,7 @@ using Witcher3StringEditor.Core;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-internal partial class LogDialogViewModel : ObservableObject, IModalDialogViewModel
+public partial class LogDialogViewModel : ObservableObject, IModalDialogViewModel
 {
     public ObservableCollection<LogEvent> LogEventsogEvents { get; } = LogManager.Instance.LogEvents;
     public bool? DialogResult => true;

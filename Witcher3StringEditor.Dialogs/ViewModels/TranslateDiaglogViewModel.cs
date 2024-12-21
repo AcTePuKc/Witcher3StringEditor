@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Dialogs.Models;
-using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

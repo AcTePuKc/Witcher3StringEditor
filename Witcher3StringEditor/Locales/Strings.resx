@@ -117,11 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppTitle" xml:space="preserve">
-    <value>Witcher 3 String Editor</value>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AllSupportedFormat" xml:space="preserve">
+    <value>All Supported Format</value>
+  </data>
+  <data name="TextFile" xml:space="preserve">
+    <value>Text File</value>
+  </data>
+  <data name="Witcher3StringsFile" xml:space="preserve">
+    <value>Witcher3 Strings File</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="BuildTime" xml:space="preserve">
+    <value>Build Time</value>
+  </data>
+  <data name="OS" xml:space="preserve">
+    <value>OS</value>
+  </data>
+  <data name="Runtime" xml:space="preserve">
+    <value>Runtime</value>
+  </data>
+  <data name="ExitQuestionMessage" xml:space="preserve">
+    <value>Are You Sure You Want To Exit?</value>
+  </data>
+  <data name="ExitQuestionCaption" xml:space="preserve">
+    <value>Exit</value>
   </data>
   <data name="OpenFileBtnLabel" xml:space="preserve">
     <value>Open File</value>
+  </data>
+  <data name="AppTitle" xml:space="preserve">
+    <value>Witcher 3 String Editor</value>
   </data>
   <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>Search</value>
@@ -150,187 +180,10 @@
   <data name="PlayBtnLabel" xml:space="preserve">
     <value>Play Game</value>
   </data>
-  <data name="AllSupportedFormat" xml:space="preserve">
-    <value>All Supported Format</value>
-  </data>
-  <data name="TextFile" xml:space="preserve">
-    <value>Text File</value>
-  </data>
-  <data name="Witcher3StringsFile" xml:space="preserve">
-    <value>Witcher3 Strings File</value>
-  </data>
-  <data name="EditDialogTitle" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="AddDialogTitle" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="SubmitBtnTxt" xml:space="preserve">
-    <value>Submit</value>
-  </data>
-  <data name="CancelBtnTxt" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="DeleteDialogTitle" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="DeleteDialogMessage" xml:space="preserve">
-    <value>You Are Deleting These Record(s):</value>
-  </data>
-  <data name="DeleteBtnTxt" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="TargetFiletype" xml:space="preserve">
-    <value>Target Filetype</value>
-  </data>
-  <data name="TargetLanguage" xml:space="preserve">
-    <value>Target Language</value>
-  </data>
-  <data name="IDSpace" xml:space="preserve">
-    <value>ID Space</value>
-  </data>
-  <data name="IgnoreIDSpaceCheck" xml:space="preserve">
-    <value>Ignore ID Space Check    </value>
-  </data>
-  <data name="SaveBtnTxt" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="BackupDialogTitle" xml:space="preserve">
-    <value>Backup</value>
-  </data>
-  <data name="Filename" xml:space="preserve">
-    <value>Filename</value>
-  </data>
-  <data name="Hash" xml:space="preserve">
-    <value>Hash</value>
-  </data>
-  <data name="OrginPath" xml:space="preserve">
-    <value>Orgin Path</value>
-  </data>
-  <data name="BackupPath" xml:space="preserve">
-    <value>Backup Path</value>
-  </data>
-  <data name="BackupTime" xml:space="preserve">
-    <value>Backup Time</value>
-  </data>
-  <data name="CloseBtnTxt" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="RestoreBtnTxt" xml:space="preserve">
-    <value>Restore</value>
-  </data>
-  <data name="LogDialogTitle" xml:space="preserve">
-    <value>Log</value>
-  </data>
-  <data name="LogTime" xml:space="preserve">
-    <value>Log Time</value>
-  </data>
-  <data name="LogLevel" xml:space="preserve">
-    <value>Log Level</value>
-  </data>
-  <data name="LogMessage" xml:space="preserve">
-    <value>Log Message</value>
-  </data>
-  <data name="SettingsDialogTitle" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="W3StringsPath" xml:space="preserve">
-    <value>Please Select w3strings.exe</value>
-  </data>
-  <data name="GameExePath" xml:space="preserve">
-    <value>Please Select witcher3.exe</value>
-  </data>
-  <data name="PreferredFiletype" xml:space="preserve">
-    <value>Preferred Filetype</value>
-  </data>
-  <data name="PreferredLanguage" xml:space="preserve">
-    <value>Preferred Language</value>
-  </data>
-  <data name="BackupRestoreMessage" xml:space="preserve">
-    <value>This Operation Will Overwrite The File And Can't Be Undone</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
-  </data>
-  <data name="BackupDeleteMessage" xml:space="preserve">
-    <value>This Operation Will Delete The File And Cannot Be Undone</value>
-  </data>
-  <data name="SaveSuccess" xml:space="preserve">
-    <value>Save Success</value>
-  </data>
-  <data name="SaveResult" xml:space="preserve">
-    <value>Save Result</value>
-  </data>
-  <data name="SaveFailure" xml:space="preserve">
-    <value>Save Failure</value>
-  </data>
-  <data name="SelectW3Strings" xml:space="preserve">
-    <value>Select w3strings.exe</value>
-  </data>
-  <data name="SelectGameExe" xml:space="preserve">
-    <value>Select witcher3.exe</value>
-  </data>
-  <data name="PleaseCheckSettings" xml:space="preserve">
-    <value>You Have Not Completed The Initialization. Click Yes to Exit,Otherwise Click No To Continue With The Initialization.</value>
-  </data>
-  <data name="SaveDialogTitle" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>Version</value>
-  </data>
-  <data name="BuildTime" xml:space="preserve">
-    <value>Build Time</value>
-  </data>
-  <data name="Runtime" xml:space="preserve">
-    <value>Runtime</value>
-  </data>
-  <data name="OS" xml:space="preserve">
-    <value>OS</value>
-  </data>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="IsOn" xml:space="preserve">
-    <value>On</value>
-  </data>
-  <data name="IsOff" xml:space="preserve">
-    <value>Off</value>
-  </data>
-  <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
-    <value>Open Working Folder</value>
-  </data>
-  <data name="UpdateAvailable" xml:space="preserve">
-    <value>Update Available</value>
-  </data>
-  <data name="ExitQuestionMessage" xml:space="preserve">
-    <value>Are You Sure You Want To Exit?</value>
-  </data>
-  <data name="ExitQuestionCaption" xml:space="preserve">
-    <value>Exit</value>
-  </data>
   <data name="TranslateBtnLabel" xml:space="preserve">
     <value>Translate</value>
   </data>
-  <data name="TranslateDialogTitle" xml:space="preserve">
-    <value>Translate</value>
-  </data>
-  <data name="PreviousBtnContent" xml:space="preserve">
-    <value>Previous</value>
-  </data>
-  <data name="NextBtnContent" xml:space="preserve">
-    <value>Next</value>
-  </data>
-  <data name="TranslateBtnContent" xml:space="preserve">
-    <value>Translate</value>
-  </data>
-  <data name="SaveBtnContent" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="SrcTxt" xml:space="preserve">
-    <value>Text</value>
-  </data>
-  <data name="TranslatedTxt" xml:space="preserve">
-    <value>Translated Text</value>
+  <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
+    <value>Open Working Folder</value>
   </data>
 </root>
