@@ -30,7 +30,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
-    private int indexOfItems;
+    private int indexOfItems = -1;
 
     partial void OnIndexOfItemsChanged(int value)
     {
