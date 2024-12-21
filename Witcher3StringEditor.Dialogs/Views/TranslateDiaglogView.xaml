@@ -64,12 +64,12 @@
             HorizontalAlignment="Right"
             Orientation="Horizontal">
             <Button
-                Width="90"
+                Width="100"
                 HorizontalAlignment="Right"
                 Command="{Binding PreviousCommand}"
                 Content="{lex:Loc PreviousBtnContent}" />
             <Button
-                Width="90"
+                Width="100"
                 Margin="10,0,0,0"
                 HorizontalAlignment="Right"
                 Command="{Binding TranslateCommand}"
@@ -81,12 +81,12 @@
             HorizontalAlignment="Left"
             Orientation="Horizontal">
             <Button
-                Width="90"
+                Width="100"
                 HorizontalAlignment="Left"
                 Command="{Binding SaveCommand}"
                 Content="{lex:Loc SaveBtnContent}" />
             <Button
-                Width="90"
+                Width="100"
                 Margin="10,0,0,0"
                 HorizontalAlignment="Left"
                 Command="{Binding NextCommand}"
