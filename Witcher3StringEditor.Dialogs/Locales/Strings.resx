@@ -258,4 +258,7 @@
   <data name="IsOff" xml:space="preserve">
     <value>Off</value>
   </data>
+  <data name="IdSpaceToolTip" xml:space="preserve">
+    <value>The Range Of The Id Space Is A Four-Digit Integer From 0000-9999. The Program Automatically Detects The Id Space And Displays It As a Minus One When There Is An Error In The Detection. The Result Are For Reference Only.</value>
+  </data>
 </root>

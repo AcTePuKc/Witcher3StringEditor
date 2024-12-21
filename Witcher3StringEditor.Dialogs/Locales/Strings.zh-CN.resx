@@ -258,4 +258,7 @@
   <data name="IsOff" xml:space="preserve">
     <value>关</value>
   </data>
+  <data name="IdSpaceToolTip" xml:space="preserve">
+    <value>ID空间的范围是0000-9999的四位整数。程序会自动检测ID空间，当检测出错时会显示为-1。该结果仅供参考。</value>
+  </data>
 </root>

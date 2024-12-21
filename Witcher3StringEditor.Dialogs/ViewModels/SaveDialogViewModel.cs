@@ -58,7 +58,7 @@ public partial class SaveDialogViewModel : ObservableObject, IModalDialogViewMod
     {
         // 使用 Match 方法尝试匹配输入字符串
         var match = IdSpaceRegex().Match(w3Item.StrId);
-        if (!match.Success) return 1;
+        if (!match.Success) return -1;
         // 如果匹配成功，则提取捕获组中的值
         var foundIdSpace = match.Groups[1].Value;
         return int.Parse(foundIdSpace);

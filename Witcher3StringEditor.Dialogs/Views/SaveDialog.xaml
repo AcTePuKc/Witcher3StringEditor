@@ -132,7 +132,7 @@
                             Grid.ColumnSpan="3"
                             ui:ControlHelper.Header="{lex:Loc IDSpace}"
                             Maximum="9999"
-                            Minimum="1"
+                            Minimum="-1"
                             SmallChange="1"
                             SpinButtonPlacementMode="Inline"
                             Value="{Binding W3Job.IdSpace}">
@@ -147,6 +147,9 @@
                                     </Style.Triggers>
                                 </Style>
                             </ui:NumberBox.Style>
+                            <ui:NumberBox.ToolTip>
+                                <ToolTip Content="{lex:Loc IdSpaceToolTip}" />
+                            </ui:NumberBox.ToolTip>
                         </ui:NumberBox>
                     </Grid>
                 </Grid>

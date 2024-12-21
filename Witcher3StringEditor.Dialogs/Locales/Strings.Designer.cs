@@ -79,6 +79,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Backup 的本地化字符串。
+        /// </summary>
+        internal static string BackupDialogTitle {
+            get {
+                return ResourceManager.GetString("BackupDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Backup Path 的本地化字符串。
+        /// </summary>
+        internal static string BackupPath {
+            get {
+                return ResourceManager.GetString("BackupPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 This Operation Will Overwrite The File And Can&apos;t Be Undone 的本地化字符串。
         /// </summary>
         internal static string BackupRestoreMessage {
@@ -88,11 +106,29 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Backup Time 的本地化字符串。
+        /// </summary>
+        internal static string BackupTime {
+            get {
+                return ResourceManager.GetString("BackupTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Cancel 的本地化字符串。
         /// </summary>
         internal static string CancelBtnContent {
             get {
                 return ResourceManager.GetString("CancelBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Close 的本地化字符串。
+        /// </summary>
+        internal static string CloseBtnContent {
+            get {
+                return ResourceManager.GetString("CloseBtnContent", resourceCulture);
             }
         }
         
@@ -133,11 +169,191 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 FileName 的本地化字符串。
+        /// </summary>
+        internal static string FileName {
+            get {
+                return ResourceManager.GetString("FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please Select witcher3.exe 的本地化字符串。
+        /// </summary>
+        internal static string GameExePath {
+            get {
+                return ResourceManager.GetString("GameExePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hash 的本地化字符串。
+        /// </summary>
+        internal static string Hash {
+            get {
+                return ResourceManager.GetString("Hash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ID Space 的本地化字符串。
+        /// </summary>
+        internal static string IDSpace {
+            get {
+                return ResourceManager.GetString("IDSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The Range Of The Id Space Is A Four-Digit Integer From 0000-9999. The Program Automatically Detects The Id Space And Displays It As a Minus One When There Is An Error In The Detection. The Result Are For Reference Only. 的本地化字符串。
+        /// </summary>
+        internal static string IdSpaceToolTip {
+            get {
+                return ResourceManager.GetString("IdSpaceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ignore ID Space Check     的本地化字符串。
+        /// </summary>
+        internal static string IgnoreIDSpaceCheck {
+            get {
+                return ResourceManager.GetString("IgnoreIDSpaceCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Off 的本地化字符串。
+        /// </summary>
+        internal static string IsOff {
+            get {
+                return ResourceManager.GetString("IsOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 On 的本地化字符串。
+        /// </summary>
+        internal static string IsOn {
+            get {
+                return ResourceManager.GetString("IsOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Log 的本地化字符串。
+        /// </summary>
+        internal static string LogDialogTitle {
+            get {
+                return ResourceManager.GetString("LogDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Log Level 的本地化字符串。
+        /// </summary>
+        internal static string LogLevel {
+            get {
+                return ResourceManager.GetString("LogLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Log Message 的本地化字符串。
+        /// </summary>
+        internal static string LogMessage {
+            get {
+                return ResourceManager.GetString("LogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Log Time 的本地化字符串。
+        /// </summary>
+        internal static string LogTime {
+            get {
+                return ResourceManager.GetString("LogTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Next 的本地化字符串。
+        /// </summary>
+        internal static string NextBtnContent {
+            get {
+                return ResourceManager.GetString("NextBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Orgin Path 的本地化字符串。
+        /// </summary>
+        internal static string OrginPath {
+            get {
+                return ResourceManager.GetString("OrginPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 You Have Not Completed The Initialization. Click Yes to Exit,Otherwise Click No To Continue With The Initialization. 的本地化字符串。
         /// </summary>
         internal static string PleaseCheckSettings {
             get {
                 return ResourceManager.GetString("PleaseCheckSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Preferred FileType 的本地化字符串。
+        /// </summary>
+        internal static string PreferredFileType {
+            get {
+                return ResourceManager.GetString("PreferredFileType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Preferred Language 的本地化字符串。
+        /// </summary>
+        internal static string PreferredLanguage {
+            get {
+                return ResourceManager.GetString("PreferredLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Previous 的本地化字符串。
+        /// </summary>
+        internal static string PreviousBtnContent {
+            get {
+                return ResourceManager.GetString("PreviousBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restore 的本地化字符串。
+        /// </summary>
+        internal static string RestoreBtnContent {
+            get {
+                return ResourceManager.GetString("RestoreBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save 的本地化字符串。
+        /// </summary>
+        internal static string SaveBtnContent {
+            get {
+                return ResourceManager.GetString("SaveBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save 的本地化字符串。
+        /// </summary>
+        internal static string SaveDialogTitle {
+            get {
+                return ResourceManager.GetString("SaveDialogTitle", resourceCulture);
             }
         }
         
@@ -187,11 +403,83 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Settings 的本地化字符串。
+        /// </summary>
+        internal static string SettingsDialogTitle {
+            get {
+                return ResourceManager.GetString("SettingsDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Text 的本地化字符串。
+        /// </summary>
+        internal static string SrcTxt {
+            get {
+                return ResourceManager.GetString("SrcTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Submit 的本地化字符串。
         /// </summary>
         internal static string SubmitBtnContent {
             get {
                 return ResourceManager.GetString("SubmitBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Target Filetype 的本地化字符串。
+        /// </summary>
+        internal static string TargetFiletype {
+            get {
+                return ResourceManager.GetString("TargetFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Target Language 的本地化字符串。
+        /// </summary>
+        internal static string TargetLanguage {
+            get {
+                return ResourceManager.GetString("TargetLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Translate 的本地化字符串。
+        /// </summary>
+        internal static string TranslateBtnContent {
+            get {
+                return ResourceManager.GetString("TranslateBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Translate 的本地化字符串。
+        /// </summary>
+        internal static string TranslateDialogTitle {
+            get {
+                return ResourceManager.GetString("TranslateDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Translated Text 的本地化字符串。
+        /// </summary>
+        internal static string TranslatedTxt {
+            get {
+                return ResourceManager.GetString("TranslatedTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please Select w3strings.exe 的本地化字符串。
+        /// </summary>
+        internal static string W3StringsPath {
+            get {
+                return ResourceManager.GetString("W3StringsPath", resourceCulture);
             }
         }
         
