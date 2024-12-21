@@ -1,53 +1,43 @@
-﻿//using Serilog.Events;
-//using System.Collections.ObjectModel;
+﻿using Newtonsoft.Json;
+using Witcher3StringEditor.Core.Implements;
+using Witcher3StringEditor.Core.Interfaces;
 
-//namespace Witcher3StringEditor.Core;
+namespace Witcher3StringEditor.Core;
 
-//public class LogManager
-//{
+public class RecentManger
+{
+    private readonly string recentFilesPath;
+    private readonly IEnumerable<IRecentItem> recentItems;
 
-//    private readonly Queue<LogEvent> logQueue = new();
+    private static readonly Lazy<RecentManger> LazyInstance
+    = new(static () => new RecentManger("RecentFiles.json"));
 
-//    private static readonly Lazy<LogManager> LazyInstance
-//    = new(static () => new LogManager());
+    public static RecentManger Instance => LazyInstance.Value;
 
-//    public static LogManager Instance => LazyInstance.Value;
+    private RecentManger(string path)
+    {
+        recentFilesPath = path;
+        recentItems = GetRecentItems(recentFilesPath);
+    }
 
-//    public readonly ObservableCollection<LogEvent> LogEvents;
+    public void Add(IRecentItem recentItem)
+        => Update(recentItems.Append(recentItem));
 
-//    private LogManager()
-//    {
-//        LogEvents = [];
-//    }
+    public void Delete(IRecentItem recentItem)
+    {
+        var list = recentItems.ToList();
+        if (list.Remove(recentItem)) Update(list);
+    }
 
-//    public void RecordLogEvent(LogEvent logEvent)
-//    {
-//        lock (logQueue)
-//        {
-//            logQueue.Enqueue(logEvent);
-//            if (isProcessing) return;
-//            isProcessing = true;
-//            ProcessLogQueue();
-//        }
-//    }
+    public void Update(IEnumerable<IRecentItem> recentItems)
+    {
+        File.WriteAllText(recentFilesPath, JsonConvert.SerializeObject(recentItems));
+    }
 
-//    private void ProcessLogQueue()
-//    {
-//        while (true)
-//        {
-//            LogEvent logEvent;
-//            lock (logQueue)
-//            {
-//                if (logQueue.Count == 0)
-//                {
-//                    isProcessing = false;
-//                    return;
-//                }
-
-//                logEvent = logQueue.Dequeue();
-//            }
-
-//            LogEvents.Add(logEvent);
-//        }
-//    }
-//}
+    private static IEnumerable<IRecentItem> GetRecentItems(string path)
+    {
+        if (!File.Exists(path)) return [];
+        var json = File.ReadAllText(path);
+        return JsonConvert.DeserializeObject<IEnumerable<RecentItem>>(json) ?? [];
+    }
+}
