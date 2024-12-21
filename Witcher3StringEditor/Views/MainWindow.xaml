@@ -247,6 +247,7 @@
             x:Name="DataPager"
             Grid.Row="3"
             HorizontalAlignment="Center"
+            NumericButtonCount="10"
             PageSize="30"
             Source="{Binding W3Items, Mode=TwoWay}" />
         <sf:GridFilterControl Grid.Row="0" />
