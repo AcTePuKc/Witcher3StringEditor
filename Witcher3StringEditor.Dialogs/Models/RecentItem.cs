@@ -6,8 +6,6 @@ namespace Witcher3StringEditor.Dialogs.Models
 {
     public partial class RecentItem : ObservableObject, IRecentItem
     {
-        public string FileName => Path.GetFileName(FilePath);
-
         [ObservableProperty]
         private string filePath;
 

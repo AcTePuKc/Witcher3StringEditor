@@ -89,7 +89,9 @@ internal partial class MainWindowViewModel : ObservableObject
             foreach (var item in await serializer.Deserialize(storageFile.LocalPath))
                 W3Items.Add(new W3Item(item));
             OutputFolder = Path.GetDirectoryName(storageFile.LocalPath) ?? string.Empty;
-            RecentManger.Instance.Add(new RecentItem(storageFile.LocalPath, DateTime.Now));
+            var recentItems = RecentManger.Instance.GetRecentItems();
+            var newRecentItem = new RecentItem(storageFile.LocalPath, DateTime.Now);
+            RecentManger.Instance.Update(recentItems.Append(newRecentItem));
         }
     }
 

@@ -2,8 +2,6 @@
 {
     public interface IRecentItem
     {
-        public string FileName { get; }
-
         public string FilePath { get; }
 
         public DateTime OpenedTime { get; set; }

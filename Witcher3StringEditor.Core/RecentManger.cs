@@ -7,7 +7,6 @@ namespace Witcher3StringEditor.Core;
 public class RecentManger
 {
     private readonly string recentFilesPath;
-    private readonly IEnumerable<IRecentItem> recentItems;
 
     private static readonly Lazy<RecentManger> LazyInstance
     = new(static () => new RecentManger("RecentFiles.json"));
@@ -17,18 +16,6 @@ public class RecentManger
     private RecentManger(string path)
     {
         recentFilesPath = path;
-        recentItems = GetRecentItems(recentFilesPath);
-    }
-
-    public void Add(IRecentItem recentItem)
-        => Update(recentItems.Append(recentItem));
-
-    public void Delete(IEnumerable<IRecentItem> items)
-    {
-        var list = recentItems.ToList();
-        foreach (var item in items)
-            list.Remove(item);
-        Update(list);
     }
 
     public void Update(IEnumerable<IRecentItem> recentItems)
@@ -36,10 +23,10 @@ public class RecentManger
         File.WriteAllText(recentFilesPath, JsonConvert.SerializeObject(recentItems));
     }
 
-    private static IEnumerable<IRecentItem> GetRecentItems(string path)
+    public IEnumerable<IRecentItem> GetRecentItems()
     {
-        if (!File.Exists(path)) return [];
-        var json = File.ReadAllText(path);
+        if (!File.Exists(recentFilesPath)) return [];
+        var json = File.ReadAllText(recentFilesPath);
         return JsonConvert.DeserializeObject<IEnumerable<RecentItem>>(json) ?? [];
     }
 }

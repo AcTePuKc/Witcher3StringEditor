@@ -25,7 +25,7 @@ namespace Witcher3StringEditor.Dialogs.Behaviors
             if (MessageBox.Show(Strings.RecentItemDeletingMessgae,
                                 Strings.Warning,
                                 MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                                MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 e.Cancel = true;
             }

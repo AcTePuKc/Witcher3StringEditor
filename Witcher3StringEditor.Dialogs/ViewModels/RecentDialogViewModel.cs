@@ -1,13 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels
 {
@@ -19,10 +16,23 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
 
         public ObservableCollection<IRecentItem> RecentItems { get; } = [];
 
-        [RelayCommand]
-        public void ReOpen(object item)
+        public RecentDialogViewModel()
         {
+            var items = RecentManger.Instance.GetRecentItems();
+            foreach (var item in items)
+                RecentItems.Add(new RecentItem(item.FilePath, item.OpenedTime, item.IsPin));
+        }
 
+        [RelayCommand]
+        public void ReOpen(IRecentItem item)
+        {
+            item.OpenedTime = DateTime.Now;
+        }
+
+        [RelayCommand]
+        public void Closing()
+        {
+            RecentManger.Instance.Update(RecentItems);
         }
     }
 }

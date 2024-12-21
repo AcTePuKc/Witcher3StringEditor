@@ -56,24 +56,49 @@
             </i:Interaction.Triggers>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
-                    Width="150"
-                    HeaderText="{lex:Loc FileName}"
-                    MappingName="FileName" />
+                    Width="300"
+                    HeaderText="{lex:Loc Path}"
+                    MappingName="FilePath"
+                    TextWrapping="WrapWithOverflow" />
                 <sf:GridDateTimeColumn
-                    Width="150"
+                    Width="200"
                     HeaderText="{lex:Loc OpenedTime}"
-                    MappingName="OpenedTime" />
+                    MappingName="OpenedTime"
+                    Pattern="RFC1123"
+                    TextAlignment="Center" />
                 <sf:GridTemplateColumn
                     Width="100"
+                    HorizontalAlignment="Center"
                     HeaderText="{lex:Loc IsPin}"
                     MappingName="IsPin">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox Template="{StaticResource PinCheckBoxTemplate}" />
+                            <CheckBox
+                                HorizontalAlignment="Center"
+                                IsChecked="{Binding IsPin}"
+                                Template="{StaticResource PinCheckBoxTemplate}" />
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
-                <sf:GridTextColumn HeaderText="{lex:Loc Path}" MappingName="FilePath" />
+                <sf:GridTemplateColumn
+                    Width="100"
+                    HorizontalAlignment="Center"
+                    AllowSorting="False"
+                    HeaderText="Goto">
+                    <sf:GridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                HorizontalAlignment="Center"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                BorderThickness="0"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ReOpenCommand}"
+                                CommandParameter="{Binding}">
+                                <ui:FontIcon Glyph="&#xe8ad;" />
+                            </Button>
+                        </DataTemplate>
+                    </sf:GridTemplateColumn.CellTemplate>
+                </sf:GridTemplateColumn>
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
     </Grid>
