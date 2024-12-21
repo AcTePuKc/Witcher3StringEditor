@@ -11,8 +11,8 @@
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc DeleteDialogTitle}"
-    Width="800"
-    Height="450"
+    Width="1000"
+    Height="750"
     d:DataContext="{d:DesignInstance Type=vm:DeleteDataDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
@@ -45,7 +45,33 @@
                     AutoGenerateColumns="False"
                     ColumnSizer="AutoWithLastColumnFill"
                     ItemsSource="{Binding W3Items}"
-                    NavigationMode="Row">
+                    NavigationMode="Row"
+                    ShowRowHeader="True">
+                    <sf:SfDataGrid.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="sf:GridRowHeaderCell">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="sf:GridRowHeaderCell">
+                                            <Border
+                                                x:Name="PART_RowHeaderCellBorder"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                <Grid>
+                                                    <TextBlock
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        TextAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ResourceDictionary>
+                    </sf:SfDataGrid.Resources>
                     <i:Interaction.Behaviors>
                         <b:SfDataGridSizeChangedBehavior />
                         <b:SfDataGridQueryRowHeightBehavior />
