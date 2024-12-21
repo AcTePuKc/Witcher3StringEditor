@@ -61,7 +61,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task CheckSettings()
     {
         var settings = settingsManager.Load<Settings>();
-        var validations = new SettingsValidator();
+        var validations = SettingsValidator.Instance;
         var result = await validations.ValidateAsync(settings);
         if (!result.IsValid)
         {

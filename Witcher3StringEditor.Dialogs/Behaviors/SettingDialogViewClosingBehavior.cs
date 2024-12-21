@@ -27,8 +27,8 @@ internal class SettingDialogViewClosingBehavior : Behavior<SettingsDialog>
     {
         if (AssociatedObject.DataContext is not SettingDialogViewModel viewModel) return;
         var settings = viewModel.Settings;
-        var validationRules = new SettingsValidator();
-        var result = validationRules.Validate(settings);
+        var validations = SettingsValidator.Instance;
+        var result = validations.Validate(settings);
         if (!result.IsValid)
         {
             e.Cancel = true;
