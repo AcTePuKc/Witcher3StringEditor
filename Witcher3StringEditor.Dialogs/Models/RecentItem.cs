@@ -4,9 +4,9 @@ using Witcher3StringEditor.Core.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.Models
 {
-    partial class RecentItem : ObservableObject, IRecentItem
+    public partial class RecentItem : ObservableObject, IRecentItem
     {
-        public string FileName => Path.GetFileName(FileName);
+        public string FileName => Path.GetFileName(FilePath);
 
         [ObservableProperty]
         private string filePath;
@@ -17,7 +17,7 @@ namespace Witcher3StringEditor.Dialogs.Models
         [ObservableProperty]
         private bool isPin;
 
-        public RecentItem(string filePath, DateTime openedTime, bool isPin)
+        public RecentItem(string filePath, DateTime openedTime, bool isPin = false)
         {
             IsPin = isPin;
             FilePath = filePath;

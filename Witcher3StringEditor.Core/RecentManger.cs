@@ -23,10 +23,12 @@ public class RecentManger
     public void Add(IRecentItem recentItem)
         => Update(recentItems.Append(recentItem));
 
-    public void Delete(IRecentItem recentItem)
+    public void Delete(IEnumerable<IRecentItem> items)
     {
         var list = recentItems.ToList();
-        if (list.Remove(recentItem)) Update(list);
+        foreach (var item in items)
+            list.Remove(item);
+        Update(list);
     }
 
     public void Update(IEnumerable<IRecentItem> recentItems)

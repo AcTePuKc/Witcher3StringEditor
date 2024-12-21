@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
-using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -90,6 +89,7 @@ internal partial class MainWindowViewModel : ObservableObject
             foreach (var item in await serializer.Deserialize(storageFile.LocalPath))
                 W3Items.Add(new W3Item(item));
             OutputFolder = Path.GetDirectoryName(storageFile.LocalPath) ?? string.Empty;
+            RecentManger.Instance.Add(new RecentItem(storageFile.LocalPath, DateTime.Now));
         }
     }
 
