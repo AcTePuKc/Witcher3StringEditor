@@ -53,5 +53,6 @@ public partial class MainWindow
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(aboutInformationRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(reloadW3ItemsRecipient);
     }
 }

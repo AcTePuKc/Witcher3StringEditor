@@ -73,6 +73,10 @@ internal partial class MainWindowViewModel : ObservableObject
         serializer = new W3Serializer(settings.W3StringsPath);
     }
 
+    [RelayCommand]
+    private void WindowClosed() 
+        => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
+
     private async Task CheckSettings()
     {
         var settings = settingsManager.Load<Settings>();
