@@ -43,9 +43,7 @@ public partial class App
                 .AddSingleton<IDialogService>(new DialogService(new DialogManager(viewLocator), Ioc.Default.GetService))
                 .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
-#if DEBUG
-        Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
-#endif
+
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
     }
 }
