@@ -45,23 +45,20 @@
         <sf:SfDataGrid
             x:Name="sfDataGrid"
             AllowDeleting="True"
+            AllowResizingColumns="True"
             AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
             ItemsSource="{Binding RecentItems}"
+            NavigationMode="Row"
             SelectionMode="Extended">
             <i:Interaction.Behaviors>
                 <b:SfDataGridSizeChangedBehavior />
                 <b:SfDataGridQueryRowHeightBehavior />
                 <b:SfDataGridRecordDeletingBehavior />
             </i:Interaction.Behaviors>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="CellDoubleTapped">
-                    <i:InvokeCommandAction Command="{Binding ReOpenCommand}" CommandParameter="{Binding SelectedItem, ElementName=sfDataGrid}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
-                    Width="300"
+                    Width="350"
                     HeaderText="{lex:Loc Path}"
                     MappingName="FilePath"
                     TextWrapping="WrapWithOverflow" />
