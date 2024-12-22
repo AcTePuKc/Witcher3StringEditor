@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.ObjectModel;
 using System.Security.Cryptography;
 using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
@@ -15,15 +14,15 @@ public class BackupManger
     private static readonly Lazy<BackupManger> LazyInstance
         = new(static () => new BackupManger(".\\Backup"));
 
-    public static BackupManger Instance => LazyInstance.Value;
+    private readonly List<IBackupItem> backupItems;
 
-    public readonly ObservableCollection<IBackupItem> BackupItems;
+    public static BackupManger Instance => LazyInstance.Value;
 
     private BackupManger(string path)
     {
         backupPath = path;
         jsonPath = $"{path}\\History.json";
-        BackupItems = new(GetHistoryItems(jsonPath).Where(static x => File.Exists(x.BackupPath)));
+        backupItems = GetAllBackup().ToList();
     }
 
     private static string ComputeSha256Hash(string filePath)
@@ -47,13 +46,12 @@ public class BackupManger
 
         if (!Directory.Exists(backupPath))
             Directory.CreateDirectory(backupPath);
-        if (BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;
+        if (backupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;
         File.Copy(backupItem.OrginPath, backupItem.BackupPath);
-        BackupItems.Add(backupItem);
-        UpdateHistoryItems(BackupItems, jsonPath);
+        UpdateBackupRecords(backupItems.Append(backupItem));
     }
 
-    public static void Restore(IBackupItem backupItem)
+    public void Restore(IBackupItem backupItem)
     {
         if (!File.Exists(backupItem.BackupPath)) return;
         var folder = Path.GetDirectoryName(backupItem.OrginPath);
@@ -67,17 +65,19 @@ public class BackupManger
     {
         if (File.Exists(backupItem.BackupPath))
             File.Delete(backupItem.BackupPath);
-        BackupItems.Remove(backupItem);
-        UpdateHistoryItems(BackupItems, jsonPath);
+        backupItems.Remove(backupItem);
+        UpdateBackupRecords(backupItems);
     }
 
-    private static void UpdateHistoryItems(IEnumerable<IBackupItem> backups, string path)
-        => File.WriteAllText(path, JsonConvert.SerializeObject(backups));
-
-    private static IEnumerable<IBackupItem> GetHistoryItems(string path)
+    private void UpdateBackupRecords(IEnumerable<IBackupItem> backups)
     {
-        if (!File.Exists(path)) return [];
-        var json = File.ReadAllText(path);
+        File.WriteAllText(jsonPath, JsonConvert.SerializeObject(backups));
+    }
+
+    public IEnumerable<IBackupItem> GetAllBackup()
+    {
+        if (!File.Exists(jsonPath)) return [];
+        var json = File.ReadAllText(jsonPath);
         return JsonConvert.DeserializeObject<IEnumerable<BackupItem>>(json) ?? [];
     }
 }
