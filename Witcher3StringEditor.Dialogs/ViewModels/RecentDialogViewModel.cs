@@ -31,8 +31,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
         public void Open(IRecentItem item)
         {
             item.OpenedTime = DateTime.Now;
-            WeakReferenceMessenger.Default.Send(new RecentFileOpenedMessage(item.FilePath));
             RequestClose?.Invoke(this, EventArgs.Empty);
+            WeakReferenceMessenger.Default.Send(new RecentFileOpenedMessage(item.FilePath));
         }
 
         [RelayCommand]

@@ -24,11 +24,10 @@ namespace Witcher3StringEditor.ViewModels;
 internal partial class MainWindowViewModel : ObservableObject
 {
     private W3Serializer? serializer;
-    private readonly SettingsManager settingsManager = SettingsManager.Instance;
-
     private readonly IDialogService dialogService;
-
+    private readonly ReloadW3ItemsRecipient reloadW3ItemsRecipient;
     private readonly RecentFileOpenedRecipient recentFileOpenedRecipient;
+    private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
     [ObservableProperty]
     private bool isUpdateAvailable;
@@ -57,6 +56,14 @@ internal partial class MainWindowViewModel : ObservableObject
                 Log.Error(e.Message);
             }
         });
+
+        reloadW3ItemsRecipient = new ReloadW3ItemsRecipient();
+        WeakReferenceMessenger.Default.Register<ReloadW3ItemsRecipient, ReloadW3ItemsMessage>(reloadW3ItemsRecipient, (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(r.Response);
+        });
+
         W3Items.CollectionChanged += (_, _) =>
         {
             AddCommand.NotifyCanExecuteChanged();
@@ -106,7 +113,12 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task OpenFile(string fileName)
     {
         if (serializer == null) return;
-        if (W3Items.Any()) W3Items.Clear();
+        if (W3Items.Any())
+        {
+            var message = new ReloadW3ItemsMessage();
+            if (await WeakReferenceMessenger.Default.Send(message))
+                W3Items.Clear();
+        }
         foreach (var item in await serializer.Deserialize(fileName))
             W3Items.Add(new W3Item(item));
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
