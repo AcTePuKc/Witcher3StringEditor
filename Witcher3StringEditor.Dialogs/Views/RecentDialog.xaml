@@ -101,7 +101,7 @@
                     Width="100"
                     HorizontalAlignment="Center"
                     AllowSorting="False"
-                    HeaderText="Goto">
+                    HeaderText="Go">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button
