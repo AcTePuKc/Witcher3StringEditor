@@ -1,8 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using iNKORE.UI.WPF.Modern.Controls;
+using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Recipients;
 using Witcher3StringEditor.ViewModels;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using MessageBoxButton = System.Windows.MessageBoxButton;
+using MessageBoxImage = System.Windows.MessageBoxImage;
+
 
 namespace Witcher3StringEditor.Views;
 
@@ -11,15 +16,18 @@ namespace Witcher3StringEditor.Views;
 /// </summary>
 public partial class MainWindow
 {
-    private readonly AboutInformationRecipient recipient;
+    private readonly AboutInformationRecipient aboutInformationRecipient;
 
     public MainWindow()
     {
         InitializeComponent();
         DataGrid.SearchHelper.AllowFiltering = true;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
-        recipient = new AboutInformationRecipient();
-        WeakReferenceMessenger.Default.Register(recipient);
+        aboutInformationRecipient = new AboutInformationRecipient();
+        WeakReferenceMessenger.Default.Register<AboutInformationRecipient,AboutInformationMessage>(aboutInformationRecipient,(r,m)=>
+        {
+            MessageBox.Show(m.Message, Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
+        });
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -34,6 +42,6 @@ public partial class MainWindow
 
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(recipient);
+        WeakReferenceMessenger.Default.UnregisterAll(aboutInformationRecipient);
     }
 }
