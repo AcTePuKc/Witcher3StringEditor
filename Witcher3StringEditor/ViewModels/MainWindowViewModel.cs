@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
@@ -25,6 +26,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
     private readonly IDialogService dialogService;
+
+    private readonly RecentFileOpenedRecipient recentFileOpenedRecipient;
 
     [ObservableProperty]
     private bool isUpdateAvailable;
@@ -39,7 +42,13 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
-
+        recentFileOpenedRecipient = new RecentFileOpenedRecipient();
+        WeakReferenceMessenger.Default.Register<RecentFileOpenedRecipient, RecentFileOpenedMessage>(recentFileOpenedRecipient, async (r, m) =>
+        {
+            r.Receive(m);
+            if (r.FileName != null)
+                await OpenFile(r.FileName);
+        });
         W3Items.CollectionChanged += (_, _) =>
         {
             AddCommand.NotifyCanExecuteChanged();
@@ -84,15 +93,20 @@ internal partial class MainWindowViewModel : ObservableObject
 
         if (storageFile != null)
         {
-            if (serializer == null) return;
-            if (W3Items.Any()) W3Items.Clear();
-            foreach (var item in await serializer.Deserialize(storageFile.LocalPath))
-                W3Items.Add(new W3Item(item));
-            OutputFolder = Path.GetDirectoryName(storageFile.LocalPath) ?? string.Empty;
-            var recentItems = RecentManger.Instance.GetRecentItems();
-            var newRecentItem = new RecentItem(storageFile.LocalPath, DateTime.Now);
-            RecentManger.Instance.Update(recentItems.Append(newRecentItem));
+            await OpenFile(storageFile.LocalPath);
         }
+    }
+
+    private async Task OpenFile(string fileName)
+    {
+        if (serializer == null) return;
+        if (W3Items.Any()) W3Items.Clear();
+        foreach (var item in await serializer.Deserialize(fileName))
+            W3Items.Add(new W3Item(item));
+        OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
+        var recentItems = RecentManger.Instance.GetRecentItems();
+        var newRecentItem = new RecentItem(fileName, DateTime.Now);
+        RecentManger.Instance.Update(recentItems.Append(newRecentItem));
     }
 
     [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]

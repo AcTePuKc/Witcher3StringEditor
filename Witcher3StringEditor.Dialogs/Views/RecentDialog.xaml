@@ -92,7 +92,7 @@
                                 Background="Transparent"
                                 BorderBrush="Transparent"
                                 BorderThickness="0"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.ReOpenCommand}"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.OpenCommand}"
                                 CommandParameter="{Binding}">
                                 <ui:FontIcon Glyph="&#xe8ad;" />
                             </Button>

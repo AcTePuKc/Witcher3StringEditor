@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels
 {
@@ -24,9 +26,10 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
         }
 
         [RelayCommand]
-        public void ReOpen(IRecentItem item)
+        public static void Open(IRecentItem item)
         {
             item.OpenedTime = DateTime.Now;
+            WeakReferenceMessenger.Default.Send(new RecentFileOpenedMessage(item.FilePath));
         }
 
         [RelayCommand]
