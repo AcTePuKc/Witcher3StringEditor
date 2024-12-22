@@ -11,8 +11,8 @@
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc RecentDialogTitle}"
-    Width="800"
-    Height="450"
+    Width="900"
+    Height="600"
     d:DataContext="{d:DesignInstance Type=vm:RecentDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
@@ -71,10 +71,10 @@
                     MappingName="FilePath"
                     TextWrapping="WrapWithOverflow" />
                 <sf:GridDateTimeColumn
-                    Width="200"
+                    Width="250"
                     HeaderText="{lex:Loc OpenedTime}"
                     MappingName="OpenedTime"
-                    Pattern="RFC1123"
+                    Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <sf:GridTemplateColumn
                     Width="100"
