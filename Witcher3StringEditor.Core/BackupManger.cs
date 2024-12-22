@@ -19,11 +19,11 @@ public class BackupManger
 
     public readonly ObservableCollection<IBackupItem> BackupItems;
 
-    private BackupManger(string backupPath)
+    private BackupManger(string path)
     {
-        this.backupPath = backupPath;
-        jsonPath = $"{backupPath}\\History.json";
-        BackupItems = new ObservableCollection<IBackupItem>(GetHistoryItems(jsonPath));
+        backupPath = path;
+        jsonPath = $"{path}\\History.json";
+        BackupItems = new(GetHistoryItems(jsonPath).Where(static x => File.Exists(x.BackupPath)));
     }
 
     private static string ComputeSha256Hash(string filePath)
