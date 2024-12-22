@@ -8,12 +8,12 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class RecentDialog
 {
-    private readonly RecentFilePinRecipient recentFileIsPinRecipient = new();
+    private readonly RecentFilePinRecipient recentFilePinRecipient = new();
 
     public RecentDialog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<RecentFilePinRecipient, RecentFilePinMessage>(recentFileIsPinRecipient, (r, m) =>
+        WeakReferenceMessenger.Default.Register<RecentFilePinRecipient, RecentFilePinMessage>(recentFilePinRecipient, (r, m) =>
         {
             r.Receive(m);
             SfDataGrid.View.Refresh();
@@ -21,5 +21,5 @@ public partial class RecentDialog
     }
 
     private void Window_Closed(object sender, EventArgs e) 
-        => WeakReferenceMessenger.Default.UnregisterAll(recentFileIsPinRecipient);
+        => WeakReferenceMessenger.Default.UnregisterAll(recentFilePinRecipient);
 }
