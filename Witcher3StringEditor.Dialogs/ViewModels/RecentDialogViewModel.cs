@@ -36,6 +36,10 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
         }
 
         [RelayCommand]
+        public static void Pin(IRecentItem item) 
+            => WeakReferenceMessenger.Default.Send(new RecentFileIsPinMessage(item.IsPin));
+
+        [RelayCommand]
         public void Closing()
         {
             RecentManger.Instance.Update(RecentItems);

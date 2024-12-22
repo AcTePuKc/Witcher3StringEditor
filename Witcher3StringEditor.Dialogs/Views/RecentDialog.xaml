@@ -50,7 +50,14 @@
             ColumnSizer="AutoWithLastColumnFill"
             ItemsSource="{Binding RecentItems}"
             NavigationMode="Row"
-            SelectionMode="Extended">
+            SelectionMode="Extended"
+            ShowSortNumbers="True">
+            <sf:SfDataGrid.SortColumnDescriptions>
+                <sf:SortColumnDescriptions>
+                    <sf:SortColumnDescription ColumnName="IsPin" SortDirection="Descending" />
+                    <sf:SortColumnDescription ColumnName="OpenedTime" SortDirection="Descending" />
+                </sf:SortColumnDescriptions>
+            </sf:SfDataGrid.SortColumnDescriptions>
             <i:Interaction.Behaviors>
                 <b:SfDataGridSizeChangedBehavior />
                 <b:SfDataGridQueryRowHeightBehavior />
@@ -78,7 +85,13 @@
                             <CheckBox
                                 HorizontalAlignment="Center"
                                 IsChecked="{Binding IsPin}"
-                                Template="{StaticResource PinCheckBoxTemplate}" />
+                                Template="{StaticResource PinCheckBoxTemplate}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.PinCommand}" CommandParameter="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
