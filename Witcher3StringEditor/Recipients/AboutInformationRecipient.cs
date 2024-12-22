@@ -6,10 +6,8 @@ using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.Recipients;
 
-internal class AboutInformationRecipient : IRecipient<string>
+internal class AboutInformationRecipient : IRecipient<AboutInformationMessage>
 {
-    public void Receive(string message)
-    {
-        MessageBox.Show(message, Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
-    }
+    public void Receive(AboutInformationMessage aboutInformation) 
+        => MessageBox.Show(aboutInformation.Message, Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
 }

@@ -17,6 +17,7 @@ using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
+using Witcher3StringEditor.Recipients;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -248,7 +249,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var version = ThisAssembly.AssemblyInformationalVersion.Trim();
         var os = $"{RuntimeInformation.OSDescription}({RuntimeInformation.OSArchitecture})";
         var message = $"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}";
-        WeakReferenceMessenger.Default.Send(message);
+        WeakReferenceMessenger.Default.Send(new AboutInformationMessage(message));
     }
 
     private static string RetrieveTimestamp()
