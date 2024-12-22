@@ -21,10 +21,9 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
 
     public RecentDialogViewModel()
     {
-        var items = RecentManger.Instance.GetRecentItems();
+        var items = RecentManger.Instance.GetRecentItems().Where(x => File.Exists(x.FilePath));
         foreach (var item in items)
-            if (File.Exists(item.FilePath))
-                RecentItems.Add(new RecentItem(item.FilePath, item.OpenedTime, item.IsPin));
+            RecentItems.Add(new RecentItem(item.FilePath, item.OpenedTime, item.IsPin));
     }
 
     [RelayCommand]
@@ -38,7 +37,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     [RelayCommand]
     private static void Pin(IRecentItem item)
     {
-        WeakReferenceMessenger.Default.Send(new RecentFileIsPinMessage(item.IsPin));
+        WeakReferenceMessenger.Default.Send(new RecentFilePinMessage(item.IsPin));
     }
 
     [RelayCommand]

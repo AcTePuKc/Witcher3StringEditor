@@ -16,7 +16,7 @@ namespace Witcher3StringEditor.Views;
 /// </summary>
 public partial class MainWindow
 {
-    private readonly ReloadW3ItemsRecipient reloadW3ItemsRecipient = new();
+    private readonly OpenFileRecipient reloadW3ItemsRecipient = new();
     private readonly AboutInformationRecipient aboutInformationRecipient = new();
 
     public MainWindow()
@@ -25,7 +25,7 @@ public partial class MainWindow
         DataGrid.SearchHelper.AllowFiltering = true;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
 
-        WeakReferenceMessenger.Default.Register<ReloadW3ItemsRecipient, ReloadW3ItemsMessage>(reloadW3ItemsRecipient, (r, m) =>
+        WeakReferenceMessenger.Default.Register<OpenFileRecipient, OpenFileMessage>(reloadW3ItemsRecipient, (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.OpenFileWarning, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);

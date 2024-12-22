@@ -120,7 +120,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (serializer == null) return;
         if (W3Items.Any())
         {
-            var message = new ReloadW3ItemsMessage();
+            var message = new OpenFileMessage();
             if (await WeakReferenceMessenger.Default.Send(message))
                 W3Items.Clear();
         }

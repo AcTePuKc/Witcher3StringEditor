@@ -2,4 +2,4 @@
 
 namespace Witcher3StringEditor.Recipients;
 
-internal class ReloadW3ItemsMessage:AsyncRequestMessage<bool>;
+internal class OpenFileMessage:AsyncRequestMessage<bool>;
