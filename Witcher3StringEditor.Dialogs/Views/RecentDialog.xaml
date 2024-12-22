@@ -46,6 +46,7 @@
             x:Name="sfDataGrid"
             AllowDeleting="True"
             AllowResizingColumns="True"
+            AllowSorting="False"
             AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
             ItemsSource="{Binding RecentItems}"
@@ -78,6 +79,7 @@
                 <sf:GridTemplateColumn
                     Width="100"
                     HorizontalAlignment="Center"
+                    AllowSorting="False"
                     HeaderText="{lex:Loc IsPin}"
                     MappingName="IsPin">
                     <sf:GridTemplateColumn.CellTemplate>
