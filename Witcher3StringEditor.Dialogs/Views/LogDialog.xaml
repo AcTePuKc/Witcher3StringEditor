@@ -22,11 +22,14 @@
     mc:Ignorable="d">
     <Grid Margin="10,10">
         <sf:SfDataGrid
+            AllowDeleting="True"
             AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
             HeaderRowHeight="25"
             ItemsSource="{Binding LogEvents}"
+            NavigationMode="Row"
             RowHeight="30"
+            SelectionMode="Extended"
             ShowRowHeader="True">
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
