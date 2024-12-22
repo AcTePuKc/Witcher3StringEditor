@@ -25,7 +25,6 @@ internal partial class MainWindowViewModel : ObservableObject
 {
     private W3Serializer? serializer;
     private readonly IDialogService dialogService;
-    private readonly ReloadW3ItemsRecipient reloadW3ItemsRecipient;
     private readonly RecentFileOpenedRecipient recentFileOpenedRecipient;
     private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
@@ -57,12 +56,7 @@ internal partial class MainWindowViewModel : ObservableObject
             }
         });
 
-        reloadW3ItemsRecipient = new ReloadW3ItemsRecipient();
-        WeakReferenceMessenger.Default.Register<ReloadW3ItemsRecipient, ReloadW3ItemsMessage>(reloadW3ItemsRecipient, (r, m) =>
-        {
-            r.Receive(m);
-            m.Reply(r.Response);
-        });
+
 
         W3Items.CollectionChanged += (_, _) =>
         {

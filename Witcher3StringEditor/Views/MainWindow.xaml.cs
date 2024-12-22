@@ -1,13 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using iNKORE.UI.WPF.Modern.Controls;
+using System.Windows;
+using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Recipients;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
 using MessageBoxImage = System.Windows.MessageBoxImage;
-
 
 namespace Witcher3StringEditor.Views;
 
@@ -16,6 +17,7 @@ namespace Witcher3StringEditor.Views;
 /// </summary>
 public partial class MainWindow
 {
+    private readonly ReloadW3ItemsRecipient reloadW3ItemsRecipient;
     private readonly AboutInformationRecipient aboutInformationRecipient;
 
     public MainWindow()
@@ -23,8 +25,15 @@ public partial class MainWindow
         InitializeComponent();
         DataGrid.SearchHelper.AllowFiltering = true;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+
+        reloadW3ItemsRecipient = new ReloadW3ItemsRecipient();
+        WeakReferenceMessenger.Default.Register<ReloadW3ItemsRecipient, ReloadW3ItemsMessage>(reloadW3ItemsRecipient, (r, m) =>
+        {
+            m.Reply(MessageBox.Show("GGG", "Q", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+        });
+
         aboutInformationRecipient = new AboutInformationRecipient();
-        WeakReferenceMessenger.Default.Register<AboutInformationRecipient,AboutInformationMessage>(aboutInformationRecipient,(r,m)=>
+        WeakReferenceMessenger.Default.Register<AboutInformationRecipient, AboutInformationMessage>(aboutInformationRecipient, (r, m) =>
         {
             MessageBox.Show(m.Message, Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
         });
