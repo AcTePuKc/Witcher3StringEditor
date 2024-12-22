@@ -9,9 +9,10 @@ namespace Witcher3StringEditor.Dialogs.Recipients;
 
 internal class SaveResultRecipient : IRecipient<SaveResultMessage>
 {
+    public bool IsSucess {  get; set; }
+
     public void Receive(SaveResultMessage result)
     {
-        MessageBox.Show(result.IsSucess ? Strings.SaveSuccess : Strings.SaveFailure, Strings.SaveResult,
-            MessageBoxButton.OK, MessageBoxImage.Information);
+;
     }
 }

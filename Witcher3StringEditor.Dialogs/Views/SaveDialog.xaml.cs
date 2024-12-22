@@ -1,5 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using MessageBoxButton = System.Windows.MessageBoxButton;
+using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.Dialogs.Views;
 
@@ -8,15 +12,18 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class SaveDialog
 {
-    private readonly SaveResultRecipient recipient;
+    private readonly SaveResultRecipient saveResultRecipient;
 
     public SaveDialog()
     {
         InitializeComponent();
-        recipient = new SaveResultRecipient();
-        WeakReferenceMessenger.Default.Register(recipient);
+        saveResultRecipient = new SaveResultRecipient();
+        WeakReferenceMessenger.Default.Register<SaveResultRecipient, SaveResultMessage>(saveResultRecipient, (r, m) =>
+        {
+            MessageBox.Show(m.IsSucess ? Strings.SaveSuccess : Strings.SaveFailure, Strings.SaveResult, MessageBoxButton.OK, MessageBoxImage.Information);
+        });
     }
 
-    private void Window_Closed(object sender, EventArgs e) 
-        => WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    private void Window_Closed(object sender, EventArgs e)
+        => WeakReferenceMessenger.Default.UnregisterAll(saveResultRecipient);
 }
