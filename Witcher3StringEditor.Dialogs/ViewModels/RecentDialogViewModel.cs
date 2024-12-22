@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
+using System.IO;
 using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
@@ -22,7 +23,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels
         {
             var items = RecentManger.Instance.GetRecentItems();
             foreach (var item in items)
-                RecentItems.Add(new RecentItem(item.FilePath, item.OpenedTime, item.IsPin));
+                if (File.Exists(item.FilePath))
+                    RecentItems.Add(new RecentItem(item.FilePath, item.OpenedTime, item.IsPin));
         }
 
         [RelayCommand]
