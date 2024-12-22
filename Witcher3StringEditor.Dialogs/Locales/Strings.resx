@@ -124,10 +124,10 @@
     <value>Warning</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
-    <value>This Operation Will Overwrite The File And Can't Be Undone</value>
+    <value>This Operation Will Overwrite The File And Can't Be Undo!</value>
   </data>
   <data name="BackupDeleteMessage" xml:space="preserve">
-    <value>This Operation Will Delete The File And Cannot Be Undone</value>
+    <value>This Operation Will Delete The File And Cann't Be Undo!</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>Save Success</value>
@@ -274,6 +274,6 @@
     <value>Pin</value>
   </data>
   <data name="RecentItemDeletingMessgae" xml:space="preserve">
-    <value>This Operation Will Delete The Record(s) And Cannot Be Undone</value>
+    <value>This Operation Will Delete The Record(s) And Can’t Be Undo!</value>
   </data>
 </root>

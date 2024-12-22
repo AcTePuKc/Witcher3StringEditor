@@ -193,7 +193,7 @@
     <value>最近打开的文件</value>
   </data>
   <data name="OpenFileWarning" xml:space="preserve">
-    <value>打开文件将失去未保存的数据</value>
+    <value>打开文件将失去未保存的数据！</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>警告</value>
