@@ -20,6 +20,7 @@ public partial class SaveDialog
         saveResultRecipient = new SaveResultRecipient();
         WeakReferenceMessenger.Default.Register<SaveResultRecipient, SaveResultMessage>(saveResultRecipient, (r, m) =>
         {
+            r.Receive(m);
             MessageBox.Show(m.IsSucess ? Strings.SaveSuccess : Strings.SaveFailure, Strings.SaveResult, MessageBoxButton.OK, MessageBoxImage.Information);
         });
     }

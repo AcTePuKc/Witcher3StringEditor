@@ -9,40 +9,39 @@ using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
 
-namespace Witcher3StringEditor.Dialogs.ViewModels
+namespace Witcher3StringEditor.Dialogs.ViewModels;
+
+public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
+    public bool? DialogResult => true;
+
+    public event EventHandler? RequestClose;
+
+    public ObservableCollection<IRecentItem> RecentItems { get; } = [];
+
+    public RecentDialogViewModel()
     {
-        public bool? DialogResult => true;
+        var items = RecentManger.Instance.GetRecentItems();
+        foreach (var item in items)
+            if (File.Exists(item.FilePath))
+                RecentItems.Add(new RecentItem(item.FilePath, item.OpenedTime, item.IsPin));
+    }
 
-        public event EventHandler? RequestClose;
+    [RelayCommand]
+    private void Open(IRecentItem item)
+    {
+        item.OpenedTime = DateTime.Now;
+        RequestClose?.Invoke(this, EventArgs.Empty);
+        WeakReferenceMessenger.Default.Send(new RecentFileOpenedMessage(item.FilePath));
+    }
 
-        public ObservableCollection<IRecentItem> RecentItems { get; } = [];
+    [RelayCommand]
+    private static void Pin(IRecentItem item) 
+        => WeakReferenceMessenger.Default.Send(new RecentFileIsPinMessage(item.IsPin));
 
-        public RecentDialogViewModel()
-        {
-            var items = RecentManger.Instance.GetRecentItems();
-            foreach (var item in items)
-                if (File.Exists(item.FilePath))
-                    RecentItems.Add(new RecentItem(item.FilePath, item.OpenedTime, item.IsPin));
-        }
-
-        [RelayCommand]
-        public void Open(IRecentItem item)
-        {
-            item.OpenedTime = DateTime.Now;
-            RequestClose?.Invoke(this, EventArgs.Empty);
-            WeakReferenceMessenger.Default.Send(new RecentFileOpenedMessage(item.FilePath));
-        }
-
-        [RelayCommand]
-        public static void Pin(IRecentItem item) 
-            => WeakReferenceMessenger.Default.Send(new RecentFileIsPinMessage(item.IsPin));
-
-        [RelayCommand]
-        public void Closing()
-        {
-            RecentManger.Instance.Update(RecentItems);
-        }
+    [RelayCommand]
+    private void Closing()
+    {
+        RecentManger.Instance.Update(RecentItems);
     }
 }

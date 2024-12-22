@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 
-namespace Witcher3StringEditor.Dialogs.Recipients
+namespace Witcher3StringEditor.Dialogs.Recipients;
+
+public class RecentFileIsPinRecipient : IRecipient<RecentFileIsPinMessage>
 {
-    public class RecentFileIsPinRecipient : IRecipient<RecentFileOpenedMessage>
+    public void Receive(RecentFileIsPinMessage message)
     {
-        public void Receive(RecentFileOpenedMessage message)
-        {
-        }
     }
 }

@@ -35,6 +35,7 @@ public partial class MainWindow
         aboutInformationRecipient = new AboutInformationRecipient();
         WeakReferenceMessenger.Default.Register<AboutInformationRecipient, AboutInformationMessage>(aboutInformationRecipient, (r, m) =>
         {
+            r.Receive(m);
             MessageBox.Show(m.Message, Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
         });
     }

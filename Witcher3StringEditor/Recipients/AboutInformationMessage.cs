@@ -1,4 +1,3 @@
-﻿namespace Witcher3StringEditor.Recipients
-{
-    internal record AboutInformationMessage(string Message);
-}
+﻿namespace Witcher3StringEditor.Recipients;
+
+internal record AboutInformationMessage(string Message);

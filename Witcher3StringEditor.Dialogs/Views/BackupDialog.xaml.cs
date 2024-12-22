@@ -22,9 +22,13 @@ public partial class BackupDialog
         WeakReferenceMessenger.Default.Register<BackupActionRecipient, BackupActionMessage>(recipient: backupActionRecipient, (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(
-                r.BackupAction == BackupActionType.restore ? Strings.BackupRestoreMessage : Strings.BackupDeleteMessage,
-                Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
+            m.Reply(MessageBox.Show(m.BackupAction == BackupActionType.restore
+                                    ? Strings.BackupRestoreMessage
+                                    : Strings.BackupDeleteMessage,
+                                    Strings.Warning,
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Warning) ==
+                                    MessageBoxResult.Yes);
         });
     }
 

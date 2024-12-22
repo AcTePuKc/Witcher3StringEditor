@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-    xmlns:local="clr-namespace:Witcher3StringEditor.Dialogs.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
@@ -43,7 +42,7 @@
     </Window.Resources>
     <Grid Margin="10">
         <sf:SfDataGrid
-            x:Name="sfDataGrid"
+            x:Name="SfDataGrid"
             AllowDeleting="True"
             AllowResizingColumns="True"
             AllowSorting="False"

@@ -20,7 +20,7 @@ namespace Witcher3StringEditor.Dialogs.Behaviors
             AssociatedObject.RecordDeleting -= AssociatedObject_RecordDeleting;
         }
 
-        private void AssociatedObject_RecordDeleting(object? sender, RecordDeletingEventArgs e)
+        private static void AssociatedObject_RecordDeleting(object? sender, RecordDeletingEventArgs e)
         {
             if (MessageBox.Show(Strings.RecentItemDeletingMessgae,
                                 Strings.Warning,

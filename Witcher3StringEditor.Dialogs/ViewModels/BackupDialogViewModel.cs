@@ -26,7 +26,7 @@ public partial class BackupDialogViewModel : ObservableObject, IModalDialogViewM
         var message = new BackupActionMessage(BackupActionType.restore);
         if (await WeakReferenceMessenger.Default.Send(message))
         {
-            backupManger.Restore(backupItem);
+            BackupManger.Restore(backupItem);
         }
     }
 

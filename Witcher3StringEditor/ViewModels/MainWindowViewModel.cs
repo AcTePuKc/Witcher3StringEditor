@@ -47,16 +47,13 @@ internal partial class MainWindowViewModel : ObservableObject
             try
             {
                 r.Receive(m);
-                if (r.FileName != null)
-                    await OpenFile(r.FileName);
+                await OpenFile(m.FileName);
             }
             catch (Exception e)
             {
                 Log.Error(e.Message);
             }
         });
-
-
 
         W3Items.CollectionChanged += (_, _) =>
         {

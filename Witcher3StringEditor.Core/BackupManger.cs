@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Security.Cryptography;
 using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
@@ -53,7 +52,7 @@ public class BackupManger
         UpdateHistoryItems(BackupItems, jsonPath);
     }
 
-    public void Restore(IBackupItem backupItem)
+    public static void Restore(IBackupItem backupItem)
     {
         if (!File.Exists(backupItem.BackupPath)) return;
         var folder = Path.GetDirectoryName(backupItem.OrginPath);
