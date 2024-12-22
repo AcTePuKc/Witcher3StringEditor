@@ -21,7 +21,7 @@ public partial class BackupDialogViewModel : ObservableObject, IModalDialogViewM
     public bool? DialogResult => true;
 
     [RelayCommand]
-    private async Task Restore(BackupItem backupItem)
+    private static async Task Restore(BackupItem backupItem)
     {
         var message = new BackupActionMessage(BackupActionType.restore);
         if (await WeakReferenceMessenger.Default.Send(message))

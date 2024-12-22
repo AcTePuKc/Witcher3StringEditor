@@ -8,12 +8,11 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class RecentDialog
 {
-    private readonly RecentFileIsPinRecipient recentFileIsPinRecipient;
+    private readonly RecentFileIsPinRecipient recentFileIsPinRecipient = new();
 
     public RecentDialog()
     {
         InitializeComponent();
-        recentFileIsPinRecipient = new RecentFileIsPinRecipient();
         WeakReferenceMessenger.Default.Register<RecentFileIsPinRecipient, RecentFileIsPinMessage>(recentFileIsPinRecipient, (r, m) =>
         {
             r.Receive(m);

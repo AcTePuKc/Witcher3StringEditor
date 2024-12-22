@@ -12,12 +12,12 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class SaveDialog
 {
-    private readonly SaveResultRecipient saveResultRecipient;
+    private readonly SaveResultRecipient saveResultRecipient = new();
 
     public SaveDialog()
     {
         InitializeComponent();
-        saveResultRecipient = new SaveResultRecipient();
+
         WeakReferenceMessenger.Default.Register<SaveResultRecipient, SaveResultMessage>(saveResultRecipient, (r, m) =>
         {
             r.Receive(m);

@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +9,6 @@ using Serilog.Events;
 using Syncfusion.Licensing;
 using System.Reactive;
 using System.Windows;
-using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.ViewModels;
@@ -23,7 +23,7 @@ public partial class App
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        var observer = new AnonymousObserver<LogEvent>(LogManager.Instance.RecordLogEvent);
+        var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File(".\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
             .CreateLogger();

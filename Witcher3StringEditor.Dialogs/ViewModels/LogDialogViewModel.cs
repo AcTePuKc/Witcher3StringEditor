@@ -2,12 +2,12 @@
 using HanumanInstitute.MvvmDialogs;
 using Serilog.Events;
 using System.Collections.ObjectModel;
-using Witcher3StringEditor.Core;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class LogDialogViewModel : ObservableObject, IModalDialogViewModel
+public partial class LogDialogViewModel(ObservableCollection<LogEvent> logEvents) : ObservableObject, IModalDialogViewModel
 {
-    public ObservableCollection<LogEvent> LogEventsogEvents { get; } = LogManager.Instance.LogEvents;
     public bool? DialogResult => true;
+
+    public ObservableCollection<LogEvent> LogEvents { get; } = logEvents;
 }

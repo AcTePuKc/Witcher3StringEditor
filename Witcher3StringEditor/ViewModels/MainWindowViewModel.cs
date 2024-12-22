@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
+using Serilog.Events;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -25,7 +26,8 @@ internal partial class MainWindowViewModel : ObservableObject
 {
     private W3Serializer? serializer;
     private readonly IDialogService dialogService;
-    private readonly RecentFileOpenedRecipient recentFileOpenedRecipient;
+    private readonly LogEventRecipient logEventRecipient= new();
+    private readonly RecentFileOpenedRecipient recentFileOpenedRecipient = new();
     private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
     [ObservableProperty]
@@ -38,10 +40,18 @@ internal partial class MainWindowViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
+    private ObservableCollection<LogEvent> LogEvents { get; } = [];
+
     public MainWindowViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
-        recentFileOpenedRecipient = new RecentFileOpenedRecipient();
+
+        WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
+        {
+            r.Receive(m);
+            LogEvents.Add(m);
+        });
+
         WeakReferenceMessenger.Default.Register<RecentFileOpenedRecipient, RecentFileOpenedMessage>(recentFileOpenedRecipient, async void (r, m) =>
         {
             try
@@ -190,7 +200,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowLogDialog()
     {
-        var dialogViewModel = new LogDialogViewModel();
+        var dialogViewModel = new LogDialogViewModel(LogEvents);
         await dialogService.ShowDialogAsync<LogDialogViewModel>(this, dialogViewModel);
     }
 

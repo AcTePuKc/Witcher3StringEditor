@@ -25,7 +25,7 @@
             AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
             HeaderRowHeight="25"
-            ItemsSource="{Binding LogEventsogEvents}"
+            ItemsSource="{Binding LogEvents}"
             RowHeight="30"
             ShowRowHeader="True">
             <sf:SfDataGrid.Resources>

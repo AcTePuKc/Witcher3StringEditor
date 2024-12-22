@@ -6,29 +6,28 @@ using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
 using MessageBoxImage = System.Windows.MessageBoxImage;
 
-namespace Witcher3StringEditor.Dialogs.Behaviors
+namespace Witcher3StringEditor.Dialogs.Behaviors;
+
+internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
 {
-    internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
+    protected override void OnAttached()
     {
-        protected override void OnAttached()
-        {
-            AssociatedObject.RecordDeleting += AssociatedObject_RecordDeleting;
-        }
+        AssociatedObject.RecordDeleting += AssociatedObject_RecordDeleting;
+    }
 
-        protected override void OnDetaching()
-        {
-            AssociatedObject.RecordDeleting -= AssociatedObject_RecordDeleting;
-        }
+    protected override void OnDetaching()
+    {
+        AssociatedObject.RecordDeleting -= AssociatedObject_RecordDeleting;
+    }
 
-        private static void AssociatedObject_RecordDeleting(object? sender, RecordDeletingEventArgs e)
+    private static void AssociatedObject_RecordDeleting(object? sender, RecordDeletingEventArgs e)
+    {
+        if (MessageBox.Show(Strings.RecentItemDeletingMessgae,
+                Strings.Warning,
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) == MessageBoxResult.No)
         {
-            if (MessageBox.Show(Strings.RecentItemDeletingMessgae,
-                                Strings.Warning,
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning) == MessageBoxResult.No)
-            {
-                e.Cancel = true;
-            }
+            e.Cancel = true;
         }
     }
 }

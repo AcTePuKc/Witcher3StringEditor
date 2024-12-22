@@ -13,12 +13,12 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class BackupDialog
 {
-    private readonly BackupActionRecipient backupActionRecipient;
+    private readonly BackupActionRecipient backupActionRecipient = new();
 
     public BackupDialog()
     {
         InitializeComponent();
-        backupActionRecipient = new BackupActionRecipient();
+
         WeakReferenceMessenger.Default.Register<BackupActionRecipient, BackupActionMessage>(recipient: backupActionRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -32,8 +32,6 @@ public partial class BackupDialog
         });
     }
 
-    private void Window_Closed(object sender, EventArgs e)
-    {
-        WeakReferenceMessenger.Default.UnregisterAll(backupActionRecipient);
-    }
+    private void Window_Closed(object sender, EventArgs e) 
+        => WeakReferenceMessenger.Default.UnregisterAll(backupActionRecipient);
 }
