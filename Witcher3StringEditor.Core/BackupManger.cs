@@ -47,6 +47,7 @@ public class BackupManger
 
         if (!Directory.Exists(backupPath))
             Directory.CreateDirectory(backupPath);
+        if (BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;
         File.Copy(backupItem.OrginPath, backupItem.BackupPath);
         BackupItems.Add(backupItem);
         UpdateHistoryItems(BackupItems, jsonPath);

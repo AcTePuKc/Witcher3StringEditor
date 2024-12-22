@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 using iNKORE.UI.WPF.Modern.Controls;
 using System.Windows;
-using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Recipients;
 using Witcher3StringEditor.ViewModels;
@@ -29,7 +28,8 @@ public partial class MainWindow
         reloadW3ItemsRecipient = new ReloadW3ItemsRecipient();
         WeakReferenceMessenger.Default.Register<ReloadW3ItemsRecipient, ReloadW3ItemsMessage>(reloadW3ItemsRecipient, (r, m) =>
         {
-            m.Reply(MessageBox.Show("GGG", "Q", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+            r.Receive(m);
+            m.Reply(MessageBox.Show(Strings.OpenFileWarning, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
         });
 
         aboutInformationRecipient = new AboutInformationRecipient();

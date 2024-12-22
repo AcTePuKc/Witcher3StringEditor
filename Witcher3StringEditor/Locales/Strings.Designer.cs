@@ -169,6 +169,15 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Opening The File Will Result In The Loss Of Unsaved Data 的本地化字符串。
+        /// </summary>
+        internal static string OpenFileWarning {
+            get {
+                return ResourceManager.GetString("OpenFileWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open Working Folder 的本地化字符串。
         /// </summary>
         internal static string OpenWorkingFolderBtnLabel {
@@ -273,6 +282,15 @@ namespace Witcher3StringEditor.Locales {
         internal static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Warning 的本地化字符串。
+        /// </summary>
+        internal static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
         

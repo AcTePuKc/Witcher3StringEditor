@@ -36,8 +36,10 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     }
 
     [RelayCommand]
-    private static void Pin(IRecentItem item) 
-        => WeakReferenceMessenger.Default.Send(new RecentFileIsPinMessage(item.IsPin));
+    private static void Pin(IRecentItem item)
+    {
+        WeakReferenceMessenger.Default.Send(new RecentFileIsPinMessage(item.IsPin));
+    }
 
     [RelayCommand]
     private void Closing()

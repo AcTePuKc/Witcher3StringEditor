@@ -192,4 +192,10 @@
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>Recent</value>
   </data>
+  <data name="OpenFileWarning" xml:space="preserve">
+    <value>Opening The File Will Result In The Loss Of Unsaved Data</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>
