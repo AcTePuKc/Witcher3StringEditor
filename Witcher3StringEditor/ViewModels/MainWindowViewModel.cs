@@ -43,11 +43,18 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         this.dialogService = dialogService;
         recentFileOpenedRecipient = new RecentFileOpenedRecipient();
-        WeakReferenceMessenger.Default.Register<RecentFileOpenedRecipient, RecentFileOpenedMessage>(recentFileOpenedRecipient, async (r, m) =>
+        WeakReferenceMessenger.Default.Register<RecentFileOpenedRecipient, RecentFileOpenedMessage>(recentFileOpenedRecipient, async void (r, m) =>
         {
-            r.Receive(m);
-            if (r.FileName != null)
-                await OpenFile(r.FileName);
+            try
+            {
+                r.Receive(m);
+                if (r.FileName != null)
+                    await OpenFile(r.FileName);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
         });
         W3Items.CollectionChanged += (_, _) =>
         {
@@ -92,9 +99,7 @@ internal partial class MainWindowViewModel : ObservableObject
         });
 
         if (storageFile != null)
-        {
             await OpenFile(storageFile.LocalPath);
-        }
     }
 
     private async Task OpenFile(string fileName)
@@ -104,9 +109,20 @@ internal partial class MainWindowViewModel : ObservableObject
         foreach (var item in await serializer.Deserialize(fileName))
             W3Items.Add(new W3Item(item));
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
-        var recentItems = RecentManger.Instance.GetRecentItems();
-        var newRecentItem = new RecentItem(fileName, DateTime.Now);
-        RecentManger.Instance.Update(recentItems.Append(newRecentItem));
+        var recentItems = RecentManger.Instance.GetRecentItems().ToList();
+        if (recentItems.Count != 0)
+        {
+            var foundItem = recentItems.Find(x => x.FilePath == fileName);
+            if (foundItem != null)
+                foundItem.OpenedTime = DateTime.Now;
+            else
+                recentItems.Add(new RecentItem(fileName, DateTime.Now));
+        }
+        else
+        {
+            recentItems.Add(new RecentItem(fileName, DateTime.Now));
+        }
+        RecentManger.Instance.Update(recentItems);
     }
 
     [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]
