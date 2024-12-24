@@ -92,7 +92,7 @@
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
-                    ColumnSizer="AutoWithLastColumnFill"
+                    Width="350"
                     HeaderText="{lex:Loc Path}"
                     MappingName="FilePath"
                     TextWrapping="WrapWithOverflow" />
@@ -106,7 +106,8 @@
                     Width="100"
                     HorizontalAlignment="Center"
                     AllowSorting="False"
-                    HeaderText="{lex:Loc IsPin}">
+                    HeaderText="{lex:Loc IsPin}"
+                    MappingName="IsPin">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
@@ -132,6 +133,7 @@
                             <Button
                                 HorizontalAlignment="Center"
                                 Background="Transparent"
+                                BorderBrush="Transparent"
                                 BorderThickness="0"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.OpenCommand}"
                                 CommandParameter="{Binding}">
