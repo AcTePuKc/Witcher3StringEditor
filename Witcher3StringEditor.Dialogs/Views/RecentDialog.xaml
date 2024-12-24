@@ -19,7 +19,6 @@
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="None"
     ui:WindowHelper.UseModernWindowStyle="True"
-    Closed="Window_Closed"
     mc:Ignorable="d">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -29,14 +28,14 @@
     <Window.Resources>
         <ControlTemplate x:Key="PinCheckBoxTemplate" TargetType="CheckBox">
             <Grid>
-                <ui:FontIcon x:Name="iconElement" Glyph="&#xe77a;" />
+                <ui:FontIcon x:Name="iconElement" Glyph="&#xe734;" />
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter TargetName="iconElement" Property="Glyph" Value="&#xe840;" />
+                    <Setter TargetName="iconElement" Property="Glyph" Value="&#xe735;" />
                 </Trigger>
                 <Trigger Property="IsChecked" Value="{x:Null}">
-                    <Setter TargetName="iconElement" Property="Glyph" Value="&#xe77a;" />
+                    <Setter TargetName="iconElement" Property="Glyph" Value="&#xe734;" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -46,7 +45,6 @@
             x:Name="SfDataGrid"
             AllowDeleting="True"
             AllowResizingColumns="True"
-            AllowSorting="False"
             AutoGenerateColumns="False"
             ItemsSource="{Binding RecentItems}"
             NavigationMode="Row"
@@ -104,21 +102,14 @@
                 <sf:GridTemplateColumn
                     Width="100"
                     HorizontalAlignment="Center"
-                    AllowSorting="False"
-                    HeaderText="{lex:Loc IsPin}"
+                    HeaderText="{lex:Loc Mark}"
                     MappingName="IsPin">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
                                 HorizontalAlignment="Center"
                                 IsChecked="{Binding IsPin}"
-                                Template="{StaticResource PinCheckBoxTemplate}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="Click">
-                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.PinCommand}" CommandParameter="{Binding}" />
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </CheckBox>
+                                Template="{StaticResource PinCheckBoxTemplate}" />
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
@@ -126,7 +117,7 @@
                     Width="100"
                     HorizontalAlignment="Center"
                     AllowSorting="False"
-                    HeaderText="Go">
+                    HeaderText="{lex:Loc Open}">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button

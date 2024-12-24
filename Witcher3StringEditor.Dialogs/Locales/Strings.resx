@@ -270,10 +270,13 @@
   <data name="OpenedTime" xml:space="preserve">
     <value>Opened Time</value>
   </data>
-  <data name="IsPin" xml:space="preserve">
-    <value>Pin</value>
+  <data name="Mark" xml:space="preserve">
+    <value>Mark</value>
   </data>
   <data name="RecentItemDeletingMessgae" xml:space="preserve">
     <value>This Operation Will Delete The Record(s) And Can’t Be Undo!</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
   </data>
 </root>
