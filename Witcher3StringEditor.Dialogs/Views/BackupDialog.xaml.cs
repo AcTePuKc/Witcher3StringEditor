@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using iNKORE.UI.WPF.Modern.Controls;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -18,6 +19,8 @@ public partial class BackupDialog
     public BackupDialog()
     {
         InitializeComponent();
+
+        DataGrid.SearchHelper.AllowFiltering = true;
 
         WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(recipient, "BackupRestore", static (r, m) =>
         {
@@ -42,4 +45,14 @@ public partial class BackupDialog
 
     private void Window_Closed(object sender, EventArgs e)
         => WeakReferenceMessenger.Default.UnregisterAll(recipient);
+
+    private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        DataGrid.SearchHelper.Search(args.QueryText);
+    }
+
+    private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        if (string.IsNullOrEmpty(sender.Text)) DataGrid.SearchHelper.ClearSearch();
+    }
 }

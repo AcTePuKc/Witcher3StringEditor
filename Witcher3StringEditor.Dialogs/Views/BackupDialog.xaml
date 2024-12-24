@@ -17,119 +17,147 @@
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
     Closed="Window_Closed"
+    WindowChrome.IsHitTestVisibleInChrome="True"
     mc:Ignorable="d">
     <Grid>
-        <Border Padding="10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <sf:SfDataGrid
-                    x:Name="DataGrid"
-                    Grid.ColumnSpan="3"
-                    AutoGenerateColumns="False"
-                    ColumnSizer="Star"
-                    ItemsSource="{Binding BackupItems}"
-                    NavigationMode="Row"
-                    ShowRowHeader="True">
-                    <sf:SfDataGrid.Resources>
-                        <ResourceDictionary>
-                            <Style TargetType="sf:GridRowHeaderCell">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="sf:GridRowHeaderCell">
-                                            <Border
-                                                x:Name="PART_RowHeaderCellBorder"
-                                                Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}">
-                                                <Grid>
-                                                    <TextBlock
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        TextAlignment="Center" />
-                                                </Grid>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ResourceDictionary>
-                    </sf:SfDataGrid.Resources>
-                    <i:Interaction.Behaviors>
-                        <b:SfDataGridSizeChangedBehavior />
-                        <b:SfDataGridQueryRowHeightBehavior />
-                    </i:Interaction.Behaviors>
-                    <sf:SfDataGrid.Columns>
-                        <sf:GridTextColumn
-                            HeaderText="{lex:Loc FileName}"
-                            MappingName="FileName"
-                            TextAlignment="Center" />
-                        <sf:GridTextColumn
-                            Width="200"
-                            HeaderText="{lex:Loc Hash}"
-                            MappingName="Hash"
-                            TextAlignment="Center"
-                            TextWrapping="Wrap" />
-                        <sf:GridTextColumn
-                            HeaderText="{lex:Loc OrginPath}"
-                            MappingName="OrginPath"
-                            MinimumWidth="200"
-                            TextWrapping="Wrap" />
-                        <sf:GridTextColumn
-                            HeaderText="{lex:Loc BackupPath}"
-                            MappingName="BackupPath"
-                            TextWrapping="Wrap" />
-                        <sf:GridDateTimeColumn
-                            HeaderText="{lex:Loc BackupTime}"
-                            MappingName="BackupTime"
-                            Pattern="FullDateTime"
-                            TextAlignment="Center" />
-                        <sf:GridTemplateColumn
-                            Width="100"
-                            HorizontalAlignment="Center"
-                            AllowSorting="False"
-                            HeaderText="{lex:Loc RestoreBtnContent}">
-                            <sf:GridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button
-                                        HorizontalAlignment="Center"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RestoreCommand}"
-                                        CommandParameter="{Binding}">
-                                        <ui:FontIcon Glyph="&#xe777;" />
-                                    </Button>
-                                </DataTemplate>
-                            </sf:GridTemplateColumn.CellTemplate>
-                        </sf:GridTemplateColumn>
-                        <sf:GridTemplateColumn
-                            Width="100"
-                            HorizontalAlignment="Center"
-                            AllowSorting="False"
-                            HeaderText="{lex:Loc DeleteBtnContent}">
-                            <sf:GridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button
-                                        HorizontalAlignment="Center"
-                                        Background="Transparent"
-                                        BorderThickness="0"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteCommand}"
-                                        CommandParameter="{Binding}">
-                                        <ui:FontIcon Glyph="&#xe74d;" />
-                                    </Button>
-                                </DataTemplate>
-                            </sf:GridTemplateColumn.CellTemplate>
-                        </sf:GridTemplateColumn>
-                    </sf:SfDataGrid.Columns>
-                </sf:SfDataGrid>
-            </Grid>
-        </Border>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Height="48">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                VerticalAlignment="Center"
+                Text="{lex:Loc BackupDialogTitle}" />
+            <ui:AutoSuggestBox
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
+                QuerySubmitted="SearchBox_QuerySubmitted"
+                TextChanged="SearchBox_TextChanged">
+                <ui:AutoSuggestBox.QueryIcon>
+                    <ui:FontIcon Glyph="&#xe721;" />
+                </ui:AutoSuggestBox.QueryIcon>
+            </ui:AutoSuggestBox>
+        </Grid>
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <sf:SfDataGrid
+                x:Name="DataGrid"
+                Grid.ColumnSpan="3"
+                AutoGenerateColumns="False"
+                ColumnSizer="Star"
+                ItemsSource="{Binding BackupItems}"
+                NavigationMode="Row"
+                ShowRowHeader="True">
+                <sf:SfDataGrid.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="sf:GridRowHeaderCell">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="sf:GridRowHeaderCell">
+                                        <Border
+                                            x:Name="PART_RowHeaderCellBorder"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <Grid>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    TextAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ResourceDictionary>
+                </sf:SfDataGrid.Resources>
+                <i:Interaction.Behaviors>
+                    <b:SfDataGridSizeChangedBehavior />
+                    <b:SfDataGridQueryRowHeightBehavior />
+                </i:Interaction.Behaviors>
+                <sf:SfDataGrid.Columns>
+                    <sf:GridTextColumn
+                        HeaderText="{lex:Loc FileName}"
+                        MappingName="FileName"
+                        TextAlignment="Center" />
+                    <sf:GridTextColumn
+                        Width="200"
+                        HeaderText="{lex:Loc Hash}"
+                        MappingName="Hash"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <sf:GridTextColumn
+                        HeaderText="{lex:Loc OrginPath}"
+                        MappingName="OrginPath"
+                        MinimumWidth="200"
+                        TextWrapping="Wrap" />
+                    <sf:GridTextColumn
+                        HeaderText="{lex:Loc BackupPath}"
+                        MappingName="BackupPath"
+                        TextWrapping="Wrap" />
+                    <sf:GridDateTimeColumn
+                        HeaderText="{lex:Loc BackupTime}"
+                        MappingName="BackupTime"
+                        Pattern="FullDateTime"
+                        TextAlignment="Center" />
+                    <sf:GridTemplateColumn
+                        Width="100"
+                        HorizontalAlignment="Center"
+                        AllowSorting="False"
+                        HeaderText="{lex:Loc RestoreBtnContent}"
+                        MappingName="Null">
+                        <sf:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    HorizontalAlignment="Center"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RestoreCommand}"
+                                    CommandParameter="{Binding}">
+                                    <ui:FontIcon Glyph="&#xe777;" />
+                                </Button>
+                            </DataTemplate>
+                        </sf:GridTemplateColumn.CellTemplate>
+                    </sf:GridTemplateColumn>
+                    <sf:GridTemplateColumn
+                        Width="100"
+                        HorizontalAlignment="Center"
+                        AllowSorting="False"
+                        HeaderText="{lex:Loc DeleteBtnContent}"
+                        MappingName="Null">
+                        <sf:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    HorizontalAlignment="Center"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteCommand}"
+                                    CommandParameter="{Binding}">
+                                    <ui:FontIcon Glyph="&#xe74d;" />
+                                </Button>
+                            </DataTemplate>
+                        </sf:GridTemplateColumn.CellTemplate>
+                    </sf:GridTemplateColumn>
+                </sf:SfDataGrid.Columns>
+            </sf:SfDataGrid>
+        </Grid>
     </Grid>
 </Window>
