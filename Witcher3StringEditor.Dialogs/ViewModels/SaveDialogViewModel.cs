@@ -41,7 +41,7 @@ public partial class SaveDialogViewModel : ObservableObject, IModalDialogViewMod
     private async Task Save()
     {
         var result = await serializer.Serialize(W3Job);
-        var message = new SaveResultMessage(result);
+        var message = new ReturnNothingBooleanMessage(result);
         WeakReferenceMessenger.Default.Send(message);
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);

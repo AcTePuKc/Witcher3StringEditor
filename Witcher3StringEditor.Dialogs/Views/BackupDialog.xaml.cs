@@ -13,18 +13,26 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class BackupDialog
 {
-    private readonly BackupActionRecipient backupActionRecipient = new();
+    private readonly ReturnBooleanNothingRecipient recipient = new();
 
     public BackupDialog()
     {
         InitializeComponent();
 
-        WeakReferenceMessenger.Default.Register<BackupActionRecipient, BackupActionMessage>(recipient: backupActionRecipient, (r, m) =>
+        WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(recipient, "BackupRestore", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(m.BackupAction == BackupActionType.restore
-                                    ? Strings.BackupRestoreMessage
-                                    : Strings.BackupDeleteMessage,
+            m.Reply(MessageBox.Show(Strings.BackupRestoreMessage,
+                                    Strings.Warning,
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Warning) ==
+                                    MessageBoxResult.Yes);
+        });
+
+        WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(recipient, "BackupDelete", static (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(MessageBox.Show(Strings.BackupDeleteMessage,
                                     Strings.Warning,
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Warning) ==
@@ -32,6 +40,6 @@ public partial class BackupDialog
         });
     }
 
-    private void Window_Closed(object sender, EventArgs e) 
-        => WeakReferenceMessenger.Default.UnregisterAll(backupActionRecipient);
+    private void Window_Closed(object sender, EventArgs e)
+        => WeakReferenceMessenger.Default.UnregisterAll(recipient);
 }

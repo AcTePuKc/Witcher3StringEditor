@@ -26,8 +26,8 @@ internal partial class MainWindowViewModel : ObservableObject
 {
     private W3Serializer? serializer;
     private readonly IDialogService dialogService;
-    private readonly LogEventRecipient logEventRecipient= new();
-    private readonly RecentFileOpenedRecipient recentFileOpenedRecipient = new();
+    private readonly LogEventRecipient logEventRecipient = new();
+    private readonly ReturnNothingStringRecipient recentFileOpenedRecipient = new();
     private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
     [ObservableProperty]
@@ -52,12 +52,12 @@ internal partial class MainWindowViewModel : ObservableObject
             LogEvents.Add(m);
         });
 
-        WeakReferenceMessenger.Default.Register<RecentFileOpenedRecipient, RecentFileOpenedMessage>(recentFileOpenedRecipient, async void (r, m) =>
+        WeakReferenceMessenger.Default.Register<ReturnNothingStringRecipient, ReturnNothingStringMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
         {
             try
             {
                 r.Receive(m);
-                await OpenFile(m.FileName);
+                await OpenFile(m.Message);
             }
             catch (Exception e)
             {
@@ -84,7 +84,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void WindowClosed() 
+    private void WindowClosed()
         => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
 
     private async Task CheckSettings()
@@ -120,8 +120,8 @@ internal partial class MainWindowViewModel : ObservableObject
         if (serializer == null) return;
         if (W3Items.Any())
         {
-            var message = new OpenFileMessage();
-            if (await WeakReferenceMessenger.Default.Send(message))
+            var message = new ReturnBooleanNothingMessage();
+            if (await WeakReferenceMessenger.Default.Send(message, "FileOpened"))
                 W3Items.Clear();
         }
         foreach (var item in await serializer.Deserialize(fileName))
@@ -266,7 +266,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var version = ThisAssembly.AssemblyInformationalVersion.Trim();
         var os = $"{RuntimeInformation.OSDescription}({RuntimeInformation.OSArchitecture})";
         var message = $"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}";
-        WeakReferenceMessenger.Default.Send(new AboutInformationMessage(message));
+        WeakReferenceMessenger.Default.Send(new ReturnNothingStringMessage(message), "AboutInformation");
     }
 
     private static string RetrieveTimestamp()

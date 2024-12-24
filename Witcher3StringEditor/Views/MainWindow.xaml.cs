@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.Messaging;
 using iNKORE.UI.WPF.Modern.Controls;
 using System.Windows;
+using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Recipients;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
@@ -16,8 +16,8 @@ namespace Witcher3StringEditor.Views;
 /// </summary>
 public partial class MainWindow
 {
-    private readonly OpenFileRecipient openFileRecipient = new();
-    private readonly AboutInformationRecipient aboutInformationRecipient = new();
+    private readonly ReturnBooleanNothingRecipient openFileRecipient = new();
+    private readonly ReturnNothingStringRecipient aboutInformationRecipient = new();
 
     public MainWindow()
     {
@@ -25,13 +25,13 @@ public partial class MainWindow
         DataGrid.SearchHelper.AllowFiltering = true;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
 
-        WeakReferenceMessenger.Default.Register<OpenFileRecipient, OpenFileMessage>(openFileRecipient, (r, m) =>
+        WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(openFileRecipient, "FileOpened", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.OpenFileWarning, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
         });
 
-        WeakReferenceMessenger.Default.Register<AboutInformationRecipient, AboutInformationMessage>(aboutInformationRecipient, (r, m) =>
+        WeakReferenceMessenger.Default.Register<ReturnNothingStringRecipient, ReturnNothingStringMessage, string>(aboutInformationRecipient, "AboutInformation", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(m.Message, Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);

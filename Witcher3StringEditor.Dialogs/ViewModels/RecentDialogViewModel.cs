@@ -31,13 +31,13 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     {
         item.OpenedTime = DateTime.Now;
         RequestClose?.Invoke(this, EventArgs.Empty);
-        WeakReferenceMessenger.Default.Send(new RecentFileOpenedMessage(item.FilePath));
+        WeakReferenceMessenger.Default.Send(new ReturnNothingStringMessage(item.FilePath),"RecentFileOpened");
     }
 
     [RelayCommand]
     private static void Pin(IRecentItem item)
     {
-        WeakReferenceMessenger.Default.Send(new RecentFilePinMessage(item.IsPin));
+        WeakReferenceMessenger.Default.Send(new ReturnNothingBooleanMessage(item.IsPin));
     }
 
     [RelayCommand]
