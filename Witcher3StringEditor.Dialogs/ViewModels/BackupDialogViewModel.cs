@@ -21,7 +21,7 @@ public partial class BackupDialogViewModel : ObservableObject, IModalDialogViewM
 
     public BackupDialogViewModel()
     {
-        BackupItems = new(BackupManger.Instance.GetAllBackup().Where(x => File.Exists(x.BackupPath)));
+        BackupItems = new ObservableCollection<IBackupItem>(BackupManger.Instance.GetAllBackup().Where(x => File.Exists(x.BackupPath)));
     }
 
     [RelayCommand]
