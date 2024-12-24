@@ -1,4 +1,7 @@
-﻿namespace Witcher3StringEditor.Dialogs.Views;
+﻿using iNKORE.UI.WPF.Modern.Controls;
+using System.Windows.Controls;
+
+namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
 ///     LogDialog.xaml 的交互逻辑
@@ -8,5 +11,15 @@ public partial class LogDialog
     public LogDialog()
     {
         InitializeComponent();
+    }
+
+    private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        SfDataGrid.SearchHelper.Search(args.QueryText);
+    }
+
+    private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        if (string.IsNullOrEmpty(sender.Text)) SfDataGrid.SearchHelper.ClearSearch();
     }
 }

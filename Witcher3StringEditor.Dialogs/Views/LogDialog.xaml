@@ -17,67 +17,98 @@
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
+    WindowChrome.IsHitTestVisibleInChrome="True"
     mc:Ignorable="d">
-    <Grid Margin="10,10">
-        <sf:SfDataGrid
-            AllowDeleting="True"
-            AutoGenerateColumns="False"
-            ColumnSizer="AutoWithLastColumnFill"
-            HeaderRowHeight="25"
-            ItemsSource="{Binding LogEvents}"
-            NavigationMode="Row"
-            RowHeight="30"
-            SelectionMode="Extended"
-            ShowRowHeader="True">
-            <sf:SfDataGrid.Resources>
-                <ResourceDictionary>
-                    <Style TargetType="sf:GridRowHeaderCell">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="sf:GridRowHeaderCell">
-                                    <Border
-                                        x:Name="PART_RowHeaderCellBorder"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                        <Grid>
-                                            <TextBlock
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
-                                                TextAlignment="Center" />
-                                        </Grid>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ResourceDictionary>
-            </sf:SfDataGrid.Resources>
-            <i:Interaction.Behaviors>
-                <b:SfDataGridSizeChangedBehavior />
-                <b:SfDataGridQueryRowHeightBehavior />
-                <b:SfDataGridAutoScrollToEndBehavior />
-            </i:Interaction.Behaviors>
-            <sf:SfDataGrid.Columns>
-                <sf:GridDateTimeColumn
-                    Width="200"
-                    HeaderText="{lex:Loc LogTime}"
-                    MappingName="Timestamp"
-                    Pattern="FullDateTime"
-                    TextAlignment="Center" />
-                <sf:GridTextColumn
-                    Width="100"
-                    HeaderText="{lex:Loc LogLevel}"
-                    MappingName="Level"
-                    TextAlignment="Center" />
-                <sf:GridTextColumn
-                    HeaderText="{lex:Loc LogMessage}"
-                    MappingName="MessageTemplate.Text"
-                    TextWrapping="WrapWithOverflow" />
-            </sf:SfDataGrid.Columns>
-        </sf:SfDataGrid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Height="48">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                VerticalAlignment="Center"
+                Text="{lex:Loc LogDialogTitle}" />
+            <ui:AutoSuggestBox
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
+                QuerySubmitted="SearchBox_QuerySubmitted"
+                TextChanged="SearchBox_TextChanged">
+                <ui:AutoSuggestBox.QueryIcon>
+                    <ui:FontIcon Glyph="&#xe721;" />
+                </ui:AutoSuggestBox.QueryIcon>
+            </ui:AutoSuggestBox>
+        </Grid>
+        <Grid Grid.Row="1" Margin="10">
+            <sf:SfDataGrid
+                x:Name="SfDataGrid"
+                AllowDeleting="True"
+                AutoGenerateColumns="False"
+                ColumnSizer="AutoWithLastColumnFill"
+                HeaderRowHeight="25"
+                ItemsSource="{Binding LogEvents}"
+                NavigationMode="Row"
+                RowHeight="30"
+                SelectionMode="Extended"
+                ShowRowHeader="True">
+                <sf:SfDataGrid.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="sf:GridRowHeaderCell">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="sf:GridRowHeaderCell">
+                                        <Border
+                                            x:Name="PART_RowHeaderCellBorder"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <Grid>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    TextAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ResourceDictionary>
+                </sf:SfDataGrid.Resources>
+                <i:Interaction.Behaviors>
+                    <b:SfDataGridSizeChangedBehavior />
+                    <b:SfDataGridQueryRowHeightBehavior />
+                    <b:SfDataGridAutoScrollToEndBehavior />
+                </i:Interaction.Behaviors>
+                <sf:SfDataGrid.Columns>
+                    <sf:GridDateTimeColumn
+                        Width="200"
+                        HeaderText="{lex:Loc LogTime}"
+                        MappingName="Timestamp"
+                        Pattern="FullDateTime"
+                        TextAlignment="Center" />
+                    <sf:GridTextColumn
+                        Width="100"
+                        HeaderText="{lex:Loc LogLevel}"
+                        MappingName="Level"
+                        TextAlignment="Center" />
+                    <sf:GridTextColumn
+                        HeaderText="{lex:Loc LogMessage}"
+                        MappingName="MessageTemplate.Text"
+                        TextWrapping="WrapWithOverflow" />
+                </sf:SfDataGrid.Columns>
+            </sf:SfDataGrid>
+        </Grid>
     </Grid>
 </Window>
