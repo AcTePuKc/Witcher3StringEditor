@@ -279,4 +279,7 @@
   <data name="Open" xml:space="preserve">
     <value>打开</value>
   </data>
+  <data name="SearchBoxPlaceholderText" xml:space="preserve">
+    <value>搜索</value>
+  </data>
 </root>

@@ -10,15 +10,16 @@
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{lex:Loc RecentDialogTitle}"
     Width="1200"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:RecentDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-    ui:WindowHelper.SystemBackdropType="None"
+    ui:TitleBar.ExtendViewIntoTitleBar="True"
+    ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
+    WindowChrome.IsHitTestVisibleInChrome="True"
     mc:Ignorable="d">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -40,91 +41,120 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
-    <Grid Margin="10">
-        <sf:SfDataGrid
-            x:Name="SfDataGrid"
-            AllowDeleting="True"
-            AllowResizingColumns="True"
-            AutoGenerateColumns="False"
-            ItemsSource="{Binding RecentItems}"
-            NavigationMode="Row"
-            SelectionMode="Extended"
-            ShowRowHeader="True">
-            <sf:SfDataGrid.Resources>
-                <ResourceDictionary>
-                    <Style TargetType="sf:GridRowHeaderCell">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="sf:GridRowHeaderCell">
-                                    <Border
-                                        x:Name="PART_RowHeaderCellBorder"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                        <Grid>
-                                            <TextBlock
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
-                                                TextAlignment="Center" />
-                                        </Grid>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ResourceDictionary>
-            </sf:SfDataGrid.Resources>
-            <i:Interaction.Behaviors>
-                <b:SfDataGridSizeChangedBehavior />
-                <b:SfDataGridQueryRowHeightBehavior />
-                <b:SfDataGridRecordDeletingBehavior />
-            </i:Interaction.Behaviors>
-            <sf:SfDataGrid.Columns>
-                <sf:GridTextColumn
-                    ColumnSizer="AutoWithLastColumnFill"
-                    HeaderText="{lex:Loc Path}"
-                    MappingName="FilePath"
-                    TextWrapping="WrapWithOverflow" />
-                <sf:GridDateTimeColumn
-                    Width="250"
-                    HeaderText="{lex:Loc OpenedTime}"
-                    MappingName="OpenedTime"
-                    Pattern="FullDateTime"
-                    TextAlignment="Center" />
-                <sf:GridTemplateColumn
-                    Width="100"
-                    HorizontalAlignment="Center"
-                    HeaderText="{lex:Loc Mark}"
-                    MappingName="IsPin">
-                    <sf:GridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox
-                                HorizontalAlignment="Center"
-                                IsChecked="{Binding IsPin}"
-                                Template="{StaticResource PinCheckBoxTemplate}" />
-                        </DataTemplate>
-                    </sf:GridTemplateColumn.CellTemplate>
-                </sf:GridTemplateColumn>
-                <sf:GridTemplateColumn
-                    Width="100"
-                    HorizontalAlignment="Center"
-                    AllowSorting="False"
-                    HeaderText="{lex:Loc Open}">
-                    <sf:GridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button
-                                HorizontalAlignment="Center"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.OpenCommand}"
-                                CommandParameter="{Binding}">
-                                <ui:FontIcon Glyph="&#xe8ad;" />
-                            </Button>
-                        </DataTemplate>
-                    </sf:GridTemplateColumn.CellTemplate>
-                </sf:GridTemplateColumn>
-            </sf:SfDataGrid.Columns>
-        </sf:SfDataGrid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Height="48">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                Margin="20,0,0,0"
+                VerticalAlignment="Center"
+                Text="{lex:Loc RecentDialogTitle}" />
+            <ui:AutoSuggestBox
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
+                QuerySubmitted="SearchBox_QuerySubmitted"
+                TextChanged="SearchBox_TextChanged">
+                <ui:AutoSuggestBox.QueryIcon>
+                    <ui:FontIcon Glyph="&#xe721;" />
+                </ui:AutoSuggestBox.QueryIcon>
+            </ui:AutoSuggestBox>
+        </Grid>
+        <Grid Grid.Row="1" Margin="10">
+            <sf:SfDataGrid
+                x:Name="SfDataGrid"
+                AllowDeleting="True"
+                AllowResizingColumns="True"
+                AutoGenerateColumns="False"
+                ItemsSource="{Binding RecentItems}"
+                NavigationMode="Row"
+                SelectionMode="Extended"
+                ShowRowHeader="True">
+                <sf:SfDataGrid.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="sf:GridRowHeaderCell">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="sf:GridRowHeaderCell">
+                                        <Border
+                                            x:Name="PART_RowHeaderCellBorder"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <Grid>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    TextAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ResourceDictionary>
+                </sf:SfDataGrid.Resources>
+                <i:Interaction.Behaviors>
+                    <b:SfDataGridSizeChangedBehavior />
+                    <b:SfDataGridQueryRowHeightBehavior />
+                    <b:SfDataGridRecordDeletingBehavior />
+                </i:Interaction.Behaviors>
+                <sf:SfDataGrid.Columns>
+                    <sf:GridTextColumn
+                        ColumnSizer="AutoWithLastColumnFill"
+                        HeaderText="{lex:Loc Path}"
+                        MappingName="FilePath"
+                        TextWrapping="WrapWithOverflow" />
+                    <sf:GridDateTimeColumn
+                        Width="250"
+                        HeaderText="{lex:Loc OpenedTime}"
+                        MappingName="OpenedTime"
+                        Pattern="FullDateTime"
+                        TextAlignment="Center" />
+                    <sf:GridTemplateColumn
+                        Width="100"
+                        HorizontalAlignment="Center"
+                        HeaderText="{lex:Loc Mark}"
+                        MappingName="IsPin">
+                        <sf:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding IsPin}"
+                                    Template="{StaticResource PinCheckBoxTemplate}" />
+                            </DataTemplate>
+                        </sf:GridTemplateColumn.CellTemplate>
+                    </sf:GridTemplateColumn>
+                    <sf:GridTemplateColumn
+                        Width="100"
+                        HorizontalAlignment="Center"
+                        AllowSorting="False"
+                        HeaderText="{lex:Loc Open}"
+                        MappingName="Null">
+                        <sf:GridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    HorizontalAlignment="Center"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.OpenCommand}"
+                                    CommandParameter="{Binding}">
+                                    <ui:FontIcon Glyph="&#xe8ad;" />
+                                </Button>
+                            </DataTemplate>
+                        </sf:GridTemplateColumn.CellTemplate>
+                    </sf:GridTemplateColumn>
+                </sf:SfDataGrid.Columns>
+            </sf:SfDataGrid>
+        </Grid>
     </Grid>
 </Window>
