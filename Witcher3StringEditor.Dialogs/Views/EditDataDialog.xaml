@@ -9,7 +9,7 @@
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{Binding Title}"
     Width="800"
-    Height="600"
+    Height="800"
     d:DataContext="{d:DesignInstance Type=vm:EditDataDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"

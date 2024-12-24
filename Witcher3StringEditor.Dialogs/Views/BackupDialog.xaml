@@ -11,8 +11,8 @@
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc BackupDialogTitle}"
-    Width="900"
-    Height="600"
+    Width="1200"
+    Height="800"
     d:DataContext="{d:DesignInstance Type=vm:BackupDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
@@ -29,11 +29,6 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="10" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
                 <sf:SfDataGrid
                     x:Name="DataGrid"
                     Grid.ColumnSpan="3"
@@ -42,6 +37,9 @@
                     ItemsSource="{Binding BackupItems}"
                     NavigationMode="Row"
                     ShowRowHeader="True">
+                    <sf:SfDataGrid.SortColumnDescriptions>
+                        <sf:SortColumnDescription ColumnName="BackupTime" SortDirection="Descending" />
+                    </sf:SfDataGrid.SortColumnDescriptions>
                     <sf:SfDataGrid.Resources>
                         <ResourceDictionary>
                             <Style TargetType="sf:GridRowHeaderCell">
@@ -91,55 +89,49 @@
                             HeaderText="{lex:Loc BackupPath}"
                             MappingName="BackupPath"
                             TextWrapping="Wrap" />
-                        <sf:GridTextColumn
+                        <sf:GridDateTimeColumn
                             HeaderText="{lex:Loc BackupTime}"
                             MappingName="BackupTime"
+                            Pattern="FullDateTime"
                             TextAlignment="Center" />
+                        <sf:GridTemplateColumn
+                            Width="100"
+                            HorizontalAlignment="Center"
+                            AllowSorting="False"
+                            HeaderText="{lex:Loc RestoreBtnContent}">
+                            <sf:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        HorizontalAlignment="Center"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RestoreCommand}"
+                                        CommandParameter="{Binding}">
+                                        <ui:FontIcon Glyph="&#xe777;" />
+                                    </Button>
+                                </DataTemplate>
+                            </sf:GridTemplateColumn.CellTemplate>
+                        </sf:GridTemplateColumn>
+                        <sf:GridTemplateColumn
+                            Width="100"
+                            HorizontalAlignment="Center"
+                            AllowSorting="False"
+                            HeaderText="{lex:Loc DeleteBtnContent}">
+                            <sf:GridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        HorizontalAlignment="Center"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteCommand}"
+                                        CommandParameter="{Binding}">
+                                        <ui:FontIcon Glyph="&#xe74d;" />
+                                    </Button>
+                                </DataTemplate>
+                            </sf:GridTemplateColumn.CellTemplate>
+                        </sf:GridTemplateColumn>
                     </sf:SfDataGrid.Columns>
                 </sf:SfDataGrid>
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    Width="100"
-                    HorizontalAlignment="Right"
-                    Command="{Binding RestoreCommand}"
-                    CommandParameter="{Binding SelectedItem, ElementName=DataGrid}"
-                    Content="{lex:Loc RestoreBtnContent}">
-                    <Button.Style>
-                        <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Width="100"
-                    HorizontalAlignment="Center"
-                    Command="{Binding DeleteCommand}"
-                    CommandParameter="{Binding SelectedItem, ElementName=DataGrid}"
-                    Content="{lex:Loc DeleteBtnContent}">
-                    <Button.Style>
-                        <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}" Value="{x:Null}">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <Button
-                    Grid.Row="2"
-                    Grid.Column="2"
-                    Width="100"
-                    HorizontalAlignment="Left"
-                    Command="{Binding CloseCommand}"
-                    Content="{lex:Loc CloseBtnContent}" />
             </Grid>
         </Border>
     </Grid>

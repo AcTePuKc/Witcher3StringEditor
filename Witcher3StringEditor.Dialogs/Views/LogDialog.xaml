@@ -11,8 +11,8 @@
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc LogDialogTitle}"
-    Width="800"
-    Height="600"
+    Width="1200"
+    Height="800"
     d:DataContext="{d:DesignInstance Type=vm:LogDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
@@ -62,10 +62,11 @@
                 <b:SfDataGridAutoScrollToEndBehavior />
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
-                <sf:GridTextColumn
+                <sf:GridDateTimeColumn
                     Width="200"
                     HeaderText="{lex:Loc LogTime}"
                     MappingName="Timestamp"
+                    Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
                     Width="100"
