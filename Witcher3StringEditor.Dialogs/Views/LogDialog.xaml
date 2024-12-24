@@ -89,7 +89,6 @@
                 <i:Interaction.Behaviors>
                     <b:SfDataGridSizeChangedBehavior />
                     <b:SfDataGridQueryRowHeightBehavior />
-                    <b:SfDataGridAutoScrollToEndBehavior />
                 </i:Interaction.Behaviors>
                 <sf:SfDataGrid.Columns>
                     <sf:GridDateTimeColumn
