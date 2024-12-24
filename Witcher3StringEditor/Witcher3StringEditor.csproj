@@ -36,7 +36,7 @@
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
         <PackageReference Include="Serilog.Sinks.Observable" Version="3.0.0" />
-        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="28.1.35" />
+        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="28.1.36" />
         <PackageReference Include="System.Reactive" Version="6.0.1" />
         <PackageReference Include="Timestamp" Version="1.0.2" />
         <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
