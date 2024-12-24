@@ -159,7 +159,7 @@
             Grid.Row="2"
             HorizontalAlignment="Center"
             NumericButtonCount="10"
-            PageSize="30"
+            PageSize="15"
             Source="{Binding BackupItems}" />
     </Grid>
 </Window>
