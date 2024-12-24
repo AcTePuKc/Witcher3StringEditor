@@ -3,7 +3,7 @@ using Syncfusion.UI.Xaml.Grid;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
-internal class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
+public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
 {
     //To get the calculated height from GetAutoRowHeight method.
     private double autoHeight = double.NaN;

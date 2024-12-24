@@ -4,7 +4,7 @@ using Syncfusion.UI.Xaml.Grid.Helpers;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
-internal class SfDataGridSizeChangedBehavior : Behavior<SfDataGrid>
+public class SfDataGridSizeChangedBehavior : Behavior<SfDataGrid>
 {
     protected override void OnAttached()
     {
