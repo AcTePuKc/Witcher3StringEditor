@@ -50,66 +50,66 @@
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
         </Grid>
-        <Grid Grid.Row="1" Margin="10">
-            <sf:SfDataGrid
-                x:Name="SfDataGrid"
-                AllowDeleting="True"
-                AutoGenerateColumns="False"
-                ColumnSizer="AutoWithLastColumnFill"
-                HeaderRowHeight="25"
-                ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
-                NavigationMode="Row"
-                RowHeight="30"
-                SelectionMode="Extended"
-                ShowRowHeader="True">
-                <sf:SfDataGrid.Resources>
-                    <ResourceDictionary>
-                        <Style TargetType="sf:GridRowHeaderCell">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="sf:GridRowHeaderCell">
-                                        <Border
-                                            x:Name="PART_RowHeaderCellBorder"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}">
-                                            <Grid>
-                                                <TextBlock
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    TextAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ResourceDictionary>
-                </sf:SfDataGrid.Resources>
-                <i:Interaction.Behaviors>
-                    <b:SfDataGridSizeChangedBehavior />
-                    <b:SfDataGridQueryRowHeightBehavior />
-                </i:Interaction.Behaviors>
-                <sf:SfDataGrid.Columns>
-                    <sf:GridDateTimeColumn
-                        Width="200"
-                        HeaderText="{lex:Loc LogTime}"
-                        MappingName="Timestamp"
-                        Pattern="FullDateTime"
-                        TextAlignment="Center" />
-                    <sf:GridTextColumn
-                        Width="100"
-                        HeaderText="{lex:Loc LogLevel}"
-                        MappingName="Level"
-                        TextAlignment="Center" />
-                    <sf:GridTextColumn
-                        HeaderText="{lex:Loc LogMessage}"
-                        MappingName="MessageTemplate.Text"
-                        TextWrapping="WrapWithOverflow" />
-                </sf:SfDataGrid.Columns>
-            </sf:SfDataGrid>
-        </Grid>
+        <sf:SfDataGrid
+            x:Name="SfDataGrid"
+            Grid.Row="1"
+            Margin="10"
+            AllowDeleting="True"
+            AutoGenerateColumns="False"
+            ColumnSizer="AutoWithLastColumnFill"
+            HeaderRowHeight="25"
+            ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
+            NavigationMode="Row"
+            RowHeight="30"
+            SelectionMode="Extended"
+            ShowRowHeader="True">
+            <sf:SfDataGrid.Resources>
+                <ResourceDictionary>
+                    <Style TargetType="sf:GridRowHeaderCell">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="sf:GridRowHeaderCell">
+                                    <Border
+                                        x:Name="PART_RowHeaderCellBorder"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                        <Grid>
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
+                                                TextAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ResourceDictionary>
+            </sf:SfDataGrid.Resources>
+            <i:Interaction.Behaviors>
+                <b:SfDataGridSizeChangedBehavior />
+                <b:SfDataGridQueryRowHeightBehavior />
+            </i:Interaction.Behaviors>
+            <sf:SfDataGrid.Columns>
+                <sf:GridDateTimeColumn
+                    Width="200"
+                    HeaderText="{lex:Loc LogTime}"
+                    MappingName="Timestamp"
+                    Pattern="FullDateTime"
+                    TextAlignment="Center" />
+                <sf:GridTextColumn
+                    Width="100"
+                    HeaderText="{lex:Loc LogLevel}"
+                    MappingName="Level"
+                    TextAlignment="Center" />
+                <sf:GridTextColumn
+                    HeaderText="{lex:Loc LogMessage}"
+                    MappingName="MessageTemplate.Text"
+                    TextWrapping="WrapWithOverflow" />
+            </sf:SfDataGrid.Columns>
+        </sf:SfDataGrid>
         <sf:SfDataPager
             x:Name="SfDataPager"
             Grid.Row="2"

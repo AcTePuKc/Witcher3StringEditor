@@ -188,7 +188,7 @@
             AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
             HeaderRowHeight="25"
-            ItemsSource="{Binding PagedSource, ElementName=DataPager, Mode=TwoWay}"
+            ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             NavigationMode="Cell"
             RowHeight="30"
             SelectionMode="Extended"
@@ -253,7 +253,7 @@
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
         <sf:SfDataPager
-            x:Name="DataPager"
+            x:Name="SfDataPager"
             Grid.Row="3"
             HorizontalAlignment="Center"
             NumericButtonCount="10"
