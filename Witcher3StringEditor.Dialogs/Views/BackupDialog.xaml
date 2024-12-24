@@ -37,9 +37,6 @@
                     ItemsSource="{Binding BackupItems}"
                     NavigationMode="Row"
                     ShowRowHeader="True">
-                    <sf:SfDataGrid.SortColumnDescriptions>
-                        <sf:SortColumnDescription ColumnName="BackupTime" SortDirection="Descending" />
-                    </sf:SfDataGrid.SortColumnDescriptions>
                     <sf:SfDataGrid.Resources>
                         <ResourceDictionary>
                             <Style TargetType="sf:GridRowHeaderCell">

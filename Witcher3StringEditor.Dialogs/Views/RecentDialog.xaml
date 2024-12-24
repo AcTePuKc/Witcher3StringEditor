@@ -49,8 +49,7 @@
             ItemsSource="{Binding RecentItems}"
             NavigationMode="Row"
             SelectionMode="Extended"
-            ShowRowHeader="True"
-            ShowSortNumbers="True">
+            ShowRowHeader="True">
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
                     <Style TargetType="sf:GridRowHeaderCell">
@@ -76,12 +75,6 @@
                     </Style>
                 </ResourceDictionary>
             </sf:SfDataGrid.Resources>
-            <sf:SfDataGrid.SortColumnDescriptions>
-                <sf:SortColumnDescriptions>
-                    <sf:SortColumnDescription ColumnName="IsPin" SortDirection="Descending" />
-                    <sf:SortColumnDescription ColumnName="OpenedTime" SortDirection="Descending" />
-                </sf:SortColumnDescriptions>
-            </sf:SfDataGrid.SortColumnDescriptions>
             <i:Interaction.Behaviors>
                 <b:SfDataGridSizeChangedBehavior />
                 <b:SfDataGridQueryRowHeightBehavior />
