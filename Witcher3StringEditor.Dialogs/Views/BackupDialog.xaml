@@ -26,6 +26,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Height="48">
             <Grid.ColumnDefinitions>
@@ -60,7 +61,7 @@
                 Grid.ColumnSpan="3"
                 AutoGenerateColumns="False"
                 ColumnSizer="Star"
-                ItemsSource="{Binding BackupItems}"
+                ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
                 NavigationMode="Row"
                 ShowRowHeader="True">
                 <sf:SfDataGrid.Resources>
@@ -158,5 +159,12 @@
                 </sf:SfDataGrid.Columns>
             </sf:SfDataGrid>
         </Grid>
+        <sf:SfDataPager
+            x:Name="SfDataPager"
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            NumericButtonCount="10"
+            PageSize="30"
+            Source="{Binding BackupItems}" />
     </Grid>
 </Window>
