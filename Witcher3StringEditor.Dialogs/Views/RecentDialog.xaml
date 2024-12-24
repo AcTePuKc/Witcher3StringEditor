@@ -48,6 +48,7 @@
             AllowResizingColumns="True"
             AllowSorting="False"
             AutoGenerateColumns="False"
+            ColumnSizer="AutoWithLastColumnFill"
             ItemsSource="{Binding RecentItems}"
             NavigationMode="Row"
             SelectionMode="Extended"
