@@ -15,13 +15,12 @@ public partial class RecentDialog
         SfDataGrid.SearchHelper.AllowFiltering = true;
     }
 
-    private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        SfDataGrid.SearchHelper.Search(args.QueryText);
-    }
+    private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) 
+        => SfDataGrid.SearchHelper.Search(args.QueryText);
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (string.IsNullOrEmpty(sender.Text)) SfDataGrid.SearchHelper.ClearSearch();
+        if (string.IsNullOrEmpty(sender.Text)) 
+            SfDataGrid.SearchHelper.ClearSearch();
     }
 }

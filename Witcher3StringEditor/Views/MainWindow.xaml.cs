@@ -22,15 +22,16 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent();
-        DataGrid.SearchHelper.AllowFiltering = true;
+        SfDataGrid.SearchHelper.AllowFiltering = true;
+        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
 
         WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(openFileRecipient, "FileOpened", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.OpenFileWarning, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
+        
         });
-
         WeakReferenceMessenger.Default.Register<ReturnNothingStringRecipient, ReturnNothingStringMessage, string>(aboutInformationRecipient, "AboutInformation", static (r, m) =>
         {
             r.Receive(m);
@@ -40,12 +41,12 @@ public partial class MainWindow
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        DataGrid.SearchHelper.Search(args.QueryText);
+        SfDataGrid.SearchHelper.Search(args.QueryText);
     }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (string.IsNullOrEmpty(sender.Text)) DataGrid.SearchHelper.ClearSearch();
+        if (string.IsNullOrEmpty(sender.Text)) SfDataGrid.SearchHelper.ClearSearch();
     }
 
     private void Window_Closed(object sender, EventArgs e)

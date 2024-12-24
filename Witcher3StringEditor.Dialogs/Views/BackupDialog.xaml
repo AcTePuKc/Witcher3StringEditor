@@ -56,7 +56,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <sf:SfDataGrid
-                x:Name="DataGrid"
+                x:Name="SfDataGrid"
                 Grid.ColumnSpan="3"
                 AutoGenerateColumns="False"
                 ColumnSizer="Star"

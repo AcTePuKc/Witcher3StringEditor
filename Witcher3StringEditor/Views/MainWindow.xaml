@@ -177,7 +177,7 @@
             </ui:AppBarButton>
         </ui:CommandBar>
         <sf:SfDataGrid
-            x:Name="DataGrid"
+            x:Name="SfDataGrid"
             Grid.Row="2"
             Margin="10,10"
             HorizontalContentAlignment="Center"
