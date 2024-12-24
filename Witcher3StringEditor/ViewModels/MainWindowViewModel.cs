@@ -78,9 +78,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         await CheckSettings();
-        IsUpdateAvailable = await CheckUpdate();
         var settings = settingsManager.Load<Settings>();
         serializer = new W3Serializer(settings.W3StringsPath);
+        IsUpdateAvailable = await CheckUpdate();
     }
 
     [RelayCommand]
