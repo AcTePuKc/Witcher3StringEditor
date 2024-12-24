@@ -11,11 +11,9 @@ using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BackupDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
+public partial class BackupDialogViewModel : ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;
-
-    public event EventHandler? RequestClose;
 
     public ObservableCollection<IBackupItem> BackupItems { get; }
 
@@ -43,11 +41,5 @@ public partial class BackupDialogViewModel : ObservableObject, IModalDialogViewM
             BackupItems.Remove(backupItem);
             BackupManger.Instance.Delete(backupItem);
         }
-    }
-
-    [RelayCommand]
-    private void Close()
-    {
-        RequestClose?.Invoke(this, EventArgs.Empty);
     }
 }
