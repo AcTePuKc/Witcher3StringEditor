@@ -2,9 +2,9 @@
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.Grid.Helpers;
 
-namespace Witcher3StringEditor.Behaviors;
+namespace Witcher3StringEditor.Dialogs.Behaviors;
 
-internal class SfDataGridCurrentCellEndEditBehavior:Behavior<SfDataGrid>
+public class SfDataGridCurrentCellEndEditBehavior : Behavior<SfDataGrid>
 {
     protected override void OnAttached()
     {

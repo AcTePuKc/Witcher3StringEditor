@@ -221,8 +221,8 @@
             <i:Interaction.Behaviors>
                 <b2:SfDataGridSizeChangedBehavior />
                 <b2:SfDataGridQueryRowHeightBehavior />
-                <b1:SfDataGridCurrentCellEndEditBehavior />
-                <b1:FrameworkElementDropFileBehavior Data="{Binding DropFileData, Mode=TwoWay}" />
+                <b2:SfDataGridCurrentCellEndEditBehavior />
+                <b2:FrameworkElementDropFileBehavior Data="{Binding DropFileData, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">

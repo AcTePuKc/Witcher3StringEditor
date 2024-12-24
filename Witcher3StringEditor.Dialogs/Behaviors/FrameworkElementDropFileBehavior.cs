@@ -2,9 +2,9 @@
 using Microsoft.Xaml.Behaviors;
 using System.Windows;
 
-namespace Witcher3StringEditor.Behaviors;
+namespace Witcher3StringEditor.Dialogs.Behaviors;
 
-internal class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
+public class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
 {
     public string[] Data
     {
