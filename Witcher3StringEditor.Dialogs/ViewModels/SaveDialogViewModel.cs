@@ -19,7 +19,7 @@ public partial class SaveDialogViewModel : ObservableObject, IModalDialogViewMod
     public SaveDialogViewModel(string path, IEnumerable<IW3Item> w3Items, W3Serializer serializer, IAppSettings appSettings)
     {
         this.serializer = serializer;
-        var items 
+        var items
             = w3Items as IW3Item[] ?? w3Items.ToArray();
         W3Job = new W3Job
         {
