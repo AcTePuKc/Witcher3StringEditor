@@ -28,6 +28,18 @@ public partial class App
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
             .CreateLogger();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
+        Ioc.Default.ConfigureServices(
+            new ServiceCollection()
+                .AddLogging(builder => builder.AddSerilog())
+                .AddSingleton<IDialogService>(new DialogService(new DialogManager(CreatStrongViewLocator()), Ioc.Default.GetService))
+                .AddTransient<MainWindowViewModel>()
+                .BuildServiceProvider());
+
+        LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
+    }
+
+    private static StrongViewLocator CreatStrongViewLocator()
+    {
         var viewLocator = new StrongViewLocator();
         viewLocator.Register<EditDataDialogViewModel, EditDataDialog>();
         viewLocator.Register<DeleteDataDialogViewModel, DeleteDataDialog>();
@@ -37,13 +49,6 @@ public partial class App
         viewLocator.Register<SettingDialogViewModel, SettingsDialog>();
         viewLocator.Register<TranslateDiaglogViewModel,TranslateDiaglog>();
         viewLocator.Register<RecentDialogViewModel, RecentDialog>();
-        Ioc.Default.ConfigureServices(
-            new ServiceCollection()
-                .AddLogging(builder => builder.AddSerilog())
-                .AddSingleton<IDialogService>(new DialogService(new DialogManager(viewLocator), Ioc.Default.GetService))
-                .AddTransient<MainWindowViewModel>()
-                .BuildServiceProvider());
-
-        LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
+        return viewLocator;
     }
 }
