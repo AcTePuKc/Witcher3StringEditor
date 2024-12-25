@@ -1,21 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class SettingDialogViewModel(Settings settings) : ObservableObject, IModalDialogViewModel
+public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogService dialogService) : ObservableObject, IModalDialogViewModel
 {
-    private readonly IDialogService dialogService = Ioc.Default.GetRequiredService<IDialogService>();
-
-    [ObservableProperty]
-    private Settings settings = settings;
-
     public bool? DialogResult => true;
+
+    public IAppSettings AppSettings { get; } = appSettings;
 
     [RelayCommand]
     private async Task SetW3StringsPath()
@@ -27,7 +23,10 @@ public partial class SettingDialogViewModel(Settings settings) : ObservableObjec
             SuggestedFileName = "w3strings"
         };
         var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
-        if (storageFile is { Name: "w3strings.exe" }) Settings.W3StringsPath = storageFile.LocalPath;
+        if (storageFile is { Name: "w3strings.exe" })
+        {
+            AppSettings.W3StringsExePath = storageFile.LocalPath;
+        }
     }
 
     [RelayCommand]
@@ -40,6 +39,9 @@ public partial class SettingDialogViewModel(Settings settings) : ObservableObjec
             SuggestedFileName = "witcher3"
         };
         var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
-        if (storageFile is { Name: "witcher3.exe" }) Settings.GameExePath = storageFile.LocalPath;
+        if (storageFile is { Name: "witcher3.exe" })
+        {
+            AppSettings.GameExePath = storageFile.LocalPath;
+        }
     }
 }

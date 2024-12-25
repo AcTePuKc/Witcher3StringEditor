@@ -67,7 +67,7 @@
         <TextBox
             ui:ControlHelper.PlaceholderText="{lex:Loc W3StringsPath}"
             IsReadOnly="True"
-            Text="{Binding Settings.W3StringsPath}" />
+            Text="{Binding AppSettings.W3StringsExePath, Mode=OneWay}" />
         <Button
             Grid.Row="0"
             Grid.Column="2"
@@ -81,7 +81,7 @@
             Grid.Column="0"
             ui:ControlHelper.PlaceholderText="{lex:Loc GameExePath}"
             IsReadOnly="True"
-            Text="{Binding Settings.GameExePath}" />
+            Text="{Binding AppSettings.GameExePath, Mode=OneWay}" />
         <Button
             Grid.Row="2"
             Grid.Column="2"
@@ -100,14 +100,14 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 ItemsSource="{StaticResource FileTypeArray}"
-                SelectedItem="{Binding Settings.PreferredFileType, Mode=TwoWay}" />
+                SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
             <TextBlock VerticalAlignment="Center" Text="{lex:Loc PreferredLanguage}" />
             <ComboBox
                 Margin="10,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 ItemsSource="{StaticResource W3LanguageArray}"
-                SelectedItem="{Binding Settings.PreferredLanguage}" />
+                SelectedItem="{Binding AppSettings.PreferredLanguage}" />
         </StackPanel>
     </Grid>
 </Window>

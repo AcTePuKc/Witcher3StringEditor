@@ -1,0 +1,26 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Witcher3StringEditor.Core.Common;
+using Witcher3StringEditor.Core.Interfaces;
+
+namespace Witcher3StringEditor.Models;
+
+public partial class AppSettings : ObservableObject, IAppSettings
+{
+    [ObservableProperty]
+    private IEnumerable<IRecentItem>? recentItems = [];
+
+    [ObservableProperty]
+    private IEnumerable<IBackupItem>? backupItems = [];
+
+    [ObservableProperty]
+    private FileType preferredFileType;
+
+    [ObservableProperty]
+    private W3Language preferredLanguage;
+
+    [ObservableProperty]
+    private string w3StringsExePath = string.Empty;
+
+    [ObservableProperty]
+    private string gameExePath = string.Empty;
+}

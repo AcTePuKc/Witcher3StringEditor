@@ -13,6 +13,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Witcher3StringEditor.Core;
+using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
@@ -25,10 +26,10 @@ namespace Witcher3StringEditor.ViewModels;
 internal partial class MainWindowViewModel : ObservableObject
 {
     private W3Serializer? serializer;
+    private readonly IAppSettings appSettings;
     private readonly IDialogService dialogService;
     private readonly LogEventRecipient logEventRecipient = new();
     private readonly ReturnNothingStringRecipient recentFileOpenedRecipient = new();
-    private readonly SettingsManager settingsManager = SettingsManager.Instance;
 
     [ObservableProperty]
     private bool isUpdateAvailable;
@@ -42,10 +43,10 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
 
-    public MainWindowViewModel(IDialogService dialogService)
+    public MainWindowViewModel(IAppSettings appSettings, IDialogService dialogService)
     {
+        this.appSettings = appSettings;
         this.dialogService = dialogService;
-
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -77,24 +78,24 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowLoaded()
     {
-        await CheckSettings();
-        var settings = settingsManager.Load<Settings>();
-        serializer = new W3Serializer(settings.W3StringsPath);
+        await CheckSettings(appSettings);
+        serializer = new W3Serializer(appSettings.W3StringsExePath);
         IsUpdateAvailable = await CheckUpdate();
     }
 
     [RelayCommand]
     private void WindowClosed()
-        => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
-
-    private async Task CheckSettings()
     {
-        var settings = settingsManager.Load<Settings>();
-        var validations = SettingsValidator.Instance;
+        WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
+    }
+
+    private async Task CheckSettings(IAppSettings settings)
+    {
+        var validations = AppSettingsValidator.Instance;
         var result = await validations.ValidateAsync(settings);
         if (!result.IsValid)
         {
-            var dialogViewModel = new SettingDialogViewModel(settings);
+            var dialogViewModel = new SettingDialogViewModel(appSettings, dialogService);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
         }
     }
@@ -207,8 +208,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
-        var settings = settingsManager.Load<Settings>();
-        var dialogViewModel = new SettingDialogViewModel(settings);
+        var dialogViewModel = new SettingDialogViewModel(appSettings, dialogService);
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 
@@ -219,8 +219,8 @@ internal partial class MainWindowViewModel : ObservableObject
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo
         {
-            FileName = settingsManager.Load<Settings>().GameExePath,
-            WorkingDirectory = Path.GetDirectoryName((string?)settingsManager.Load<Settings>().GameExePath),
+            FileName = appSettings.GameExePath,
+            WorkingDirectory = Path.GetDirectoryName(appSettings.GameExePath),
             RedirectStandardError = true,
             RedirectStandardOutput = true
         };
@@ -316,8 +316,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(object item)
     {
         if (item is not W3Item w3Item) return;
-        var index = W3Items.IndexOf(w3Item);
-        var diaglogViewModel = new TranslateDiaglogViewModel(W3Items, index);
+        var diaglogViewModel = new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 

@@ -4,8 +4,8 @@ using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
-using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Common;
+using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -15,7 +15,6 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     public bool? DialogResult => true;
 
     private readonly IEnumerable<W3Item> w3Items;
-    private readonly SettingsManager settingsManager = SettingsManager.Instance;
     private readonly MicrosoftTranslator translator = new();
 
     public ObservableCollection<Language> Languages { get; }
@@ -38,11 +37,11 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
     }
 
-    public TranslateDiaglogViewModel(IEnumerable<W3Item> w3Items, int index)
+    public TranslateDiaglogViewModel(IEnumerable<W3Item> w3Items, int index,IAppSettings appSettings)
     {
         this.w3Items = w3Items;
         IndexOfItems = index;
-        var language = settingsManager.Load<Settings>().PreferredLanguage;
+        var language = appSettings.PreferredLanguage;
         ToLanguage = language switch
         {
             W3Language.br => Language.GetLanguage("pt"),

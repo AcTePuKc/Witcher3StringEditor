@@ -48,10 +48,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="Locales\Strings.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
