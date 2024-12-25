@@ -26,25 +26,25 @@ internal class SettingDialogViewClosingBehavior : Behavior<SettingsDialog>
     private void AssociatedObject_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
         if (AssociatedObject.DataContext is not SettingDialogViewModel viewModel) return;
-        //var settings = viewModel.Settings;
-        //var validations = SettingsValidator.Instance;
-        //var result = validations.Validate(settings);
-        //if (!result.IsValid)
-        //{
-        //    e.Cancel = true;
+        var settings = viewModel.AppSettings;
+        var validations = AppSettingsValidator.Instance;
+        var result = validations.Validate(settings);
+        if (!result.IsValid)
+        {
+            e.Cancel = true;
 
-        //    if (MessageBox.Show(Strings.PleaseCheckSettings,
-        //            Strings.Warning,
-        //            MessageBoxButton.YesNo,
-        //            MessageBoxImage.Warning) ==
-        //        MessageBoxResult.Yes)
-        //    {
-        //        Environment.Exit(0);
-        //    }
-        //}
-        //else
-        //{
-        //    settingsManager.Save(settings);
-        //}
+            if (MessageBox.Show(Strings.PleaseCheckSettings,
+                    Strings.Warning,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) ==
+                MessageBoxResult.Yes)
+            {
+                Environment.Exit(0);
+            }
+        }
+        else
+        {
+            settingsManager.Save(settings);
+        }
     }
 }

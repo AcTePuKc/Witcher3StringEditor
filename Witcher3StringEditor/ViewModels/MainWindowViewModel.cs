@@ -194,7 +194,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]
     private async Task ShowSaveDialog()
     {
-        var dialogViewModel = new SaveDialogViewModel(W3Items, OutputFolder);
+        if (serializer == null) return;
+        var dialogViewModel = new SaveDialogViewModel(OutputFolder, W3Items, serializer, appSettings);
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 
