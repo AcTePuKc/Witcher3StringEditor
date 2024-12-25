@@ -14,6 +14,6 @@ public partial class AppSettingsValidator : AbstractValidator<IAppSettings>
     private AppSettingsValidator()
     {
         RuleFor(x => x.GameExePath).NotEmpty().Must(x => File.Exists(x) && Path.GetFileName(x) == "witcher3.exe");
-        RuleFor(x => x.W3StringsExePath).NotEmpty().Must(x => File.Exists(x) && Path.GetFileName(x) == "w3strings.exe");
+        RuleFor(x => x.W3StringsPath).NotEmpty().Must(x => File.Exists(x) && Path.GetFileName(x) == "w3strings.exe");
     }
 }

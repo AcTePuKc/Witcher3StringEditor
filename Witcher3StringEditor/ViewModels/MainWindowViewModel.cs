@@ -79,7 +79,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         await CheckSettings(appSettings);
-        serializer = new W3Serializer(appSettings.W3StringsExePath);
+        serializer = new W3Serializer(appSettings.W3StringsPath);
         IsUpdateAvailable = await CheckUpdate();
     }
 

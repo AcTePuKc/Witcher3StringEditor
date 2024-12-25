@@ -25,7 +25,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
         if (storageFile is { Name: "w3strings.exe" })
         {
-            AppSettings.W3StringsExePath = storageFile.LocalPath;
+            AppSettings.W3StringsPath = storageFile.LocalPath;
         }
     }
 

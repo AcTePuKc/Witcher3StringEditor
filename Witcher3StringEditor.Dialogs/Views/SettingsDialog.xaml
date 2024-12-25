@@ -67,7 +67,7 @@
         <TextBox
             ui:ControlHelper.PlaceholderText="{lex:Loc W3StringsPath}"
             IsReadOnly="True"
-            Text="{Binding AppSettings.W3StringsExePath, Mode=OneWay}" />
+            Text="{Binding AppSettings.W3StringsPath, Mode=OneWay}" />
         <Button
             Grid.Row="0"
             Grid.Column="2"
