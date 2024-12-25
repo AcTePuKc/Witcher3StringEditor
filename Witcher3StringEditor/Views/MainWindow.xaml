@@ -86,7 +86,7 @@
             </ui:AppBarButton>
             <ui:AppBarButton
                 Command="{Binding EditCommand}"
-                CommandParameter="{Binding SelectedItem, ElementName=DataGrid}"
+                CommandParameter="{Binding SelectedItem, ElementName=SfDataGrid}"
                 Label="{lex:Loc EditBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe70f;" />
@@ -94,7 +94,7 @@
                 <ui:AppBarButton.Style>
                     <Style TargetType="ui:AppBarButton">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}" Value="{x:Null}">
+                            <DataTrigger Binding="{Binding ElementName=SfDataGrid, Path=SelectedItem}" Value="{x:Null}">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -103,7 +103,7 @@
             </ui:AppBarButton>
             <ui:AppBarButton
                 Command="{Binding DeleteCommand}"
-                CommandParameter="{Binding SelectedItems, ElementName=DataGrid}"
+                CommandParameter="{Binding SelectedItems, ElementName=SfDataGrid}"
                 Label="{lex:Loc DeleteBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74d;" />
@@ -111,7 +111,7 @@
                 <ui:AppBarButton.Style>
                     <Style TargetType="ui:AppBarButton">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}" Value="{x:Null}">
+                            <DataTrigger Binding="{Binding ElementName=SfDataGrid, Path=SelectedItem}" Value="{x:Null}">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
                         </Style.Triggers>
@@ -120,7 +120,7 @@
             </ui:AppBarButton>
             <ui:AppBarButton
                 Command="{Binding ShowTranslateDialogCommand}"
-                CommandParameter="{Binding SelectedItem, ElementName=DataGrid}"
+                CommandParameter="{Binding SelectedItem, ElementName=SfDataGrid}"
                 Label="{lex:Loc TranslateBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xf2b7;" />
@@ -128,7 +128,7 @@
                 <ui:AppBarButton.Style>
                     <Style TargetType="ui:AppBarButton">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=DataGrid, Path=SelectedItem}" Value="{x:Null}">
+                            <DataTrigger Binding="{Binding ElementName=SfDataGrid, Path=SelectedItem}" Value="{x:Null}">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
                         </Style.Triggers>

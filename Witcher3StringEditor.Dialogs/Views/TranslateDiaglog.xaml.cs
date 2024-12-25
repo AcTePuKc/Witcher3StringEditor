@@ -3,9 +3,9 @@
 /// <summary>
 /// TranslateDiaglogView.xaml 的交互逻辑
 /// </summary>
-public partial class TranslateDiaglogView
+public partial class TranslateDiaglog
 {
-    public TranslateDiaglogView()
+    public TranslateDiaglog()
     {
         InitializeComponent();
     }

@@ -35,7 +35,7 @@ public partial class App
         viewLocator.Register<SaveDialogViewModel, SaveDialog>();
         viewLocator.Register<LogDialogViewModel, LogDialog>();
         viewLocator.Register<SettingDialogViewModel, SettingsDialog>();
-        viewLocator.Register<TranslateDiaglogViewModel,TranslateDiaglogView>();
+        viewLocator.Register<TranslateDiaglogViewModel,TranslateDiaglog>();
         viewLocator.Register<RecentDialogViewModel, RecentDialog>();
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
