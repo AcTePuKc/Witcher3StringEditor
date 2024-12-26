@@ -11,111 +11,110 @@ using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
 
-namespace Witcher3StringEditor.Dialogs.ViewModels
+namespace Witcher3StringEditor.Dialogs.ViewModels;
+
+public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDialogViewModel
 {
-    public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDialogViewModel
+    public bool? DialogResult => true;
+
+    private CancellationTokenSource? cancellationTokenSource;
+
+    private readonly MicrosoftTranslator translator = new();
+
+    [ObservableProperty]
+    private Language toLanguage;
+
+    [ObservableProperty]
+    private int maxValue;
+
+    [ObservableProperty]
+    private int startIndex = 1;
+
+    [ObservableProperty]
+    private int endIndex;
+
+    [ObservableProperty]
+    private int progressValue;
+
+    [ObservableProperty]
+    private int progressMaxValue;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    private bool isBusy;
+
+    public ObservableCollection<Language> Languages { get; }
+        = new(Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft)));
+
+    private readonly IEnumerable<IW3Item> w3Items;
+
+    public BatchTranslateDialogViewModel(IEnumerable<IW3Item> w3Items, IAppSettings appSettings)
     {
-        public bool? DialogResult => true;
-
-        private CancellationTokenSource? cancellationTokenSource;
-
-        private readonly MicrosoftTranslator translator = new();
-
-        [ObservableProperty]
-        private Language toLanguage;
-
-        [ObservableProperty]
-        private int maxValue;
-
-        [ObservableProperty]
-        private int startIndex = 1;
-
-        [ObservableProperty]
-        private int endIndex;
-
-        [ObservableProperty]
-        private int progressValue;
-
-        [ObservableProperty]
-        private int progressMaxValue;
-
-        [ObservableProperty]
-        [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
-        private bool isBusy;
-
-        public ObservableCollection<Language> Languages { get; }
-            = new(Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft)));
-
-        private readonly IEnumerable<IW3Item> w3Items;
-
-        public BatchTranslateDialogViewModel(IEnumerable<IW3Item> w3Items, IAppSettings appSettings)
+        var items = w3Items as IW3Item[] ?? w3Items.ToArray();
+        this.w3Items = items;
+        EndIndex = MaxValue = items.Length;
+        ToLanguage = appSettings.PreferredLanguage switch
         {
-            var items = w3Items as IW3Item[] ?? w3Items.ToArray();
-            this.w3Items = items;
-            EndIndex = MaxValue = items.Length;
-            ToLanguage = appSettings.PreferredLanguage switch
-            {
-                W3Language.br => Language.GetLanguage("pt"),
-                W3Language.cn => Language.GetLanguage("zh-CN"),
-                W3Language.esmx => Language.GetLanguage("es"),
-                W3Language.cz => Language.GetLanguage("cs"),
-                W3Language.jp => Language.GetLanguage("ja"),
-                W3Language.kr => Language.GetLanguage("ko"),
-                W3Language.zh => Language.GetLanguage("zh-TW"),
-                _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
-            };
-        }
+            W3Language.br => Language.GetLanguage("pt"),
+            W3Language.cn => Language.GetLanguage("zh-CN"),
+            W3Language.esmx => Language.GetLanguage("es"),
+            W3Language.cz => Language.GetLanguage("cs"),
+            W3Language.jp => Language.GetLanguage("ja"),
+            W3Language.kr => Language.GetLanguage("ko"),
+            W3Language.zh => Language.GetLanguage("zh-TW"),
+            _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
+        };
+    }
 
-        [RelayCommand]
-        private async Task Start()
+    [RelayCommand]
+    private async Task Start()
+    {
+        IsBusy = true;
+        ProgressValue = 0;
+        ProgressMaxValue = EndIndex - StartIndex + 1;
+        cancellationTokenSource = new CancellationTokenSource();
+        foreach (var item in w3Items.Skip(StartIndex - 1).Take(ProgressMaxValue))
         {
-            IsBusy = true;
-            ProgressValue = 0;
-            ProgressMaxValue = EndIndex - StartIndex + 1;
-            cancellationTokenSource = new CancellationTokenSource();
-            foreach (var item in w3Items.Skip(StartIndex - 1).Take(ProgressMaxValue))
+            if (cancellationTokenSource.IsCancellationRequested) return;
+            try
             {
-                if (cancellationTokenSource.IsCancellationRequested) return;
-                try
-                {
-                    var result = await translator.TranslateAsync(item.Text, ToLanguage);
-                    item.Text = result.Translation;
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex.Message);
-                }
-                ProgressValue++;
+                var result = await translator.TranslateAsync(item.Text, ToLanguage);
+                item.Text = result.Translation;
             }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+            ProgressValue++;
+        }
+        IsBusy = false;
+    }
+
+    private bool CanCancel => IsBusy;
+
+    [RelayCommand(CanExecute = nameof(CanCancel))]
+    private async Task Cancel()
+    {
+        if (IsBusy && cancellationTokenSource != null)
+        {
+            await cancellationTokenSource.CancelAsync();
             IsBusy = false;
         }
+    }
 
-        private bool CanCancel => IsBusy;
-
-        [RelayCommand(CanExecute = nameof(CanCancel))]
-        private async Task Cancel()
+    [RelayCommand]
+    private async Task Closing(CancelEventArgs e)
+    {
+        if (IsBusy && cancellationTokenSource != null)
         {
-            if (IsBusy && cancellationTokenSource != null)
+            if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "BatchTranslateDialogClosing"))
+            {
+                e.Cancel = true;
+            }
+            else
             {
                 await cancellationTokenSource.CancelAsync();
                 IsBusy = false;
-            }
-        }
-
-        [RelayCommand]
-        private async Task Closing(CancelEventArgs e)
-        {
-            if (IsBusy && cancellationTokenSource != null)
-            {
-                if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "BatchTranslateDialogClosing"))
-                {
-                    e.Cancel = true;
-                }
-                else
-                {
-                    await cancellationTokenSource.CancelAsync();
-                    IsBusy = false;
-                }
             }
         }
     }
