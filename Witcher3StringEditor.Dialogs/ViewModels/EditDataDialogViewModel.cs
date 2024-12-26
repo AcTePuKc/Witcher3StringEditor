@@ -6,10 +6,10 @@ using Witcher3StringEditor.Dialogs.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class EditDataDialogViewModel(IW3Item? w3Item = null)
+public partial class EditDataDialogViewModel(IW3Item w3Item)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    public string Title { get; } = w3Item == null ? Strings.AddDialogTitle : Strings.EditDialogTitle;
+    public string Title { get; } = w3Item.StrId == string.Empty ? Strings.AddDialogTitle : Strings.EditDialogTitle;
 
     public IW3Item? W3Item { get; } = w3Item?.Clone() as IW3Item;
 
