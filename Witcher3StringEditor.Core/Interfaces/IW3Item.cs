@@ -2,6 +2,8 @@
 
 public interface IW3Item
 {
+    public Guid Id { get; }
+
     public string StrId { get; set; }
 
     public string KeyHex { get; set; }

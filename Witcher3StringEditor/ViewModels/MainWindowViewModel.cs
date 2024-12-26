@@ -153,7 +153,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var item = new W3Item(string.Empty, string.Empty, string.Empty, string.Empty);
         var dialogViewModel = new EditDataDialogViewModel(item);
         var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
-        if (result == true && dialogViewModel.W3Item != null) 
+        if (result == true && dialogViewModel.W3Item != null)
             W3Items.Add(dialogViewModel.W3Item);
     }
 
@@ -164,7 +164,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
         if (result == true && dialogViewModel.W3Item != null)
         {
-            var first = W3Items.First(x => x.StrId == w3Item.StrId);
+            var first = W3Items.First(x => x.Id == w3Item.Id);
             var index = W3Items.IndexOf(first);
             W3Items[index] = dialogViewModel.W3Item;
         }

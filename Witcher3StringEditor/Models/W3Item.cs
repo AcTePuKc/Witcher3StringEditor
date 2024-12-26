@@ -6,6 +6,8 @@ namespace Witcher3StringEditor.Models;
 
 public partial class W3Item : ObservableObject, IW3Item
 {
+    public Guid Id { get; }
+
     [ObservableProperty]
     [Display(Name = "Key(Hex)")]
     private string keyHex;
@@ -22,6 +24,7 @@ public partial class W3Item : ObservableObject, IW3Item
 
     public W3Item(string strId, string keyHex, string keyName, string text)
     {
+        Id = Guid.NewGuid();
         StrId = strId;
         KeyHex = keyHex;
         KeyName = keyName;
