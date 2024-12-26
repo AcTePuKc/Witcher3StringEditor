@@ -57,7 +57,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         if (!result.IsValid)
         {
             e.Cancel = true;
-            if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(e), "SettingsDialogClosing"))
+            if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "SettingsDialogClosing"))
                 Environment.Exit(0);
         }
     }
