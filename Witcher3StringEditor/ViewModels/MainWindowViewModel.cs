@@ -150,8 +150,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]
     private async Task Add()
     {
-        var item = new W3Item(string.Empty, string.Empty, string.Empty, string.Empty);
-        var dialogViewModel = new EditDataDialogViewModel(item);
+        var dialogViewModel = new EditDataDialogViewModel(new W3Item());
         var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
         if (result == true && dialogViewModel.W3Item != null)
             W3Items.Add(dialogViewModel.W3Item);

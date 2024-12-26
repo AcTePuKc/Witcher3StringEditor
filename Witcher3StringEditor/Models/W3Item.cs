@@ -22,7 +22,7 @@ public partial class W3Item : ObservableObject, IW3Item
 
     [ObservableProperty] private string text;
 
-    public W3Item(string strId, string keyHex, string keyName, string text)
+    public W3Item(string strId = "", string keyHex = "", string keyName = "", string text = "")
     {
         Id = Guid.NewGuid();
         StrId = strId;
