@@ -160,6 +160,6 @@
             HorizontalAlignment="Center"
             NumericButtonCount="10"
             PageSize="15"
-            Source="{Binding BackupItems}" />
+            Source="{Binding AppSettings.BackupItems}" />
     </Grid>
 </Window>

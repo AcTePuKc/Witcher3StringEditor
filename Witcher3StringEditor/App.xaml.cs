@@ -3,14 +3,15 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
 using System.IO;
 using System.Reactive;
-using System.Text.Json;
 using System.Windows;
+using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
@@ -31,8 +32,8 @@ public partial class App
     protected override void OnStartup(StartupEventArgs e)
     {
         appSettings = File.Exists(ConfigPath)
-            ? JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(ConfigPath)) ?? new AppSettings()
-            : (IAppSettings)new AppSettings();
+            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(ConfigPath)) ?? new AppSettings(string.Empty, FileType.w3Strings, W3Language.en, string.Empty, [], [])
+            : new AppSettings(string.Empty, FileType.w3Strings, W3Language.en, string.Empty, [], []);
         var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File(".\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
@@ -51,7 +52,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        File.WriteAllText(ConfigPath, JsonSerializer.Serialize(appSettings));
+        File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(appSettings));
         base.OnExit(e);
     }
 

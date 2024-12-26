@@ -10,7 +10,7 @@ using Witcher3StringEditor.Services;
 
 namespace Witcher3StringEditor.Serializers;
 
-internal class W3Serializer(string wstrings) : IW3Serializer
+internal class W3Serializer(IAppSettings appSettings) : IW3Serializer
 {
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
@@ -40,7 +40,7 @@ internal class W3Serializer(string wstrings) : IW3Serializer
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo
         {
-            FileName = wstrings,
+            FileName = appSettings.W3StringsPath,
             Arguments = Parser.Default.FormatCommandLine(new W3Options
             {
                 Decode = path
@@ -76,7 +76,7 @@ internal class W3Serializer(string wstrings) : IW3Serializer
         return await SerializeCsv(w3Job);
     }
 
-    private static async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
+    private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
     {
         var stringBuilder = new StringBuilder();
         var lang = w3Job.Language
@@ -94,12 +94,18 @@ internal class W3Serializer(string wstrings) : IW3Serializer
             stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
         var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         if (File.Exists(csvPath))
-            BackupService.Instance.Backup(csvPath);
+        {
+            var backupItem = new BackupService(appSettings).Backup(csvPath);
+            if (backupItem != null)
+            {
+                appSettings.BackupItems.Add(backupItem);
+            }
+        }
         await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
         return true;
     }
 
-    private static async Task<bool> SerializeCsv(IW3Job w3Job)
+    private async Task<bool> SerializeCsv(IW3Job w3Job)
     {
         return await SerializeCsv(w3Job, w3Job.Path);
     }
@@ -119,7 +125,7 @@ internal class W3Serializer(string wstrings) : IW3Serializer
             RedirectStandardOutput = true,
             UseShellExecute = false,
             CreateNoWindow = true,
-            FileName = wstrings,
+            FileName = appSettings.W3StringsPath,
             Arguments = w3Job.IsIgnoreIdSpaceCheck
                 ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
                 : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
@@ -133,7 +139,13 @@ internal class W3Serializer(string wstrings) : IW3Serializer
         if (process.ExitCode != 0) return false;
         var tempW3StringsPath = $"{csvPath}.w3strings";
         if (File.Exists(w3StringsPath))
-            BackupService.Instance.Backup(w3StringsPath);
+        {
+            var backupItem = new BackupService(appSettings).Backup(w3StringsPath);
+            if (backupItem != null)
+            {
+                appSettings.BackupItems.Add(backupItem);
+            }
+        }
         File.Copy(tempW3StringsPath, w3StringsPath, true);
         return true;
     }

@@ -1,30 +1,13 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
-using System.Text.Json;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;
 
-internal class BackupService : IBackupService
+internal class BackupService(IAppSettings appSettings) : IBackupService
 {
-    private readonly string backupPath;
-
-    private readonly string jsonPath;
-
-    private static readonly Lazy<BackupService> LazyInstance
-        = new(static () => new BackupService(".\\Backup"));
-
-    private readonly List<IBackupItem> backupItems;
-
-    public static BackupService Instance => LazyInstance.Value;
-
-    private BackupService(string path)
-    {
-        backupPath = path;
-        jsonPath = $"{path}\\History.json";
-        backupItems = GetAllBackup().ToList();
-    }
+    public readonly IAppSettings appSettings = appSettings;
 
     private static string ComputeSha256Hash(string filePath)
     {
@@ -34,22 +17,22 @@ internal class BackupService : IBackupService
         return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
     }
 
-    public void Backup(string path)
+    public IBackupItem? Backup(string path)
     {
         var backupItem = new BackupItem
         {
             FileName = Path.GetFileName(path),
             Hash = ComputeSha256Hash(path),
             OrginPath = path,
-            BackupPath = Path.Combine($"{backupPath}\\{Guid.NewGuid():N}.bak"),
+            BackupPath = Path.Combine($".\\Data\\{Guid.NewGuid():N}.bak"),
             BackupTime = DateTime.Now
         };
 
-        if (!Directory.Exists(backupPath))
-            Directory.CreateDirectory(backupPath);
-        if (backupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;
+        if (!Directory.Exists(".\\Data"))
+            Directory.CreateDirectory(".\\Data");
+        if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return null;
         File.Copy(backupItem.OrginPath, backupItem.BackupPath);
-        UpdateBackupRecords(backupItems.Append(backupItem));
+        return backupItem;
     }
 
     public void Restore(IBackupItem backupItem)
@@ -66,18 +49,6 @@ internal class BackupService : IBackupService
     {
         if (File.Exists(backupItem.BackupPath))
             File.Delete(backupItem.BackupPath);
-        backupItems.Remove(backupItem);
-        UpdateBackupRecords(backupItems);
-    }
-
-    private void UpdateBackupRecords(IEnumerable<IBackupItem> backups)
-    {
-        File.WriteAllText(jsonPath, JsonSerializer.Serialize(backups));
-    }
-
-    public IEnumerable<IBackupItem> GetAllBackup()
-    {
-        if (!File.Exists(jsonPath)) return [];
-        return JsonSerializer.Deserialize<IEnumerable<BackupItem>>(File.ReadAllText(jsonPath)) ?? [];
+        appSettings.BackupItems.Remove(backupItem);
     }
 }

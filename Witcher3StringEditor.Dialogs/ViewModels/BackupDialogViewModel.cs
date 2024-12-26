@@ -2,19 +2,16 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
-using System.Collections.ObjectModel;
-using System.IO;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BackupDialogViewModel(IBackupService backupService) : ObservableObject, IModalDialogViewModel
+public partial class BackupDialogViewModel(IBackupService backupService, IAppSettings appSettings) : ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;
 
-    public ObservableCollection<IBackupItem> BackupItems { get; }
-        = new(backupService.GetAllBackup().Where(x => File.Exists(x.BackupPath)));
+    public IAppSettings AppSettings => appSettings;
 
     [RelayCommand]
     private async Task Restore(IBackupItem backupItem)
@@ -30,7 +27,6 @@ public partial class BackupDialogViewModel(IBackupService backupService) : Obser
     {
         if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupDelete"))
         {
-            BackupItems.Remove(backupItem);
             backupService.Delete(backupItem);
         }
     }

@@ -50,7 +50,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         this.appSettings = appSettings;
         this.dialogService = dialogService;
-        backupService = BackupService.Instance;
+        backupService = new BackupService(appSettings);
         recentService = RecentService.Instance;
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
@@ -84,7 +84,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         await CheckSettings(appSettings);
-        serializer = new W3Serializer(appSettings.W3StringsPath);
+        serializer = new W3Serializer(appSettings);
         IsUpdateAvailable = await CheckUpdate();
     }
 
@@ -189,7 +189,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowBackupDialog()
     {
-        var dialogViewModel = new BackupDialogViewModel(backupService);
+        var dialogViewModel = new BackupDialogViewModel(backupService, appSettings);
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 
@@ -337,7 +337,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
-        var diaglogViewModel = new RecentDialogViewModel(recentService);
+        var diaglogViewModel = new RecentDialogViewModel(recentService,appSettings);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 }

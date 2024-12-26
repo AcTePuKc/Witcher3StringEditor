@@ -2,11 +2,9 @@
 
 public interface IBackupService
 {
-    public void Backup(string path);
+    public IBackupItem? Backup(string path);
 
     public void Restore(IBackupItem backupItem);
 
     public void Delete(IBackupItem backupItem);
-
-    public IEnumerable<IBackupItem> GetAllBackup();
 }

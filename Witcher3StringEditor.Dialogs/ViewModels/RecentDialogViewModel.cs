@@ -9,7 +9,7 @@ using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class RecentDialogViewModel(IRecentService recentService) : ObservableObject, IModalDialogViewModel, ICloseable
+public partial class RecentDialogViewModel(IRecentService recentService,IAppSettings appSettings) : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public bool? DialogResult => true;
 
@@ -17,6 +17,8 @@ public partial class RecentDialogViewModel(IRecentService recentService) : Obser
 
     public ObservableCollection<IRecentItem> RecentItems { get; }
         = new(recentService.GetRecentItems().Where(x => File.Exists(x.FilePath)));
+
+    public readonly IAppSettings appSettings = appSettings;
 
     [RelayCommand]
     private void Open(IRecentItem item)
