@@ -7,6 +7,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
 using Serilog.Events;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -87,6 +88,13 @@ internal partial class MainWindowViewModel : ObservableObject
     private void WindowClosed()
     {
         WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
+    }
+
+    [RelayCommand]
+    private async Task WindowClosing(CancelEventArgs e)
+    {
+        if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(e)) == true)
+            e.Cancel = true;
     }
 
     private async Task CheckSettings(IAppSettings settings)

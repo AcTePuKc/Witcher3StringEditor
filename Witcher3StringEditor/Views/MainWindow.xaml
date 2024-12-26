@@ -2,7 +2,6 @@
     x:Class="Witcher3StringEditor.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:b1="clr-namespace:Witcher3StringEditor.Behaviors"
     xmlns:b2="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors;assembly=Witcher3StringEditor.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -24,15 +23,15 @@
     WindowChrome.IsHitTestVisibleInChrome="True"
     WindowState="Maximized"
     mc:Ignorable="d">
-    <i:Interaction.Behaviors>
-        <b1:MainWindowClosingBehavior />
-    </i:Interaction.Behaviors>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Closed">
-            <i:InvokeCommandAction />
+            <i:InvokeCommandAction Command="{Binding WindowClosedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding WindowClosingCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
