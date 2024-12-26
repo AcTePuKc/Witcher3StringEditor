@@ -18,7 +18,7 @@ public partial class MainWindow
 {
     private readonly WindowClosingRecipient closingRecipient = new();
     private readonly FileOpenedRecipient fileOpenedRecipient = new();
-    private readonly ReturnNothingStringRecipient aboutInformationRecipient = new();
+    private readonly SimpleStringRecipient aboutInformationRecipient = new();
 
     public MainWindow()
     {
@@ -39,7 +39,7 @@ public partial class MainWindow
             m.Reply(MessageBox.Show(Strings.OpenFileWarning, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
         });
 
-        WeakReferenceMessenger.Default.Register<ReturnNothingStringRecipient, ReturnNothingStringMessage, string>(aboutInformationRecipient, "AboutInformation", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(aboutInformationRecipient, "AboutInformation", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(m.Message, Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);

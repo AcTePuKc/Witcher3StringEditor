@@ -274,7 +274,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var version = ThisAssembly.AssemblyInformationalVersion.Trim();
         var os = $"{RuntimeInformation.OSDescription}({RuntimeInformation.OSArchitecture})";
         var message = $"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}";
-        WeakReferenceMessenger.Default.Send(new ReturnNothingStringMessage(message), "AboutInformation");
+        WeakReferenceMessenger.Default.Send(new SimpleStringMessage(message), "AboutInformation");
     }
 
     private static string RetrieveTimestamp()
