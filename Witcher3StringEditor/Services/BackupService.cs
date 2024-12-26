@@ -24,12 +24,12 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             FileName = Path.GetFileName(path),
             Hash = ComputeSha256Hash(path),
             OrginPath = path,
-            BackupPath = Path.Combine($".\\Data\\{Guid.NewGuid():N}.bak"),
+            BackupPath = Path.Combine($".\\Backup\\{Guid.NewGuid():N}.bak"),
             BackupTime = DateTime.Now
         };
 
-        if (!Directory.Exists(".\\Data"))
-            Directory.CreateDirectory(".\\Data");
+        if (!Directory.Exists(".\\Backup"))
+            Directory.CreateDirectory(".\\Backup");
         if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return null;
         File.Copy(backupItem.OrginPath, backupItem.BackupPath);
         return backupItem;
