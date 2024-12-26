@@ -3,7 +3,7 @@ using Witcher3StringEditor.Core.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 
-public partial class RecentItem : ObservableObject, IRecentItem
+internal partial class RecentItem : ObservableObject, IRecentItem
 {
     [ObservableProperty]
     private string filePath;

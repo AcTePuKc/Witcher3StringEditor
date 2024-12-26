@@ -3,10 +3,10 @@ using Serilog;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Services;
 
 namespace Witcher3StringEditor.Serializers;
 
@@ -94,7 +94,7 @@ internal class W3Serializer(string wstrings) : IW3Serializer
             stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
         var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         if (File.Exists(csvPath))
-            BackupManger.Instance.Backup(csvPath);
+            BackupService.Instance.Backup(csvPath);
         await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
         return true;
     }
@@ -133,7 +133,7 @@ internal class W3Serializer(string wstrings) : IW3Serializer
         if (process.ExitCode != 0) return false;
         var tempW3StringsPath = $"{csvPath}.w3strings";
         if (File.Exists(w3StringsPath))
-            BackupManger.Instance.Backup(w3StringsPath);
+            BackupService.Instance.Backup(w3StringsPath);
         File.Copy(tempW3StringsPath, w3StringsPath, true);
         return true;
     }

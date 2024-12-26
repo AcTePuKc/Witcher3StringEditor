@@ -1,24 +1,25 @@
 ﻿using Newtonsoft.Json;
+using System.IO;
 using System.Security.Cryptography;
-using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Models;
 
-namespace Witcher3StringEditor.Core;
+namespace Witcher3StringEditor.Services;
 
-public class BackupManger
+internal class BackupService : IBackupService
 {
     private readonly string backupPath;
 
     private readonly string jsonPath;
 
-    private static readonly Lazy<BackupManger> LazyInstance
-        = new(static () => new BackupManger(".\\Backup"));
+    private static readonly Lazy<BackupService> LazyInstance
+        = new(static () => new BackupService(".\\Backup"));
 
     private readonly List<IBackupItem> backupItems;
 
-    public static BackupManger Instance => LazyInstance.Value;
+    public static BackupService Instance => LazyInstance.Value;
 
-    private BackupManger(string path)
+    private BackupService(string path)
     {
         backupPath = path;
         jsonPath = $"{path}\\History.json";

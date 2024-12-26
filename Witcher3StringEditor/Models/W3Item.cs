@@ -4,7 +4,7 @@ using Witcher3StringEditor.Core.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 
-public partial class W3Item : ObservableObject, IW3Item
+internal partial class W3Item : ObservableObject, IW3Item
 {
     public Guid Id { get; }
 

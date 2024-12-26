@@ -1,8 +1,8 @@
 ﻿using Witcher3StringEditor.Core.Interfaces;
 
-namespace Witcher3StringEditor.Core.Implements;
+namespace Witcher3StringEditor.Models;
 
-public record BackupItem : IBackupItem
+internal record BackupItem : IBackupItem
 {
     public required string FileName { get; init; }
     public required string Hash { get; init; }

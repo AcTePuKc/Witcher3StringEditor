@@ -4,40 +4,36 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
 using System.IO;
-using Witcher3StringEditor.Core;
-using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BackupDialogViewModel : ObservableObject, IModalDialogViewModel
+public partial class BackupDialogViewModel(IBackupService backupService) : ObservableObject, IModalDialogViewModel
 {
+    private readonly IBackupService backupService = backupService;
+
     public bool? DialogResult => true;
 
     public ObservableCollection<IBackupItem> BackupItems { get; }
-
-    public BackupDialogViewModel()
-    {
-        BackupItems = new ObservableCollection<IBackupItem>(BackupManger.Instance.GetAllBackup().Where(x => File.Exists(x.BackupPath)));
-    }
+        = new(backupService.GetAllBackup().Where(x => File.Exists(x.BackupPath)));
 
     [RelayCommand]
-    private static async Task Restore(BackupItem backupItem)
+    private async Task Restore(IBackupItem backupItem)
     {
         if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupRestore"))
         {
-            BackupManger.Instance.Restore(backupItem);
+            backupService.Restore(backupItem);
         }
     }
 
     [RelayCommand]
-    private async Task Delete(BackupItem backupItem)
+    private async Task Delete(IBackupItem backupItem)
     {
         if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupDelete"))
         {
             BackupItems.Remove(backupItem);
-            BackupManger.Instance.Delete(backupItem);
+            backupService.Delete(backupItem);
         }
     }
 }

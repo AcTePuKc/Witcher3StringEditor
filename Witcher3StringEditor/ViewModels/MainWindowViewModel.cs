@@ -29,7 +29,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private W3Serializer? serializer;
     private readonly IAppSettings appSettings;
     private readonly IDialogService dialogService;
-    private readonly IRecentService recentService;
+    private readonly IBackupService backupService;
+    private readonly RecentService recentService;
     private readonly LogEventRecipient logEventRecipient = new();
     private readonly FileOpenedRecipient recentFileOpenedRecipient = new();
 
@@ -49,6 +50,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         this.appSettings = appSettings;
         this.dialogService = dialogService;
+        this.backupService = BackupService.Instance;
         this.recentService = RecentService.Instance;
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
@@ -187,7 +189,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowBackupDialog()
     {
-        var dialogViewModel = new BackupDialogViewModel();
+        var dialogViewModel = new BackupDialogViewModel(backupService);
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 

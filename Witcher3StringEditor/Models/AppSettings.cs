@@ -4,7 +4,7 @@ using Witcher3StringEditor.Core.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 
-public partial class AppSettings : ObservableObject, IAppSettings
+internal partial class AppSettings : ObservableObject, IAppSettings
 {
     [ObservableProperty]
     private FileType preferredFileType;
