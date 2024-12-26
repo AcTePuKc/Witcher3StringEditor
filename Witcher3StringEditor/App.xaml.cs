@@ -4,6 +4,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Resourcer;
 using Serilog;
 using Serilog.Events;
@@ -51,7 +52,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(appSettings));
+        File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(appSettings, new StringEnumConverter()));
         base.OnExit(e);
     }
 
