@@ -26,7 +26,7 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private const string ConfigPath = "Config.json";
+    private readonly string ConfigPath = $"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\AppSettings.Json";
     private IAppSettings? appSettings;
 
     protected override void OnStartup(StartupEventArgs e)
