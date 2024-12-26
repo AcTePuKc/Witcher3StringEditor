@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Text.RegularExpressions;
 using Witcher3StringEditor.Core.Interfaces;
-using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -15,19 +14,11 @@ public partial class SaveDialogViewModel : ObservableObject, IModalDialogViewMod
 
     [ObservableProperty] private IW3Job w3Job;
 
-    public SaveDialogViewModel(string path, IEnumerable<IW3Item> w3Items, IW3Serializer serializer, IAppSettings appSettings)
+    public SaveDialogViewModel(IW3Job w3Job, IW3Serializer serializer)
     {
+        W3Job = w3Job;
+        W3Job.IdSpace = FindIdSpace(W3Job.W3Items.First());
         this.serializer = serializer;
-        var items
-            = w3Items as IW3Item[] ?? w3Items.ToArray();
-        W3Job = new W3Job
-        {
-            Path = path,
-            W3Items = items,
-            FileType = appSettings.PreferredFileType,
-            Language = appSettings.PreferredLanguage,
-            IdSpace = FindIdSpace(items.First())
-        };
     }
 
     public event EventHandler? RequestClose;

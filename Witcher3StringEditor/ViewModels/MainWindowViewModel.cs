@@ -199,7 +199,13 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSaveDialog()
     {
         if (serializer == null) return;
-        var dialogViewModel = new SaveDialogViewModel(OutputFolder, W3Items, serializer, appSettings);
+        var dialogViewModel = new SaveDialogViewModel(new W3Job()
+        {
+            Path = OutputFolder,
+            W3Items = W3Items,
+            FileType = appSettings.PreferredFileType,
+            Language = appSettings.PreferredLanguage
+        }, serializer);
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 
