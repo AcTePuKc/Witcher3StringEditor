@@ -11,7 +11,6 @@ using Syncfusion.Licensing;
 using System.IO;
 using System.Reactive;
 using System.Windows;
-using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
@@ -32,8 +31,8 @@ public partial class App
     protected override void OnStartup(StartupEventArgs e)
     {
         appSettings = File.Exists(ConfigPath)
-            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(ConfigPath)) ?? new AppSettings(string.Empty, FileType.w3Strings, W3Language.en, string.Empty, [], [])
-            : new AppSettings(string.Empty, FileType.w3Strings, W3Language.en, string.Empty, [], []);
+            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(ConfigPath)) ?? new AppSettings()
+            : new AppSettings();
         var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File($"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
