@@ -2,4 +2,6 @@
 
 namespace Witcher3StringEditor.Dialogs.Recipients;
 
-public class ReturnBooleanNothingMessage : AsyncRequestMessage<bool>;
+internal class BackupMessage : AsyncRequestMessage<bool>
+{
+}

@@ -128,7 +128,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (serializer == null) return;
         if (W3Items.Any())
         {
-            var message = new ReturnBooleanNothingMessage();
+            var message = new FileOpenedMessage(fileName);
             if (await WeakReferenceMessenger.Default.Send(message, "FileOpened"))
                 W3Items.Clear();
         }

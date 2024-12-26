@@ -17,7 +17,7 @@ namespace Witcher3StringEditor.Views;
 public partial class MainWindow
 {
     private readonly WindowClosingRecipient closingRecipient = new();
-    private readonly ReturnBooleanNothingRecipient openFileRecipient = new();
+    private readonly FileOpenedRecipient fileOpenedRecipient = new();
     private readonly ReturnNothingStringRecipient aboutInformationRecipient = new();
 
     public MainWindow()
@@ -27,13 +27,13 @@ public partial class MainWindow
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
 
-        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage,string>(closingRecipient,"MainWindowClosing" ,static (r, m) =>
+        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "MainWindowClosing", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.ExitQuestionMessage, Strings.ExitQuestionCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No);
         });
 
-        WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(openFileRecipient, "FileOpened", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "FileOpened", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.OpenFileWarning, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
@@ -58,7 +58,7 @@ public partial class MainWindow
 
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(openFileRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(fileOpenedRecipient);
         WeakReferenceMessenger.Default.UnregisterAll(aboutInformationRecipient);
     }
 }

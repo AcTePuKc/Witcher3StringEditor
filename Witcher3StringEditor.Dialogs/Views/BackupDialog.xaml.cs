@@ -14,7 +14,7 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class BackupDialog
 {
-    private readonly ReturnBooleanNothingRecipient recipient = new();
+    private readonly BackupRecipient backupRecipient = new();
 
     public BackupDialog()
     {
@@ -22,7 +22,7 @@ public partial class BackupDialog
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
 
-        WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(recipient, "BackupRestore", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupRestore", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.BackupRestoreMessage,
@@ -32,7 +32,7 @@ public partial class BackupDialog
                                     MessageBoxResult.Yes);
         });
 
-        WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(recipient, "BackupDelete", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupDelete", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.BackupDeleteMessage,
@@ -44,14 +44,14 @@ public partial class BackupDialog
     }
 
     private void Window_Closed(object sender, EventArgs e)
-        => WeakReferenceMessenger.Default.UnregisterAll(recipient);
+        => WeakReferenceMessenger.Default.UnregisterAll(backupRecipient);
 
-    private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) 
+    private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         => SfDataGrid.SearchHelper.Search(args.QueryText);
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (string.IsNullOrEmpty(sender.Text)) 
+        if (string.IsNullOrEmpty(sender.Text))
             SfDataGrid.SearchHelper.ClearSearch();
     }
 }
