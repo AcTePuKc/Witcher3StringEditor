@@ -29,7 +29,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IAppSettings appSettings;
     private readonly IDialogService dialogService;
     private readonly LogEventRecipient logEventRecipient = new();
-    private readonly ReturnNothingStringRecipient recentFileOpenedRecipient = new();
+    private readonly FileOpenedRecipient recentFileOpenedRecipient = new();
 
     [ObservableProperty]
     private bool isUpdateAvailable;
@@ -53,12 +53,12 @@ internal partial class MainWindowViewModel : ObservableObject
             LogEvents.Add(m);
         });
 
-        WeakReferenceMessenger.Default.Register<ReturnNothingStringRecipient, ReturnNothingStringMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
+        WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
         {
             try
             {
                 r.Receive(m);
-                await OpenFile(m.Message);
+                await OpenFile(m.FileName);
             }
             catch (Exception e)
             {

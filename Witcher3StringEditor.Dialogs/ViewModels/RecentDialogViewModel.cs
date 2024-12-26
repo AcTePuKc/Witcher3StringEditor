@@ -31,7 +31,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     {
         item.OpenedTime = DateTime.Now;
         RequestClose?.Invoke(this, EventArgs.Empty);
-        WeakReferenceMessenger.Default.Send(new ReturnNothingStringMessage(item.FilePath), "RecentFileOpened");
+        WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
     }
 
     [RelayCommand]

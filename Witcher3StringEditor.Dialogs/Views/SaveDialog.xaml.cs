@@ -12,19 +12,19 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class SaveDialog
 {
-    private readonly ReturnNothingBooleanRecipient recipient = new();
+    private readonly SaveResultRecipient saveResultRecipient = new();
 
     public SaveDialog()
     {
         InitializeComponent();
 
-        WeakReferenceMessenger.Default.Register<ReturnNothingBooleanRecipient, ReturnNothingBooleanMessage>(recipient, (r, m) =>
+        WeakReferenceMessenger.Default.Register<SaveResultRecipient, SaveResultMessage>(saveResultRecipient, (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(m.Message ? Strings.SaveSuccess : Strings.SaveFailure, Strings.SaveResult, MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(m.IsSuccess ? Strings.SaveSuccess : Strings.SaveFailure, Strings.SaveResult, MessageBoxButton.OK, MessageBoxImage.Information);
         });
     }
 
     private void Window_Closed(object sender, EventArgs e)
-        => WeakReferenceMessenger.Default.UnregisterAll(recipient);
+        => WeakReferenceMessenger.Default.UnregisterAll(saveResultRecipient);
 }
