@@ -20,7 +20,6 @@ using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Recipients;
 
 namespace Witcher3StringEditor.ViewModels;
 

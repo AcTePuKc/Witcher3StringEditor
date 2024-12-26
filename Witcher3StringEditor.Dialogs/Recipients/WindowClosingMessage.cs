@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.ComponentModel;
 
-namespace Witcher3StringEditor.Recipients;
+namespace Witcher3StringEditor.Dialogs.Recipients;
 
-internal class WindowClosingMessage(CancelEventArgs e) : AsyncRequestMessage<bool>
+public class WindowClosingMessage(CancelEventArgs e) : AsyncRequestMessage<bool>
 {
     public CancelEventArgs Message { get; private set; } = e;
 }

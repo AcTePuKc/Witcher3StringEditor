@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Serilog.Events;
 
-namespace Witcher3StringEditor.Recipients;
+namespace Witcher3StringEditor.Dialogs.Recipients;
 
-internal class LogEventRecipient : IRecipient<LogEvent>
+public class LogEventRecipient : IRecipient<LogEvent>
 {
     public void Receive(LogEvent message)
     {

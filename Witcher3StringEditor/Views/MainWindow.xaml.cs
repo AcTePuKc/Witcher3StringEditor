@@ -4,7 +4,6 @@ using iNKORE.UI.WPF.Modern.Controls;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Recipients;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 using MessageBoxButton = System.Windows.MessageBoxButton;
