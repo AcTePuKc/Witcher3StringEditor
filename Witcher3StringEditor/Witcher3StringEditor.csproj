@@ -21,6 +21,7 @@
 
     <ItemGroup>
         <PackageReference Include="AngleSharp" Version="1.1.2" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="HanumanInstitute.MvvmDialogs.Wpf" Version="2.1.0" />
         <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.9.30" />
@@ -29,6 +30,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Resourcer.Fody" Version="1.8.1">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
