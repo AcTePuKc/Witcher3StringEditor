@@ -1,6 +1,6 @@
-﻿using CommandLine;
-using Microsoft.Xaml.Behaviors;
+﻿using Microsoft.Xaml.Behaviors;
 using System.Windows;
+using WinRT;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
@@ -46,6 +46,6 @@ public class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
 
     private void AssociatedObject_Drop(object sender, DragEventArgs e)
     {
-        Data = e.Data.GetData(DataFormats.FileDrop).Cast<string[]>();
+        Data = e.Data.GetData(DataFormats.FileDrop).As<string[]>();
     }
 }
