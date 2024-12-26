@@ -98,10 +98,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         return true;
     }
 
-    private async Task<bool> SerializeCsv(IW3Job w3Job)
-    {
-        return await SerializeCsv(w3Job, w3Job.Path);
-    }
+    private async Task<bool> SerializeCsv(IW3Job w3Job) => await SerializeCsv(w3Job, w3Job.Path);
 
     private async Task<bool> SerializeW3Strings(IW3Job w3Job)
     {

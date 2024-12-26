@@ -26,13 +26,13 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private readonly string ConfigPath = $"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\AppSettings.Json";
+    private readonly string configPath = $"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\AppSettings.Json";
     private IAppSettings? appSettings;
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        appSettings = File.Exists(ConfigPath)
-            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(ConfigPath)) ?? new AppSettings()
+        appSettings = File.Exists(configPath)
+            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
             : new AppSettings();
         var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File($"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
@@ -52,7 +52,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(appSettings, new StringEnumConverter()));
+        File.WriteAllText(configPath, JsonConvert.SerializeObject(appSettings, new StringEnumConverter()));
         base.OnExit(e);
     }
 
