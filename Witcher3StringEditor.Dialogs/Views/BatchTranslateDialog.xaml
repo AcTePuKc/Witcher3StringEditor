@@ -2,11 +2,9 @@
     x:Class="Witcher3StringEditor.Dialogs.Views.BatchTranslateDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-    xmlns:local="clr-namespace:Witcher3StringEditor.Dialogs.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
@@ -49,6 +47,7 @@
             SelectedValue="{Binding ToLanguage}" />
         <ui:NumberBox
             Grid.Row="1"
+            Grid.Column="0"
             Grid.ColumnSpan="3"
             Margin="0,10"
             ui:ControlHelper.Header="{lex:Loc StartIndex}"
@@ -59,6 +58,7 @@
             Value="{Binding StartIndex}" />
         <ui:NumberBox
             Grid.Row="2"
+            Grid.Column="0"
             Grid.ColumnSpan="3"
             ui:ControlHelper.Header="{lex:Loc EndIndex}"
             Maximum="{Binding MaxValue, Mode=OneTime}"
@@ -68,6 +68,7 @@
             Value="{Binding EndIndex}" />
         <sf:SfCircularProgressBar
             Grid.Row="3"
+            Grid.Column="0"
             Grid.ColumnSpan="3"
             Margin="0,10"
             Maximum="{Binding ProgressMaxValue}"
@@ -82,6 +83,7 @@
         </sf:SfCircularProgressBar>
         <Button
             Grid.Row="4"
+            Grid.Column="0"
             HorizontalAlignment="Right"
             Command="{Binding StartCommand}"
             Content="{lex:Loc TranslateBtnContent}" />
