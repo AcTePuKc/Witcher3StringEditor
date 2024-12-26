@@ -14,7 +14,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
 {
     public bool? DialogResult => true;
 
-    private readonly IEnumerable<W3Item> w3Items;
+    private readonly IEnumerable<IW3Item> w3Items;
     private readonly MicrosoftTranslator translator = new();
 
     public ObservableCollection<Language> Languages { get; }
@@ -34,10 +34,10 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     partial void OnIndexOfItemsChanged(int value)
     {
         var item = w3Items.ElementAt(value);
-        CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
+        CurrentTranslateItemModel = new TranslateItem { Id = item.StrId, Text = item.Text };
     }
 
-    public TranslateDiaglogViewModel(IEnumerable<W3Item> w3Items, int index,IAppSettings appSettings)
+    public TranslateDiaglogViewModel(IEnumerable<IW3Item> w3Items, int index,IAppSettings appSettings)
     {
         this.w3Items = w3Items;
         IndexOfItems = index;
@@ -67,7 +67,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private void Save()
     {
         if (CurrentTranslateItemModel == null) return;
-        w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+        w3Items.First(x => x.StrId == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
     }
 
     private bool CanPrevious() => IndexOfItems > 0;

@@ -1,14 +1,16 @@
 ﻿using CommandLine;
 using Serilog;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
+using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Common;
-using Witcher3StringEditor.Core.Implements;
 using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Models;
 
-namespace Witcher3StringEditor.Core;
+namespace Witcher3StringEditor.Serializers;
 
-public class W3Serializer(string wstrings) : IW3Serializer
+internal class W3Serializer(string wstrings) : IW3Serializer
 {
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
@@ -29,14 +31,7 @@ public class W3Serializer(string wstrings) : IW3Serializer
                select line.Split("|")
             into parts
                where parts.Length == 4
-               select new W3Item
-               {
-                   StrId = parts[0]
-                       .Trim(),
-                   KeyHex = parts[1],
-                   KeyName = parts[2],
-                   Text = parts[3]
-               };
+               select new W3Item(parts[0].Trim(), parts[1], parts[2], parts[3]);
     }
 
     private async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)

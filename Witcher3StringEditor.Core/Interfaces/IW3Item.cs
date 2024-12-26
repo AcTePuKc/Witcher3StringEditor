@@ -2,11 +2,13 @@
 
 public interface IW3Item
 {
-    public string StrId { get; }
+    public string StrId { get; set; }
 
-    public string KeyHex { get; }
+    public string KeyHex { get; set; }
 
-    public string KeyName { get; }
+    public string KeyName { get; set; }
 
-    public string Text { get; }
+    public string Text { get; set; }
+
+    object Clone();
 }

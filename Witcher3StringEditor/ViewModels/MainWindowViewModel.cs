@@ -20,6 +20,8 @@ using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
+using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Serializers;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -73,7 +75,7 @@ internal partial class MainWindowViewModel : ObservableObject
         };
     }
 
-    public ObservableCollection<W3Item> W3Items { get; set; } = [];
+    public ObservableCollection<IW3Item> W3Items { get; set; } = [];
 
     [RelayCommand]
     private async Task WindowLoaded()
@@ -126,14 +128,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task OpenFile(string fileName)
     {
         if (serializer == null) return;
-        if (W3Items.Any())
-        {
-            var message = new FileOpenedMessage(fileName);
-            if (await WeakReferenceMessenger.Default.Send(message, "FileOpened"))
-                W3Items.Clear();
-        }
-        foreach (var item in await serializer.Deserialize(fileName))
-            W3Items.Add(new W3Item(item));
+        if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) W3Items.Clear();
+        foreach (var item in await serializer.Deserialize(fileName)) W3Items.Add(item);
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
         var recentItems = RecentManger.Instance.GetRecentItems().ToList();
         if (recentItems.Count != 0)
@@ -160,13 +156,13 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task Edit(W3Item w3Item)
+    private async Task Edit(IW3Item w3Item)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
         var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
         if (result == true && dialogViewModel.W3Item != null)
         {
-            var first = W3Items.First(x => x.Id == w3Item.Id);
+            var first = W3Items.First(x => x.StrId == w3Item.StrId);
             var index = W3Items.IndexOf(first);
             W3Items[index] = dialogViewModel.W3Item;
         }
@@ -261,7 +257,7 @@ internal partial class MainWindowViewModel : ObservableObject
             {
                 if (serializer == null) return;
                 if (W3Items.Any()) W3Items.Clear();
-                foreach (var item in await serializer.Deserialize(file)) W3Items.Add(new W3Item(item));
+                foreach (var item in await serializer.Deserialize(file)) W3Items.Add(item);
             }
         }
     }
