@@ -3,13 +3,13 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
 using System.IO;
 using System.Reactive;
+using System.Text.Json;
 using System.Windows;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.ViewModels;
@@ -31,7 +31,7 @@ public partial class App
     protected override void OnStartup(StartupEventArgs e)
     {
         appSettings = File.Exists(ConfigPath)
-            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(ConfigPath)) ?? new AppSettings()
+            ? JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(ConfigPath)) ?? new AppSettings()
             : (IAppSettings)new AppSettings();
         var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File(".\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
@@ -51,7 +51,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(appSettings, Formatting.Indented));
+        File.WriteAllText(ConfigPath, JsonSerializer.Serialize(appSettings));
         base.OnExit(e);
     }
 
