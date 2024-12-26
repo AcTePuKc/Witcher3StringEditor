@@ -1,19 +1,20 @@
 ﻿using Newtonsoft.Json;
-using Witcher3StringEditor.Core.Implements;
+using System.IO;
 using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Models;
 
-namespace Witcher3StringEditor.Core;
+namespace Witcher3StringEditor.Services;
 
-public class RecentManger
+internal class RecentService : IRecentService
 {
     private readonly string recentFilesPath;
 
-    private static readonly Lazy<RecentManger> LazyInstance
-    = new(static () => new RecentManger("RecentFiles.json"));
+    private static readonly Lazy<RecentService> LazyInstance
+    = new(static () => new RecentService("RecentFiles.json"));
 
-    public static RecentManger Instance => LazyInstance.Value;
+    public static RecentService Instance => LazyInstance.Value;
 
-    private RecentManger(string path)
+    private RecentService(string path)
     {
         recentFilesPath = path;
     }

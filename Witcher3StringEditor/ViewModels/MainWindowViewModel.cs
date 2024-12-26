@@ -13,15 +13,14 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
-using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;
+using Witcher3StringEditor.Services;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -30,6 +29,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private W3Serializer? serializer;
     private readonly IAppSettings appSettings;
     private readonly IDialogService dialogService;
+    private readonly IRecentService recentService;
     private readonly LogEventRecipient logEventRecipient = new();
     private readonly FileOpenedRecipient recentFileOpenedRecipient = new();
 
@@ -49,6 +49,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         this.appSettings = appSettings;
         this.dialogService = dialogService;
+        this.recentService = RecentService.Instance;
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -131,7 +132,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) W3Items.Clear();
         foreach (var item in await serializer.Deserialize(fileName)) W3Items.Add(item);
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
-        var recentItems = RecentManger.Instance.GetRecentItems().ToList();
+        var recentItems = recentService.GetRecentItems().ToList();
         if (recentItems.Count != 0)
         {
             var foundItem = recentItems.Find(x => x.FilePath == fileName);
@@ -144,7 +145,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             recentItems.Add(new RecentItem(fileName, DateTime.Now));
         }
-        RecentManger.Instance.Update(recentItems);
+        recentService.Update(recentItems);
     }
 
     [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]
@@ -334,7 +335,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
-        var diaglogViewModel = new RecentDialogViewModel();
+        var diaglogViewModel = new RecentDialogViewModel(recentService);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 }

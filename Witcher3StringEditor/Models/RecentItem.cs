@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Witcher3StringEditor.Core.Interfaces;
 
-namespace Witcher3StringEditor.Dialogs.Models;
+namespace Witcher3StringEditor.Models;
 
 public partial class RecentItem : ObservableObject, IRecentItem
 {

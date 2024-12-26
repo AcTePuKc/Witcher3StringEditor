@@ -4,27 +4,19 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
 using System.IO;
-using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
-using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
+public partial class RecentDialogViewModel(IRecentService recentService) : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public bool? DialogResult => true;
 
     public event EventHandler? RequestClose;
 
-    public ObservableCollection<IRecentItem> RecentItems { get; } = [];
-
-    public RecentDialogViewModel()
-    {
-        var items = RecentManger.Instance.GetRecentItems().Where(x => File.Exists(x.FilePath));
-        foreach (var item in items)
-            RecentItems.Add(new RecentItem(item.FilePath, item.OpenedTime, item.IsPin));
-    }
+    public ObservableCollection<IRecentItem> RecentItems { get; }
+        = new(recentService.GetRecentItems().Where(x => File.Exists(x.FilePath)));
 
     [RelayCommand]
     private void Open(IRecentItem item)
@@ -37,6 +29,6 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     [RelayCommand]
     private void Closing()
     {
-        RecentManger.Instance.Update(RecentItems);
+        recentService.Update(RecentItems);
     }
 }
