@@ -27,12 +27,11 @@ public partial class MainWindow
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
 
-        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage>(closingRecipient, static (r, m) =>
+        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage,string>(closingRecipient,"MainWindowClosing" ,static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.ExitQuestionMessage, Strings.ExitQuestionCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No);
         });
-
 
         WeakReferenceMessenger.Default.Register<ReturnBooleanNothingRecipient, ReturnBooleanNothingMessage, string>(openFileRecipient, "FileOpened", static (r, m) =>
         {

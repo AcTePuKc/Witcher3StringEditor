@@ -1,9 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using System.ComponentModel;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Dialogs.Recipients;
+using Witcher3StringEditor.Dialogs.Validators;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -42,6 +46,19 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         if (storageFile is { Name: "witcher3.exe" })
         {
             AppSettings.GameExePath = storageFile.LocalPath;
+        }
+    }
+
+    [RelayCommand]
+    private async Task WindowClosing(CancelEventArgs e)
+    {
+        var validations = AppSettingsValidator.Instance;
+        var result = validations.Validate(AppSettings);
+        if (!result.IsValid)
+        {
+            e.Cancel = true;
+            if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(e), "SettingsDialogClosing"))
+                Environment.Exit(0);
         }
     }
 }

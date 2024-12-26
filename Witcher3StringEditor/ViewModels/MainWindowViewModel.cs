@@ -92,7 +92,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(e)) == true)
+        if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(e), "MainWindowClosing"))
             e.Cancel = true;
     }
 
