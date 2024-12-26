@@ -7,7 +7,7 @@ namespace Witcher3StringEditor.Services;
 
 internal class BackupService(IAppSettings appSettings) : IBackupService
 {
-    public readonly IAppSettings appSettings = appSettings;
+    private readonly IAppSettings appSettings = appSettings;
 
     private static string ComputeSha256Hash(string filePath)
     {
@@ -17,7 +17,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
     }
 
-    public IBackupItem? Backup(string path)
+    public void Backup(string path)
     {
         var backupItem = new BackupItem
         {
@@ -30,9 +30,11 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
 
         if (!Directory.Exists(".\\Backup"))
             Directory.CreateDirectory(".\\Backup");
-        if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return null;
-        File.Copy(backupItem.OrginPath, backupItem.BackupPath);
-        return backupItem;
+        if (!appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath))
+        {
+            File.Copy(backupItem.OrginPath, backupItem.BackupPath);
+            appSettings.BackupItems.Add(backupItem);
+        }
     }
 
     public void Restore(IBackupItem backupItem)

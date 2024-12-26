@@ -84,7 +84,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         await CheckSettings(appSettings);
-        serializer = new W3Serializer(appSettings);
+        serializer = new W3Serializer(appSettings, backupService);
         IsUpdateAvailable = await CheckUpdate();
     }
 
@@ -337,7 +337,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
-        var diaglogViewModel = new RecentDialogViewModel(recentService,appSettings);
+        var diaglogViewModel = new RecentDialogViewModel(recentService, appSettings);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 }

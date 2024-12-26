@@ -6,11 +6,10 @@ using System.Text;
 using Witcher3StringEditor.Core.Common;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Models;
-using Witcher3StringEditor.Services;
 
 namespace Witcher3StringEditor.Serializers;
 
-internal class W3Serializer(IAppSettings appSettings) : IW3Serializer
+internal class W3Serializer(IAppSettings appSettings, IBackupService backupService) : IW3Serializer
 {
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
@@ -94,13 +93,7 @@ internal class W3Serializer(IAppSettings appSettings) : IW3Serializer
             stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
         var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         if (File.Exists(csvPath))
-        {
-            var backupItem = new BackupService(appSettings).Backup(csvPath);
-            if (backupItem != null)
-            {
-                appSettings.BackupItems.Add(backupItem);
-            }
-        }
+            backupService.Backup(csvPath);
         await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
         return true;
     }
@@ -139,13 +132,7 @@ internal class W3Serializer(IAppSettings appSettings) : IW3Serializer
         if (process.ExitCode != 0) return false;
         var tempW3StringsPath = $"{csvPath}.w3strings";
         if (File.Exists(w3StringsPath))
-        {
-            var backupItem = new BackupService(appSettings).Backup(w3StringsPath);
-            if (backupItem != null)
-            {
-                appSettings.BackupItems.Add(backupItem);
-            }
-        }
+            backupService.Backup(w3StringsPath);
         File.Copy(tempW3StringsPath, w3StringsPath, true);
         return true;
     }

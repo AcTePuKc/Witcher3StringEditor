@@ -2,7 +2,7 @@
 
 public interface IBackupService
 {
-    public IBackupItem? Backup(string path);
+    public void Backup(string path);
 
     public void Restore(IBackupItem backupItem);
 
