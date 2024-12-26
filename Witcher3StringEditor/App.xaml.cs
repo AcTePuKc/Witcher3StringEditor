@@ -3,13 +3,14 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
+using System.IO;
 using System.Reactive;
 using System.Windows;
-using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
@@ -24,11 +25,14 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
+    private const string configPath = "Config.json";
     private IAppSettings? appSettings;
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        appSettings = SettingsManager.Instance.Load<AppSettings>();
+        appSettings = File.Exists(configPath)
+            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
+            : (IAppSettings)new AppSettings();
         var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File(".\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
@@ -47,7 +51,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        SettingsManager.Instance.Save(appSettings);
+        File.WriteAllText(configPath, JsonConvert.SerializeObject(appSettings, Formatting.Indented));
         base.OnExit(e);
     }
 
