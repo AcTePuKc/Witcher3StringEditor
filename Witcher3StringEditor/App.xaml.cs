@@ -35,7 +35,7 @@ public partial class App
             ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(ConfigPath)) ?? new AppSettings(string.Empty, FileType.w3Strings, W3Language.en, string.Empty, [], [])
             : new AppSettings(string.Empty, FileType.w3Strings, W3Language.en, string.Empty, [], []);
         var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
-        Log.Logger = new LoggerConfiguration().WriteTo.File(".\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
+        Log.Logger = new LoggerConfiguration().WriteTo.File($"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
             .CreateLogger();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
