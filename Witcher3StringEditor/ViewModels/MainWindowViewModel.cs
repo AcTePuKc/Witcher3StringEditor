@@ -30,7 +30,6 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IAppSettings appSettings;
     private readonly IDialogService dialogService;
     private readonly IBackupService backupService;
-    private readonly RecentService recentService;
     private readonly LogEventRecipient logEventRecipient = new();
     private readonly FileOpenedRecipient recentFileOpenedRecipient = new();
 
@@ -51,7 +50,6 @@ internal partial class MainWindowViewModel : ObservableObject
         this.appSettings = appSettings;
         this.dialogService = dialogService;
         backupService = new BackupService(appSettings);
-        recentService = RecentService.Instance;
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -134,20 +132,22 @@ internal partial class MainWindowViewModel : ObservableObject
         if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) W3Items.Clear();
         foreach (var item in await serializer.Deserialize(fileName)) W3Items.Add(item);
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
-        var recentItems = recentService.GetRecentItems().ToList();
-        if (recentItems.Count != 0)
+        if (appSettings.RecentItems.Count != 0)
         {
-            var foundItem = recentItems.Find(x => x.FilePath == fileName);
-            if (foundItem != null)
+            try
+            {
+                var foundItem = appSettings.RecentItems.First(x => x.FilePath == fileName);
                 foundItem.OpenedTime = DateTime.Now;
-            else
-                recentItems.Add(new RecentItem(fileName, DateTime.Now));
+            }
+            catch (Exception)
+            {
+                appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
+            }
         }
         else
         {
-            recentItems.Add(new RecentItem(fileName, DateTime.Now));
+            appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
         }
-        recentService.Update(recentItems);
     }
 
     [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]
@@ -337,7 +337,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
-        var diaglogViewModel = new RecentDialogViewModel(recentService, appSettings);
+        var diaglogViewModel = new RecentDialogViewModel(appSettings);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 }

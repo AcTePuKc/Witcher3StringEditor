@@ -21,11 +21,6 @@
     ui:WindowHelper.UseModernWindowStyle="True"
     WindowChrome.IsHitTestVisibleInChrome="True"
     mc:Ignorable="d">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding ClosingCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
     <Window.Resources>
         <ControlTemplate x:Key="PinCheckBoxTemplate" TargetType="CheckBox">
             <Grid>
@@ -163,6 +158,6 @@
             HorizontalAlignment="Center"
             NumericButtonCount="10"
             PageSize="30"
-            Source="{Binding RecentItems}" />
+            Source="{Binding AppSettings.RecentItems}" />
     </Grid>
 </Window>

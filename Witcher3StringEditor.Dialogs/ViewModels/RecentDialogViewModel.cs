@@ -2,35 +2,23 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
-using System.Collections.ObjectModel;
-using System.IO;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Recipients;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class RecentDialogViewModel(IRecentService recentService,IAppSettings appSettings) : ObservableObject, IModalDialogViewModel, ICloseable
+public partial class RecentDialogViewModel(IAppSettings appSettings) : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public bool? DialogResult => true;
 
     public event EventHandler? RequestClose;
 
-    public ObservableCollection<IRecentItem> RecentItems { get; }
-        = new(recentService.GetRecentItems().Where(x => File.Exists(x.FilePath)));
-
-    public readonly IAppSettings appSettings = appSettings;
+    public IAppSettings AppSettings => appSettings;
 
     [RelayCommand]
     private void Open(IRecentItem item)
     {
-        item.OpenedTime = DateTime.Now;
         RequestClose?.Invoke(this, EventArgs.Empty);
         WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
-    }
-
-    [RelayCommand]
-    private void Closing()
-    {
-        recentService.Update(RecentItems);
     }
 }
