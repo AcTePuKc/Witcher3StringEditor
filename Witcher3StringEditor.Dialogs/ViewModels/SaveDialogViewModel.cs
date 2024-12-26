@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Text.RegularExpressions;
-using Witcher3StringEditor.Core;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -12,11 +11,11 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class SaveDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    private readonly W3Serializer serializer;
+    private readonly IW3Serializer serializer;
 
     [ObservableProperty] private IW3Job w3Job;
 
-    public SaveDialogViewModel(string path, IEnumerable<IW3Item> w3Items, W3Serializer serializer, IAppSettings appSettings)
+    public SaveDialogViewModel(string path, IEnumerable<IW3Item> w3Items, IW3Serializer serializer, IAppSettings appSettings)
     {
         this.serializer = serializer;
         var items

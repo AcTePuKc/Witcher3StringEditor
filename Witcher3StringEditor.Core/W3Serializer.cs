@@ -8,7 +8,7 @@ using Witcher3StringEditor.Core.Interfaces;
 
 namespace Witcher3StringEditor.Core;
 
-public class W3Serializer(string wstrings)
+public class W3Serializer(string wstrings) : IW3Serializer
 {
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
