@@ -134,6 +134,13 @@
                     </Style>
                 </ui:AppBarButton.Style>
             </ui:AppBarButton>
+            <ui:AppBarButton
+                Command="{Binding ShowBatchTranslateDialogCommand}"
+                Label="Batch Translate">
+                <ui:AppBarButton.Icon>
+                    <ui:FontIcon Glyph="&#xf2b7;" />
+                </ui:AppBarButton.Icon>
+            </ui:AppBarButton>
             <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}" Label="{lex:Loc SaveBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74e;" />

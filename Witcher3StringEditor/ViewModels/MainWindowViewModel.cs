@@ -340,4 +340,11 @@ internal partial class MainWindowViewModel : ObservableObject
         var diaglogViewModel = new RecentDialogViewModel(appSettings);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
+
+    [RelayCommand]
+    private async Task ShowBatchTranslateDialog()
+    {
+        var diaglogViewModel = new BatchTranslateDialogViewModel();
+        await dialogService.ShowDialogAsync(this, diaglogViewModel);
+    }
 }
