@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Dialogs.Recipients;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using MessageBoxButton = System.Windows.MessageBoxButton;
+using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.Dialogs.Views
 {
@@ -19,9 +13,20 @@ namespace Witcher3StringEditor.Dialogs.Views
     /// </summary>
     public partial class BatchTranslateDialog : Window
     {
+        private readonly WindowClosingRecipient closingRecipient = new();
+
         public BatchTranslateDialog()
         {
             InitializeComponent();
+
+            WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "BatchTranslateDialogClosing", (r, m) =>
+            {
+                r.Receive(m);
+                m.Reply(MessageBox.Show(Strings.DialogClosingWhenTranslatingMessage, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No);
+            });
         }
+
+        private void Window_Closed(object sender, EventArgs e) 
+            => WeakReferenceMessenger.Default.UnregisterAll(closingRecipient);
     }
 }

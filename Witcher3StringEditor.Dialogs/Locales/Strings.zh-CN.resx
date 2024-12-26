@@ -282,4 +282,16 @@
   <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>搜索</value>
   </data>
+  <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
+    <value>当前正在进行翻译，关闭窗口将停止翻译。</value>
+  </data>
+  <data name="StartIndex" xml:space="preserve">
+    <value>开始位置</value>
+  </data>
+  <data name="EndIndex" xml:space="preserve">
+    <value>结束位置</value>
+  </data>
+  <data name="BatchTranslateDialogTitle" xml:space="preserve">
+    <value>批量翻译</value>
+  </data>
 </root>

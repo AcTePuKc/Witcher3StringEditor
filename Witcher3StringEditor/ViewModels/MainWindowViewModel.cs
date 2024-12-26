@@ -73,6 +73,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             AddCommand.NotifyCanExecuteChanged();
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
+            ShowBatchTranslateDialogCommand.NotifyCanExecuteChanged();
         };
     }
 
@@ -150,7 +151,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]
+    [RelayCommand(CanExecute = nameof(CanShowDialog))]
     private async Task Add()
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3Item());
@@ -193,12 +194,9 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 
-    private bool CanShowSaveDialog()
-    {
-        return W3Items.Any();
-    }
+    private bool CanShowDialog() => W3Items.Any();
 
-    [RelayCommand(CanExecute = nameof(CanShowSaveDialog))]
+    [RelayCommand(CanExecute = nameof(CanShowDialog))]
     private async Task ShowSaveDialog()
     {
         if (serializer == null) return;
@@ -341,10 +339,10 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanShowDialog))]
     private async Task ShowBatchTranslateDialog()
     {
-        var diaglogViewModel = new BatchTranslateDialogViewModel();
+        var diaglogViewModel = new BatchTranslateDialogViewModel(W3Items, appSettings);
         await dialogService.ShowDialogAsync(this, diaglogViewModel);
     }
 }

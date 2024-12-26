@@ -282,4 +282,16 @@
   <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
+    <value>Translation Is Currently In Progress, Closing The Window Will Stop The Translation.</value>
+  </data>
+  <data name="StartIndex" xml:space="preserve">
+    <value>Start Index</value>
+  </data>
+  <data name="EndIndex" xml:space="preserve">
+    <value>End Index</value>
+  </data>
+  <data name="BatchTranslateDialogTitle" xml:space="preserve">
+    <value>Batch Translate</value>
+  </data>
 </root>

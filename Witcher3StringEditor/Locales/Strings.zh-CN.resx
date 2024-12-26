@@ -198,4 +198,7 @@
   <data name="Warning" xml:space="preserve">
     <value>警告</value>
   </data>
+  <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
+    <value>批量翻译</value>
+  </data>
 </root>

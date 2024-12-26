@@ -70,7 +70,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 This Operation Will Delete The File And Cannot Be Undone 的本地化字符串。
+        ///   查找类似 This Operation Will Delete The File And Cann&apos;t Be Undo! 的本地化字符串。
         /// </summary>
         internal static string BackupDeleteMessage {
             get {
@@ -97,7 +97,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 This Operation Will Overwrite The File And Can&apos;t Be Undone 的本地化字符串。
+        ///   查找类似 This Operation Will Overwrite The File And Can&apos;t Be Undo! 的本地化字符串。
         /// </summary>
         internal static string BackupRestoreMessage {
             get {
@@ -156,6 +156,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string DeleteDialogTitle {
             get {
                 return ResourceManager.GetString("DeleteDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Translation Is Currently In Progress, Closing The Window Will Stop The Translation. 的本地化字符串。
+        /// </summary>
+        internal static string DialogClosingWhenTranslatingMessage {
+            get {
+                return ResourceManager.GetString("DialogClosingWhenTranslatingMessage", resourceCulture);
             }
         }
         
@@ -241,15 +250,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Pin 的本地化字符串。
-        /// </summary>
-        internal static string IsPin {
-            get {
-                return ResourceManager.GetString("IsPin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Log 的本地化字符串。
         /// </summary>
         internal static string LogDialogTitle {
@@ -286,11 +286,29 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Mark 的本地化字符串。
+        /// </summary>
+        internal static string Mark {
+            get {
+                return ResourceManager.GetString("Mark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Next 的本地化字符串。
         /// </summary>
         internal static string NextBtnContent {
             get {
                 return ResourceManager.GetString("NextBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open 的本地化字符串。
+        /// </summary>
+        internal static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
             }
         }
         
@@ -367,7 +385,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 This Operation Will Delete The Record(s) And Cannot Be Undone 的本地化字符串。
+        ///   查找类似 This Operation Will Delete The Record(s) And Can’t Be Undo! 的本地化字符串。
         /// </summary>
         internal static string RecentItemDeletingMessgae {
             get {
@@ -426,6 +444,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string SaveSuccess {
             get {
                 return ResourceManager.GetString("SaveSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Search 的本地化字符串。
+        /// </summary>
+        internal static string SearchBoxPlaceholderText {
+            get {
+                return ResourceManager.GetString("SearchBoxPlaceholderText", resourceCulture);
             }
         }
         
