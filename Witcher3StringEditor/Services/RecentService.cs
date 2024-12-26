@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
+using System.Text.Json;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Models;
 
@@ -21,13 +21,12 @@ internal class RecentService : IRecentService
 
     public void Update(IEnumerable<IRecentItem> recentItems)
     {
-        File.WriteAllText(recentFilesPath, JsonConvert.SerializeObject(recentItems));
+        File.WriteAllText(recentFilesPath, JsonSerializer.Serialize(recentItems));
     }
 
     public IEnumerable<IRecentItem> GetRecentItems()
     {
         if (!File.Exists(recentFilesPath)) return [];
-        var json = File.ReadAllText(recentFilesPath);
-        return JsonConvert.DeserializeObject<IEnumerable<RecentItem>>(json) ?? [];
+        return JsonSerializer.Deserialize<IEnumerable<RecentItem>>(File.ReadAllText(recentFilesPath)) ?? [];
     }
 }

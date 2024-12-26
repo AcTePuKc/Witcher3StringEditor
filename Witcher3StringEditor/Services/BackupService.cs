@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
 using System.Security.Cryptography;
+using System.Text.Json;
 using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Models;
 
@@ -72,13 +72,12 @@ internal class BackupService : IBackupService
 
     private void UpdateBackupRecords(IEnumerable<IBackupItem> backups)
     {
-        File.WriteAllText(jsonPath, JsonConvert.SerializeObject(backups));
+        File.WriteAllText(jsonPath, JsonSerializer.Serialize(backups));
     }
 
     public IEnumerable<IBackupItem> GetAllBackup()
     {
         if (!File.Exists(jsonPath)) return [];
-        var json = File.ReadAllText(jsonPath);
-        return JsonConvert.DeserializeObject<IEnumerable<BackupItem>>(json) ?? [];
+        return JsonSerializer.Deserialize<IEnumerable<BackupItem>>(File.ReadAllText(jsonPath)) ?? [];
     }
 }
