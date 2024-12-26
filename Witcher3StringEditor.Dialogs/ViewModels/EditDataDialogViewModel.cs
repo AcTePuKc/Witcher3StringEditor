@@ -11,7 +11,7 @@ public partial class EditDataDialogViewModel(IW3Item w3Item)
 {
     public string Title { get; } = w3Item.StrId == string.Empty ? Strings.AddDialogTitle : Strings.EditDialogTitle;
 
-    public IW3Item? W3Item { get; } = w3Item?.Clone() as IW3Item;
+    public IW3Item? W3Item { get; } = w3Item.Clone() as IW3Item;
 
     public event EventHandler? RequestClose;
 

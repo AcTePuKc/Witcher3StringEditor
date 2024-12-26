@@ -50,8 +50,8 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         this.appSettings = appSettings;
         this.dialogService = dialogService;
-        this.backupService = BackupService.Instance;
-        this.recentService = RecentService.Instance;
+        backupService = BackupService.Instance;
+        recentService = RecentService.Instance;
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -202,7 +202,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSaveDialog()
     {
         if (serializer == null) return;
-        var dialogViewModel = new SaveDialogViewModel(new W3Job()
+        var dialogViewModel = new SaveDialogViewModel(new W3Job
         {
             Path = OutputFolder,
             W3Items = W3Items,

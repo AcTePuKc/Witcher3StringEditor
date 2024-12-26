@@ -11,8 +11,6 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class BackupDialogViewModel(IBackupService backupService) : ObservableObject, IModalDialogViewModel
 {
-    private readonly IBackupService backupService = backupService;
-
     public bool? DialogResult => true;
 
     public ObservableCollection<IBackupItem> BackupItems { get; }
