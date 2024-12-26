@@ -52,7 +52,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        File.WriteAllText(configPath, JsonConvert.SerializeObject(appSettings, new StringEnumConverter()));
+        File.WriteAllText(configPath, JsonConvert.SerializeObject(appSettings, Formatting.Indented, new StringEnumConverter()));
         base.OnExit(e);
     }
 
