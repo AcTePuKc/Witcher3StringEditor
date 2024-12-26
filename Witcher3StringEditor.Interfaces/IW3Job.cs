@@ -1,6 +1,6 @@
-﻿using Witcher3StringEditor.Core.Common;
+﻿using Witcher3StringEditor.Common;
 
-namespace Witcher3StringEditor.Core.Interfaces;
+namespace Witcher3StringEditor.Interfaces;
 
 public interface IW3Job
 {

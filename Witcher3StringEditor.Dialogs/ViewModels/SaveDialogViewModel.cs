@@ -3,8 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using System.Text.RegularExpressions;
-using Witcher3StringEditor.Core.Interfaces;
 using Witcher3StringEditor.Dialogs.Recipients;
+using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

@@ -1,4 +1,4 @@
-﻿namespace Witcher3StringEditor.Core.Common;
+﻿namespace Witcher3StringEditor.Common;
 
 public enum FileType
 {

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Witcher3StringEditor.Core.Common;
-using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 

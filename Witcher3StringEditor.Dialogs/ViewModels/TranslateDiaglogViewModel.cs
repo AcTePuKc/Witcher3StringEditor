@@ -4,9 +4,9 @@ using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using System.Collections.ObjectModel;
-using Witcher3StringEditor.Core.Common;
-using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

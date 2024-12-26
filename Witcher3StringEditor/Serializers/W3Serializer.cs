@@ -3,8 +3,8 @@ using Serilog;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using Witcher3StringEditor.Core.Common;
-using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Serializers;

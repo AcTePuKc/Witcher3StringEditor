@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
-using Witcher3StringEditor.Core.Interfaces;
+using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;

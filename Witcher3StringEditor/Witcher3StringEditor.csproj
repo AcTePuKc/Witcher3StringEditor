@@ -45,8 +45,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Witcher3StringEditor.Core\Witcher3StringEditor.Core.csproj" />
+      <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj" />
       <ProjectReference Include="..\Witcher3StringEditor.Dialogs\Witcher3StringEditor.Dialogs.csproj" />
+      <ProjectReference Include="..\Witcher3StringEditor.Interfaces\Witcher3StringEditor.Interfaces.csproj" />
     </ItemGroup>
 
     <ItemGroup>
