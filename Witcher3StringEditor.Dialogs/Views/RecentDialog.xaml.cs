@@ -1,5 +1,4 @@
 ﻿using iNKORE.UI.WPF.Modern.Controls;
-using System.Windows.Controls;
 
 namespace Witcher3StringEditor.Dialogs.Views;
 

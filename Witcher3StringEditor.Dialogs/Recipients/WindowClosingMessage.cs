@@ -5,5 +5,5 @@ namespace Witcher3StringEditor.Dialogs.Recipients;
 
 public class WindowClosingMessage(CancelEventArgs e) : AsyncRequestMessage<bool>
 {
-    public CancelEventArgs Message { get; private set; } = e;
+    public CancelEventArgs Cancel { get; private set; } = e;
 }

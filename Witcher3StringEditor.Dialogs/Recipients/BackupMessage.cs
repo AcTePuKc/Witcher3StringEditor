@@ -2,6 +2,4 @@
 
 namespace Witcher3StringEditor.Dialogs.Recipients;
 
-internal class BackupMessage : AsyncRequestMessage<bool>
-{
-}
+internal class BackupMessage : AsyncRequestMessage<bool>;

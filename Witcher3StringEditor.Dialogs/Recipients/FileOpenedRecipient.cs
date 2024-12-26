@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 
-namespace Witcher3StringEditor.Dialogs.Recipients
+namespace Witcher3StringEditor.Dialogs.Recipients;
+
+public class FileOpenedRecipient : IRecipient<FileOpenedMessage>
 {
-    public class FileOpenedRecipient : IRecipient<FileOpenedMessage>
+    public void Receive(FileOpenedMessage message)
     {
-        public void Receive(FileOpenedMessage message)
-        {
-        }
     }
 }
