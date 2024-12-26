@@ -12,11 +12,11 @@ internal partial class RecentItem : ObservableObject, IRecentItem
     private DateTime openedTime;
 
     [ObservableProperty]
-    private bool isPin;
+    private bool isMarked;
 
-    public RecentItem(string filePath, DateTime openedTime, bool isPin = false)
+    public RecentItem(string filePath, DateTime openedTime, bool isMarked = false)
     {
-        IsPin = isPin;
+        IsMarked = isMarked;
         FilePath = filePath;
         OpenedTime = openedTime;
     }

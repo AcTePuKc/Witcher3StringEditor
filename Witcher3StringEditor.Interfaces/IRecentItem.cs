@@ -6,5 +6,5 @@ public interface IRecentItem
 
     public DateTime OpenedTime { get; set; }
 
-    public bool IsPin { get; set; }
+    public bool IsMarked { get; set; }
 }

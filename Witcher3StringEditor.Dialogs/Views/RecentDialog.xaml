@@ -121,12 +121,12 @@
                     Width="100"
                     HorizontalAlignment="Center"
                     HeaderText="{lex:Loc Mark}"
-                    MappingName="IsPin">
+                    MappingName="IsMarked">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
                                 HorizontalAlignment="Center"
-                                IsChecked="{Binding IsPin}"
+                                IsChecked="{Binding IsMarked}"
                                 Template="{StaticResource PinCheckBoxTemplate}" />
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
