@@ -196,6 +196,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Failure 的本地化字符串。
+        /// </summary>
+        internal static string Failure {
+            get {
+                return ResourceManager.GetString("Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 FileName 的本地化字符串。
         /// </summary>
         internal static string FileName {
@@ -354,6 +363,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string Path {
             get {
                 return ResourceManager.GetString("Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pending 的本地化字符串。
+        /// </summary>
+        internal static string Pending {
+            get {
+                return ResourceManager.GetString("Pending", resourceCulture);
             }
         }
         
@@ -529,6 +547,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Success 的本地化字符串。
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Target Filetype 的本地化字符串。
         /// </summary>
         internal static string TargetFiletype {
@@ -579,6 +606,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string TranslateDialogTitle {
             get {
                 return ResourceManager.GetString("TranslateDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Translated Text Is Invalid,Can&apos;t Save. 的本地化字符串。
+        /// </summary>
+        internal static string TranslatedTextInvalid {
+            get {
+                return ResourceManager.GetString("TranslatedTextInvalid", resourceCulture);
             }
         }
         

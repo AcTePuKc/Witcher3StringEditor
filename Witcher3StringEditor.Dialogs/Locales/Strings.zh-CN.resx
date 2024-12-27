@@ -309,4 +309,7 @@
   <data name="Failure" xml:space="preserve">
     <value>失败</value>
   </data>
+  <data name="TranslatedTextInvalid" xml:space="preserve">
+    <value>译文无效，无法保存！</value>
+  </data>
 </root>

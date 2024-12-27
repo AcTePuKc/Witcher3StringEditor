@@ -23,6 +23,12 @@ public partial class TranslateDiaglog
             r.Receive(m);
             MessageBox.Show(Strings.TranslateCharactersNumberExceedLimit, Strings.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
         });
+
+        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslatedTextInvalid", (r, m) =>
+        {
+            r.Receive(m);
+            MessageBox.Show(Strings.TranslatedTextInvalid, Strings.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
+        });
     }
 
     private void Window_Closed(object sender, EventArgs e)

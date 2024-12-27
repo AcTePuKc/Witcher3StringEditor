@@ -85,7 +85,10 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private void Save()
     {
         if (CurrentTranslateItemModel == null) return;
-        w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+        if (string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
+            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslatedTextInvalid), "TranslatedTextInvalid");
+        else
+            w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
     }
 
     private bool CanPrevious() => IndexOfItems > 0;
