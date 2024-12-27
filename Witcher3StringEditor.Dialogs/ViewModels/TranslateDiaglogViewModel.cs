@@ -96,14 +96,8 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private bool CanNext() => IndexOfItems < w3Items.Count() - 1;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
-    private void Previous()
-    {
-        IndexOfItems -= 1;
-    }
+    private void Previous() => IndexOfItems -= 1;
 
     [RelayCommand(CanExecute = nameof(CanNext))]
-    private void Next()
-    {
-        IndexOfItems += 1;
-    }
+    private void Next() => IndexOfItems += 1;
 }
