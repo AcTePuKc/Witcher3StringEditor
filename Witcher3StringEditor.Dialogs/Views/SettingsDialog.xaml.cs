@@ -25,4 +25,7 @@ public partial class SettingsDialog
             m.Reply(MessageBox.Show(Strings.PleaseCheckSettings, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
     }
+
+    private void Window_Closed(object sender, EventArgs e) 
+        => WeakReferenceMessenger.Default.UnregisterAll(closingRecipient);
 }
