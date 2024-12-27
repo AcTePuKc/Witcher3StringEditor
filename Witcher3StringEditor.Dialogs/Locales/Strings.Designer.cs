@@ -558,9 +558,9 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         /// <summary>
         ///   查找类似 The Text Exceeds the Maximum Length Of 1000 Characters Allowed For The Translator.  的本地化字符串。
         /// </summary>
-        internal static string TranslateCharactersNumberLimit {
+        internal static string TranslateCharactersNumberExceedLimit {
             get {
-                return ResourceManager.GetString("TranslateCharactersNumberLimit", resourceCulture);
+                return ResourceManager.GetString("TranslateCharactersNumberExceedLimit", resourceCulture);
             }
         }
         

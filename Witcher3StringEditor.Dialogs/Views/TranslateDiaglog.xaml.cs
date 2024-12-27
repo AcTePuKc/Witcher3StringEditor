@@ -18,10 +18,10 @@ public partial class TranslateDiaglog
     {
         InitializeComponent();
 
-        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslateCharactersNumberLimit", (r, m) =>
+        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslateCharactersNumberExceedLimit", (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(Strings.TranslateCharactersNumberLimit, Strings.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(Strings.TranslateCharactersNumberExceedLimit, Strings.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
         });
     }
 

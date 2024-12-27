@@ -294,7 +294,7 @@
   <data name="BatchTranslateDialogTitle" xml:space="preserve">
     <value>Batch Translate</value>
   </data>
-  <data name="TranslateCharactersNumberLimit" xml:space="preserve">
+  <data name="TranslateCharactersNumberExceedLimit" xml:space="preserve">
     <value>The Text Exceeds the Maximum Length Of 1000 Characters Allowed For The Translator. </value>
   </data>
 </root>

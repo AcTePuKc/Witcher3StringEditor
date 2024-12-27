@@ -7,6 +7,7 @@ using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using System.Collections.ObjectModel;
 using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
@@ -62,15 +63,21 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private async Task Translate()
     {
         if (CurrentTranslateItemModel == null) return;
-        try
+        if (CurrentTranslateItemModel.Text.Length <= 1000)
         {
-            var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage);
-            CurrentTranslateItemModel.TranslatedText = result.Translation;
+            try
+            {
+                var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage);
+                CurrentTranslateItemModel.TranslatedText = result.Translation;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
         }
-        catch (Exception ex)
+        else
         {
-            Log.Error(ex.Message);
-            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(ex.Message), "TranslateCharactersNumberLimit");
+            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslateCharactersNumberExceedLimit), "TranslateCharactersNumberExceedLimit");
         }
     }
 
