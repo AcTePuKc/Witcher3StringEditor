@@ -297,4 +297,7 @@
   <data name="TranslateCharactersNumberExceedLimit" xml:space="preserve">
     <value>The Text Exceeds the Maximum Length Of 1000 Characters Allowed For The Translator. </value>
   </data>
+  <data name="TranslateCharactersNumberLimit" xml:space="preserve">
+    <value>The Translator Allowed Maximum Length Is1000 Characters.</value>
+  </data>
 </root>

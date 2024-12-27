@@ -297,4 +297,7 @@
   <data name="TranslateCharactersNumberExceedLimit" xml:space="preserve">
     <value>文本超过了翻译器允许的最大长度 1000 个字符。</value>
   </data>
+  <data name="TranslateCharactersNumberLimit" xml:space="preserve">
+    <value>翻译器允许的最大翻译长度为1000个字符</value>
+  </data>
 </root>

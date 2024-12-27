@@ -565,6 +565,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 The Translator Allowed Maximum Length Is1000 Characters. 的本地化字符串。
+        /// </summary>
+        internal static string TranslateCharactersNumberLimit {
+            get {
+                return ResourceManager.GetString("TranslateCharactersNumberLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Translate 的本地化字符串。
         /// </summary>
         internal static string TranslateDialogTitle {

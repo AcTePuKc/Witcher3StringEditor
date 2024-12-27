@@ -57,6 +57,7 @@
         <TextBox
             Grid.Row="4"
             Grid.Column="2"
+            ui:ControlHelper.PlaceholderText="{lex:Loc TranslateCharactersNumberLimit}"
             Text="{Binding CurrentTranslateItemModel.TranslatedText, FallbackValue=''}"
             TextWrapping="WrapWithOverflow" />
         <StackPanel
