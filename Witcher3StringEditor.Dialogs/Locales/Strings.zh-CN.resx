@@ -294,4 +294,7 @@
   <data name="BatchTranslateDialogTitle" xml:space="preserve">
     <value>批量翻译</value>
   </data>
+  <data name="TranslateCharactersNumberLimit" xml:space="preserve">
+    <value>文本超过了翻译器允许的最大长度 1000 个字符。</value>
+  </data>
 </root>

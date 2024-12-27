@@ -115,6 +115,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Batch Translate 的本地化字符串。
+        /// </summary>
+        internal static string BatchTranslateDialogTitle {
+            get {
+                return ResourceManager.GetString("BatchTranslateDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Cancel 的本地化字符串。
         /// </summary>
         internal static string CancelBtnContent {
@@ -174,6 +183,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string EditDialogTitle {
             get {
                 return ResourceManager.GetString("EditDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 End Index 的本地化字符串。
+        /// </summary>
+        internal static string EndIndex {
+            get {
+                return ResourceManager.GetString("EndIndex", resourceCulture);
             }
         }
         
@@ -493,6 +511,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Start Index 的本地化字符串。
+        /// </summary>
+        internal static string StartIndex {
+            get {
+                return ResourceManager.GetString("StartIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Submit 的本地化字符串。
         /// </summary>
         internal static string SubmitBtnContent {
@@ -525,6 +552,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string TranslateBtnContent {
             get {
                 return ResourceManager.GetString("TranslateBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The Text Exceeds the Maximum Length Of 1000 Characters Allowed For The Translator.  的本地化字符串。
+        /// </summary>
+        internal static string TranslateCharactersNumberLimit {
+            get {
+                return ResourceManager.GetString("TranslateCharactersNumberLimit", resourceCulture);
             }
         }
         
