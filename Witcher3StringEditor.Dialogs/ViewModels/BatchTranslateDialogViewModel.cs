@@ -34,10 +34,13 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     private int endIndex;
 
     [ObservableProperty]
-    private int progressValue;
+    private int successCount;
 
     [ObservableProperty]
-    private int progressMaxValue;
+    private int failureCount;
+
+    [ObservableProperty]
+    private int pendingCount;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
@@ -70,22 +73,25 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     private async Task Start()
     {
         IsBusy = true;
-        ProgressValue = 0;
-        ProgressMaxValue = EndIndex - StartIndex + 1;
+        SuccessCount = 0;
+        FailureCount = 0;
+        PendingCount = EndIndex - StartIndex + 1;
         cancellationTokenSource = new CancellationTokenSource();
-        foreach (var item in w3Items.Skip(StartIndex - 1).Take(ProgressMaxValue))
+        foreach (var item in w3Items.Skip(StartIndex - 1).Take(PendingCount))
         {
             if (cancellationTokenSource.IsCancellationRequested) return;
             try
             {
                 var result = await translator.TranslateAsync(item.Text, ToLanguage);
                 item.Text = result.Translation;
+                SuccessCount++;
             }
             catch (Exception ex)
             {
                 Log.Error(ex.Message);
+                FailureCount++;
             }
-            ProgressValue++;
+            PendingCount--;
         }
         IsBusy = false;
     }

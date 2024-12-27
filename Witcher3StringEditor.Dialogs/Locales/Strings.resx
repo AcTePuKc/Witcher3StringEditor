@@ -300,4 +300,13 @@
   <data name="TranslateCharactersNumberLimit" xml:space="preserve">
     <value>The Translator Allowed Maximum Length Is1000 Characters.</value>
   </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Failure" xml:space="preserve">
+    <value>Failure</value>
+  </data>
 </root>
