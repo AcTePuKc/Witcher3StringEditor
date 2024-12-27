@@ -1,11 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
+using Serilog;
 using System.Collections.ObjectModel;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -59,8 +62,16 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private async Task Translate()
     {
         if (CurrentTranslateItemModel == null) return;
-        var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage);
-        CurrentTranslateItemModel.TranslatedText = result.Translation;
+        try
+        {
+            var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage);
+            CurrentTranslateItemModel.TranslatedText = result.Translation;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(ex.Message), "TranslateCharactersNumberLimit");
+        }
     }
 
     [RelayCommand]

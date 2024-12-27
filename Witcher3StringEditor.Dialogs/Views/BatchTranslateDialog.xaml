@@ -66,21 +66,18 @@
             SmallChange="1"
             SpinButtonPlacementMode="Inline"
             Value="{Binding EndIndex}" />
-        <sf:SfCircularProgressBar
+        <StackPanel
             Grid.Row="3"
             Grid.Column="0"
             Grid.ColumnSpan="3"
             Margin="0,10"
-            Maximum="{Binding ProgressMaxValue}"
-            Progress="{Binding ProgressValue}">
-            <sf:SfCircularProgressBar.ProgressContent>
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock Text="{Binding ProgressValue}" />
-                    <TextBlock Text="/" />
-                    <TextBlock Text="{Binding ProgressMaxValue}" />
-                </StackPanel>
-            </sf:SfCircularProgressBar.ProgressContent>
-        </sf:SfCircularProgressBar>
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <TextBlock FontSize="100" Text="{Binding ProgressValue}" />
+            <TextBlock FontSize="100" Text="/" />
+            <TextBlock FontSize="100" Text="{Binding ProgressMaxValue}" />
+        </StackPanel>
         <Button
             Grid.Row="4"
             Grid.Column="0"
