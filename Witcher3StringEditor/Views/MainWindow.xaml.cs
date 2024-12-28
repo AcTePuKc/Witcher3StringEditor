@@ -64,10 +64,8 @@ public partial class MainWindow
         });
     }
 
-    private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        SfDataGrid.SearchHelper.Search(args.QueryText);
-    }
+    private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) 
+        => SfDataGrid.SearchHelper.Search(args.QueryText);
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {

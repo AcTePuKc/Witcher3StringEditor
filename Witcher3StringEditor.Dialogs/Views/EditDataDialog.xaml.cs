@@ -5,8 +5,6 @@
 /// </summary>
 public partial class EditDataDialog
 {
-    public EditDataDialog()
-    {
-        InitializeComponent();
-    }
+    public EditDataDialog() 
+        => InitializeComponent();
 }
