@@ -88,7 +88,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void WindowClosed() 
+    private void WindowClosed()
         => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
 
     [RelayCommand]
@@ -129,7 +129,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         if (serializer == null) return;
         if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) W3Items.Clear();
-        foreach (var item in await serializer.Deserialize(fileName)) W3Items.Add(item);
+        foreach (var item in (await serializer.Deserialize(fileName)).OrderBy(x => x.StrId)) W3Items.Add(item);
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
         if (appSettings.RecentItems.Count != 0)
         {
