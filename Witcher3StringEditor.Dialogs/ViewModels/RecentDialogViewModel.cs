@@ -22,7 +22,7 @@ public partial class RecentDialogViewModel(IAppSettings appSettings) : Observabl
         RequestClose?.Invoke(this, EventArgs.Empty);
         if (File.Exists(item.FilePath))
         {
-            await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
+            _ = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
         }
         else
         {
