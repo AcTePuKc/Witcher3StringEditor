@@ -318,4 +318,10 @@
   <data name="BackupFileNoFoundCaption" xml:space="preserve">
     <value>备份文件不存在</value>
   </data>
+  <data name="BackupDeleteCaption" xml:space="preserve">
+    <value>删除备份文件</value>
+  </data>
+  <data name="BackupRestoreCaption" xml:space="preserve">
+    <value>备份恢复</value>
+  </data>
 </root>

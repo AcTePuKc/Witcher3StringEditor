@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
+  <data name="AboutBtnLabel" xml:space="preserve">
     <value>关于</value>
   </data>
-  <data name="AllSupportedFormat" xml:space="preserve">
+  <data name="FileFormatSupported" xml:space="preserve">
     <value>所有支持的格式</value>
   </data>
-  <data name="TextFile" xml:space="preserve">
+  <data name="FileFormatTextFile" xml:space="preserve">
     <value>文本文件</value>
   </data>
-  <data name="Witcher3StringsFile" xml:space="preserve">
+  <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
     <value>巫师3字符串文件</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>版本</value>
   </data>
-  <data name="BuildTime" xml:space="preserve">
+  <data name="AppBuildTime" xml:space="preserve">
     <value>编译时间</value>
   </data>
   <data name="OS" xml:space="preserve">
@@ -141,10 +141,10 @@
   <data name="Runtime" xml:space="preserve">
     <value>运行时</value>
   </data>
-  <data name="ExitQuestionMessage" xml:space="preserve">
+  <data name="AppExitMessage" xml:space="preserve">
     <value>您确认要退出吗？</value>
   </data>
-  <data name="ExitQuestionCaption" xml:space="preserve">
+  <data name="AppExitCaption" xml:space="preserve">
     <value>退出</value>
   </data>
   <data name="OpenFileBtnLabel" xml:space="preserve">
@@ -192,16 +192,22 @@
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>最近打开的文件</value>
   </data>
-  <data name="OpenFileWarning" xml:space="preserve">
-    <value>打开文件将失去未保存的数据！</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>警告</value>
-  </data>
   <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
     <value>批量翻译</value>
   </data>
-  <data name="OpenedFileNoFound" xml:space="preserve">
+  <data name="FileOpenedNoFoundMessage" xml:space="preserve">
     <value>打开的文件不存在，是否删除记录？</value>
+  </data>
+  <data name="FileOpenedMessage" xml:space="preserve">
+    <value>打开文件将失去未保存的数据！</value>
+  </data>
+  <data name="FileOpenedCaption" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="FileOpenedNoFoundCaption" xml:space="preserve">
+    <value>打开的文件不存在</value>
+  </data>
+  <data name="AboutCaption" xml:space="preserve">
+    <value>关于</value>
   </data>
 </root>

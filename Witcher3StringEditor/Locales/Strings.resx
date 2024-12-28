@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
+  <data name="AboutBtnLabel" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="AllSupportedFormat" xml:space="preserve">
+  <data name="FileFormatSupported" xml:space="preserve">
     <value>All Supported Format</value>
   </data>
-  <data name="TextFile" xml:space="preserve">
+  <data name="FileFormatTextFile" xml:space="preserve">
     <value>Text File</value>
   </data>
-  <data name="Witcher3StringsFile" xml:space="preserve">
+  <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
     <value>Witcher3 Strings File</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>
-  <data name="BuildTime" xml:space="preserve">
+  <data name="AppBuildTime" xml:space="preserve">
     <value>Build Time</value>
   </data>
   <data name="OS" xml:space="preserve">
@@ -141,10 +141,10 @@
   <data name="Runtime" xml:space="preserve">
     <value>Runtime</value>
   </data>
-  <data name="ExitQuestionMessage" xml:space="preserve">
+  <data name="AppExitMessage" xml:space="preserve">
     <value>Are You Sure You Want To Exit?</value>
   </data>
-  <data name="ExitQuestionCaption" xml:space="preserve">
+  <data name="AppExitCaption" xml:space="preserve">
     <value>Exit</value>
   </data>
   <data name="OpenFileBtnLabel" xml:space="preserve">
@@ -192,16 +192,22 @@
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>Recent</value>
   </data>
-  <data name="OpenFileWarning" xml:space="preserve">
-    <value>Opening The File Will Result In The Loss Of Unsaved Data!</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
-  </data>
   <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
     <value>Batch Translate</value>
   </data>
-  <data name="OpenedFileNoFound" xml:space="preserve">
+  <data name="FileOpenedNoFoundMessage" xml:space="preserve">
     <value>The Opened File Does Not Exist. Do You Want To Delete The Record?</value>
+  </data>
+  <data name="FileOpenedMessage" xml:space="preserve">
+    <value>Opening The File Will Result In The Loss Of Unsaved Data!</value>
+  </data>
+  <data name="FileOpenedCaption" xml:space="preserve">
+    <value>Open File</value>
+  </data>
+  <data name="FileOpenedNoFoundCaption" xml:space="preserve">
+    <value>Opened File No Found</value>
+  </data>
+  <data name="AboutCaption" xml:space="preserve">
+    <value>About</value>
   </data>
 </root>

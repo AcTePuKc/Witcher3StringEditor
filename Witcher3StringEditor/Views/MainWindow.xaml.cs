@@ -30,25 +30,25 @@ public partial class MainWindow
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "MainWindowClosing", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.ExitQuestionMessage, Strings.ExitQuestionCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No);
+            m.Reply(MessageBox.Show(Strings.AppExitMessage, Strings.AppExitCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No);
         });
 
         WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "FileOpened", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.OpenFileWarning, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
+            m.Reply(MessageBox.Show(Strings.FileOpenedMessage, Strings.FileOpenedCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
 
         WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "OpenedFileNoFound", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.OpenedFileNoFound, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes);
+            m.Reply(MessageBox.Show(Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
 
         WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(aboutInformationRecipient, "AboutInformation", static (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(m.Message, Strings.About, MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(m.Message, Strings.AboutCaption, MessageBoxButton.OK, MessageBoxImage.Information);
         });
     }
 

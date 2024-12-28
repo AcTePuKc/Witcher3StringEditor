@@ -174,7 +174,7 @@
                     <ui:FontIcon Glyph="&#xe71b;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowAboutCommand}" Label="{lex:Loc About}">
+            <ui:AppBarButton Command="{Binding ShowAboutCommand}" Label="{lex:Loc AboutBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe946;" />
                 </ui:AppBarButton.Icon>

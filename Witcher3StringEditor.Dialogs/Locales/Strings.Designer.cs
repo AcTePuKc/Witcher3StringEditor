@@ -70,6 +70,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Backup Delete 的本地化字符串。
+        /// </summary>
+        internal static string BackupDeleteCaption {
+            get {
+                return ResourceManager.GetString("BackupDeleteCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 This Operation Will Delete The File And Cann&apos;t Be Undo! 的本地化字符串。
         /// </summary>
         internal static string BackupDeleteMessage {
@@ -111,6 +120,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string BackupPath {
             get {
                 return ResourceManager.GetString("BackupPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Backup Restore 的本地化字符串。
+        /// </summary>
+        internal static string BackupRestoreCaption {
+            get {
+                return ResourceManager.GetString("BackupRestoreCaption", resourceCulture);
             }
         }
         

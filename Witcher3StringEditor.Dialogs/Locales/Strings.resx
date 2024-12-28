@@ -318,4 +318,10 @@
   <data name="BackupFileNoFoundCaption" xml:space="preserve">
     <value>Backup File No Found</value>
   </data>
+  <data name="BackupDeleteCaption" xml:space="preserve">
+    <value>Backup Delete</value>
+  </data>
+  <data name="BackupRestoreCaption" xml:space="preserve">
+    <value>Backup Restore</value>
+  </data>
 </root>

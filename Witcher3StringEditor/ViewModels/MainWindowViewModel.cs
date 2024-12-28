@@ -116,8 +116,8 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             Filters =
             [
-                new FileFilter(Strings.AllSupportedFormat, [".csv", ".w3strings"]),
-                new FileFilter(Strings.TextFile, ".csv"), new FileFilter(Strings.Witcher3StringsFile, ".w3strings")
+                new FileFilter(Strings.FileFormatSupported, [".csv", ".w3strings"]),
+                new FileFilter(Strings.FileFormatTextFile, ".csv"), new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
 
@@ -275,7 +275,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var runtime = RuntimeInformation.FrameworkDescription;
         var version = ThisAssembly.AssemblyInformationalVersion.Trim();
         var os = $"{RuntimeInformation.OSDescription}({RuntimeInformation.OSArchitecture})";
-        var message = $"{Strings.Version}: {version}\n{Strings.BuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}";
+        var message = $"{Strings.Version}: {version}\n{Strings.AppBuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}";
         WeakReferenceMessenger.Default.Send(new SimpleStringMessage(message), "AboutInformation");
     }
 

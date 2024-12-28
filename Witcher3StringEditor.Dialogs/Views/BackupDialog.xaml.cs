@@ -26,9 +26,9 @@ public partial class BackupDialog
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.BackupRestoreMessage,
-                                    Strings.Warning,
+                                    Strings.BackupRestoreCaption,
                                     MessageBoxButton.YesNo,
-                                    MessageBoxImage.Warning) ==
+                                    MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
 
@@ -36,9 +36,9 @@ public partial class BackupDialog
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.BackupDeleteMessage,
-                                    Strings.Warning,
+                                    Strings.BackupDeleteCaption,
                                     MessageBoxButton.YesNo,
-                                    MessageBoxImage.Warning) ==
+                                    MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
 
@@ -48,7 +48,7 @@ public partial class BackupDialog
             m.Reply(MessageBox.Show(Strings.BackupFileNoFoundMessage,
                                     Strings.BackupFileNoFoundCaption,
                                     MessageBoxButton.YesNo,
-                                    MessageBoxImage.Warning) ==
+                                    MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
     }
