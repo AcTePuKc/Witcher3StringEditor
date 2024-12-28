@@ -169,6 +169,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Settings Invalid 的本地化字符串。
+        /// </summary>
+        internal static string CheckSettingsCaption {
+            get {
+                return ResourceManager.GetString("CheckSettingsCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 You Have Not Completed The Initialization. Click Yes to Exit,Otherwise Click No To Continue With The Initialization. 的本地化字符串。
+        /// </summary>
+        internal static string CheckSettingsMessage {
+            get {
+                return ResourceManager.GetString("CheckSettingsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Close 的本地化字符串。
         /// </summary>
         internal static string CloseBtnContent {
@@ -201,6 +219,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string DeleteDialogTitle {
             get {
                 return ResourceManager.GetString("DeleteDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Translating 的本地化字符串。
+        /// </summary>
+        internal static string DialogClosingWhenTranslatingCaption {
+            get {
+                return ResourceManager.GetString("DialogClosingWhenTranslatingCaption", resourceCulture);
             }
         }
         
@@ -412,15 +439,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 You Have Not Completed The Initialization. Click Yes to Exit,Otherwise Click No To Continue With The Initialization. 的本地化字符串。
-        /// </summary>
-        internal static string PleaseCheckSettings {
-            get {
-                return ResourceManager.GetString("PleaseCheckSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Preferred FileType 的本地化字符串。
         /// </summary>
         internal static string PreferredFileType {
@@ -619,11 +637,20 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Text Too Long 的本地化字符串。
+        /// </summary>
+        internal static string TranslateCharactersNumberExceedLimitCaption {
+            get {
+                return ResourceManager.GetString("TranslateCharactersNumberExceedLimitCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The Text Exceeds the Maximum Length Of 1000 Characters Allowed For The Translator.  的本地化字符串。
         /// </summary>
-        internal static string TranslateCharactersNumberExceedLimit {
+        internal static string TranslateCharactersNumberExceedLimitMessage {
             get {
-                return ResourceManager.GetString("TranslateCharactersNumberExceedLimit", resourceCulture);
+                return ResourceManager.GetString("TranslateCharactersNumberExceedLimitMessage", resourceCulture);
             }
         }
         
@@ -646,11 +673,20 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Translated Text Invalid 的本地化字符串。
+        /// </summary>
+        internal static string TranslatedTextInvalidCaption {
+            get {
+                return ResourceManager.GetString("TranslatedTextInvalidCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Translated Text Is Invalid,Can&apos;t Save! 的本地化字符串。
         /// </summary>
-        internal static string TranslatedTextInvalid {
+        internal static string TranslatedTextInvalidMessage {
             get {
-                return ResourceManager.GetString("TranslatedTextInvalid", resourceCulture);
+                return ResourceManager.GetString("TranslatedTextInvalidMessage", resourceCulture);
             }
         }
         

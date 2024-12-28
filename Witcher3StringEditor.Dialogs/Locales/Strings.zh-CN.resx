@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PleaseCheckSettings" xml:space="preserve">
+  <data name="CheckSettingsMessage" xml:space="preserve">
     <value>您尚未完成初始化。请点击是退出程序，或者点击否继续完成初始化。</value>
   </data>
   <data name="Warning" xml:space="preserve">
@@ -294,7 +294,7 @@
   <data name="BatchTranslateDialogTitle" xml:space="preserve">
     <value>批量翻译</value>
   </data>
-  <data name="TranslateCharactersNumberExceedLimit" xml:space="preserve">
+  <data name="TranslateCharactersNumberExceedLimitMessage" xml:space="preserve">
     <value>文本超过了翻译器允许的最大长度 1000 个字符。</value>
   </data>
   <data name="TranslateCharactersNumberLimit" xml:space="preserve">
@@ -309,7 +309,7 @@
   <data name="Failure" xml:space="preserve">
     <value>失败</value>
   </data>
-  <data name="TranslatedTextInvalid" xml:space="preserve">
+  <data name="TranslatedTextInvalidMessage" xml:space="preserve">
     <value>译文无效，无法保存！</value>
   </data>
   <data name="BackupFileNoFoundMessage" xml:space="preserve">
@@ -323,5 +323,17 @@
   </data>
   <data name="BackupRestoreCaption" xml:space="preserve">
     <value>备份恢复</value>
+  </data>
+  <data name="DialogClosingWhenTranslatingCaption" xml:space="preserve">
+    <value>正在翻译中</value>
+  </data>
+  <data name="CheckSettingsCaption" xml:space="preserve">
+    <value>设置不正确</value>
+  </data>
+  <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
+    <value>文本超长</value>
+  </data>
+  <data name="TranslatedTextInvalidCaption" xml:space="preserve">
+    <value>译文无效</value>
   </data>
 </root>

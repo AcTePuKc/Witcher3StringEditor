@@ -10,7 +10,6 @@ public partial class RecentDialog
     public RecentDialog()
     {
         InitializeComponent();
-
         SfDataGrid.SearchHelper.AllowFiltering = true;
     }
 

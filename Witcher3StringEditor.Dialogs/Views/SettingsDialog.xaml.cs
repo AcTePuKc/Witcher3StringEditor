@@ -22,7 +22,10 @@ public partial class SettingsDialog
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage,string>(closingRecipient, "SettingsDialogClosing", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.PleaseCheckSettings, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+            m.Reply(MessageBox.Show(Strings.CheckSettingsMessage,
+                                    Strings.CheckSettingsCaption,
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
     }
 

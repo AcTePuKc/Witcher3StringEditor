@@ -21,13 +21,19 @@ public partial class TranslateDiaglog
         WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslateCharactersNumberExceedLimit", (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(Strings.TranslateCharactersNumberExceedLimit, Strings.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(Strings.TranslateCharactersNumberExceedLimitMessage,
+                            Strings.TranslateCharactersNumberExceedLimitCaption,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
         });
 
         WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslatedTextInvalid", (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(Strings.TranslatedTextInvalid, Strings.Warning, MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(Strings.TranslatedTextInvalidMessage,
+                            Strings.TranslatedTextInvalidCaption,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
         });
     }
 

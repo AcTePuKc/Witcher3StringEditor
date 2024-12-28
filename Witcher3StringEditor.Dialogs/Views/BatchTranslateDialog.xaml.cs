@@ -22,7 +22,10 @@ public partial class BatchTranslateDialog
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "BatchTranslateDialogClosing", (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.DialogClosingWhenTranslatingMessage, Strings.Warning, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No);
+            m.Reply(MessageBox.Show(Strings.DialogClosingWhenTranslatingMessage,
+                                    Strings.DialogClosingWhenTranslatingCaption,
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question) == MessageBoxResult.No);
         });
     }
 

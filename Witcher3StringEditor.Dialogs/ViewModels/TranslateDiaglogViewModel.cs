@@ -77,7 +77,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         }
         else
         {
-            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslateCharactersNumberExceedLimit), "TranslateCharactersNumberExceedLimit");
+            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslateCharactersNumberExceedLimitMessage), "TranslateCharactersNumberExceedLimit");
         }
     }
 
@@ -86,7 +86,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     {
         if (CurrentTranslateItemModel == null) return;
         if (string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
-            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslatedTextInvalid), "TranslatedTextInvalid");
+            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslatedTextInvalidMessage), "TranslatedTextInvalid");
         else
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
     }
