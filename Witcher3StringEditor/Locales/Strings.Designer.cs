@@ -106,6 +106,15 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Batch Translate 的本地化字符串。
+        /// </summary>
+        internal static string BatchTranslateDialogBtnLabel {
+            get {
+                return ResourceManager.GetString("BatchTranslateDialogBtnLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Build Time 的本地化字符串。
         /// </summary>
         internal static string BuildTime {
@@ -160,6 +169,15 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   查找类似 The Opened File Does Not Exist. Do You Want To Delete The Record? 的本地化字符串。
+        /// </summary>
+        internal static string OpenedFileNoFound {
+            get {
+                return ResourceManager.GetString("OpenedFileNoFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open File 的本地化字符串。
         /// </summary>
         internal static string OpenFileBtnLabel {
@@ -169,7 +187,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Opening The File Will Result In The Loss Of Unsaved Data 的本地化字符串。
+        ///   查找类似 Opening The File Will Result In The Loss Of Unsaved Data! 的本地化字符串。
         /// </summary>
         internal static string OpenFileWarning {
             get {

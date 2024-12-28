@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
+using System.IO;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
 
@@ -16,9 +17,17 @@ public partial class RecentDialogViewModel(IAppSettings appSettings) : Observabl
     public IAppSettings AppSettings => appSettings;
 
     [RelayCommand]
-    private void Open(IRecentItem item)
+    private async Task Open(IRecentItem item)
     {
         RequestClose?.Invoke(this, EventArgs.Empty);
-        WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
+        if (File.Exists(item.FilePath))
+        {
+            await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
+        }
+        else
+        {
+            if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "OpenedFileNoFound"))
+                appSettings.RecentItems.Remove(item);
+        }
     }
 }

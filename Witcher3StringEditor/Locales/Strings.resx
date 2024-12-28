@@ -201,4 +201,7 @@
   <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
     <value>Batch Translate</value>
   </data>
+  <data name="OpenedFileNoFound" xml:space="preserve">
+    <value>The Opened File Does Not Exist. Do You Want To Delete The Record?</value>
+  </data>
 </root>
