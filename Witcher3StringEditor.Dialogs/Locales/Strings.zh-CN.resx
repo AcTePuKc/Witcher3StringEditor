@@ -312,4 +312,10 @@
   <data name="TranslatedTextInvalid" xml:space="preserve">
     <value>译文无效，无法保存！</value>
   </data>
+  <data name="BackupFileNoFoundMessage" xml:space="preserve">
+    <value>备份文件不存在，是否删除该记录？</value>
+  </data>
+  <data name="BackupFileNoFoundCaption" xml:space="preserve">
+    <value>备份文件不存在</value>
+  </data>
 </root>

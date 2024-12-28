@@ -41,6 +41,16 @@ public partial class BackupDialog
                                     MessageBoxImage.Warning) ==
                                     MessageBoxResult.Yes);
         });
+
+        WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupFileNoFound", static (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(MessageBox.Show(Strings.BackupFileNoFoundMessage,
+                                    Strings.BackupFileNoFoundCaption,
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Warning) ==
+                                    MessageBoxResult.Yes);
+        });
     }
 
     private void Window_Closed(object sender, EventArgs e)

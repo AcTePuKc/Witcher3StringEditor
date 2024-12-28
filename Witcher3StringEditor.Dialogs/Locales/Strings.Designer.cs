@@ -88,6 +88,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Backup File No Found 的本地化字符串。
+        /// </summary>
+        internal static string BackupFileNoFoundCaption {
+            get {
+                return ResourceManager.GetString("BackupFileNoFoundCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The Backup File Does Not Exist, Whether To Delete The Record? 的本地化字符串。
+        /// </summary>
+        internal static string BackupFileNoFoundMessage {
+            get {
+                return ResourceManager.GetString("BackupFileNoFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Backup Path 的本地化字符串。
         /// </summary>
         internal static string BackupPath {
@@ -610,7 +628,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Translated Text Is Invalid,Can&apos;t Save. 的本地化字符串。
+        ///   查找类似 Translated Text Is Invalid,Can&apos;t Save! 的本地化字符串。
         /// </summary>
         internal static string TranslatedTextInvalid {
             get {

@@ -312,4 +312,10 @@
   <data name="TranslatedTextInvalid" xml:space="preserve">
     <value>Translated Text Is Invalid,Can't Save!</value>
   </data>
+  <data name="BackupFileNoFoundMessage" xml:space="preserve">
+    <value>The Backup File Does Not Exist, Whether To Delete The Record?</value>
+  </data>
+  <data name="BackupFileNoFoundCaption" xml:space="preserve">
+    <value>Backup File No Found</value>
+  </data>
 </root>
