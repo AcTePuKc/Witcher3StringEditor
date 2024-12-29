@@ -174,14 +174,13 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task Delete(IEnumerable<object> items)
     {
-        var w3Items = items.Cast<W3Item>().ToArray();
+        var w3Items = items.Cast<IW3Item>().ToArray();
         if (w3Items.Length != 0)
         {
             var dialogViewModel = new DeleteDataDialogViewModel(w3Items);
             var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
             if (result == true)
-                foreach (var item in w3Items)
-                    W3Items.Remove(item);
+                Array.ForEach(w3Items, item => W3Items.Remove(item));
         }
     }
 
