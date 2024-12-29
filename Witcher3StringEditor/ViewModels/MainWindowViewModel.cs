@@ -180,7 +180,7 @@ internal partial class MainWindowViewModel : ObservableObject
             var dialogViewModel = new DeleteDataDialogViewModel(w3Items);
             var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
             if (result == true)
-                Array.ForEach(w3Items, item => W3Items.Remove(item));
+                w3Items.ForEach(item => W3Items.Remove(item));
         }
     }
 
