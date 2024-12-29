@@ -336,4 +336,7 @@
   <data name="TranslatedTextInvalidCaption" xml:space="preserve">
     <value>译文无效</value>
   </data>
+  <data name="TranslateErrorCaption" xml:space="preserve">
+    <value>翻译出错</value>
+  </data>
 </root>

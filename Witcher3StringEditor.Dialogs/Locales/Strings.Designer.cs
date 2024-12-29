@@ -700,6 +700,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Translate Error 的本地化字符串。
+        /// </summary>
+        internal static string TranslateErrorCaption {
+            get {
+                return ResourceManager.GetString("TranslateErrorCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please Select w3strings.exe 的本地化字符串。
         /// </summary>
         internal static string W3StringsPath {

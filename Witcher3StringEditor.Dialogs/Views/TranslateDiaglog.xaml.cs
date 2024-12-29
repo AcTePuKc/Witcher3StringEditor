@@ -35,6 +35,15 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
+
+        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslateError", (r, m) =>
+        {
+            r.Receive(m);
+            MessageBox.Show(m.Message,
+                            Strings.TranslateErrorCaption,
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+        });
     }
 
     private void Window_Closed(object sender, EventArgs e) 
