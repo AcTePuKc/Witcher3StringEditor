@@ -6,6 +6,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
 using Serilog.Events;
+using Syncfusion.Data.Extensions;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -129,7 +130,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         if (serializer == null) return;
         if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) W3Items.Clear();
-        foreach (var item in await serializer.Deserialize(fileName)) W3Items.Add(item);
+        (await serializer.Deserialize(fileName)).ForEach(W3Items.Add);
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
         if (appSettings.RecentItems.Count != 0)
         {
@@ -264,7 +265,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(file), "FileOpened"))
                 {
                     W3Items.Clear();
-                    foreach (var item in await serializer.Deserialize(file)) W3Items.Add(item);
+                    (await serializer.Deserialize(file)).ForEach(W3Items.Add);
                 }
             }
         }
@@ -285,7 +286,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         var attribute = Assembly.GetExecutingAssembly()
             .GetCustomAttributesData()
-            .First(x => x.AttributeType.Name == "TimestampAttribute");
+            .First(static x => x.AttributeType.Name == "TimestampAttribute");
 
         return attribute.ConstructorArguments.First().Value as string ?? string.Empty;
     }
