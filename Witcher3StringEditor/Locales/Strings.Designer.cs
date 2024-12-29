@@ -331,6 +331,15 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Update 的本地化字符串。
+        /// </summary>
+        internal static string UpdateBtnContent {
+            get {
+                return ResourceManager.GetString("UpdateBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Version 的本地化字符串。
         /// </summary>
         internal static string Version {

@@ -270,6 +270,10 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             IsOpen="{Binding IsUpdateAvailable}"
-            Message="{lex:Loc UpdateAvailable}" />
+            Message="{lex:Loc UpdateAvailable}">
+            <ui:InfoBar.ActionButton>
+                <Button Command="{Binding OpenNexusModsCommand}" Content="{lex:Loc UpdateBtnContent}" />
+            </ui:InfoBar.ActionButton>
+        </ui:InfoBar>
     </Grid>
 </Window>

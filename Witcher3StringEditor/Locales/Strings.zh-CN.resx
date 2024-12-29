@@ -117,35 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutBtnLabel" xml:space="preserve">
-    <value>关于</value>
-  </data>
-  <data name="FileFormatSupported" xml:space="preserve">
-    <value>所有支持的格式</value>
-  </data>
-  <data name="FileFormatTextFile" xml:space="preserve">
-    <value>文本文件</value>
-  </data>
-  <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
-    <value>巫师3字符串文件</value>
-  </data>
   <data name="Version" xml:space="preserve">
     <value>版本</value>
-  </data>
-  <data name="AppBuildTime" xml:space="preserve">
-    <value>编译时间</value>
   </data>
   <data name="OS" xml:space="preserve">
     <value>操作系统</value>
   </data>
   <data name="Runtime" xml:space="preserve">
     <value>运行时</value>
-  </data>
-  <data name="AppExitMessage" xml:space="preserve">
-    <value>您确认要退出吗？</value>
-  </data>
-  <data name="AppExitCaption" xml:space="preserve">
-    <value>退出</value>
   </data>
   <data name="OpenFileBtnLabel" xml:space="preserve">
     <value>打开文件</value>
@@ -195,6 +174,27 @@
   <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
     <value>批量翻译</value>
   </data>
+  <data name="AboutBtnLabel" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="FileFormatSupported" xml:space="preserve">
+    <value>所有支持的格式</value>
+  </data>
+  <data name="FileFormatTextFile" xml:space="preserve">
+    <value>文本文件</value>
+  </data>
+  <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
+    <value>巫师3字符串文件</value>
+  </data>
+  <data name="AppBuildTime" xml:space="preserve">
+    <value>编译时间</value>
+  </data>
+  <data name="AppExitMessage" xml:space="preserve">
+    <value>您确认要退出吗？</value>
+  </data>
+  <data name="AppExitCaption" xml:space="preserve">
+    <value>退出</value>
+  </data>
   <data name="FileOpenedNoFoundMessage" xml:space="preserve">
     <value>打开的文件不存在，是否删除记录？</value>
   </data>
@@ -209,5 +209,8 @@
   </data>
   <data name="AboutCaption" xml:space="preserve">
     <value>关于</value>
+  </data>
+  <data name="UpdateBtnContent" xml:space="preserve">
+    <value>更新</value>
   </data>
 </root>
