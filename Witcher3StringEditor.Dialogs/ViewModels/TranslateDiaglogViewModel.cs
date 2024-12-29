@@ -39,6 +39,12 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private int indexOfItems = -1;
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
+    [NotifyCanExecuteChangedFor(nameof(NextCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    private bool isTransLating;
+
     partial void OnIndexOfItemsChanged(int value)
     {
         var item = w3Items.ElementAt(value);
@@ -72,6 +78,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         {
             try
             {
+                IsTransLating = true;
                 var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage);
                 CurrentTranslateItemModel.TranslatedText = result.Translation;
             }
@@ -80,6 +87,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
                 WeakReferenceMessenger.Default.Send(new SimpleStringMessage(ex.Message), "TranslateError");
                 Log.Error(ex.Message);
             }
+            IsTransLating = false;
         }
         else
         {
@@ -87,7 +95,9 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         }
     }
 
-    [RelayCommand]
+    private bool CanSave() => !IsTransLating;
+
+    [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
     {
         if (CurrentTranslateItemModel == null) return;
@@ -97,9 +107,9 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
     }
 
-    private bool CanPrevious() => IndexOfItems > 0;
+    private bool CanPrevious() => IndexOfItems > 0 && !IsTransLating;
 
-    private bool CanNext() => IndexOfItems < w3Items.Count() - 1;
+    private bool CanNext() => IndexOfItems < w3Items.Count() - 1 && !IsTransLating;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
     private void Previous() => IndexOfItems -= 1;
