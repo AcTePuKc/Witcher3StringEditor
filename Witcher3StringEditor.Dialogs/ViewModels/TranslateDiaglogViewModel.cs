@@ -6,6 +6,7 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Models;
@@ -28,6 +29,9 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private Language toLanguage;
 
     [ObservableProperty]
+    private Language formLanguage;
+
+    [ObservableProperty]
     private TranslateItem? currentTranslateItemModel;
 
     [ObservableProperty]
@@ -45,6 +49,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     {
         this.w3Items = w3Items;
         IndexOfItems = index;
+        FormLanguage = Language.GetLanguage("en");
         var language = appSettings.PreferredLanguage;
         ToLanguage = language switch
         {
@@ -67,7 +72,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         {
             try
             {
-                var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage);
+                var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage);
                 CurrentTranslateItemModel.TranslatedText = result.Translation;
             }
             catch (Exception ex)

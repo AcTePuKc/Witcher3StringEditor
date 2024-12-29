@@ -40,9 +40,15 @@
             Grid.Row="0"
             Grid.Column="2"
             Text="{lex:Loc TranslatedTxt}" />
-        <TextBox
+        <ComboBox
             Grid.Row="2"
-            Grid.RowSpan="3"
+            Grid.Column="0"
+            HorizontalAlignment="Stretch"
+            DisplayMemberPath="NativeName"
+            ItemsSource="{Binding Languages}"
+            SelectedValue="{Binding FormLanguage, Mode=TwoWay}" />
+        <TextBox
+            Grid.Row="4"
             Grid.Column="0"
             IsReadOnly="True"
             Text="{Binding CurrentTranslateItemModel.Text, FallbackValue=''}"
