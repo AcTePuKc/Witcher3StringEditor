@@ -26,7 +26,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
             Title = Strings.SelectW3Strings,
             SuggestedFileName = "w3strings"
         };
-        var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
         if (storageFile is { Name: "w3strings.exe" })
         {
             AppSettings.W3StringsPath = storageFile.LocalPath;
@@ -42,7 +42,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
             Title = Strings.SelectGameExe,
             SuggestedFileName = "witcher3"
         };
-        var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
         if (storageFile is { Name: "witcher3.exe" })
         {
             AppSettings.GameExePath = storageFile.LocalPath;

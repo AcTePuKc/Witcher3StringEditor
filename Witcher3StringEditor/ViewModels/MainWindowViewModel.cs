@@ -112,7 +112,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task OpenFile()
     {
-        var storageFile = await dialogService.ShowOpenFileDialogAsync(this, new OpenFileDialogSettings
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, new OpenFileDialogSettings
         {
             Filters =
             [
