@@ -5,7 +5,6 @@ using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -49,8 +48,8 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isBusy;
 
-    public ObservableCollection<Language> Languages { get; }
-        = new(Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft)));
+    public IEnumerable<Language> Languages { get; }
+        = Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
 
     private readonly IEnumerable<IW3Item> w3Items;
 

@@ -5,7 +5,6 @@ using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
-using System.Collections.ObjectModel;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Models;
@@ -21,8 +20,8 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private readonly IEnumerable<IW3Item> w3Items;
     private readonly ITranslator translator = new MicrosoftTranslator();
 
-    public ObservableCollection<Language> Languages { get; }
-        = new(Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft)));
+    public IEnumerable<Language> Languages { get; }
+        = Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
 
     [ObservableProperty]
     private Language toLanguage;

@@ -200,7 +200,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var dialogViewModel = new SaveDialogViewModel(new W3Job
         {
             Path = OutputFolder,
-            W3Items = W3Items.AsReadOnly(),
+            W3Items = [.. W3Items],
             FileType = appSettings.PreferredFileType,
             Language = appSettings.PreferredLanguage
         }, serializer);
@@ -261,8 +261,11 @@ internal partial class MainWindowViewModel : ObservableObject
             if (ext is ".csv" or ".w3strings")
             {
                 if (serializer == null) return;
-                if (W3Items.Any()) W3Items.Clear();
-                foreach (var item in await serializer.Deserialize(file)) W3Items.Add(item);
+                if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(file), "FileOpened"))
+                {
+                    W3Items.Clear();
+                    foreach (var item in await serializer.Deserialize(file)) W3Items.Add(item);
+                }
             }
         }
     }
