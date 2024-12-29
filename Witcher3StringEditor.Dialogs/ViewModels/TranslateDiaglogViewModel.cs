@@ -6,7 +6,6 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Models;

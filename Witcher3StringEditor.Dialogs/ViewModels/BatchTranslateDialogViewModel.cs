@@ -80,13 +80,13 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
         SuccessCount = 0; FailureCount = 0;
         PendingCount = EndIndex - StartIndex + 1;
         cancellationTokenSource = new CancellationTokenSource();
-        var toLanguage = ToLanguage; var formLanguage = FormLanguage;
+        var tLanguage = ToLanguage; var fLanguage = FormLanguage;
         foreach (var item in w3Items.Skip(StartIndex - 1).Take(PendingCount))
         {
             if (cancellationTokenSource.IsCancellationRequested) return;
             try
             {
-                var result = await translator.TranslateAsync(item.Text, toLanguage, formLanguage);
+                var result = await translator.TranslateAsync(item.Text, tLanguage, fLanguage);
                 item.Text = result.Translation;
                 SuccessCount++;
             }
