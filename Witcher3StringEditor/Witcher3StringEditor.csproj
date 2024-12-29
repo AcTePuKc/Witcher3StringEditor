@@ -7,7 +7,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
         <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
         <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
 
