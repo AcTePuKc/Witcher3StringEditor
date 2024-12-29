@@ -339,4 +339,7 @@
   <data name="TranslateErrorCaption" xml:space="preserve">
     <value>翻译出错</value>
   </data>
+  <data name="TextLanguage" xml:space="preserve">
+    <value>文本语言</value>
+  </data>
 </root>

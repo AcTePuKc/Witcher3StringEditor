@@ -25,6 +25,9 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     private Language toLanguage;
 
     [ObservableProperty]
+    private Language formLanguage;
+
+    [ObservableProperty]
     private int maxValue;
 
     [ObservableProperty]
@@ -56,6 +59,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
         var items = w3Items as IW3Item[] ?? w3Items.ToArray();
         this.w3Items = items;
         EndIndex = MaxValue = items.Length;
+        FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
         {
             W3Language.br => Language.GetLanguage("pt"),

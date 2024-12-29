@@ -628,6 +628,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Text Language 的本地化字符串。
+        /// </summary>
+        internal static string TextLanguage {
+            get {
+                return ResourceManager.GetString("TextLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Translate 的本地化字符串。
         /// </summary>
         internal static string TranslateBtnContent {
