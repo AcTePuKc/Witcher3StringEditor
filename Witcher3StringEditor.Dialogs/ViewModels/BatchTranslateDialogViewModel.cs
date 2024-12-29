@@ -19,7 +19,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
 
     private CancellationTokenSource? cancellationTokenSource;
 
-    private readonly MicrosoftTranslator translator = new();
+    private readonly ITranslator translator = new MicrosoftTranslator();
 
     [ObservableProperty]
     private Language toLanguage;

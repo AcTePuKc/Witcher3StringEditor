@@ -19,7 +19,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     public bool? DialogResult => true;
 
     private readonly IEnumerable<IW3Item> w3Items;
-    private readonly MicrosoftTranslator translator = new();
+    private readonly ITranslator translator = new MicrosoftTranslator();
 
     public ObservableCollection<Language> Languages { get; }
         = new(Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft)));

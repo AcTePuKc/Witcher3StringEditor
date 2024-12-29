@@ -165,9 +165,8 @@ internal partial class MainWindowViewModel : ObservableObject
         var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
         if (result == true && dialogViewModel.W3Item != null)
         {
-            var first = W3Items.First(x => x.Id == w3Item.Id);
-            var index = W3Items.IndexOf(first);
-            W3Items[index] = dialogViewModel.W3Item;
+            var found = W3Items.First(x => x.Id == w3Item.Id);
+            found = dialogViewModel.W3Item;
         }
     }
 
@@ -201,7 +200,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var dialogViewModel = new SaveDialogViewModel(new W3Job
         {
             Path = OutputFolder,
-            W3Items = W3Items,
+            W3Items = W3Items.AsReadOnly(),
             FileType = appSettings.PreferredFileType,
             Language = appSettings.PreferredLanguage
         }, serializer);
