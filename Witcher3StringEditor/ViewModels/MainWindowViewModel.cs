@@ -109,7 +109,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task DropFile()
     {
-        if (DropFileData.Length != 0)
+        if (DropFileData.Length > 0)
         {
             var file = DropFileData[0];
             var ext = Path.GetExtension(file);
@@ -146,7 +146,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) W3Items.Clear();
         (await serializer.Deserialize(fileName)).ForEach(W3Items.Add);
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
-        if (appSettings.RecentItems.Count != 0)
+        if (appSettings.RecentItems.Count > 0)
         {
             try
             {
@@ -189,7 +189,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Delete(IEnumerable<object> items)
     {
         var w3Items = items.Cast<IW3Item>().ToArray();
-        if (w3Items.Length != 0)
+        if (w3Items.Length > 0)
         {
             if (await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
                 w3Items.ForEach(item => W3Items.Remove(item));
