@@ -46,6 +46,8 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
 
+    public ObservableCollection<IW3Item> W3Items { get; set; } = [];
+
     public MainWindowViewModel(IAppSettings appSettings, IDialogService dialogService)
     {
         this.appSettings = appSettings;
@@ -76,8 +78,6 @@ internal partial class MainWindowViewModel : ObservableObject
         };
     }
 
-    public ObservableCollection<IW3Item> W3Items { get; set; } = [];
-
     [RelayCommand]
     private async Task WindowLoaded()
     {
@@ -87,15 +87,15 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void WindowClosed()
-        => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
-
-    [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
         if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "MainWindowClosing"))
             e.Cancel = true;
     }
+
+    [RelayCommand]
+    private void WindowClosed()
+    => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
 
     private async Task CheckSettings(IAppSettings settings)
     {
@@ -103,6 +103,25 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             var dialogViewModel = new SettingDialogViewModel(appSettings, dialogService);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
+        }
+    }
+
+    [RelayCommand]
+    private async Task DropFile()
+    {
+        if (DropFileData.Length != 0)
+        {
+            var file = DropFileData[0];
+            var ext = Path.GetExtension(file);
+            if (ext is ".csv" or ".w3strings")
+            {
+                if (serializer == null) return;
+                if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(file), "FileOpened"))
+                {
+                    W3Items.Clear();
+                    (await serializer.Deserialize(file)).ForEach(W3Items.Add);
+                }
+            }
         }
     }
 
@@ -235,25 +254,6 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task DropFile()
-    {
-        if (DropFileData.Length != 0)
-        {
-            var file = DropFileData[0];
-            var ext = Path.GetExtension(file);
-            if (ext is ".csv" or ".w3strings")
-            {
-                if (serializer == null) return;
-                if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(file), "FileOpened"))
-                {
-                    W3Items.Clear();
-                    (await serializer.Deserialize(file)).ForEach(W3Items.Add);
-                }
-            }
-        }
-    }
-
-    [RelayCommand]
     private static void ShowAbout()
     {
         var buildTime = RetrieveTimestampAsDateTime();
@@ -301,17 +301,17 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task ShowRecentDialog()
+    => await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
+
+    [RelayCommand]
     private async Task ShowTranslateDialog(object item)
     {
         if (item is not W3Item w3Item) return;
         await dialogService.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings));
     }
 
-    [RelayCommand]
-    private async Task ShowRecentDialog()
-        => await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
-
     [RelayCommand(CanExecute = nameof(CanShowDialog))]
     private async Task ShowBatchTranslateDialog()
-        => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings));
+    => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings));
 }
