@@ -100,10 +100,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task CheckSettings(IAppSettings settings)
     {
         if (!(await AppSettingsValidator.Instance.ValidateAsync(settings)).IsValid)
-        {
-            var dialogViewModel = new SettingDialogViewModel(appSettings, dialogService);
-            await dialogService.ShowDialogAsync(this, dialogViewModel);
-        }
+            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService));
     }
 
     [RelayCommand]
@@ -114,14 +111,7 @@ internal partial class MainWindowViewModel : ObservableObject
             var file = DropFileData[0];
             var ext = Path.GetExtension(file);
             if (ext is ".csv" or ".w3strings")
-            {
-                if (serializer == null) return;
-                if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(file), "FileOpened"))
-                {
-                    W3Items.Clear();
-                    (await serializer.Deserialize(file)).ForEach(W3Items.Add);
-                }
-            }
+                await OpenFile(file);
         }
     }
 
