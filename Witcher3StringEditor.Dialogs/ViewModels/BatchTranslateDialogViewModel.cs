@@ -14,10 +14,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDialogViewModel
 {
-    public bool? DialogResult => true;
-
     private CancellationTokenSource? cancellationTokenSource;
-
     private readonly ITranslator translator = new MicrosoftTranslator();
 
     [ObservableProperty]
@@ -47,6 +44,8 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isBusy;
+
+    public bool? DialogResult => true;
 
     public IEnumerable<Language> Languages { get; }
         = Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));

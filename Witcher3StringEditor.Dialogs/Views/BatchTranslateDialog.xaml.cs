@@ -18,7 +18,6 @@ public partial class BatchTranslateDialog
     public BatchTranslateDialog()
     {
         InitializeComponent();
-
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "BatchTranslateDialogClosing", (r, m) =>
         {
             r.Receive(m);

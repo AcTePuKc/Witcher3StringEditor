@@ -17,7 +17,6 @@ public partial class SaveDialog
     public SaveDialog()
     {
         InitializeComponent();
-
         WeakReferenceMessenger.Default.Register<SaveResultRecipient, SaveResultMessage>(saveResultRecipient, (r, m) =>
         {
             r.Receive(m);

@@ -56,7 +56,6 @@ internal partial class MainWindowViewModel : ObservableObject
             r.Receive(m);
             LogEvents.Add(m);
         });
-
         WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
         {
             try
@@ -69,7 +68,6 @@ internal partial class MainWindowViewModel : ObservableObject
                 Log.Error(e.Message);
             }
         });
-
         W3Items.CollectionChanged += (_, _) =>
         {
             AddCommand.NotifyCanExecuteChanged();
@@ -101,9 +99,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private async Task CheckSettings(IAppSettings settings)
     {
-        var validations = AppSettingsValidator.Instance;
-        var result = await validations.ValidateAsync(settings);
-        if (!result.IsValid)
+        if (!(await AppSettingsValidator.Instance.ValidateAsync(settings)).IsValid)
         {
             var dialogViewModel = new SettingDialogViewModel(appSettings, dialogService);
             await dialogService.ShowDialogAsync(this, dialogViewModel);
@@ -121,7 +117,6 @@ internal partial class MainWindowViewModel : ObservableObject
                 new FileFilter(Strings.FileFormatTextFile, ".csv"), new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
-
         if (storageFile != null)
             await OpenFile(storageFile.LocalPath);
     }
@@ -177,19 +172,14 @@ internal partial class MainWindowViewModel : ObservableObject
         var w3Items = items.Cast<IW3Item>().ToArray();
         if (w3Items.Length != 0)
         {
-            var dialogViewModel = new DeleteDataDialogViewModel(w3Items);
-            var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
-            if (result == true)
+            if (await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
                 w3Items.ForEach(item => W3Items.Remove(item));
         }
     }
 
     [RelayCommand]
     private async Task ShowBackupDialog()
-    {
-        var dialogViewModel = new BackupDialogViewModel(backupService, appSettings);
-        await dialogService.ShowDialogAsync(this, dialogViewModel);
-    }
+        => await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(backupService, appSettings));
 
     private bool CanShowDialog() => W3Items.Any();
 
@@ -197,29 +187,22 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSaveDialog()
     {
         if (serializer == null) return;
-        var dialogViewModel = new SaveDialogViewModel(new W3Job
+        await dialogService.ShowDialogAsync(this, new SaveDialogViewModel(new W3Job
         {
             Path = OutputFolder,
             W3Items = [.. W3Items],
             FileType = appSettings.PreferredFileType,
             Language = appSettings.PreferredLanguage
-        }, serializer);
-        await dialogService.ShowDialogAsync(this, dialogViewModel);
+        }, serializer));
     }
 
     [RelayCommand]
     private async Task ShowLogDialog()
-    {
-        var dialogViewModel = new LogDialogViewModel(LogEvents);
-        await dialogService.ShowDialogAsync<LogDialogViewModel>(this, dialogViewModel);
-    }
+        => await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
 
     [RelayCommand]
     private async Task ShowSettingsDialog()
-    {
-        var dialogViewModel = new SettingDialogViewModel(appSettings, dialogService);
-        await dialogService.ShowDialogAsync(this, dialogViewModel);
-    }
+        => await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService));
 
     [RelayCommand]
     private async Task PlayGame()
@@ -286,7 +269,6 @@ internal partial class MainWindowViewModel : ObservableObject
         var attribute = Assembly.GetExecutingAssembly()
             .GetCustomAttributesData()
             .First(static x => x.AttributeType.Name == "TimestampAttribute");
-
         return attribute.ConstructorArguments.First().Value as string ?? string.Empty;
     }
 
@@ -301,20 +283,14 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
-    {
-        Process.Start("explorer.exe", OutputFolder);
-    }
+        => Process.Start("explorer.exe", OutputFolder);
 
     private bool CanOpenWorkingFolder()
-    {
-        return Directory.Exists(OutputFolder);
-    }
+        => Directory.Exists(OutputFolder);
 
     [RelayCommand]
     private static void OpenNexusMods()
-    {
-        Process.Start("explorer.exe", "https://www.nexusmods.com/witcher3/mods/10032");
-    }
+        => Process.Start("explorer.exe", "https://www.nexusmods.com/witcher3/mods/10032");
 
     private static async Task<bool> CheckUpdate()
     {
@@ -328,21 +304,14 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(object item)
     {
         if (item is not W3Item w3Item) return;
-        var diaglogViewModel = new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings);
-        await dialogService.ShowDialogAsync(this, diaglogViewModel);
+        await dialogService.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings));
     }
 
     [RelayCommand]
     private async Task ShowRecentDialog()
-    {
-        var diaglogViewModel = new RecentDialogViewModel(appSettings);
-        await dialogService.ShowDialogAsync(this, diaglogViewModel);
-    }
+        => await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
 
     [RelayCommand(CanExecute = nameof(CanShowDialog))]
     private async Task ShowBatchTranslateDialog()
-    {
-        var diaglogViewModel = new BatchTranslateDialogViewModel(W3Items, appSettings);
-        await dialogService.ShowDialogAsync(this, diaglogViewModel);
-    }
+        => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings));
 }

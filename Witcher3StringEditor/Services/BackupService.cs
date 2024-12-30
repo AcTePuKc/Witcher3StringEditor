@@ -14,8 +14,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         using var sha256 = SHA256.Create();
         using var stream = File.OpenRead(filePath);
-        var hashBytes = sha256.ComputeHash(stream);
-        return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+        return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
     }
 
     public void Backup(string path)
@@ -28,7 +27,6 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             BackupPath = Path.Combine(backBasePath, $"{Guid.NewGuid():N}.bak"),
             BackupTime = DateTime.Now
         };
-
         if (!Directory.Exists(backBasePath))
             Directory.CreateDirectory(backBasePath);
         if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;

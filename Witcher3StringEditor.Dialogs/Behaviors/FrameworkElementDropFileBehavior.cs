@@ -44,8 +44,6 @@ public class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
         e.Handled = true;
     }
 
-    private void AssociatedObject_Drop(object sender, DragEventArgs e)
-    {
-        Data = e.Data.GetData(DataFormats.FileDrop).As<string[]>();
-    }
+    private void AssociatedObject_Drop(object sender, DragEventArgs e) 
+        => Data = e.Data.GetData(DataFormats.FileDrop).As<string[]>();
 }

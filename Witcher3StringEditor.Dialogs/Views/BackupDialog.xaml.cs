@@ -21,7 +21,6 @@ public partial class BackupDialog
         InitializeComponent();
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
-
         WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupRestore", static (r, m) =>
         {
             r.Receive(m);
@@ -31,7 +30,6 @@ public partial class BackupDialog
                                     MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
-
         WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupDelete", static (r, m) =>
         {
             r.Receive(m);
@@ -41,7 +39,6 @@ public partial class BackupDialog
                                     MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
-
         WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupFileNoFound", static (r, m) =>
         {
             r.Receive(m);

@@ -18,7 +18,6 @@ public partial class SettingsDialog
     public SettingsDialog()
     {
         InitializeComponent();
-
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage,string>(closingRecipient, "SettingsDialogClosing", static (r, m) =>
         {
             r.Receive(m);

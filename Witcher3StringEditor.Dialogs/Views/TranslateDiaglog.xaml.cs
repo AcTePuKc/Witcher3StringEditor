@@ -17,7 +17,6 @@ public partial class TranslateDiaglog
     public TranslateDiaglog()
     {
         InitializeComponent();
-
         WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslateCharactersNumberExceedLimit", (r, m) =>
         {
             r.Receive(m);
@@ -26,7 +25,6 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-
         WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslatedTextInvalid", (r, m) =>
         {
             r.Receive(m);
@@ -35,7 +33,6 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-
         WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslateError", (r, m) =>
         {
             r.Receive(m);

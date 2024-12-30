@@ -26,7 +26,6 @@ public partial class MainWindow
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
-
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "MainWindowClosing", static (r, m) =>
         {
             r.Receive(m);
@@ -35,7 +34,6 @@ public partial class MainWindow
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.No);
         });
-
         WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "FileOpened", static (r, m) =>
         {
             r.Receive(m);
@@ -44,7 +42,6 @@ public partial class MainWindow
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-
         WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "OpenedFileNoFound", static (r, m) =>
         {
             r.Receive(m);
@@ -53,7 +50,6 @@ public partial class MainWindow
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-
         WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(aboutInformationRecipient, "AboutInformation", static (r, m) =>
         {
             r.Receive(m);

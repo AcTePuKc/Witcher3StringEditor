@@ -14,7 +14,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
         if (Path.GetExtension(path) == ".csv") return DeserializeCsv(path);
-
         if (Path.GetExtension(path) != ".w3strings") return [];
         var folder = CreateRandomTempDirectory();
         var filename = Path.GetFileName(path);
@@ -69,11 +68,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     }
 
     public async Task<bool> Serialize(IW3Job w3Job)
-    {
-        if (w3Job.FileType == FileType.w3Strings) return await SerializeW3Strings(w3Job);
-
-        return await SerializeCsv(w3Job);
-    }
+        => w3Job.FileType == FileType.w3Strings ? await SerializeW3Strings(w3Job) : await SerializeCsv(w3Job);
 
     private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
     {
@@ -105,7 +100,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         var tempFolder = CreateRandomTempDirectory();
         var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
-
         if (!await SerializeCsv(w3Job, tempFolder)) return false;
         using var process = new Process();
         process.EnableRaisingEvents = true;
@@ -137,17 +131,12 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     private static string CreateRandomTempDirectory()
     {
         string tempPath;
-
         do
         {
-            // Generate a random directory name using Guid to ensure uniqueness.
-            var randomDirName = Guid.NewGuid().ToString("N"); // Remove hyphens for a cleaner name.
+            var randomDirName = Guid.NewGuid().ToString("N");
             tempPath = Path.Combine(Path.GetTempPath(), randomDirName);
-        } while (Directory.Exists(tempPath)); // Ensure the directory does not already exist.
-
-        // Create the directory.
+        } while (Directory.Exists(tempPath));
         Directory.CreateDirectory(tempPath);
-
         return tempPath;
     }
 }
