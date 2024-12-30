@@ -20,15 +20,15 @@ public partial class RecentDialogViewModel(IAppSettings appSettings)
     [RelayCommand]
     private async Task Open(IRecentItem item)
     {
-        RequestClose?.Invoke(this, EventArgs.Empty);
-        if (File.Exists(item.FilePath))
-        {
-            _ = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
-        }
-        else
+        if (!File.Exists(item.FilePath))
         {
             if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "OpenedFileNoFound"))
                 appSettings.RecentItems.Remove(item);
+        }
+        else
+        {
+            RequestClose?.Invoke(this, EventArgs.Empty);
+            _ = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
         }
     }
 }
