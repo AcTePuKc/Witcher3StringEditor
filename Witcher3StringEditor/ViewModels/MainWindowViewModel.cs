@@ -302,7 +302,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task ShowRecentDialog()
-    => await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
+        => await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
 
     [RelayCommand]
     private async Task ShowTranslateDialog(object item)
@@ -313,5 +313,5 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(CanShowDialog))]
     private async Task ShowBatchTranslateDialog()
-    => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings));
+        => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings));
 }
