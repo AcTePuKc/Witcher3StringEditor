@@ -86,6 +86,12 @@ internal partial class MainWindowViewModel : ObservableObject
         IsUpdateAvailable = await CheckUpdate();
     }
 
+    private async Task CheckSettings(IAppSettings settings)
+    {
+        if (!(await AppSettingsValidator.Instance.ValidateAsync(settings)).IsValid)
+            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService));
+    }
+
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
@@ -96,12 +102,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void WindowClosed()
     => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
-
-    private async Task CheckSettings(IAppSettings settings)
-    {
-        if (!(await AppSettingsValidator.Instance.ValidateAsync(settings)).IsValid)
-            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService));
-    }
 
     [RelayCommand]
     private async Task DropFile()
