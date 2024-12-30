@@ -199,7 +199,7 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this, new SaveDialogViewModel(new W3Job
         {
             Path = OutputFolder,
-            W3Items = [.. W3Items],
+            W3Items = W3Items,
             FileType = appSettings.PreferredFileType,
             Language = appSettings.PreferredLanguage
         }, serializer));
