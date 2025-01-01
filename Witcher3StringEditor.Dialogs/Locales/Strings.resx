@@ -342,4 +342,10 @@
   <data name="TextLanguage" xml:space="preserve">
     <value>Text Language</value>
   </data>
+  <data name="TranslatedTextNoSavedMessage" xml:space="preserve">
+    <value>The Translation No Save. Do You Want to Save?</value>
+  </data>
+  <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
+    <value>Translation No Save</value>
+  </data>
 </root>

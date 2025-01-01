@@ -700,6 +700,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Translation No Save 的本地化字符串。
+        /// </summary>
+        internal static string TranslatedTextNoSavedCaption {
+            get {
+                return ResourceManager.GetString("TranslatedTextNoSavedCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 The Translation No Save. Do You Want to Save? 的本地化字符串。
+        /// </summary>
+        internal static string TranslatedTextNoSavedMessage {
+            get {
+                return ResourceManager.GetString("TranslatedTextNoSavedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Translated Text 的本地化字符串。
         /// </summary>
         internal static string TranslatedTxt {

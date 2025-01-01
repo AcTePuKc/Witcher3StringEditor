@@ -342,4 +342,10 @@
   <data name="TextLanguage" xml:space="preserve">
     <value>文本语言</value>
   </data>
+  <data name="TranslatedTextNoSavedMessage" xml:space="preserve">
+    <value>译文未保存，是否保存？</value>
+  </data>
+  <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
+    <value>译文未保存</value>
+  </data>
 </root>

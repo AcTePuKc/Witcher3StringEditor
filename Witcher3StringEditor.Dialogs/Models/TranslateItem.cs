@@ -11,4 +11,7 @@ public partial class TranslateItem : ObservableObject
 
     [ObservableProperty]
     private string translatedText = string.Empty;
+
+    [ObservableProperty]
+    private bool isSaved;
 }

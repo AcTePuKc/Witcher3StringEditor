@@ -103,6 +103,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
             WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslatedTextInvalidMessage), "TranslatedTextInvalid");
         else
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+            CurrentTranslateItemModel.IsSaved = true;
     }
 
     private bool CanPrevious() => IndexOfItems > 0 && !IsTransLating;
@@ -110,8 +111,22 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private bool CanNext() => IndexOfItems < w3Items.Count() - 1 && !IsTransLating;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
-    private void Previous() => IndexOfItems -= 1;
+    private async Task PreviousAsync()
+    {
+        if (CurrentTranslateItemModel != null
+            && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+            && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
+            w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+        IndexOfItems -= 1;
+    }
 
     [RelayCommand(CanExecute = nameof(CanNext))]
-    private void Next() => IndexOfItems += 1;
+    private async Task Next()
+    {
+        if (CurrentTranslateItemModel != null
+            && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+            && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
+            w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+        IndexOfItems += 1;
+    }
 }

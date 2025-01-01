@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
@@ -12,12 +13,13 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class TranslateDiaglog
 {
-    private readonly SimpleStringRecipient recipient = new();
+    private readonly SimpleStringRecipient translateRecipient = new();
+    private readonly TranslatedTextNoSavedRecipient noSavedRecipient = new();
 
     public TranslateDiaglog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslateCharactersNumberExceedLimit", (r, m) =>
+        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(translateRecipient, "TranslateCharactersNumberExceedLimit", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(Strings.TranslateCharactersNumberExceedLimitMessage,
@@ -25,7 +27,7 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslatedTextInvalid", (r, m) =>
+        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(translateRecipient, "TranslatedTextInvalid", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(Strings.TranslatedTextInvalidMessage,
@@ -33,7 +35,7 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(recipient, "TranslateError", (r, m) =>
+        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(translateRecipient, "TranslateError", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(m.Message,
@@ -41,8 +43,19 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
+        WeakReferenceMessenger.Default.Register<TranslatedTextNoSavedRecipient, TranslatedTextNoSavedMessage>(noSavedRecipient, static (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(MessageBox.Show(Strings.TranslatedTextNoSavedMessage,
+                                    Strings.TranslatedTextNoSavedCaption,
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
+        });
     }
 
-    private void Window_Closed(object sender, EventArgs e) 
-        => WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    private void Window_Closed(object sender, EventArgs e)
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(translateRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(noSavedRecipient);
+    }
 }
