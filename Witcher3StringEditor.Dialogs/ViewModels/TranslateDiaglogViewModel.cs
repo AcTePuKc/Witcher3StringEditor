@@ -132,8 +132,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [RelayCommand(CanExecute = nameof(CanNext))]
     private async Task Next()
     {
-        if (CurrentTranslateItemModel != null
-            && !CurrentTranslateItemModel.IsSaved
+        if (CurrentTranslateItemModel is { IsSaved: false }
             && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
