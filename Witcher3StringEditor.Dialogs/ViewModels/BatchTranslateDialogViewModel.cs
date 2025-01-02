@@ -18,10 +18,10 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     private readonly ITranslator translator = new MicrosoftTranslator();
 
     [ObservableProperty]
-    private Language toLanguage;
+    private ILanguage toLanguage;
 
     [ObservableProperty]
-    private Language formLanguage;
+    private ILanguage formLanguage;
 
     [ObservableProperty]
     private int maxValue;
@@ -47,7 +47,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
 
     public bool? DialogResult => true;
 
-    public IEnumerable<Language> Languages { get; }
+    public IEnumerable<ILanguage> Languages { get; }
         = Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
 
     private readonly IEnumerable<IW3Item> w3Items;

@@ -20,14 +20,14 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private readonly IEnumerable<IW3Item> w3Items;
     private readonly ITranslator translator = new MicrosoftTranslator();
 
-    public IEnumerable<Language> Languages { get; }
+    public IEnumerable<ILanguage> Languages { get; }
         = Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
 
     [ObservableProperty]
-    private Language toLanguage;
+    private ILanguage toLanguage;
 
     [ObservableProperty]
-    private Language formLanguage;
+    private ILanguage formLanguage;
 
     [ObservableProperty]
     private TranslateItem? currentTranslateItemModel;
