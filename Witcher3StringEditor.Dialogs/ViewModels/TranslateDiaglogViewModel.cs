@@ -69,6 +69,16 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     }
 
     [RelayCommand]
+    private async Task Closing()
+    {
+        if (CurrentTranslateItemModel != null
+            && !CurrentTranslateItemModel.IsSaved
+            && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+            && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
+            w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+    }
+
+    [RelayCommand]
     private async Task Translate()
     {
         if (CurrentTranslateItemModel == null) return;
@@ -103,7 +113,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
             WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslatedTextInvalidMessage), "TranslatedTextInvalid");
         else
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
-            CurrentTranslateItemModel.IsSaved = true;
+        CurrentTranslateItemModel.IsSaved = true;
     }
 
     private bool CanPrevious() => IndexOfItems > 0 && !IsTransLating;
