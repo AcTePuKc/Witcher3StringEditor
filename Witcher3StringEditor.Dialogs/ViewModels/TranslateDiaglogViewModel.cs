@@ -71,8 +71,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [RelayCommand]
     private async Task Closing()
     {
-        if (CurrentTranslateItemModel != null
-            && !CurrentTranslateItemModel.IsSaved
+        if (CurrentTranslateItemModel is { IsSaved: false }
             && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
@@ -123,8 +122,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [RelayCommand(CanExecute = nameof(CanPrevious))]
     private async Task PreviousAsync()
     {
-        if (CurrentTranslateItemModel != null
-            && !CurrentTranslateItemModel.IsSaved
+        if (CurrentTranslateItemModel is { IsSaved: false }
             && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;

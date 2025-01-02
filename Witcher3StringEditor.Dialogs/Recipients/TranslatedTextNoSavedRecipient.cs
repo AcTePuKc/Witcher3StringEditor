@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 
-namespace Witcher3StringEditor.Dialogs.Recipients
+namespace Witcher3StringEditor.Dialogs.Recipients;
+
+internal class TranslatedTextNoSavedRecipient : IRecipient<TranslatedTextNoSavedMessage>
 {
-    internal class TranslatedTextNoSavedRecipient : IRecipient<TranslatedTextNoSavedMessage>
+    public void Receive(TranslatedTextNoSavedMessage message)
     {
-        public void Receive(TranslatedTextNoSavedMessage message)
-        {
-        }
     }
 }
