@@ -102,7 +102,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         }
     }
 
-    private bool CanSave() => !IsTransLating;
+    private bool CanSave => !IsTransLating;
 
     [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
@@ -115,9 +115,9 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         CurrentTranslateItemModel.IsSaved = true;
     }
 
-    private bool CanPrevious() => IndexOfItems > 0 && !IsTransLating;
+    private bool CanPrevious => IndexOfItems > 0 && !IsTransLating;
 
-    private bool CanNext() => IndexOfItems < w3Items.Count() - 1 && !IsTransLating;
+    private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsTransLating;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
     private async Task PreviousAsync()

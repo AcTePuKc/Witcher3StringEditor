@@ -154,7 +154,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanShowDialog))]
+    [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task Add()
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3Item());
@@ -190,9 +190,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowBackupDialog()
         => await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(backupService, appSettings));
 
-    private bool CanShowDialog() => W3Items.Any();
+    private bool W3ItemsHaveItems => W3Items.Any();
 
-    [RelayCommand(CanExecute = nameof(CanShowDialog))]
+    [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowSaveDialog()
     {
         if (serializer == null) return;
@@ -275,8 +275,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private void OpenWorkingFolder()
         => Process.Start("explorer.exe", OutputFolder);
 
-    private bool CanOpenWorkingFolder()
-        => Directory.Exists(OutputFolder);
+    private bool CanOpenWorkingFolder => Directory.Exists(OutputFolder);
 
     [RelayCommand]
     private static void OpenNexusMods()
@@ -301,7 +300,7 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings));
     }
 
-    [RelayCommand(CanExecute = nameof(CanShowDialog))]
+    [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowBatchTranslateDialog()
         => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings));
 }
