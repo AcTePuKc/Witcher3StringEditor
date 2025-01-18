@@ -133,7 +133,11 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task OpenFile(string fileName)
     {
         if (serializer == null) return;
-        if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) W3Items.Clear();
+        if (W3Items.Any())
+            if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
+                W3Items.Clear();
+            else
+                return;
         (await serializer.Deserialize(fileName)).ForEach(W3Items.Add);
         OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
         if (appSettings.RecentItems.Count > 0)
