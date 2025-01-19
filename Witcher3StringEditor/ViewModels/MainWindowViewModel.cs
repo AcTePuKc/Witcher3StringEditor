@@ -61,15 +61,8 @@ internal partial class MainWindowViewModel : ObservableObject
         });
         WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
         {
-            try
-            {
-                r.Receive(m);
-                await OpenFile(m.FileName);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
-            }
+            r.Receive(m);
+            await OpenFile(m.FileName);
         });
         W3Items.CollectionChanged += (_, _) =>
         {
@@ -133,29 +126,36 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private async Task OpenFile(string fileName)
     {
-        if (serializer == null) return;
-        if (W3Items.Any())
-            if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
-                W3Items.Clear();
-            else
-                return;
-        (await serializer.Deserialize(fileName)).ForEach(W3Items.Add);
-        OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
-        if (appSettings.RecentItems.Count > 0)
+        try
         {
-            try
+            if (serializer == null) return;
+            if (W3Items.Any())
+                if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
+                    W3Items.Clear();
+                else
+                    return;
+            (await serializer.Deserialize(fileName)).ForEach(W3Items.Add);
+            OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
+            if (appSettings.RecentItems.Count > 0)
             {
-                var foundItem = appSettings.RecentItems.First(x => x.FilePath == fileName);
-                foundItem.OpenedTime = DateTime.Now;
+                try
+                {
+                    var foundItem = appSettings.RecentItems.First(x => x.FilePath == fileName);
+                    foundItem.OpenedTime = DateTime.Now;
+                }
+                catch (Exception)
+                {
+                    appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
+                }
             }
-            catch (Exception)
+            else
             {
                 appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
             }
         }
-        else
+        catch (Exception ex)
         {
-            appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
+            Log.Error($"Failed to open file '{fileName}': {ex.Message}");
         }
     }
 
