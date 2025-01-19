@@ -125,18 +125,20 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
         if (!await SerializeCsv(w3Job, tempFolder)) return false;
-        using var process = new Process();
-        process.EnableRaisingEvents = true;
-        process.StartInfo = new ProcessStartInfo
+        using var process = new Process
         {
-            RedirectStandardError = true,
-            RedirectStandardOutput = true,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            FileName = appSettings.W3StringsPath,
-            Arguments = w3Job.IsIgnoreIdSpaceCheck
-                ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
-                : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
+            EnableRaisingEvents = true,
+            StartInfo = new ProcessStartInfo
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                FileName = appSettings.W3StringsPath,
+                Arguments = w3Job.IsIgnoreIdSpaceCheck
+                    ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
+                    : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
+            }
         };
         process.ErrorDataReceived += Process_ErrorDataReceived;
         process.OutputDataReceived += Process_OutputDataReceived;
