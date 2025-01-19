@@ -300,10 +300,18 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private static async Task<bool> CheckUpdate()
     {
-        var context = BrowsingContext.New(Configuration.Default.WithDefaultLoader());
-        var document = await context.OpenAsync("https://www.nexusmods.com/witcher3/mods/10032");
-        var element = document.QuerySelector("#pagetitle>ul.stats.clearfix>li.stat-version>div>div.stat");
-        return element != null && new Version(element.InnerHtml) > new Version(ThisAssembly.AssemblyFileVersion);
+        try
+        {
+            var context = BrowsingContext.New(Configuration.Default.WithDefaultLoader());
+            var document = await context.OpenAsync("https://www.nexusmods.com/witcher3/mods/10032");
+            var element = document.QuerySelector("#pagetitle>ul.stats.clearfix>li.stat-version>div>div.stat");
+            return element != null && new Version(element.InnerHtml) > new Version(ThisAssembly.AssemblyFileVersion);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to check for updates.");
+            return false;
+        }
     }
 
     [RelayCommand]
