@@ -129,11 +129,11 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 
     private async Task<bool> SerializeW3Strings(IW3Job w3Job)
     {
-        var tempFolder = CreateRandomTempDirectory();
-        var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
-        var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
         try
         {
+            var tempFolder = CreateRandomTempDirectory();
+            var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
+            var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
             if (!await SerializeCsv(w3Job, tempFolder)) return false;
             using var process = new Process
             {
