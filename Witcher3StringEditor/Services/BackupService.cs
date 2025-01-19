@@ -46,7 +46,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to backup file: {ex.Message}");
+            Log.Error($"Failed to backup file '{path}': {ex.Message}");
         }
     }
 
@@ -63,7 +63,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to restore backup item: {ex.Message}");
+            Log.Error($"Failed to restore backup item '{backupItem.OrginPath}': {ex.Message}");
         }
     }
 
@@ -77,7 +77,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to delete backup item: {ex.Message}");
+            Log.Error($"Failed to delete backup item '{backupItem.BackupPath}': {ex.Message}");
         }
     }
 }
