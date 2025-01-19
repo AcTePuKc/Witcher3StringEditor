@@ -37,12 +37,19 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
 
     public void Restore(IBackupItem backupItem)
     {
-        if (!File.Exists(backupItem.BackupPath)) return;
-        var folder = Path.GetDirectoryName(backupItem.OrginPath);
-        if (folder == null) return;
-        if (!Directory.Exists(folder))
-            Directory.CreateDirectory(folder);
-        File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
+        try
+        {
+            if (!File.Exists(backupItem.BackupPath)) return;
+            var folder = Path.GetDirectoryName(backupItem.OrginPath);
+            if (folder == null) return;
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+            File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to restore backup item: {ex.Message}", ex);
+        }
     }
 
     public void Delete(IBackupItem backupItem)
