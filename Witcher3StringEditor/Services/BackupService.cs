@@ -13,26 +13,41 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
 
     private static string ComputeSha256Hash(string filePath)
     {
-        using var sha256 = SHA256.Create();
-        using var stream = File.OpenRead(filePath);
-        return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+        try
+        {
+            using var sha256 = SHA256.Create();
+            using var stream = File.OpenRead(filePath);
+            return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to compute SHA256 hash: {ex.Message}");
+            throw;
+        }
     }
 
     public void Backup(string path)
     {
-        var backupItem = new BackupItem
+        try
         {
-            FileName = Path.GetFileName(path),
-            Hash = ComputeSha256Hash(path),
-            OrginPath = path,
-            BackupPath = Path.Combine(backBasePath, $"{Guid.NewGuid():N}.bak"),
-            BackupTime = DateTime.Now
-        };
-        if (!Directory.Exists(backBasePath))
-            Directory.CreateDirectory(backBasePath);
-        if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;
-        File.Copy(backupItem.OrginPath, backupItem.BackupPath);
-        appSettings.BackupItems.Add(backupItem);
+            var backupItem = new BackupItem
+            {
+                FileName = Path.GetFileName(path),
+                Hash = ComputeSha256Hash(path),
+                OrginPath = path,
+                BackupPath = Path.Combine(backBasePath, $"{Guid.NewGuid():N}.bak"),
+                BackupTime = DateTime.Now
+            };
+            if (!Directory.Exists(backBasePath))
+                Directory.CreateDirectory(backBasePath);
+            if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;
+            File.Copy(backupItem.OrginPath, backupItem.BackupPath);
+            appSettings.BackupItems.Add(backupItem);
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to backup file: {ex.Message}");
+        }
     }
 
     public void Restore(IBackupItem backupItem)
@@ -48,7 +63,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to restore backup item: {ex.Message}", ex);
+            Log.Error($"Failed to restore backup item: {ex.Message}");
         }
     }
 
@@ -62,7 +77,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to delete backup item: {ex.Message}", ex);
+            Log.Error($"Failed to delete backup item: {ex.Message}");
         }
     }
 }
