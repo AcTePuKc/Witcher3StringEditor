@@ -281,8 +281,9 @@ internal partial class MainWindowViewModel : ObservableObject
                 ? DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal).ToLocalTime()
                 : DateTime.MinValue;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Log.Error(ex, "Failed to retrieve the build time of the application.");
             return DateTime.MinValue;
         }
     }
