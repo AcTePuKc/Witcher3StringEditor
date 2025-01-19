@@ -32,12 +32,20 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 
     private static IEnumerable<IW3Item> DeserializeCsv(string path)
     {
-        return from line in File.ReadAllLines(path)
-               where !line.StartsWith(';')
-               select line.Split("|")
-            into parts
-               where parts.Length == 4
-               select new W3Item(parts[0].Trim(), parts[1], parts[2], parts[3]);
+        try
+        {
+            return from line in File.ReadAllLines(path)
+                   where !line.StartsWith(';')
+                   select line.Split("|")
+                into parts
+                   where parts.Length == 4
+                   select new W3Item(parts[0].Trim(), parts[1], parts[2], parts[3]);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while deserializing the CSV file.");
+            return [];
+        }
     }
 
     private async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
