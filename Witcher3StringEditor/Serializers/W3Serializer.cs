@@ -25,7 +25,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing the file.");
+            Log.Error($"An error occurred while deserializing the file: {ex.Message}");
             return [];
         }
     }
@@ -43,7 +43,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing the CSV file.");
+            Log.Error($"An error occurred while deserializing the CSV file: {ex.Message}");
             return [];
         }
     }
@@ -76,7 +76,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing W3Strings.");
+            Log.Error($"An error occurred while deserializing W3Strings: {ex.Message}");
             return [];
         }
     }
@@ -120,7 +120,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while serializing the CSV file.");
+            Log.Error($"An error occurred while serializing the CSV file: {ex.Message}");
             return false;
         }
     }
@@ -165,7 +165,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while serializing W3Strings.");
+            Log.Error($"An error occurred while serializing W3Strings: {ex.Message}");
             return false;
         }
     }
