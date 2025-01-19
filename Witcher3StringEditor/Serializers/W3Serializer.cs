@@ -96,25 +96,33 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 
     private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
     {
-        var stringBuilder = new StringBuilder();
-        var lang = w3Job.Language
-            is not W3Language.ar
-            and not W3Language.br
-            and not W3Language.cn
-            and not W3Language.esmx
-            and not W3Language.kr
-            and not W3Language.tr
-            ? Enum.GetName(w3Job.Language) ?? "en"
-            : "cleartext";
-        stringBuilder.AppendLine($";meta[language={lang}]");
-        stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
-        foreach (var item in w3Job.W3Items)
-            stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
-        var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
-        if (File.Exists(csvPath))
-            backupService.Backup(csvPath);
-        await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
-        return true;
+        try
+        {
+            var stringBuilder = new StringBuilder();
+            var lang = w3Job.Language
+                is not W3Language.ar
+                and not W3Language.br
+                and not W3Language.cn
+                and not W3Language.esmx
+                and not W3Language.kr
+                and not W3Language.tr
+                ? Enum.GetName(w3Job.Language) ?? "en"
+                : "cleartext";
+            stringBuilder.AppendLine($";meta[language={lang}]");
+            stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
+            foreach (var item in w3Job.W3Items)
+                stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
+            var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
+            if (File.Exists(csvPath))
+                backupService.Backup(csvPath);
+            await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while serializing the CSV file.");
+            return false;
+        }
     }
 
     private async Task<bool> SerializeCsv(IW3Job w3Job) => await SerializeCsv(w3Job, w3Job.Path);
