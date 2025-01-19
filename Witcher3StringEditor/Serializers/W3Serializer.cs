@@ -13,13 +13,21 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 {
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
-        if (Path.GetExtension(path) == ".csv") return DeserializeCsv(path);
-        if (Path.GetExtension(path) != ".w3strings") return [];
-        var folder = CreateRandomTempDirectory();
-        var filename = Path.GetFileName(path);
-        var newPath = Path.Combine(folder, filename);
-        File.Copy(path, newPath);
-        return await DeserializeW3Strings(newPath);
+        try
+        {
+            if (Path.GetExtension(path) == ".csv") return DeserializeCsv(path);
+            if (Path.GetExtension(path) != ".w3strings") return [];
+            var folder = CreateRandomTempDirectory();
+            var filename = Path.GetFileName(path);
+            var newPath = Path.Combine(folder, filename);
+            File.Copy(path, newPath);
+            return await DeserializeW3Strings(newPath);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while deserializing the file.");
+            return [];
+        }
     }
 
     private static IEnumerable<IW3Item> DeserializeCsv(string path)
