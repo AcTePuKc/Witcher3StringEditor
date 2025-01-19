@@ -221,21 +221,30 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task PlayGame()
     {
-        using var process = new Process();
-        process.EnableRaisingEvents = true;
-        process.StartInfo = new ProcessStartInfo
+        try
         {
-            FileName = appSettings.GameExePath,
-            WorkingDirectory = Path.GetDirectoryName(appSettings.GameExePath),
-            RedirectStandardError = true,
-            RedirectStandardOutput = true
-        };
-        process.ErrorDataReceived += Process_ErrorDataReceived;
-        process.OutputDataReceived += Process_OutputDataReceived;
-        process.Start();
-        process.BeginErrorReadLine();
-        process.BeginOutputReadLine();
-        await process.WaitForExitAsync();
+            using var process = new Process
+            {
+                EnableRaisingEvents = true,
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = appSettings.GameExePath,
+                    WorkingDirectory = Path.GetDirectoryName(appSettings.GameExePath),
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true
+                }
+            };
+            process.ErrorDataReceived += Process_ErrorDataReceived;
+            process.OutputDataReceived += Process_OutputDataReceived;
+            process.Start();
+            process.BeginErrorReadLine();
+            process.BeginOutputReadLine();
+            await process.WaitForExitAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to start the game process.");
+        }
     }
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
