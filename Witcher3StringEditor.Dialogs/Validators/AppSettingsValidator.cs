@@ -4,7 +4,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.Validators;
 
-public partial class AppSettingsValidator : AbstractValidator<IAppSettings>
+public class AppSettingsValidator : AbstractValidator<IAppSettings>
 {
     private static readonly Lazy<AppSettingsValidator> LazyInstance
     = new(static () => new AppSettingsValidator());

@@ -4,7 +4,7 @@ using Serilog.Events;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class LogDialogViewModel(IEnumerable<LogEvent> logEvents) 
+public class LogDialogViewModel(IEnumerable<LogEvent> logEvents) 
     : ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;

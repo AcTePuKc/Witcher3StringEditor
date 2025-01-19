@@ -61,8 +61,15 @@ internal partial class MainWindowViewModel : ObservableObject
         });
         WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
         {
-            r.Receive(m);
-            await OpenFile(m.FileName);
+            try
+            {
+                r.Receive(m);
+                await OpenFile(m.FileName);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
         });
         W3Items.CollectionChanged += (_, _) =>
         {
@@ -223,16 +230,14 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         try
         {
-            using var process = new Process
+            using var process = new Process();
+            process.EnableRaisingEvents = true;
+            process.StartInfo = new ProcessStartInfo
             {
-                EnableRaisingEvents = true,
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = appSettings.GameExePath,
-                    WorkingDirectory = Path.GetDirectoryName(appSettings.GameExePath),
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true
-                }
+                FileName = appSettings.GameExePath,
+                WorkingDirectory = Path.GetDirectoryName(appSettings.GameExePath),
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
             };
             process.ErrorDataReceived += Process_ErrorDataReceived;
             process.OutputDataReceived += Process_OutputDataReceived;
@@ -265,7 +270,7 @@ internal partial class MainWindowViewModel : ObservableObject
         stringBuilder.AppendLine($"{Strings.Version}: {ThisAssembly.AssemblyInformationalVersion.Trim()}");
         if (buildTime != DateTime.MinValue)
             stringBuilder.AppendLine($"{Strings.AppBuildTime}: {buildTime}");
-        stringBuilder.AppendLine($"{Strings.OS}: {$"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})"}");
+        stringBuilder.AppendLine($"{Strings.OS}: {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         stringBuilder.AppendLine($"{Strings.Runtime}: {RuntimeInformation.FrameworkDescription}");
         WeakReferenceMessenger.Default.Send(new SimpleStringMessage(stringBuilder.ToString()), "AboutInformation");
     }
