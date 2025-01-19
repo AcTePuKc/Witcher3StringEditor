@@ -17,7 +17,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         {
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
             if (Path.GetExtension(path) != ".w3strings") return [];
-            var folder = CreateRandomTempDirectory();
+            var folder = Directory.CreateTempSubdirectory().FullName;
             var filename = Path.GetFileName(path);
             var newPath = Path.Combine(folder, filename);
             File.Copy(path, newPath);
@@ -131,7 +131,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            var tempFolder = CreateRandomTempDirectory();
+            var tempFolder = Directory.CreateTempSubdirectory().FullName;
             var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
             var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
             if (!await SerializeCsv(w3Job, tempFolder)) return false;
@@ -168,17 +168,5 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             Log.Error($"An error occurred while serializing W3Strings: {ex.Message}");
             return false;
         }
-    }
-
-    private static string CreateRandomTempDirectory()
-    {
-        string tempPath;
-        do
-        {
-            var randomDirName = Guid.NewGuid().ToString("N");
-            tempPath = Path.Combine(Path.GetTempPath(), randomDirName);
-        } while (Directory.Exists(tempPath));
-        Directory.CreateDirectory(tempPath);
-        return tempPath;
     }
 }
