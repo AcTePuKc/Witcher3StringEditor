@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Serilog;
+using System.IO;
 using System.Security.Cryptography;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
@@ -7,7 +8,7 @@ namespace Witcher3StringEditor.Services;
 
 internal class BackupService(IAppSettings appSettings) : IBackupService
 {
-    private readonly string backBasePath 
+    private readonly string backBasePath
         = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Witcher3StringEditor", "Backup");
 
     private static string ComputeSha256Hash(string filePath)
@@ -46,8 +47,15 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
 
     public void Delete(IBackupItem backupItem)
     {
-        if (File.Exists(backupItem.BackupPath))
-            File.Delete(backupItem.BackupPath);
-        appSettings.BackupItems.Remove(backupItem);
+        try
+        {
+            if (File.Exists(backupItem.BackupPath))
+                File.Delete(backupItem.BackupPath);
+            appSettings.BackupItems.Remove(backupItem);
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Failed to delete backup item: {ex.Message}", ex);
+        }
     }
 }
