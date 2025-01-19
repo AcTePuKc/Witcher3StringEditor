@@ -132,34 +132,42 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         var tempFolder = CreateRandomTempDirectory();
         var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
         var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
-        if (!await SerializeCsv(w3Job, tempFolder)) return false;
-        using var process = new Process
+        try
         {
-            EnableRaisingEvents = true,
-            StartInfo = new ProcessStartInfo
+            if (!await SerializeCsv(w3Job, tempFolder)) return false;
+            using var process = new Process
             {
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                FileName = appSettings.W3StringsPath,
-                Arguments = w3Job.IsIgnoreIdSpaceCheck
-                    ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
-                    : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
-            }
-        };
-        process.ErrorDataReceived += Process_ErrorDataReceived;
-        process.OutputDataReceived += Process_OutputDataReceived;
-        process.Start();
-        process.BeginErrorReadLine();
-        process.BeginOutputReadLine();
-        await process.WaitForExitAsync();
-        if (process.ExitCode != 0) return false;
-        var tempW3StringsPath = $"{csvPath}.w3strings";
-        if (File.Exists(w3StringsPath))
-            backupService.Backup(w3StringsPath);
-        File.Copy(tempW3StringsPath, w3StringsPath, true);
-        return true;
+                EnableRaisingEvents = true,
+                StartInfo = new ProcessStartInfo
+                {
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    FileName = appSettings.W3StringsPath,
+                    Arguments = w3Job.IsIgnoreIdSpaceCheck
+                        ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
+                        : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
+                }
+            };
+            process.ErrorDataReceived += Process_ErrorDataReceived;
+            process.OutputDataReceived += Process_OutputDataReceived;
+            process.Start();
+            process.BeginErrorReadLine();
+            process.BeginOutputReadLine();
+            await process.WaitForExitAsync();
+            if (process.ExitCode != 0) return false;
+            var tempW3StringsPath = $"{csvPath}.w3strings";
+            if (File.Exists(w3StringsPath))
+                backupService.Backup(w3StringsPath);
+            File.Copy(tempW3StringsPath, w3StringsPath, true);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while serializing W3Strings.");
+            return false;
+        }
     }
 
     private static string CreateRandomTempDirectory()
