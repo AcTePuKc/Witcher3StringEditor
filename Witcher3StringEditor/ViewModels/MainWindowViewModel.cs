@@ -270,21 +270,21 @@ internal partial class MainWindowViewModel : ObservableObject
         WeakReferenceMessenger.Default.Send(new SimpleStringMessage(stringBuilder.ToString()), "AboutInformation");
     }
 
-    private static string RetrieveTimestamp()
-    {
-        var attribute = Assembly.GetExecutingAssembly()
-            .GetCustomAttributesData()
-            .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute");
-        return attribute?.ConstructorArguments.FirstOrDefault().Value as string ?? string.Empty;
-    }
-
     private static DateTime RetrieveTimestampAsDateTime()
     {
-        var timestamp = RetrieveTimestamp();
-        return timestamp == string.Empty
-            ? DateTime.MinValue
-            : DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal)
-                .ToLocalTime();
+        try
+        {
+            var timestamp = Assembly.GetExecutingAssembly().GetCustomAttributesData()
+                .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute")?.ConstructorArguments
+                .FirstOrDefault().Value as string ?? string.Empty;
+            return !string.IsNullOrWhiteSpace(timestamp)
+                ? DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal).ToLocalTime()
+                : DateTime.MinValue;
+        }
+        catch (Exception)
+        {
+            return DateTime.MinValue;
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
