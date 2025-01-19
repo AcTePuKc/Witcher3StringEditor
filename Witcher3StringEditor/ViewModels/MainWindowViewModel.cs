@@ -243,7 +243,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to start the game process.");
+            Log.Error($"Failed to start the game process: {ex.Message}");
         }
     }
 
@@ -283,7 +283,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to retrieve the build time of the application.");
+            Log.Error($"Failed to retrieve the build time of the application: {ex.Message}");
             return DateTime.MinValue;
         }
     }
@@ -309,7 +309,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to check for updates.");
+            Log.Error($"Failed to check for updates: {ex.Message}");
             return false;
         }
     }
