@@ -15,7 +15,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            if (Path.GetExtension(path) == ".csv") return DeserializeCsv(path);
+            if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
             if (Path.GetExtension(path) != ".w3strings") return [];
             var folder = CreateRandomTempDirectory();
             var filename = Path.GetFileName(path);
@@ -30,11 +30,11 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
     }
 
-    private static IEnumerable<IW3Item> DeserializeCsv(string path)
+    private static async Task<IEnumerable<IW3Item>> DeserializeCsv(string path)
     {
         try
         {
-            return from line in File.ReadAllLines(path)
+            return from line in await File.ReadAllLinesAsync(path)
                    where !line.StartsWith(';')
                    select line.Split("|")
                 into parts
@@ -72,7 +72,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
             await process.WaitForExitAsync();
-            return process.ExitCode == 0 ? DeserializeCsv($"{path}.csv") : [];
+            return process.ExitCode == 0 ? await DeserializeCsv($"{path}.csv") : [];
         }
         catch (Exception ex)
         {
