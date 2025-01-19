@@ -42,27 +42,35 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 
     private async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
     {
-        using var process = new Process();
-        process.EnableRaisingEvents = true;
-        process.StartInfo = new ProcessStartInfo
+        try
         {
-            FileName = appSettings.W3StringsPath,
-            Arguments = Parser.Default.FormatCommandLine(new W3Options
+            using var process = new Process();
+            process.EnableRaisingEvents = true;
+            process.StartInfo = new ProcessStartInfo
             {
-                Decode = path
-            }),
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            RedirectStandardError = true,
-            RedirectStandardOutput = true
-        };
-        process.ErrorDataReceived += Process_ErrorDataReceived;
-        process.OutputDataReceived += Process_OutputDataReceived;
-        process.Start();
-        process.BeginErrorReadLine();
-        process.BeginOutputReadLine();
-        await process.WaitForExitAsync();
-        return process.ExitCode == 0 ? DeserializeCsv($"{path}.csv") : [];
+                FileName = appSettings.W3StringsPath,
+                Arguments = Parser.Default.FormatCommandLine(new W3Options
+                {
+                    Decode = path
+                }),
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+            process.ErrorDataReceived += Process_ErrorDataReceived;
+            process.OutputDataReceived += Process_OutputDataReceived;
+            process.Start();
+            process.BeginErrorReadLine();
+            process.BeginOutputReadLine();
+            await process.WaitForExitAsync();
+            return process.ExitCode == 0 ? DeserializeCsv($"{path}.csv") : [];
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while deserializing W3Strings.");
+            return [];
+        }
     }
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
