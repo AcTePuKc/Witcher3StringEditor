@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
@@ -251,26 +252,28 @@ internal partial class MainWindowViewModel : ObservableObject
     private static void ShowAbout()
     {
         var buildTime = RetrieveTimestampAsDateTime();
-        var runtime = RuntimeInformation.FrameworkDescription;
-        var version = ThisAssembly.AssemblyInformationalVersion.Trim();
-        var os = $"{RuntimeInformation.OSDescription}({RuntimeInformation.OSArchitecture})";
-        var message = $"{Strings.Version}: {version}\n{Strings.AppBuildTime}: {buildTime}\n{Strings.OS}: {os}\n{Strings.Runtime}: {runtime}";
-        WeakReferenceMessenger.Default.Send(new SimpleStringMessage(message), "AboutInformation");
+        var stringBuilder = new StringBuilder();
+        stringBuilder.AppendLine($"{Strings.Version}: {ThisAssembly.AssemblyInformationalVersion.Trim()}");
+        if (buildTime != DateTime.MinValue)
+            stringBuilder.AppendLine($"{Strings.AppBuildTime}: {buildTime}");
+        stringBuilder.AppendLine($"{Strings.OS}: {$"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})"}");
+        stringBuilder.AppendLine($"{Strings.Runtime}: {RuntimeInformation.FrameworkDescription}");
+        WeakReferenceMessenger.Default.Send(new SimpleStringMessage(stringBuilder.ToString()), "AboutInformation");
     }
 
     private static string RetrieveTimestamp()
     {
         var attribute = Assembly.GetExecutingAssembly()
             .GetCustomAttributesData()
-            .First(static x => x.AttributeType.Name == "TimestampAttribute");
-        return attribute.ConstructorArguments.First().Value as string ?? string.Empty;
+            .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute");
+        return attribute?.ConstructorArguments.FirstOrDefault().Value as string ?? string.Empty;
     }
 
     private static DateTime RetrieveTimestampAsDateTime()
     {
         var timestamp = RetrieveTimestamp();
         return timestamp == string.Empty
-            ? new DateTime()
+            ? DateTime.MinValue
             : DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal)
                 .ToLocalTime();
     }
