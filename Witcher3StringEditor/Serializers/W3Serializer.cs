@@ -113,8 +113,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             foreach (var item in w3Job.W3Items)
                 stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
             var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
-            if (File.Exists(csvPath))
-                backupService.Backup(csvPath);
+            if (File.Exists(csvPath) && !backupService.Backup(csvPath)) return false;
             await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
             return true;
         }
