@@ -280,7 +280,7 @@
     <value>Search</value>
   </data>
   <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
-    <value>Translation is currently in progress. If you close this window, the translation will be stopped. Would you like to continue with the translation?</value>
+    <value>Translation is currently in progress. If you close this window, the translation will be stopped.Do you want to close the window?</value>
   </data>
   <data name="StartIndex" xml:space="preserve">
     <value>Start Index</value>
@@ -340,7 +340,7 @@
     <value>Text Language</value>
   </data>
   <data name="TranslatedTextNoSavedMessage" xml:space="preserve">
-    <value>Translation Not Saved. Save Now?</value>
+    <value>Translation not saved. Save now?</value>
   </data>
   <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
     <value>Translation Not Save</value>

@@ -190,22 +190,22 @@
     <value>Build Time</value>
   </data>
   <data name="AppExitMessage" xml:space="preserve">
-    <value>Are You Sure You Want To Exit?</value>
+    <value>Are you sure you want to exit? Any unsaved data will be lost.</value>
   </data>
   <data name="AppExitCaption" xml:space="preserve">
     <value>Exit</value>
   </data>
   <data name="FileOpenedNoFoundMessage" xml:space="preserve">
-    <value>The Opened File Does Not Exist. Do You Want To Delete The Record?</value>
+    <value>The opened file does not exist. Do you want to delete the associated record?</value>
   </data>
   <data name="FileOpenedMessage" xml:space="preserve">
-    <value>Opening The File Will Result In The Loss Of Unsaved Data!</value>
+    <value>Opening this file will result in the loss of any unsaved data. Do you want to continue?</value>
   </data>
   <data name="FileOpenedCaption" xml:space="preserve">
     <value>Open File</value>
   </data>
   <data name="FileOpenedNoFoundCaption" xml:space="preserve">
-    <value>Opened File No Found</value>
+    <value>Opened File Not Found</value>
   </data>
   <data name="AboutCaption" xml:space="preserve">
     <value>About</value>
