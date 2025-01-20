@@ -48,6 +48,15 @@ public partial class BackupDialog
                                     MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
+        WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "OperationFailed", static (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(MessageBox.Show(Strings.OperationFailureMessage,
+                                    Strings.OperationResultCaption,
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Warning) ==
+                                    MessageBoxResult.OK);
+        });
     }
 
     private void Window_Closed(object sender, EventArgs e)

@@ -8,7 +8,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BackupDialogViewModel(IBackupService backupService, IAppSettings appSettings) 
+public partial class BackupDialogViewModel(IBackupService backupService, IAppSettings appSettings)
     : ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;
@@ -23,14 +23,14 @@ public partial class BackupDialogViewModel(IBackupService backupService, IAppSet
             backupService.Delete(backupItem); return;
         }
 
-        if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupRestore"))
-            backupService.Restore(backupItem);
+        if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupRestore") && !backupService.Restore(backupItem))
+            await WeakReferenceMessenger.Default.Send(new BackupMessage(), "OperationFailed");
     }
 
     [RelayCommand]
     private async Task Delete(IBackupItem backupItem)
     {
-        if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupDelete"))
-            backupService.Delete(backupItem);
+        if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupDelete") && !backupService.Delete(backupItem))
+            await WeakReferenceMessenger.Default.Send(new BackupMessage(), "OperationFailed");
     }
 }

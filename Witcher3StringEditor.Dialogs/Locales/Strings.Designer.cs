@@ -412,6 +412,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 The Operation Failed 的本地化字符串。
+        /// </summary>
+        internal static string OperationFailureMessage {
+            get {
+                return ResourceManager.GetString("OperationFailureMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Operation Result 的本地化字符串。
+        /// </summary>
+        internal static string OperationResultCaption {
+            get {
+                return ResourceManager.GetString("OperationResultCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Orgin Path 的本地化字符串。
         /// </summary>
         internal static string OrginPath {
