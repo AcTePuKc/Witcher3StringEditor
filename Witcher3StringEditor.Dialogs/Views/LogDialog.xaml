@@ -98,12 +98,14 @@
                     ColumnSizer="SizeToHeader"
                     HeaderText="{lex:Loc LogTime}"
                     MappingName="Timestamp"
+                    MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
                     ColumnSizer="SizeToHeader"
                     HeaderText="{lex:Loc LogLevel}"
                     MappingName="Level"
+                    MinimumWidth="150"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
                     HeaderText="{lex:Loc LogMessage}"
