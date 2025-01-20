@@ -121,10 +121,10 @@
     <value>您尚未完成初始化。请点击是退出程序，或者点击否继续完成初始化。</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
-    <value>此操作将覆盖当前所在路径的文件且操作无法撤销!</value>
+    <value>此操作将覆盖当前所在路径的文件且操作无法撤销.是否继续？</value>
   </data>
   <data name="BackupDeleteMessage" xml:space="preserve">
-    <value>此操作将删除备份文件且操作无法撤销!</value>
+    <value>此操作将删除备份文件且操作无法撤销.是否继续？</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>保存成功</value>
@@ -271,7 +271,7 @@
     <value>标记</value>
   </data>
   <data name="RecentItemDeletingMessgae" xml:space="preserve">
-    <value>此操作将删除记录且操作无法撤销!</value>
+    <value>此操作将删除记录且操作无法撤销.是否继续？</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>打开</value>
@@ -280,7 +280,7 @@
     <value>搜索</value>
   </data>
   <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
-    <value>当前正在进行翻译，关闭窗口将停止翻译。</value>
+    <value>当前正在进行翻译，关闭窗口将停止翻译。是否关闭窗口？</value>
   </data>
   <data name="StartIndex" xml:space="preserve">
     <value>开始位置</value>
@@ -307,7 +307,7 @@
     <value>失败</value>
   </data>
   <data name="TranslatedTextInvalidMessage" xml:space="preserve">
-    <value>译文无效，无法保存！</value>
+    <value>译文无效，无法保存。请在保存前检查译文是否有效。</value>
   </data>
   <data name="BackupFileNoFoundMessage" xml:space="preserve">
     <value>备份文件不存在，是否删除该记录？</value>

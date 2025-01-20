@@ -190,7 +190,7 @@
     <value>编译时间</value>
   </data>
   <data name="AppExitMessage" xml:space="preserve">
-    <value>您确认要退出吗？</value>
+    <value>您确定要退出吗？退出将会导致所有未保存的数据丢失。</value>
   </data>
   <data name="AppExitCaption" xml:space="preserve">
     <value>退出</value>
@@ -199,7 +199,7 @@
     <value>打开的文件不存在，是否删除记录？</value>
   </data>
   <data name="FileOpenedMessage" xml:space="preserve">
-    <value>打开文件将失去未保存的数据！</value>
+    <value>打开新文件将导致未保存的数据丢失。确定要继续吗？</value>
   </data>
   <data name="FileOpenedCaption" xml:space="preserve">
     <value>打开文件</value>

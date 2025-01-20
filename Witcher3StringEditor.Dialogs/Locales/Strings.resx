@@ -292,7 +292,7 @@
     <value>Batch Translate</value>
   </data>
   <data name="TranslateCharactersNumberExceedLimitMessage" xml:space="preserve">
-    <value>The text you've entered exceeds the maximum allowed length of 1,000 characters for translation. Please shorten your text and try again.</value>
+    <value>The text you've entered exceeds the maximum allowed length of 1,000 characters for translation.</value>
   </data>
   <data name="TranslateCharactersNumberLimit" xml:space="preserve">
     <value>The translator allows a maximum of 1,000 characters</value>
