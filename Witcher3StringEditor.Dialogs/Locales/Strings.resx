@@ -280,7 +280,7 @@
     <value>Search</value>
   </data>
   <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
-    <value>Translation is currently in progress. If you close this window, the translation will be stopped.Do you want to close the window?</value>
+    <value>Translation is currently in progress. Closing this window will stop the translation. Do you want to continue translating?</value>
   </data>
   <data name="StartIndex" xml:space="preserve">
     <value>Start Index</value>
