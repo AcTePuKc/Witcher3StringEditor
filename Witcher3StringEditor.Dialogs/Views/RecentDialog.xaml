@@ -112,16 +112,18 @@
                     MappingName="FilePath"
                     TextWrapping="WrapWithOverflow" />
                 <sf:GridDateTimeColumn
-                    Width="250"
+                    ColumnSizer="SizeToHeader"
                     HeaderText="{lex:Loc OpenedTime}"
                     MappingName="OpenedTime"
+                    MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <sf:GridTemplateColumn
-                    Width="100"
                     HorizontalAlignment="Center"
+                    ColumnSizer="SizeToHeader"
                     HeaderText="{lex:Loc Mark}"
-                    MappingName="IsMarked">
+                    MappingName="IsMarked"
+                    MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
@@ -132,11 +134,12 @@
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
                 <sf:GridTemplateColumn
-                    Width="100"
                     HorizontalAlignment="Center"
                     AllowSorting="False"
+                    ColumnSizer="SizeToHeader"
                     HeaderText="{lex:Loc Open}"
-                    MappingName="Null">
+                    MappingName="Null"
+                    MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button
