@@ -120,9 +120,6 @@
   <data name="CheckSettingsMessage" xml:space="preserve">
     <value>Vous n'avez pas terminé l'initialisation. Cliquez sur Oui pour quitter, sinon cliquez sur Non pour continuer l'initialisation.</value>
   </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Attention</value>
-  </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
     <value>Cette opération écrase le fichier et ne peut être annulée !</value>
   </data>

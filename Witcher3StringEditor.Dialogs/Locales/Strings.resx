@@ -118,16 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CheckSettingsMessage" xml:space="preserve">
-    <value>You Have Not Completed The Initialization. Click Yes to Exit,Otherwise Click No To Continue With The Initialization.</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
+    <value>Initialization has not been completed. Do you wish to exit without completing it? Click YES to exit, or NO to continue and complete the initialization.</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
-    <value>This Operation Will Overwrite The File And Can't Be Undo!</value>
+    <value>This operation will overwrite the file and is not reversible. Are you sure you want to proceed?</value>
   </data>
   <data name="BackupDeleteMessage" xml:space="preserve">
-    <value>This Operation Will Delete The File And Cann't Be Undo!</value>
+    <value>This operation will permanently delete the file and cannot be undone. Are you sure you want to proceed?</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>Save Success</value>
@@ -160,7 +157,7 @@
     <value>Delete</value>
   </data>
   <data name="DeleteDialogMessage" xml:space="preserve">
-    <value>You Are Deleting These Record(s):</value>
+    <value>You are about to delete the following record(s):</value>
   </data>
   <data name="DeleteBtnContent" xml:space="preserve">
     <value>Delete</value>
@@ -241,10 +238,10 @@
     <value>Settings</value>
   </data>
   <data name="W3StringsPath" xml:space="preserve">
-    <value>Please Select w3strings.exe</value>
+    <value>Please select w3strings.exe</value>
   </data>
   <data name="GameExePath" xml:space="preserve">
-    <value>Please Select witcher3.exe</value>
+    <value>Please select witcher3.exe</value>
   </data>
   <data name="PreferredFileType" xml:space="preserve">
     <value>Preferred FileType</value>
@@ -259,7 +256,7 @@
     <value>Off</value>
   </data>
   <data name="IdSpaceToolTip" xml:space="preserve">
-    <value>The Range Of The Id Space Is A Four-Digit Integer From 0000-9999. The Program Automatically Detects The Id Space And Displays It As a Minus One When There Is An Error In The Detection. The Result Are For Reference Only.</value>
+    <value>The range of the ID Space is a four-digit integer (from 0000 to 9999). When there is an error in detection, the program automatically indicates this by displaying the ID Space as negative one. Please note that the results are for reference only.</value>
   </data>
   <data name="RecentDialogTitle" xml:space="preserve">
     <value>Recent</value>
@@ -274,7 +271,7 @@
     <value>Mark</value>
   </data>
   <data name="RecentItemDeletingMessgae" xml:space="preserve">
-    <value>This Operation Will Delete The Record(s) And Can’t Be Undo!</value>
+    <value>This operation will permanently delete the selected record(s) and cannot be undone. Are you sure you want to proceed?</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
@@ -283,7 +280,7 @@
     <value>Search</value>
   </data>
   <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
-    <value>Translation Is Currently In Progress, Closing The Window Will Stop The Translation.</value>
+    <value>Translation is currently in progress. If you close this window, the translation will be stopped. Would you like to continue with the translation?</value>
   </data>
   <data name="StartIndex" xml:space="preserve">
     <value>Start Index</value>
@@ -295,10 +292,10 @@
     <value>Batch Translate</value>
   </data>
   <data name="TranslateCharactersNumberExceedLimitMessage" xml:space="preserve">
-    <value>The Text Exceeds the Maximum Length Of 1000 Characters Allowed For The Translator. </value>
+    <value>The text you've entered exceeds the maximum allowed length of 1,000 characters for translation. Please shorten your text and try again.</value>
   </data>
   <data name="TranslateCharactersNumberLimit" xml:space="preserve">
-    <value>The Translator Allowed Maximum Length Is1000 Characters.</value>
+    <value>The translator allows a maximum of 1,000 characters</value>
   </data>
   <data name="Pending" xml:space="preserve">
     <value>Pending</value>
@@ -310,13 +307,13 @@
     <value>Failure</value>
   </data>
   <data name="TranslatedTextInvalidMessage" xml:space="preserve">
-    <value>Translated Text Is Invalid,Can't Save!</value>
+    <value>The translated text is invalid. Please review and correct it before saving.</value>
   </data>
   <data name="BackupFileNoFoundMessage" xml:space="preserve">
-    <value>The Backup File Does Not Exist, Whether To Delete The Record?</value>
+    <value>The backup file does not exist. Would you like to proceed with deleting the record?</value>
   </data>
   <data name="BackupFileNoFoundCaption" xml:space="preserve">
-    <value>Backup File No Found</value>
+    <value>Backup File Not Found</value>
   </data>
   <data name="BackupDeleteCaption" xml:space="preserve">
     <value>Backup Delete</value>
@@ -343,10 +340,10 @@
     <value>Text Language</value>
   </data>
   <data name="TranslatedTextNoSavedMessage" xml:space="preserve">
-    <value>The Translation No Save. Do You Want to Save?</value>
+    <value>Translation Not Saved. Save Now?</value>
   </data>
   <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
-    <value>Translation No Save</value>
+    <value>Translation Not Save</value>
   </data>
   <data name="OperationResultCaption" xml:space="preserve">
     <value>Operation Result</value>
