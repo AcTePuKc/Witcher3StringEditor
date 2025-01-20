@@ -47,7 +47,7 @@ public partial class App
                 .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
 
-        LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentUICulture;
+        LocalizeDictionary.Instance.Culture = new System.Globalization.CultureInfo("fr");
     }
 
     protected override void OnExit(ExitEventArgs e)

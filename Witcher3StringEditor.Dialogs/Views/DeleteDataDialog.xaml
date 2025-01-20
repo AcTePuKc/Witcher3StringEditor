@@ -42,6 +42,7 @@
                     Grid.ColumnSpan="3"
                     AllowDeleting="False"
                     AllowEditing="False"
+                    AllowResizingColumns="True"
                     AutoGenerateColumns="False"
                     ColumnSizer="AutoWithLastColumnFill"
                     ItemsSource="{Binding W3Items}"
@@ -98,14 +99,14 @@
                 <Button
                     Grid.Row="4"
                     Grid.Column="0"
-                    Width="100"
+                    MinWidth="100"
                     HorizontalAlignment="Right"
                     Command="{Binding DeleteCommand}"
                     Content="{lex:Loc DeleteBtnContent}" />
                 <Button
                     Grid.Row="4"
                     Grid.Column="2"
-                    Width="100"
+                    MinWidth="100"
                     HorizontalAlignment="Left"
                     Command="{Binding CancelCommand}"
                     Content="{lex:Loc CancelBtnContent}" />

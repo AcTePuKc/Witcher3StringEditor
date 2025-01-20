@@ -162,13 +162,13 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button
-                Width="100"
+                MinWidth="100"
                 HorizontalAlignment="Right"
                 Command="{Binding SaveCommand}"
                 Content="{lex:Loc SaveBtnContent}" />
             <Button
                 Grid.Column="2"
-                Width="100"
+                MinWidth="100"
                 HorizontalAlignment="Left"
                 Command="{Binding CancelCommand}"
                 Content="{lex:Loc CancelBtnContent}" />

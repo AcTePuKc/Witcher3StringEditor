@@ -55,6 +55,7 @@
             Grid.Row="1"
             Grid.ColumnSpan="3"
             Margin="10"
+            AllowResizingColumns="True"
             AutoGenerateColumns="False"
             ColumnSizer="Star"
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"

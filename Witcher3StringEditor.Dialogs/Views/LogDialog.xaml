@@ -55,6 +55,7 @@
             Grid.Row="1"
             Margin="10"
             AllowDeleting="True"
+            AllowResizingColumns="True"
             AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
             HeaderRowHeight="25"
@@ -94,13 +95,13 @@
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridDateTimeColumn
-                    Width="200"
+                    ColumnSizer="SizeToHeader"
                     HeaderText="{lex:Loc LogTime}"
                     MappingName="Timestamp"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
-                    Width="100"
+                    ColumnSizer="SizeToHeader"
                     HeaderText="{lex:Loc LogLevel}"
                     MappingName="Level"
                     TextAlignment="Center" />
