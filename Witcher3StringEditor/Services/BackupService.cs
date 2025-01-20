@@ -40,7 +40,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             };
             if (!Directory.Exists(backBasePath))
                 Directory.CreateDirectory(backBasePath);
-            if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;
+            if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return true;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
             appSettings.BackupItems.Add(backupItem);
             return true;
