@@ -26,7 +26,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
     }
 
-    public void Backup(string path)
+    public bool Backup(string path)
     {
         try
         {
@@ -43,41 +43,47 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath)) return;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
             appSettings.BackupItems.Add(backupItem);
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error($"Failed to backup file '{path}': {ex.Message}");
+            return false;
         }
     }
 
-    public void Restore(IBackupItem backupItem)
+    public bool Restore(IBackupItem backupItem)
     {
         try
         {
-            if (!File.Exists(backupItem.BackupPath)) return;
+            if (!File.Exists(backupItem.BackupPath)) return false;
             var folder = Path.GetDirectoryName(backupItem.OrginPath);
-            if (folder == null) return;
+            if (folder == null) return false; 
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error($"Failed to restore backup item '{backupItem.OrginPath}': {ex.Message}");
+            return false;
         }
     }
 
-    public void Delete(IBackupItem backupItem)
+    public bool Delete(IBackupItem backupItem)
     {
         try
         {
             if (File.Exists(backupItem.BackupPath))
                 File.Delete(backupItem.BackupPath);
             appSettings.BackupItems.Remove(backupItem);
+            return true;
         }
         catch (Exception ex)
         {
             Log.Error($"Failed to delete backup item '{backupItem.BackupPath}': {ex.Message}");
+            return false;
         }
     }
 }

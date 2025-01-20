@@ -2,9 +2,9 @@
 
 public interface IBackupService
 {
-    public void Backup(string path);
+    public bool Backup(string path);
 
-    public void Restore(IBackupItem backupItem);
+    public bool Restore(IBackupItem backupItem);
 
-    public void Delete(IBackupItem backupItem);
+    public bool Delete(IBackupItem backupItem);
 }
