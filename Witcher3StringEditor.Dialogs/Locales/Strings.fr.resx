@@ -328,4 +328,10 @@
   <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
     <value>La traduction n'est pas sauvegardée</value>
   </data>
+  <data name="OperationResultCaption" xml:space="preserve">
+    <value>Résultat de l’opération</value>
+  </data>
+  <data name="OperationFailureMessage" xml:space="preserve">
+    <value>L’opération a échoué</value>
+  </data>
 </root>

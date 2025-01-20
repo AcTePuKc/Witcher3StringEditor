@@ -348,4 +348,10 @@
   <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
     <value>Translation No Save</value>
   </data>
+  <data name="OperationResultCaption" xml:space="preserve">
+    <value>Operation Result</value>
+  </data>
+  <data name="OperationFailureMessage" xml:space="preserve">
+    <value>The Operation Failed</value>
+  </data>
 </root>
