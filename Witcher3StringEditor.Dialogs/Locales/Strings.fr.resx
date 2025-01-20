@@ -121,10 +121,10 @@
     <value>Vous n'avez pas terminé l'initialisation. Cliquez sur Oui pour quitter, sinon cliquez sur Non pour continuer l'initialisation.</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
-    <value>Cette opération écrase le fichier et ne peut être annulée !</value>
+    <value>Cette opération écrase le fichier et ne peut être annulée ! Êtes-vous sûr de vouloir continuer ?</value>
   </data>
   <data name="BackupDeleteMessage" xml:space="preserve">
-    <value>Cette opération effacera le fichier et ne pourra pas être annulée !</value>
+    <value>Cette opération effacera le fichier et ne pourra pas être annulée ! Êtes-vous sûr de vouloir continuer ?</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>Réussite de la sauvegarde</value>
@@ -280,7 +280,7 @@
     <value>Rechercher</value>
   </data>
   <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
-    <value>La traduction est actuellement en cours, la fermeture de la fenêtre interrompra la traduction.</value>
+    <value>La traduction est actuellement en cours, la fermeture de la fenêtre interrompra la traduction. Voulez-vous continuer à traduire ?</value>
   </data>
   <data name="StartIndex" xml:space="preserve">
     <value>Index de départ</value>

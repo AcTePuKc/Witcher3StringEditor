@@ -164,13 +164,13 @@
     <value>Fichier texte</value>
   </data>
   <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
-    <value>Fichier de chaînes de Witcher3</value>
+    <value>Witcher3 Strings File</value>
   </data>
   <data name="AppBuildTime" xml:space="preserve">
     <value>Temps de construction</value>
   </data>
   <data name="AppExitMessage" xml:space="preserve">
-    <value>Êtes-vous sûr de vouloir quitter ?</value>
+    <value>Êtes-vous sûr de vouloir quitter ?  Toutes les données non sauvegardées seront perdues.</value>
   </data>
   <data name="AppExitCaption" xml:space="preserve">
     <value>Quitter</value>
@@ -179,7 +179,7 @@
     <value>Le fichier ouvert n'existe pas. Voulez-vous supprimer l'enregistrement ?</value>
   </data>
   <data name="FileOpenedMessage" xml:space="preserve">
-    <value>L'ouverture du fichier entraînera la perte des données non sauvegardées !</value>
+    <value>L'ouverture du fichier entraînera la perte des données non sauvegardées ! Voulez-vous continuer ?</value>
   </data>
   <data name="FileOpenedCaption" xml:space="preserve">
     <value>Ouvrir le fichier</value>
