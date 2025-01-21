@@ -28,7 +28,11 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private readonly string configPath = $"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\AppSettings.Json";
+    private readonly string configPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "Witcher3StringEditor",
+        "AppSettings.Json");
+
     private IAppSettings? appSettings;
     private IBackupService? backupService;
     private IW3Serializer? w3Serializer;
@@ -41,7 +45,8 @@ public partial class App
         backupService = new BackupService(appSettings);
         w3Serializer = new W3Serializer(appSettings, backupService);
         var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
-        Log.Logger = new LoggerConfiguration().WriteTo.File($"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
+        Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+            , "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
             .CreateLogger();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
