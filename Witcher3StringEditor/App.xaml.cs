@@ -16,6 +16,8 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Serializers;
+using Witcher3StringEditor.Services;
 using Witcher3StringEditor.ViewModels;
 using WPFLocalizeExtension.Engine;
 
@@ -28,12 +30,16 @@ public partial class App
 {
     private readonly string configPath = $"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\AppSettings.Json";
     private IAppSettings? appSettings;
+    private IBackupService? backupService;
+    private IW3Serializer? w3Serializer;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         appSettings = File.Exists(configPath)
             ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
             : new AppSettings();
+        backupService = new BackupService(appSettings);
+        w3Serializer = new W3Serializer(appSettings, backupService);
         var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File($"{Environment.ExpandEnvironmentVariables("%appdata%")}\\Witcher3StringEditor\\Logs\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
@@ -42,8 +48,10 @@ public partial class App
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
                 .AddLogging(builder => builder.AddSerilog())
-                .AddSingleton<IDialogService>(new DialogService(new DialogManager(CreatStrongViewLocator()), Ioc.Default.GetService))
                 .AddSingleton(appSettings)
+                .AddSingleton(backupService)
+                .AddSingleton(w3Serializer)
+                .AddSingleton<IDialogService>(new DialogService(new DialogManager(CreatStrongViewLocator()), Ioc.Default.GetService))
                 .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
 

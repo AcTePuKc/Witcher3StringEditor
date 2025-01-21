@@ -14,7 +14,7 @@ public partial class SaveDialogViewModel : ObservableObject, IModalDialogViewMod
 
     [ObservableProperty] private IW3Job w3Job;
 
-    public SaveDialogViewModel(IW3Job w3Job, IW3Serializer serializer)
+    public SaveDialogViewModel(IW3Serializer serializer, IW3Job w3Job)
     {
         W3Job = w3Job;
         W3Job.IdSpace = FindIdSpace(W3Job.W3Items.First());

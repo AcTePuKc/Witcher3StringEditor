@@ -21,17 +21,15 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
-using Witcher3StringEditor.Serializers;
-using Witcher3StringEditor.Services;
 
 namespace Witcher3StringEditor.ViewModels;
 
 internal partial class MainWindowViewModel : ObservableObject
 {
-    private W3Serializer? serializer;
     private readonly IAppSettings appSettings;
-    private readonly IDialogService dialogService;
+    private readonly IW3Serializer w3Serializer;
     private readonly IBackupService backupService;
+    private readonly IDialogService dialogService;
     private readonly LogEventRecipient logEventRecipient = new();
     private readonly FileOpenedRecipient recentFileOpenedRecipient = new();
 
@@ -49,11 +47,12 @@ internal partial class MainWindowViewModel : ObservableObject
 
     public ObservableCollection<IW3Item> W3Items { get; set; } = [];
 
-    public MainWindowViewModel(IAppSettings appSettings, IDialogService dialogService)
+    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IW3Serializer w3Serializer, IDialogService dialogService)
     {
         this.appSettings = appSettings;
+        this.w3Serializer = w3Serializer;
+        this.backupService = backupService;
         this.dialogService = dialogService;
-        backupService = new BackupService(appSettings);
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -83,7 +82,6 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         await CheckSettings(appSettings);
-        serializer = new W3Serializer(appSettings, backupService);
         IsUpdateAvailable = await CheckUpdate();
     }
 
@@ -131,17 +129,16 @@ internal partial class MainWindowViewModel : ObservableObject
             await OpenFile(storageFile.LocalPath);
     }
 
-    private async Task OpenFile(string fileName)
+    internal async Task OpenFile(string fileName)
     {
         try
         {
-            if (serializer == null) return;
             if (W3Items.Any())
                 if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
                     W3Items.Clear();
                 else
                     return;
-            (await serializer.Deserialize(fileName)).ForEach(W3Items.Add);
+            (await w3Serializer.Deserialize(fileName)).ForEach(W3Items.Add);
             OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
             if (appSettings.RecentItems.Count > 0)
             {
@@ -200,21 +197,21 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task ShowBackupDialog()
-        => await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(backupService, appSettings));
+        => await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
+
 
     private bool W3ItemsHaveItems => W3Items.Any();
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowSaveDialog()
     {
-        if (serializer == null) return;
-        await dialogService.ShowDialogAsync(this, new SaveDialogViewModel(new W3Job
+        await dialogService.ShowDialogAsync(this, new SaveDialogViewModel(w3Serializer, new W3Job
         {
             Path = OutputFolder,
             W3Items = W3Items,
             FileType = appSettings.PreferredFileType,
             Language = appSettings.PreferredLanguage
-        }, serializer));
+        }));
     }
 
     [RelayCommand]

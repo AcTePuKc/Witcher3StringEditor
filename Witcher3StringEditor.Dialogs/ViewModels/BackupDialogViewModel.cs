@@ -8,7 +8,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BackupDialogViewModel(IBackupService backupService, IAppSettings appSettings)
+public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupService backupService)
     : ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;
