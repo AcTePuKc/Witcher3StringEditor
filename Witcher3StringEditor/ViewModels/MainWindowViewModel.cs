@@ -180,7 +180,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (result == true && dialogViewModel.W3Item != null)
         {
             var found = W3Items.First(x => x.Id == w3Item.Id);
-            found = dialogViewModel.W3Item;
+            W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
         }
     }
 
