@@ -79,7 +79,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 This Operation Will Delete The File And Cann&apos;t Be Undo! 的本地化字符串。
+        ///   查找类似 This operation will permanently delete the file and cannot be undone. Are you sure you want to proceed? 的本地化字符串。
         /// </summary>
         internal static string BackupDeleteMessage {
             get {
@@ -97,7 +97,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Backup File No Found 的本地化字符串。
+        ///   查找类似 Backup File Not Found 的本地化字符串。
         /// </summary>
         internal static string BackupFileNoFoundCaption {
             get {
@@ -106,7 +106,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 The Backup File Does Not Exist, Whether To Delete The Record? 的本地化字符串。
+        ///   查找类似 The backup file does not exist. Would you like to proceed with deleting the record? 的本地化字符串。
         /// </summary>
         internal static string BackupFileNoFoundMessage {
             get {
@@ -133,7 +133,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 This Operation Will Overwrite The File And Can&apos;t Be Undo! 的本地化字符串。
+        ///   查找类似 This operation will overwrite the file and is not reversible. Are you sure you want to proceed? 的本地化字符串。
         /// </summary>
         internal static string BackupRestoreMessage {
             get {
@@ -178,7 +178,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 You Have Not Completed The Initialization. Click Yes to Exit,Otherwise Click No To Continue With The Initialization. 的本地化字符串。
+        ///   查找类似 Initialization has not been completed. Do you wish to exit without completing it? Click YES to exit, or NO to continue and complete the initialization. 的本地化字符串。
         /// </summary>
         internal static string CheckSettingsMessage {
             get {
@@ -205,7 +205,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 You Are Deleting These Record(s): 的本地化字符串。
+        ///   查找类似 You are about to delete the following record(s): 的本地化字符串。
         /// </summary>
         internal static string DeleteDialogMessage {
             get {
@@ -232,7 +232,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Translation Is Currently In Progress, Closing The Window Will Stop The Translation. 的本地化字符串。
+        ///   查找类似 Translation is currently in progress. Closing this window will stop the translation. Do you want to continue translating? 的本地化字符串。
         /// </summary>
         internal static string DialogClosingWhenTranslatingMessage {
             get {
@@ -277,7 +277,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Please Select witcher3.exe 的本地化字符串。
+        ///   查找类似 Please select witcher3.exe 的本地化字符串。
         /// </summary>
         internal static string GameExePath {
             get {
@@ -304,7 +304,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 The Range Of The Id Space Is A Four-Digit Integer From 0000-9999. The Program Automatically Detects The Id Space And Displays It As a Minus One When There Is An Error In The Detection. The Result Are For Reference Only. 的本地化字符串。
+        ///   查找类似 The range of the ID Space is a four-digit integer (from 0000 to 9999). When there is an error in detection, the program automatically indicates this by displaying the ID Space as negative one. Please note that the results are for reference only. 的本地化字符串。
         /// </summary>
         internal static string IdSpaceToolTip {
             get {
@@ -493,7 +493,16 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 This Operation Will Delete The Record(s) And Can’t Be Undo! 的本地化字符串。
+        ///   查找类似 The Entries Is Being Deleted 的本地化字符串。
+        /// </summary>
+        internal static string RecentItemDeletingCaption {
+            get {
+                return ResourceManager.GetString("RecentItemDeletingCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 This operation will permanently delete the selected record(s) and cannot be undone. Are you sure you want to proceed? 的本地化字符串。
         /// </summary>
         internal static string RecentItemDeletingMessgae {
             get {
@@ -673,7 +682,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 The Text Exceeds the Maximum Length Of 1000 Characters Allowed For The Translator.  的本地化字符串。
+        ///   查找类似 The text you&apos;ve entered exceeds the maximum allowed length of 1,000 characters for translation. 的本地化字符串。
         /// </summary>
         internal static string TranslateCharactersNumberExceedLimitMessage {
             get {
@@ -682,7 +691,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 The Translator Allowed Maximum Length Is1000 Characters. 的本地化字符串。
+        ///   查找类似 The translator allows a maximum of 1,000 characters 的本地化字符串。
         /// </summary>
         internal static string TranslateCharactersNumberLimit {
             get {
@@ -709,7 +718,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Translated Text Is Invalid,Can&apos;t Save! 的本地化字符串。
+        ///   查找类似 The translated text is invalid. Please review and correct it before saving. 的本地化字符串。
         /// </summary>
         internal static string TranslatedTextInvalidMessage {
             get {
@@ -718,7 +727,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Translation No Save 的本地化字符串。
+        ///   查找类似 Translation Not Save 的本地化字符串。
         /// </summary>
         internal static string TranslatedTextNoSavedCaption {
             get {
@@ -727,7 +736,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 The Translation No Save. Do You Want to Save? 的本地化字符串。
+        ///   查找类似 Translation not saved. Save now? 的本地化字符串。
         /// </summary>
         internal static string TranslatedTextNoSavedMessage {
             get {
@@ -754,20 +763,11 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Please Select w3strings.exe 的本地化字符串。
+        ///   查找类似 Please select w3strings.exe 的本地化字符串。
         /// </summary>
         internal static string W3StringsPath {
             get {
                 return ResourceManager.GetString("W3StringsPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Warning 的本地化字符串。
-        /// </summary>
-        internal static string Warning {
-            get {
-                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }

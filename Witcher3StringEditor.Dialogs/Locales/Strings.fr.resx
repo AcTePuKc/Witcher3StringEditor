@@ -351,4 +351,7 @@
   <data name="OperationFailureMessage" xml:space="preserve">
     <value>L’opération a échoué</value>
   </data>
+  <data name="RecentItemDeletingCaption" xml:space="preserve">
+    <value>Les records sont en cours de suppression</value>
+  </data>
 </root>
