@@ -14,7 +14,10 @@ public class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
 
     // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty DataProperty =
-        DependencyProperty.Register(nameof(Data), typeof(string[]), typeof(FrameworkElementDropFileBehavior), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(Data),
+                                    typeof(string[]),
+                                    typeof(FrameworkElementDropFileBehavior),
+                                    new PropertyMetadata(null));
 
     protected override void OnAttached()
     {
@@ -33,14 +36,12 @@ public class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
     private static void AssociatedObject_DragEnter(object sender, DragEventArgs e)
     {
         e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
-
         e.Handled = true;
     }
 
     private static void AssociatedObject_DragLeave(object sender, DragEventArgs e)
     {
         e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
-
         e.Handled = true;
     }
 
