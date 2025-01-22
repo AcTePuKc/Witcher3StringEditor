@@ -18,19 +18,30 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
     [RelayCommand]
     private async Task Restore(IBackupItem backupItem)
     {
-        if (!File.Exists(backupItem.BackupPath) && await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupFileNoFound"))
+        if (!File.Exists(backupItem.BackupPath))
         {
-            backupService.Delete(backupItem); return;
+            if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupFileNoFound"))
+            {
+                backupService.Delete(backupItem);
+            }
         }
-
-        if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupRestore") && !backupService.Restore(backupItem))
-            await WeakReferenceMessenger.Default.Send(new BackupMessage(), "OperationFailed");
+        else
+        {
+            if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupRestore") 
+                && !backupService.Restore(backupItem))
+            {
+                await WeakReferenceMessenger.Default.Send(new BackupMessage(), "OperationFailed");
+            }
+        }
     }
 
     [RelayCommand]
     private async Task Delete(IBackupItem backupItem)
     {
-        if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupDelete") && !backupService.Delete(backupItem))
+        if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupDelete") 
+            && !backupService.Delete(backupItem))
+        {
             await WeakReferenceMessenger.Default.Send(new BackupMessage(), "OperationFailed");
+        }
     }
 }
