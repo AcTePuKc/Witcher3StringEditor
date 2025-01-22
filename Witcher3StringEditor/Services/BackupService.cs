@@ -9,7 +9,7 @@ namespace Witcher3StringEditor.Services;
 internal class BackupService(IAppSettings appSettings) : IBackupService
 {
     private readonly string backBasePath
-        = Path.Combine(Environment.ExpandEnvironmentVariables("%appdata%"), "Witcher3StringEditor", "Backup");
+        = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Witcher3StringEditor", "Backup");
 
     private static string ComputeSha256Hash(string filePath)
     {
@@ -58,7 +58,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         {
             if (!File.Exists(backupItem.BackupPath)) return false;
             var folder = Path.GetDirectoryName(backupItem.OrginPath);
-            if (folder == null) return false; 
+            if (folder == null) return false;
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);

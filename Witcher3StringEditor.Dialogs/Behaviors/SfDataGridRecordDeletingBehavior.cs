@@ -1,25 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Xaml.Behaviors;
 using Syncfusion.UI.Xaml.Grid;
-using System.Windows;
-using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
-using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
-using MessageBoxButton = System.Windows.MessageBoxButton;
-using MessageBoxImage = System.Windows.MessageBoxImage;
+using Log = Serilog.Log;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
 internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
 {
-    protected override void OnAttached() 
+    protected override void OnAttached()
         => AssociatedObject.RecordDeleting += AssociatedObject_RecordDeleting;
 
-    protected override void OnDetaching() 
+    protected override void OnDetaching()
         => AssociatedObject.RecordDeleting -= AssociatedObject_RecordDeleting;
 
     private static async void AssociatedObject_RecordDeleting(object? sender, RecordDeletingEventArgs e)
     {
-        if (await WeakReferenceMessenger.Default.Send(new RecentItemDeletingMessage()) == false) e.Cancel = true;
+        try
+        {
+            if (await WeakReferenceMessenger.Default.Send(new RecentItemDeletingMessage()) == false) e.Cancel = true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex.Message);
+        }
     }
 }

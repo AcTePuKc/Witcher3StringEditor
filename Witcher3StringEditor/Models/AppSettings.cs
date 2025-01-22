@@ -26,7 +26,6 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 
     public AppSettings()
     {
-
     }
 
     [JsonConstructor]

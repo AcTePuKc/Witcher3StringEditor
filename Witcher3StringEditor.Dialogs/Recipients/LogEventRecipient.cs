@@ -7,6 +7,5 @@ public class LogEventRecipient : IRecipient<LogEvent>
 {
     public void Receive(LogEvent message)
     {
-
     }
 }

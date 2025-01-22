@@ -2,4 +2,4 @@
 
 namespace Witcher3StringEditor.Dialogs.Recipients;
 
-internal class TranslatedTextNoSavedMessage: AsyncRequestMessage<bool>;
+internal class TranslatedTextNoSavedMessage : AsyncRequestMessage<bool>;

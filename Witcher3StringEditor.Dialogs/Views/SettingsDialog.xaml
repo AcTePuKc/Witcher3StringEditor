@@ -10,7 +10,6 @@
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc SettingsDialogTitle}"
-    Closed="Window_Closed"
     Width="600"
     Height="200"
     d:DataContext="{d:DesignInstance Type=vm:SettingDialogViewModel}"
@@ -19,6 +18,7 @@
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
+    Closed="Window_Closed"
     ResizeMode="NoResize"
     mc:Ignorable="d">
     <i:Interaction.Triggers>

@@ -6,6 +6,5 @@ internal class BackupRecipient : IRecipient<BackupMessage>
 {
     public void Receive(BackupMessage message)
     {
-        
     }
 }

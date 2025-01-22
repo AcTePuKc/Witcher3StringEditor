@@ -129,7 +129,7 @@ internal partial class MainWindowViewModel : ObservableObject
             await OpenFile(storageFile.LocalPath);
     }
 
-    internal async Task OpenFile(string fileName)
+    private async Task OpenFile(string fileName)
     {
         try
         {
@@ -198,7 +198,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowBackupDialog()
         => await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
-
 
     private bool W3ItemsHaveItems => W3Items.Any();
 

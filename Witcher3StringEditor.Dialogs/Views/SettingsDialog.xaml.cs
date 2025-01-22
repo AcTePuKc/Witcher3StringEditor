@@ -18,7 +18,7 @@ public partial class SettingsDialog
     public SettingsDialog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage,string>(closingRecipient, "SettingsDialogClosing", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "SettingsDialogClosing", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.CheckSettingsMessage,
@@ -28,6 +28,6 @@ public partial class SettingsDialog
         });
     }
 
-    private void Window_Closed(object sender, EventArgs e) 
+    private void Window_Closed(object sender, EventArgs e)
         => WeakReferenceMessenger.Default.UnregisterAll(closingRecipient);
 }
