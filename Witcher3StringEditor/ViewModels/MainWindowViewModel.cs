@@ -108,7 +108,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private void WindowClosed()
-    => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
+        => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
 
     [RelayCommand]
     private async Task DropFile()

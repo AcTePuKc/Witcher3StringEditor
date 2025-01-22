@@ -53,22 +53,22 @@ public partial class App
 
     private static ServiceProvider InitializeServices(IAppSettings appSettings)
     {
-        IBackupService backupService = new BackupService(appSettings);
-        IW3Serializer w3Serializer = new W3Serializer(appSettings, backupService);
-        IDialogManager dialogManager = new DialogManager(CreatStrongViewLocator());
-        IDialogService dialogService = new DialogService(dialogManager, Ioc.Default.GetService);
-        ICheckUpdateService checkUpdateService = new CheckUpdateService();
-        IPlayGameService playGameService = new PlayGameService(appSettings);
+        var backupService = new BackupService(appSettings);
+        var w3Serializer = new W3Serializer(appSettings, backupService);
+        var dialogManager = new DialogManager(CreatStrongViewLocator());
+        var dialogService = new DialogService(dialogManager, Ioc.Default.GetService);
+        var checkUpdateService = new CheckUpdateService();
+        var playGameService = new PlayGameService(appSettings);
         return new ServiceCollection()
-                        .AddLogging(builder => builder.AddSerilog())
-                        .AddSingleton(appSettings)
-                        .AddSingleton(backupService)
-                        .AddSingleton(w3Serializer)
-                        .AddSingleton(dialogService)
-                        .AddSingleton(checkUpdateService)
-                        .AddSingleton(playGameService)
-                        .AddTransient<MainWindowViewModel>()
-                        .BuildServiceProvider();
+            .AddLogging(builder => builder.AddSerilog())
+            .AddSingleton(appSettings)
+            .AddSingleton<IBackupService>(backupService)
+            .AddSingleton<IW3Serializer>(w3Serializer)
+            .AddSingleton<IDialogService>(dialogService)
+            .AddSingleton<ICheckUpdateService>(checkUpdateService)
+            .AddSingleton<IPlayGameService>(playGameService)
+            .AddTransient<MainWindowViewModel>()
+            .BuildServiceProvider();
     }
 
     private static StrongViewLocator CreatStrongViewLocator()
