@@ -28,45 +28,47 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
+    private IAppSettings? appSettings;
+    private ObserverBase<LogEvent>? logObserver;
+
     private readonly string configPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "Witcher3StringEditor",
         "AppSettings.Json");
-
-    private IAppSettings? appSettings;
-    private IBackupService? backupService;
-    private IW3Serializer? w3Serializer;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         appSettings = File.Exists(configPath)
             ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
             : new AppSettings();
-        backupService = new BackupService(appSettings);
-        w3Serializer = new W3Serializer(appSettings, backupService);
-        var observer = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
+        var logObserver = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
             , "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day)
-            .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
+            .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
             .CreateLogger();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
-        Ioc.Default.ConfigureServices(
-            new ServiceCollection()
-                .AddLogging(builder => builder.AddSerilog())
-                .AddSingleton(appSettings)
-                .AddSingleton(backupService)
-                .AddSingleton(w3Serializer)
-                .AddSingleton<IDialogService>(new DialogService(new DialogManager(CreatStrongViewLocator()), Ioc.Default.GetService))
-                .AddTransient<MainWindowViewModel>()
-                .BuildServiceProvider());
-
+        Ioc.Default.ConfigureServices(InitializeServices(appSettings));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
     }
 
-    protected override void OnExit(ExitEventArgs e)
+    private static ServiceProvider InitializeServices(IAppSettings appSettings)
     {
-        File.WriteAllText(configPath, JsonConvert.SerializeObject(appSettings, Formatting.Indented, new StringEnumConverter()));
-        base.OnExit(e);
+        IBackupService backupService = new BackupService(appSettings);
+        IW3Serializer w3Serializer = new W3Serializer(appSettings, backupService);
+        IDialogManager dialogManager = new DialogManager(CreatStrongViewLocator());
+        IDialogService dialogService = new DialogService(dialogManager, Ioc.Default.GetService);
+        ICheckUpdateService checkUpdateService = new CheckUpdateService();
+        IPlayGameService playGameService = new PlayGameService(appSettings);
+        return new ServiceCollection()
+                        .AddLogging(builder => builder.AddSerilog())
+                        .AddSingleton(appSettings)
+                        .AddSingleton(backupService)
+                        .AddSingleton(w3Serializer)
+                        .AddSingleton(dialogService)
+                        .AddSingleton(checkUpdateService)
+                        .AddSingleton(playGameService)
+                        .AddTransient<MainWindowViewModel>()
+                        .BuildServiceProvider();
     }
 
     private static StrongViewLocator CreatStrongViewLocator()
@@ -82,5 +84,14 @@ public partial class App
         viewLocator.Register<RecentDialogViewModel, RecentDialog>();
         viewLocator.Register<BatchTranslateDialogViewModel, BatchTranslateDialog>();
         return viewLocator;
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        if (appSettings != null)
+            File.WriteAllText(configPath, JsonConvert.SerializeObject(appSettings,
+                                                                      Formatting.Indented,
+                                                                      new StringEnumConverter()));
+        logObserver?.Dispose();
     }
 }

@@ -1,5 +1,4 @@
-﻿using AngleSharp;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
@@ -30,6 +29,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IW3Serializer w3Serializer;
     private readonly IBackupService backupService;
     private readonly IDialogService dialogService;
+    private readonly ICheckUpdateService checkUpdateService;
+    private readonly IPlayGameService playGameService;
     private readonly LogEventRecipient logEventRecipient = new();
     private readonly FileOpenedRecipient recentFileOpenedRecipient = new();
 
@@ -47,12 +48,19 @@ internal partial class MainWindowViewModel : ObservableObject
 
     public ObservableCollection<IW3Item> W3Items { get; set; } = [];
 
-    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IW3Serializer w3Serializer, IDialogService dialogService)
+    public MainWindowViewModel(IAppSettings appSettings,
+                               IBackupService backupService,
+                               IW3Serializer w3Serializer,
+                               IDialogService dialogService,
+                               ICheckUpdateService checkUpdateService,
+                               IPlayGameService playGameService)
     {
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
         this.backupService = backupService;
         this.dialogService = dialogService;
+        this.checkUpdateService = checkUpdateService;
+        this.playGameService = playGameService;
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -82,7 +90,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         await CheckSettings(appSettings);
-        IsUpdateAvailable = await CheckUpdate();
+        IsUpdateAvailable = await checkUpdateService.CheckUpdate();
     }
 
     private async Task CheckSettings(IAppSettings settings)
@@ -223,40 +231,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task PlayGame()
-    {
-        try
-        {
-            using var process = new Process();
-            process.EnableRaisingEvents = true;
-            process.StartInfo = new ProcessStartInfo
-            {
-                FileName = appSettings.GameExePath,
-                WorkingDirectory = Path.GetDirectoryName(appSettings.GameExePath),
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
-            process.ErrorDataReceived += Process_ErrorDataReceived;
-            process.OutputDataReceived += Process_OutputDataReceived;
-            process.Start();
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
-            await process.WaitForExitAsync();
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"Failed to start the game process: {ex.Message}");
-        }
-    }
-
-    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        if (e.Data != null) Log.Error(e.Data);
-    }
-
-    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        if (e.Data != null) Log.Information(e.Data);
-    }
+        => await playGameService.PlayGame();
 
     [RelayCommand]
     private static void ShowAbout()
@@ -298,22 +273,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private static void OpenNexusMods()
         => Process.Start("explorer.exe", "https://www.nexusmods.com/witcher3/mods/10032");
-
-    private static async Task<bool> CheckUpdate()
-    {
-        try
-        {
-            var context = BrowsingContext.New(Configuration.Default.WithDefaultLoader());
-            var document = await context.OpenAsync("https://www.nexusmods.com/witcher3/mods/10032");
-            var element = document.QuerySelector("#pagetitle>ul.stats.clearfix>li.stat-version>div>div.stat");
-            return element != null && new Version(element.InnerHtml) > new Version(ThisAssembly.AssemblyFileVersion);
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"Failed to check for updates: {ex.Message}");
-            return false;
-        }
-    }
 
     [RelayCommand]
     private async Task ShowRecentDialog()
