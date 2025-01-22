@@ -1,7 +1,6 @@
-﻿namespace Witcher3StringEditor.Interfaces
+﻿namespace Witcher3StringEditor.Interfaces;
+
+public interface ICheckUpdateService
 {
-    public interface ICheckUpdateService
-    {
-        public Task<bool> CheckUpdate();
-    }
+    public Task<bool> CheckUpdate();
 }

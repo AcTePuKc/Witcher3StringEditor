@@ -1,7 +1,6 @@
-﻿namespace Witcher3StringEditor.Interfaces
+﻿namespace Witcher3StringEditor.Interfaces;
+
+public interface IPlayGameService
 {
-    public interface IPlayGameService
-    {
-        public Task PlayGame();
-    }
+    public Task PlayGame();
 }

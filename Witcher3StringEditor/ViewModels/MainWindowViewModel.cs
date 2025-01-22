@@ -8,7 +8,6 @@ using Serilog.Events;
 using Syncfusion.Data.Extensions;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -31,6 +30,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IDialogService dialogService;
     private readonly ICheckUpdateService checkUpdateService;
     private readonly IPlayGameService playGameService;
+    private readonly IExplorerService explorerService;
     private readonly LogEventRecipient logEventRecipient = new();
     private readonly FileOpenedRecipient recentFileOpenedRecipient = new();
 
@@ -53,7 +53,8 @@ internal partial class MainWindowViewModel : ObservableObject
                                IW3Serializer w3Serializer,
                                IDialogService dialogService,
                                ICheckUpdateService checkUpdateService,
-                               IPlayGameService playGameService)
+                               IPlayGameService playGameService,
+                               IExplorerService explorerService)
     {
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
@@ -61,6 +62,7 @@ internal partial class MainWindowViewModel : ObservableObject
         this.dialogService = dialogService;
         this.checkUpdateService = checkUpdateService;
         this.playGameService = playGameService;
+        this.explorerService = explorerService;
         WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -266,13 +268,14 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
-        => Process.Start("explorer.exe", OutputFolder);
+        => explorerService.Open(OutputFolder);
 
-    private bool CanOpenWorkingFolder => Directory.Exists(OutputFolder);
+    private bool CanOpenWorkingFolder
+        => Directory.Exists(OutputFolder);
 
     [RelayCommand]
-    private static void OpenNexusMods()
-        => Process.Start("explorer.exe", "https://www.nexusmods.com/witcher3/mods/10032");
+    private void OpenNexusMods()
+        => explorerService.Open("https://www.nexusmods.com/witcher3/mods/");
 
     [RelayCommand]
     private async Task ShowRecentDialog()

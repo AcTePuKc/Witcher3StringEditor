@@ -59,6 +59,7 @@ public partial class App
         var dialogService = new DialogService(dialogManager, Ioc.Default.GetService);
         var checkUpdateService = new CheckUpdateService();
         var playGameService = new PlayGameService(appSettings);
+        var explorerService = new ExplorerService();
         return new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton(appSettings)
@@ -67,6 +68,7 @@ public partial class App
             .AddSingleton<IDialogService>(dialogService)
             .AddSingleton<ICheckUpdateService>(checkUpdateService)
             .AddSingleton<IPlayGameService>(playGameService)
+            .AddSingleton<IExplorerService>(explorerService)
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
     }
