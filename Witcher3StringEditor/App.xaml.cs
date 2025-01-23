@@ -31,10 +31,9 @@ public partial class App
     private IAppSettings? appSettings;
     private ObserverBase<LogEvent>? logObserver;
 
-    private readonly string configPath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "Witcher3StringEditor",
-        "AppSettings.Json");
+    private readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                                      "Witcher3StringEditor",
+                                                      "AppSettings.Json");
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -90,10 +89,15 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
+        var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Witcher3StringEditor");
+        if (!Directory.Exists(configFolderPath))
+            Directory.CreateDirectory(configFolderPath);
         if (appSettings != null)
+        {
             File.WriteAllText(configPath, JsonConvert.SerializeObject(appSettings,
                                                                       Formatting.Indented,
                                                                       new StringEnumConverter()));
+        }
         logObserver?.Dispose();
     }
 }

@@ -155,8 +155,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             await process.WaitForExitAsync();
             if (process.ExitCode != 0) return false;
             var tempW3StringsPath = $"{csvPath}.w3strings";
-            if (File.Exists(w3StringsPath))
-                backupService.Backup(w3StringsPath);
+            if (File.Exists(w3StringsPath)&& !backupService.Backup(w3StringsPath)) return false;
             File.Copy(tempW3StringsPath, w3StringsPath, true);
             return true;
         }
