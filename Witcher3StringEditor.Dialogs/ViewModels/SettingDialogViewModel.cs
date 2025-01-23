@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using System.ComponentModel;
+using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
@@ -55,7 +56,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         {
             e.Cancel = true;
             if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "SettingsDialogClosing"))
-                Environment.Exit(0);
+                Application.Current.Shutdown();
         }
     }
 }
