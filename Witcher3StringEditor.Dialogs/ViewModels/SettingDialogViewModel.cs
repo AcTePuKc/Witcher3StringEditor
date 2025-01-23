@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using System.ComponentModel;
 using Witcher3StringEditor.Dialogs.Locales;
@@ -12,8 +11,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class SettingDialogViewModel(IAppSettings appSettings,
-                                            IDialogManager dialogManager) : ObservableObject, IModalDialogViewModel
+public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogService dialogService) : ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;
 
@@ -28,8 +26,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings,
             Title = Strings.SelectW3Strings,
             SuggestedFileName = "w3strings"
         };
-        using var storageFile = (await dialogManager.ShowFrameworkDialogAsync(this, dialogSettings)
-            as IDialogStorageFile[])?.FirstOrDefault();
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
         if (storageFile is { Name: "w3strings.exe" })
             AppSettings.W3StringsPath = storageFile.LocalPath;
     }
@@ -43,8 +40,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings,
             Title = Strings.SelectGameExe,
             SuggestedFileName = "witcher3"
         };
-        using var storageFile = (await dialogManager.ShowFrameworkDialogAsync(this, dialogSettings)
-            as IDialogStorageFile[])?.FirstOrDefault();
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
         if (storageFile is { Name: "witcher3.exe" })
             AppSettings.GameExePath = storageFile.LocalPath;
     }

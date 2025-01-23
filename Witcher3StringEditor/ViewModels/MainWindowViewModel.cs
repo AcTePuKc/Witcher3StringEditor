@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
 using Serilog.Events;
@@ -28,7 +27,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IAppSettings appSettings;
     private readonly IW3Serializer w3Serializer;
     private readonly IBackupService backupService;
-    private readonly IDialogManager dialogManager;
+    private readonly IDialogService dialogService;
     private readonly ICheckUpdateService checkUpdateService;
     private readonly IPlayGameService playGameService;
     private readonly IExplorerService explorerService;
@@ -52,7 +51,7 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IAppSettings appSettings,
                                IBackupService backupService,
                                IW3Serializer w3Serializer,
-                               IDialogManager dialogManager,
+                               IDialogService dialogService,
                                ICheckUpdateService checkUpdateService,
                                IPlayGameService playGameService,
                                IExplorerService explorerService)
@@ -60,7 +59,7 @@ internal partial class MainWindowViewModel : ObservableObject
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
         this.backupService = backupService;
-        this.dialogManager = dialogManager;
+        this.dialogService = dialogService;
         this.checkUpdateService = checkUpdateService;
         this.playGameService = playGameService;
         this.explorerService = explorerService;
@@ -99,7 +98,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task CheckSettings(IAppSettings settings)
     {
         if (!(await AppSettingsValidator.Instance.ValidateAsync(settings)).IsValid)
-            await dialogManager.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogManager));
+            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService));
     }
 
     [RelayCommand]
@@ -128,14 +127,14 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task OpenFile()
     {
-        using var storageFile = (await dialogManager.ShowFrameworkDialogAsync(this, new OpenFileDialogSettings
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, new OpenFileDialogSettings
         {
             Filters =
             [
                 new FileFilter(Strings.FileFormatSupported, [".csv", ".w3strings"]),
                 new FileFilter(Strings.FileFormatTextFile, ".csv"), new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
-        }) as IDialogStorageFile[])?.FirstOrDefault();
+        });
         if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings")
             await OpenFile(storageFile.LocalPath);
     }
@@ -178,8 +177,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Add()
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3Item());
-        await dialogManager.ShowDialogAsync(this, dialogViewModel);
-        if (dialogViewModel.DialogResult == true && dialogViewModel.W3Item != null)
+        var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
+        if (result == true && dialogViewModel.W3Item != null)
             W3Items.Add(dialogViewModel.W3Item);
     }
 
@@ -187,8 +186,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Edit(IW3Item w3Item)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
-        await dialogManager.ShowDialogAsync(this, dialogViewModel);
-        if (dialogViewModel.DialogResult == true && dialogViewModel.W3Item != null)
+        var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
+        if (result == true && dialogViewModel.W3Item != null)
         {
             var found = W3Items.First(x => x.Id == w3Item.Id);
             W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
@@ -201,23 +200,21 @@ internal partial class MainWindowViewModel : ObservableObject
         var w3Items = items.Cast<IW3Item>().ToArray();
         if (w3Items.Length > 0)
         {
-            var dialogViewModel = new DeleteDataDialogViewModel(w3Items);
-            await dialogManager.ShowDialogAsync(this, dialogViewModel);
-            if (dialogViewModel.DialogResult == true)
+            if (await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
                 w3Items.ForEach(item => W3Items.Remove(item));
         }
     }
 
     [RelayCommand]
     private async Task ShowBackupDialog()
-        => await dialogManager.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
+        => await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
 
     private bool W3ItemsHaveItems => W3Items.Any();
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowSaveDialog()
     {
-        await dialogManager.ShowDialogAsync(this, new SaveDialogViewModel(w3Serializer, new W3Job
+        await dialogService.ShowDialogAsync(this, new SaveDialogViewModel(w3Serializer, new W3Job
         {
             Path = OutputFolder,
             W3Items = W3Items,
@@ -228,11 +225,11 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task ShowLogDialog()
-        => await dialogManager.ShowDialogAsync(this, new LogDialogViewModel(LogEvents));
+        => await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
 
     [RelayCommand]
     private async Task ShowSettingsDialog()
-        => await dialogManager.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogManager));
+        => await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService));
 
     [RelayCommand]
     private async Task PlayGame()
@@ -282,16 +279,16 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task ShowRecentDialog()
-        => await dialogManager.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
+        => await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
 
     [RelayCommand]
     private async Task ShowTranslateDialog(object item)
     {
         if (item is not W3Item w3Item) return;
-        await dialogManager.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings));
+        await dialogService.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowBatchTranslateDialog()
-        => await dialogManager.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings));
+        => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings));
 }

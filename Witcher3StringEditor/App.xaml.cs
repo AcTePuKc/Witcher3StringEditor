@@ -56,6 +56,7 @@ public partial class App
         var backupService = new BackupService(appSettings);
         var w3Serializer = new W3Serializer(appSettings, backupService);
         var dialogManager = new DialogManager(CreatStrongViewLocator());
+        var dialogService = new DialogService(dialogManager, Ioc.Default.GetService);
         var checkUpdateService = new CheckUpdateService();
         var playGameService = new PlayGameService(appSettings);
         var explorerService = new ExplorerService();
@@ -64,7 +65,7 @@ public partial class App
             .AddSingleton(appSettings)
             .AddSingleton<IBackupService>(backupService)
             .AddSingleton<IW3Serializer>(w3Serializer)
-            .AddSingleton<IDialogManager>(dialogManager)
+            .AddSingleton<IDialogService>(dialogService)
             .AddSingleton<ICheckUpdateService>(checkUpdateService)
             .AddSingleton<IPlayGameService>(playGameService)
             .AddSingleton<IExplorerService>(explorerService)
