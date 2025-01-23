@@ -177,8 +177,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Add()
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3Item());
-        var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
-        if (result == true && dialogViewModel.W3Item != null)
+        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
+            && dialogViewModel.W3Item != null)
             W3Items.Add(dialogViewModel.W3Item);
     }
 
@@ -186,8 +186,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Edit(IW3Item w3Item)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
-        var result = await dialogService.ShowDialogAsync(this, dialogViewModel);
-        if (result == true && dialogViewModel.W3Item != null)
+        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
+            && dialogViewModel.W3Item != null)
         {
             var found = W3Items.First(x => x.Id == w3Item.Id);
             W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
