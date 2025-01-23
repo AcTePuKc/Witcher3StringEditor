@@ -150,22 +150,12 @@ internal partial class MainWindowViewModel : ObservableObject
                     return;
             (await w3Serializer.Deserialize(fileName)).ForEach(W3Items.Add);
             OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
-            if (appSettings.RecentItems.Count > 0)
-            {
-                try
-                {
-                    var foundItem = appSettings.RecentItems.First(x => x.FilePath == fileName);
-                    foundItem.OpenedTime = DateTime.Now;
-                }
-                catch (Exception)
-                {
-                    appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
-                }
-            }
-            else
-            {
+            var foundItem = appSettings.RecentItems
+                .FirstOrDefault(x => x.FilePath == fileName);
+            if (foundItem == null)
                 appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
-            }
+            else
+                foundItem.OpenedTime = DateTime.Now;
         }
         catch (Exception ex)
         {
