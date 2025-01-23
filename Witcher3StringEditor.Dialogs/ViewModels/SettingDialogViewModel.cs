@@ -11,7 +11,8 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogService dialogService) : ObservableObject, IModalDialogViewModel
+public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogService dialogService) 
+    : ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;
 

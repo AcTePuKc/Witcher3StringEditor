@@ -132,7 +132,8 @@ internal partial class MainWindowViewModel : ObservableObject
             Filters =
             [
                 new FileFilter(Strings.FileFormatSupported, [".csv", ".w3strings"]),
-                new FileFilter(Strings.FileFormatTextFile, ".csv"), new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
+                new FileFilter(Strings.FileFormatTextFile, ".csv"), 
+                new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
         if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings")

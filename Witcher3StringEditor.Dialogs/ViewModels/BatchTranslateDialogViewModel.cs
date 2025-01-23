@@ -48,7 +48,8 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     public bool? DialogResult => true;
 
     public IEnumerable<ILanguage> Languages { get; }
-        = Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
+        = Language.LanguageDictionary.Values
+        .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
 
     private readonly IEnumerable<IW3Item> w3Items;
 

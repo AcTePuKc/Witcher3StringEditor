@@ -34,7 +34,8 @@ public partial class MainWindow
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.No);
         });
-        WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "FileOpened", static (r, m) =>
+        WeakReferenceMessenger.Default
+            .Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "FileOpened", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.FileOpenedMessage,

@@ -8,7 +8,8 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class SaveDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
+public partial class SaveDialogViewModel 
+    : ObservableObject, IModalDialogViewModel, ICloseable
 {
     private readonly IW3Serializer serializer;
 
