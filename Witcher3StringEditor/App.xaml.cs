@@ -28,14 +28,14 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private IAppSettings? appSettings;
-    private ObserverBase<LogEvent>? logObserver;
+    private readonly IAppSettings appSettings;
+    private readonly ObserverBase<LogEvent>? logObserver;
 
     private readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                       "Witcher3StringEditor",
                                                       "AppSettings.Json");
 
-    protected override void OnStartup(StartupEventArgs e)
+    public App()
     {
         appSettings = File.Exists(configPath)
             ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
@@ -48,6 +48,9 @@ public partial class App
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         Ioc.Default.ConfigureServices(InitializeServices(appSettings));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
+        DispatcherUnhandledException += (sender, e) => Log.Error($"Unhandled exception:{e.Exception.Message}");
+        TaskScheduler.UnobservedTaskException += (sender, e) => Log.Error($"Unhandled exception:{e.Exception.Message}");
+        Exit += App_Exit;
     }
 
     private static ServiceProvider InitializeServices(IAppSettings appSettings)
@@ -87,7 +90,7 @@ public partial class App
         return viewLocator;
     }
 
-    protected override void OnExit(ExitEventArgs e)
+    private void App_Exit(object sender, ExitEventArgs e)
     {
         var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Witcher3StringEditor");
         if (!Directory.Exists(configFolderPath))
