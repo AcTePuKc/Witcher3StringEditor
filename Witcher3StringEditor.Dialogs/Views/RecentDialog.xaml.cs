@@ -21,8 +21,8 @@ public partial class RecentDialog
         WeakReferenceMessenger.Default.Register<RecordDeletingRecipient, RecordDeletingMessage, string>(recipient, "RecentItem", (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.RecentItemDeletingMessgae,
-                                    Strings.RecentItemDeletingCaption,
+            m.Reply(MessageBox.Show(Strings.RecordDeletingMessgae,
+                                    Strings.RecordDeletingCaption,
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Warning) == MessageBoxResult.Yes);
         });

@@ -493,20 +493,20 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 The Entries Is Being Deleted 的本地化字符串。
+        ///   查找类似 The Record(s) Is Being Deleted 的本地化字符串。
         /// </summary>
-        internal static string RecentItemDeletingCaption {
+        internal static string RecordDeletingCaption {
             get {
-                return ResourceManager.GetString("RecentItemDeletingCaption", resourceCulture);
+                return ResourceManager.GetString("RecordDeletingCaption", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 This operation will permanently delete the selected record(s) and cannot be undone. Are you sure you want to proceed? 的本地化字符串。
         /// </summary>
-        internal static string RecentItemDeletingMessgae {
+        internal static string RecordDeletingMessgae {
             get {
-                return ResourceManager.GetString("RecentItemDeletingMessgae", resourceCulture);
+                return ResourceManager.GetString("RecordDeletingMessgae", resourceCulture);
             }
         }
         
