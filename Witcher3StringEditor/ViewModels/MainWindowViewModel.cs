@@ -132,7 +132,7 @@ internal partial class MainWindowViewModel : ObservableObject
             Filters =
             [
                 new FileFilter(Strings.FileFormatSupported, [".csv", ".w3strings"]),
-                new FileFilter(Strings.FileFormatTextFile, ".csv"), 
+                new FileFilter(Strings.FileFormatTextFile, ".csv"),
                 new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
@@ -247,7 +247,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute")?.ConstructorArguments
                 .FirstOrDefault().Value as string ?? string.Empty;
             return !string.IsNullOrWhiteSpace(timestamp)
-                ? DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", null, DateTimeStyles.AssumeUniversal).ToLocalTime()
+                ? DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToLocalTime()
                 : DateTime.MinValue;
         }
         catch (Exception ex)
