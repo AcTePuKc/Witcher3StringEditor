@@ -50,8 +50,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        var validations = AppSettingsValidator.Instance;
-        var result = await validations.ValidateAsync(AppSettings);
+        var result = await AppSettingsValidator.Instance.ValidateAsync(AppSettings);
         if (!result.IsValid)
         {
             e.Cancel = true;
