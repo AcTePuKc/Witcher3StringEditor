@@ -104,7 +104,7 @@
             <i:Interaction.Behaviors>
                 <b:SfDataGridSizeChangedBehavior />
                 <b:SfDataGridQueryRowHeightBehavior />
-                <b:RecentItemDeletingBehavior />
+                <b:SfDataGridRecordDeletingBehavior />
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
