@@ -6,7 +6,7 @@ using Log = Serilog.Log;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
-internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
+internal class RecentItemDeletingBehavior : Behavior<SfDataGrid>
 {
     protected override void OnAttached()
         => AssociatedObject.RecordDeleting += AssociatedObject_RecordDeleting;
