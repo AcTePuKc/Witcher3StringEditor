@@ -21,7 +21,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to compute SHA256 hash: {ex.Message}");
+            Log.Error(ex, "Failed to compute SHA256 hash.");
             throw;
         }
     }
@@ -47,7 +47,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to backup file '{path}': {ex.Message}");
+            Log.Error(ex, "Failed to backup file {Path}", path);
             return false;
         }
     }
@@ -66,7 +66,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to restore backup item '{backupItem.OrginPath}': {ex.Message}");
+            Log.Error(ex, "Failed to restore backup item:{OrginPath}.", backupItem.OrginPath);
             return false;
         }
     }
@@ -82,7 +82,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to delete backup item '{backupItem.BackupPath}': {ex.Message}");
+            Log.Error(ex, "Failed to delete backup item:{BackupPath}", backupItem.BackupPath);
             return false;
         }
     }

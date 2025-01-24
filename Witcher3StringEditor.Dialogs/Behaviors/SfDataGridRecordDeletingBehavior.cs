@@ -19,11 +19,11 @@ internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
         try
         {
             var recordItemType = e.Items[0].GetType().Name;
-            if (await WeakReferenceMessenger.Default.Send(new RecordDeletingMessage(), recordItemType) == false) e.Cancel = true;
+            if (!await WeakReferenceMessenger.Default.Send(new RecordDeletingMessage(), recordItemType)) e.Cancel = true;
         }
         catch (Exception ex)
         {
-            Log.Error(ex.Message);
+            Log.Error(ex, "An error occurred while deleting a record.");
         }
     }
 }
