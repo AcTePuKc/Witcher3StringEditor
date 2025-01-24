@@ -85,8 +85,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
             if (cancellationTokenSource.IsCancellationRequested) return;
             try
             {
-                var result = await translator.TranslateAsync(item.Text, tLanguage, fLanguage);
-                item.Text = result.Translation;
+                item.Text = (await translator.TranslateAsync(item.Text, tLanguage, fLanguage)).Translation;
                 SuccessCount++;
             }
             catch (Exception ex)
