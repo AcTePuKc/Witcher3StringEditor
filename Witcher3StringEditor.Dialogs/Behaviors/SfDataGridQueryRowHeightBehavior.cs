@@ -5,9 +5,6 @@ namespace Witcher3StringEditor.Dialogs.Behaviors;
 
 public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
 {
-    //To get the calculated height from GetAutoRowHeight method.
-    private double autoHeight = double.NaN;
-
     private readonly GridRowSizingOptions gridRowResizingOptions = new();
 
     protected override void OnAttached() 
@@ -18,8 +15,8 @@ public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
 
     private void AssociatedObject_QueryRowHeight(object? sender, QueryRowHeightEventArgs e)
     {
-        if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out autoHeight)) return;
-        if (!(autoHeight > 30)) return;
+        if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions,out double autoHeight)) return;
+        if (autoHeight <= 30) return;
         e.Height = autoHeight;
         e.Handled = true;
     }
