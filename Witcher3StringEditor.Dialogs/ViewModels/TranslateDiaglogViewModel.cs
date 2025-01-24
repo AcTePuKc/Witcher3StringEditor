@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GTranslate;
+using GTranslate.Results;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
@@ -86,8 +87,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
             try
             {
                 IsTransLating = true;
-                var result = await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage);
-                CurrentTranslateItemModel.TranslatedText = result.Translation;
+                CurrentTranslateItemModel.TranslatedText = (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage)).Translation;
             }
             catch (Exception ex)
             {
