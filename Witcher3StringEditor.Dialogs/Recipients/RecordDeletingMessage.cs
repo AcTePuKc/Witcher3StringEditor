@@ -2,4 +2,4 @@
 
 namespace Witcher3StringEditor.Dialogs.Recipients;
 
-public class RecentItemDeletingMessage : AsyncRequestMessage<bool>;
+public class RecordDeletingMessage : AsyncRequestMessage<bool>;

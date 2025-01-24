@@ -18,7 +18,8 @@ internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
     {
         try
         {
-            if (await WeakReferenceMessenger.Default.Send(new RecentItemDeletingMessage()) == false) e.Cancel = true;
+            var recordItemType = e.Items[0].GetType().Name;
+            if (await WeakReferenceMessenger.Default.Send(new RecordDeletingMessage(), recordItemType) == false) e.Cancel = true;
         }
         catch (Exception ex)
         {

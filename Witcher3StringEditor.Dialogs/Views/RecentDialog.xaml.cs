@@ -12,13 +12,13 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class RecentDialog
 {
-    private readonly RecentItemDeletingRecipient recipient = new();
+    private readonly RecordDeletingRecipient recipient = new();
 
     public RecentDialog()
     {
         InitializeComponent();
         SfDataGrid.SearchHelper.AllowFiltering = true;
-        WeakReferenceMessenger.Default.Register<RecentItemDeletingRecipient, RecentItemDeletingMessage>(recipient, (r, m) =>
+        WeakReferenceMessenger.Default.Register<RecordDeletingRecipient, RecordDeletingMessage, string>(recipient, "RecentItem", (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.RecentItemDeletingMessgae,
@@ -37,6 +37,6 @@ public partial class RecentDialog
             SfDataGrid.SearchHelper.ClearSearch();
     }
 
-    private void Window_Closed(object sender, EventArgs e) 
+    private void Window_Closed(object sender, EventArgs e)
         => WeakReferenceMessenger.Default.UnregisterAll(recipient);
 }
