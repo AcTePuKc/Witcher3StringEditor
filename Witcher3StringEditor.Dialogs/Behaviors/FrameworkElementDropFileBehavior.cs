@@ -21,30 +21,24 @@ public class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
 
     protected override void OnAttached()
     {
-        AssociatedObject.DragEnter += AssociatedObject_DragEnter;
-        AssociatedObject.DragLeave += AssociatedObject_DragLeave;
+        AssociatedObject.DragEnter += AssociatedObject_DragEnterOrDragLeave;
+        AssociatedObject.DragLeave += AssociatedObject_DragEnterOrDragLeave;
         AssociatedObject.Drop += AssociatedObject_Drop;
     }
 
     protected override void OnDetaching()
     {
-        AssociatedObject.DragEnter -= AssociatedObject_DragEnter;
-        AssociatedObject.DragLeave -= AssociatedObject_DragLeave;
+        AssociatedObject.DragEnter -= AssociatedObject_DragEnterOrDragLeave;
+        AssociatedObject.DragLeave -= AssociatedObject_DragEnterOrDragLeave;
         AssociatedObject.Drop -= AssociatedObject_Drop;
     }
 
-    private static void AssociatedObject_DragEnter(object sender, DragEventArgs e)
+    private static void AssociatedObject_DragEnterOrDragLeave(object sender, DragEventArgs e)
     {
         e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
         e.Handled = true;
     }
 
-    private static void AssociatedObject_DragLeave(object sender, DragEventArgs e)
-    {
-        e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None;
-        e.Handled = true;
-    }
-
-    private void AssociatedObject_Drop(object sender, DragEventArgs e) 
+    private void AssociatedObject_Drop(object sender, DragEventArgs e)
         => Data = e.Data.GetData(DataFormats.FileDrop).As<string[]>();
 }
