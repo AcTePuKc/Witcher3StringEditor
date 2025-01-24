@@ -22,7 +22,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         catch (Exception ex)
         {
             Log.Error(ex, "Failed to compute SHA256 hash.");
-            throw;
+            return string.Empty;
         }
     }
 
@@ -30,10 +30,12 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
+            var hash = ComputeSha256Hash(path);
+            if (string.IsNullOrWhiteSpace(hash)) return false;
             var backupItem = new BackupItem
             {
                 FileName = Path.GetFileName(path),
-                Hash = ComputeSha256Hash(path),
+                Hash = hash,
                 OrginPath = path,
                 BackupPath = Path.Combine(backupFolderPath, $"{Guid.NewGuid():N}.bak"),
                 BackupTime = DateTime.Now
