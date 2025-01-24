@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GTranslate;
-using GTranslate.Results;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
