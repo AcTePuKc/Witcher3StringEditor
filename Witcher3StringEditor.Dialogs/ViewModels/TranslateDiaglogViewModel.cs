@@ -91,7 +91,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
             catch (Exception ex)
             {
                 WeakReferenceMessenger.Default.Send(new SimpleStringMessage(ex.Message), "TranslateError");
-                Log.Error(ex.Message);
+                Log.Error(ex, "Translation error occurred.");
             }
             IsTransLating = false;
         }

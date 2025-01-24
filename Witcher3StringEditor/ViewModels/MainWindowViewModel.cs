@@ -252,7 +252,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Log.Error($"Failed to retrieve the build time of the application: {ex.Message}");
+            Log.Error(ex, "Failed to retrieve the build time of the application.");
             return DateTime.MinValue;
         }
     }

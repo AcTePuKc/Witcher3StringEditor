@@ -90,7 +90,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
+                Log.Error(ex, "Translation error occurred.");
                 FailureCount++;
             }
             PendingCount--;
@@ -106,6 +106,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
         if (IsBusy && cancellationTokenSource != null)
         {
             await cancellationTokenSource.CancelAsync();
+            cancellationTokenSource.Dispose();
             IsBusy = false;
         }
     }
