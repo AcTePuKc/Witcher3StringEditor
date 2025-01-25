@@ -21,7 +21,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to compute SHA256 hash.");
+            Log.Error(ex, "Failed to compute SHA256 hash: {Path}", filePath);
             return string.Empty;
         }
     }
@@ -49,7 +49,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to backup file {Path}", path);
+            Log.Error(ex, "Failed to backup file: {Path}", path);
             return false;
         }
     }
