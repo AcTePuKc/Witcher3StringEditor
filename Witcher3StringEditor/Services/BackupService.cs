@@ -68,7 +68,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to restore backup item:{OrginPath}.", backupItem.OrginPath);
+            Log.Error(ex, "Failed to restore backup item: {OrginPath}.", backupItem.OrginPath);
             return false;
         }
     }
@@ -84,7 +84,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to delete backup item:{BackupPath}", backupItem.BackupPath);
+            Log.Error(ex, "Failed to delete backup item: {BackupPath}", backupItem.BackupPath);
             return false;
         }
     }

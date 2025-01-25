@@ -160,7 +160,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to open file:{FileName}", fileName);
+            Log.Error(ex, "Failed to open file: {FileName}", fileName);
         }
     }
 
