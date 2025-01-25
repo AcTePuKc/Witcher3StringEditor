@@ -266,7 +266,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private void OpenNexusMods()
-        => explorerService.Open("https://www.nexusmods.com/witcher3/mods/10032");
+        => explorerService.Open(appSettings.NexusModUrl);
 
     [RelayCommand]
     private async Task ShowRecentDialog()

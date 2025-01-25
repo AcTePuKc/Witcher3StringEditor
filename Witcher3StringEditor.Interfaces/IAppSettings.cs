@@ -13,6 +13,8 @@ public interface IAppSettings
 
     public string GameExePath { get; set; }
 
+    public string NexusModUrl { get; set; }
+
     public ObservableCollection<IRecentItem> RecentItems { get; set; }
 
     public ObservableCollection<IBackupItem> BackupItems { get; set; }

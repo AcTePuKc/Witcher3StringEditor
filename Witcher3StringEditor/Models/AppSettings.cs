@@ -24,6 +24,8 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 
     public ObservableCollection<IBackupItem> BackupItems { get; set; } = [];
 
+    public string NexusModUrl { get; set; } = "https://www.nexusmods.com/witcher3/mods/10032";
+
     public AppSettings()
     {
     }
