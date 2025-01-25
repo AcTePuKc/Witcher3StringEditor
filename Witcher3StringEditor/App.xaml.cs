@@ -59,7 +59,7 @@ public partial class App
         var w3Serializer = new W3Serializer(appSettings, backupService);
         var dialogManager = new DialogManager(CreatStrongViewLocator());
         var dialogService = new DialogService(dialogManager, Ioc.Default.GetService);
-        var checkUpdateService = new CheckUpdateService();
+        var checkUpdateService = new CheckUpdateService(appSettings);
         var playGameService = new PlayGameService(appSettings);
         var explorerService = new ExplorerService();
         return new ServiceCollection()
