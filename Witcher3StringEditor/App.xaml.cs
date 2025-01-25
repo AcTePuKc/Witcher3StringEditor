@@ -29,7 +29,7 @@ namespace Witcher3StringEditor;
 public partial class App
 {
     private readonly IAppSettings appSettings;
-    private readonly ObserverBase<LogEvent>? logObserver;
+    private readonly ObserverBase<LogEvent> logObserver;
 
     private readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                       "Witcher3StringEditor",
@@ -101,6 +101,6 @@ public partial class App
                                                                       Formatting.Indented,
                                                                       new StringEnumConverter()));
         }
-        logObserver?.Dispose();
+        logObserver.Dispose();
     }
 }
