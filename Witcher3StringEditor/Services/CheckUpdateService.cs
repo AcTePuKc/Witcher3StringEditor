@@ -13,8 +13,8 @@ internal class CheckUpdateService(IAppSettings appSettings) : ICheckUpdateServic
     {
         try
         {
-            var context = BrowsingContext.New(Configuration.Default.WithDefaultLoader());
-            var document = await context.OpenAsync(Address);
+            using var context = BrowsingContext.New(Configuration.Default.WithDefaultLoader());
+            using var document = await context.OpenAsync(Address);
             var element = document.QuerySelector(Selectors);
             return element != null
                 && new Version(element.InnerHtml) > new Version(ThisAssembly.AssemblyFileVersion);
