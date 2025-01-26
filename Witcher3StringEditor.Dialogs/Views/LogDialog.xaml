@@ -109,7 +109,7 @@
                     TextAlignment="Center" />
                 <sf:GridTextColumn
                     HeaderText="{lex:Loc LogMessage}"
-                    MappingName="MessageTemplate.Text"
+                    MappingName="Message"
                     TextWrapping="WrapWithOverflow" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
