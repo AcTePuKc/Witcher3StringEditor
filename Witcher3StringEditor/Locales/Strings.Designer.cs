@@ -106,7 +106,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Are You Sure You Want To Exit? 的本地化字符串。
+        ///   查找类似 Are you sure you want to exit? Any unsaved data will be lost. 的本地化字符串。
         /// </summary>
         internal static string AppExitMessage {
             get {
@@ -147,6 +147,15 @@ namespace Witcher3StringEditor.Locales {
         internal static string DeleteBtnLabel {
             get {
                 return ResourceManager.GetString("DeleteBtnLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Drag and Drop File Here 的本地化字符串。
+        /// </summary>
+        internal static string DropHereTxt {
+            get {
+                return ResourceManager.GetString("DropHereTxt", resourceCulture);
             }
         }
         
@@ -196,7 +205,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Opening The File Will Result In The Loss Of Unsaved Data! 的本地化字符串。
+        ///   查找类似 Opening this file will result in the loss of any unsaved data. Do you want to continue? 的本地化字符串。
         /// </summary>
         internal static string FileOpenedMessage {
             get {
@@ -205,7 +214,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Opened File No Found 的本地化字符串。
+        ///   查找类似 Opened File Not Found 的本地化字符串。
         /// </summary>
         internal static string FileOpenedNoFoundCaption {
             get {
@@ -214,7 +223,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   查找类似 The Opened File Does Not Exist. Do You Want To Delete The Record? 的本地化字符串。
+        ///   查找类似 The opened file does not exist. Do you want to delete the associated record? 的本地化字符串。
         /// </summary>
         internal static string FileOpenedNoFoundMessage {
             get {

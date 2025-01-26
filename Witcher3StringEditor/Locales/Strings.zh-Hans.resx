@@ -213,4 +213,7 @@
   <data name="UpdateBtnContent" xml:space="preserve">
     <value>更新</value>
   </data>
+  <data name="DropHereTxt" xml:space="preserve">
+    <value>拖放单个文件至此处打开</value>
+  </data>
 </root>

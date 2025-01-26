@@ -180,6 +180,24 @@
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
         </ui:CommandBar>
+        <TextBlock
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="18"
+            Opacity="0.5"
+            Text="{lex:Loc DropHereTxt}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Hidden" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding W3Items.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <sf:SfDataGrid
             x:Name="SfDataGrid"
             Grid.Row="2"

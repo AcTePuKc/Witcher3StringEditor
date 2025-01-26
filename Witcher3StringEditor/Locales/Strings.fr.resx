@@ -193,4 +193,7 @@
   <data name="UpdateBtnContent" xml:space="preserve">
     <value>Mise à jour</value>
   </data>
+  <data name="DropHereTxt" xml:space="preserve">
+    <value>Glissez-déposez un seul fichier ici pour l'ouvrir</value>
+  </data>
 </root>

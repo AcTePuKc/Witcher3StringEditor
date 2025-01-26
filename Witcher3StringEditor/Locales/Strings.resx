@@ -213,4 +213,7 @@
   <data name="UpdateBtnContent" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="DropHereTxt" xml:space="preserve">
+    <value>Drag and Drop A Single File Here To Open</value>
+  </data>
 </root>
