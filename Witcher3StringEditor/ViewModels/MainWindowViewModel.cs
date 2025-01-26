@@ -77,7 +77,7 @@ internal partial class MainWindowViewModel : ObservableObject
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Failed to open file: {FileName}", m.FileName);
+                Log.Error(ex, "Failed to open file: {0}", m.FileName);
             }
         });
         W3Items.CollectionChanged += (_, _) =>
@@ -160,7 +160,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to open file: {FileName}", fileName);
+            Log.Error(ex, "Failed to open file: {0}", fileName);
         }
     }
 
