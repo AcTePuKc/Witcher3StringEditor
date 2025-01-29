@@ -18,9 +18,9 @@ public class LogDialogViewModel
     {
         foreach (var logEvent in logEvents)
             LogEvents.Add(new LogEventItem(logEvent));
-        logEvents.CollectionChanged += (s, e) =>
+        logEvents.CollectionChanged += (_, e) =>
         {
-            if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
+            if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
             {
                 foreach (LogEvent item in e.NewItems)
                 {
@@ -28,9 +28,9 @@ public class LogDialogViewModel
                 }
             }
         };
-        LogEvents.CollectionChanged += (s, e) =>
+        LogEvents.CollectionChanged += (_, e) =>
         {
-            if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
+            if (e is { Action: NotifyCollectionChangedAction.Remove, OldItems: not null })
             {
                 foreach (LogEventItem item in e.OldItems)
                 {
