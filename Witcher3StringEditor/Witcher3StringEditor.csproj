@@ -46,11 +46,11 @@
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
         <PackageReference Include="Serilog.Sinks.Observable" Version="3.0.0" />
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="10.5.0.109200">
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="10.6.0.109712">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="28.1.41" />
+        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="28.2.3" />
         <PackageReference Include="System.Reactive" Version="6.0.1" />
         <PackageReference Include="Timestamp" Version="1.0.2" />
         <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
