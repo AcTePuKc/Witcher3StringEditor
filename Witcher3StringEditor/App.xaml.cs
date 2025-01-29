@@ -48,8 +48,8 @@ public partial class App
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         Ioc.Default.ConfigureServices(InitializeServices(appSettings));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
-        DispatcherUnhandledException += (sender, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
-        TaskScheduler.UnobservedTaskException += (sender, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
+        DispatcherUnhandledException += (_, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
+        TaskScheduler.UnobservedTaskException += (_, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
         Exit += App_Exit;
     }
 
