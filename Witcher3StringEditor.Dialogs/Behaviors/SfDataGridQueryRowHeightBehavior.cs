@@ -15,7 +15,7 @@ public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
 
     private void AssociatedObject_QueryRowHeight(object? sender, QueryRowHeightEventArgs e)
     {
-        if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions,out double autoHeight)) return;
+        if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions,out var autoHeight)) return;
         if (autoHeight <= 30) return;
         e.Height = autoHeight;
         e.Handled = true;
