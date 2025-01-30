@@ -20,22 +20,18 @@ public class LogDialogViewModel
             LogEvents.Add(new LogEventItem(logEvent));
         logEvents.CollectionChanged += (_, e) =>
         {
-            if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
+            if (e is not { Action: NotifyCollectionChangedAction.Add, NewItems: not null }) return;
+            foreach (LogEvent item in e.NewItems)
             {
-                foreach (LogEvent item in e.NewItems)
-                {
-                    LogEvents.Add(new LogEventItem(item));
-                }
+                LogEvents.Add(new LogEventItem(item));
             }
         };
         LogEvents.CollectionChanged += (_, e) =>
         {
-            if (e is { Action: NotifyCollectionChangedAction.Remove, OldItems: not null })
+            if (e is not { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }) return;
+            foreach (LogEventItem item in e.OldItems)
             {
-                foreach (LogEventItem item in e.OldItems)
-                {
-                    logEvents.Remove(item.EventEntry);
-                }
+                logEvents.Remove(item.EventEntry);
             }
         };
     }
