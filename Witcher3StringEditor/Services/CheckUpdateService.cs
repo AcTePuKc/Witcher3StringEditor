@@ -7,7 +7,7 @@ namespace Witcher3StringEditor.Services;
 internal class CheckUpdateService(IAppSettings appSettings) : ICheckUpdateService
 {
     private readonly string address = appSettings.NexusModUrl;
-    private const string Selectors = "#pagetitle>ul.stats.clearfix>li.stat-version>div>div.stat";
+    private const string Selectors = "li.stat-version>div>div.stat";
 
     public async Task<bool> CheckUpdate()
     {
