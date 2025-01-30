@@ -2,13 +2,13 @@
 
 public interface IBackupItem
 {
-    public string FileName { get; init; }
+    public string FileName { get; }
 
-    public string Hash { get; init; }
+    public string Hash { get; }
 
-    public string OrginPath { get; init; }
+    public string OrginPath { get; }
 
-    public string BackupPath { get; init; }
+    public string BackupPath { get; }
 
-    public DateTime BackupTime { get; init; }
+    public DateTime BackupTime { get; }
 }
