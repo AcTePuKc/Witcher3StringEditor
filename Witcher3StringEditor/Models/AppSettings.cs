@@ -20,12 +20,12 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty]
     private string gameExePath = string.Empty;
 
-    public ObservableCollection<IRecentItem> RecentItems { get; set; } = [];
+    public ObservableCollection<IRecentItem> RecentItems { get; } = [];
 
-    public ObservableCollection<IBackupItem> BackupItems { get; set; } = [];
+    public ObservableCollection<IBackupItem> BackupItems { get; } = [];
 
     [JsonIgnore]
-    public string NexusModUrl { get; set; } = "https://www.nexusmods.com/witcher3/mods/10032";
+    public string NexusModUrl { get; } = "https://www.nexusmods.com/witcher3/mods/10032";
 
     public AppSettings()
     {
