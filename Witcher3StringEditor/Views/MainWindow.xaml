@@ -281,7 +281,6 @@
             NumericButtonCount="10"
             PageSize="30"
             Source="{Binding W3Items, Mode=TwoWay}" />
-        <sf:GridFilterControl Grid.Row="0" />
         <ui:InfoBar
             Grid.Row="2"
             Margin="0,0,0,100"
