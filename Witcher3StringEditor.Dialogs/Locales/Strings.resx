@@ -354,4 +354,19 @@
   <data name="RecordDeletingCaption" xml:space="preserve">
     <value>The Record(s) Is Being Deleted</value>
   </data>
+  <data name="AboutDialogTitle" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="OS" xml:space="preserve">
+    <value>OS:</value>
+  </data>
+  <data name="Runtime" xml:space="preserve">
+    <value>Runtime:</value>
+  </data>
+  <data name="AppBuildTime" xml:space="preserve">
+    <value>Build Time:</value>
+  </data>
 </root>

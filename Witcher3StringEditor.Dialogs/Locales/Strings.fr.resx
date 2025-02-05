@@ -354,4 +354,19 @@
   <data name="RecordDeletingCaption" xml:space="preserve">
     <value>Les records sont en cours de suppression</value>
   </data>
+  <data name="AboutDialogTitle" xml:space="preserve">
+    <value>A propos de</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="OS" xml:space="preserve">
+    <value>OS:</value>
+  </data>
+  <data name="Runtime" xml:space="preserve">
+    <value>Durée d'exécution:</value>
+  </data>
+  <data name="AppBuildTime" xml:space="preserve">
+    <value>Temps de construction:</value>
+  </data>
 </root>

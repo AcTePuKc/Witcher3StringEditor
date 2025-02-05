@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using Microsoft.Extensions.DependencyModel;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
@@ -12,7 +13,6 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
@@ -227,16 +227,15 @@ internal partial class MainWindowViewModel : ObservableObject
         => await playGameService.PlayGame();
 
     [RelayCommand]
-    private static void ShowAbout()
+    private async Task ShowAbout()
     {
-        var buildTime = RetrieveTimestampAsDateTime();
-        var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine($"{Strings.Version}: {ThisAssembly.AssemblyInformationalVersion.Trim()}");
-        if (buildTime != DateTime.MinValue)
-            stringBuilder.AppendLine($"{Strings.AppBuildTime}: {buildTime}");
-        stringBuilder.AppendLine($"{Strings.OS}: {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
-        stringBuilder.AppendLine($"{Strings.Runtime}: {RuntimeInformation.FrameworkDescription}");
-        WeakReferenceMessenger.Default.Send(new SimpleStringMessage(stringBuilder.ToString()), "AboutInformation");
+        await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object>
+        {
+            { "Version", ThisAssembly.AssemblyInformationalVersion.Trim() },
+            { "BuildTime", RetrieveTimestampAsDateTime() },
+            { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
+            { "Runtime", RuntimeInformation.FrameworkDescription }
+        }, DependencyContext.Default?.RuntimeLibraries.Where(x => x.Type == "package")));
     }
 
     private static DateTime RetrieveTimestampAsDateTime()

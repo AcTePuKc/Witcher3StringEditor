@@ -18,7 +18,6 @@ public partial class MainWindow
 {
     private readonly WindowClosingRecipient closingRecipient = new();
     private readonly FileOpenedRecipient fileOpenedRecipient = new();
-    private readonly SimpleStringRecipient aboutInformationRecipient = new();
 
     public MainWindow()
     {
@@ -51,14 +50,6 @@ public partial class MainWindow
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(aboutInformationRecipient, "AboutInformation", static (r, m) =>
-        {
-            r.Receive(m);
-            MessageBox.Show(m.Message,
-                            Strings.AboutCaption,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-        });
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) 
@@ -72,6 +63,5 @@ public partial class MainWindow
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(fileOpenedRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(aboutInformationRecipient);
     }
 }

@@ -97,12 +97,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Version" xml:space="preserve">
-    <value>Version</value>
-  </data>
-  <data name="OS" xml:space="preserve">
-    <value>OS</value>
-  </data>
   <data name="Runtime" xml:space="preserve">
     <value>Durée d'exécution</value>
   </data>
@@ -166,9 +160,6 @@
   <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
     <value>Witcher3 Strings File</value>
   </data>
-  <data name="AppBuildTime" xml:space="preserve">
-    <value>Temps de construction</value>
-  </data>
   <data name="AppExitMessage" xml:space="preserve">
     <value>Êtes-vous sûr de vouloir quitter ?  Toutes les données non sauvegardées seront perdues.</value>
   </data>
@@ -186,9 +177,6 @@
   </data>
   <data name="FileOpenedNoFoundCaption" xml:space="preserve">
     <value>Fichier ouvert introuvable</value>
-  </data>
-  <data name="AboutCaption" xml:space="preserve">
-    <value>A propos de</value>
   </data>
   <data name="UpdateBtnContent" xml:space="preserve">
     <value>Mise à jour</value>

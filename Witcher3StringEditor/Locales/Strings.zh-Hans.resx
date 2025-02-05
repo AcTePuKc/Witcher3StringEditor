@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Version" xml:space="preserve">
-    <value>版本</value>
-  </data>
-  <data name="OS" xml:space="preserve">
-    <value>操作系统</value>
-  </data>
   <data name="Runtime" xml:space="preserve">
     <value>运行时</value>
   </data>
@@ -186,9 +180,6 @@
   <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
     <value>巫师3字符串文件</value>
   </data>
-  <data name="AppBuildTime" xml:space="preserve">
-    <value>编译时间</value>
-  </data>
   <data name="AppExitMessage" xml:space="preserve">
     <value>您确定要退出吗？退出将会导致所有未保存的数据丢失。</value>
   </data>
@@ -206,9 +197,6 @@
   </data>
   <data name="FileOpenedNoFoundCaption" xml:space="preserve">
     <value>打开的文件不存在</value>
-  </data>
-  <data name="AboutCaption" xml:space="preserve">
-    <value>关于</value>
   </data>
   <data name="UpdateBtnContent" xml:space="preserve">
     <value>更新</value>
