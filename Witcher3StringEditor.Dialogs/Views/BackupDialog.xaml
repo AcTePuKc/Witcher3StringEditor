@@ -156,9 +156,9 @@
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
         <sf:SfDataPager
-            Margin="0,5"
             x:Name="SfDataPager"
             Grid.Row="2"
+            Margin="0,5"
             HorizontalAlignment="Center"
             NumericButtonCount="10"
             PageSize="15"
