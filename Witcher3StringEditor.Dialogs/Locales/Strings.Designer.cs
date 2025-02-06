@@ -267,6 +267,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Encoder Path.
+        /// </summary>
+        internal static string EncoderSettingCardHeader {
+            get {
+                return ResourceManager.GetString("EncoderSettingCardHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End Index.
         /// </summary>
         internal static string EndIndex {
@@ -299,6 +308,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string GameExePath {
             get {
                 return ResourceManager.GetString("GameExePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Path.
+        /// </summary>
+        internal static string GameSettingCardHeader {
+            get {
+                return ResourceManager.GetString("GameSettingCardHeader", resourceCulture);
             }
         }
         

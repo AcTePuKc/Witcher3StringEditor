@@ -55,7 +55,7 @@
     </Window.Resources>
     <Grid Margin="10,10">
         <iwk:SimpleStackPanel Spacing="4">
-            <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="Encoder Path">
+            <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="{lex:Loc EncoderSettingCardHeader}">
                 <ui:SettingsCard.HeaderIcon>
                     <ui:FontIcon Glyph="&#xE90F;" />
                 </ui:SettingsCard.HeaderIcon>
@@ -63,7 +63,7 @@
                     <ui:FontIcon Glyph="&#xe71e;" />
                 </Button>
             </ui:SettingsCard>
-            <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}" Header="Game Path">
+            <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}" Header="{lex:Loc GameSettingCardHeader}">
                 <ui:SettingsCard.HeaderIcon>
                     <ui:FontIcon Glyph="&#xE7FC;" />
                 </ui:SettingsCard.HeaderIcon>

@@ -369,4 +369,10 @@
   <data name="AppBuildTime" xml:space="preserve">
     <value>编译时间:</value>
   </data>
+  <data name="EncoderSettingCardHeader" xml:space="preserve">
+    <value>编码器路径</value>
+  </data>
+  <data name="GameSettingCardHeader" xml:space="preserve">
+    <value>游戏路径</value>
+  </data>
 </root>

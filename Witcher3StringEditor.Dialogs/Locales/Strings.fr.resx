@@ -369,4 +369,10 @@
   <data name="AppBuildTime" xml:space="preserve">
     <value>Temps de construction:</value>
   </data>
+  <data name="EncoderSettingCardHeader" xml:space="preserve">
+    <value>Chemin de l'encodeur</value>
+  </data>
+  <data name="GameSettingCardHeader" xml:space="preserve">
+    <value>Chemin du jeu</value>
+  </data>
 </root>
