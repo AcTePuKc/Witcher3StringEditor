@@ -229,13 +229,14 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowAbout()
     {
-        await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object>
+        await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
         {
             { "Version", ThisAssembly.AssemblyInformationalVersion.Trim() },
             { "BuildTime", RetrieveTimestampAsDateTime() },
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
-            { "Runtime", RuntimeInformation.FrameworkDescription }
-        }, DependencyContext.Default?.RuntimeLibraries.Where(x => x.Type == "package")));
+            { "Runtime", RuntimeInformation.FrameworkDescription },
+            { "Package",DependencyContext.Default?.RuntimeLibraries.Where(x => x.Type == "package")}
+        }));
     }
 
     private static DateTime RetrieveTimestampAsDateTime()

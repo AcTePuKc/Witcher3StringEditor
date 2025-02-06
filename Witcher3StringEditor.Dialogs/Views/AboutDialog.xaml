@@ -92,7 +92,7 @@
             Margin="10"
             BorderBrush="LightGray"
             BorderThickness="1">
-            <ItemsControl ItemsSource="{Binding RuntimeLibraries}">
+            <ItemsControl ItemsSource="{Binding AboutInfo[Package]}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="10,10,0,0" Orientation="Horizontal">
