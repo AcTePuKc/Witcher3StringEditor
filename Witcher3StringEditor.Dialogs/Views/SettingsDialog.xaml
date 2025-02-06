@@ -5,13 +5,14 @@
     xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc SettingsDialogTitle}"
-    Width="600"
-    Height="200"
+    Width="800"
+    Height="600"
     d:DataContext="{d:DesignInstance Type=vm:SettingDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
@@ -19,7 +20,6 @@
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
     Closed="Window_Closed"
-    ResizeMode="NoResize"
     mc:Ignorable="d">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -54,70 +54,35 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="10,10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <ui:FontIcon Glyph="&#xE90F;" />
-        <TextBox
-            Grid.Column="2"
-            ui:ControlHelper.PlaceholderText="{lex:Loc W3StringsPath}"
-            IsReadOnly="True"
-            Text="{Binding AppSettings.W3StringsPath, Mode=OneWay}" />
-        <Button
-            Grid.Row="0"
-            Grid.Column="4"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Command="{Binding SetW3StringsPathCommand}">
-            <ui:FontIcon Glyph="&#xe71e;" />
-        </Button>
-        <ui:FontIcon Grid.Row="2" Glyph="&#xE7FC;" />
-        <TextBox
-            Grid.Row="2"
-            Grid.Column="2"
-            ui:ControlHelper.PlaceholderText="{lex:Loc GameExePath}"
-            IsReadOnly="True"
-            Text="{Binding AppSettings.GameExePath, Mode=OneWay}" />
-        <Button
-            Grid.Row="2"
-            Grid.Column="4"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Command="{Binding SetGameExePathCommand}">
-            <ui:FontIcon Glyph="&#xe71e;" />
-        </Button>
-        <StackPanel
-            Grid.Row="4"
-            Grid.ColumnSpan="5"
-            Orientation="Horizontal">
-            <ui:FontIcon Margin="0,0,10,0" Glyph="&#xE97C;" />
-            <TextBlock VerticalAlignment="Center" Text="{lex:Loc PreferredFiletype}" />
-            <ComboBox
-                Grid.Column="2"
-                Margin="10,0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                ItemsSource="{StaticResource FileTypeArray}"
-                SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
-            <ui:FontIcon Margin="0,0,10,0" Glyph="&#xF2B7;" />
-            <TextBlock VerticalAlignment="Center" Text="{lex:Loc PreferredLanguage}" />
-            <ComboBox
-                Margin="10,0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                ItemsSource="{StaticResource W3LanguageArray}"
-                SelectedItem="{Binding AppSettings.PreferredLanguage}" />
-        </StackPanel>
+        <iwk:SimpleStackPanel Spacing="4">
+            <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="Encoder Path">
+                <ui:SettingsCard.HeaderIcon>
+                    <ui:FontIcon Glyph="&#xE90F;" />
+                </ui:SettingsCard.HeaderIcon>
+                <Button Command="{Binding SetW3StringsPathCommand}">
+                    <ui:FontIcon Glyph="&#xe71e;" />
+                </Button>
+            </ui:SettingsCard>
+            <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}" Header="Game Path">
+                <ui:SettingsCard.HeaderIcon>
+                    <ui:FontIcon Glyph="&#xE7FC;" />
+                </ui:SettingsCard.HeaderIcon>
+                <Button Command="{Binding SetGameExePathCommand}">
+                    <ui:FontIcon Glyph="&#xe71e;" />
+                </Button>
+            </ui:SettingsCard>
+            <ui:SettingsCard Header="{lex:Loc PreferredFiletype}">
+                <ui:SettingsCard.HeaderIcon>
+                    <ui:FontIcon Glyph="&#xE97C;" />
+                </ui:SettingsCard.HeaderIcon>
+                <ComboBox ItemsSource="{StaticResource FileTypeArray}" SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
+            </ui:SettingsCard>
+            <ui:SettingsCard Header="{lex:Loc PreferredLanguage}">
+                <ui:SettingsCard.HeaderIcon>
+                    <ui:FontIcon Glyph="&#xF2B7;" />
+                </ui:SettingsCard.HeaderIcon>
+                <ComboBox ItemsSource="{StaticResource W3LanguageArray}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
+            </ui:SettingsCard>
+        </iwk:SimpleStackPanel>
     </Grid>
 </Window>
