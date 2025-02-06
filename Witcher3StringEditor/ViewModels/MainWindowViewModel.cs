@@ -227,17 +227,14 @@ internal partial class MainWindowViewModel : ObservableObject
         => await playGameService.PlayGame();
 
     [RelayCommand]
-    private async Task ShowAbout()
-    {
-        await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
+    private async Task ShowAbout() => await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
         {
             { "Version", ThisAssembly.AssemblyInformationalVersion.Trim() },
             { "BuildTime", RetrieveTimestampAsDateTime() },
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
-            { "Package",DependencyContext.Default?.RuntimeLibraries.Where(x => x.Type == "package")}
+            { "Package",DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package")}
         }));
-    }
 
     private static DateTime RetrieveTimestampAsDateTime()
     {
