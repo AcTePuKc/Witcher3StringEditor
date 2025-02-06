@@ -51,38 +51,49 @@
                 <c:W3Language>tr</c:W3Language>
                 <c:W3Language>zh</c:W3Language>
             </x:Array>
+            <Style
+                x:Key="SettingsSectionHeaderTextBlockStyle"
+                BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+                TargetType="TextBlock">
+                <Style.Setters>
+                    <Setter Property="Margin" Value="1,30,0,6" />
+                </Style.Setters>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="10,10">
-        <iwk:SimpleStackPanel Spacing="4">
-            <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="{lex:Loc EncoderSettingCardHeader}">
-                <ui:SettingsCard.HeaderIcon>
-                    <ui:FontIcon Glyph="&#xE90F;" />
-                </ui:SettingsCard.HeaderIcon>
-                <Button Command="{Binding SetW3StringsPathCommand}">
-                    <ui:FontIcon Glyph="&#xe71e;" />
-                </Button>
-            </ui:SettingsCard>
-            <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}" Header="{lex:Loc GameSettingCardHeader}">
-                <ui:SettingsCard.HeaderIcon>
-                    <ui:FontIcon Glyph="&#xE7FC;" />
-                </ui:SettingsCard.HeaderIcon>
-                <Button Command="{Binding SetGameExePathCommand}">
-                    <ui:FontIcon Glyph="&#xe71e;" />
-                </Button>
-            </ui:SettingsCard>
-            <ui:SettingsCard Header="{lex:Loc PreferredFiletype}">
-                <ui:SettingsCard.HeaderIcon>
-                    <ui:FontIcon Glyph="&#xE97C;" />
-                </ui:SettingsCard.HeaderIcon>
-                <ComboBox ItemsSource="{StaticResource FileTypeArray}" SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
-            </ui:SettingsCard>
-            <ui:SettingsCard Header="{lex:Loc PreferredLanguage}">
-                <ui:SettingsCard.HeaderIcon>
-                    <ui:FontIcon Glyph="&#xF2B7;" />
-                </ui:SettingsCard.HeaderIcon>
-                <ComboBox ItemsSource="{StaticResource W3LanguageArray}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
-            </ui:SettingsCard>
-        </iwk:SimpleStackPanel>
+        <ScrollViewer>
+            <iwk:SimpleStackPanel Spacing="4">
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{lex:Loc GeneralSettingsHeader}" />
+                <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="{lex:Loc EncoderSettingCardHeader}">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Glyph="&#xE90F;" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <Button Command="{Binding SetW3StringsPathCommand}">
+                        <ui:FontIcon Glyph="&#xe71e;" />
+                    </Button>
+                </ui:SettingsCard>
+                <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}" Header="{lex:Loc GameSettingCardHeader}">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Glyph="&#xE7FC;" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <Button Command="{Binding SetGameExePathCommand}">
+                        <ui:FontIcon Glyph="&#xe71e;" />
+                    </Button>
+                </ui:SettingsCard>
+                <ui:SettingsCard Header="{lex:Loc PreferredFiletype}">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Glyph="&#xE97C;" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <ComboBox ItemsSource="{StaticResource FileTypeArray}" SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
+                </ui:SettingsCard>
+                <ui:SettingsCard Header="{lex:Loc PreferredLanguage}">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Glyph="&#xF2B7;" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <ComboBox ItemsSource="{StaticResource W3LanguageArray}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
+                </ui:SettingsCard>
+            </iwk:SimpleStackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

@@ -375,4 +375,7 @@
   <data name="GameSettingCardHeader" xml:space="preserve">
     <value>Chemin du jeu</value>
   </data>
+  <data name="GeneralSettingsHeader" xml:space="preserve">
+    <value>Paramètres généraux</value>
+  </data>
 </root>

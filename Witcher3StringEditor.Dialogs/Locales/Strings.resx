@@ -375,4 +375,7 @@
   <data name="GameSettingCardHeader" xml:space="preserve">
     <value>Game Path</value>
   </data>
+  <data name="GeneralSettingsHeader" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
 </root>

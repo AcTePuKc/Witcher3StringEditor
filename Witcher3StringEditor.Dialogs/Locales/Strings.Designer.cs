@@ -321,6 +321,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Settings.
+        /// </summary>
+        internal static string GeneralSettingsHeader {
+            get {
+                return ResourceManager.GetString("GeneralSettingsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hash.
         /// </summary>
         internal static string Hash {
