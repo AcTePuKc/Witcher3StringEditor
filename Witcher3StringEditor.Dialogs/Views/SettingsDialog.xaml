@@ -62,31 +62,36 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        <ui:FontIcon Glyph="&#xE90F;" />
         <TextBox
+            Grid.Column="2"
             ui:ControlHelper.PlaceholderText="{lex:Loc W3StringsPath}"
             IsReadOnly="True"
             Text="{Binding AppSettings.W3StringsPath, Mode=OneWay}" />
         <Button
             Grid.Row="0"
-            Grid.Column="2"
+            Grid.Column="4"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding SetW3StringsPathCommand}">
             <ui:FontIcon Glyph="&#xe71e;" />
         </Button>
+        <ui:FontIcon Grid.Row="2" Glyph="&#xE7FC;" />
         <TextBox
             Grid.Row="2"
-            Grid.Column="0"
+            Grid.Column="2"
             ui:ControlHelper.PlaceholderText="{lex:Loc GameExePath}"
             IsReadOnly="True"
             Text="{Binding AppSettings.GameExePath, Mode=OneWay}" />
         <Button
             Grid.Row="2"
-            Grid.Column="2"
+            Grid.Column="4"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Command="{Binding SetGameExePathCommand}">
@@ -94,15 +99,17 @@
         </Button>
         <StackPanel
             Grid.Row="4"
-            Grid.Column="0"
+            Grid.ColumnSpan="5"
             Orientation="Horizontal">
+            <ui:FontIcon Margin="0,0,10,0" Glyph="&#xE97C;" />
             <TextBlock VerticalAlignment="Center" Text="{lex:Loc PreferredFiletype}" />
             <ComboBox
-                Margin="10,0"
+                Grid.Column="2"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 ItemsSource="{StaticResource FileTypeArray}"
                 SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
+            <ui:FontIcon Margin="10,0" Glyph="&#xF2B7;" />
             <TextBlock VerticalAlignment="Center" Text="{lex:Loc PreferredLanguage}" />
             <ComboBox
                 Margin="10,0"
