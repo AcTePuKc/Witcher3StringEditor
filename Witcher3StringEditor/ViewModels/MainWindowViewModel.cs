@@ -235,7 +235,7 @@ internal partial class MainWindowViewModel : ObservableObject
             { "BuildTime", RetrieveTimestampAsDateTime() },
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
-            { "Package",DependencyContext.Default?.RuntimeLibraries.Where(x => x.Type == "package")}
+            { "Package",DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package")}
         }));
     }
 
