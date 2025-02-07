@@ -4,13 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc SaveDialogTitle}"
     Width="800"
-    Height="350"
+    Height="500"
     d:DataContext="{d:DesignInstance Type=vm:SaveDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
@@ -50,13 +51,13 @@
             </x:Array>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Margin="10,10">
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Expander IsExpanded="True">
+        <Expander VerticalAlignment="Top" IsExpanded="True">
             <Expander.Header>
                 <Grid Height="30">
                     <Grid.ColumnDefinitions>
@@ -81,8 +82,8 @@
                         <ColumnDefinition Width="150" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="10" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="16" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetLanguage}" />
@@ -155,12 +156,13 @@
                 </Grid>
             </Expander.Content>
         </Expander>
-        <Grid Grid.Row="2" Grid.ColumnSpan="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="50" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <iwk:SimpleStackPanel
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
+            Margin="0,24"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="16">
             <Button
                 MinWidth="100"
                 HorizontalAlignment="Right"
@@ -172,6 +174,6 @@
                 HorizontalAlignment="Left"
                 Command="{Binding CancelCommand}"
                 Content="{lex:Loc CancelBtnContent}" />
-        </Grid>
+        </iwk:SimpleStackPanel>
     </Grid>
 </Window>

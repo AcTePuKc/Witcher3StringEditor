@@ -12,7 +12,7 @@
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc SettingsDialogTitle}"
     Width="800"
-    Height="600"
+    Height="500"
     d:DataContext="{d:DesignInstance Type=vm:SettingDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"

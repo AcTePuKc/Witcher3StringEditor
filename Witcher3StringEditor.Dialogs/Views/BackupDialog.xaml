@@ -54,7 +54,7 @@
             x:Name="SfDataGrid"
             Grid.Row="1"
             Grid.ColumnSpan="3"
-            Margin="10,10,10,0"
+            Margin="16,16,16,0"
             AllowResizingColumns="True"
             AutoGenerateColumns="False"
             ColumnSizer="Star"
@@ -158,7 +158,7 @@
         <sf:SfDataPager
             x:Name="SfDataPager"
             Grid.Row="2"
-            Margin="0,5"
+            Margin="0,4"
             HorizontalAlignment="Center"
             NumericButtonCount="10"
             PageSize="15"

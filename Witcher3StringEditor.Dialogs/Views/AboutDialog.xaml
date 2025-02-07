@@ -30,26 +30,26 @@
         </Grid.ColumnDefinitions>
         <ui:FontIcon
             Width="100"
-            Margin="10,0,0,0"
+            Margin="24,0,0,0"
             FontSize="50"
             Glyph="&#xE946;" />
         <Grid
             Grid.Row="0"
             Grid.Column="1"
-            Margin="10,10"
+            Margin="24,24"
             VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="10" />
+                <RowDefinition Height="16" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="10" />
+                <RowDefinition Height="16" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="10" />
+                <RowDefinition Height="16" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock HorizontalAlignment="Right" Text="{lex:Loc Version}" />
@@ -89,7 +89,7 @@
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="2"
-            Margin="10"
+            Margin="16"
             BorderBrush="LightGray"
             BorderThickness="1">
             <ItemsControl ItemsSource="{Binding AboutInfo[Package]}">

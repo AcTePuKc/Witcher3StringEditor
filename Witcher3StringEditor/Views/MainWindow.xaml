@@ -201,7 +201,7 @@
         <sf:SfDataGrid
             x:Name="SfDataGrid"
             Grid.Row="2"
-            Margin="10,10,10,0"
+            Margin="16,16,16,0"
             HorizontalContentAlignment="Center"
             AllowDeleting="False"
             AllowDrop="True"
@@ -277,7 +277,7 @@
         <sf:SfDataPager
             x:Name="SfDataPager"
             Grid.Row="3"
-            Margin="0,5"
+            Margin="0,4"
             HorizontalAlignment="Center"
             NumericButtonCount="10"
             PageSize="30"

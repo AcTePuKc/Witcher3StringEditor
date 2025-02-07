@@ -26,18 +26,13 @@
             <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid Margin="10">
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <iwk:SimpleStackPanel Grid.ColumnSpan="3" Spacing="16">
+        <iwk:SimpleStackPanel Spacing="16">
             <ComboBox
                 HorizontalAlignment="Stretch"
                 ui:ControlHelper.Header="{lex:Loc TextLanguage}"
@@ -76,72 +71,74 @@
             VerticalAlignment="Center"
             Orientation="Horizontal">
             <Ellipse
-                Width="50"
-                Height="50"
+                Width="35"
+                Height="35"
                 Fill="Green"
                 ToolTip="{lex:Loc Success}" />
             <TextBlock
                 Width="70"
-                Margin="20,0"
+                Margin="8,0,16,0"
                 VerticalAlignment="Center"
                 d:Text="70"
                 FontSize="25"
                 Text="{Binding SuccessCount}"
                 TextAlignment="Center" />
             <Ellipse
-                Width="50"
-                Height="50"
+                Width="35"
+                Height="35"
                 Fill="Red"
                 ToolTip="{lex:Loc Failure}" />
             <TextBlock
                 Width="70"
-                Margin="20"
+                Margin="8,0,16,0"
                 VerticalAlignment="Center"
                 d:Text="20"
                 FontSize="25"
                 Text="{Binding FailureCount}"
                 TextAlignment="Center" />
             <Ellipse
-                Width="50"
-                Height="50"
+                Width="35"
+                Height="35"
                 Fill="Orange"
                 ToolTip="{lex:Loc Pending}" />
             <TextBlock
                 Width="70"
-                Margin="20,0"
+                Margin="8,0,16,0"
                 VerticalAlignment="Center"
                 d:Text="10"
                 FontSize="25"
                 Text="{Binding PendingCount}"
                 TextAlignment="Center" />
         </StackPanel>
-        <Button
-            Grid.Row="3"
-            Grid.Column="0"
-            MinWidth="100"
-            HorizontalAlignment="Right"
-            Command="{Binding StartCommand}"
-            Content="{lex:Loc TranslateBtnContent}">
-            <Button.Style>
-                <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
-                    <Setter Property="IsEnabled" Value="False" />
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding ElementName=StartIndexInput, Path=(Validation.HasError)}" Value="False" />
-                                <Condition Binding="{Binding ElementName=EndIndexInput, Path=(Validation.HasError)}" Value="False" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="IsEnabled" Value="True" />
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
-        <Button
-            Grid.Row="3"
-            Grid.Column="2"
-            MinWidth="100"
-            Command="{Binding CancelCommand}"
-            Content="{lex:Loc CancelBtnContent}" />
+        <iwk:SimpleStackPanel
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="16">
+            <Button
+                MinWidth="100"
+                HorizontalAlignment="Right"
+                Command="{Binding StartCommand}"
+                Content="{lex:Loc TranslateBtnContent}">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+                        <Setter Property="IsEnabled" Value="False" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=StartIndexInput, Path=(Validation.HasError)}" Value="False" />
+                                    <Condition Binding="{Binding ElementName=EndIndexInput, Path=(Validation.HasError)}" Value="False" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button
+                MinWidth="100"
+                Command="{Binding CancelCommand}"
+                Content="{lex:Loc CancelBtnContent}" />
+        </iwk:SimpleStackPanel>
     </Grid>
 </Window>

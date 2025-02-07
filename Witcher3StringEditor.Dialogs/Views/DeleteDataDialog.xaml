@@ -5,6 +5,7 @@
     xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
@@ -21,25 +22,19 @@
     ui:WindowHelper.UseModernWindowStyle="True"
     mc:Ignorable="d">
     <Grid>
-        <Border Padding="10">
+        <Border Margin="16,24">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="10" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="10" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
                 <TextBlock Text="{lex:Loc DeleteDialogMessage}" />
                 <sf:SfDataGrid
-                    Grid.Row="2"
+                    Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="3"
+                    Margin="0,16"
                     AllowDeleting="False"
                     AllowEditing="False"
                     AllowResizingColumns="True"
@@ -96,20 +91,26 @@
                         <sf:GridTextColumn MappingName="Text" TextWrapping="WrapWithOverflow" />
                     </sf:SfDataGrid.Columns>
                 </sf:SfDataGrid>
-                <Button
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    MinWidth="100"
-                    HorizontalAlignment="Right"
-                    Command="{Binding DeleteCommand}"
-                    Content="{lex:Loc DeleteBtnContent}" />
-                <Button
-                    Grid.Row="4"
-                    Grid.Column="2"
-                    MinWidth="100"
-                    HorizontalAlignment="Left"
-                    Command="{Binding CancelCommand}"
-                    Content="{lex:Loc CancelBtnContent}" />
+                <iwk:SimpleStackPanel
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="16">
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        MinWidth="100"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DeleteCommand}"
+                        Content="{lex:Loc DeleteBtnContent}" />
+                    <Button
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        MinWidth="100"
+                        HorizontalAlignment="Left"
+                        Command="{Binding CancelCommand}"
+                        Content="{lex:Loc CancelBtnContent}" />
+                </iwk:SimpleStackPanel>
             </Grid>
         </Border>
     </Grid>
