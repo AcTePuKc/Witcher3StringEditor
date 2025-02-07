@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
@@ -28,10 +29,6 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
@@ -40,53 +37,39 @@
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ComboBox
-            Grid.ColumnSpan="3"
-            HorizontalAlignment="Stretch"
-            ui:ControlHelper.Header="{lex:Loc TextLanguage}"
-            DisplayMemberPath="NativeName"
-            ItemsSource="{Binding Languages}"
-            SelectedValue="{Binding FormLanguage}" />
-        <ComboBox
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Margin="0,10"
-            HorizontalAlignment="Stretch"
-            ui:ControlHelper.Header="{lex:Loc TargetLanguage}"
-            DisplayMemberPath="NativeName"
-            ItemsSource="{Binding Languages}"
-            SelectedValue="{Binding ToLanguage}" />
-        <ui:NumberBox
-            x:Name="StartIndexInput"
-            Grid.Row="2"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            ui:ControlHelper.Header="{lex:Loc StartIndex}"
-            Maximum="{Binding MaxValue, Mode=OneTime}"
-            Minimum="1"
-            SmallChange="1"
-            SpinButtonPlacementMode="Inline"
-            Value="{Binding StartIndex}" />
-        <ui:NumberBox
-            x:Name="EndIndexInput"
-            Grid.Row="3"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Margin="0,10"
-            ui:ControlHelper.Header="{lex:Loc EndIndex}"
-            Maximum="{Binding MaxValue, Mode=OneTime}"
-            Minimum="{Binding StartIndex}"
-            SmallChange="1"
-            SpinButtonPlacementMode="Inline"
-            Value="{Binding EndIndex}" />
-        <TextBlock
-            Grid.Row="4"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Text="{lex:Loc TranslateCharactersNumberLimit}" />
+        <iwk:SimpleStackPanel Grid.ColumnSpan="3" Spacing="16">
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                ui:ControlHelper.Header="{lex:Loc TextLanguage}"
+                DisplayMemberPath="NativeName"
+                ItemsSource="{Binding Languages}"
+                SelectedValue="{Binding FormLanguage}" />
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                ui:ControlHelper.Header="{lex:Loc TargetLanguage}"
+                DisplayMemberPath="NativeName"
+                ItemsSource="{Binding Languages}"
+                SelectedValue="{Binding ToLanguage}" />
+            <ui:NumberBox
+                x:Name="StartIndexInput"
+                ui:ControlHelper.Header="{lex:Loc StartIndex}"
+                Maximum="{Binding MaxValue, Mode=OneTime}"
+                Minimum="1"
+                SmallChange="1"
+                SpinButtonPlacementMode="Inline"
+                Value="{Binding StartIndex}" />
+            <ui:NumberBox
+                x:Name="EndIndexInput"
+                ui:ControlHelper.Header="{lex:Loc EndIndex}"
+                Maximum="{Binding MaxValue, Mode=OneTime}"
+                Minimum="{Binding StartIndex}"
+                SmallChange="1"
+                SpinButtonPlacementMode="Inline"
+                Value="{Binding EndIndex}" />
+            <TextBlock Text="{lex:Loc TranslateCharactersNumberLimit}" />
+        </iwk:SimpleStackPanel>
         <StackPanel
-            Grid.Row="5"
+            Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
@@ -133,7 +116,7 @@
                 TextAlignment="Center" />
         </StackPanel>
         <Button
-            Grid.Row="6"
+            Grid.Row="3"
             Grid.Column="0"
             MinWidth="100"
             HorizontalAlignment="Right"
@@ -155,7 +138,7 @@
             </Button.Style>
         </Button>
         <Button
-            Grid.Row="6"
+            Grid.Row="3"
             Grid.Column="2"
             MinWidth="100"
             Command="{Binding CancelCommand}"
