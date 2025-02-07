@@ -10,7 +10,7 @@
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc AboutDialogTitle}"
     Width="800"
-    Height="600"
+    Height="500"
     d:DataContext="{d:DesignInstance Type=vm:AboutDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
@@ -30,13 +30,13 @@
         </Grid.ColumnDefinitions>
         <ui:FontIcon
             Width="100"
-            Margin="24,0,0,0"
+            Margin="24,24,16,0"
             FontSize="50"
             Glyph="&#xE946;" />
         <Grid
             Grid.Row="0"
             Grid.Column="1"
-            Margin="24,24"
+            Margin="0,24,24,0"
             VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
