@@ -61,7 +61,7 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Margin="10,10">
+    <Grid Margin="36,0">
         <ScrollViewer>
             <iwk:SimpleStackPanel Spacing="4">
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{lex:Loc GeneralSettingsHeader}" />
