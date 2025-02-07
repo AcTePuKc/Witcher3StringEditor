@@ -104,21 +104,22 @@
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Collapsed" />
-                                <Setter Property="IsEnabled" Value="False" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.w3Strings}">
                                         <Setter Property="Visibility" Value="Visible" />
-                                        <Setter Property="IsEnabled" Value="True" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-                        <TextBlock VerticalAlignment="Center" Text="{lex:Loc IgnoreIDSpaceCheck}" />
+                        <TextBlock
+                            Margin="0,16,0,0"
+                            VerticalAlignment="Center"
+                            Text="{lex:Loc IgnoreIDSpaceCheck}" />
                         <ui:ToggleSwitch
                             x:Name="IgnoreIdSpaceCheckSwitch"
                             Grid.Row="0"
                             Grid.Column="1"
-                            Margin="0,16"
+                            Margin="0,16,0,0"
                             IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
                             OffContent="{lex:Loc IsOff}"
                             OnContent="{lex:Loc IsOn}" />
@@ -126,6 +127,7 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
+                            Margin="0,16,0,0"
                             ui:ControlHelper.Header="{lex:Loc IDSpace}"
                             Maximum="9999"
                             Minimum="-1"
@@ -135,10 +137,8 @@
                             <ui:NumberBox.Style>
                                 <Style TargetType="ui:NumberBox">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=IgnoreIdSpaceCheckSwitch, Path=IsOn}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False" />
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                            <Setter Property="Height" Value="0" />
+                                        <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
