@@ -65,7 +65,6 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetFiletype}" />
                     <ComboBox
-                        x:Name="Comobox"
                         Grid.Column="1"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{StaticResource FileTypeArray}"
@@ -81,6 +80,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetLanguage}" />
                     <ComboBox
+                        Grid.Row="0"
                         Width="150"
                         HorizontalAlignment="Right"
                         ItemsSource="{StaticResource W3LanguageArray}"
@@ -89,7 +89,7 @@
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.csv}">
+                                    <DataTrigger Binding="{Binding W3Job.FileType}" Value="{x:Static c:FileType.csv}">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -100,7 +100,6 @@
                             VerticalAlignment="Center"
                             Text="{lex:Loc IgnoreIDSpaceCheck}" />
                         <ui:ToggleSwitch
-                            x:Name="IgnoreIdSpaceCheckSwitch"
                             Margin="0,16,0,0"
                             HorizontalAlignment="Right"
                             IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
@@ -119,7 +118,7 @@
                         <ui:NumberBox.Style>
                             <Style TargetType="ui:NumberBox">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.csv}">
+                                    <DataTrigger Binding="{Binding W3Job.FileType}" Value="{x:Static c:FileType.csv}">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">
