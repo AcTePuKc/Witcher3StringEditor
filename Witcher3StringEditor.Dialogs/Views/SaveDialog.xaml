@@ -54,7 +54,6 @@
     <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Expander VerticalAlignment="Top" IsExpanded="True">
@@ -165,12 +164,10 @@
             Spacing="16">
             <Button
                 MinWidth="100"
-                HorizontalAlignment="Right"
                 Command="{Binding SaveCommand}"
                 Content="{lex:Loc SaveBtnContent}" />
             <Button
                 MinWidth="100"
-                HorizontalAlignment="Left"
                 Command="{Binding CancelCommand}"
                 Content="{lex:Loc CancelBtnContent}" />
         </iwk:SimpleStackPanel>
