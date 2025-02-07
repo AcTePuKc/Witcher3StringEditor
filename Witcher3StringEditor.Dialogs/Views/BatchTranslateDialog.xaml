@@ -1,7 +1,18 @@
 ﻿<Window
+    Closed="Window_Closed"
+    Height="500"
+    ResizeMode="NoResize"
+    Title="{lex:Loc BatchTranslateDialogTitle}"
+    Width="800"
+    d:DataContext="{d:DesignInstance Type=vm:BatchTranslateDialogViewModel}"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    mc:Ignorable="d"
+    ui:WindowHelper.SystemBackdropType="Mica"
+    ui:WindowHelper.UseModernWindowStyle="True"
     x:Class="Witcher3StringEditor.Dialogs.Views.BatchTranslateDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
@@ -9,18 +20,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{lex:Loc BatchTranslateDialogTitle}"
-    Width="800"
-    Height="500"
-    d:DataContext="{d:DesignInstance Type=vm:BatchTranslateDialogViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-    ui:WindowHelper.SystemBackdropType="Mica"
-    ui:WindowHelper.UseModernWindowStyle="True"
-    Closed="Window_Closed"
-    ResizeMode="NoResize"
-    mc:Ignorable="d">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True" />
@@ -34,81 +34,79 @@
         </Grid.RowDefinitions>
         <iwk:SimpleStackPanel Spacing="16">
             <ComboBox
-                HorizontalAlignment="Stretch"
-                ui:ControlHelper.Header="{lex:Loc TextLanguage}"
                 DisplayMemberPath="NativeName"
+                HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Languages}"
-                SelectedValue="{Binding FormLanguage}" />
+                SelectedValue="{Binding FormLanguage}"
+                ui:ControlHelper.Header="{lex:Loc TextLanguage}" />
             <ComboBox
-                HorizontalAlignment="Stretch"
-                ui:ControlHelper.Header="{lex:Loc TargetLanguage}"
                 DisplayMemberPath="NativeName"
+                HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Languages}"
-                SelectedValue="{Binding ToLanguage}" />
+                SelectedValue="{Binding ToLanguage}"
+                ui:ControlHelper.Header="{lex:Loc TargetLanguage}" />
             <ui:NumberBox
-                x:Name="StartIndexInput"
-                ui:ControlHelper.Header="{lex:Loc StartIndex}"
                 Maximum="{Binding MaxValue, Mode=OneTime}"
                 Minimum="1"
                 SmallChange="1"
                 SpinButtonPlacementMode="Inline"
-                Value="{Binding StartIndex}" />
+                Value="{Binding StartIndex}"
+                ui:ControlHelper.Header="{lex:Loc StartIndex}"
+                x:Name="StartIndexInput" />
             <ui:NumberBox
-                x:Name="EndIndexInput"
-                ui:ControlHelper.Header="{lex:Loc EndIndex}"
                 Maximum="{Binding MaxValue, Mode=OneTime}"
                 Minimum="{Binding StartIndex}"
                 SmallChange="1"
                 SpinButtonPlacementMode="Inline"
-                Value="{Binding EndIndex}" />
+                Value="{Binding EndIndex}"
+                ui:ControlHelper.Header="{lex:Loc EndIndex}"
+                x:Name="EndIndexInput" />
             <TextBlock Text="{lex:Loc TranslateCharactersNumberLimit}" />
         </iwk:SimpleStackPanel>
         <StackPanel
             Grid.Row="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            VerticalAlignment="Center">
             <Ellipse
-                Width="35"
-                Height="35"
                 Fill="Green"
-                ToolTip="{lex:Loc Success}" />
+                Height="35"
+                ToolTip="{lex:Loc Success}"
+                Width="35" />
             <TextBlock
-                Width="70"
-                Margin="8,0,16,0"
-                VerticalAlignment="Center"
-                d:Text="70"
                 FontSize="25"
+                Margin="8,0,16,0"
                 Text="{Binding SuccessCount}"
-                TextAlignment="Center" />
+                TextAlignment="Center"
+                VerticalAlignment="Center"
+                Width="70"
+                d:Text="70" />
             <Ellipse
-                Width="35"
-                Height="35"
                 Fill="Red"
-                ToolTip="{lex:Loc Failure}" />
-            <TextBlock
-                Width="70"
-                Margin="8,0,16,0"
-                VerticalAlignment="Center"
-                d:Text="20"
-                FontSize="25"
-                Text="{Binding FailureCount}"
-                TextAlignment="Center" />
-            <Ellipse
-                Width="35"
                 Height="35"
-                Fill="Orange"
-                ToolTip="{lex:Loc Pending}" />
+                ToolTip="{lex:Loc Failure}"
+                Width="35" />
             <TextBlock
-                Width="70"
-                Margin="8,0,16,0"
-                VerticalAlignment="Center"
-                d:Text="10"
                 FontSize="25"
+                Margin="8,0,16,0"
+                Text="{Binding FailureCount}"
+                TextAlignment="Center"
+                VerticalAlignment="Center"
+                Width="70"
+                d:Text="20" />
+            <Ellipse
+                Fill="Orange"
+                Height="35"
+                ToolTip="{lex:Loc Pending}"
+                Width="35" />
+            <TextBlock
+                FontSize="25"
+                Margin="8,0,16,0"
                 Text="{Binding PendingCount}"
-                TextAlignment="Center" />
+                TextAlignment="Center"
+                VerticalAlignment="Center"
+                Width="70"
+                d:Text="10" />
         </StackPanel>
         <iwk:SimpleStackPanel
             Grid.Row="2"
@@ -116,10 +114,10 @@
             Orientation="Horizontal"
             Spacing="16">
             <Button
-                MinWidth="100"
-                HorizontalAlignment="Right"
                 Command="{Binding StartCommand}"
-                Content="{lex:Loc TranslateBtnContent}">
+                Content="{lex:Loc TranslateBtnContent}"
+                HorizontalAlignment="Right"
+                MinWidth="100">
                 <Button.Style>
                     <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
                         <Setter Property="IsEnabled" Value="False" />
@@ -136,9 +134,9 @@
                 </Button.Style>
             </Button>
             <Button
-                MinWidth="100"
                 Command="{Binding CancelCommand}"
-                Content="{lex:Loc CancelBtnContent}" />
+                Content="{lex:Loc CancelBtnContent}"
+                MinWidth="100" />
         </iwk:SimpleStackPanel>
     </Grid>
 </Window>

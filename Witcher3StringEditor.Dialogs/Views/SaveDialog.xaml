@@ -169,7 +169,6 @@
                 Command="{Binding SaveCommand}"
                 Content="{lex:Loc SaveBtnContent}" />
             <Button
-                Grid.Column="2"
                 MinWidth="100"
                 HorizontalAlignment="Left"
                 Command="{Binding CancelCommand}"

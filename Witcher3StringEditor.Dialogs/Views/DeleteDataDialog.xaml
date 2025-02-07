@@ -32,8 +32,6 @@
                 <TextBlock Text="{lex:Loc DeleteDialogMessage}" />
                 <sf:SfDataGrid
                     Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
                     Margin="0,16"
                     AllowDeleting="False"
                     AllowEditing="False"
@@ -97,15 +95,11 @@
                     Orientation="Horizontal"
                     Spacing="16">
                     <Button
-                        Grid.Row="4"
-                        Grid.Column="0"
                         MinWidth="100"
                         HorizontalAlignment="Right"
                         Command="{Binding DeleteCommand}"
                         Content="{lex:Loc DeleteBtnContent}" />
                     <Button
-                        Grid.Row="4"
-                        Grid.Column="2"
                         MinWidth="100"
                         HorizontalAlignment="Left"
                         Command="{Binding CancelCommand}"

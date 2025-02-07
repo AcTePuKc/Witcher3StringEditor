@@ -33,28 +33,25 @@
                 </iwk:SimpleStackPanel>
                 <TextBox
                     Grid.Row="1"
-                    Margin="0,16"
+                    Margin="0,16,0,0"
                     ui:ControlHelper.Header="Text"
                     Text="{Binding W3Item.Text, FallbackValue=''}"
                     TextWrapping="WrapWithOverflow" />
-                <Grid Grid.Row="2" Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="16" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                <iwk:SimpleStackPanel
+                    Grid.Row="2"
+                    Margin="0,24,0,0"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="16">
                     <Button
                         MinWidth="100"
-                        HorizontalAlignment="Right"
                         Command="{Binding SubmitCommand}"
                         Content="{lex:Loc SubmitBtnContent}" />
                     <Button
-                        Grid.Column="2"
                         MinWidth="100"
-                        HorizontalAlignment="Left"
                         Command="{Binding CancelCommand}"
                         Content="{lex:Loc CancelBtnContent}" />
-                </Grid>
+                </iwk:SimpleStackPanel>
             </Grid>
         </Border>
     </Grid>
