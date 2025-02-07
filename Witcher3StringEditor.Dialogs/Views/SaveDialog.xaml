@@ -77,6 +77,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetLanguage}" />
                     <ComboBox
@@ -85,16 +86,11 @@
                         ItemsSource="{StaticResource W3LanguageArray}"
                         SelectedValue="{Binding W3Job.Language}" />
                     <Grid Grid.Row="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
                         <Grid.Style>
                             <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Collapsed" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.w3Strings}">
-                                        <Setter Property="Visibility" Value="Visible" />
+                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.csv}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -110,29 +106,32 @@
                             IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
                             OffContent="{lex:Loc IsOff}"
                             OnContent="{lex:Loc IsOn}" />
-                        <ui:NumberBox
-                            Grid.Row="1"
-                            Margin="0,16,0,0"
-                            ui:ControlHelper.Header="{lex:Loc IDSpace}"
-                            Maximum="9999"
-                            Minimum="-1"
-                            SmallChange="1"
-                            SpinButtonPlacementMode="Inline"
-                            Value="{Binding W3Job.IdSpace}">
-                            <ui:NumberBox.Style>
-                                <Style TargetType="ui:NumberBox">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ui:NumberBox.Style>
-                            <ui:NumberBox.ToolTip>
-                                <ToolTip Content="{lex:Loc IdSpaceToolTip}" />
-                            </ui:NumberBox.ToolTip>
-                        </ui:NumberBox>
                     </Grid>
+                    <ui:NumberBox
+                        Grid.Row="2"
+                        Margin="0,16,0,0"
+                        ui:ControlHelper.Header="{lex:Loc IDSpace}"
+                        Maximum="9999"
+                        Minimum="-1"
+                        SmallChange="1"
+                        SpinButtonPlacementMode="Inline"
+                        Value="{Binding W3Job.IdSpace}">
+                        <ui:NumberBox.Style>
+                            <Style TargetType="ui:NumberBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Comobox, Path=SelectedItem}" Value="{x:Static c:FileType.csv}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ui:NumberBox.Style>
+                        <ui:NumberBox.ToolTip>
+                            <ToolTip Content="{lex:Loc IdSpaceToolTip}" />
+                        </ui:NumberBox.ToolTip>
+                    </ui:NumberBox>
                 </Grid>
             </Expander.Content>
         </Expander>
