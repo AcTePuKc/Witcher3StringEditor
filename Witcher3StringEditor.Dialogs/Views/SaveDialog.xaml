@@ -74,33 +74,21 @@
             </Expander.Header>
             <Expander.Content>
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="150" />
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetLanguage}" />
                     <ComboBox
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        HorizontalAlignment="Stretch"
+                        Width="150"
+                        HorizontalAlignment="Right"
                         ItemsSource="{StaticResource W3LanguageArray}"
                         SelectedValue="{Binding W3Job.Language}" />
-                    <Grid
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2">
+                    <Grid Grid.Row="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="150" />
-                        </Grid.ColumnDefinitions>
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Collapsed" />
@@ -117,16 +105,13 @@
                             Text="{lex:Loc IgnoreIDSpaceCheck}" />
                         <ui:ToggleSwitch
                             x:Name="IgnoreIdSpaceCheckSwitch"
-                            Grid.Row="0"
-                            Grid.Column="1"
                             Margin="0,16,0,0"
+                            HorizontalAlignment="Right"
                             IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
                             OffContent="{lex:Loc IsOff}"
                             OnContent="{lex:Loc IsOn}" />
                         <ui:NumberBox
                             Grid.Row="1"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
                             Margin="0,16,0,0"
                             ui:ControlHelper.Header="{lex:Loc IDSpace}"
                             Maximum="9999"
