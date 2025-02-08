@@ -8,6 +8,7 @@
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc SettingsDialogTitle}"
@@ -28,29 +29,22 @@
     </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
-            <x:Array x:Key="FileTypeArray" Type="c:FileType">
-                <c:FileType>csv</c:FileType>
-                <c:FileType>w3Strings</c:FileType>
-            </x:Array>
-            <x:Array x:Key="W3LanguageArray" Type="c:W3Language">
-                <c:W3Language>ar</c:W3Language>
-                <c:W3Language>br</c:W3Language>
-                <c:W3Language>cn</c:W3Language>
-                <c:W3Language>cz</c:W3Language>
-                <c:W3Language>de</c:W3Language>
-                <c:W3Language>en</c:W3Language>
-                <c:W3Language>es</c:W3Language>
-                <c:W3Language>esmx</c:W3Language>
-                <c:W3Language>fr</c:W3Language>
-                <c:W3Language>hu</c:W3Language>
-                <c:W3Language>it</c:W3Language>
-                <c:W3Language>jp</c:W3Language>
-                <c:W3Language>kr</c:W3Language>
-                <c:W3Language>pl</c:W3Language>
-                <c:W3Language>ru</c:W3Language>
-                <c:W3Language>tr</c:W3Language>
-                <c:W3Language>zh</c:W3Language>
-            </x:Array>
+            <ObjectDataProvider
+                x:Key="FileType"
+                MethodName="GetValues"
+                ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="c:FileType" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider
+                x:Key="W3Language"
+                MethodName="GetValues"
+                ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="c:W3Language" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
             <Style
                 x:Key="SettingsSectionHeaderTextBlockStyle"
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"
@@ -85,13 +79,13 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE97C;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{StaticResource FileTypeArray}" SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}" SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{lex:Loc PreferredLanguage}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xF2B7;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{StaticResource W3LanguageArray}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>
