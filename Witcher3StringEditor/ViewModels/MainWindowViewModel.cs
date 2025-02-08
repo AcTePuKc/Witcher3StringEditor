@@ -149,7 +149,7 @@ internal partial class MainWindowViewModel : ObservableObject
                     W3Items.Clear();
                 else
                     return;
-            (await w3Serializer.Deserialize(fileName)).ForEach(W3Items.Add);
+            (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
             OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
             var foundItem = appSettings.RecentItems
                 .FirstOrDefault(x => x.FilePath == fileName);
