@@ -95,14 +95,13 @@
             <ItemsControl ItemsSource="{Binding AboutInfo[Package]}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="10,10,0,0" Orientation="Horizontal">
+                        <StackPanel Margin="16,16,0,0" Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" />
-                            <TextBlock Margin="10,0,0,0" Text="{Binding Version}" />
+                            <TextBlock Margin="12,0,0,0" Text="{Binding Version}" />
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-
     </Grid>
 </Window>
