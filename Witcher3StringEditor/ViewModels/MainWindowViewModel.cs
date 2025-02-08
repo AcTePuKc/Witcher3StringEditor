@@ -209,7 +209,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             Path = OutputFolder,
             W3Items = W3Items,
-            FileType = appSettings.PreferredFileType,
+            W3FileType = appSettings.PreferredW3FileType,
             Language = appSettings.PreferredLanguage
         }));
     }

@@ -5,7 +5,7 @@ namespace Witcher3StringEditor.Interfaces;
 
 public interface IAppSettings
 {
-    public FileType PreferredFileType { get; set; }
+    public W3FileType PreferredW3FileType { get; set; }
 
     public W3Language PreferredLanguage { get; set; }
 

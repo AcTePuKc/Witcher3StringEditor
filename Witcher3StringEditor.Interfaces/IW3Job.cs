@@ -10,7 +10,7 @@ public interface IW3Job
 
     public bool IsIgnoreIdSpaceCheck { get; set; }
 
-    public FileType FileType { get; set; }
+    public W3FileType W3FileType { get; set; }
 
     public string Path { get; }
 

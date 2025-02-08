@@ -6,7 +6,7 @@ namespace Witcher3StringEditor.Models;
 
 internal partial class W3Job : ObservableObject, IW3Job
 {
-    [ObservableProperty] private FileType fileType;
+    [ObservableProperty] private W3FileType w3FileType;
 
     [ObservableProperty] private int idSpace;
 

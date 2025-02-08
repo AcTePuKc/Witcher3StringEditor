@@ -9,7 +9,7 @@ namespace Witcher3StringEditor.Models;
 internal partial class AppSettings : ObservableObject, IAppSettings
 {
     [ObservableProperty]
-    private FileType preferredFileType;
+    private W3FileType preferredW3FileType;
 
     [ObservableProperty]
     private W3Language preferredLanguage;
@@ -33,14 +33,14 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 
     [JsonConstructor]
     public AppSettings(string w3StringsPath,
-                       FileType preferredFileType,
+                       W3FileType preferredW3FileType,
                        W3Language preferredLanguage,
                        string gameExePath,
                        ObservableCollection<BackupItem> backupItems,
                        ObservableCollection<RecentItem> recentItems)
     {
         W3StringsPath = w3StringsPath;
-        PreferredFileType = preferredFileType;
+        PreferredW3FileType = preferredW3FileType;
         PreferredLanguage = preferredLanguage;
         GameExePath = gameExePath;
         BackupItems = new ObservableCollection<IBackupItem>(backupItems);

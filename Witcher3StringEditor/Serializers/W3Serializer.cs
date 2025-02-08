@@ -92,7 +92,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     }
 
     public async Task<bool> Serialize(IW3Job w3Job)
-        => w3Job.FileType == FileType.w3Strings ? await SerializeW3Strings(w3Job) : await SerializeCsv(w3Job);
+        => w3Job.W3FileType == W3FileType.w3Strings ? await SerializeW3Strings(w3Job) : await SerializeCsv(w3Job);
 
     private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
     {

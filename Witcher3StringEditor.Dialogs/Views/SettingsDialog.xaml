@@ -1,7 +1,17 @@
 ﻿<Window
+    Closed="Window_Closed"
+    Height="500"
+    Title="{lex:Loc SettingsDialogTitle}"
+    Width="800"
+    d:DataContext="{d:DesignInstance Type=vm:SettingDialogViewModel}"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    mc:Ignorable="d"
+    ui:WindowHelper.SystemBackdropType="Mica"
+    ui:WindowHelper.UseModernWindowStyle="True"
     x:Class="Witcher3StringEditor.Dialogs.Views.SettingsDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -11,17 +21,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{lex:Loc SettingsDialogTitle}"
-    Width="800"
-    Height="500"
-    d:DataContext="{d:DesignInstance Type=vm:SettingDialogViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-    ui:WindowHelper.SystemBackdropType="Mica"
-    ui:WindowHelper.UseModernWindowStyle="True"
-    Closed="Window_Closed"
-    mc:Ignorable="d">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding WindowClosingCommand}" PassEventArgsToCommand="True" />
@@ -30,25 +30,25 @@
     <Window.Resources>
         <ResourceDictionary>
             <ObjectDataProvider
-                x:Key="FileType"
                 MethodName="GetValues"
-                ObjectType="{x:Type sys:Enum}">
+                ObjectType="{x:Type sys:Enum}"
+                x:Key="FileType">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="c:FileType" />
+                    <x:Type TypeName="c:W3FileType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <ObjectDataProvider
-                x:Key="W3Language"
                 MethodName="GetValues"
-                ObjectType="{x:Type sys:Enum}">
+                ObjectType="{x:Type sys:Enum}"
+                x:Key="W3Language">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="c:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <Style
-                x:Key="SettingsSectionHeaderTextBlockStyle"
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"
-                TargetType="TextBlock">
+                TargetType="TextBlock"
+                x:Key="SettingsSectionHeaderTextBlockStyle">
                 <Style.Setters>
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
@@ -79,7 +79,7 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE97C;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}" SelectedItem="{Binding AppSettings.PreferredFileType, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}" SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{lex:Loc PreferredLanguage}">
                     <ui:SettingsCard.HeaderIcon>
