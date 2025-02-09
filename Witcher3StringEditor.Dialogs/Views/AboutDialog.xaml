@@ -17,7 +17,6 @@
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
-    ResizeMode="NoResize"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>

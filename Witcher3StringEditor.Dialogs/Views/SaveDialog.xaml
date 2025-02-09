@@ -1,18 +1,7 @@
 ﻿<Window
-    Closed="Window_Closed"
-    Height="500"
-    ResizeMode="NoResize"
-    Title="{lex:Loc SaveDialogTitle}"
-    Width="800"
-    d:DataContext="{d:DesignInstance Type=vm:SaveDialogViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-    mc:Ignorable="d"
-    ui:WindowHelper.SystemBackdropType="Mica"
-    ui:WindowHelper.UseModernWindowStyle="True"
     x:Class="Witcher3StringEditor.Dialogs.Views.SaveDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
@@ -21,24 +10,34 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    Title="{lex:Loc SaveDialogTitle}"
+    Width="800"
+    Height="500"
+    d:DataContext="{d:DesignInstance Type=vm:SaveDialogViewModel}"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:WindowHelper.SystemBackdropType="Mica"
+    ui:WindowHelper.UseModernWindowStyle="True"
+    Closed="Window_Closed"
+    mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
             <Style BasedOn="{StaticResource {x:Static ui:ThemeKeys.ExpanderCardStyleKey}}" TargetType="Expander">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
             </Style>
             <ObjectDataProvider
+                x:Key="FileType"
                 MethodName="GetValues"
-                ObjectType="{x:Type sys:Enum}"
-                x:Key="FileType">
+                ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="c:W3FileType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <ObjectDataProvider
+                x:Key="W3Language"
                 MethodName="GetValues"
-                ObjectType="{x:Type sys:Enum}"
-                x:Key="W3Language">
+                ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="c:W3Language" />
                 </ObjectDataProvider.MethodParameters>
@@ -50,14 +49,14 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Expander IsExpanded="True" VerticalAlignment="Top">
+        <Expander VerticalAlignment="Top" IsExpanded="True">
             <Expander.Header>
-                <Grid Height="30">
+                <Grid Height="Auto">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="150" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{lex:Loc TargetFiletype}" VerticalAlignment="Center" />
+                    <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetFiletype}" />
                     <ComboBox
                         Grid.Column="1"
                         HorizontalAlignment="Stretch"
@@ -72,13 +71,13 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{lex:Loc TargetLanguage}" VerticalAlignment="Center" />
+                    <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetLanguage}" />
                     <ComboBox
                         Grid.Row="0"
+                        Width="150"
                         HorizontalAlignment="Right"
                         ItemsSource="{Binding Source={StaticResource W3Language}}"
-                        SelectedValue="{Binding W3Job.Language}"
-                        Width="150" />
+                        SelectedValue="{Binding W3Job.Language}" />
                     <Grid Grid.Row="1">
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -91,24 +90,24 @@
                         </Grid.Style>
                         <TextBlock
                             Margin="0,16,0,0"
-                            Text="{lex:Loc IgnoreIDSpaceCheck}"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            Text="{lex:Loc IgnoreIDSpaceCheck}" />
                         <ui:ToggleSwitch
+                            Margin="0,16,0,0"
                             HorizontalAlignment="Right"
                             IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
-                            Margin="0,16,0,0"
                             OffContent="{lex:Loc IsOff}"
                             OnContent="{lex:Loc IsOn}" />
                     </Grid>
                     <ui:NumberBox
                         Grid.Row="2"
                         Margin="0,16,0,0"
+                        ui:ControlHelper.Header="{lex:Loc IDSpace}"
                         Maximum="9999"
                         Minimum="-1"
                         SmallChange="1"
                         SpinButtonPlacementMode="Inline"
-                        Value="{Binding W3Job.IdSpace}"
-                        ui:ControlHelper.Header="{lex:Loc IDSpace}">
+                        Value="{Binding W3Job.IdSpace}">
                         <ui:NumberBox.Style>
                             <Style TargetType="ui:NumberBox">
                                 <Style.Triggers>
@@ -129,20 +128,20 @@
             </Expander.Content>
         </Expander>
         <iwk:SimpleStackPanel
-            Grid.ColumnSpan="2"
             Grid.Row="1"
-            HorizontalAlignment="Center"
+            Grid.ColumnSpan="2"
             Margin="0,24"
+            HorizontalAlignment="Center"
             Orientation="Horizontal"
             Spacing="16">
             <Button
+                MinWidth="100"
                 Command="{Binding SaveCommand}"
-                Content="{lex:Loc SaveBtnContent}"
-                MinWidth="100" />
+                Content="{lex:Loc SaveBtnContent}" />
             <Button
+                MinWidth="100"
                 Command="{Binding CancelCommand}"
-                Content="{lex:Loc CancelBtnContent}"
-                MinWidth="100" />
+                Content="{lex:Loc CancelBtnContent}" />
         </iwk:SimpleStackPanel>
     </Grid>
 </Window>
