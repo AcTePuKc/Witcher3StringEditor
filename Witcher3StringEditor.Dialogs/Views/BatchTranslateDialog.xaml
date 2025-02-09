@@ -74,7 +74,8 @@
                 Fill="Green"
                 ToolTip="{lex:Loc Success}" />
             <TextBlock
-                Width="70"
+                Width="Auto"
+                MinWidth="70"
                 Margin="8,0,16,0"
                 VerticalAlignment="Center"
                 d:Text="70"
@@ -87,7 +88,8 @@
                 Fill="Red"
                 ToolTip="{lex:Loc Failure}" />
             <TextBlock
-                Width="70"
+                Width="Auto"
+                MinWidth="70"
                 Margin="8,0,16,0"
                 VerticalAlignment="Center"
                 d:Text="20"
@@ -100,7 +102,8 @@
                 Fill="Orange"
                 ToolTip="{lex:Loc Pending}" />
             <TextBlock
-                Width="70"
+                Width="Auto"
+                MinWidth="70"
                 Margin="8,0,16,0"
                 VerticalAlignment="Center"
                 d:Text="10"
