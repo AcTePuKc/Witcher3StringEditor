@@ -20,6 +20,7 @@
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
+    WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Grid>
         <Border Margin="16,24">

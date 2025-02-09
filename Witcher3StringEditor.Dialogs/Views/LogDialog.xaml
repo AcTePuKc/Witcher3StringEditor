@@ -21,6 +21,7 @@
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
     WindowChrome.IsHitTestVisibleInChrome="True"
+    WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>

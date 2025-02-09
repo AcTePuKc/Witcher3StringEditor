@@ -21,6 +21,7 @@
     ui:WindowHelper.UseModernWindowStyle="True"
     Closed="Window_Closed"
     WindowChrome.IsHitTestVisibleInChrome="True"
+    WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Window.Resources>
         <ControlTemplate x:Key="PinCheckBoxTemplate" TargetType="CheckBox">
