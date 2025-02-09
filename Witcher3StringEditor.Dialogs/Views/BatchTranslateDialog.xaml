@@ -118,7 +118,6 @@
             Spacing="16">
             <Button
                 MinWidth="100"
-                HorizontalAlignment="Right"
                 Command="{Binding StartCommand}"
                 Content="{lex:Loc TranslateBtnContent}">
                 <Button.Style>
