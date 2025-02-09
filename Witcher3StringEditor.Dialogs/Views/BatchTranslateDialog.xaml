@@ -11,7 +11,7 @@
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc BatchTranslateDialogTitle}"
     Width="800"
-    Height="480"
+    Height="500"
     d:DataContext="{d:DesignInstance Type=vm:BatchTranslateDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
