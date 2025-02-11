@@ -56,9 +56,9 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Margin="36,0">
+    <Grid>
         <ScrollViewer>
-            <iwk:SimpleStackPanel Spacing="4">
+            <iwk:SimpleStackPanel Margin="36,0" Spacing="4">
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{lex:Loc GeneralSettingsHeader}" />
                 <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="{lex:Loc EncoderSettingCardHeader}">
                     <ui:SettingsCard.HeaderIcon>
