@@ -19,7 +19,6 @@ using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;
 using Witcher3StringEditor.Services;
-using Witcher3StringEditor.Translators;
 using Witcher3StringEditor.ViewModels;
 using WPFLocalizeExtension.Engine;
 
