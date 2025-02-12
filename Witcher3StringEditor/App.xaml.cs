@@ -56,9 +56,10 @@ public partial class App
     {
         return new ServiceCollection()
             .AddSingleton<IAppSettings, AppSettings>(x => LoadAppSettings(path))
+            .AddSingleton<IDialogManager, DialogManager>(x => new DialogManager(CreatStrongViewLocator()))
             .AddSingleton<IBackupService, BackupService>(x => new BackupService(Ioc.Default.GetRequiredService<IAppSettings>()))
             .AddSingleton<IW3Serializer, W3Serializer>(x => new W3Serializer(Ioc.Default.GetRequiredService<IAppSettings>(), Ioc.Default.GetRequiredService<IBackupService>()))
-            .AddSingleton<IDialogService, DialogService>(x => new DialogService(new DialogManager(CreatStrongViewLocator()), Ioc.Default.GetService))
+            .AddSingleton<IDialogService, DialogService>(x => new DialogService(Ioc.Default.GetService<IDialogManager>(), Ioc.Default.GetService))
             .AddSingleton<ICheckUpdateService, CheckUpdateService>(x => new CheckUpdateService(Ioc.Default.GetRequiredService<IAppSettings>()))
             .AddSingleton<IPlayGameService, PlayGameService>(x => new PlayGameService(Ioc.Default.GetRequiredService<IAppSettings>()))
             .AddSingleton<IExplorerService, ExplorerService>(x => new ExplorerService())
