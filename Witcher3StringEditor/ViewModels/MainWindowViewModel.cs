@@ -21,6 +21,7 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Translators;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -278,10 +279,12 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(object item)
     {
         if (item is not W3Item w3Item) return;
-        await dialogService.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings, Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
+        await dialogService.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings, appSettings.IsUseAiTranslate
+            ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowBatchTranslateDialog()
-        => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings, Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
+        => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings, appSettings.IsUseAiTranslate
+            ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
 }
