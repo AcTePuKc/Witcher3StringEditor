@@ -391,7 +391,7 @@
     <value>AI翻译器</value>
   </data>
   <data name="AiTranslatorSwitchDescription" xml:space="preserve">
-    <value>一旦启用了AI翻译器，该系统将会自动替换原有的微软翻译器作为默认翻译引擎</value>
+    <value>启用AI翻译器后，该系统将会自动替换原有的微软翻译器作为默认翻译引擎</value>
   </data>
   <data name="ModelSettingsHeader" xml:space="preserve">
     <value>模型设置</value>
