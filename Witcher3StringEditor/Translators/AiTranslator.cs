@@ -70,7 +70,10 @@ internal class AiTranslator : ITranslator
         var history = new ChatHistory();
         history.AddSystemMessage(string.Format(promots, toLanguage));
         history.AddUserMessage(stringBuilder.ToString());
-        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(history)).ToString();
+        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(history, new OpenAIPromptExecutionSettings()
+        {
+            Temperature = 1.3
+        })).ToString();
         var lines = translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries);
         if (lines.Length != nodes.Length)
             return new AiTranslationResult
