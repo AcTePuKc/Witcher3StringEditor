@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
+    xmlns:con="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
@@ -55,6 +56,7 @@
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
             </Style>
+            <con:SecurePasswordConverter x:Key="SecurePasswordConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -104,7 +106,7 @@
                                     <TextBox ui:ControlHelper.Header="ModelId" Text="{Binding AppSettings.ModelSettings.ModelId}" />
                                     <PasswordBox ui:ControlHelper.Header="ApiKey">
                                         <i:Interaction.Behaviors>
-                                            <b:PasswordBindingBehavior Password="{Binding AppSettings.ModelSettings.ApiKey}" />
+                                            <b:PasswordBindingBehavior Password="{Binding AppSettings.ModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
                                         </i:Interaction.Behaviors>
                                     </PasswordBox>
                                 </iwk:SimpleStackPanel>
