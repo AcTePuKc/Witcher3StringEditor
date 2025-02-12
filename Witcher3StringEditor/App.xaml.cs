@@ -87,7 +87,7 @@ public partial class App
     {
         var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Witcher3StringEditor");
         if (!Directory.Exists(configFolderPath))
-            Directory.CreateDirectory(configFolderPath);
+            _ = Directory.CreateDirectory(configFolderPath);
         File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
             Formatting.Indented,
             new StringEnumConverter()));
