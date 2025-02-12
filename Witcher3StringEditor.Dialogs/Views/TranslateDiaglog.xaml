@@ -22,7 +22,7 @@
     mc:Ignorable="d">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding ClosingCommand}" />
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid Margin="24">

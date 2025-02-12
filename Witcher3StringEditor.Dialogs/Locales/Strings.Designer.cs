@@ -825,6 +825,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Translation is Underway.
+        /// </summary>
+        internal static string TranslatorTranslatingCaption {
+            get {
+                return ResourceManager.GetString("TranslatorTranslatingCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The translator is working hard on the translation. Do you really want to quit?.
+        /// </summary>
+        internal static string TranslatorTranslatingMessage {
+            get {
+                return ResourceManager.GetString("TranslatorTranslatingMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version:.
         /// </summary>
         internal static string Version {

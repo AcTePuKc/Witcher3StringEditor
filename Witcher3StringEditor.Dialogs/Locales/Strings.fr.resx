@@ -378,4 +378,10 @@
   <data name="GeneralSettingsHeader" xml:space="preserve">
     <value>Paramètres généraux</value>
   </data>
+  <data name="TranslatorTranslatingMessage" xml:space="preserve">
+    <value>Le traducteur est en train de traduire. Vous voulez vraiment quitter ?</value>
+  </data>
+  <data name="TranslatorTranslatingCaption" xml:space="preserve">
+    <value>Traduction en Cours</value>
+  </data>
 </root>

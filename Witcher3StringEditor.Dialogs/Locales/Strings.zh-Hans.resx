@@ -378,4 +378,10 @@
   <data name="GeneralSettingsHeader" xml:space="preserve">
     <value>通用设置</value>
   </data>
+  <data name="TranslatorTranslatingMessage" xml:space="preserve">
+    <value>翻译器正在努力翻译中，你忍心退出吗？</value>
+  </data>
+  <data name="TranslatorTranslatingCaption" xml:space="preserve">
+    <value>翻译进行中</value>
+  </data>
 </root>

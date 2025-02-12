@@ -15,6 +15,7 @@ public partial class TranslateDiaglog
 {
     private readonly SimpleStringRecipient translateRecipient = new();
     private readonly TranslatedTextNoSavedRecipient noSavedRecipient = new();
+    private readonly TranslatorTranslatingRecipient translatingRecipient = new();
 
     public TranslateDiaglog()
     {
@@ -51,11 +52,21 @@ public partial class TranslateDiaglog
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
+        WeakReferenceMessenger.Default.Register<TranslatorTranslatingRecipient, TranslatorTranslatingMessage>(translatingRecipient, static (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(MessageBox.Show(Strings.TranslatorTranslatingMessage,
+                                    Strings.TranslatorTranslatingCaption,
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
+        });
+
     }
 
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(translateRecipient);
         WeakReferenceMessenger.Default.UnregisterAll(noSavedRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(translatingRecipient);
     }
 }

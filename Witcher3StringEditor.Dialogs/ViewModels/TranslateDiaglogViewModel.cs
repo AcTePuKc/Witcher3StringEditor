@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GTranslate;
@@ -70,12 +71,19 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     }
 
     [RelayCommand]
-    private async Task Closing()
+    private async Task Closing(CancelEventArgs e)
     {
-        if (CurrentTranslateItemModel is { IsSaved: false }
-            && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-            && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
-            w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+        if (IsTransLating && !await WeakReferenceMessenger.Default.Send(new TranslatorTranslatingMessage()))
+        {
+            e.Cancel = true;
+        }
+        else
+        {
+            if (CurrentTranslateItemModel is { IsSaved: false }
+                && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+                && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
+                w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+        }
     }
 
     [RelayCommand]
