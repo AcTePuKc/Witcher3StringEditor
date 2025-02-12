@@ -55,22 +55,15 @@ public partial class App
 
     private static ServiceProvider InitializeServices(IAppSettings appSettings)
     {
-        var backupService = new BackupService(appSettings);
-        var w3Serializer = new W3Serializer(appSettings, backupService);
-        var dialogManager = new DialogManager(CreatStrongViewLocator());
-        var dialogService = new DialogService(dialogManager, Ioc.Default.GetService);
-        var checkUpdateService = new CheckUpdateService(appSettings);
-        var playGameService = new PlayGameService(appSettings);
-        var explorerService = new ExplorerService();
         return new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton(appSettings)
-            .AddSingleton<IBackupService>(backupService)
-            .AddSingleton<IW3Serializer>(w3Serializer)
-            .AddSingleton<IDialogService>(dialogService)
-            .AddSingleton<ICheckUpdateService>(checkUpdateService)
-            .AddSingleton<IPlayGameService>(playGameService)
-            .AddSingleton<IExplorerService>(explorerService)
+            .AddSingleton<IBackupService, BackupService>(x => new BackupService(appSettings))
+            .AddSingleton<IW3Serializer, W3Serializer>(x => new W3Serializer(appSettings, new BackupService(appSettings)))
+            .AddSingleton<IDialogService, DialogService>(x => new DialogService(new DialogManager(CreatStrongViewLocator()), Ioc.Default.GetService))
+            .AddSingleton<ICheckUpdateService, CheckUpdateService>(x => new CheckUpdateService(appSettings))
+            .AddSingleton<IPlayGameService, PlayGameService>(x => new PlayGameService(appSettings))
+            .AddSingleton<IExplorerService, ExplorerService>(x => new ExplorerService())
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
     }
