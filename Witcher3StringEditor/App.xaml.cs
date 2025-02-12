@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
+using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;
 using Witcher3StringEditor.Services;
+using Witcher3StringEditor.Translators;
 using Witcher3StringEditor.ViewModels;
 using WPFLocalizeExtension.Engine;
 
@@ -64,6 +66,8 @@ public partial class App
             .AddSingleton<ICheckUpdateService, CheckUpdateService>()
             .AddSingleton<IPlayGameService, PlayGameService>()
             .AddSingleton<IExplorerService, ExplorerService>()
+            .AddKeyedSingleton<ITranslator, MicrosoftTranslator>("MicrosoftTranslator")
+            .AddKeyedSingleton<ITranslator, AiTranslator>("AITranslator")
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
     }
