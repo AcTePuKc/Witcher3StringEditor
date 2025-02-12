@@ -56,7 +56,6 @@ public partial class App
     private static ServiceProvider InitializeServices(IAppSettings appSettings)
     {
         return new ServiceCollection()
-            .AddLogging(builder => builder.AddSerilog())
             .AddSingleton(appSettings)
             .AddSingleton<IBackupService, BackupService>(x => new BackupService(appSettings))
             .AddSingleton<IW3Serializer, W3Serializer>(x => new W3Serializer(appSettings, new BackupService(appSettings)))
@@ -64,6 +63,7 @@ public partial class App
             .AddSingleton<ICheckUpdateService, CheckUpdateService>(x => new CheckUpdateService(appSettings))
             .AddSingleton<IPlayGameService, PlayGameService>(x => new PlayGameService(appSettings))
             .AddSingleton<IExplorerService, ExplorerService>(x => new ExplorerService())
+            .AddLogging(builder => builder.AddSerilog())
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
     }
