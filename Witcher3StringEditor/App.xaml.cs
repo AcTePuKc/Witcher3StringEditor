@@ -28,7 +28,6 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private readonly IAppSettings appSettings;
     private readonly ObserverBase<LogEvent> logObserver;
 
     private readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -37,31 +36,31 @@ public partial class App
 
     public App()
     {
-        appSettings = File.Exists(configPath)
-            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
-            : new AppSettings();
         logObserver = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
             , "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
             .CreateLogger();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
-        Ioc.Default.ConfigureServices(InitializeServices(appSettings));
+        Ioc.Default.ConfigureServices(InitializeServices(configPath));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
         DispatcherUnhandledException += (_, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
         TaskScheduler.UnobservedTaskException += (_, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
         Exit += App_Exit;
     }
 
-    private static ServiceProvider InitializeServices(IAppSettings appSettings)
+    private static AppSettings LoadAppSettings(string path)
+        => File.Exists(path) ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(path)) ?? new AppSettings() : new AppSettings();
+
+    private static ServiceProvider InitializeServices(string path)
     {
         return new ServiceCollection()
-            .AddSingleton(appSettings)
-            .AddSingleton<IBackupService, BackupService>(x => new BackupService(appSettings))
-            .AddSingleton<IW3Serializer, W3Serializer>(x => new W3Serializer(appSettings, new BackupService(appSettings)))
+            .AddSingleton<IAppSettings, AppSettings>(x => LoadAppSettings(path))
+            .AddSingleton<IBackupService, BackupService>(x => new BackupService(Ioc.Default.GetRequiredService<IAppSettings>()))
+            .AddSingleton<IW3Serializer, W3Serializer>(x => new W3Serializer(Ioc.Default.GetRequiredService<IAppSettings>(), new BackupService(Ioc.Default.GetRequiredService<IAppSettings>())))
             .AddSingleton<IDialogService, DialogService>(x => new DialogService(new DialogManager(CreatStrongViewLocator()), Ioc.Default.GetService))
-            .AddSingleton<ICheckUpdateService, CheckUpdateService>(x => new CheckUpdateService(appSettings))
-            .AddSingleton<IPlayGameService, PlayGameService>(x => new PlayGameService(appSettings))
+            .AddSingleton<ICheckUpdateService, CheckUpdateService>(x => new CheckUpdateService(Ioc.Default.GetRequiredService<IAppSettings>()))
+            .AddSingleton<IPlayGameService, PlayGameService>(x => new PlayGameService(Ioc.Default.GetRequiredService<IAppSettings>()))
             .AddSingleton<IExplorerService, ExplorerService>(x => new ExplorerService())
             .AddLogging(builder => builder.AddSerilog())
             .AddTransient<MainWindowViewModel>()
@@ -89,7 +88,7 @@ public partial class App
         var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Witcher3StringEditor");
         if (!Directory.Exists(configFolderPath))
             Directory.CreateDirectory(configFolderPath);
-        File.WriteAllText(configPath, JsonConvert.SerializeObject(appSettings,
+        File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
             Formatting.Indented,
             new StringEnumConverter()));
         logObserver.Dispose();
