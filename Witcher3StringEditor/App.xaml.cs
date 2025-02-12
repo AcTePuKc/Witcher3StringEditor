@@ -44,8 +44,8 @@ public partial class App
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         Ioc.Default.ConfigureServices(InitializeServices(configPath));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
-        DispatcherUnhandledException += (_, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
-        TaskScheduler.UnobservedTaskException += (_, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
+        DispatcherUnhandledException += (_, eventArgs) => Log.Error(eventArgs.Exception, "Unhandled exception occurred.");
+        TaskScheduler.UnobservedTaskException += (_, eventArgs) => Log.Error(eventArgs.Exception, "Unhandled exception occurred.");
     }
 
     private static AppSettings LoadAppSettings(string path)
@@ -54,14 +54,14 @@ public partial class App
     private static ServiceProvider InitializeServices(string path)
     {
         return new ServiceCollection()
-            .AddSingleton<IAppSettings, AppSettings>(x => LoadAppSettings(path))
-            .AddSingleton<IDialogManager, DialogManager>(x => new DialogManager(CreatStrongViewLocator()))
-            .AddSingleton<IBackupService, BackupService>(x => new BackupService(Ioc.Default.GetRequiredService<IAppSettings>()))
-            .AddSingleton<IW3Serializer, W3Serializer>(x => new W3Serializer(Ioc.Default.GetRequiredService<IAppSettings>(), Ioc.Default.GetRequiredService<IBackupService>()))
-            .AddSingleton<IDialogService, DialogService>(x => new DialogService(Ioc.Default.GetService<IDialogManager>(), Ioc.Default.GetService))
-            .AddSingleton<ICheckUpdateService, CheckUpdateService>(x => new CheckUpdateService(Ioc.Default.GetRequiredService<IAppSettings>()))
-            .AddSingleton<IPlayGameService, PlayGameService>(x => new PlayGameService(Ioc.Default.GetRequiredService<IAppSettings>()))
-            .AddSingleton<IExplorerService, ExplorerService>(x => new ExplorerService())
+            .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
+            .AddSingleton<IDialogManager, DialogManager>(_ => new DialogManager(CreatStrongViewLocator()))
+            .AddSingleton<IBackupService, BackupService>(_ => new BackupService(Ioc.Default.GetRequiredService<IAppSettings>()))
+            .AddSingleton<IW3Serializer, W3Serializer>(_ => new W3Serializer(Ioc.Default.GetRequiredService<IAppSettings>(), Ioc.Default.GetRequiredService<IBackupService>()))
+            .AddSingleton<IDialogService, DialogService>(_ => new DialogService(Ioc.Default.GetService<IDialogManager>(), Ioc.Default.GetService))
+            .AddSingleton<ICheckUpdateService, CheckUpdateService>(_ => new CheckUpdateService(Ioc.Default.GetRequiredService<IAppSettings>()))
+            .AddSingleton<IPlayGameService, PlayGameService>(_ => new PlayGameService(Ioc.Default.GetRequiredService<IAppSettings>()))
+            .AddSingleton<IExplorerService, ExplorerService>(_ => new ExplorerService())
             .AddLogging(builder => builder.AddSerilog())
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
