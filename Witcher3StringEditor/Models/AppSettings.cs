@@ -27,6 +27,8 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [JsonIgnore]
     public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
 
+    [ObservableProperty] private IModelSettings modelSettings = new ModelSettings();
+
     public AppSettings()
     {
     }
@@ -36,6 +38,7 @@ internal partial class AppSettings : ObservableObject, IAppSettings
                        W3FileType preferredW3FileType,
                        W3Language preferredLanguage,
                        string gameExePath,
+                       ModelSettings modelSettings,
                        ObservableCollection<BackupItem> backupItems,
                        ObservableCollection<RecentItem> recentItems)
     {

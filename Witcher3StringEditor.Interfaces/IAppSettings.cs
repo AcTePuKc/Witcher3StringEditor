@@ -14,6 +14,8 @@ public interface IAppSettings
     public string GameExePath { get; set; }
 
     public string NexusModUrl { get; }
+    
+    public IModelSettings ModelSettings { get; }
 
     public ObservableCollection<IRecentItem> RecentItems { get; }
 
