@@ -6,6 +6,7 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using System.ComponentModel;
+using System.Security.Cryptography.Xml;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
@@ -92,8 +93,16 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
             if (cancellationTokenSource.IsCancellationRequested) return;
             try
             {
-                item.Text = (await translator.TranslateAsync(item.Text, tLanguage, fLanguage)).Translation;
-                SuccessCount++;
+                var translation = (await translator.TranslateAsync(item.Text, tLanguage, fLanguage)).Translation;
+                if (!string.IsNullOrWhiteSpace(translation))
+                {
+                    item.Text = translation;
+                    SuccessCount++;
+                }
+                else
+                {
+                    FailureCount++;
+                }
             }
             catch (Exception ex)
             {
