@@ -71,9 +71,19 @@
         <TextBox
             Grid.Row="4"
             Grid.Column="2"
-            ui:ControlHelper.PlaceholderText="{lex:Loc TranslateCharactersNumberLimit}"
             Text="{Binding CurrentTranslateItemModel.TranslatedText, FallbackValue=''}"
-            TextWrapping="WrapWithOverflow" />
+            TextWrapping="WrapWithOverflow">
+            <TextBox.Style>
+                <Style BasedOn="{StaticResource DefaultTextBoxStyle}" TargetType="TextBox">
+                    <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc TranslateCharactersNumberLimit}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAiTranslator}" Value="True">
+                            <Setter Property="ui:ControlHelper.PlaceholderText" Value="" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
         <iwk:SimpleStackPanel
             Grid.Row="6"
             Grid.Column="0"
