@@ -28,13 +28,13 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private readonly ObserverBase<LogEvent> logObserver;
+    private ObserverBase<LogEvent>? logObserver;
 
     private readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                       "Witcher3StringEditor",
                                                       "AppSettings.Json");
 
-    public App()
+    protected override void OnStartup(StartupEventArgs e)
     {
         logObserver = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
@@ -46,7 +46,6 @@ public partial class App
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
         DispatcherUnhandledException += (_, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
         TaskScheduler.UnobservedTaskException += (_, e) => Log.Error(e.Exception, "Unhandled exception occurred.");
-        Exit += App_Exit;
     }
 
     private static AppSettings LoadAppSettings(string path)
@@ -84,7 +83,7 @@ public partial class App
         return viewLocator;
     }
 
-    private void App_Exit(object sender, ExitEventArgs e)
+    protected override void OnExit(ExitEventArgs e)
     {
         var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Witcher3StringEditor");
         if (!Directory.Exists(configFolderPath))
@@ -92,6 +91,6 @@ public partial class App
         File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
             Formatting.Indented,
             new StringEnumConverter()));
-        logObserver.Dispose();
+        logObserver?.Dispose();
     }
 }
