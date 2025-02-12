@@ -16,8 +16,7 @@ public class SecurePasswordConverter : IValueConverter
                 return DependencyProperty.UnsetValue;
             var encryptedData = System.Convert.FromBase64String(encryptedPassword);
             var data = ProtectedData.Unprotect(encryptedData, null, DataProtectionScope.CurrentUser);
-            var c= Encoding.UTF8.GetString(data);
-            return c;
+            return Encoding.UTF8.GetString(data);
         }
         catch (CryptographicException ex)
         {
