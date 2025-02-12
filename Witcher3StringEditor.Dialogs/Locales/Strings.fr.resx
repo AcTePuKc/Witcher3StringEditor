@@ -384,4 +384,43 @@
   <data name="TranslatorTranslatingCaption" xml:space="preserve">
     <value>Traduction en Cours</value>
   </data>
+  <data name="AiTranslatorSettingsHeader" xml:space="preserve">
+    <value>Traducteur IA (Expérimental)</value>
+  </data>
+  <data name="AiTranslatorSwitchHeader" xml:space="preserve">
+    <value>Traducteur IA</value>
+  </data>
+  <data name="AiTranslatorSwitchDescription" xml:space="preserve">
+    <value>Une fois que le traducteur IA est activé, le système remplacera automatiquement le traducteur Microsoft existant comme moteur de traduction par défaut</value>
+  </data>
+  <data name="ModelSettingsHeader" xml:space="preserve">
+    <value>Paramètres du modèle</value>
+  </data>
+  <data name="ModelSettingsDescription" xml:space="preserve">
+    <value>Modèle de génération de texte avec prise en charge des spécifications de l'API OpenAI</value>
+  </data>
+  <data name="PromptsSettingsHeader" xml:space="preserve">
+    <value>Invites</value>
+  </data>
+  <data name="PromptsSettingsDescription" xml:space="preserve">
+    <value>Les invites sont des textes ou des instructions fournis à un modèle IA pour générer des réponses spécifiques. Elles peuvent aller de phrases simples à des phrases complexes, guidant le modèle sur le type de sortie attendue</value>
+  </data>
+  <data name="ModelSettingsEndpointHeader" xml:space="preserve">
+    <value>Endpoint</value>
+  </data>
+  <data name="ModelSettingsModelIDHeader" xml:space="preserve">
+    <value>ID du modèle</value>
+  </data>
+  <data name="ModelSettingsModelIDDescription" xml:space="preserve">
+    <value>Identifiant du modèle</value>
+  </data>
+  <data name="ModelSettingsApiKeyHeader" xml:space="preserve">
+    <value>Clé API</value>
+  </data>
+  <data name="ModelSettingsEndpointDescription" xml:space="preserve">
+    <value>URL de l'API</value>
+  </data>
+  <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
+    <value>Jeton de sécurité</value>
+  </data>
 </root>

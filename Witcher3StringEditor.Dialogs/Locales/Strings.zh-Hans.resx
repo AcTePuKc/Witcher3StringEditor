@@ -384,4 +384,43 @@
   <data name="TranslatorTranslatingCaption" xml:space="preserve">
     <value>翻译进行中</value>
   </data>
+  <data name="AiTranslatorSettingsHeader" xml:space="preserve">
+    <value>AI翻译器（实验性）</value>
+  </data>
+  <data name="AiTranslatorSwitchHeader" xml:space="preserve">
+    <value>AI翻译器</value>
+  </data>
+  <data name="AiTranslatorSwitchDescription" xml:space="preserve">
+    <value>一旦启用了AI翻译器，该系统将会自动替换原有的微软翻译器作为默认翻译引擎</value>
+  </data>
+  <data name="ModelSettingsHeader" xml:space="preserve">
+    <value>模型设置</value>
+  </data>
+  <data name="ModelSettingsDescription" xml:space="preserve">
+    <value>支持OpenAI API规范的文本生成模型</value>
+  </data>
+  <data name="PromptsSettingsHeader" xml:space="preserve">
+    <value>提示词</value>
+  </data>
+  <data name="PromptsSettingsDescription" xml:space="preserve">
+    <value>提示词是提供给AI模型以生成特定响应的输入文本或指令。它们可以是从简单的短语到复杂的句子，指导模型预期输出的内容</value>
+  </data>
+  <data name="ModelSettingsEndpointHeader" xml:space="preserve">
+    <value>端点</value>
+  </data>
+  <data name="ModelSettingsModelIDHeader" xml:space="preserve">
+    <value>模型ID</value>
+  </data>
+  <data name="ModelSettingsModelIDDescription" xml:space="preserve">
+    <value>模型标识符</value>
+  </data>
+  <data name="ModelSettingsApiKeyHeader" xml:space="preserve">
+    <value>API密钥</value>
+  </data>
+  <data name="ModelSettingsEndpointDescription" xml:space="preserve">
+    <value>API URL</value>
+  </data>
+  <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
+    <value>安全令牌</value>
+  </data>
 </root>

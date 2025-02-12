@@ -78,6 +78,33 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AI Translator(Experimental).
+        /// </summary>
+        internal static string AiTranslatorSettingsHeader {
+            get {
+                return ResourceManager.GetString("AiTranslatorSettingsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once the AI Translator is enabled, the system will automatically replace the existing Microsoft Translator as the default translation engine.
+        /// </summary>
+        internal static string AiTranslatorSwitchDescription {
+            get {
+                return ResourceManager.GetString("AiTranslatorSwitchDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AI Translator.
+        /// </summary>
+        internal static string AiTranslatorSwitchHeader {
+            get {
+                return ResourceManager.GetString("AiTranslatorSwitchHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Build Time:.
         /// </summary>
         internal static string AppBuildTime {
@@ -429,6 +456,78 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Security token.
+        /// </summary>
+        internal static string ModelSettingsApiKeyDescription {
+            get {
+                return ResourceManager.GetString("ModelSettingsApiKeyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API Key.
+        /// </summary>
+        internal static string ModelSettingsApiKeyHeader {
+            get {
+                return ResourceManager.GetString("ModelSettingsApiKeyHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text Generation Model with Support for OpenAI API Specifications.
+        /// </summary>
+        internal static string ModelSettingsDescription {
+            get {
+                return ResourceManager.GetString("ModelSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API URL.
+        /// </summary>
+        internal static string ModelSettingsEndpointDescription {
+            get {
+                return ResourceManager.GetString("ModelSettingsEndpointDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Endpoint.
+        /// </summary>
+        internal static string ModelSettingsEndpointHeader {
+            get {
+                return ResourceManager.GetString("ModelSettingsEndpointHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model Settings.
+        /// </summary>
+        internal static string ModelSettingsHeader {
+            get {
+                return ResourceManager.GetString("ModelSettingsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model identifier.
+        /// </summary>
+        internal static string ModelSettingsModelIDDescription {
+            get {
+                return ResourceManager.GetString("ModelSettingsModelIDDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model ID.
+        /// </summary>
+        internal static string ModelSettingsModelIDHeader {
+            get {
+                return ResourceManager.GetString("ModelSettingsModelIDHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
         internal static string NextBtnContent {
@@ -533,6 +632,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string PreviousBtnContent {
             get {
                 return ResourceManager.GetString("PreviousBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prompts are input texts or instructions given to an AI model to generate specific responses. They can range from simple phrases to complex sentences, guiding the model on what kind of output is expected.
+        /// </summary>
+        internal static string PromptsSettingsDescription {
+            get {
+                return ResourceManager.GetString("PromptsSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prompts.
+        /// </summary>
+        internal static string PromptsSettingsHeader {
+            get {
+                return ResourceManager.GetString("PromptsSettingsHeader", resourceCulture);
             }
         }
         

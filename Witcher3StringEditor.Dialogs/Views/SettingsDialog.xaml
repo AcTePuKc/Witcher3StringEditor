@@ -91,20 +91,29 @@
                     </ui:SettingsCard.HeaderIcon>
                     <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
                 </ui:SettingsCard>
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="AI Translate(Experimental)" />
-                <ui:SettingsCard Header="AI Translate">
-                    <ui:ToggleSwitch IsOn="{Binding AppSettings.IsUseAiTranslate}" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{lex:Loc AiTranslatorSettingsHeader}" />
+                <ui:SettingsCard Description="{lex:Loc AiTranslatorSwitchDescription}" Header="{lex:Loc AiTranslatorSwitchHeader}">
+                    <ui:ToggleSwitch
+                        IsOn="{Binding AppSettings.IsUseAiTranslate}"
+                        OffContent="{lex:Loc IsOff}"
+                        OnContent="{lex:Loc IsOn}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="OpenAI Compatible Text Generation Model" Header="Model Settings">
+                <ui:SettingsCard Description="{lex:Loc ModelSettingsDescription}" Header="{lex:Loc ModelSettingsHeader}">
                     <Button>
                         <ui:FontIcon Glyph="&#xE70F;" />
                         <ui:FlyoutService.Flyout>
                             <ui:Flyout>
                                 <iwk:SimpleStackPanel Width="300" Spacing="16">
-                                    <TextBlock FontWeight="Bold" Text="Model Settings" />
-                                    <TextBox ui:ControlHelper.Header="EndPoint" Text="{Binding AppSettings.ModelSettings.EndPoint}" />
-                                    <TextBox ui:ControlHelper.Header="ModelId" Text="{Binding AppSettings.ModelSettings.ModelId}" />
-                                    <PasswordBox ui:ControlHelper.Header="ApiKey">
+                                    <TextBlock FontWeight="Bold" Text="{lex:Loc ModelSettingsHeader}" />
+                                    <TextBox
+                                        ui:ControlHelper.Header="{lex:Loc ModelSettingsEndpointHeader}"
+                                        ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsEndpointDescription}"
+                                        Text="{Binding AppSettings.ModelSettings.EndPoint}" />
+                                    <TextBox
+                                        ui:ControlHelper.Header="{lex:Loc ModelSettingsModelIDHeader}"
+                                        ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsModelIDHeader}"
+                                        Text="{Binding AppSettings.ModelSettings.ModelId}" />
+                                    <PasswordBox ui:ControlHelper.Header="{lex:Loc ModelSettingsApiKeyHeader}" ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsApiKeyDescription}">
                                         <i:Interaction.Behaviors>
                                             <b:PasswordBindingBehavior Password="{Binding AppSettings.ModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
                                         </i:Interaction.Behaviors>
@@ -114,7 +123,7 @@
                         </ui:FlyoutService.Flyout>
                     </Button>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="Custom Promots" Header="Promots">
+                <ui:SettingsCard Description="{lex:Loc PromptsSettingsDescription}" Header="{lex:Loc PromptsSettingsHeader}">
                     <Button>
                         <ui:FontIcon Glyph="&#xE70F;" />
                         <ui:FlyoutService.Flyout>
@@ -127,7 +136,7 @@
                                         TextWrapping="WrapWithOverflow">
                                         <ui:ControlHelper.HeaderTemplate>
                                             <DataTemplate>
-                                                <TextBlock FontWeight="Bold" Text="Promots" />
+                                                <TextBlock FontWeight="Bold" Text="{lex:Loc PromptsSettingsHeader}" />
                                             </DataTemplate>
                                         </ui:ControlHelper.HeaderTemplate>
                                     </TextBox>
