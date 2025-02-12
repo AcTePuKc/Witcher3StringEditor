@@ -54,6 +54,7 @@ public partial class App
     private static ServiceProvider InitializeServices(string path)
     {
         return new ServiceCollection()
+            .AddLogging(builder => builder.AddSerilog())
             .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
             .AddSingleton<IDialogManager, DialogManager>()
@@ -63,7 +64,6 @@ public partial class App
             .AddSingleton<ICheckUpdateService, CheckUpdateService>()
             .AddSingleton<IPlayGameService, PlayGameService>()
             .AddSingleton<IExplorerService, ExplorerService>()
-            .AddLogging(builder => builder.AddSerilog())
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
     }
