@@ -15,6 +15,8 @@ public interface IAppSettings
 
     public string NexusModUrl { get; }
     
+    public bool IsUseAiTranslate { get; set; }
+
     public IModelSettings ModelSettings { get; }
 
     public ObservableCollection<IRecentItem> RecentItems { get; }

@@ -27,7 +27,11 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [JsonIgnore]
     public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
 
-    [ObservableProperty] private IModelSettings modelSettings = new ModelSettings();
+    [ObservableProperty]
+    private bool isUseAiTranslate;
+
+    [ObservableProperty] 
+    private IModelSettings modelSettings = new ModelSettings();
 
     public AppSettings()
     {
