@@ -66,8 +66,6 @@ public partial class App
             .AddSingleton<ICheckUpdateService, CheckUpdateService>()
             .AddSingleton<IPlayGameService, PlayGameService>()
             .AddSingleton<IExplorerService, ExplorerService>()
-            .AddKeyedSingleton<ITranslator, MicrosoftTranslator>("MicrosoftTranslator")
-            .AddKeyedSingleton<ITranslator, AiTranslator>("AITranslator")
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
     }
