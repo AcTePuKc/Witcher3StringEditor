@@ -52,5 +52,6 @@ internal partial class AppSettings : ObservableObject, IAppSettings
         GameExePath = gameExePath;
         BackupItems = new ObservableCollection<IBackupItem>(backupItems);
         RecentItems = new ObservableCollection<IRecentItem>(recentItems);
+        ModelSettings = modelSettings;
     }
 }
