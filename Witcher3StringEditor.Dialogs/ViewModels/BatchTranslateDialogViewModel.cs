@@ -15,7 +15,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDialogViewModel
 {
     private CancellationTokenSource? cancellationTokenSource;
-    private readonly ITranslator translator = new MicrosoftTranslator();
+
+    private readonly ITranslator translator;
 
     [ObservableProperty]
     private ILanguage toLanguage;
@@ -53,8 +54,9 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
 
     private readonly IEnumerable<IW3Item> w3Items;
 
-    public BatchTranslateDialogViewModel(IEnumerable<IW3Item> w3Items, IAppSettings appSettings)
+    public BatchTranslateDialogViewModel(IEnumerable<IW3Item> w3Items, IAppSettings appSettings, ITranslator translator)
     {
+        this.translator = translator;
         var items = w3Items as IW3Item[] ?? w3Items.ToArray();
         this.w3Items = items;
         EndIndex = MaxValue = items.Length;

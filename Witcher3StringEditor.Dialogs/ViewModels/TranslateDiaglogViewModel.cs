@@ -18,7 +18,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     public bool? DialogResult => true;
 
     private readonly IEnumerable<IW3Item> w3Items;
-    private readonly ITranslator translator = new MicrosoftTranslator();
+    private readonly ITranslator translator;
 
     public IEnumerable<ILanguage> Languages { get; }
         = Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
@@ -49,9 +49,10 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
     }
 
-    public TranslateDiaglogViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings)
+    public TranslateDiaglogViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)
     {
         this.w3Items = w3Items;
+        this.translator = translator;
         IndexOfItems = index;
         FormLanguage = Language.GetLanguage("en");
         var language = appSettings.PreferredLanguage;
