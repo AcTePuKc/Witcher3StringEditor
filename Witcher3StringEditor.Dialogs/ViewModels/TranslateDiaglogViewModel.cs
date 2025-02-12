@@ -21,8 +21,11 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private readonly IEnumerable<IW3Item> w3Items;
     private readonly ITranslator translator;
 
-    public IEnumerable<ILanguage> Languages { get; }
-        = Language.LanguageDictionary.Values.Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
+    [ObservableProperty]
+    private bool isAiTranslator;
+
+    [ObservableProperty]
+    private IEnumerable<ILanguage> languages;
 
     [ObservableProperty]
     private ILanguage toLanguage;
@@ -54,6 +57,9 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     {
         this.w3Items = w3Items;
         this.translator = translator;
+        IsAiTranslator = translator is not MicrosoftTranslator;
+        Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
+            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         IndexOfItems = index;
         FormLanguage = Language.GetLanguage("en");
         var language = appSettings.PreferredLanguage;
