@@ -120,17 +120,17 @@
                         <ui:FlyoutService.Flyout>
                             <ui:Flyout>
                                 <Grid Width="300" Height="300">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock FontWeight="Bold" Text="Promots" />
                                     <TextBox
-                                        Grid.Row="1"
                                         Margin="0,16,0,0"
                                         AcceptsReturn="True"
-                                        Text="{Binding AppSettings.ModelSettings.Promots, Mode=TwoWay}"
-                                        TextWrapping="WrapWithOverflow" />
+                                        Text="{Binding AppSettings.ModelSettings.Prompts, UpdateSourceTrigger=PropertyChanged}"
+                                        TextWrapping="WrapWithOverflow">
+                                        <ui:ControlHelper.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock FontWeight="Bold" Text="Promots" />
+                                            </DataTemplate>
+                                        </ui:ControlHelper.HeaderTemplate>
+                                    </TextBox>
                                 </Grid>
                             </ui:Flyout>
                         </ui:FlyoutService.Flyout>
