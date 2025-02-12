@@ -96,7 +96,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     private async Task Translate()
     {
         if (CurrentTranslateItemModel == null) return;
-        if (CurrentTranslateItemModel.Text.Length <= 1000)
+        if (CurrentTranslateItemModel.Text.Length <= 1000 || IsAiTranslator)
         {
             try
             {
