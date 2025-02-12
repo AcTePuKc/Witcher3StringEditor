@@ -46,6 +46,9 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isBusy;
 
+    [ObservableProperty]
+    private bool isAiTranslator;
+
     public bool? DialogResult => true;
 
     public IEnumerable<ILanguage> Languages { get; }
@@ -59,6 +62,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
         this.translator = translator;
         var items = w3Items as IW3Item[] ?? w3Items.ToArray();
         this.w3Items = items;
+        IsAiTranslator = translator is not MicrosoftTranslator;
         EndIndex = MaxValue = items.Length;
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
