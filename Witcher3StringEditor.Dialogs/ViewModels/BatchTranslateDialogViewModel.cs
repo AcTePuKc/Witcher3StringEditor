@@ -51,9 +51,8 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
 
     public bool? DialogResult => true;
 
-    public IEnumerable<ILanguage> Languages { get; }
-        = Language.LanguageDictionary.Values
-        .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
+    [ObservableProperty]
+    private IEnumerable<ILanguage> languages;
 
     private readonly IEnumerable<IW3Item> w3Items;
 
@@ -63,6 +62,8 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
         var items = w3Items as IW3Item[] ?? w3Items.ToArray();
         this.w3Items = items;
         IsAiTranslator = translator is not MicrosoftTranslator;
+        Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
+            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         EndIndex = MaxValue = items.Length;
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
