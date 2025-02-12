@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Serilog;
 using Serilog.Events;
