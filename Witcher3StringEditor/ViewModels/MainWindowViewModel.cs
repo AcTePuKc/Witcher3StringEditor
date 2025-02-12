@@ -279,10 +279,10 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(object item)
     {
         if (item is not W3Item w3Item) return;
-        await dialogService.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings, new MicrosoftTranslator()));
+        await dialogService.ShowDialogAsync(this, new TranslateDiaglogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings, Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowBatchTranslateDialog()
-        => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings, new MicrosoftTranslator()));
+        => await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, appSettings, Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
 }

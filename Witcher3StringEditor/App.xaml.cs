@@ -56,6 +56,8 @@ public partial class App
     private static ServiceProvider InitializeServices(string path)
     {
         return new ServiceCollection()
+            .AddSingleton<AiTranslator>()
+            .AddSingleton<MicrosoftTranslator>()
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
