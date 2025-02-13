@@ -71,6 +71,7 @@
         <TextBox
             Grid.Row="4"
             Grid.Column="2"
+            IsReadOnly="{Binding IsTranslating}"
             Text="{Binding CurrentTranslateItemModel.TranslatedText, FallbackValue=''}"
             TextWrapping="WrapWithOverflow">
             <TextBox.Style>
