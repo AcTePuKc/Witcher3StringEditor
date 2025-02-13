@@ -62,8 +62,14 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
             result = await ModelSettingsValidator.Instance.ValidateAsync(AppSettings.ModelSettings);
             if (!result.IsValid)
             {
-                e.Cancel = true;
-                _= await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "SettingsDialogClosing");
+                if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "SettingsDialogClosing"))
+                {
+                    AppSettings.IsUseAiTranslate = false;
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
             }
         }
     }
