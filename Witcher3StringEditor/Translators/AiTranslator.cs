@@ -70,7 +70,7 @@ internal class AiTranslator : ITranslator
         var history = new ChatHistory();
         history.AddSystemMessage(string.Format(promots, toLanguage));
         history.AddUserMessage(stringBuilder.ToString());
-        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(history, new OpenAIPromptExecutionSettings()
+        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(history, new OpenAIPromptExecutionSettings
         {
             Temperature = 1.3
         })).ToString();

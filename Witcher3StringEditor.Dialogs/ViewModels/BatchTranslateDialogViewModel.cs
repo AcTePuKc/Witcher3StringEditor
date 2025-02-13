@@ -6,7 +6,6 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using System.ComponentModel;
-using System.Security.Cryptography.Xml;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;

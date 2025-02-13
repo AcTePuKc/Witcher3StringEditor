@@ -42,7 +42,7 @@ internal partial class AppSettings : ObservableObject, IAppSettings
                        W3FileType preferredW3FileType,
                        W3Language preferredLanguage,
                        string gameExePath,
-                       ModelSettings modelSettings,
+                       ModelSettings? modelSettings,
                        ObservableCollection<BackupItem> backupItems,
                        ObservableCollection<RecentItem> recentItems)
     {
