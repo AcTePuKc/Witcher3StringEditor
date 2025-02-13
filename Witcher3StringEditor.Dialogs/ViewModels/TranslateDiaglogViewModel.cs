@@ -45,7 +45,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private bool isTransLating;
+    private bool isTranslating;
 
     partial void OnIndexOfItemsChanged(int value)
     {
@@ -79,7 +79,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [RelayCommand]
     private async Task Closing(CancelEventArgs e)
     {
-        if (IsTransLating && !await WeakReferenceMessenger.Default.Send(new TranslatorTranslatingMessage()))
+        if (IsTranslating && !await WeakReferenceMessenger.Default.Send(new TranslatorTranslatingMessage()))
         {
             e.Cancel = true;
         }
@@ -100,7 +100,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         {
             try
             {
-                IsTransLating = true;
+                IsTranslating = true;
                 CurrentTranslateItemModel.TranslatedText = (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage)).Translation;
             }
             catch (Exception ex)
@@ -108,7 +108,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
                 WeakReferenceMessenger.Default.Send(new SimpleStringMessage(ex.Message), "TranslateError");
                 Log.Error(ex, "Translation error occurred.");
             }
-            IsTransLating = false;
+            IsTranslating = false;
         }
         else
         {
@@ -116,7 +116,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         }
     }
 
-    private bool CanSave => !IsTransLating;
+    private bool CanSave => !IsTranslating;
 
     [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
@@ -129,9 +129,9 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         CurrentTranslateItemModel.IsSaved = true;
     }
 
-    private bool CanPrevious => IndexOfItems > 0 && !IsTransLating;
+    private bool CanPrevious => IndexOfItems > 0 && !IsTranslating;
 
-    private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsTransLating;
+    private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsTranslating;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
     private async Task PreviousAsync()
