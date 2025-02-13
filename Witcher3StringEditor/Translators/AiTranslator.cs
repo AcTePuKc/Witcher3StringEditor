@@ -1,4 +1,5 @@
-﻿using AngleSharp;
+﻿using System.IO;
+using AngleSharp;
 using AngleSharp.Dom;
 using GTranslate;
 using GTranslate.Results;
@@ -50,23 +51,16 @@ internal class AiTranslator : ITranslator
 
     public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
     {
+        if (string.IsNullOrEmpty(text)) throw new ArgumentException("Text cannot be null");
+        if (string.IsNullOrWhiteSpace(promots)) throw new InvalidOperationException("Prompts not configured");
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
-        var config = Configuration.Default;
-        var context = BrowsingContext.New(config);
+        var context = BrowsingContext.New(Configuration.Default);
         var document = await context.OpenAsync(req => req.Content(text));
         var nodes = document.Body?.Descendants<IText>().ToArray();
-        if (nodes == null)
-            return new AiTranslationResult
-            {
-                Source = text,
-                Translation = string.Empty,
-                SourceLanguage = sourceLanguage,
-                TargetLanguage = targetLanguage
-            };
+        if (nodes == null) throw new InvalidDataException("No text found");
         var stringBuilder = new StringBuilder();
-        foreach (var node in nodes)
-            stringBuilder.AppendLine(node.Text);
+        foreach (var node in nodes) stringBuilder.AppendLine(node.Text);
         var history = new ChatHistory();
         history.AddSystemMessage(string.Format(promots, toLanguage));
         history.AddUserMessage(stringBuilder.ToString());
@@ -76,13 +70,7 @@ internal class AiTranslator : ITranslator
         })).ToString();
         var lines = translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries);
         if (lines.Length != nodes.Length)
-            return new AiTranslationResult
-            {
-                Source = text,
-                Translation = string.Empty,
-                SourceLanguage = sourceLanguage,
-                TargetLanguage = targetLanguage
-            };
+            throw new InvalidOperationException($"翻译结果行数({lines.Length})与原文节点数({nodes.Length})不匹配");
         for (var i = 0; i < nodes.Length; i++)
             nodes[i].TextContent = lines[i];
         return new AiTranslationResult
