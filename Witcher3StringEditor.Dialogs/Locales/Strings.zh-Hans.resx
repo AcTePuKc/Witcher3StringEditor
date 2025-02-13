@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CheckSettingsMessage" xml:space="preserve">
-    <value>您尚未完成初始化。请点击是退出程序，或者点击否继续完成初始化。</value>
+  <data name="InitializationIncompleteMessage" xml:space="preserve">
+    <value>您尚未完成初始化。{0}- 点击“是”退出程序。{0}- 点击“否”继续完成初始化。</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
     <value>此操作将覆盖当前所在路径的文件且操作无法撤销.是否继续？</value>
@@ -279,9 +279,6 @@
   <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>搜索</value>
   </data>
-  <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
-    <value>当前正在进行翻译，关闭窗口将停止翻译。是否继续翻译？</value>
-  </data>
   <data name="StartIndex" xml:space="preserve">
     <value>开始位置</value>
   </data>
@@ -321,11 +318,8 @@
   <data name="BackupRestoreCaption" xml:space="preserve">
     <value>备份恢复</value>
   </data>
-  <data name="DialogClosingWhenTranslatingCaption" xml:space="preserve">
-    <value>正在翻译中</value>
-  </data>
-  <data name="CheckSettingsCaption" xml:space="preserve">
-    <value>设置不正确</value>
+  <data name="InitializationIncompleteCaption" xml:space="preserve">
+    <value>初始化未完成</value>
   </data>
   <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
     <value>文本超长</value>
@@ -422,5 +416,11 @@
   </data>
   <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
     <value>安全令牌</value>
+  </data>
+  <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
+    <value>AI翻译设置不完整</value>
+  </data>
+  <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
+    <value>AI翻译已激活，但设置不完整。立即退出将禁用该功能，直至重新配置。{0}- 点击“是”以退出并关闭AI翻译功能。{0}- 点击“否”返回设置界面继续完成配置</value>
   </data>
 </root>

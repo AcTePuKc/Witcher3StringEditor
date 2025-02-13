@@ -54,7 +54,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         if (!result.IsValid)
         {
             e.Cancel = true;
-            if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "SettingsDialogClosing"))
+            if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "InitializationIncomplete"))
                 Application.Current.Shutdown();
         }
         else if (AppSettings.IsUseAiTranslate)
@@ -62,7 +62,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
             result = await ModelSettingsValidator.Instance.ValidateAsync(AppSettings.ModelSettings);
             if (!result.IsValid)
             {
-                if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "SettingsDialogClosing"))
+                if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "IncompleteAiTranslationSettings"))
                 {
                     AppSettings.IsUseAiTranslate = false;
                 }

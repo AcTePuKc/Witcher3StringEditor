@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CheckSettingsMessage" xml:space="preserve">
-    <value>Initialization has not been completed. Do you wish to exit without completing it? Click YES to exit, or NO to continue and complete the initialization.</value>
+  <data name="InitializationIncompleteMessage" xml:space="preserve">
+    <value>You have not completed the initialization.{0}- Click "Yes" to exit the program.{0}- Click "No" to continue with the initialization.</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
     <value>This operation will overwrite the file and is not reversible. Are you sure you want to proceed?</value>
@@ -279,9 +279,6 @@
   <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>Search</value>
   </data>
-  <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
-    <value>Translation is currently in progress. Closing this window will stop the translation. Do you want to continue translating?</value>
-  </data>
   <data name="StartIndex" xml:space="preserve">
     <value>Start Index</value>
   </data>
@@ -321,11 +318,8 @@
   <data name="BackupRestoreCaption" xml:space="preserve">
     <value>Backup Restore</value>
   </data>
-  <data name="DialogClosingWhenTranslatingCaption" xml:space="preserve">
-    <value>Translating</value>
-  </data>
-  <data name="CheckSettingsCaption" xml:space="preserve">
-    <value>Settings Invalid</value>
+  <data name="InitializationIncompleteCaption" xml:space="preserve">
+    <value>Initialization Incomplete</value>
   </data>
   <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
     <value>Text Too Long</value>
@@ -422,5 +416,11 @@
   </data>
   <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
     <value>Security token</value>
+  </data>
+  <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
+    <value>Incomplete AI Translation Settings</value>
+  </data>
+  <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
+    <value>AI translation is activated but settings are incomplete. Exiting now will disable the feature until re-configured.\n- Click "Yes" to exit and disable AI translation.\n- Click "No" to return to settings and complete configuration.</value>
   </data>
 </root>

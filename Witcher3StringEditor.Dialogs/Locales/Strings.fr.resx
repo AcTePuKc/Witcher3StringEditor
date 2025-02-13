@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CheckSettingsMessage" xml:space="preserve">
-    <value>Vous n'avez pas terminé l'initialisation. Cliquez sur Oui pour quitter, sinon cliquez sur Non pour continuer l'initialisation.</value>
+  <data name="InitializationIncompleteMessage" xml:space="preserve">
+    <value>Vous n'avez pas complété l'initialisation.{0}- Cliquez sur "Oui" pour quitter le programme.{0}- Cliquez sur "Non" pour continuer l'initialisation.</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
     <value>Cette opération écrase le fichier et ne peut être annulée ! Êtes-vous sûr de vouloir continuer ?</value>
@@ -279,9 +279,6 @@
   <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>Rechercher</value>
   </data>
-  <data name="DialogClosingWhenTranslatingMessage" xml:space="preserve">
-    <value>La traduction est actuellement en cours, la fermeture de la fenêtre interrompra la traduction. Voulez-vous continuer à traduire ?</value>
-  </data>
   <data name="StartIndex" xml:space="preserve">
     <value>Index de départ</value>
   </data>
@@ -321,11 +318,8 @@
   <data name="BackupRestoreCaption" xml:space="preserve">
     <value>Restauration de la sauvegarde</value>
   </data>
-  <data name="DialogClosingWhenTranslatingCaption" xml:space="preserve">
-    <value>Traduction</value>
-  </data>
-  <data name="CheckSettingsCaption" xml:space="preserve">
-    <value>Paramètres invalides</value>
+  <data name="InitializationIncompleteCaption" xml:space="preserve">
+    <value>Initialisation incomplète</value>
   </data>
   <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
     <value>Texte trop long</value>
@@ -422,5 +416,11 @@
   </data>
   <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
     <value>Jeton de sécurité</value>
+  </data>
+  <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
+    <value>Paramètres de traduction IA incomplets</value>
+  </data>
+  <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
+    <value>La traduction IA est activée, mais les paramètres sont incomplets. Quitter maintenant désactivera la fonction jusqu'à la reconfiguration.\n- Cliquez sur "Oui" pour quitter et désactiver la traduction IA.\n- Cliquez sur "Non" pour retourner aux paramètres et finaliser la configuration.</value>
   </data>
 </root>

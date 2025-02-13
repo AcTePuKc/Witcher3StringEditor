@@ -18,11 +18,19 @@ public partial class SettingsDialog
     public SettingsDialog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "SettingsDialogClosing", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "InitializationIncomplete", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.CheckSettingsMessage,
-                                    Strings.CheckSettingsCaption,
+            m.Reply(MessageBox.Show(string.Format(Strings.InitializationIncompleteMessage, Environment.NewLine),
+                                    string.Format(Strings.InitializationIncompleteCaption, Environment.NewLine),
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
+        });
+        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "IncompleteAiTranslationSettings", static (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(MessageBox.Show(string.Format(Strings.IncompleteAiTranslationSettingsMessage, Environment.NewLine),
+                                    string.Format(Strings.IncompleteAiTranslationSettingsCaption, Environment.NewLine),
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });

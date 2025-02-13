@@ -213,24 +213,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings Invalid.
-        /// </summary>
-        internal static string CheckSettingsCaption {
-            get {
-                return ResourceManager.GetString("CheckSettingsCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initialization has not been completed. Do you wish to exit without completing it? Click YES to exit, or NO to continue and complete the initialization..
-        /// </summary>
-        internal static string CheckSettingsMessage {
-            get {
-                return ResourceManager.GetString("CheckSettingsMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         internal static string CloseBtnContent {
@@ -263,24 +245,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string DeleteDialogTitle {
             get {
                 return ResourceManager.GetString("DeleteDialogTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Translating.
-        /// </summary>
-        internal static string DialogClosingWhenTranslatingCaption {
-            get {
-                return ResourceManager.GetString("DialogClosingWhenTranslatingCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Translation is currently in progress. Closing this window will stop the translation. Do you want to continue translating?.
-        /// </summary>
-        internal static string DialogClosingWhenTranslatingMessage {
-            get {
-                return ResourceManager.GetString("DialogClosingWhenTranslatingMessage", resourceCulture);
             }
         }
         
@@ -389,6 +353,42 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string IgnoreIDSpaceCheck {
             get {
                 return ResourceManager.GetString("IgnoreIDSpaceCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete AI Translation Settings.
+        /// </summary>
+        internal static string IncompleteAiTranslationSettingsCaption {
+            get {
+                return ResourceManager.GetString("IncompleteAiTranslationSettingsCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AI translation is activated but settings are incomplete. Exiting now will disable the feature until re-configured.\n- Click &quot;Yes&quot; to exit and disable AI translation.\n- Click &quot;No&quot; to return to settings and complete configuration..
+        /// </summary>
+        internal static string IncompleteAiTranslationSettingsMessage {
+            get {
+                return ResourceManager.GetString("IncompleteAiTranslationSettingsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialization Incomplete.
+        /// </summary>
+        internal static string InitializationIncompleteCaption {
+            get {
+                return ResourceManager.GetString("InitializationIncompleteCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have not completed the initialization.{0}- Click &quot;Yes&quot; to exit the program.{0}- Click &quot;No&quot; to continue with the initialization..
+        /// </summary>
+        internal static string InitializationIncompleteMessage {
+            get {
+                return ResourceManager.GetString("InitializationIncompleteMessage", resourceCulture);
             }
         }
         

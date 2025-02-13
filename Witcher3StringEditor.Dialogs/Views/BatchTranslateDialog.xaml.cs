@@ -21,8 +21,8 @@ public partial class BatchTranslateDialog
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "BatchTranslateDialogClosing", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.DialogClosingWhenTranslatingMessage,
-                                    Strings.DialogClosingWhenTranslatingCaption,
+            m.Reply(MessageBox.Show(Strings.TranslatorTranslatingMessage,
+                                    Strings.TranslatorTranslatingCaption,
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.No);
         });
