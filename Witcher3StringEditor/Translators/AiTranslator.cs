@@ -51,26 +51,25 @@ internal class AiTranslator : ITranslator
 
     public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
     {
-        if (string.IsNullOrEmpty(text)) throw new ArgumentException("Text cannot be null");
-        if (string.IsNullOrWhiteSpace(promots)) throw new InvalidOperationException("Prompts not configured");
+        if (string.IsNullOrEmpty(text)) throw new ArgumentException("Text cannot be null.");
+        if (string.IsNullOrWhiteSpace(promots)) throw new InvalidOperationException("Prompts not configured.");
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
         var context = BrowsingContext.New(Configuration.Default);
         var document = await context.OpenAsync(req => req.Content(text));
-        var nodes = document.Body?.Descendants<IText>().ToArray();
-        if (nodes == null) throw new InvalidDataException("No text found");
-        var stringBuilder = new StringBuilder();
-        foreach (var node in nodes) stringBuilder.AppendLine(node.Text);
+        var nodes = (document.Body?.Descendants<IText>().ToArray()) ?? throw new InvalidDataException("No text found.");
         var history = new ChatHistory();
         history.AddSystemMessage(string.Format(promots, toLanguage));
-        history.AddUserMessage(stringBuilder.ToString());
+        history.AddUserMessage(ExtractTextContent(nodes));
         var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(history, new OpenAIPromptExecutionSettings
         {
             Temperature = 1.3
         })).ToString();
-        var lines = translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries);
+        if (string.IsNullOrWhiteSpace(translationResponse))
+            throw new InvalidDataException("Translation content cannot be null or empty.");
+        var lines = nodes.Length > 1 ? translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries) : [translationResponse];
         if (lines.Length != nodes.Length)
-            throw new InvalidOperationException($"翻译结果行数({lines.Length})与原文节点数({nodes.Length})不匹配");
+            throw new InvalidOperationException($"The number of translated lines ({{lines.Length}}) does not match the number of original nodes ({{nodes.Length}}).");
         for (var i = 0; i < nodes.Length; i++)
             nodes[i].TextContent = lines[i];
         return new AiTranslationResult
@@ -90,4 +89,28 @@ internal class AiTranslator : ITranslator
 
     public Task<ITransliterationResult> TransliterateAsync(string text, ILanguage toLanguage, ILanguage? fromLanguage = null)
         => throw new NotImplementedException();
+
+    private static string ExtractTextContent(IText[] nodes)
+    {
+        string result;
+        if (nodes.Length == 1)
+        {
+            result = nodes[0].Text;
+        }
+        else
+        {
+            var isFirst = true;
+            var stringBuilder = new StringBuilder();
+            foreach (var node in nodes)
+            {
+                if (!isFirst)
+                    stringBuilder.AppendLine();
+                stringBuilder.Append(node.Text);
+                isFirst = false;
+            }
+            result = stringBuilder.ToString();
+        }
+
+        return result;
+    }
 }
