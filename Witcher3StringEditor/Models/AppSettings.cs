@@ -50,8 +50,8 @@ internal partial class AppSettings : ObservableObject, IAppSettings
         PreferredW3FileType = preferredW3FileType;
         PreferredLanguage = preferredLanguage;
         GameExePath = gameExePath;
-        BackupItems = new ObservableCollection<IBackupItem>(backupItems);
-        RecentItems = new ObservableCollection<IRecentItem>(recentItems);
-        ModelSettings = modelSettings;
+        BackupItems = [.. backupItems];
+        RecentItems = [.. recentItems];
+        ModelSettings = modelSettings ?? new ModelSettings();
     }
 }
