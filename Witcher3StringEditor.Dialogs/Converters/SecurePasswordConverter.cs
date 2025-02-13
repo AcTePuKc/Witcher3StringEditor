@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
+using Serilog;
 
 namespace Witcher3StringEditor.Dialogs.Converters;
 
@@ -20,6 +21,7 @@ public class SecurePasswordConverter : IValueConverter
         }
         catch (CryptographicException ex)
         {
+            Log.Error(ex, "Failed to decrypt password");
             return DependencyProperty.UnsetValue;
         }
     }
@@ -36,6 +38,7 @@ public class SecurePasswordConverter : IValueConverter
         }
         catch (CryptographicException ex)
         {
+            Log.Error(ex, "Failed to encrypt password");
             return DependencyProperty.UnsetValue;
         }
     }
