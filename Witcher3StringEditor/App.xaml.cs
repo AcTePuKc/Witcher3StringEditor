@@ -10,6 +10,7 @@ using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using System.Windows;
@@ -33,7 +34,7 @@ public partial class App
 
     private readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                                       "Witcher3StringEditor",
-                                                      "AppSettings.Json");
+                                                      string.Format("AppSettings{0}.Json", Debugger.IsAttached ? "_Debug" : string.Empty));
 
     protected override void OnStartup(StartupEventArgs e)
     {
