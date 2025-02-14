@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
-    xmlns:con="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
@@ -56,7 +55,6 @@
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
             </Style>
-            <con:SecurePasswordConverter x:Key="SecurePasswordConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -99,28 +97,8 @@
                         OnContent="{lex:Loc IsOn}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Description="{lex:Loc ModelSettingsDescription}" Header="{lex:Loc ModelSettingsHeader}">
-                    <Button>
+                    <Button Command="{Binding ShowModelSettingDialogCommand}">
                         <ui:FontIcon Glyph="&#xE70F;" />
-                        <ui:FlyoutService.Flyout>
-                            <ui:Flyout>
-                                <iwk:SimpleStackPanel Width="300" Spacing="16">
-                                    <TextBlock FontWeight="Bold" Text="{lex:Loc ModelSettingsHeader}" />
-                                    <TextBox
-                                        ui:ControlHelper.Header="{lex:Loc ModelSettingsEndpointHeader}"
-                                        ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsEndpointDescription}"
-                                        Text="{Binding AppSettings.ModelSettings.EndPoint}" />
-                                    <TextBox
-                                        ui:ControlHelper.Header="{lex:Loc ModelSettingsModelIDHeader}"
-                                        ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsModelIDHeader}"
-                                        Text="{Binding AppSettings.ModelSettings.ModelId}" />
-                                    <PasswordBox ui:ControlHelper.Header="{lex:Loc ModelSettingsApiKeyHeader}" ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsApiKeyDescription}">
-                                        <i:Interaction.Behaviors>
-                                            <b:PasswordBindingBehavior Password="{Binding AppSettings.ModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
-                                        </i:Interaction.Behaviors>
-                                    </PasswordBox>
-                                </iwk:SimpleStackPanel>
-                            </ui:Flyout>
-                        </ui:FlyoutService.Flyout>
                     </Button>
                 </ui:SettingsCard>
                 <ui:SettingsCard Description="{lex:Loc PromptsSettingsDescription}" Header="{lex:Loc PromptsSettingsHeader}">

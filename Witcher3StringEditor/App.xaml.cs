@@ -84,6 +84,7 @@ public partial class App
         viewLocator.Register<RecentDialogViewModel, RecentDialog>();
         viewLocator.Register<BatchTranslateDialogViewModel, BatchTranslateDialog>();
         viewLocator.Register<AboutDialogViewModel, AboutDialog>();
+        viewLocator.Register<ModelSettingsDialogViewModel, ModelSettingsDialog>();
         return viewLocator;
     }
 

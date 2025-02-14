@@ -1,0 +1,48 @@
+﻿<Window
+    x:Class="Witcher3StringEditor.Dialogs.Views.ModelSettingsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
+    xmlns:con="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
+    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:local="clr-namespace:Witcher3StringEditor.Dialogs.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+    xmlns:viewmodels="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
+    Title="{lex:Loc ModelSettingsHeader}"
+    Width="500"
+    Height="300"
+    d:DataContext="{d:DesignInstance Type=viewmodels:ModelSettingsDialogViewModel}"
+    lex:LocalizeDictionary.DesignCulture="en"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
+    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:WindowHelper.SystemBackdropType="Mica"
+    ui:WindowHelper.UseModernWindowStyle="True"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <con:SecurePasswordConverter x:Key="SecurePasswordConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="24">
+        <iwk:SimpleStackPanel Spacing="16">
+            <TextBox
+                ui:ControlHelper.Header="{lex:Loc ModelSettingsEndpointHeader}"
+                ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsEndpointDescription}"
+                Text="{Binding ModelSettings.EndPoint}" />
+            <TextBox
+                ui:ControlHelper.Header="{lex:Loc ModelSettingsModelIDHeader}"
+                ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsModelIDHeader}"
+                Text="{Binding ModelSettings.ModelId}" />
+            <PasswordBox ui:ControlHelper.Header="{lex:Loc ModelSettingsApiKeyHeader}" ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsApiKeyDescription}">
+                <i:Interaction.Behaviors>
+                    <b:PasswordBindingBehavior Password="{Binding ModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
+                </i:Interaction.Behaviors>
+            </PasswordBox>
+        </iwk:SimpleStackPanel>
+    </Grid>
+</Window>

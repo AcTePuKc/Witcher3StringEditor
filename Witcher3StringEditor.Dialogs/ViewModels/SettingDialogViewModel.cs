@@ -48,6 +48,13 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
     }
 
     [RelayCommand]
+    private async Task ShowModelSettingDialog()
+    {
+        await dialogService.ShowDialogAsync<ModelSettingsDialogViewModel>(this, new ModelSettingsDialogViewModel(AppSettings.ModelSettings));
+    }
+
+
+    [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
         var result = await AppSettingsValidator.Instance.ValidateAsync(AppSettings);
