@@ -57,7 +57,7 @@ internal class AiTranslator : ITranslator
         var targetLanguage = Language.GetLanguage(toLanguage);
         var context = BrowsingContext.New(Configuration.Default);
         var document = await context.OpenAsync(req => req.Content(text));
-        var nodes = (document.Body?.Descendants<IText>().ToArray()) ?? throw new InvalidDataException("No text found.");
+        var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
         var history = new ChatHistory();
         history.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage));
         history.AddUserMessage(ExtractTextContent(nodes));
@@ -71,7 +71,7 @@ internal class AiTranslator : ITranslator
             throw new InvalidDataException("Translation content cannot be null or empty.");
         var lines = nodes.Length > 1 ? translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries) : [translationResponse];
         if (lines.Length != nodes.Length)
-            throw new InvalidOperationException($"The number of translated lines ({{lines.Length}}) does not match the number of original nodes ({{nodes.Length}}).");
+            throw new InvalidOperationException($"The number of translated lines ({lines.Length}) does not match the number of original nodes ({nodes.Length}).");
         for (var i = 0; i < nodes.Length; i++)
             nodes[i].TextContent = lines[i];
         return new AiTranslationResult
