@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BackupRestoreMessage" xml:space="preserve">
+    <value>Ez a művelet felülírja a fájlt, és nem visszafordítható. Biztos, hogy folytatni akarja?</value>
+  </data>
+  <data name="BackupDeleteMessage" xml:space="preserve">
+    <value>Ez a művelet véglegesen törli a fájlt, és nem vonható vissza. Biztos, hogy folytatni akarja?</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>Sikeres mentés</value>
+  </data>
+  <data name="SaveFailure" xml:space="preserve">
+    <value>Sikertelen mentés</value>
+  </data>
+  <data name="SaveResult" xml:space="preserve">
+    <value>Eredmény mentése</value>
+  </data>
+  <data name="AddDialogTitle" xml:space="preserve">
+    <value>Hozzáadás</value>
+  </data>
+  <data name="EditDialogTitle" xml:space="preserve">
+    <value>Szerkesztés</value>
+  </data>
+  <data name="SelectW3Strings" xml:space="preserve">
+    <value>w3strings.exe kiválasztása</value>
+  </data>
+  <data name="SelectGameExe" xml:space="preserve">
+    <value>witcher3.exe  kiválasztása</value>
+  </data>
+  <data name="SubmitBtnContent" xml:space="preserve">
+    <value>Elküldés</value>
+  </data>
+  <data name="CancelBtnContent" xml:space="preserve">
+    <value>Mégsem</value>
+  </data>
+  <data name="DeleteDialogTitle" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="DeleteDialogMessage" xml:space="preserve">
+    <value>A következő tétel(ek) törlésére készül:</value>
+  </data>
+  <data name="DeleteBtnContent" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="TranslateDialogTitle" xml:space="preserve">
+    <value>Fordítás</value>
+  </data>
+  <data name="PreviousBtnContent" xml:space="preserve">
+    <value>Előző</value>
+  </data>
+  <data name="NextBtnContent" xml:space="preserve">
+    <value>Következő</value>
+  </data>
+  <data name="TranslateBtnContent" xml:space="preserve">
+    <value>Fordítás</value>
+  </data>
+  <data name="SaveBtnContent" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
+  <data name="SrcTxt" xml:space="preserve">
+    <value>Szöveg</value>
+  </data>
+  <data name="TranslatedTxt" xml:space="preserve">
+    <value>Lefordított szöveg</value>
+  </data>
+  <data name="SaveDialogTitle" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
+  <data name="TargetFiletype" xml:space="preserve">
+    <value>Célfájl típusa</value>
+  </data>
+  <data name="TargetLanguage" xml:space="preserve">
+    <value>Célnyelv</value>
+  </data>
+  <data name="IgnoreIDSpaceCheck" xml:space="preserve">
+    <value>ID helyellenőrzés figyelmen kívül hagyása</value>
+  </data>
+  <data name="IDSpace" xml:space="preserve">
+    <value>ID Terület</value>
+  </data>
+  <data name="BackupDialogTitle" xml:space="preserve">
+    <value>Visszaállítás</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Fájlnév</value>
+  </data>
+  <data name="Hash" xml:space="preserve">
+    <value>Hash</value>
+  </data>
+  <data name="OrginPath" xml:space="preserve">
+    <value>Eredeti útvonal</value>
+  </data>
+  <data name="BackupPath" xml:space="preserve">
+    <value>Biztonsági mentés útvonala</value>
+  </data>
+  <data name="BackupTime" xml:space="preserve">
+    <value>Biztonsági mentés ideje</value>
+  </data>
+  <data name="RestoreBtnContent" xml:space="preserve">
+    <value>Visszaállítás</value>
+  </data>
+  <data name="CloseBtnContent" xml:space="preserve">
+    <value>Bezárás</value>
+  </data>
+  <data name="LogDialogTitle" xml:space="preserve">
+    <value>Napló</value>
+  </data>
+  <data name="LogTime" xml:space="preserve">
+    <value>Naplózás ideje</value>
+  </data>
+  <data name="LogLevel" xml:space="preserve">
+    <value>Naplószint</value>
+  </data>
+  <data name="LogMessage" xml:space="preserve">
+    <value>Naplóbejegyzés</value>
+  </data>
+  <data name="SettingsDialogTitle" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="W3StringsPath" xml:space="preserve">
+    <value>Kérlek, válaszd ki a w3strings.exe fájlt</value>
+  </data>
+  <data name="GameExePath" xml:space="preserve">
+    <value>Kérlek, válaszd ki a witcher3.exe fájlt</value>
+  </data>
+  <data name="PreferredFileType" xml:space="preserve">
+    <value>Kedvelt fájltípus</value>
+  </data>
+  <data name="PreferredLanguage" xml:space="preserve">
+    <value>Kedvelt nyelv</value>
+  </data>
+  <data name="IsOn" xml:space="preserve">
+    <value>Be</value>
+  </data>
+  <data name="IsOff" xml:space="preserve">
+    <value>Ki</value>
+  </data>
+  <data name="IdSpaceToolTip" xml:space="preserve">
+    <value>Az ID hely tartománya egy négyjegyű egész szám (0000 és 9999 között). Ha hiba van az észlelésben, a program automatikusan jelzi ezt az ID-tér negatív egységként való megjelenítésével. Kérjük, vegye figyelembe, hogy az eredmények csak referenciaként szolgálnak.</value>
+  </data>
+  <data name="RecentDialogTitle" xml:space="preserve">
+    <value>A legújabb</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Elérési útvonal</value>
+  </data>
+  <data name="OpenedTime" xml:space="preserve">
+    <value>Megnyitás ideje</value>
+  </data>
+  <data name="Mark" xml:space="preserve">
+    <value>Jelölő</value>
+  </data>
+  <data name="RecordDeletingMessgae" xml:space="preserve">
+    <value>Ez a művelet véglegesen törli a kiválasztott bejegyzés(eke)t, és nem vonható vissza. Biztos, hogy folytatni szeretné?</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Megnyitás</value>
+  </data>
+  <data name="SearchBoxPlaceholderText" xml:space="preserve">
+    <value>Keresés</value>
+  </data>
+  <data name="StartIndex" xml:space="preserve">
+    <value>Kezdő mutató</value>
+  </data>
+  <data name="EndIndex" xml:space="preserve">
+    <value>Befejező mutató</value>
+  </data>
+  <data name="BatchTranslateDialogTitle" xml:space="preserve">
+    <value>Kötegelt fordítás</value>
+  </data>
+  <data name="TranslateCharactersNumberExceedLimitMessage" xml:space="preserve">
+    <value>Az Ön által megadott szöveg meghaladja a fordításhoz megengedett 1000 karakteres maximális hosszúságot.</value>
+  </data>
+  <data name="TranslateCharactersNumberLimit" xml:space="preserve">
+    <value>A fordító maximum 1000 karaktert engedélyez</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Függőben</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Sikeres</value>
+  </data>
+  <data name="Failure" xml:space="preserve">
+    <value>Sikertelen</value>
+  </data>
+  <data name="TranslatedTextInvalidMessage" xml:space="preserve">
+    <value>A lefordított szöveg érvénytelen. Kérjük, mentés előtt ellenőrizze és javítsa ki.</value>
+  </data>
+  <data name="BackupFileNoFoundMessage" xml:space="preserve">
+    <value>A biztonsági másolat fájl nem létezik. Szeretné folytatni a bejegyzés törlését?</value>
+  </data>
+  <data name="BackupFileNoFoundCaption" xml:space="preserve">
+    <value>Biztonsági másolat fájl nem található</value>
+  </data>
+  <data name="BackupDeleteCaption" xml:space="preserve">
+    <value>Biztonsági mentés törlése</value>
+  </data>
+  <data name="BackupRestoreCaption" xml:space="preserve">
+    <value>Biztonsági mentés visszaállítása</value>
+  </data>
+  <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
+    <value>A szöveg túl hosszú</value>
+  </data>
+  <data name="TranslatedTextInvalidCaption" xml:space="preserve">
+    <value>A lefordított szöveg érvénytelen</value>
+  </data>
+  <data name="TranslateErrorCaption" xml:space="preserve">
+    <value>Fordítási hiba</value>
+  </data>
+  <data name="TextLanguage" xml:space="preserve">
+    <value>Szöveg nyelve</value>
+  </data>
+  <data name="TranslatedTextNoSavedMessage" xml:space="preserve">
+    <value>A fordítás nincs elmentve. Elmenti most?</value>
+  </data>
+  <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
+    <value>Fordítás nincs mentve</value>
+  </data>
+  <data name="OperationResultCaption" xml:space="preserve">
+    <value>A művelet eredménye</value>
+  </data>
+  <data name="OperationFailureMessage" xml:space="preserve">
+    <value>A művelet sikertelen volt</value>
+  </data>
+  <data name="RecordDeletingCaption" xml:space="preserve">
+    <value>A bejegyzés(ek) törlése folyamatban van</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Verzió:</value>
+  </data>
+  <data name="OS" xml:space="preserve">
+    <value>OS:</value>
+  </data>
+  <data name="AppBuildTime" xml:space="preserve">
+    <value>Készítési idő:</value>
+  </data>
+  <data name="AboutDialogTitle" xml:space="preserve">
+    <value>Rólunk</value>
+  </data>
+  <data name="Runtime" xml:space="preserve">
+    <value>Futtatás ideje:</value>
+  </data>
+  <data name="EncoderSettingCardHeader" xml:space="preserve">
+    <value>Kódoló útvonal</value>
+  </data>
+  <data name="GameSettingCardHeader" xml:space="preserve">
+    <value>Játék útvonal</value>
+  </data>
+  <data name="GeneralSettingsHeader" xml:space="preserve">
+    <value>Általános beállítások</value>
+  </data>
+  <data name="TranslatorTranslatingMessage" xml:space="preserve">
+    <value>A fordító jelenleg dolgozik, nem bánod el hagyni őt?</value>
+  </data>
+  <data name="AiTranslatorSettingsHeader" xml:space="preserve">
+    <value>AI fordító (kísérleti)</value>
+  </data>
+  <data name="AiTranslatorSwitchHeader" xml:space="preserve">
+    <value>AI fordító</value>
+  </data>
+  <data name="ModelSettingsHeader" xml:space="preserve">
+    <value>Modell beállítások</value>
+  </data>
+  <data name="PromptsSettingsHeader" xml:space="preserve">
+    <value>Utasítások</value>
+  </data>
+  <data name="PromptsSettingsDescription" xml:space="preserve">
+    <value>A prompt-ök (utasítások) olyan beviteli szöveg vagy utasítások, amelyeket az AI modellnek megadnak egy adott válasz előállításához. Ezek egyszerű frázisoktól kezdve összetett mondatokig terjedhetnek, és arra irányíthatják a modellt, hogy milyen tartalmat adjon vissza.</value>
+  </data>
+  <data name="InitializationIncompleteCaption" xml:space="preserve">
+    <value>Végpont</value>
+  </data>
+  <data name="ModelSettingsApiKeyHeader" xml:space="preserve">
+    <value>API kulcs</value>
+  </data>
+  <data name="Translating" xml:space="preserve">
+    <value>A fordítás szavakban virágzik...</value>
+  </data>
+  <data name="ModelSettingsEndpointDescription" xml:space="preserve">
+    <value>API URL</value>
+  </data>
+  <data name="TemperatureSettingHeader" xml:space="preserve">
+    <value>Szöveg véletlenszerűség</value>
+  </data>
+  <data name="ModelSettingsModelIDHeader" xml:space="preserve">
+    <value>Modell ID</value>
+  </data>
+  <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
+    <value>Hozzáférési kulcs</value>
+  </data>
+  <data name="TranslatorTranslatingCaption" xml:space="preserve">
+    <value>Fordítás folyamatban van</value>
+  </data>
+  <data name="AiTranslatorSwitchDescription" xml:space="preserve">
+    <value>Miután az AI fordítót engedélyezték, a rendszer automatikusan lecseréli a meglévő Microsoft Translator alapértelmezett fordítási motorként.</value>
+  </data>
+  <data name="ModelSettingsDescription" xml:space="preserve">
+    <value>Szöveggeneráló modell, amely támogatja az OpenAI API specifikációit</value>
+  </data>
+  <data name="ModelSettingsModelIDDescription" xml:space="preserve">
+    <value>Modell azonosító</value>
+  </data>
+  <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
+    <value>Hiányzó AI fordítási beállítások</value>
+  </data>
+  <data name="TemperatureSettingDescription" xml:space="preserve">
+    <value>Szabályozza a generált szöveg véletlenszerűségét és kreativitását. Az alacsonyabb értékek determinisztikusabb és a legvalószínűbb opciókra összpontosító kimenetet eredményeznek, míg a magasabb értékek növelik a sokszínűséget, de csökkenthetik a koherenciát. Ajánlott tartomány: 0 és 2 között. A 0-nál kisebb értékek letiltják ezt a beállítást.</value>
+  </data>
+  <data name="TopPSettingDescription" xml:space="preserve">
+    <value>A mintavételi folyamatot dinamikusan igazítja a legvalószínűbb tokenek kumulatív valószínűség alapján választott legkisebb halmazon. Ez a módszer növeli a kimenet sokszínűségét, miközben megtartja a minőséget. Ajánlott tartomány: 0 és 1 között. A 0-nál kisebb értékek letiltják ezt a beállítást.</value>
+  </data>
+  <data name="InitializationIncompleteMessage" xml:space="preserve">
+    <value>Ön még nem fejezte be a inicializálást.
+- Kattintson az "Igen" gombra a program bezárásához.
+- Kattintson a "Nem" gombra az inicializálás folytatásához.</value>
+  </data>
+  <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
+    <value>Az AI fordítás be van kapcsolva, de a beállítások hiányosak. Ha most kilép, a funkció letiltásra kerül, amíg újra nem konfigurálja.
+- Kattintson az "Igen" gombra a kilépéshez és az AI fordítás letiltásához.
+- Kattintson a "Nem" gombra a beállításokhoz való visszatéréshez és a konfiguráció befejezéséhez.</value>
+  </data>
+  <data name="ModelSettingsEndpointHeader" xml:space="preserve">
+    <value>Végpont</value>
+  </data>
+  <data name="TopPSettingHeader" xml:space="preserve">
+    <value>Kumulatív valószínűség</value>
+  </data>
+</root>

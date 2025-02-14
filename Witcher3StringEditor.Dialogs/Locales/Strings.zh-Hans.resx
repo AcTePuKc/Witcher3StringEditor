@@ -118,7 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InitializationIncompleteMessage" xml:space="preserve">
-    <value>您尚未完成初始化。{0}- 点击“是”退出程序。{0}- 点击“否”继续完成初始化。</value>
+    <value>您尚未完成初始化。
+- 点击“是”退出程序。
+- 点击“否”继续完成初始化。</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
     <value>此操作将覆盖当前所在路径的文件且操作无法撤销.是否继续？</value>
@@ -385,7 +387,7 @@
     <value>AI翻译器</value>
   </data>
   <data name="AiTranslatorSwitchDescription" xml:space="preserve">
-    <value>启用AI翻译器后，该系统将会自动替换原有的微软翻译器作为默认翻译引擎</value>
+    <value>启用AI翻译器后，该系统将会自动替换原有的微软翻译器作为默认翻译引擎。</value>
   </data>
   <data name="ModelSettingsHeader" xml:space="preserve">
     <value>模型设置</value>
@@ -397,7 +399,7 @@
     <value>提示词</value>
   </data>
   <data name="PromptsSettingsDescription" xml:space="preserve">
-    <value>提示词是提供给AI模型以生成特定响应的输入文本或指令。它们可以是从简单的短语到复杂的句子，指导模型预期输出的内容</value>
+    <value>提示词是提供给AI模型以生成特定响应的输入文本或指令。它们可以是从简单的短语到复杂的句子，指导模型预期输出的内容。</value>
   </data>
   <data name="ModelSettingsEndpointHeader" xml:space="preserve">
     <value>端点</value>
@@ -415,13 +417,15 @@
     <value>API URL</value>
   </data>
   <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
-    <value>安全令牌</value>
+    <value>访问密钥</value>
   </data>
   <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
     <value>AI翻译设置不完整</value>
   </data>
   <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
-    <value>AI翻译已激活，但设置不完整。立即退出将禁用该功能，直至重新配置。{0}- 点击“是”以退出并关闭AI翻译功能。{0}- 点击“否”返回设置界面继续完成配置</value>
+    <value>AI翻译已激活，但设置不完整。立即退出将禁用该功能，直至重新配置。
+- 点击“是”以退出并关闭AI翻译功能。
+- 点击“否”返回设置界面继续完成配置。</value>
   </data>
   <data name="TemperatureSettingDescription" xml:space="preserve">
     <value>控制生成文本的随机性和创造性。较低的值使输出更加确定并集中在最高概率选项上，而较高的值增加多样性但可能降低连贯性。推荐范围：0到2。小于0的值表示该选项被禁用。</value>
@@ -433,7 +437,7 @@
     <value>文本随机性</value>
   </data>
   <data name="TopPSettingHeader" xml:space="preserve">
-    <value>词汇采样</value>
+    <value>累积概率</value>
   </data>
   <data name="Translating" xml:space="preserve">
     <value>穿梭于语言的奇妙旅程中...</value>

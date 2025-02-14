@@ -118,7 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InitializationIncompleteMessage" xml:space="preserve">
-    <value>Vous n'avez pas complété l'initialisation.{0}- Cliquez sur "Oui" pour quitter le programme.{0}- Cliquez sur "Non" pour continuer l'initialisation.</value>
+    <value>Vous n'avez pas complété l'initialisation.
+- Cliquez sur "Oui" pour quitter le programme.
+- Cliquez sur "Non" pour continuer l'initialisation.</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
     <value>Cette opération écrase le fichier et ne peut être annulée ! Êtes-vous sûr de vouloir continuer ?</value>
@@ -271,7 +273,7 @@
     <value>Marquer</value>
   </data>
   <data name="RecordDeletingMessgae" xml:space="preserve">
-    <value>Cette opération supprime le(s) enregistrement(s) et ne peut être annulée !</value>
+    <value>Cette opération supprime le(s) enregistrement(s) et ne peut être annulée ?</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>Ouvrir</value>
@@ -292,7 +294,7 @@
     <value>Le texte dépasse la longueur maximale de 1000 caractères autorisée par le traducteur.</value>
   </data>
   <data name="TranslateCharactersNumberLimit" xml:space="preserve">
-    <value>La longueur maximale autorisée par le traducteur est de 1000 caractères.</value>
+    <value>La longueur maximale autorisée par le traducteur est de 1000 caractères</value>
   </data>
   <data name="Pending" xml:space="preserve">
     <value>En attente</value>
@@ -304,7 +306,7 @@
     <value>Échec</value>
   </data>
   <data name="TranslatedTextInvalidMessage" xml:space="preserve">
-    <value>Le texte traduit est invalide, impossible de le sauvegarder !</value>
+    <value>Le texte traduit est invalide, impossible de le sauvegarder.</value>
   </data>
   <data name="BackupFileNoFoundMessage" xml:space="preserve">
     <value>Le fichier de sauvegarde n'existe pas, faut-il supprimer l'enregistrement ?</value>
@@ -376,7 +378,7 @@
     <value>Le traducteur est en train de traduire. Vous voulez vraiment quitter ?</value>
   </data>
   <data name="TranslatorTranslatingCaption" xml:space="preserve">
-    <value>Traduction en Cours</value>
+    <value>La traduction est en cours</value>
   </data>
   <data name="AiTranslatorSettingsHeader" xml:space="preserve">
     <value>Traducteur IA (Expérimental)</value>
@@ -385,7 +387,7 @@
     <value>Traducteur IA</value>
   </data>
   <data name="AiTranslatorSwitchDescription" xml:space="preserve">
-    <value>Une fois que le traducteur IA est activé, le système remplacera automatiquement le traducteur Microsoft existant comme moteur de traduction par défaut</value>
+    <value>Une fois que le traducteur IA est activé, le système remplacera automatiquement le traducteur Microsoft existant comme moteur de traduction par défaut.</value>
   </data>
   <data name="ModelSettingsHeader" xml:space="preserve">
     <value>Paramètres du modèle</value>
@@ -394,13 +396,13 @@
     <value>Modèle de génération de texte avec prise en charge des spécifications de l'API OpenAI</value>
   </data>
   <data name="PromptsSettingsHeader" xml:space="preserve">
-    <value>Invites</value>
+    <value>Instructions</value>
   </data>
   <data name="PromptsSettingsDescription" xml:space="preserve">
-    <value>Les invites sont des textes ou des instructions fournis à un modèle IA pour générer des réponses spécifiques. Elles peuvent aller de phrases simples à des phrases complexes, guidant le modèle sur le type de sortie attendue</value>
+    <value>Les invites sont des textes ou des instructions fournis à un modèle IA pour générer des réponses spécifiques. Elles peuvent aller de phrases simples à des phrases complexes, guidant le modèle sur le type de sortie attendue.</value>
   </data>
   <data name="ModelSettingsEndpointHeader" xml:space="preserve">
-    <value>Endpoint</value>
+    <value>Point de terminaison</value>
   </data>
   <data name="ModelSettingsModelIDHeader" xml:space="preserve">
     <value>ID du modèle</value>
@@ -415,13 +417,15 @@
     <value>URL de l'API</value>
   </data>
   <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
-    <value>Jeton de sécurité</value>
+    <value>Clé d'accès</value>
   </data>
   <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
     <value>Paramètres de traduction IA incomplets</value>
   </data>
   <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
-    <value>La traduction IA est activée, mais les paramètres sont incomplets. Quitter maintenant désactivera la fonction jusqu'à la reconfiguration.\n- Cliquez sur "Oui" pour quitter et désactiver la traduction IA.\n- Cliquez sur "Non" pour retourner aux paramètres et finaliser la configuration.</value>
+    <value>La traduction IA est activée, mais les paramètres sont incomplets. Quitter maintenant désactivera la fonction jusqu'à la reconfiguration.
+- Cliquez sur "Oui" pour quitter et désactiver la traduction IA.
+- Cliquez sur "Non" pour retourner aux paramètres et finaliser la configuration.</value>
   </data>
   <data name="TemperatureSettingDescription" xml:space="preserve">
     <value>Contrôle le caractère aléatoire et la créativité du texte généré. Des valeurs plus basses rendent la sortie plus déterministe et concentrée sur les options de plus haute probabilité, tandis que des valeurs plus élevées augmentent la diversité mais peuvent réduire la cohérence. Plage recommandée : de 0 à 2. Les valeurs inférieures à 0 désactivent cette option.</value>
@@ -433,7 +437,7 @@
     <value>Aléatoire du Texte</value>
   </data>
   <data name="TopPSettingHeader" xml:space="preserve">
-    <value>Échantillonnage des Jetons</value>
+    <value>Probabilité cumulative</value>
   </data>
   <data name="Translating" xml:space="preserve">
     <value>En Route Vers La Traduction Magique...</value>

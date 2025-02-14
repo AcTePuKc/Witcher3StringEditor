@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Runtime" xml:space="preserve">
+    <value>Futtatás ideje</value>
+  </data>
+  <data name="OpenFileBtnLabel" xml:space="preserve">
+    <value>Fájl megnyitása</value>
+  </data>
+  <data name="AppTitle" xml:space="preserve">
+    <value>Witcher 3 szövegszerkesztő</value>
+  </data>
+  <data name="SearchBoxPlaceholderText" xml:space="preserve">
+    <value>Keresés</value>
+  </data>
+  <data name="AddBtnLabel" xml:space="preserve">
+    <value>Adatok hozzáadása</value>
+  </data>
+  <data name="EditBtnLabel" xml:space="preserve">
+    <value>Adat szerkesztése</value>
+  </data>
+  <data name="DeleteBtnLabel" xml:space="preserve">
+    <value>Adat törlése</value>
+  </data>
+  <data name="SaveBtnLabel" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
+  <data name="BackupBtnLabel" xml:space="preserve">
+    <value>Visszaállítás</value>
+  </data>
+  <data name="LogBtnLabel" xml:space="preserve">
+    <value>Napló</value>
+  </data>
+  <data name="SettingsBtnLabel" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="PlayBtnLabel" xml:space="preserve">
+    <value>Játék</value>
+  </data>
+  <data name="TranslateBtnLabel" xml:space="preserve">
+    <value>Fordítás</value>
+  </data>
+  <data name="OpenWorkingFolderBtnLabel" xml:space="preserve">
+    <value>Munkamappa megnyitása</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Frissítés elérhető</value>
+  </data>
+  <data name="RecentBtnLabel" xml:space="preserve">
+    <value>A legutóbbi</value>
+  </data>
+  <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
+    <value>Kötegelt fordítás</value>
+  </data>
+  <data name="AboutBtnLabel" xml:space="preserve">
+    <value>Rólunk</value>
+  </data>
+  <data name="FileFormatSupported" xml:space="preserve">
+    <value>Összes támogatott formátum</value>
+  </data>
+  <data name="FileFormatTextFile" xml:space="preserve">
+    <value>Szövegfájl</value>
+  </data>
+  <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
+    <value>Witcher3 szövegfájl</value>
+  </data>
+  <data name="AppExitMessage" xml:space="preserve">
+    <value>Biztos, hogy ki akarsz lépni? Minden el nem mentett adat elveszik.</value>
+  </data>
+  <data name="AppExitCaption" xml:space="preserve">
+    <value>Kilépés</value>
+  </data>
+  <data name="FileOpenedNoFoundMessage" xml:space="preserve">
+    <value>A megnyitott fájl nem létezik. Szeretné törölni a kapcsolódó bejegyzést?</value>
+  </data>
+  <data name="FileOpenedMessage" xml:space="preserve">
+    <value>A fájl megnyitása a nem mentett adatok elvesztését eredményezi. Szeretnéd folytatni?</value>
+  </data>
+  <data name="FileOpenedCaption" xml:space="preserve">
+    <value>Fájl megnyitása</value>
+  </data>
+  <data name="FileOpenedNoFoundCaption" xml:space="preserve">
+    <value>A megnyitott fájl nem található</value>
+  </data>
+  <data name="UpdateBtnContent" xml:space="preserve">
+    <value>Frissítés</value>
+  </data>
+  <data name="DropHereTxt" xml:space="preserve">
+    <value>Húzz ide egy fájl a megnyitásához</value>
+  </data>
+</root>

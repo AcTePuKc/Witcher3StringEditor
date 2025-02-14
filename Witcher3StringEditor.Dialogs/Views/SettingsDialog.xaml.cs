@@ -21,16 +21,16 @@ public partial class SettingsDialog
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "InitializationIncomplete", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(string.Format(Strings.InitializationIncompleteMessage, Environment.NewLine),
-                                    string.Format(Strings.InitializationIncompleteCaption, Environment.NewLine),
+            m.Reply(MessageBox.Show(Strings.InitializationIncompleteMessage,
+                                    Strings.InitializationIncompleteCaption,
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
         WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "IncompleteAiTranslationSettings", static (r, m) =>
         {
             r.Receive(m);
-            m.Reply(MessageBox.Show(string.Format(Strings.IncompleteAiTranslationSettingsMessage, Environment.NewLine),
-                                    string.Format(Strings.IncompleteAiTranslationSettingsCaption, Environment.NewLine),
+            m.Reply(MessageBox.Show(Strings.IncompleteAiTranslationSettingsMessage,
+                                    Strings.IncompleteAiTranslationSettingsCaption,
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });

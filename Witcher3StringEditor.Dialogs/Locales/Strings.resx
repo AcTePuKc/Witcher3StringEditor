@@ -118,7 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InitializationIncompleteMessage" xml:space="preserve">
-    <value>You have not completed the initialization.{0}- Click "Yes" to exit the program.{0}- Click "No" to continue with the initialization.</value>
+    <value>You have not completed the initialization.
+- Click "Yes" to exit the program.
+- Click "No" to continue with the initialization.</value>
   </data>
   <data name="BackupRestoreMessage" xml:space="preserve">
     <value>This operation will overwrite the file and is not reversible. Are you sure you want to proceed?</value>
@@ -385,7 +387,7 @@
     <value>AI Translator</value>
   </data>
   <data name="AiTranslatorSwitchDescription" xml:space="preserve">
-    <value>Once the AI Translator is enabled, the system will automatically replace the existing Microsoft Translator as the default translation engine</value>
+    <value>Once the AI Translator is enabled, the system will automatically replace the existing Microsoft Translator as the default translation engine.</value>
   </data>
   <data name="ModelSettingsHeader" xml:space="preserve">
     <value>Model Settings</value>
@@ -397,7 +399,7 @@
     <value>Prompts</value>
   </data>
   <data name="PromptsSettingsDescription" xml:space="preserve">
-    <value>Prompts are input texts or instructions given to an AI model to generate specific responses. They can range from simple phrases to complex sentences, guiding the model on what kind of output is expected</value>
+    <value>Prompts are input texts or instructions given to an AI model to generate specific responses. They can range from simple phrases to complex sentences, guiding the model on what kind of output is expected.</value>
   </data>
   <data name="ModelSettingsEndpointHeader" xml:space="preserve">
     <value>Endpoint</value>
@@ -415,13 +417,15 @@
     <value>API URL</value>
   </data>
   <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
-    <value>Security token</value>
+    <value>Access Key</value>
   </data>
   <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
     <value>Incomplete AI Translation Settings</value>
   </data>
   <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
-    <value>AI translation is activated but settings are incomplete. Exiting now will disable the feature until re-configured.\n- Click "Yes" to exit and disable AI translation.\n- Click "No" to return to settings and complete configuration.</value>
+    <value>AI translation is activated but settings are incomplete. Exiting now will disable the feature until re-configured.
+- Click "Yes" to exit and disable AI translation.
+- Click "No" to return to settings and complete configuration.</value>
   </data>
   <data name="TemperatureSettingDescription" xml:space="preserve">
     <value>Controls the randomness and creativity of the generated text. Lower values make the output more deterministic and focused on the highest probability options, while higher values increase diversity but may reduce coherence. Recommended range: 0 to 2. Values less than 0 disable this option.</value>
@@ -433,7 +437,7 @@
     <value>Text Randomness</value>
   </data>
   <data name="TopPSettingHeader" xml:space="preserve">
-    <value>Token Sampling</value>
+    <value>Cumulative Probability</value>
   </data>
   <data name="Translating" xml:space="preserve">
     <value>Twirling through Translation...</value>
