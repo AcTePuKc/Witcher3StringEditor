@@ -53,6 +53,12 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         await dialogService.ShowDialogAsync<ModelSettingsDialogViewModel>(this, new ModelSettingsDialogViewModel(AppSettings.ModelSettings));
     }
 
+    [RelayCommand]
+    private async Task ShowPromotsSettingDialog()
+    {
+        await dialogService.ShowDialogAsync<PromptsSettingDialogViewModel>(this, new PromptsSettingDialogViewModel(AppSettings.ModelSettings));
+    }
+
 
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)

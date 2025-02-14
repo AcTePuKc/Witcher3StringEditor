@@ -102,9 +102,9 @@
                     </Button>
                 </ui:SettingsCard>
                 <ui:SettingsCard Description="{lex:Loc PromptsSettingsDescription}" Header="{lex:Loc PromptsSettingsHeader}">
-                    <Button>
+                    <Button Command="{Binding ShowPromotsSettingDialogCommand}">
                         <ui:FontIcon Glyph="&#xE70F;" />
-                        <ui:FlyoutService.Flyout>
+                        <!--<ui:FlyoutService.Flyout>
                             <ui:Flyout>
                                 <Grid Width="300" Height="300">
                                     <TextBox
@@ -120,7 +120,7 @@
                                     </TextBox>
                                 </Grid>
                             </ui:Flyout>
-                        </ui:FlyoutService.Flyout>
+                        </ui:FlyoutService.Flyout>-->
                     </Button>
                 </ui:SettingsCard>
                 <ui:SettingsCard Description="{lex:Loc TemperatureSettingDescription}" Header="{lex:Loc TemperatureSettingHeader}">
