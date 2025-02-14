@@ -153,7 +153,10 @@
                         SmallChange="0.1"
                         Value="{Binding AppSettings.ModelSettings.Temperature}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{lex:Loc TopPSettingDescription}" Header="{lex:Loc TopPSettingHeader}">
+                <ui:SettingsCard
+                    Margin="0,0,0,36"
+                    Description="{lex:Loc TopPSettingDescription}"
+                    Header="{lex:Loc TopPSettingHeader}">
                     <Slider
                         AutoToolTipPrecision="1"
                         Maximum="2"
