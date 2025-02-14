@@ -101,6 +101,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
             try
             {
                 IsTranslating = true;
+                CurrentTranslateItemModel.TranslatedText = string.Empty;
                 CurrentTranslateItemModel.TranslatedText = (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage)).Translation;
             }
             catch (Exception ex)

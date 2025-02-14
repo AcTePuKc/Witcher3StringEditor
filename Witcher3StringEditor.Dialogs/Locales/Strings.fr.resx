@@ -435,4 +435,7 @@
   <data name="TopPSettingHeader" xml:space="preserve">
     <value>Échantillonnage des Jetons</value>
   </data>
+  <data name="Translating" xml:space="preserve">
+    <value>En Route Vers La Traduction Magique...</value>
+  </data>
 </root>

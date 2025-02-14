@@ -435,4 +435,7 @@
   <data name="TopPSettingHeader" xml:space="preserve">
     <value>Token Sampling</value>
   </data>
+  <data name="Translating" xml:space="preserve">
+    <value>Twirling through Translation...</value>
+  </data>
 </root>

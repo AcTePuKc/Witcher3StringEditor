@@ -978,6 +978,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Twirling through Translation....
+        /// </summary>
+        internal static string Translating {
+            get {
+                return ResourceManager.GetString("Translating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Translation is Underway.
         /// </summary>
         internal static string TranslatorTranslatingCaption {

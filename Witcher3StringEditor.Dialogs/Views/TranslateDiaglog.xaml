@@ -20,6 +20,11 @@
     Closed="Window_Closed"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True" />
@@ -80,6 +85,9 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsAiTranslator}" Value="True">
                             <Setter Property="ui:ControlHelper.PlaceholderText" Value="" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsTranslating}" Value="True">
+                            <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc Translating}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

@@ -435,4 +435,7 @@
   <data name="TopPSettingHeader" xml:space="preserve">
     <value>词汇采样</value>
   </data>
+  <data name="Translating" xml:space="preserve">
+    <value>穿梭于语言的奇妙旅程中...</value>
+  </data>
 </root>
