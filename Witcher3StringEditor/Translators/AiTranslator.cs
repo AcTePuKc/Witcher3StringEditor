@@ -1,11 +1,11 @@
-﻿using System.IO;
-using AngleSharp;
+﻿using AngleSharp;
 using AngleSharp.Dom;
 using GTranslate;
 using GTranslate.Results;
 using GTranslate.Translators;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,13 +15,13 @@ namespace Witcher3StringEditor.Translators;
 
 internal class AiTranslator : ITranslator
 {
-    private readonly string promots;
+    private readonly IModelSettings modelSettings;
     private readonly HttpClient httpClient;
     private readonly IChatCompletionService chatCompletionService;
 
     public AiTranslator(IModelSettings settings)
     {
-        promots = settings.Prompts;
+        modelSettings = settings;
         httpClient = new HttpClient
         {
             BaseAddress = new Uri(settings.EndPoint)
@@ -52,19 +52,21 @@ internal class AiTranslator : ITranslator
     public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
     {
         if (string.IsNullOrEmpty(text)) throw new ArgumentException("Text cannot be null.");
-        if (string.IsNullOrWhiteSpace(promots)) throw new InvalidOperationException("Prompts not configured.");
+        if (string.IsNullOrWhiteSpace(modelSettings.Prompts)) throw new InvalidOperationException("Prompts not configured.");
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
         var context = BrowsingContext.New(Configuration.Default);
         var document = await context.OpenAsync(req => req.Content(text));
         var nodes = (document.Body?.Descendants<IText>().ToArray()) ?? throw new InvalidDataException("No text found.");
         var history = new ChatHistory();
-        history.AddSystemMessage(string.Format(promots, toLanguage));
+        history.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage));
         history.AddUserMessage(ExtractTextContent(nodes));
-        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(history, new OpenAIPromptExecutionSettings
-        {
-            Temperature = 1.3
-        })).ToString();
+        var promptExecutionSettings = new OpenAIPromptExecutionSettings();
+        if (modelSettings.Temperature >= 0)
+            promptExecutionSettings.Temperature = modelSettings.Temperature;
+        if (modelSettings.TopP >= 0)
+            promptExecutionSettings.TopP = modelSettings.TopP;
+        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(history, promptExecutionSettings)).ToString();
         if (string.IsNullOrWhiteSpace(translationResponse))
             throw new InvalidDataException("Translation content cannot be null or empty.");
         var lines = nodes.Length > 1 ? translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries) : [translationResponse];
