@@ -16,4 +16,10 @@ public partial class ModelSettings : ObservableObject, IModelSettings
 
     [ObservableProperty]
     private string prompts = string.Empty;
+
+    [ObservableProperty]
+    private double temperature = -1;
+
+    [ObservableProperty]
+    private double topP = -1;
 }

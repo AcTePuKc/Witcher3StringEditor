@@ -9,4 +9,8 @@ public interface IModelSettings
     public string ApiKey { get; set; }
 
     public string Prompts { get; set; }
+
+    public double Temperature { get; set; }
+
+    public double TopP { get; set; }
 }
