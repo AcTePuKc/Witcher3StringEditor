@@ -79,7 +79,10 @@
             Text="{Binding CurrentTranslateItemModel.TranslatedText, FallbackValue=''}"
             TextWrapping="WrapWithOverflow">
             <TextBox.Style>
-                <Style BasedOn="{StaticResource DefaultTextBoxStyle}" TargetType="TextBox">
+                <Style TargetType="TextBox">
+                    <Style.BasedOn>
+                        <StaticResource ResourceKey="{x:Static ui:ThemeKeys.DefaultTextBoxStyleKey}" />
+                    </Style.BasedOn>
                     <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc TranslateCharactersNumberLimit}" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsAiTranslator}" Value="True">

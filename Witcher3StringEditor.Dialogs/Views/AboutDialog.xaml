@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
+    xmlns:dependencyModel="clr-namespace:Microsoft.Extensions.DependencyModel;assembly=Microsoft.Extensions.DependencyModel"
     Title="{lex:Loc AboutDialogTitle}"
     Width="800"
     Height="800"
@@ -94,7 +95,7 @@
             BorderThickness="1">
             <ItemsControl ItemsSource="{Binding AboutInfo[Package]}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate DataType="{x:Type dependencyModel:Dependency}">
                         <StackPanel Margin="16,16,0,0" Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" />
                             <TextBlock Margin="12,0,0,0" Text="{Binding Version}" />

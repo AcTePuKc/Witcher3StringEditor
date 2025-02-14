@@ -132,7 +132,10 @@
                 Command="{Binding StartCommand}"
                 Content="{lex:Loc TranslateBtnContent}">
                 <Button.Style>
-                    <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+                    <Style TargetType="Button">
+                        <Style.BasedOn>
+                            <StaticResource ResourceKey="{x:Static ui:ThemeKeys.DefaultButtonStyleKey}" />
+                        </Style.BasedOn>
                         <Setter Property="IsEnabled" Value="False" />
                         <Style.Triggers>
                             <MultiDataTrigger>
