@@ -60,7 +60,6 @@ public partial class TranslateDiaglog
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-
     }
 
     private void Window_Closed(object sender, EventArgs e)

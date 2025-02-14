@@ -8,7 +8,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class RecentDialogViewModel(IAppSettings appSettings) 
+public partial class RecentDialogViewModel(IAppSettings appSettings)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public bool? DialogResult => true;

@@ -14,7 +14,7 @@ public interface IAppSettings
     public string GameExePath { get; set; }
 
     public string NexusModUrl { get; }
-    
+
     public bool IsUseAiTranslate { get; set; }
 
     public IModelSettings ModelSettings { get; }

@@ -5,7 +5,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class DeleteDataDialogViewModel(IEnumerable<IW3Item> w3Items) 
+public partial class DeleteDataDialogViewModel(IEnumerable<IW3Item> w3Items)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public IEnumerable<IW3Item> W3Items { get; } = w3Items;

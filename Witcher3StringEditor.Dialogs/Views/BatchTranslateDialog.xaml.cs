@@ -28,6 +28,6 @@ public partial class BatchTranslateDialog
         });
     }
 
-    private void Window_Closed(object sender, EventArgs e) 
+    private void Window_Closed(object sender, EventArgs e)
         => WeakReferenceMessenger.Default.UnregisterAll(closingRecipient);
 }

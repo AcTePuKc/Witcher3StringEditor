@@ -5,6 +5,6 @@
 /// </summary>
 public partial class DeleteDataDialog
 {
-    public DeleteDataDialog() 
+    public DeleteDataDialog()
         => InitializeComponent();
 }

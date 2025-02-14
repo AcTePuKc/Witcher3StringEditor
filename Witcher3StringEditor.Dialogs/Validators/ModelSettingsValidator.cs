@@ -14,7 +14,7 @@ public class ModelSettingsValidator : AbstractValidator<IModelSettings>
     {
         RuleFor(x => x.EndPoint).Must(x => Uri.TryCreate(x, UriKind.Absolute, out _));
         RuleFor(x => x.ModelId).NotEmpty();
-        RuleFor(x=>x.ApiKey).NotEmpty();
-        RuleFor(x=>x.Prompts).NotEmpty();
+        RuleFor(x => x.ApiKey).NotEmpty();
+        RuleFor(x => x.Prompts).NotEmpty();
     }
 }

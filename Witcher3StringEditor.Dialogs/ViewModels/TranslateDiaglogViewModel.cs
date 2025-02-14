@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
+using System.ComponentModel;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Models;

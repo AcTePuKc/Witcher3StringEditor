@@ -30,7 +30,7 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty]
     private bool isUseAiTranslate;
 
-    [ObservableProperty] 
+    [ObservableProperty]
     private IModelSettings modelSettings = new ModelSettings();
 
     public AppSettings()

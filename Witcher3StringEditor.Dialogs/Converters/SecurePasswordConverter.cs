@@ -1,9 +1,9 @@
-﻿using System.Globalization;
+﻿using Serilog;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
-using Serilog;
 
 namespace Witcher3StringEditor.Dialogs.Converters;
 
