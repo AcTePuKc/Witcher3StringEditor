@@ -423,4 +423,16 @@
   <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
     <value>La traduction IA est activée, mais les paramètres sont incomplets. Quitter maintenant désactivera la fonction jusqu'à la reconfiguration.\n- Cliquez sur "Oui" pour quitter et désactiver la traduction IA.\n- Cliquez sur "Non" pour retourner aux paramètres et finaliser la configuration.</value>
   </data>
+  <data name="TemperatureSettingDescription" xml:space="preserve">
+    <value>Contrôle le caractère aléatoire et la créativité du texte généré. Des valeurs plus basses rendent la sortie plus déterministe et concentrée sur les options de plus haute probabilité, tandis que des valeurs plus élevées augmentent la diversité mais peuvent réduire la cohérence. Plage recommandée : de 0 à 2. Les valeurs inférieures à 0 désactivent cette option.</value>
+  </data>
+  <data name="TopPSettingDescription" xml:space="preserve">
+    <value>Ajuste dynamiquement le processus d'échantillonnage en sélectionnant le plus petit ensemble de jetons les plus probables basé sur la probabilité cumulative. Cette méthode augmente la diversité de la sortie tout en maintenant la qualité. Plage recommandée : de 0 à 1. Les valeurs inférieures à 0 désactivent cette option.</value>
+  </data>
+  <data name="TemperatureSettingHeader" xml:space="preserve">
+    <value>Aléatoire du Texte</value>
+  </data>
+  <data name="TopPSettingHeader" xml:space="preserve">
+    <value>Échantillonnage des Jetons</value>
+  </data>
 </root>

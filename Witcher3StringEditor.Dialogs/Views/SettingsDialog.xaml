@@ -145,6 +145,20 @@
                         </ui:FlyoutService.Flyout>
                     </Button>
                 </ui:SettingsCard>
+                <ui:SettingsCard Description="{lex:Loc TemperatureSettingDescription}" Header="{lex:Loc TemperatureSettingHeader}">
+                    <Slider
+                        AutoToolTipPrecision="1"
+                        Maximum="2"
+                        Minimum="-1"
+                        SmallChange="0.1" />
+                </ui:SettingsCard>
+                <ui:SettingsCard Description="{lex:Loc TopPSettingDescription}" Header="{lex:Loc TopPSettingHeader}">
+                    <Slider
+                        AutoToolTipPrecision="1"
+                        Maximum="2"
+                        Minimum="-1"
+                        SmallChange="0.1" />
+                </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>
     </Grid>

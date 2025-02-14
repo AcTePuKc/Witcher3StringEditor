@@ -423,4 +423,16 @@
   <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
     <value>AI翻译已激活，但设置不完整。立即退出将禁用该功能，直至重新配置。{0}- 点击“是”以退出并关闭AI翻译功能。{0}- 点击“否”返回设置界面继续完成配置</value>
   </data>
+  <data name="TemperatureSettingDescription" xml:space="preserve">
+    <value>控制生成文本的随机性和创造性。较低的值使输出更加确定并集中在最高概率选项上，而较高的值增加多样性但可能降低连贯性。推荐范围：0到2。小于0的值表示该选项被禁用。</value>
+  </data>
+  <data name="TopPSettingDescription" xml:space="preserve">
+    <value>通过基于累积概率选择最有可能的最小词汇集来动态调整采样过程。这种方法在保持质量的同时增加了输出的多样性。推荐范围：0到1。小于0的值表示该选项被禁用。</value>
+  </data>
+  <data name="TemperatureSettingHeader" xml:space="preserve">
+    <value>文本随机性</value>
+  </data>
+  <data name="TopPSettingHeader" xml:space="preserve">
+    <value>词汇采样</value>
+  </data>
 </root>

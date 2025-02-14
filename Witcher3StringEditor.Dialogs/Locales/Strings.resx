@@ -423,4 +423,16 @@
   <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
     <value>AI translation is activated but settings are incomplete. Exiting now will disable the feature until re-configured.\n- Click "Yes" to exit and disable AI translation.\n- Click "No" to return to settings and complete configuration.</value>
   </data>
+  <data name="TemperatureSettingDescription" xml:space="preserve">
+    <value>Controls the randomness and creativity of the generated text. Lower values make the output more deterministic and focused on the highest probability options, while higher values increase diversity but may reduce coherence. Recommended range: 0 to 2. Values less than 0 disable this option.</value>
+  </data>
+  <data name="TopPSettingDescription" xml:space="preserve">
+    <value>Dynamically adjusts the sampling process by selecting from the smallest set of most probable tokens based on cumulative probability. This method increases output diversity while maintaining quality. Recommended range: 0 to 1. Values less than 0 disable this option.</value>
+  </data>
+  <data name="TemperatureSettingHeader" xml:space="preserve">
+    <value>Text Randomness</value>
+  </data>
+  <data name="TopPSettingHeader" xml:space="preserve">
+    <value>Token Sampling</value>
+  </data>
 </root>
