@@ -22,7 +22,6 @@
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <i:Interaction.Triggers>

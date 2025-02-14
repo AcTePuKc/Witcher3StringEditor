@@ -2,12 +2,12 @@
 using HanumanInstitute.MvvmDialogs;
 using Witcher3StringEditor.Interfaces;
 
-namespace Witcher3StringEditor.Dialogs.ViewModels
-{
-    public class ModelSettingsDialogViewModel(IModelSettings modelSettings) : ObservableObject, IModalDialogViewModel
-    {
-        public IModelSettings ModelSettings => modelSettings;
+namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-        public bool? DialogResult => true;
-    }
+public class ModelSettingsDialogViewModel(IModelSettings modelSettings)
+    : ObservableObject, IModalDialogViewModel
+{
+    public IModelSettings ModelSettings => modelSettings;
+
+    public bool? DialogResult => true;
 }
