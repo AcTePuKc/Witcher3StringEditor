@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using System.Windows;
+using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Interfaces;
@@ -38,7 +39,7 @@ public partial class App
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        logObserver = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(x));
+        logObserver = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
             , "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day)
             .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
