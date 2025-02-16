@@ -53,6 +53,9 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isBusy;
 
+    partial void OnIsBusyChanged(bool value) 
+        => WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBusy");
+
     [ObservableProperty]
     private bool isAiTranslator;
 
