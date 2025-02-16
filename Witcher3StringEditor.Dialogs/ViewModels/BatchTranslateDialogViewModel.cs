@@ -69,14 +69,13 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
                                          ITranslator translator)
     {
         this.translator = translator;
-        var items = w3Items as IW3Item[] ?? [.. w3Items];
-        this.w3Items = items;
+        this.w3Items = w3Items;
         IsAiTranslator = translator is not MicrosoftTranslator;
         Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         StartIndex = startIndex + 1;
         EndIndex = endIndex + 1;
-        MaxValue = w3Items.Count();
+        MaxValue = this.w3Items.Count();
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
         {
