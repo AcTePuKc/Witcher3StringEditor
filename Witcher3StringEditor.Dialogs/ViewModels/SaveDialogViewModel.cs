@@ -29,9 +29,7 @@ public partial class SaveDialogViewModel
     [RelayCommand]
     private async Task Save()
     {
-        var result = await serializer.Serialize(W3Job);
-        var message = new SaveResultMessage(result);
-        WeakReferenceMessenger.Default.Send(message);
+        WeakReferenceMessenger.Default.Send(new SaveResultMessage(await serializer.Serialize(W3Job)), "Save");
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
