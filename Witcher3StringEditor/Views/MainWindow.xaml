@@ -135,7 +135,10 @@
                     </Style>
                 </ui:AppBarButton.Style>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowBatchTranslateDialogCommand}" Label="{lex:Loc BatchTranslateDialogBtnLabel}">
+            <ui:AppBarButton
+                Command="{Binding ShowBatchTranslateDialogCommand}"
+                CommandParameter="{Binding ElementName=SfDataGrid, Path=SelectedItems}"
+                Label="{lex:Loc BatchTranslateDialogBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>

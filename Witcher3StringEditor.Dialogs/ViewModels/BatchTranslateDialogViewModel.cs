@@ -28,7 +28,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     private int maxValue;
 
     [ObservableProperty]
-    private int startIndex = 1;
+    private int startIndex;
 
     [ObservableProperty]
     private int endIndex;
@@ -56,15 +56,21 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
 
     private readonly IEnumerable<IW3Item> w3Items;
 
-    public BatchTranslateDialogViewModel(IEnumerable<IW3Item> w3Items, IAppSettings appSettings, ITranslator translator)
+    public BatchTranslateDialogViewModel(IEnumerable<IW3Item> w3Items,
+                                         int startIndex,
+                                         int endIndex,
+                                         IAppSettings appSettings,
+                                         ITranslator translator)
     {
         this.translator = translator;
-        var items = w3Items as IW3Item[] ?? w3Items.ToArray();
+        var items = w3Items as IW3Item[] ?? [.. w3Items];
         this.w3Items = items;
         IsAiTranslator = translator is not MicrosoftTranslator;
         Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
-        EndIndex = MaxValue = items.Length;
+        StartIndex = startIndex + 1;
+        EndIndex = endIndex + 1;
+        MaxValue = w3Items.Count();
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
         {
