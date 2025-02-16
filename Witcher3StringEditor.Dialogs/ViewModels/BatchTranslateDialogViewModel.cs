@@ -73,8 +73,8 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
         IsAiTranslator = translator is not MicrosoftTranslator;
         Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
-        StartIndex = startIndex + 1;
-        EndIndex = endIndex + 1;
+        StartIndex = startIndex;
+        EndIndex = endIndex;
         MaxValue = this.w3Items.Count();
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
@@ -94,7 +94,8 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     private async Task Start()
     {
         IsBusy = true;
-        SuccessCount = 0; FailureCount = 0;
+        SuccessCount = 0; 
+        FailureCount = 0;
         PendingCount = EndIndex - StartIndex + 1;
         cancellationTokenSource = new CancellationTokenSource();
         var tLanguage = ToLanguage; var fLanguage = FormLanguage;
