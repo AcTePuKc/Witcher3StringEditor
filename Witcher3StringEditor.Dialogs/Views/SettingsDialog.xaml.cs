@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -13,12 +14,12 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class SettingsDialog
 {
-    private readonly WindowClosingRecipient closingRecipient = new();
+    private readonly AsyncRequestRecipient<bool> closingRecipient = new();
 
     public SettingsDialog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "InitializationIncomplete", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(closingRecipient, "InitializationIncomplete", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.InitializationIncompleteMessage,
@@ -26,7 +27,7 @@ public partial class SettingsDialog
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "IncompleteAiTranslationSettings", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(closingRecipient, "IncompleteAiTranslationSettings", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.IncompleteAiTranslationSettingsMessage,

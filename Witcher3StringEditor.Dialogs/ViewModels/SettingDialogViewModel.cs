@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using System.ComponentModel;
@@ -59,7 +60,6 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         await dialogService.ShowDialogAsync<PromptsSettingDialogViewModel>(this, new PromptsSettingDialogViewModel(AppSettings.ModelSettings));
     }
 
-
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
@@ -67,7 +67,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         if (!result.IsValid)
         {
             e.Cancel = true;
-            if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "InitializationIncomplete"))
+            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "InitializationIncomplete"))
                 Application.Current.Shutdown();
         }
         else if (AppSettings.IsUseAiTranslate)
@@ -75,7 +75,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
             result = await ModelSettingsValidator.Instance.ValidateAsync(AppSettings.ModelSettings);
             if (!result.IsValid)
             {
-                if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "IncompleteAiTranslationSettings"))
+                if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "IncompleteAiTranslationSettings"))
                 {
                     AppSettings.IsUseAiTranslate = false;
                 }

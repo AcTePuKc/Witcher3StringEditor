@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -16,8 +17,7 @@ namespace Witcher3StringEditor.Views;
 /// </summary>
 public partial class MainWindow
 {
-    private readonly WindowClosingRecipient closingRecipient = new();
-    private readonly FileOpenedRecipient fileOpenedRecipient = new();
+    private readonly AsyncRequestRecipient<bool> recipient = new();
 
     public MainWindow()
     {
@@ -25,7 +25,7 @@ public partial class MainWindow
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
-        WeakReferenceMessenger.Default.Register<WindowClosingRecipient, WindowClosingMessage, string>(closingRecipient, "MainWindowClosing", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(recipient, "MainWindowClosing", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.AppExitMessage,
@@ -34,7 +34,7 @@ public partial class MainWindow
                                     MessageBoxImage.Question) == MessageBoxResult.No);
         });
         WeakReferenceMessenger.Default
-            .Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "FileOpened", static (r, m) =>
+            .Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(recipient, "FileOpened", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.FileOpenedMessage,
@@ -42,7 +42,7 @@ public partial class MainWindow
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(fileOpenedRecipient, "OpenedFileNoFound", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(recipient, "OpenedFileNoFound", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.FileOpenedNoFoundMessage,
@@ -62,6 +62,6 @@ public partial class MainWindow
 
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(fileOpenedRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(recipient);
     }
 }

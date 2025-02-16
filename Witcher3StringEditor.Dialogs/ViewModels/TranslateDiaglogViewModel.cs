@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
@@ -79,7 +80,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     [RelayCommand]
     private async Task Closing(CancelEventArgs e)
     {
-        if (IsTranslating && !await WeakReferenceMessenger.Default.Send(new TranslatorTranslatingMessage()))
+        if (IsTranslating && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatorTranslating"))
         {
             e.Cancel = true;
         }
@@ -87,7 +88,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
         {
             if (CurrentTranslateItemModel is { IsSaved: false }
                 && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-                && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
+                && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
                 w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         }
     }
@@ -106,14 +107,14 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
             }
             catch (Exception ex)
             {
-                WeakReferenceMessenger.Default.Send(new SimpleStringMessage(ex.Message), "TranslateError");
+                WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
                 Log.Error(ex, "Translation error occurred.");
             }
             IsTranslating = false;
         }
         else
         {
-            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslateCharactersNumberExceedLimitMessage), "TranslateCharactersNumberExceedLimit");
+            WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(Strings.TranslateCharactersNumberExceedLimitMessage), "TranslateCharactersNumberExceedLimit");
         }
     }
 
@@ -124,7 +125,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     {
         if (CurrentTranslateItemModel == null) return;
         if (string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
-            WeakReferenceMessenger.Default.Send(new SimpleStringMessage(Strings.TranslatedTextInvalidMessage), "TranslatedTextInvalid");
+            WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(Strings.TranslatedTextInvalidMessage), "TranslatedTextInvalid");
         else
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         CurrentTranslateItemModel.IsSaved = true;
@@ -139,7 +140,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     {
         if (CurrentTranslateItemModel is { IsSaved: false }
             && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-            && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
+            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         IndexOfItems -= 1;
     }
@@ -149,7 +150,7 @@ public partial class TranslateDiaglogViewModel : ObservableObject, IModalDialogV
     {
         if (CurrentTranslateItemModel is { IsSaved: false }
             && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-            && await WeakReferenceMessenger.Default.Send(new TranslatedTextNoSavedMessage()))
+            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         IndexOfItems += 1;
     }

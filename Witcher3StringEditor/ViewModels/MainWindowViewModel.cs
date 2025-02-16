@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
@@ -34,8 +35,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly ICheckUpdateService checkUpdateService;
     private readonly IPlayGameService playGameService;
     private readonly IExplorerService explorerService;
-    private readonly LogEventRecipient logEventRecipient = new();
-    private readonly FileOpenedRecipient recentFileOpenedRecipient = new();
+    private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
+    private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
 
     [ObservableProperty]
     private bool isUpdateAvailable;
@@ -66,12 +67,12 @@ internal partial class MainWindowViewModel : ObservableObject
         this.checkUpdateService = checkUpdateService;
         this.playGameService = playGameService;
         this.explorerService = explorerService;
-        WeakReferenceMessenger.Default.Register<LogEventRecipient, LogEvent>(logEventRecipient, (r, m) =>
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
-            LogEvents.Add(m);
+            LogEvents.Add(m.Message);
         });
-        WeakReferenceMessenger.Default.Register<FileOpenedRecipient, FileOpenedMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
         {
             try
             {
@@ -107,7 +108,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "MainWindowClosing"))
+        if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "MainWindowClosing"))
             e.Cancel = true;
     }
 

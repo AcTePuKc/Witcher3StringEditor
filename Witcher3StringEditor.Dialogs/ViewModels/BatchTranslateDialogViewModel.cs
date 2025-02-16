@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
@@ -143,7 +144,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     {
         if (IsBusy && cancellationTokenSource != null)
         {
-            if (await WeakReferenceMessenger.Default.Send(new WindowClosingMessage(), "BatchTranslateDialogClosing"))
+            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BatchTranslateDialogClosing"))
             {
                 e.Cancel = true;
             }

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -13,14 +14,13 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class TranslateDiaglog
 {
-    private readonly SimpleStringRecipient translateRecipient = new();
-    private readonly TranslatedTextNoSavedRecipient noSavedRecipient = new();
-    private readonly TranslatorTranslatingRecipient translatingRecipient = new();
+    private readonly AsyncRequestRecipient<bool> requestRecipient = new();
+    private readonly NotificationRecipient<string> notificationRecipient = new();
 
     public TranslateDiaglog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(translateRecipient, "TranslateCharactersNumberExceedLimit", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(notificationRecipient, "TranslateCharactersNumberExceedLimit", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(Strings.TranslateCharactersNumberExceedLimitMessage,
@@ -28,7 +28,7 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(translateRecipient, "TranslatedTextInvalid", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(notificationRecipient, "TranslatedTextInvalid", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(Strings.TranslatedTextInvalidMessage,
@@ -36,7 +36,7 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-        WeakReferenceMessenger.Default.Register<SimpleStringRecipient, SimpleStringMessage, string>(translateRecipient, "TranslateError", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(notificationRecipient, "TranslateError", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(m.Message,
@@ -44,7 +44,7 @@ public partial class TranslateDiaglog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-        WeakReferenceMessenger.Default.Register<TranslatedTextNoSavedRecipient, TranslatedTextNoSavedMessage>(noSavedRecipient, static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslatedTextNoSaved", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.TranslatedTextNoSavedMessage,
@@ -52,7 +52,7 @@ public partial class TranslateDiaglog
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<TranslatorTranslatingRecipient, TranslatorTranslatingMessage>(translatingRecipient, static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslatorIsTranslating", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.TranslatorTranslatingMessage,
@@ -64,8 +64,7 @@ public partial class TranslateDiaglog
 
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(translateRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(noSavedRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(translatingRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(requestRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(notificationRecipient);
     }
 }

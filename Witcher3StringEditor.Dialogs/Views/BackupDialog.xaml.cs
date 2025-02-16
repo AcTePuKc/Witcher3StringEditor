@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
@@ -14,14 +15,14 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class BackupDialog
 {
-    private readonly BackupRecipient backupRecipient = new();
+    private readonly AsyncRequestRecipient<bool> backupRecipient = new();
 
     public BackupDialog()
     {
         InitializeComponent();
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
-        WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupRestore", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(backupRecipient, "BackupRestore", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.BackupRestoreMessage,
@@ -30,7 +31,7 @@ public partial class BackupDialog
                                     MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupDelete", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(backupRecipient, "BackupDelete", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.BackupDeleteMessage,
@@ -39,7 +40,7 @@ public partial class BackupDialog
                                     MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "BackupFileNoFound", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(backupRecipient, "BackupFileNoFound", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.BackupFileNoFoundMessage,
@@ -48,7 +49,7 @@ public partial class BackupDialog
                                     MessageBoxImage.Question) ==
                                     MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<BackupRecipient, BackupMessage, string>(backupRecipient, "OperationFailed", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(backupRecipient, "OperationFailed", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.OperationFailureMessage,

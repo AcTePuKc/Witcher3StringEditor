@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Xaml.Behaviors;
 using Syncfusion.UI.Xaml.Grid;
-using Witcher3StringEditor.Dialogs.Recipients;
 using Log = Serilog.Log;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
@@ -19,7 +19,7 @@ internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
         try
         {
             var recordItemType = e.Items[0].GetType().Name;
-            if (!await WeakReferenceMessenger.Default.Send(new RecordDeletingMessage(), recordItemType)) e.Cancel = true;
+            if (!await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), recordItemType)) e.Cancel = true;
         }
         catch (Exception ex)
         {

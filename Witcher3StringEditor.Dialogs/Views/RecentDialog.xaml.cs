@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
@@ -12,13 +13,13 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class RecentDialog
 {
-    private readonly RecordDeletingRecipient recipient = new();
+    private readonly AsyncRequestRecipient<bool> recipient = new();
 
     public RecentDialog()
     {
         InitializeComponent();
         SfDataGrid.SearchHelper.AllowFiltering = true;
-        WeakReferenceMessenger.Default.Register<RecordDeletingRecipient, RecordDeletingMessage, string>(recipient, "RecentItem", (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(recipient, "RecentItem", (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.RecordDeletingMessgae,

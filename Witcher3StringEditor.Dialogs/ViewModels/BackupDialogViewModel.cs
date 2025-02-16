@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using HanumanInstitute.MvvmDialogs;
 using System.IO;
-using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -20,17 +20,17 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
     {
         if (!File.Exists(backupItem.BackupPath))
         {
-            if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupFileNoFound"))
+            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupFileNoFound"))
             {
                 backupService.Delete(backupItem);
             }
         }
         else
         {
-            if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupRestore")
+            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupRestore")
                 && !backupService.Restore(backupItem))
             {
-                await WeakReferenceMessenger.Default.Send(new BackupMessage(), "OperationFailed");
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
             }
         }
     }
@@ -38,10 +38,10 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
     [RelayCommand]
     private async Task Delete(IBackupItem backupItem)
     {
-        if (await WeakReferenceMessenger.Default.Send(new BackupMessage(), "BackupDelete")
+        if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupDelete")
             && !backupService.Delete(backupItem))
         {
-            await WeakReferenceMessenger.Default.Send(new BackupMessage(), "OperationFailed");
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
         }
     }
 }
