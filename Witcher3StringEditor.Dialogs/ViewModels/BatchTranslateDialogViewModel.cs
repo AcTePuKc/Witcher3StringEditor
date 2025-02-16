@@ -34,6 +34,12 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
     private int endIndex;
 
     [ObservableProperty]
+    private int endIndexMin;
+
+    partial void OnStartIndexChanged(int value) 
+        => EndIndexMin = value > MaxValue ? MaxValue : value;
+
+    [ObservableProperty]
     private int successCount;
 
     [ObservableProperty]

@@ -57,7 +57,7 @@
                 x:Name="EndIndexInput"
                 ui:ControlHelper.Header="{lex:Loc EndIndex}"
                 Maximum="{Binding MaxValue, Mode=OneTime}"
-                Minimum="{Binding StartIndex}"
+                Minimum="{Binding EndIndexMin}"
                 SmallChange="1"
                 SpinButtonPlacementMode="Inline"
                 Value="{Binding EndIndex}" />
