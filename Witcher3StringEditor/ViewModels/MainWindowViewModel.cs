@@ -137,7 +137,7 @@ internal partial class MainWindowViewModel : ObservableObject
             [
                 new FileFilter(Strings.FileFormatSupported, [".csv", ".xlsx", ".w3strings"]),
                 new FileFilter(Strings.FileFormatTextFile, ".csv"),
-                new FileFilter("Excel WorkSheets", ".xlsx"),
+                new FileFilter(Strings.FileFormatExcelWorkSheets, ".xlsx"),
                 new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
