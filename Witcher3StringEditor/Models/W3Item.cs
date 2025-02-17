@@ -19,11 +19,9 @@ internal partial class W3Item : ObservableObject, IW3Item
     private string keyName = string.Empty;
 
     [ObservableProperty]
-    [ExcelColumnWidth(50)]
     private string oldText = string.Empty;
 
     [ObservableProperty]
-    [ExcelColumnWidth(50)]
     private string text = string.Empty;
 
     public object Clone() => MemberwiseClone();
