@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using MiniExcelLibs;
 using Serilog;
 using System.Diagnostics;
 using System.IO;
@@ -16,6 +17,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
+            if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
             if (Path.GetExtension(path) != ".w3strings") return [];
             var folder = Directory.CreateTempSubdirectory().FullName;
             var filename = Path.GetFileName(path);
@@ -55,6 +57,19 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
     }
 
+    private static async Task<IEnumerable<IW3Item>> DeserializeExcel(string path)
+    {
+        try
+        {
+            return await MiniExcel.QueryAsync<W3Item>(path);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {0}", path);
+            return [];
+        }
+    }
+
     private async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
     {
         try
@@ -83,7 +98,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing W3Strings: {0}", path);
+            Log.Error(ex, "An error occurred while deserializing W3Strings file: {0}", path);
             return [];
         }
     }
@@ -99,7 +114,14 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     }
 
     public async Task<bool> Serialize(IW3Job w3Job)
-        => w3Job.W3FileType == W3FileType.w3Strings ? await SerializeW3Strings(w3Job) : await SerializeCsv(w3Job);
+    {
+        return w3Job.W3FileType switch
+        {
+            W3FileType.w3Strings => await SerializeW3Strings(w3Job),
+            W3FileType.csv => await SerializeCsv(w3Job),
+            _ => await SerializeExcel(w3Job),
+        };
+    }
 
     private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
     {
@@ -132,6 +154,22 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     }
 
     private async Task<bool> SerializeCsv(IW3Job w3Job) => await SerializeCsv(w3Job, w3Job.Path);
+
+    private async Task<bool> SerializeExcel(IW3Job w3Job)
+    {
+        try
+        {
+            var path = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.xlsx";
+            if (File.Exists(path) && !backupService.Backup(path)) return false;
+            await MiniExcel.SaveAsAsync(path, w3Job.W3Items.Cast<W3Item>(), overwriteFile: true);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occurred while serializing the Excel worksheets file.");
+            return false;
+        }
+    }
 
     private async Task<bool> SerializeW3Strings(IW3Job w3Job)
     {

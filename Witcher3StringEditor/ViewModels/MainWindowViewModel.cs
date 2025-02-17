@@ -123,7 +123,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             var file = DropFileData[0];
             var ext = Path.GetExtension(file);
-            if (ext is ".csv" or ".w3strings")
+            if (ext is ".csv" or ".w3strings" or ".xlsx")
                 await OpenFile(file);
         }
     }
@@ -135,12 +135,13 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             Filters =
             [
-                new FileFilter(Strings.FileFormatSupported, [".csv", ".w3strings"]),
+                new FileFilter(Strings.FileFormatSupported, [".csv", ".xlsx", ".w3strings"]),
                 new FileFilter(Strings.FileFormatTextFile, ".csv"),
+                new FileFilter("Excel WorkSheets", ".xlsx"),
                 new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
-        if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings")
+        if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings" or ".xlsx")
             await OpenFile(storageFile.LocalPath);
     }
 
