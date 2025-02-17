@@ -285,21 +285,10 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
-    private async Task ShowBatchTranslateDialog(IEnumerable<object>? items = null)
+    private async Task ShowBatchTranslateDialog(object? item = null)
     {
-        var startIndex = 1;
-        var endIndex = W3Items.Count;
-        if (items != null)
-        {
-            var selectedItems = items as object[] ?? [.. items];
-            if (selectedItems.Length > 0)
-            {
-                startIndex = W3Items.IndexOf(selectedItems[0]) + 1;
-                if (selectedItems.Length > 1)
-                    endIndex = W3Items.IndexOf(selectedItems[^1]) + 1;
-            }
-        }
-        await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, startIndex, endIndex, appSettings, appSettings.IsUseAiTranslate
+        var startIndex = item != null ? W3Items.IndexOf(item) + 1 : 1;
+        await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, startIndex, appSettings, appSettings.IsUseAiTranslate
             ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
 }
