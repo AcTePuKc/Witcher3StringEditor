@@ -39,7 +39,14 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
                    select line.Split("|")
                 into parts
                    where parts.Length == 4
-                   select new W3Item(parts[0].Trim(), parts[1], parts[2], parts[3]);
+                   select new W3Item
+                   {
+                       StrId = parts[0],
+                       KeyHex = parts[1],
+                       KeyName = parts[2],
+                       OldText = parts[3],
+                       Text = parts[3]
+                   };
         }
         catch (Exception ex)
         {

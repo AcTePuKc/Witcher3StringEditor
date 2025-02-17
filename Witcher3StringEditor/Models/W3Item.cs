@@ -1,35 +1,26 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 
 internal partial class W3Item : ObservableObject, IW3Item
 {
-    public Guid Id { get; }
+    public Guid Id { get; } = Guid.NewGuid();
 
     [ObservableProperty]
-    [Display(Name = "Key(Hex)")]
-    private string keyHex;
+    private string keyHex = string.Empty;
 
     [ObservableProperty]
-    [Display(Name = "Key(String)")]
-    private string keyName;
+    private string keyName = string.Empty;
 
     [ObservableProperty]
-    [Display(Name = "ID")]
-    private string strId;
+    private string strId = string.Empty;
 
-    [ObservableProperty] private string text;
+    [ObservableProperty]
+    private string oldText = string.Empty;
 
-    public W3Item(string strId = "", string keyHex = "", string keyName = "", string text = "")
-    {
-        Id = Guid.NewGuid();
-        StrId = strId;
-        KeyHex = keyHex;
-        KeyName = keyName;
-        Text = text;
-    }
+    [ObservableProperty]
+    private string text = string.Empty;
 
     public object Clone() => MemberwiseClone();
 }
