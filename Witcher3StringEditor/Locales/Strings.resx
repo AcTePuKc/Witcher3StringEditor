@@ -204,4 +204,7 @@
   <data name="DropHereTxt" xml:space="preserve">
     <value>Drag and Drop A Single File Here To Open</value>
   </data>
+  <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <value>Excel Worksheets</value>
+  </data>
 </root>

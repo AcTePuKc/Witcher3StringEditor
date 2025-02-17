@@ -99,4 +99,7 @@
   <data name="DropHereTxt" xml:space="preserve">
     <value>Húzz ide egy fájl a megnyitásához</value>
   </data>
+  <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <value>Excel munkalapok</value>
+  </data>
 </root>

@@ -150,6 +150,15 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Excel Worksheets.
+        /// </summary>
+        internal static string FileFormatExcelWorkSheets {
+            get {
+                return ResourceManager.GetString("FileFormatExcelWorkSheets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All Supported Format.
         /// </summary>
         internal static string FileFormatSupported {

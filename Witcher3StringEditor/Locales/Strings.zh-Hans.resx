@@ -204,4 +204,7 @@
   <data name="DropHereTxt" xml:space="preserve">
     <value>拖放单个文件至此处打开</value>
   </data>
+  <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <value>Excel工作簿</value>
+  </data>
 </root>
