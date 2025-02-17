@@ -119,7 +119,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         {
             W3FileType.w3Strings => await SerializeW3Strings(w3Job),
             W3FileType.csv => await SerializeCsv(w3Job),
-            _ => await SerializeExcel(w3Job),
+            _ => await SerializeExcel(w3Job)
         };
     }
 
