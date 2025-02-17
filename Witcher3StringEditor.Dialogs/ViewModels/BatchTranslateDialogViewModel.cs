@@ -77,8 +77,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
         Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         StartIndex = startIndex;
-        MaxValue = this.w3Items.Count();
-        EndIndex = MaxValue + 1;
+        EndIndex = MaxValue = this.w3Items.Count();
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
         {
