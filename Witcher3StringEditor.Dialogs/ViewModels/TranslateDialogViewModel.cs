@@ -54,10 +54,13 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Switch()
     {
-        if (CurrentViewModel is not TranslateContentViewModel { IsBusy: true } || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+        if (CurrentViewModel is not TranslateContentViewModel { IsBusy: true }
+            || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+        {
             CurrentViewModel = CurrentViewModel is TranslateContentViewModel
                 ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
                 : new TranslateContentViewModel(w3Items, index, appSettings, translator);
+        }
     }
 
     public TranslateDialogViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)
