@@ -32,17 +32,19 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             case TranslateViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
                 e.Cancel = true;
                 break;
+
             case TranslateViewModel translateViewModel:
-            {
-                if (translateViewModel.CurrentTranslateItemModel is { IsSaved: false }
-                    && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
-                    && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-                    w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text = translateViewModel.CurrentTranslateItemModel.TranslatedText;
-                break;
-            }
+                {
+                    if (translateViewModel.CurrentTranslateItemModel is { IsSaved: false }
+                        && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
+                        && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
+                        w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text = translateViewModel.CurrentTranslateItemModel.TranslatedText;
+                    break;
+                }
             case BatchTranslateViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
                 e.Cancel = true;
                 break;
+
             case BatchTranslateViewModel { IsBusy: true } batchTranslateViewModel:
                 await batchTranslateViewModel.CancelCommand.ExecuteAsync(null);
                 break;
