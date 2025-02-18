@@ -97,7 +97,7 @@ public partial class TranslateContentViewModel : ObservableObject
     private async Task Translate()
     {
         if (CurrentTranslateItemModel == null) return;
-        if (CurrentTranslateItemModel.Text.Length <= 1000 || IsBusy)
+        if (CurrentTranslateItemModel.Text.Length <= 1000 || IsAiTranslator)
         {
             try
             {
