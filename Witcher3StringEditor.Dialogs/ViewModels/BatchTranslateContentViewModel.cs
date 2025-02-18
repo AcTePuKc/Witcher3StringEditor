@@ -5,12 +5,13 @@ using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Dialogs.Interfaces;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BatchTranslateContentViewModel : ObservableObject
+internal partial class BatchTranslateContentViewModel : ObservableObject, ITranslateViewModel
 {
     private CancellationTokenSource? cancellationTokenSource;
 

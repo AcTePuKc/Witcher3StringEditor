@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using System.ComponentModel;
+using Witcher3StringEditor.Dialogs.Interfaces;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -14,7 +15,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     public bool? DialogResult => true;
 
     [ObservableProperty]
-    private object currentViewModel;
+    private ITranslateViewModel currentViewModel;
 
     private readonly int index;
 
