@@ -14,7 +14,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     public bool? DialogResult => true;
 
     [ObservableProperty]
-    private object current;
+    private object currentViewModel;
 
     private readonly int index;
 
@@ -27,7 +27,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Closing(CancelEventArgs e)
     {
-        switch (Current)
+        switch (CurrentViewModel)
         {
             case TranslateContentViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
                 e.Cancel = true;
@@ -54,8 +54,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Switch()
     {
-        if (Current is not TranslateContentViewModel { IsBusy: true } || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
-            Current = Current is TranslateContentViewModel
+        if (CurrentViewModel is not TranslateContentViewModel { IsBusy: true } || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+            CurrentViewModel = CurrentViewModel is TranslateContentViewModel
                 ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
                 : new TranslateContentViewModel(w3Items, index, appSettings, translator);
     }
@@ -66,6 +66,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.index = index;
         this.appSettings = appSettings;
         this.translator = translator;
-        Current = new TranslateContentViewModel(this.w3Items, index, appSettings, translator);
+        CurrentViewModel = new TranslateContentViewModel(this.w3Items, index, appSettings, translator);
     }
 }

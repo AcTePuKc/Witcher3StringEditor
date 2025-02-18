@@ -270,7 +270,7 @@
         </Button>
         <ContentControl
             Grid.Row="1"
-            Content="{Binding Current}"
+            Content="{Binding CurrentViewModel}"
             ContentTemplateSelector="{StaticResource TranslateDataTemplateSelector}" />
     </Grid>
 </Window>
