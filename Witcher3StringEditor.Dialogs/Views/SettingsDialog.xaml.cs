@@ -4,8 +4,6 @@ using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
-using MessageBoxButton = System.Windows.MessageBoxButton;
-using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.Dialogs.Views;
 
@@ -19,22 +17,24 @@ public partial class SettingsDialog
     public SettingsDialog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(closingRecipient, "InitializationIncomplete", static (r, m) =>
+
+        var messageHandlers = new[]
         {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.InitializationIncompleteMessage,
-                                    Strings.InitializationIncompleteCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-        });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(closingRecipient, "IncompleteAiTranslationSettings", static (r, m) =>
+            ("InitializationIncomplete", Strings.InitializationIncompleteMessage, Strings.InitializationIncompleteCaption),
+            ("IncompleteAiTranslationSettings", Strings.IncompleteAiTranslationSettingsMessage, Strings.IncompleteAiTranslationSettingsCaption)
+        };
+
+        foreach (var (token, message, caption) in messageHandlers)
         {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.IncompleteAiTranslationSettingsMessage,
-                                    Strings.IncompleteAiTranslationSettingsCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-        });
+            WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
+                closingRecipient,
+                token,
+                (r, m) =>
+                {
+                    r.Receive(m);
+                    m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+                });
+        }
     }
 
     private void Window_Closed(object sender, EventArgs e)
