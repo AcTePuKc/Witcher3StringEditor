@@ -7,8 +7,6 @@ using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
-using MessageBoxButton = System.Windows.MessageBoxButton;
-using MessageBoxImage = System.Windows.MessageBoxImage;
 
 namespace Witcher3StringEditor.Views;
 
@@ -60,6 +58,6 @@ public partial class MainWindow
         if (string.IsNullOrEmpty(sender.Text)) SfDataGrid.SearchHelper.ClearSearch();
     }
 
-    private void Window_Closed(object sender, EventArgs e) 
+    private void Window_Closed(object sender, EventArgs e)
         => WeakReferenceMessenger.Default.UnregisterAll(recipient);
 }
