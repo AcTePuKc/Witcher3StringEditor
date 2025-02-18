@@ -43,7 +43,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         }
         else if (Current is BatchTranslateViewModel batchTranslateViewModel && batchTranslateViewModel.IsBusy)
         {
-            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
+            if (!await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
             {
                 e.Cancel = true;
             }
