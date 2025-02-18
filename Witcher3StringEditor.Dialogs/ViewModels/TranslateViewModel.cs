@@ -51,12 +51,15 @@ public partial class TranslateViewModel : ObservableObject, IModalDialogViewMode
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
     }
 
+    [ObservableProperty]
+    private bool isAiTranslator;
+
     public TranslateViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)
     {
         this.w3Items = w3Items;
         this.translator = translator;
-        IsBusy = translator is not MicrosoftTranslator;
-        Languages = IsBusy ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
+        IsAiTranslator = translator is not MicrosoftTranslator;
+        Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         IndexOfItems = index;
         FormLanguage = Language.GetLanguage("en");

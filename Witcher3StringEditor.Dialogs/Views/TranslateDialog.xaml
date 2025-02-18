@@ -28,7 +28,7 @@
     </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
-            <DataTemplate x:Key="TranslateDataTemplate" d:DataType="vm:TranslateDialogViewModel">
+            <DataTemplate x:Key="TranslateDataTemplate" d:DataType="vm:TranslateViewModel">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -123,7 +123,7 @@
                     </iwk:SimpleStackPanel>
                 </Grid>
             </DataTemplate>
-            <DataTemplate x:Key="BatchTranslateDataTemplate">
+            <DataTemplate x:Key="BatchTranslateDataTemplate" DataType="vm:BatchTranslateViewModel">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
