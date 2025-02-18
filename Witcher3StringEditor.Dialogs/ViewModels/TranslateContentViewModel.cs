@@ -15,7 +15,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class TranslateViewModel : ObservableObject, IModalDialogViewModel
+public partial class TranslateContentViewModel : ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;
 
@@ -57,7 +57,7 @@ public partial class TranslateViewModel : ObservableObject, IModalDialogViewMode
     [ObservableProperty]
     private bool isAiTranslator;
 
-    public TranslateViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)
+    public TranslateContentViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)
     {
         this.w3Items = w3Items;
         this.translator = translator;

@@ -28,7 +28,7 @@
     </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
-            <DataTemplate x:Key="TranslateDataTemplate" DataType="{x:Type vm:TranslateViewModel}">
+            <DataTemplate x:Key="TranslateDataTemplate" DataType="{x:Type vm:TranslateContentViewModel}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

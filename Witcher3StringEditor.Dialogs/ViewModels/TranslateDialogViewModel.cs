@@ -29,11 +29,11 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         switch (Current)
         {
-            case TranslateViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
+            case TranslateContentViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
                 e.Cancel = true;
                 break;
 
-            case TranslateViewModel translateViewModel:
+            case TranslateContentViewModel translateViewModel:
                 {
                     if (translateViewModel.CurrentTranslateItemModel is { IsSaved: false }
                         && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
@@ -41,11 +41,11 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                         w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text = translateViewModel.CurrentTranslateItemModel.TranslatedText;
                     break;
                 }
-            case BatchTranslateViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
+            case BatchTranslateContentViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
                 e.Cancel = true;
                 break;
 
-            case BatchTranslateViewModel { IsBusy: true } batchTranslateViewModel:
+            case BatchTranslateContentViewModel { IsBusy: true } batchTranslateViewModel:
                 await batchTranslateViewModel.CancelCommand.ExecuteAsync(null);
                 break;
         }
@@ -54,10 +54,10 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Switch()
     {
-        if (Current is not TranslateViewModel { IsBusy: true } || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
-            Current = Current is TranslateViewModel
-                ? new BatchTranslateViewModel(w3Items, index + 1, appSettings, translator)
-                : new TranslateViewModel(w3Items, index, appSettings, translator);
+        if (Current is not TranslateContentViewModel { IsBusy: true } || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+            Current = Current is TranslateContentViewModel
+                ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
+                : new TranslateContentViewModel(w3Items, index, appSettings, translator);
     }
 
     public TranslateDialogViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)
@@ -66,6 +66,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.index = index;
         this.appSettings = appSettings;
         this.translator = translator;
-        Current = new TranslateViewModel(this.w3Items, index, appSettings, translator);
+        Current = new TranslateContentViewModel(this.w3Items, index, appSettings, translator);
     }
 }

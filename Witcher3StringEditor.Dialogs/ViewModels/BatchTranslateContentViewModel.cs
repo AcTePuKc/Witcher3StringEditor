@@ -11,7 +11,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BatchTranslateViewModel : ObservableObject, IModalDialogViewModel
+public partial class BatchTranslateContentViewModel : ObservableObject, IModalDialogViewModel
 {
     private CancellationTokenSource? cancellationTokenSource;
 
@@ -64,7 +64,7 @@ public partial class BatchTranslateViewModel : ObservableObject, IModalDialogVie
 
     private readonly IEnumerable<IW3Item> w3Items;
 
-    public BatchTranslateViewModel(IEnumerable<IW3Item> w3Items,
+    public BatchTranslateContentViewModel(IEnumerable<IW3Item> w3Items,
                                          int startIndex,
                                          IAppSettings appSettings,
                                          ITranslator translator)
