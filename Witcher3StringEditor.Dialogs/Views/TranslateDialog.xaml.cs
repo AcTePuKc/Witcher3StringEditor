@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using System.Windows;
+using Windows.Win32;
+using Windows.Win32.System.Power;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
@@ -15,12 +17,13 @@ namespace Witcher3StringEditor.Dialogs.Views;
 public partial class TranslateDialog
 {
     private readonly AsyncRequestRecipient<bool> requestRecipient = new();
-    private readonly NotificationRecipient<string> notificationRecipient = new();
+    private readonly NotificationRecipient<string> translateNotificationRecipient = new();
+    private readonly NotificationRecipient<bool> translatorBusyNotificationRecipient = new();
 
     public TranslateDialog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(notificationRecipient, "TranslateCharactersNumberExceedLimit", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(translateNotificationRecipient, "TranslateCharactersNumberExceedLimit", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(Strings.TranslateCharactersNumberExceedLimitMessage,
@@ -28,7 +31,7 @@ public partial class TranslateDialog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(notificationRecipient, "TranslatedTextInvalid", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(translateNotificationRecipient, "TranslatedTextInvalid", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(Strings.TranslatedTextInvalidMessage,
@@ -36,7 +39,7 @@ public partial class TranslateDialog
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
         });
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(notificationRecipient, "TranslateError", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(translateNotificationRecipient, "TranslateError", static (r, m) =>
         {
             r.Receive(m);
             MessageBox.Show(m.Message,
@@ -52,7 +55,7 @@ public partial class TranslateDialog
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslatorIsTranslating", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslatorIsBusy", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.TranslatorTranslatingMessage,
@@ -60,11 +63,28 @@ public partial class TranslateDialog
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
+
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "BatchTranslateDialogClosing", static (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(MessageBox.Show(Strings.TranslatorTranslatingMessage,
+                                    Strings.TranslatorTranslatingCaption,
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question) == MessageBoxResult.No);
+        });
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(translatorBusyNotificationRecipient, "TranslatorIsBusy", static (r, m) =>
+        {
+            r.Receive(m);
+            if (m.Message)
+                PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
+            else
+                PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
+        });
     }
 
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(requestRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(notificationRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(translateNotificationRecipient);
     }
 }

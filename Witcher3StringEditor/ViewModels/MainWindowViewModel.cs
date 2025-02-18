@@ -42,6 +42,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private bool isUpdateAvailable;
 
     [ObservableProperty]
+    private object? selectedItem;
+
+    [ObservableProperty]
     private string[] dropFileData = [];
 
     [ObservableProperty]
@@ -88,7 +91,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             AddCommand.NotifyCanExecuteChanged();
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
-            ShowBatchTranslateDialogCommand.NotifyCanExecuteChanged();
+            ShowTranslateDialogCommand.NotifyCanExecuteChanged();
         };
     }
 
@@ -277,19 +280,10 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowRecentDialog()
         => await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
 
-    [RelayCommand]
-    private async Task ShowTranslateDialog(object item)
-    {
-        if (item is not W3Item w3Item) return;
-        await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, W3Items.IndexOf(w3Item), appSettings, appSettings.IsUseAiTranslate
-            ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
-    }
-
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
-    private async Task ShowBatchTranslateDialog(object? item = null)
+    private async Task ShowTranslateDialog()
     {
-        var startIndex = item != null ? W3Items.IndexOf(item) + 1 : 1;
-        await dialogService.ShowDialogAsync(this, new BatchTranslateDialogViewModel(W3Items, startIndex, appSettings, appSettings.IsUseAiTranslate
+        await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, appSettings.IsUseAiTranslate
             ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
 }

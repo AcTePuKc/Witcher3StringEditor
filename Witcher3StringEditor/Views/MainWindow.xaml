@@ -118,27 +118,7 @@
                     </Style>
                 </ui:AppBarButton.Style>
             </ui:AppBarButton>
-            <ui:AppBarButton
-                Command="{Binding ShowTranslateDialogCommand}"
-                CommandParameter="{Binding SelectedItem, ElementName=SfDataGrid}"
-                Label="{lex:Loc TranslateBtnLabel}">
-                <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xf2b7;" />
-                </ui:AppBarButton.Icon>
-                <ui:AppBarButton.Style>
-                    <Style TargetType="ui:AppBarButton">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=SfDataGrid, Path=SelectedItem}" Value="{x:Null}">
-                                <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:AppBarButton.Style>
-            </ui:AppBarButton>
-            <ui:AppBarButton
-                Command="{Binding ShowBatchTranslateDialogCommand}"
-                CommandParameter="{Binding ElementName=SfDataGrid, Path=SelectedItem}"
-                Label="{lex:Loc BatchTranslateDialogBtnLabel}">
+            <ui:AppBarButton Command="{Binding ShowTranslateDialogCommand}" Label="{lex:Loc TranslateBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>
@@ -217,6 +197,7 @@
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             NavigationMode="Cell"
             RowHeight="30"
+            SelectedItem="{Binding SelectedItem}"
             SelectionMode="Extended"
             ShowRowHeader="True">
             <sf:SfDataGrid.Resources>

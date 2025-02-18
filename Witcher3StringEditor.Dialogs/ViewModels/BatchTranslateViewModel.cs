@@ -13,7 +13,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDialogViewModel
+public partial class BatchTranslateViewModel : ObservableObject, IModalDialogViewModel
 {
     private CancellationTokenSource? cancellationTokenSource;
 
@@ -66,7 +66,7 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
 
     private readonly IEnumerable<IW3Item> w3Items;
 
-    public BatchTranslateDialogViewModel(IEnumerable<IW3Item> w3Items,
+    public BatchTranslateViewModel(IEnumerable<IW3Item> w3Items,
                                          int startIndex,
                                          IAppSettings appSettings,
                                          ITranslator translator)
@@ -137,23 +137,6 @@ public partial class BatchTranslateDialogViewModel : ObservableObject, IModalDia
             await cancellationTokenSource.CancelAsync();
             cancellationTokenSource.Dispose();
             IsBusy = false;
-        }
-    }
-
-    [RelayCommand]
-    private async Task Closing(CancelEventArgs e)
-    {
-        if (IsBusy && cancellationTokenSource != null)
-        {
-            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BatchTranslateDialogClosing"))
-            {
-                e.Cancel = true;
-            }
-            else
-            {
-                await cancellationTokenSource.CancelAsync();
-                IsBusy = false;
-            }
         }
     }
 }

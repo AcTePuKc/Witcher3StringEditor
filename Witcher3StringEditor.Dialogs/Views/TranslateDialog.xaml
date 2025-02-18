@@ -8,6 +8,7 @@
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
+    xmlns:views="clr-namespace:Witcher3StringEditor.Dialogs.Views"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc TranslateDialogTitle}"
     Width="800"
@@ -20,108 +21,253 @@
     Closed="Window_Closed"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
-    <Window.Resources>
-        <ResourceDictionary />
-    </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <Window.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="TranslateDataTemplate" d:DataType="vm:TranslateDialogViewModel">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="{lex:Loc SrcTxt}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Text="{lex:Loc TranslatedTxt}" />
+                    <ComboBox
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Stretch"
+                        DisplayMemberPath="NativeName"
+                        ItemsSource="{Binding Languages}"
+                        SelectedValue="{Binding FormLanguage, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        IsReadOnly="True"
+                        Text="{Binding CurrentTranslateItemModel.Text, FallbackValue=''}"
+                        TextWrapping="WrapWithOverflow" />
+                    <ComboBox
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        HorizontalAlignment="Stretch"
+                        DisplayMemberPath="NativeName"
+                        ItemsSource="{Binding Languages}"
+                        SelectedValue="{Binding ToLanguage, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Row="4"
+                        Grid.Column="2"
+                        IsReadOnly="{Binding IsBusy}"
+                        Text="{Binding CurrentTranslateItemModel.TranslatedText, FallbackValue=''}"
+                        TextWrapping="WrapWithOverflow">
+                        <TextBox.Style>
+                            <Style BasedOn="{StaticResource DefaultTextBoxStyle}" TargetType="TextBox">
+                                <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc TranslateCharactersNumberLimit}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAiTranslator}" Value="True">
+                                        <Setter Property="ui:ControlHelper.PlaceholderText" Value="" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                                        <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc Translating}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                    <iwk:SimpleStackPanel
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="16">
+                        <Button
+                            MinWidth="100"
+                            HorizontalAlignment="Right"
+                            Command="{Binding PreviousCommand}"
+                            Content="{lex:Loc PreviousBtnContent}" />
+                        <Button
+                            MinWidth="100"
+                            HorizontalAlignment="Right"
+                            Command="{Binding TranslateCommand}"
+                            Content="{lex:Loc TranslateBtnContent}" />
+
+                        <Button
+                            MinWidth="100"
+                            HorizontalAlignment="Left"
+                            Command="{Binding SaveCommand}"
+                            Content="{lex:Loc SaveBtnContent}" />
+                        <Button
+                            MinWidth="100"
+                            HorizontalAlignment="Left"
+                            Command="{Binding NextCommand}"
+                            Content="{lex:Loc NextBtnContent}" />
+                    </iwk:SimpleStackPanel>
+                </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="BatchTranslateDataTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <iwk:SimpleStackPanel Spacing="16">
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            ui:ControlHelper.Header="{lex:Loc TextLanguage}"
+                            DisplayMemberPath="NativeName"
+                            ItemsSource="{Binding Languages}"
+                            SelectedValue="{Binding FormLanguage}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            ui:ControlHelper.Header="{lex:Loc TargetLanguage}"
+                            DisplayMemberPath="NativeName"
+                            ItemsSource="{Binding Languages}"
+                            SelectedValue="{Binding ToLanguage}" />
+                        <ui:NumberBox
+                            x:Name="StartIndexInput"
+                            ui:ControlHelper.Header="{lex:Loc StartIndex}"
+                            Maximum="{Binding MaxValue, Mode=OneTime}"
+                            Minimum="1"
+                            SmallChange="1"
+                            SpinButtonPlacementMode="Inline"
+                            Value="{Binding StartIndex}" />
+                        <ui:NumberBox
+                            x:Name="EndIndexInput"
+                            ui:ControlHelper.Header="{lex:Loc EndIndex}"
+                            Maximum="{Binding MaxValue, Mode=OneTime}"
+                            Minimum="{Binding EndIndexMin}"
+                            SmallChange="1"
+                            SpinButtonPlacementMode="Inline"
+                            Value="{Binding EndIndex}" />
+                        <TextBlock Text="{lex:Loc TranslateCharactersNumberLimit}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsAiTranslator, Mode=OneWay}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </iwk:SimpleStackPanel>
+                    <StackPanel
+                        Grid.Row="1"
+                        Margin="0,16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Ellipse
+                            Width="35"
+                            Height="35"
+                            Fill="Green"
+                            ToolTip="{lex:Loc Success}" />
+                        <TextBlock
+                            Width="Auto"
+                            MinWidth="70"
+                            Margin="8,0,16,0"
+                            VerticalAlignment="Center"
+                            d:Text="70"
+                            FontSize="25"
+                            Text="{Binding SuccessCount}"
+                            TextAlignment="Center" />
+                        <Ellipse
+                            Width="35"
+                            Height="35"
+                            Fill="Red"
+                            ToolTip="{lex:Loc Failure}" />
+                        <TextBlock
+                            Width="Auto"
+                            MinWidth="70"
+                            Margin="8,0,16,0"
+                            VerticalAlignment="Center"
+                            d:Text="20"
+                            FontSize="25"
+                            Text="{Binding FailureCount}"
+                            TextAlignment="Center" />
+                        <Ellipse
+                            Width="35"
+                            Height="35"
+                            Fill="Orange"
+                            ToolTip="{lex:Loc Pending}" />
+                        <TextBlock
+                            Width="Auto"
+                            MinWidth="70"
+                            Margin="8,0,16,0"
+                            VerticalAlignment="Center"
+                            d:Text="10"
+                            FontSize="25"
+                            Text="{Binding PendingCount}"
+                            TextAlignment="Center" />
+                    </StackPanel>
+                    <iwk:SimpleStackPanel
+                        Grid.Row="2"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="16">
+                        <Button
+                            MinWidth="100"
+                            Command="{Binding StartCommand}"
+                            Content="{lex:Loc TranslateBtnContent}">
+                            <Button.Style>
+                                <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ElementName=StartIndexInput, Path=(Validation.HasError)}" Value="False" />
+                                                <Condition Binding="{Binding ElementName=EndIndexInput, Path=(Validation.HasError)}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="True" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button
+                            MinWidth="100"
+                            Command="{Binding CancelCommand}"
+                            Content="{lex:Loc CancelBtnContent}" />
+                    </iwk:SimpleStackPanel>
+                </Grid>
+            </DataTemplate>
+            <views:TranslateDataTemplateSelector
+                x:Key="TranslateDataTemplateSelector"
+                BatchTranslateDataTemplate="{StaticResource BatchTranslateDataTemplate}"
+                TranslateDataTemplate="{StaticResource TranslateDataTemplate}" />
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="16" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="16" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="24" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="16" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="0"
-            Text="{lex:Loc SrcTxt}" />
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="2"
-            Text="{lex:Loc TranslatedTxt}" />
-        <ComboBox
-            Grid.Row="2"
-            Grid.Column="0"
-            HorizontalAlignment="Stretch"
-            DisplayMemberPath="NativeName"
-            ItemsSource="{Binding Languages}"
-            SelectedValue="{Binding FormLanguage, Mode=TwoWay}" />
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="0"
-            IsReadOnly="True"
-            Text="{Binding CurrentTranslateItemModel.Text, FallbackValue=''}"
-            TextWrapping="WrapWithOverflow" />
-        <ComboBox
-            Grid.Row="2"
-            Grid.Column="2"
-            HorizontalAlignment="Stretch"
-            DisplayMemberPath="NativeName"
-            ItemsSource="{Binding Languages}"
-            SelectedValue="{Binding ToLanguage, Mode=TwoWay}" />
-        <TextBox
-            Grid.Row="4"
-            Grid.Column="2"
-            IsReadOnly="{Binding IsTranslating}"
-            Text="{Binding CurrentTranslateItemModel.TranslatedText, FallbackValue=''}"
-            TextWrapping="WrapWithOverflow">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Style.BasedOn>
-                        <StaticResource ResourceKey="{x:Static ui:ThemeKeys.DefaultTextBoxStyleKey}" />
-                    </Style.BasedOn>
-                    <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc TranslateCharactersNumberLimit}" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsAiTranslator}" Value="True">
-                            <Setter Property="ui:ControlHelper.PlaceholderText" Value="" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsTranslating}" Value="True">
-                            <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc Translating}" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
-        <iwk:SimpleStackPanel
-            Grid.Row="6"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal"
-            Spacing="16">
-            <Button
-                MinWidth="100"
-                HorizontalAlignment="Right"
-                Command="{Binding PreviousCommand}"
-                Content="{lex:Loc PreviousBtnContent}" />
-            <Button
-                MinWidth="100"
-                HorizontalAlignment="Right"
-                Command="{Binding TranslateCommand}"
-                Content="{lex:Loc TranslateBtnContent}" />
-
-            <Button
-                MinWidth="100"
-                HorizontalAlignment="Left"
-                Command="{Binding SaveCommand}"
-                Content="{lex:Loc SaveBtnContent}" />
-            <Button
-                MinWidth="100"
-                HorizontalAlignment="Left"
-                Command="{Binding NextCommand}"
-                Content="{lex:Loc NextBtnContent}" />
-        </iwk:SimpleStackPanel>
+        <Button HorizontalAlignment="Right" Command="{Binding SwitchCommand}">
+            <ui:FontIcon Glyph="&#xE8AB;" />
+        </Button>
+        <ContentControl
+            Grid.Row="1"
+            Content="{Binding Current}"
+            ContentTemplateSelector="{StaticResource TranslateDataTemplateSelector}" />
     </Grid>
 </Window>
