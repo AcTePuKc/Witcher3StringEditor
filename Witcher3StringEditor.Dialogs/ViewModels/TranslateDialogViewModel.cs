@@ -58,7 +58,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     private void Switch()
     {
         Current = Current is TranslateViewModel
-            ? new BatchTranslateViewModel(w3Items, index, appSettings, translator)
+            ? new BatchTranslateViewModel(w3Items, index + 1, appSettings, translator)
             : new TranslateViewModel(w3Items, index, appSettings, translator);
     }
 
