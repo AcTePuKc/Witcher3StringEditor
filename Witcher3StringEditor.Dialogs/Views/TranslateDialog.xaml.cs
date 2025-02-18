@@ -18,7 +18,7 @@ public partial class TranslateDialog
 {
     private readonly AsyncRequestRecipient<bool> requestRecipient = new();
     private readonly NotificationRecipient<string> notificationRecipient = new();
-    private readonly NotificationRecipient<bool> translatorBusyNotificationRecipient = new();
+    private readonly NotificationRecipient<bool> busyNotificationRecipient = new();
 
     public TranslateDialog()
     {
@@ -30,7 +30,7 @@ public partial class TranslateDialog
             ("TranslateError", m => m.Message, Strings.TranslateErrorCaption)
         };
 
-        foreach ((string token, Func<NotificationMessage<string>, string> message, string caption) in notificationHandlers)
+        foreach (var (token, message, caption) in notificationHandlers)
         {
             WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(
                 notificationRecipient,
@@ -45,23 +45,30 @@ public partial class TranslateDialog
                 });
         }
 
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslatedTextNoSaved", static (r, m) =>
+        var messageHandlers = new[]
         {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.TranslatedTextNoSavedMessage,
-                                    Strings.TranslatedTextNoSavedCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-        });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslationDialogClosing", static (r, m) =>
+            ("TranslatedTextNoSaved", Strings.TranslatedTextNoSavedMessage, Strings.TranslatedTextNoSavedCaption),
+            ("TranslationDialogClosing", Strings.TranslatorTranslatingMessage, Strings.TranslatorTranslatingCaption),
+            ("TranslationModeSwitch", Strings.TranslationModeSwitchMessage, Strings.TranslationModeSwitchCaption)
+        };
+
+        foreach (var (token, message, caption) in messageHandlers)
         {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.TranslatorTranslatingMessage,
-                                    Strings.TranslatorTranslatingCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-        });
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(translatorBusyNotificationRecipient, "TranslatorIsBatchTranslating", (r, m) =>
+            WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
+                requestRecipient,
+                token,
+                (r, m) =>
+                {
+                    r.Receive(m);
+                    m.Reply(MessageBox.Show(
+                        message,
+                        caption,
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question) == MessageBoxResult.Yes);
+                });
+        }
+
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(busyNotificationRecipient, "TranslatorIsBatchTranslating", (r, m) =>
         {
             r.Receive(m);
             if (m.Message)
@@ -70,20 +77,12 @@ public partial class TranslateDialog
                 PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
             SwitchBtn.IsEnabled = !m.Message;
         });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslationModeSwitch", static (r, m) =>
-        {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.TranslationModeSwitchMessage,
-                        Strings.TranslationModeSwitchCaption,
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question) == MessageBoxResult.Yes);
-        });
     }
 
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(requestRecipient);
         WeakReferenceMessenger.Default.UnregisterAll(notificationRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(translatorBusyNotificationRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(busyNotificationRecipient);
     }
 }
