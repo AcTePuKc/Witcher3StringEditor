@@ -7,7 +7,6 @@ using GTranslate.Translators;
 using Serilog;
 using System.ComponentModel;
 using Witcher3StringEditor.Common;
-using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
@@ -114,7 +113,7 @@ public partial class TranslateContentViewModel : ObservableObject
         }
         else
         {
-            _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(Strings.TranslateCharactersNumberExceedLimitMessage), "TranslateCharactersNumberExceedLimit");
+            _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty), "TranslateCharactersNumberExceedLimit");
         }
     }
 
@@ -125,7 +124,7 @@ public partial class TranslateContentViewModel : ObservableObject
     {
         if (CurrentTranslateItemModel == null) return;
         if (string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
-            WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(Strings.TranslatedTextInvalidMessage), "TranslatedTextInvalid");
+            WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty), "TranslatedTextInvalid");
         else
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         CurrentTranslateItemModel.IsSaved = true;
