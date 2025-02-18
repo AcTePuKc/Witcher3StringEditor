@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -55,11 +56,14 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     }
 
     [RelayCommand]
-    private void Switch()
+    private async Task Switch()
     {
-        Current = Current is TranslateViewModel
-            ? new BatchTranslateViewModel(w3Items, index + 1, appSettings, translator)
-            : new TranslateViewModel(w3Items, index, appSettings, translator);
+        if (Current is not TranslateViewModel translateViewModel
+            || !translateViewModel.IsBusy
+            || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+            Current = Current is TranslateViewModel
+                ? new BatchTranslateViewModel(w3Items, index + 1, appSettings, translator)
+                : new TranslateViewModel(w3Items, index, appSettings, translator);
     }
 
     public TranslateDialogViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)

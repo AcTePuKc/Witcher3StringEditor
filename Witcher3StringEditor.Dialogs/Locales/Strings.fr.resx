@@ -442,4 +442,10 @@
   <data name="Translating" xml:space="preserve">
     <value>En Route Vers La Traduction Magique...</value>
   </data>
+  <data name="TranslationModeSwitchCaption" xml:space="preserve">
+    <value>Changement de Mode de Traduction Confirmation</value>
+  </data>
+  <data name="TranslationModeSwitchMessage" xml:space="preserve">
+    <value>Traduction en cours. Le changement de mode de traduction va interrompre le processus. Voulez-vous vraiment changer de mode de traduction ?</value>
+  </data>
 </root>

@@ -442,4 +442,10 @@
   <data name="Translating" xml:space="preserve">
     <value>Twirling through Translation...</value>
   </data>
+  <data name="TranslationModeSwitchCaption" xml:space="preserve">
+    <value>Switch Translation Mode Confirmation</value>
+  </data>
+  <data name="TranslationModeSwitchMessage" xml:space="preserve">
+    <value>Translating. Switching translation modes will interrupt the process. Do you want to proceed with the switch?</value>
+  </data>
 </root>

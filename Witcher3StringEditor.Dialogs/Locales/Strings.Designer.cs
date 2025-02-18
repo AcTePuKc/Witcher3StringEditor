@@ -87,7 +87,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Once the AI Translator is enabled, the system will automatically replace the existing Microsoft Translator as the default translation engine.
+        ///   Looks up a localized string similar to Once the AI Translator is enabled, the system will automatically replace the existing Microsoft Translator as the default translation engine..
         /// </summary>
         internal static string AiTranslatorSwitchDescription {
             get {
@@ -366,7 +366,9 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AI translation is activated but settings are incomplete. Exiting now will disable the feature until re-configured.\n- Click &quot;Yes&quot; to exit and disable AI translation.\n- Click &quot;No&quot; to return to settings and complete configuration..
+        ///   Looks up a localized string similar to AI translation is activated but settings are incomplete. Exiting now will disable the feature until re-configured.
+        ///- Click &quot;Yes&quot; to exit and disable AI translation.
+        ///- Click &quot;No&quot; to return to settings and complete configuration..
         /// </summary>
         internal static string IncompleteAiTranslationSettingsMessage {
             get {
@@ -384,7 +386,9 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have not completed the initialization.{0}- Click &quot;Yes&quot; to exit the program.{0}- Click &quot;No&quot; to continue with the initialization..
+        ///   Looks up a localized string similar to You have not completed the initialization.
+        ///- Click &quot;Yes&quot; to exit the program.
+        ///- Click &quot;No&quot; to continue with the initialization..
         /// </summary>
         internal static string InitializationIncompleteMessage {
             get {
@@ -456,7 +460,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Security token.
+        ///   Looks up a localized string similar to Access Key.
         /// </summary>
         internal static string ModelSettingsApiKeyDescription {
             get {
@@ -636,7 +640,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prompts are input texts or instructions given to an AI model to generate specific responses. They can range from simple phrases to complex sentences, guiding the model on what kind of output is expected.
+        ///   Looks up a localized string similar to Prompts are input texts or instructions given to an AI model to generate specific responses. They can range from simple phrases to complex sentences, guiding the model on what kind of output is expected..
         /// </summary>
         internal static string PromptsSettingsDescription {
             get {
@@ -870,7 +874,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Token Sampling.
+        ///   Looks up a localized string similar to Cumulative Probability.
         /// </summary>
         internal static string TopPSettingHeader {
             get {
@@ -983,6 +987,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string Translating {
             get {
                 return ResourceManager.GetString("Translating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch Translation Mode Confirmation.
+        /// </summary>
+        internal static string TranslationModeSwitchCaption {
+            get {
+                return ResourceManager.GetString("TranslationModeSwitchCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Translating. Switching translation modes will interrupt the process. Do you want to proceed with the switch?.
+        /// </summary>
+        internal static string TranslationModeSwitchMessage {
+            get {
+                return ResourceManager.GetString("TranslationModeSwitchMessage", resourceCulture);
             }
         }
         

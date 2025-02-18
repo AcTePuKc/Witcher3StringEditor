@@ -337,4 +337,10 @@
   <data name="TopPSettingHeader" xml:space="preserve">
     <value>Kumulatív valószínűség</value>
   </data>
+  <data name="TranslationModeSwitchCaption" xml:space="preserve">
+    <value>Fordítási Mód Váltásának Megerősítése</value>
+  </data>
+  <data name="TranslationModeSwitchMessage" xml:space="preserve">
+    <value>Fordítás folyamatban. A mód váltása megszakítja a folyamatot. Biztosan át szeretne váltani?</value>
+  </data>
 </root>

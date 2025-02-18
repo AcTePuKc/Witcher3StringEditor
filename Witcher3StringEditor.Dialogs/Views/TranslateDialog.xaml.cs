@@ -68,9 +68,16 @@ public partial class TranslateDialog
             r.Receive(m);
             if (m.Message)
                 PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
-            else
                 PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
             SwitchBtn.IsEnabled = !m.Message;
+        });
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslationModeSwitch", static (r, m) =>
+        {
+            r.Receive(m);
+            m.Reply(MessageBox.Show(Strings.TranslationModeSwitchMessage,
+                        Strings.TranslationModeSwitchCaption,
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
     }
 

@@ -442,4 +442,10 @@
   <data name="Translating" xml:space="preserve">
     <value>穿梭于语言的奇妙旅程中...</value>
   </data>
+  <data name="TranslationModeSwitchCaption" xml:space="preserve">
+    <value>切换翻译模式确认</value>
+  </data>
+  <data name="TranslationModeSwitchMessage" xml:space="preserve">
+    <value>正在翻译。切换翻译模式将中断此过程。您确定要切换吗？</value>
+  </data>
 </root>
