@@ -22,42 +22,26 @@ public partial class BackupDialog
         InitializeComponent();
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(backupRecipient, "BackupRestore", static (r, m) =>
+
+        var messageHandlers = new[]
         {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.BackupRestoreMessage,
-                                    Strings.BackupRestoreCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) ==
-                                    MessageBoxResult.Yes);
-        });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(backupRecipient, "BackupDelete", static (r, m) =>
+            ("BackupRestore", Strings.BackupRestoreMessage, Strings.BackupRestoreCaption, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("BackupDelete", Strings.BackupDeleteMessage, Strings.BackupDeleteCaption, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("BackupFileNoFound", Strings.BackupFileNoFoundMessage, Strings.BackupFileNoFoundCaption, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("OperationFailed", Strings.OperationFailureMessage, Strings.OperationResultCaption, MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK)
+        };
+
+        foreach (var (token, message, caption, button, icon, expected) in messageHandlers)
         {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.BackupDeleteMessage,
-                                    Strings.BackupDeleteCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) ==
-                                    MessageBoxResult.Yes);
-        });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(backupRecipient, "BackupFileNoFound", static (r, m) =>
-        {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.BackupFileNoFoundMessage,
-                                    Strings.BackupFileNoFoundCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) ==
-                                    MessageBoxResult.Yes);
-        });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(backupRecipient, "OperationFailed", static (r, m) =>
-        {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.OperationFailureMessage,
-                                    Strings.OperationResultCaption,
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Warning) ==
-                                    MessageBoxResult.OK);
-        });
+            WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
+                backupRecipient,
+                token,
+                (r, m) =>
+                {
+                    r.Receive(m);
+                    m.Reply(MessageBox.Show(message, caption, button, icon) == expected);
+                });
+        }
     }
 
     private void Window_Closed(object sender, EventArgs e)
