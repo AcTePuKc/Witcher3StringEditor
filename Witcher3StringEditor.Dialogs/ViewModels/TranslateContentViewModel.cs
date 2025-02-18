@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate;
 using GTranslate.Translators;
-using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using System.ComponentModel;
 using Witcher3StringEditor.Common;
@@ -15,10 +14,8 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class TranslateContentViewModel : ObservableObject, IModalDialogViewModel
+public partial class TranslateContentViewModel : ObservableObject
 {
-    public bool? DialogResult => true;
-
     private readonly IEnumerable<IW3Item> w3Items;
     private readonly ITranslator translator;
 

@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GTranslate;
 using GTranslate.Translators;
-using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -11,7 +10,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BatchTranslateContentViewModel : ObservableObject, IModalDialogViewModel
+public partial class BatchTranslateContentViewModel : ObservableObject
 {
     private CancellationTokenSource? cancellationTokenSource;
 
@@ -35,7 +34,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IModalDi
     [ObservableProperty]
     private int endIndexMin;
 
-    partial void OnStartIndexChanged(int value) 
+    partial void OnStartIndexChanged(int value)
         => EndIndexMin = value > MaxValue ? MaxValue : value;
 
     [ObservableProperty]
@@ -51,13 +50,11 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IModalDi
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isBusy;
 
-    partial void OnIsBusyChanged(bool value) 
+    partial void OnIsBusyChanged(bool value)
         => WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBatchTranslating");
 
     [ObservableProperty]
     private bool isAiTranslator;
-
-    public bool? DialogResult => true;
 
     [ObservableProperty]
     private IEnumerable<ILanguage> languages;
@@ -94,7 +91,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IModalDi
     private async Task Start()
     {
         IsBusy = true;
-        SuccessCount = 0; 
+        SuccessCount = 0;
         FailureCount = 0;
         PendingCount = EndIndex - StartIndex + 1;
         cancellationTokenSource = new CancellationTokenSource();
