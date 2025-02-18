@@ -57,9 +57,15 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         if (CurrentViewModel is not TranslateContentViewModel { IsBusy: true }
             || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
         {
+            if (CurrentViewModel is TranslateContentViewModel { CurrentTranslateItemModel.IsSaved: false } translateViewModel
+                && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
+                && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
+            {
+                w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel?.Id).Text = translateViewModel.CurrentTranslateItemModel.TranslatedText;
+            }
             CurrentViewModel = CurrentViewModel is TranslateContentViewModel
-                ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
-                : new TranslateContentViewModel(w3Items, index, appSettings, translator);
+                    ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
+                    : new TranslateContentViewModel(w3Items, index, appSettings, translator);
         }
     }
 
