@@ -29,7 +29,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         if (Current is TranslateViewModel translateViewModel)
         {
-            if (translateViewModel.IsBusy && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatorIsBusy"))
+            if (translateViewModel.IsBusy && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
             {
                 e.Cancel = true;
             }
@@ -43,7 +43,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         }
         else if (Current is BatchTranslateViewModel batchTranslateViewModel && batchTranslateViewModel.IsBusy)
         {
-            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BatchTranslateDialogClosing"))
+            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
             {
                 e.Cancel = true;
             }

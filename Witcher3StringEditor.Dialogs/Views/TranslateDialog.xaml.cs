@@ -55,7 +55,7 @@ public partial class TranslateDialog
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslatorIsBusy", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "TranslationDialogClosing", static (r, m) =>
         {
             r.Receive(m);
             m.Reply(MessageBox.Show(Strings.TranslatorTranslatingMessage,
@@ -63,22 +63,14 @@ public partial class TranslateDialog
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
-
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(requestRecipient, "BatchTranslateDialogClosing", static (r, m) =>
-        {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.TranslatorTranslatingMessage,
-                                    Strings.TranslatorTranslatingCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) == MessageBoxResult.No);
-        });
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(translatorBusyNotificationRecipient, "TranslatorIsBusy", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(translatorBusyNotificationRecipient, "TranslatorIsBatchTranslating", (r, m) =>
         {
             r.Receive(m);
             if (m.Message)
                 PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
             else
                 PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
+            SwitchBtn.IsEnabled = !m.Message;
         });
     }
 

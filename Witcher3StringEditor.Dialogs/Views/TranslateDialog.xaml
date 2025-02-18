@@ -262,7 +262,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button HorizontalAlignment="Right" Command="{Binding SwitchCommand}">
+        <Button
+            x:Name="SwitchBtn"
+            HorizontalAlignment="Right"
+            Command="{Binding SwitchCommand}">
             <ui:FontIcon Glyph="&#xE8AB;" />
         </Button>
         <ContentControl

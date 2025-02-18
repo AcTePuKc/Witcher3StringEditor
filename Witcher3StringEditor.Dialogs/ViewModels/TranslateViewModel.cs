@@ -45,6 +45,9 @@ public partial class TranslateViewModel : ObservableObject, IModalDialogViewMode
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private bool isBusy;
 
+    partial void OnIsBusyChanged(bool value)
+        => WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBusy");
+
     partial void OnIndexOfItemsChanged(int value)
     {
         var item = w3Items.ElementAt(value);

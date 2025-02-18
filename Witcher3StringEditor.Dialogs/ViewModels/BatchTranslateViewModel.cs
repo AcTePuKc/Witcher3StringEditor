@@ -54,7 +54,7 @@ public partial class BatchTranslateViewModel : ObservableObject, IModalDialogVie
     private bool isBusy;
 
     partial void OnIsBusyChanged(bool value) 
-        => WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBusy");
+        => WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBatchTranslating");
 
     [ObservableProperty]
     private bool isAiTranslator;
