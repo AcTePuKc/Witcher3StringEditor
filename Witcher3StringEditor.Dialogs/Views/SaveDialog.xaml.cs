@@ -20,7 +20,7 @@ public partial class SaveDialog
         WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(saveResultRecipient, "Save", static (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(m.Message ? Strings.SaveSuccess : Strings.SaveFailure,
+            _ = MessageBox.Show(m.Message ? Strings.SaveSuccess : Strings.SaveFailure,
                             Strings.SaveResult,
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);

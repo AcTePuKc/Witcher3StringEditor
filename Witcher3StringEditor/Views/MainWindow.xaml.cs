@@ -60,8 +60,6 @@ public partial class MainWindow
         if (string.IsNullOrEmpty(sender.Text)) SfDataGrid.SearchHelper.ClearSearch();
     }
 
-    private void Window_Closed(object sender, EventArgs e)
-    {
-        WeakReferenceMessenger.Default.UnregisterAll(recipient);
-    }
+    private void Window_Closed(object sender, EventArgs e) 
+        => WeakReferenceMessenger.Default.UnregisterAll(recipient);
 }

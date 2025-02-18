@@ -26,15 +26,15 @@ public partial class TranslateDialog
         WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(translateNotificationRecipient, "TranslateCharactersNumberExceedLimit", static (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(Strings.TranslateCharactersNumberExceedLimitMessage,
-                            Strings.TranslateCharactersNumberExceedLimitCaption,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Warning);
+            _ = MessageBox.Show(Strings.TranslateCharactersNumberExceedLimitMessage,
+                                Strings.TranslateCharactersNumberExceedLimitCaption,
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
         });
         WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(translateNotificationRecipient, "TranslatedTextInvalid", static (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(Strings.TranslatedTextInvalidMessage,
+            _ = MessageBox.Show(Strings.TranslatedTextInvalidMessage,
                             Strings.TranslatedTextInvalidCaption,
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);
@@ -42,7 +42,7 @@ public partial class TranslateDialog
         WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(translateNotificationRecipient, "TranslateError", static (r, m) =>
         {
             r.Receive(m);
-            MessageBox.Show(m.Message,
+            _ = MessageBox.Show(m.Message,
                             Strings.TranslateErrorCaption,
                             MessageBoxButton.OK,
                             MessageBoxImage.Warning);

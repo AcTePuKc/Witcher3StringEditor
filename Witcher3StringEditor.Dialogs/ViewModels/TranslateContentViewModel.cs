@@ -107,14 +107,14 @@ public partial class TranslateContentViewModel : ObservableObject
             }
             catch (Exception ex)
             {
-                WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
+                _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
                 Log.Error(ex, "Translation error occurred.");
             }
             IsBusy = false;
         }
         else
         {
-            WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(Strings.TranslateCharactersNumberExceedLimitMessage), "TranslateCharactersNumberExceedLimit");
+            _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(Strings.TranslateCharactersNumberExceedLimitMessage), "TranslateCharactersNumberExceedLimit");
         }
     }
 
