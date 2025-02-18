@@ -52,9 +52,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Switch()
     {
-        if (Current is not TranslateViewModel translateViewModel
-            || !translateViewModel.IsBusy
-            || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+        if (Current is not TranslateViewModel { IsBusy: true } || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
             Current = Current is TranslateViewModel
                 ? new BatchTranslateViewModel(w3Items, index + 1, appSettings, translator)
                 : new TranslateViewModel(w3Items, index, appSettings, translator);
