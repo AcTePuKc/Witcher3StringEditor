@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Witcher3StringEditor.Dialogs.ViewModels;
 
-namespace Witcher3StringEditor.Dialogs.Helper;
+namespace Witcher3StringEditor.Dialogs.Helpers;
 
 public class TranslateDataTemplateSelector : DataTemplateSelector
 {
@@ -10,10 +10,13 @@ public class TranslateDataTemplateSelector : DataTemplateSelector
 
     public DataTemplate? BatchTranslateDataTemplate { get; set; }
 
-    public override DataTemplate? SelectTemplate(object item, DependencyObject container)
+    public override DataTemplate? SelectTemplate(object? item, DependencyObject container)
     {
-        if (item is TranslateViewModel) return TranslateDataTemplate;
-        if (item is BatchTranslateViewModel) return BatchTranslateDataTemplate;
-        return null;
+        return item switch
+        {
+            TranslateViewModel => TranslateDataTemplate,
+            BatchTranslateViewModel => BatchTranslateDataTemplate,
+            _ => null
+        };
     }
 }

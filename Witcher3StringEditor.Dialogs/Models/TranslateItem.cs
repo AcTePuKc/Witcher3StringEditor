@@ -6,7 +6,7 @@ public partial class TranslateItem : ObservableObject
 {
     public required Guid Id { get; init; }
 
-    public required string Text { get; set; }
+    public required string Text { get; init; }
 
     [ObservableProperty]
     private string translatedText = string.Empty;

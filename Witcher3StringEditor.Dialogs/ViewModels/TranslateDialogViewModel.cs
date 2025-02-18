@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -28,30 +27,25 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Closing(CancelEventArgs e)
     {
-        if (Current is TranslateViewModel translateViewModel)
+        switch (Current)
         {
-            if (translateViewModel.IsBusy && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
-            {
+            case TranslateViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
                 e.Cancel = true;
-            }
-            else
+                break;
+            case TranslateViewModel translateViewModel:
             {
                 if (translateViewModel.CurrentTranslateItemModel is { IsSaved: false }
                     && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
                     && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
                     w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text = translateViewModel.CurrentTranslateItemModel.TranslatedText;
+                break;
             }
-        }
-        else if (Current is BatchTranslateViewModel batchTranslateViewModel && batchTranslateViewModel.IsBusy)
-        {
-            if (!await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
-            {
+            case BatchTranslateViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
                 e.Cancel = true;
-            }
-            else
-            {
+                break;
+            case BatchTranslateViewModel { IsBusy: true } batchTranslateViewModel:
                 await batchTranslateViewModel.CancelCommand.ExecuteAsync(null);
-            }
+                break;
         }
     }
 
@@ -72,6 +66,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.index = index;
         this.appSettings = appSettings;
         this.translator = translator;
-        Current = new TranslateViewModel(w3Items, index, appSettings, translator);
+        Current = new TranslateViewModel(this.w3Items, index, appSettings, translator);
     }
 }
