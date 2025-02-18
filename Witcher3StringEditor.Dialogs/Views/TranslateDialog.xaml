@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="Witcher3StringEditor.Dialogs.Views.TranslateDiaglog"
+    x:Class="Witcher3StringEditor.Dialogs.Views.TranslateDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,7 +12,7 @@
     Title="{lex:Loc TranslateDialogTitle}"
     Width="800"
     Height="800"
-    d:DataContext="{d:DesignInstance Type=vm:TranslateDiaglogViewModel}"
+    d:DataContext="{d:DesignInstance Type=vm:TranslateDialogViewModel}"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:WindowHelper.SystemBackdropType="Mica"

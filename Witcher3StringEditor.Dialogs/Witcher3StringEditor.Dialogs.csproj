@@ -48,7 +48,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Update="Views\TranslateDiaglog.xaml.cs">
+    <Compile Update="Views\TranslateDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

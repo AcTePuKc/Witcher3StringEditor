@@ -12,12 +12,12 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 /// TranslateDiaglogView.xaml 的交互逻辑
 /// </summary>
-public partial class TranslateDiaglog
+public partial class TranslateDialog
 {
     private readonly AsyncRequestRecipient<bool> requestRecipient = new();
     private readonly NotificationRecipient<string> notificationRecipient = new();
 
-    public TranslateDiaglog()
+    public TranslateDialog()
     {
         InitializeComponent();
         WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(notificationRecipient, "TranslateCharactersNumberExceedLimit", static (r, m) =>
