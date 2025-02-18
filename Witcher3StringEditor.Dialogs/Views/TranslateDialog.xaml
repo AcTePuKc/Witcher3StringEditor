@@ -123,7 +123,7 @@
                     </iwk:SimpleStackPanel>
                 </Grid>
             </DataTemplate>
-            <DataTemplate x:Key="BatchTranslateDataTemplate" DataType="vm:BatchTranslateViewModel">
+            <DataTemplate x:Key="BatchTranslateDataTemplate" DataType="{x:Type vm:BatchTranslateContentViewModel}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
