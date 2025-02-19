@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using System.ComponentModel;
+using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
 
@@ -15,6 +16,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     private readonly NotificationRecipient<bool> recipient = new();
 
     public bool? DialogResult => true;
+
+    [ObservableProperty]
+    private string title = Strings.TranslateDialogTitle;
 
     [ObservableProperty]
     private object currentViewModel;
@@ -58,6 +62,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             CurrentViewModel = CurrentViewModel is TranslateContentViewModel
                     ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
                     : new TranslateContentViewModel(w3Items, index, appSettings, translator);
+            Title = CurrentViewModel.GetType() == typeof(BatchTranslateContentViewModel) ? Strings.BatchTranslateDialogTitle : Strings.TranslateDialogTitle;
         }
     }
 

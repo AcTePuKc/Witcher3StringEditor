@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{lex:Loc TranslateDialogTitle}"
+    Title="{Binding Title}"
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:TranslateDialogViewModel}"
