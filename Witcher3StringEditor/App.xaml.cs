@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reactive;
+using System.Reflection;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
@@ -32,6 +33,8 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
+    private Mutex? mutex;
+
     private ObserverBase<LogEvent>? logObserver;
 
     private readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -50,11 +53,8 @@ public partial class App
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
         DispatcherUnhandledException += (_, eventArgs) => Log.Error(eventArgs.Exception, "Unhandled exception occurred.");
         TaskScheduler.UnobservedTaskException += (_, eventArgs) => Log.Error(eventArgs.Exception, "Unhandled exception occurred.");
-        var currentProcess = Process.GetCurrentProcess();
-        var currentProcessName = currentProcess.ProcessName;
-        var processes = Process.GetProcessesByName(currentProcessName);
-        if (processes.SkipWhile(p => p.Id == currentProcess.Id).Any(p => p.ProcessName == currentProcessName))
-            Current.Shutdown();
+        mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
+        if (!createdNew) Current.Shutdown();
     }
 
     private static AppSettings LoadAppSettings(string path)
@@ -104,5 +104,6 @@ public partial class App
             Formatting.Indented,
             new StringEnumConverter()));
         logObserver?.Dispose();
+        mutex?.Dispose();
     }
 }
