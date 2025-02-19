@@ -126,7 +126,7 @@
     <value>此操作将覆盖当前所在路径的文件且操作无法撤销.是否继续？</value>
   </data>
   <data name="BackupDeleteMessage" xml:space="preserve">
-    <value>此操作将删除备份文件且操作无法撤销.是否继续？</value>
+    <value>此操作将删除备份文件且操作无法撤销。是否继续？</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>保存成功</value>
