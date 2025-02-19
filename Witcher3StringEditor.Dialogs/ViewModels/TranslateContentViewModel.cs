@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
-using System.ComponentModel;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
