@@ -15,12 +15,15 @@ namespace Witcher3StringEditor.Translators;
 
 internal class AiTranslator : ITranslator
 {
-    private readonly IModelSettings modelSettings;
+    private Language? destinationLanguage;
     private readonly HttpClient httpClient;
+    private readonly ChatHistory chatHistory;
+    private readonly IModelSettings modelSettings;
     private readonly IChatCompletionService chatCompletionService;
 
     public AiTranslator(IModelSettings settings)
     {
+        chatHistory = [];
         modelSettings = settings;
         httpClient = new HttpClient
         {
@@ -55,20 +58,26 @@ internal class AiTranslator : ITranslator
         if (string.IsNullOrWhiteSpace(modelSettings.Prompts)) throw new InvalidOperationException("Prompts not configured.");
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
+        if (destinationLanguage?.Equals(targetLanguage) != true)
+        {
+            chatHistory.Clear();
+            destinationLanguage = targetLanguage;
+        }
         var context = BrowsingContext.New(Configuration.Default);
         var document = await context.OpenAsync(req => req.Content(text));
         var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
-        var history = new ChatHistory();
-        history.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage));
-        history.AddUserMessage(ExtractTextContent(nodes));
+        if (chatHistory.Count == 0)
+            chatHistory.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage));
+        chatHistory.AddUserMessage(ExtractTextContent(nodes));
         var promptExecutionSettings = new OpenAIPromptExecutionSettings();
         if (modelSettings.Temperature >= 0)
             promptExecutionSettings.Temperature = modelSettings.Temperature;
         if (modelSettings.TopP >= 0)
             promptExecutionSettings.TopP = modelSettings.TopP;
-        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(history, promptExecutionSettings)).ToString();
+        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
         if (string.IsNullOrWhiteSpace(translationResponse))
             throw new InvalidDataException("Translation content cannot be null or empty.");
+        chatHistory.AddAssistantMessage(translationResponse);
         var lines = nodes.Length > 1 ? translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries) : [translationResponse];
         if (lines.Length != nodes.Length)
             throw new InvalidOperationException($"The number of translated lines ({lines.Length}) does not match the number of original nodes ({nodes.Length}).");
