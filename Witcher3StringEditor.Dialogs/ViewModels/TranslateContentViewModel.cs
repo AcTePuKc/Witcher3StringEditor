@@ -77,22 +77,6 @@ public partial class TranslateContentViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task Closing(CancelEventArgs e)
-    {
-        if (IsBusy && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatorTranslating"))
-        {
-            e.Cancel = true;
-        }
-        else
-        {
-            if (CurrentTranslateItemModel is { IsSaved: false }
-                && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-                && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-                w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
-        }
-    }
-
-    [RelayCommand]
     private async Task Translate()
     {
         if (CurrentTranslateItemModel == null) return;
