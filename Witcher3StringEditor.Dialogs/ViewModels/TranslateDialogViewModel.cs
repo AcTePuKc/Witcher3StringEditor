@@ -43,6 +43,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         CurrentViewModel = new TranslateContentViewModel(this.w3Items, index, appSettings, translator);
         WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(recipient, "TranslatorIsBatchTranslating", (r, m) =>
         {
+            r.Receive(m);
             SwitchIsEnabled = !m.Message;
         });
     }
