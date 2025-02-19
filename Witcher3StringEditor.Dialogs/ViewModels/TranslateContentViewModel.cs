@@ -33,6 +33,12 @@ public partial class TranslateContentViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private int indexOfItems = -1;
+    
+    partial void OnIndexOfItemsChanged(int value)
+    {
+        var item = w3Items.ElementAt(value);
+        CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
+    }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
@@ -42,12 +48,6 @@ public partial class TranslateContentViewModel : ObservableObject
 
     partial void OnIsBusyChanged(bool value)
         => WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBusy");
-
-    partial void OnIndexOfItemsChanged(int value)
-    {
-        var item = w3Items.ElementAt(value);
-        CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
-    }
 
     [ObservableProperty]
     private bool isAiTranslator;
@@ -118,7 +118,7 @@ public partial class TranslateContentViewModel : ObservableObject
     private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsBusy;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
-    private async Task PreviousAsync()
+    private async Task Previous()
     {
         if (CurrentTranslateItemModel is { IsSaved: false }
             && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)

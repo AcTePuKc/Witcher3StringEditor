@@ -172,6 +172,8 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    private bool W3ItemsHaveItems => W3Items.Any();
+
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task Add()
     {
@@ -207,8 +209,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowBackupDialog()
         => await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
-
-    private bool W3ItemsHaveItems => W3Items.Any();
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowSaveDialog()
@@ -265,12 +265,12 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    private bool CanOpenWorkingFolder
+        => Directory.Exists(OutputFolder);
+
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
         => explorerService.Open(OutputFolder);
-
-    private bool CanOpenWorkingFolder
-        => Directory.Exists(OutputFolder);
 
     [RelayCommand]
     private void OpenNexusMods()
