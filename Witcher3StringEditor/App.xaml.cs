@@ -11,6 +11,7 @@ using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reactive;
 using System.Windows;
@@ -41,14 +42,19 @@ public partial class App
     {
         logObserver = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-            , "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day)
-            .WriteTo.Debug().WriteTo.Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
+            , "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
+            .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo.Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
             .CreateLogger();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         Ioc.Default.ConfigureServices(InitializeServices(configPath));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
         DispatcherUnhandledException += (_, eventArgs) => Log.Error(eventArgs.Exception, "Unhandled exception occurred.");
         TaskScheduler.UnobservedTaskException += (_, eventArgs) => Log.Error(eventArgs.Exception, "Unhandled exception occurred.");
+        var currentProcess = Process.GetCurrentProcess();
+        var currentProcessName = currentProcess.ProcessName;
+        var processes = Process.GetProcessesByName(currentProcessName);
+        if (processes.SkipWhile(p => p.Id == currentProcess.Id).Any(p => p.ProcessName == currentProcessName))
+            Current.Shutdown();
     }
 
     private static AppSettings LoadAppSettings(string path)
