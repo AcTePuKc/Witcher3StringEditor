@@ -73,7 +73,6 @@ public partial class TranslateDialog
                 PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
             else
                 PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
-            SwitchBtn.IsEnabled = !m.Message;
         });
     }
 

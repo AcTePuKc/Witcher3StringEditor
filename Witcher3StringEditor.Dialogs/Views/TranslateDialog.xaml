@@ -24,6 +24,9 @@
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding ClosedCommand}" PassEventArgsToCommand="True" />
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
@@ -43,9 +46,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Button
-            x:Name="SwitchBtn"
             HorizontalAlignment="Right"
-            Command="{Binding SwitchCommand}">
+            Command="{Binding SwitchCommand}"
+            IsEnabled="{Binding SwitchIsEnabled}">
             <ui:FontIcon Glyph="&#xE8AB;" />
         </Button>
         <ContentControl
