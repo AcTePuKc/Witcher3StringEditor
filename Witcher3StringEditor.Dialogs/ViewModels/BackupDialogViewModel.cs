@@ -30,7 +30,7 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupRestore")
                 && !backupService.Restore(backupItem))
             {
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
+                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
             }
         }
     }
@@ -41,7 +41,7 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
         if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupDelete")
             && !backupService.Delete(backupItem))
         {
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
+            _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
         }
     }
 }
