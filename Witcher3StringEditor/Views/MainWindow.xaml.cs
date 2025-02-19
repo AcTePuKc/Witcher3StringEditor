@@ -23,6 +23,25 @@ public partial class MainWindow
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+
+        var messageHandlers = new[]
+        {
+            ("FileOpened", Strings.FileOpenedMessage, Strings.FileOpenedCaption),
+            ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption)
+        };
+
+        foreach (var (token, message, caption) in messageHandlers)
+        {
+            WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(
+                recipient,
+                token,
+                (r, m) =>
+                {
+                    r.Receive(m);
+                    m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+                });
+        }
+
         WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(recipient, "MainWindowClosing", static (r, m) =>
         {
             r.Receive(m);
@@ -30,23 +49,6 @@ public partial class MainWindow
                                     Strings.AppExitCaption,
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Question) == MessageBoxResult.No);
-        });
-        WeakReferenceMessenger.Default
-            .Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(recipient, "FileOpened", static (r, m) =>
-        {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.FileOpenedMessage,
-                                    Strings.FileOpenedCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-        });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(recipient, "OpenedFileNoFound", static (r, m) =>
-        {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.FileOpenedNoFoundMessage,
-                                    Strings.FileOpenedNoFoundCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) == MessageBoxResult.Yes);
         });
     }
 
