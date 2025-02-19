@@ -114,15 +114,6 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Batch Translate.
-        /// </summary>
-        internal static string BatchTranslateDialogBtnLabel {
-            get {
-                return ResourceManager.GetString("BatchTranslateDialogBtnLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete Data.
         /// </summary>
         internal static string DeleteBtnLabel {

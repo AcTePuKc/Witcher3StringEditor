@@ -165,9 +165,6 @@
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>最近打开的文件</value>
   </data>
-  <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
-    <value>批量翻译</value>
-  </data>
   <data name="AboutBtnLabel" xml:space="preserve">
     <value>关于</value>
   </data>

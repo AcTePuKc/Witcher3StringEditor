@@ -60,9 +60,6 @@
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>A legutóbbi</value>
   </data>
-  <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
-    <value>Kötegelt fordítás</value>
-  </data>
   <data name="AboutBtnLabel" xml:space="preserve">
     <value>Rólunk</value>
   </data>

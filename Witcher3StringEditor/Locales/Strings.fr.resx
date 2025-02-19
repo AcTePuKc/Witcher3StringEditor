@@ -145,9 +145,6 @@
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>Récentes</value>
   </data>
-  <data name="BatchTranslateDialogBtnLabel" xml:space="preserve">
-    <value>Traduire automatiquement</value>
-  </data>
   <data name="AboutBtnLabel" xml:space="preserve">
     <value>A propos de</value>
   </data>
