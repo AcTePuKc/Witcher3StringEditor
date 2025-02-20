@@ -76,7 +76,7 @@ internal class AiTranslator : ITranslator
         var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
         if (chatHistory.Count == 0)
             chatHistory.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage));
-        await chatHistory.ReduceAsync(chatHistoryReducer, new CancellationToken());
+        await chatHistory.ReduceAsync(chatHistoryReducer, CancellationToken.None);
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
         var promptExecutionSettings = new OpenAIPromptExecutionSettings();
         if (modelSettings.Temperature >= 0)
