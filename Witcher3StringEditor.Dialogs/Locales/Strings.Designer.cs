@@ -222,6 +222,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Controls the number of historical messages considered by the model when generating replies. Increasing this value can improve reply accuracy but may decrease speed and increase costs. Setting it to 0 disables this option, meaning the model will not consider any historical messages..
+        /// </summary>
+        internal static string ContextLengthSettingDescription {
+            get {
+                return ResourceManager.GetString("ContextLengthSettingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Context Length.
+        /// </summary>
+        internal static string ContextLengthSettingHeader {
+            get {
+                return ResourceManager.GetString("ContextLengthSettingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string DeleteBtnContent {

@@ -448,4 +448,10 @@
   <data name="TranslationModeSwitchMessage" xml:space="preserve">
     <value>Traduction en cours. Le changement de mode de traduction va interrompre le processus. Voulez-vous vraiment changer de mode de traduction ?</value>
   </data>
+  <data name="ContextLengthSettingHeader" xml:space="preserve">
+    <value>Longueur du Contexte</value>
+  </data>
+  <data name="ContextLengthSettingDescription" xml:space="preserve">
+    <value>Contrôle le nombre de messages historiques pris en compte par le modèle lors de la génération de réponses. Augmenter cette valeur peut améliorer la précision des réponses, mais peut diminuer la vitesse et augmenter les coûts. La définir sur 0 désactive cette option, ce qui signifie que le modèle ne tiendra compte d'aucun message historique.</value>
+  </data>
 </root>

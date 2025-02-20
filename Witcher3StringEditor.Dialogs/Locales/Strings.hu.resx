@@ -343,4 +343,10 @@
   <data name="TranslationModeSwitchMessage" xml:space="preserve">
     <value>Fordítás folyamatban. A mód váltása megszakítja a folyamatot. Biztosan át szeretne váltani?</value>
   </data>
+  <data name="ContextLengthSettingHeader" xml:space="preserve">
+    <value>Kontextus Hossza</value>
+  </data>
+  <data name="ContextLengthSettingDescription" xml:space="preserve">
+    <value>Állítsa be a kontextus hosszát, hogy meghatározza, hány korábbi üzenetet vesz figyelembe a modell válaszgenerálás során. A számérték növelésével javítható a válaszok pontossága, de ez csökkentheti a sebességet és emelheti a költségeket. Ha 0-ra állítja, letiltja ezt a beállítást, tehát a modell nem vesz figyelembe egyetlen előző üzenetet sem.</value>
+  </data>
 </root>

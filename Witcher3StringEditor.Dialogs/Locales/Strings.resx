@@ -448,4 +448,10 @@
   <data name="TranslationModeSwitchMessage" xml:space="preserve">
     <value>Translating. Switching translation modes will interrupt the process. Do you want to proceed with the switch?</value>
   </data>
+  <data name="ContextLengthSettingHeader" xml:space="preserve">
+    <value>Context Length</value>
+  </data>
+  <data name="ContextLengthSettingDescription" xml:space="preserve">
+    <value>Controls the number of historical messages considered by the model when generating replies. Increasing this value can improve reply accuracy but may decrease speed and increase costs. Setting it to 0 disables this option, meaning the model will not consider any historical messages.</value>
+  </data>
 </root>
