@@ -108,10 +108,10 @@
                 <ui:SettingsCard Description="{lex:Loc ContextLengthSettingDescription}" Header="{lex:Loc ContextLengthSettingHeader}">
                     <Slider
                         IsSnapToTickEnabled="True"
-                        Maximum="100"
+                        Maximum="30"
                         Minimum="0"
-                        SmallChange="10"
-                        TickFrequency="10"
+                        SmallChange="5"
+                        TickFrequency="5"
                         TickPlacement="BottomRight"
                         Value="{Binding AppSettings.ModelSettings.ContextLength}" />
                 </ui:SettingsCard>
