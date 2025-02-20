@@ -70,14 +70,14 @@ internal class AiTranslator : ITranslator
             chatHistory.Clear();
             destinationLanguage = targetLanguage;
         }
-        var context = BrowsingContext.New(Configuration.Default);
-        var document = await context.OpenAsync(req => req.Content(text));
-        var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
         if (chatHistory.Count == 0)
             chatHistory.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage));
         if (modelSettings.ContextLength == 0 && chatHistory.Count > 1)
             chatHistory.RemoveRange(1, chatHistory.Count - 1);
         _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
+        var context = BrowsingContext.New(Configuration.Default);
+        var document = await context.OpenAsync(req => req.Content(text));
+        var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
         var promptExecutionSettings = new OpenAIPromptExecutionSettings();
         if (modelSettings.Temperature >= 0)
