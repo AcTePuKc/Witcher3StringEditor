@@ -75,8 +75,8 @@ internal class AiTranslator : ITranslator
         if (modelSettings.ContextLength == 0 && chatHistory.Count > 1)
             chatHistory.RemoveRange(1, chatHistory.Count - 1);
         _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
-        var context = BrowsingContext.New(Configuration.Default);
-        var document = await context.OpenAsync(req => req.Content(text));
+        using var context = BrowsingContext.New(Configuration.Default);
+        using var document = await context.OpenAsync(req => req.Content(text));
         var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
         var promptExecutionSettings = new OpenAIPromptExecutionSettings();
