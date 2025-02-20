@@ -10,6 +10,8 @@ public interface IModelSettings
 
     public string Prompts { get; set; }
 
+    public int ContextLength { get; set; }
+
     public double Temperature { get; set; }
 
     public double TopP { get; set; }
