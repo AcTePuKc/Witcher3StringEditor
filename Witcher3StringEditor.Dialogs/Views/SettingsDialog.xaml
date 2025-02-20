@@ -107,12 +107,13 @@
                 </ui:SettingsCard>
                 <ui:SettingsCard Description="{lex:Loc ContextLengthSettingDescription}" Header="{lex:Loc ContextLengthSettingHeader}">
                     <Slider
-                        TickPlacement="BottomRight"
                         IsSnapToTickEnabled="True"
                         Maximum="100"
                         Minimum="0"
                         SmallChange="10"
-                        TickFrequency="10" />
+                        TickFrequency="10"
+                        TickPlacement="BottomRight"
+                        Value="{Binding AppSettings.ModelSettings.ContextLength}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Description="{lex:Loc TemperatureSettingDescription}" Header="{lex:Loc TemperatureSettingHeader}">
                     <Slider
