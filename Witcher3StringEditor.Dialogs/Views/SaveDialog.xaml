@@ -24,7 +24,7 @@
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
-            <Style BasedOn="{StaticResource {x:Static ui:ThemeKeys.ExpanderCardStyleKey}}" TargetType="Expander">
+            <Style BasedOn="{StaticResource ExpanderCardStyle}" TargetType="Expander">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
             </Style>
             <ObjectDataProvider
