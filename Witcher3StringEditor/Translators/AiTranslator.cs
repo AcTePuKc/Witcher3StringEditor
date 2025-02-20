@@ -20,6 +20,10 @@ internal class AiTranslator : ITranslator
     private readonly ChatHistory chatHistory;
     private readonly IModelSettings modelSettings;
     private readonly IChatCompletionService chatCompletionService;
+#pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
+    private readonly ChatHistoryTruncationReducer chatHistoryReducer;
+#pragma warning restore SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
+
 
     public AiTranslator(IModelSettings settings)
     {
@@ -29,6 +33,9 @@ internal class AiTranslator : ITranslator
         {
             BaseAddress = new Uri(settings.EndPoint)
         };
+#pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
+        chatHistoryReducer = new ChatHistoryTruncationReducer(10);
+#pragma warning restore SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         chatCompletionService = new OpenAIChatCompletionService(settings.ModelId, apiKey: Unprotect(settings.ApiKey), httpClient: httpClient);
     }
 
@@ -63,11 +70,13 @@ internal class AiTranslator : ITranslator
             chatHistory.Clear();
             destinationLanguage = targetLanguage;
         }
+        await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, default);
         var context = BrowsingContext.New(Configuration.Default);
         var document = await context.OpenAsync(req => req.Content(text));
         var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
         if (chatHistory.Count == 0)
             chatHistory.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage));
+        await chatHistory.ReduceAsync(chatHistoryReducer, new CancellationToken());
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
         var promptExecutionSettings = new OpenAIPromptExecutionSettings();
         if (modelSettings.Temperature >= 0)
