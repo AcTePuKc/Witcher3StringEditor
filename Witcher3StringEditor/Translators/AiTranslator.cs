@@ -70,7 +70,6 @@ internal class AiTranslator : ITranslator
             chatHistory.Clear();
             destinationLanguage = targetLanguage;
         }
-        await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, default);
         var context = BrowsingContext.New(Configuration.Default);
         var document = await context.OpenAsync(req => req.Content(text));
         var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
