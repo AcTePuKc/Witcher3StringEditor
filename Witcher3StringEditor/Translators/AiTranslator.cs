@@ -1,5 +1,6 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
+using CommunityToolkit.Diagnostics;
 using GTranslate;
 using GTranslate.Results;
 using GTranslate.Translators;
@@ -61,8 +62,8 @@ internal class AiTranslator : ITranslator
 
     public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
     {
-        if (string.IsNullOrEmpty(text)) throw new ArgumentException("Text cannot be null.");
-        if (string.IsNullOrWhiteSpace(modelSettings.Prompts)) throw new InvalidOperationException("Prompts not configured.");
+        Guard.IsNullOrWhiteSpace(text);
+        Guard.IsNullOrWhiteSpace(modelSettings.Prompts);
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
         if (destinationLanguage?.Equals(targetLanguage) != true)
@@ -85,12 +86,10 @@ internal class AiTranslator : ITranslator
         if (modelSettings.TopP >= 0)
             promptExecutionSettings.TopP = modelSettings.TopP;
         var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
-        if (string.IsNullOrWhiteSpace(translationResponse))
-            throw new InvalidDataException("Translation content cannot be null or empty.");
+        Guard.IsNotNullOrWhiteSpace(translationResponse);
         chatHistory.AddAssistantMessage(translationResponse);
         var lines = nodes.Length > 1 ? translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries) : [translationResponse];
-        if (lines.Length != nodes.Length)
-            throw new InvalidOperationException($"The number of translated lines ({lines.Length}) does not match the number of original nodes ({nodes.Length}).");
+        Guard.HasSizeEqualTo(lines, nodes.Length);
         for (var i = 0; i < nodes.Length; i++)
             nodes[i].TextContent = lines[i];
         return new AiTranslationResult
