@@ -90,9 +90,11 @@ internal class AiTranslator : ITranslator
         var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
         var translationResponse = await FetchTranslationResponse(nodes);
         UpdateNodeTextContent(nodes, translationResponse);
-        var translation = BuildTranslationResult(text, document.Body?.InnerHtml ?? string.Empty, sourceLanguage, targetLanguage);
+        var translation = document.Body?.InnerHtml;
+        Guard.IsNotNullOrWhiteSpace(translation);
+        var translationResult = BuildTranslationResult(text, translation, sourceLanguage, targetLanguage);
         document.Dispose();
-        return translation;
+        return translationResult;
     }
 
     public async Task<ITranslationResult> TranslateAsync(string text, ILanguage toLanguage, ILanguage? fromLanguage = null)
