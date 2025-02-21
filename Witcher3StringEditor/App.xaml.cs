@@ -56,12 +56,14 @@ public partial class App
         DispatcherUnhandledException += (_, eventArgs) =>
         {
             eventArgs.Handled = true;
-            Log.Error(eventArgs.Exception, "Unhandled exception occurred.");
+            var exception = eventArgs.Exception;
+            Log.Error(exception, exception.Message);
         };
         TaskScheduler.UnobservedTaskException += (_, eventArgs) =>
         {
             eventArgs.SetObserved();
-            Log.Error(eventArgs.Exception, "Unhandled exception occurred.");
+            var exception = eventArgs.Exception;
+            Log.Error(exception, exception.Message);
         };
         mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
         if (!createdNew) Current.Shutdown();
