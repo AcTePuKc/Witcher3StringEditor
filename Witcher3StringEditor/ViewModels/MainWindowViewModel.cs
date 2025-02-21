@@ -261,10 +261,9 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         try
         {
-            var timestamp = Assembly.GetExecutingAssembly().GetCustomAttributesData()
+            Guard.IsTrue(DateTime.TryParseExact(Assembly.GetExecutingAssembly().GetCustomAttributesData()
                 .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute")?.ConstructorArguments
-                .FirstOrDefault().Value as string;
-            Guard.IsTrue(DateTime.TryParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var buildTime));
+                .FirstOrDefault().Value as string, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var buildTime));
             return buildTime.ToLocalTime();
         }
         catch (Exception ex)
