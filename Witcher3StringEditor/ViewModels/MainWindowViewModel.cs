@@ -159,13 +159,16 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         try
         {
+            Guard.IsNotNullOrWhiteSpace(fileName);
             if (W3Items.Any())
                 if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
                     W3Items.Clear();
                 else
                     return;
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
-            OutputFolder = Path.GetDirectoryName(fileName) ?? string.Empty;
+            var folder = Path.GetDirectoryName(fileName);
+            Guard.IsNotNull(folder);
+            OutputFolder = folder;
             var foundItem = appSettings.RecentItems
                 .FirstOrDefault(x => x.FilePath == fileName);
             if (foundItem == null)
@@ -260,7 +263,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             var timestamp = Assembly.GetExecutingAssembly().GetCustomAttributesData()
                 .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute")?.ConstructorArguments
-                .FirstOrDefault().Value as string ?? string.Empty;
+                .FirstOrDefault().Value as string;
             Guard.IsNotNullOrWhiteSpace(timestamp);
             Guard.IsTrue(DateTime.TryParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var buildTime));
             return buildTime.ToLocalTime();
