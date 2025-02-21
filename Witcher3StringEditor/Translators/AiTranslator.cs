@@ -82,8 +82,6 @@ internal class AiTranslator : ITranslator
 
     public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
     {
-        Guard.IsNotNullOrWhiteSpace(text);
-        Guard.IsNotNullOrWhiteSpace(modelSettings.Prompts);
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
         await PrepareChatHistory(targetLanguage);
