@@ -179,8 +179,10 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             var tempFolder = Directory.CreateTempSubdirectory().FullName;
-            var csvPath = $"{Path.Combine(tempFolder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
-            var w3StringsPath = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.w3strings";
+            var saveLang = Enum.GetName(w3Job.Language);
+            Guard.IsNotNullOrWhiteSpace(saveLang);
+            var csvPath = $"{Path.Combine(tempFolder, saveLang)}.csv";
+            var w3StringsPath = $"{Path.Combine(w3Job.Path, saveLang)}.w3strings";
             if (!await SerializeCsv(w3Job, tempFolder)) return false;
             using var process = new Process();
             process.EnableRaisingEvents = true;
