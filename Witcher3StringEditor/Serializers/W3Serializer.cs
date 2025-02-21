@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using CommunityToolkit.Diagnostics;
 using MiniExcelLibs;
 using Serilog;
 using System.Diagnostics;
@@ -141,7 +142,9 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
             foreach (var item in w3Job.W3Items)
                 stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
-            var csvPath = $"{Path.Combine(folder, Enum.GetName(w3Job.Language) ?? "en")}.csv";
+            var saveLang = Enum.GetName(w3Job.Language);
+            Guard.IsNotNullOrWhiteSpace(saveLang);
+            var csvPath = $"{Path.Combine(folder, saveLang)}.csv";
             if (File.Exists(csvPath) && !backupService.Backup(csvPath)) return false;
             await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
             return true;
