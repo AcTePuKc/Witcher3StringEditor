@@ -19,6 +19,7 @@ namespace Witcher3StringEditor.Translators;
 internal class AiTranslator : ITranslator
 {
     private Language? destinationLanguage;
+    private readonly IBrowsingContext browsingContext;
     private readonly HttpClient httpClient;
     private readonly ChatHistory chatHistory;
     private readonly IModelSettings modelSettings;
@@ -35,6 +36,7 @@ internal class AiTranslator : ITranslator
         {
             BaseAddress = new Uri(settings.EndPoint)
         };
+        browsingContext = BrowsingContext.New(Configuration.Default);
 #pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         if (modelSettings.ContextLength > 0)
             chatHistoryReducer = new ChatHistoryTruncationReducer(modelSettings.ContextLength);
@@ -55,6 +57,7 @@ internal class AiTranslator : ITranslator
     ~AiTranslator()
     {
         httpClient.Dispose();
+        browsingContext.Dispose();
     }
 
     public string Name => "AiTranslator";
@@ -75,7 +78,9 @@ internal class AiTranslator : ITranslator
         var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
         var translationResponse = await GetTranslationResponse(nodes);
         UpdateNodeTextContent(nodes, translationResponse);
-        return BuildTranslationResult(document, text, sourceLanguage, targetLanguage);
+        var translationResult = BuildTranslationResult(document, text, sourceLanguage, targetLanguage);
+        document.Dispose();
+        return translationResult;
     }
 
     public async Task<ITranslationResult> TranslateAsync(string text, ILanguage toLanguage, ILanguage? fromLanguage = null)
@@ -101,10 +106,9 @@ internal class AiTranslator : ITranslator
         _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
     }
 
-    private static async Task<(IDocument document, IText[] nodes)> ProcessDocumentAndExtractNodes(string text)
+    private async Task<(IDocument document, IText[] nodes)> ProcessDocumentAndExtractNodes(string text)
     {
-        using var context = BrowsingContext.New(Configuration.Default);
-        using var document = await context.OpenAsync(req => req.Content(text));
+        var document = await browsingContext.OpenAsync(req => req.Content(text));
         var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
         return (document, nodes);
     }
