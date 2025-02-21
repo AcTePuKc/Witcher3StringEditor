@@ -78,9 +78,9 @@ internal class AiTranslator : ITranslator
         var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
         var translationResponse = await GetTranslationResponse(nodes);
         UpdateNodeTextContent(nodes, translationResponse);
-        var translationResult = BuildTranslationResult(document, text, sourceLanguage, targetLanguage);
+        var translation = BuildTranslationResult(text, document.Body?.InnerHtml ?? string.Empty, sourceLanguage, targetLanguage);
         document.Dispose();
-        return translationResult;
+        return translation;
     }
 
     public async Task<ITranslationResult> TranslateAsync(string text, ILanguage toLanguage, ILanguage? fromLanguage = null)
@@ -161,12 +161,12 @@ internal class AiTranslator : ITranslator
             nodes[i].TextContent = lines[i];
     }
 
-    private static AiTranslationResult BuildTranslationResult(IDocument document, string text, Language formLanguage, Language toLanguage)
+    private static AiTranslationResult BuildTranslationResult(string source, string translation, Language formLanguage, Language toLanguage)
     {
         return new AiTranslationResult
         {
-            Source = text,
-            Translation = document.Body?.InnerHtml ?? string.Empty,
+            Source = source,
+            Translation = translation,
             SourceLanguage = formLanguage,
             TargetLanguage = toLanguage
         };
