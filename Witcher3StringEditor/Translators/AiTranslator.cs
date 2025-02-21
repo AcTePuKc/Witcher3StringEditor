@@ -8,7 +8,6 @@ using GTranslate.Translators;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
-using Serilog.Extensions.Logging;
 using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
