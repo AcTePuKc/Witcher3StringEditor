@@ -6,6 +6,7 @@ using GTranslate;
 using GTranslate.Results;
 using GTranslate.Translators;
 using Microsoft.Extensions.Logging;
+using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System.Net.Http;
@@ -23,6 +24,7 @@ internal class AiTranslator : ITranslator
     private readonly ChatHistory chatHistory;
     private readonly IModelSettings modelSettings;
     private readonly IChatCompletionService chatCompletionService;
+    private readonly PromptExecutionSettings promptExecutionSettings;
 #pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
     private readonly ChatHistoryTruncationReducer? chatHistoryReducer;
 #pragma warning restore SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
@@ -36,6 +38,7 @@ internal class AiTranslator : ITranslator
             BaseAddress = new Uri(settings.EndPoint)
         };
         browsingContext = BrowsingContext.New(Configuration.Default);
+        promptExecutionSettings = CreatePromptExecutionSettings();
 #pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         if (modelSettings.ContextLength > 0)
             chatHistoryReducer = new ChatHistoryTruncationReducer(modelSettings.ContextLength);
@@ -44,6 +47,16 @@ internal class AiTranslator : ITranslator
                                                                 apiKey: Unprotect(settings.ApiKey),
                                                                 httpClient: httpClient,
                                                                 loggerFactory: Ioc.Default.GetRequiredService<ILoggerFactory>());
+    }
+
+    private PromptExecutionSettings CreatePromptExecutionSettings()
+    {
+        var defaultPromptSettings = new OpenAIPromptExecutionSettings();
+        if (modelSettings.Temperature >= 0)
+            defaultPromptSettings.Temperature = modelSettings.Temperature;
+        if (modelSettings.TopP >= 0)
+            defaultPromptSettings.TopP = modelSettings.TopP;
+        return defaultPromptSettings;
     }
 
     private static string Unprotect(string encryptedKey)
@@ -75,7 +88,7 @@ internal class AiTranslator : ITranslator
         var targetLanguage = Language.GetLanguage(toLanguage);
         await PrepareChatHistory(targetLanguage);
         var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
-        var translationResponse = await GetTranslationResponse(nodes);
+        var translationResponse = await FetchTranslationResponse(nodes);
         UpdateNodeTextContent(nodes, translationResponse);
         var translation = BuildTranslationResult(text, document.Body?.InnerHtml ?? string.Empty, sourceLanguage, targetLanguage);
         document.Dispose();
@@ -115,18 +128,13 @@ internal class AiTranslator : ITranslator
         return (document, nodes);
     }
 
-    private async Task<string> GetTranslationResponse(IText[] nodes)
+    private async Task<string> FetchTranslationResponse(IText[] nodes)
     {
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
-        var promptExecutionSettings = new OpenAIPromptExecutionSettings();
-        if (modelSettings.Temperature >= 0)
-            promptExecutionSettings.Temperature = modelSettings.Temperature;
-        if (modelSettings.TopP >= 0)
-            promptExecutionSettings.TopP = modelSettings.TopP;
-        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
-        Guard.IsNotNullOrWhiteSpace(translationResponse);
-        chatHistory.AddAssistantMessage(translationResponse);
-        return translationResponse;
+        var translation = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
+        Guard.IsNotNullOrWhiteSpace(translation);
+        chatHistory.AddAssistantMessage(translation);
+        return translation;
     }
 
     private static string ExtractTextContent(IText[] nodes)
