@@ -282,7 +282,17 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private void OpenNexusMods()
-        => explorerService.Open(appSettings.NexusModUrl);
+    {
+        try
+        {
+            Guard.IsTrue(Uri.TryCreate(appSettings.NexusModUrl, UriKind.Absolute, out var _));
+            explorerService.Open(appSettings.NexusModUrl);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error occurred in MainWindowViewModel.OpenNexusMods.");
+        }
+    }
 
     [RelayCommand]
     private async Task ShowRecentDialog()
@@ -291,7 +301,17 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowTranslateDialog()
     {
-        await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, appSettings.IsUseAiTranslate
-            ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
+        try
+        {
+            Guard.IsGreaterThan(W3Items.Count, 0);
+            var index = W3Items.IndexOf(SelectedItem);
+            Guard.IsEqualTo(index, -1);
+            await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? index : 0, appSettings, appSettings.IsUseAiTranslate
+                ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error occurred in MainWindowViewModel.ShowTranslateDialogAsync.");
+        }
     }
 }
