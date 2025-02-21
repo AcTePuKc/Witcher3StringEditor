@@ -92,7 +92,7 @@
             </sf:SfDataGrid.Resources>
             <i:Interaction.Behaviors>
                 <b:SfDataGridSizeChangedBehavior />
-                <b:SfDataGridQueryRowHeightBehavior />
+                <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding ElementName=SfDataGrid, Path=RowHeight}" />
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridDateTimeColumn

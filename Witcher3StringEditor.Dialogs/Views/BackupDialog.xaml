@@ -61,6 +61,7 @@
             ColumnSizer="Star"
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             NavigationMode="Row"
+            RowHeight="30"
             ShowRowHeader="True">
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>

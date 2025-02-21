@@ -76,6 +76,7 @@
             AutoGenerateColumns="False"
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             NavigationMode="Row"
+            RowHeight="30"
             SelectionMode="Extended"
             ShowRowHeader="True">
             <sf:SfDataGrid.Resources>
@@ -105,7 +106,7 @@
             </sf:SfDataGrid.Resources>
             <i:Interaction.Behaviors>
                 <b:SfDataGridSizeChangedBehavior />
-                <b:SfDataGridQueryRowHeightBehavior />
+                <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding ElementName=SfDataGrid, Path=RowHeight}" />
                 <b:SfDataGridRecordDeletingBehavior />
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
