@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using CommunityToolkit.Diagnostics;
+using Serilog;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,8 +14,8 @@ public class SecurePasswordConverter : IValueConverter
     {
         try
         {
-            if (value is not string encryptedPassword || string.IsNullOrWhiteSpace(encryptedPassword))
-                return DependencyProperty.UnsetValue;
+            var encryptedPassword = value as string;
+            Guard.IsNotNullOrWhiteSpace(encryptedPassword);
             var encryptedData = System.Convert.FromBase64String(encryptedPassword);
             var data = ProtectedData.Unprotect(encryptedData, null, DataProtectionScope.CurrentUser);
             return Encoding.UTF8.GetString(data);
@@ -30,8 +31,8 @@ public class SecurePasswordConverter : IValueConverter
     {
         try
         {
-            if (value is not string password || string.IsNullOrWhiteSpace(password))
-                return DependencyProperty.UnsetValue;
+            var password = value as string;
+            Guard.IsNotNullOrWhiteSpace(password);
             var data = Encoding.UTF8.GetBytes(password);
             var encryptedData = ProtectedData.Protect(data, null, DataProtectionScope.CurrentUser);
             return System.Convert.ToBase64String(encryptedData);
