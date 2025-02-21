@@ -82,11 +82,14 @@ internal class AiTranslator : ITranslator
 
     public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
     {
-        var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
-        var targetLanguage = Language.GetLanguage(toLanguage);
+        Guard.IsNotNullOrWhiteSpace(text);
+        Guard.IsTrue(Language.TryGetLanguage(fromLanguage ?? "en", out var sourceLanguage));
+        Guard.IsTrue(Language.TryGetLanguage(toLanguage, out var targetLanguage));
         await PrepareChatHistory(targetLanguage);
         var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
+        Guard.IsNotEmpty(nodes);
         var translationResponse = await FetchTranslationResponse(nodes);
+        Guard.IsNotNullOrWhiteSpace(translationResponse);
         UpdateNodeTextContent(nodes, translationResponse);
         var translation = document.Body?.InnerHtml;
         Guard.IsNotNullOrWhiteSpace(translation);
@@ -120,16 +123,17 @@ internal class AiTranslator : ITranslator
 
     private async Task<(IDocument document, IText[] nodes)> ProcessDocumentAndExtractNodes(string text)
     {
+        Guard.IsNotNullOrWhiteSpace(text);
         var document = await browsingContext.OpenAsync(req => req.Content(text));
-        Guard.IsNotNull(document);
-        Guard.IsNotNull(document.Body);
-        var nodes = document.Body.Descendants<IText>().ToArray();
+        var nodes = document.Body?.Descendants<IText>().ToArray();
         Guard.IsNotNull(nodes);
+        Guard.IsEmpty(nodes);
         return (document, nodes);
     }
 
     private async Task<string> FetchTranslationResponse(IText[] nodes)
     {
+        Guard.IsNotEmpty(nodes);
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
         var translation = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
         Guard.IsNotNullOrWhiteSpace(translation);
@@ -139,6 +143,7 @@ internal class AiTranslator : ITranslator
 
     private static string ExtractTextContent(IText[] nodes)
     {
+        Guard.IsNotEmpty(nodes);
         string result;
         if (nodes.Length == 1)
         {
@@ -157,15 +162,18 @@ internal class AiTranslator : ITranslator
             }
             result = stringBuilder.ToString();
         }
-
+        Guard.IsNotNullOrWhiteSpace(result);
         return result;
     }
 
     private static void UpdateNodeTextContent(IText[] nodes, string translation)
     {
+        Guard.IsNotEmpty(nodes);
+        Guard.IsNotNullOrWhiteSpace(translation);
         var lines = nodes.Length > 1
             ? translation.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries)
             : [translation];
+        Guard.IsNotEmpty(lines);
         Guard.HasSizeEqualTo(lines, nodes.Length);
         for (var i = 0; i < nodes.Length; i++)
             nodes[i].TextContent = lines[i];
@@ -173,6 +181,8 @@ internal class AiTranslator : ITranslator
 
     private static AiTranslationResult BuildTranslationResult(string source, string translation, Language formLanguage, Language toLanguage)
     {
+        Guard.IsNotNullOrWhiteSpace(source);
+        Guard.IsNotNullOrWhiteSpace(translation);
         return new AiTranslationResult
         {
             Source = source,
