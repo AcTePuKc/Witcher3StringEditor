@@ -74,7 +74,7 @@ internal class AiTranslator : ITranslator
         Guard.IsNotNullOrWhiteSpace(modelSettings.Prompts);
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
-        await PrepareChatHistory(targetLanguage, modelSettings);
+        await PrepareChatHistory(targetLanguage);
         var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
         var translationResponse = await GetTranslationResponse(nodes);
         UpdateNodeTextContent(nodes, translationResponse);
@@ -92,7 +92,7 @@ internal class AiTranslator : ITranslator
     public Task<ITransliterationResult> TransliterateAsync(string text, ILanguage toLanguage, ILanguage? fromLanguage = null)
         => throw new NotImplementedException();
 
-    private async Task PrepareChatHistory(Language targetLanguage, IModelSettings modelSettings)
+    private async Task PrepareChatHistory(Language targetLanguage)
     {
         if (destinationLanguage?.Equals(targetLanguage) != true)
         {
