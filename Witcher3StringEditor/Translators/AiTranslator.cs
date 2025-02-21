@@ -1,11 +1,14 @@
 ﻿using AngleSharp;
 using AngleSharp.Dom;
 using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using GTranslate;
 using GTranslate.Results;
 using GTranslate.Translators;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Serilog.Extensions.Logging;
 using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -37,7 +40,10 @@ internal class AiTranslator : ITranslator
         if (modelSettings.ContextLength > 0)
             chatHistoryReducer = new ChatHistoryTruncationReducer(modelSettings.ContextLength);
 #pragma warning restore SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
-        chatCompletionService = new OpenAIChatCompletionService(settings.ModelId, apiKey: Unprotect(settings.ApiKey), httpClient: httpClient);
+        chatCompletionService = new OpenAIChatCompletionService(settings.ModelId,
+                                                                apiKey: Unprotect(settings.ApiKey),
+                                                                httpClient: httpClient,
+                                                                loggerFactory: Ioc.Default.GetRequiredService<ILoggerFactory>());
     }
 
     private static string Unprotect(string encryptedKey)
@@ -62,8 +68,8 @@ internal class AiTranslator : ITranslator
 
     public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
     {
-        Guard.IsNullOrWhiteSpace(text);
-        Guard.IsNullOrWhiteSpace(modelSettings.Prompts);
+        Guard.IsNotNullOrWhiteSpace(text);
+        Guard.IsNotNullOrWhiteSpace(modelSettings.Prompts);
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
         if (destinationLanguage?.Equals(targetLanguage) != true)
