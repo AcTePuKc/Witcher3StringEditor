@@ -71,8 +71,7 @@ internal class AiTranslator : ITranslator
         Guard.IsNotNullOrWhiteSpace(modelSettings.Prompts);
         var sourceLanguage = Language.GetLanguage(fromLanguage ?? "en");
         var targetLanguage = Language.GetLanguage(toLanguage);
-        InitializeChatHistory(targetLanguage);
-        _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
+        await PrepareChatHistory(targetLanguage, modelSettings);
         var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
         var translationResponse = await GetTranslationResponse(nodes);
         UpdateNodeTextContent(nodes, translationResponse);
@@ -87,6 +86,42 @@ internal class AiTranslator : ITranslator
 
     public Task<ITransliterationResult> TransliterateAsync(string text, ILanguage toLanguage, ILanguage? fromLanguage = null)
         => throw new NotImplementedException();
+
+    private async Task PrepareChatHistory(Language targetLanguage, IModelSettings modelSettings)
+    {
+        if (destinationLanguage?.Equals(targetLanguage) != true)
+        {
+            chatHistory.Clear();
+            destinationLanguage = targetLanguage;
+        }
+        if (chatHistory.Count == 0)
+            chatHistory.AddSystemMessage(string.Format(modelSettings.Prompts, targetLanguage.ISO6393));
+        if (modelSettings.ContextLength == 0 && chatHistory.Count > 1)
+            chatHistory.RemoveRange(1, chatHistory.Count - 1);
+        _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
+    }
+
+    private static async Task<(IDocument document, IText[] nodes)> ProcessDocumentAndExtractNodes(string text)
+    {
+        using var context = BrowsingContext.New(Configuration.Default);
+        using var document = await context.OpenAsync(req => req.Content(text));
+        var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
+        return (document, nodes);
+    }
+
+    private async Task<string> GetTranslationResponse(IText[] nodes)
+    {
+        chatHistory.AddUserMessage(ExtractTextContent(nodes));
+        var promptExecutionSettings = new OpenAIPromptExecutionSettings();
+        if (modelSettings.Temperature >= 0)
+            promptExecutionSettings.Temperature = modelSettings.Temperature;
+        if (modelSettings.TopP >= 0)
+            promptExecutionSettings.TopP = modelSettings.TopP;
+        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
+        Guard.IsNotNullOrWhiteSpace(translationResponse);
+        chatHistory.AddAssistantMessage(translationResponse);
+        return translationResponse;
+    }
 
     private static string ExtractTextContent(IText[] nodes)
     {
@@ -110,41 +145,6 @@ internal class AiTranslator : ITranslator
         }
 
         return result;
-    }
-
-    private void InitializeChatHistory(Language targetLanguage)
-    {
-        if (destinationLanguage?.Equals(targetLanguage) != true)
-        {
-            chatHistory.Clear();
-            destinationLanguage = targetLanguage;
-        }
-        if (chatHistory.Count == 0)
-            chatHistory.AddSystemMessage(string.Format(modelSettings.Prompts, targetLanguage.ISO6393));
-        if (modelSettings.ContextLength == 0 && chatHistory.Count > 1)
-            chatHistory.RemoveRange(1, chatHistory.Count - 1);
-    }
-
-    private static async Task<(IDocument document, IText[] nodes)> ProcessDocumentAndExtractNodes(string text)
-    {
-        using var context = BrowsingContext.New(Configuration.Default);
-        using var document = await context.OpenAsync(req => req.Content(text));
-        var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
-        return (document, nodes);
-    }
-
-    private async Task<string> GetTranslationResponse(IText[] nodes)
-    {
-        chatHistory.AddUserMessage(ExtractTextContent(nodes));
-        var promptExecutionSettings = new OpenAIPromptExecutionSettings();
-        if (modelSettings.Temperature >= 0)
-            promptExecutionSettings.Temperature = modelSettings.Temperature;
-        if (modelSettings.TopP >= 0)
-            promptExecutionSettings.TopP = modelSettings.TopP;
-        var translationResponse = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
-        Guard.IsNotNullOrWhiteSpace(translationResponse);
-        chatHistory.AddAssistantMessage(translationResponse);
-        return translationResponse;
     }
 
     private static void UpdateNodeTextContent(IText[] nodes, string translationResponse)
