@@ -8,7 +8,6 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using System.ComponentModel;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
-using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
