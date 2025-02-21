@@ -237,17 +237,8 @@ internal partial class MainWindowViewModel : ObservableObject
         => await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
 
     [RelayCommand]
-    private async Task ShowSettingsDialog()
-    {
-        try
-        {
-            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Error occurred in MainWindowViewModel.ShowSettingsDialog.");
-        }
-    }
+    private async Task ShowSettingsDialog() 
+        => await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
 
     [RelayCommand]
     private async Task PlayGame()
@@ -311,7 +302,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         Guard.IsGreaterThan(W3Items.Count, 0);
         var index = W3Items.IndexOf(SelectedItem);
-        Guard.IsEqualTo(index, -1);
+        Guard.IsNotEqualTo(index, -1);
         await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? index : 0, appSettings, appSettings.IsUseAiTranslate
             ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
