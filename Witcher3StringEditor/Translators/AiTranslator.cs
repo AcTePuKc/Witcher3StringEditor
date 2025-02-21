@@ -147,24 +147,24 @@ internal class AiTranslator : ITranslator
         return result;
     }
 
-    private static void UpdateNodeTextContent(IText[] nodes, string translationResponse)
+    private static void UpdateNodeTextContent(IText[] nodes, string translation)
     {
         var lines = nodes.Length > 1
-            ? translationResponse.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries)
-            : [translationResponse];
+            ? translation.Split(["\r\n", "\r", "\n"], StringSplitOptions.TrimEntries)
+            : [translation];
         Guard.HasSizeEqualTo(lines, nodes.Length);
         for (var i = 0; i < nodes.Length; i++)
             nodes[i].TextContent = lines[i];
     }
 
-    private static AiTranslationResult BuildTranslationResult(IDocument document, string text, Language sourceLanguage, Language targetLanguage)
+    private static AiTranslationResult BuildTranslationResult(IDocument document, string text, Language formLanguage, Language toLanguage)
     {
         return new AiTranslationResult
         {
             Source = text,
             Translation = document.Body?.InnerHtml ?? string.Empty,
-            SourceLanguage = sourceLanguage,
-            TargetLanguage = targetLanguage
+            SourceLanguage = formLanguage,
+            TargetLanguage = toLanguage
         };
     }
 }
