@@ -17,6 +17,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            Guard.IsTrue(File.Exists(path));
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
             if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
             if (Path.GetExtension(path) != ".w3strings") return [];
@@ -37,6 +38,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            Guard.IsTrue(File.Exists(path));
             return from line in await File.ReadAllLinesAsync(path)
                    where !line.StartsWith(';')
                    select line.Split("|")
@@ -62,6 +64,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            Guard.IsTrue(File.Exists(path));
             return await MiniExcel.QueryAsync<W3Item>(path);
         }
         catch (Exception ex)
@@ -75,6 +78,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            Guard.IsTrue(File.Exists(path));
+            Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
@@ -128,6 +133,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            Guard.IsTrue(Directory.Exists(folder));
             var saveLang = Enum.GetName(w3Job.Language);
             Guard.IsNotNullOrWhiteSpace(saveLang);
             var stringBuilder = new StringBuilder();
@@ -179,6 +185,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
             var tempFolder = Directory.CreateTempSubdirectory().FullName;
             var saveLang = Enum.GetName(w3Job.Language);
             Guard.IsNotNullOrWhiteSpace(saveLang);
