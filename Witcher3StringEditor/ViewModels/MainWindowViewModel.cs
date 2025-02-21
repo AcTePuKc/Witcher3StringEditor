@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -260,9 +261,9 @@ internal partial class MainWindowViewModel : ObservableObject
             var timestamp = Assembly.GetExecutingAssembly().GetCustomAttributesData()
                 .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute")?.ConstructorArguments
                 .FirstOrDefault().Value as string ?? string.Empty;
-            return !string.IsNullOrWhiteSpace(timestamp)
-                ? DateTime.ParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToLocalTime()
-                : DateTime.MinValue;
+            Guard.IsNotNullOrWhiteSpace(timestamp);
+            Guard.IsTrue(DateTime.TryParseExact(timestamp, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var buildTime));
+            return buildTime.ToLocalTime();
         }
         catch (Exception ex)
         {
