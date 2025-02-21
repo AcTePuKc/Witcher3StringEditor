@@ -128,6 +128,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            var saveLang = Enum.GetName(w3Job.Language);
+            Guard.IsNotNullOrWhiteSpace(saveLang);
             var stringBuilder = new StringBuilder();
             var lang = w3Job.Language
                 is not W3Language.ar
@@ -136,14 +138,11 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
                 and not W3Language.esmx
                 and not W3Language.kr
                 and not W3Language.tr
-                ? Enum.GetName(w3Job.Language) ?? "en"
-                : "cleartext";
+                ? saveLang : "cleartext";
             stringBuilder.AppendLine($";meta[language={lang}]");
             stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
             foreach (var item in w3Job.W3Items)
                 stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
-            var saveLang = Enum.GetName(w3Job.Language);
-            Guard.IsNotNullOrWhiteSpace(saveLang);
             var csvPath = $"{Path.Combine(folder, saveLang)}.csv";
             if (File.Exists(csvPath) && !backupService.Backup(csvPath)) return false;
             await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
@@ -162,7 +161,9 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            var path = $"{Path.Combine(w3Job.Path, Enum.GetName(w3Job.Language) ?? "en")}.xlsx";
+            var saveLang = Enum.GetName(w3Job.Language);
+            Guard.IsNotNullOrWhiteSpace(saveLang);
+            var path = $"{Path.Combine(w3Job.Path, saveLang)}.xlsx";
             if (File.Exists(path) && !backupService.Backup(path)) return false;
             await MiniExcel.SaveAsAsync(path, w3Job.W3Items.Cast<W3Item>(), overwriteFile: true);
             return true;
