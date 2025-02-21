@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Diagnostics;
 using Serilog;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using Witcher3StringEditor.Interfaces;
@@ -10,7 +11,7 @@ namespace Witcher3StringEditor.Services;
 internal class BackupService(IAppSettings appSettings) : IBackupService
 {
     private readonly string backupFolderPath
-        = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Witcher3StringEditor", "Backup");
+        = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Backup");
 
     private static string ComputeSha256Hash(string filePath)
     {
