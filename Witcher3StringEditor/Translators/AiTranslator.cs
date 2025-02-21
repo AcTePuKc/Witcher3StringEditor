@@ -8,7 +8,6 @@ using GTranslate.Translators;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
-using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -109,7 +108,10 @@ internal class AiTranslator : ITranslator
     private async Task<(IDocument document, IText[] nodes)> ProcessDocumentAndExtractNodes(string text)
     {
         var document = await browsingContext.OpenAsync(req => req.Content(text));
-        var nodes = document.Body?.Descendants<IText>().ToArray() ?? throw new InvalidDataException("No text found.");
+        Guard.IsNotNull(document);
+        Guard.IsNotNull(document.Body);
+        var nodes = document.Body.Descendants<IText>().ToArray();
+        Guard.IsNotNull(nodes);
         return (document, nodes);
     }
 
