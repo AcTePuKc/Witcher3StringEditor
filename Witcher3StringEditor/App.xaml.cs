@@ -47,7 +47,7 @@ public partial class App
     {
         logObserver = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-            , "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
+            , Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
             .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo.Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
             .CreateLogger();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
