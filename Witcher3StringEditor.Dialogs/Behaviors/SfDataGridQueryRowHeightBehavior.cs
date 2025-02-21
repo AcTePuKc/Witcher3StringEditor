@@ -1,10 +1,20 @@
 ﻿using Microsoft.Xaml.Behaviors;
 using Syncfusion.UI.Xaml.Grid;
+using System.Windows;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
 public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
 {
+    public static readonly DependencyProperty MinHeightProperty
+        = DependencyProperty.Register(nameof(MinHeight), typeof(double), typeof(SfDataGridQueryRowHeightBehavior), new PropertyMetadata(25.0));
+
+    public double MinHeight
+    {
+        get => (double)GetValue(MinHeightProperty);
+        set => SetValue(MinHeightProperty, value);
+    }
+
     private readonly GridRowSizingOptions gridRowResizingOptions = new();
 
     protected override void OnAttached()
@@ -16,7 +26,7 @@ public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
     private void AssociatedObject_QueryRowHeight(object? sender, QueryRowHeightEventArgs e)
     {
         if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out var autoHeight)) return;
-        if (autoHeight <= 30) return;
+        if (autoHeight <= MinHeight) return;
         e.Height = autoHeight;
         e.Handled = true;
     }
