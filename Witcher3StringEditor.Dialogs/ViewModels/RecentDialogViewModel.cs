@@ -23,7 +23,7 @@ public partial class RecentDialogViewModel(IAppSettings appSettings)
         if (!File.Exists(item.FilePath))
         {
             if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "OpenedFileNoFound"))
-                AppSettings.RecentItems.Remove(item);
+                _ = AppSettings.RecentItems.Remove(item);
         }
         else
         {
