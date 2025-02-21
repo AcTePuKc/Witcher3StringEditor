@@ -49,7 +49,7 @@ internal class AiTranslator : ITranslator
                                                                 loggerFactory: Ioc.Default.GetRequiredService<ILoggerFactory>());
     }
 
-    private PromptExecutionSettings CreatePromptExecutionSettings()
+    private OpenAIPromptExecutionSettings CreatePromptExecutionSettings()
     {
         var defaultPromptSettings = new OpenAIPromptExecutionSettings();
         if (modelSettings.Temperature >= 0)
