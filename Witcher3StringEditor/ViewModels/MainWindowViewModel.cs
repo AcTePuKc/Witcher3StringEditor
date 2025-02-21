@@ -238,11 +238,30 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task ShowSettingsDialog()
-        => await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+    {
+        try
+        {
+            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error occurred in MainWindowViewModel.ShowSettingsDialog.");
+        }
+    }
 
     [RelayCommand]
     private async Task PlayGame()
-        => await playGameService.PlayGame();
+    {
+        try
+        {
+            Guard.IsTrue(File.Exists(appSettings.GameExePath));
+            await playGameService.PlayGame();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error occurred in MainWindowViewModel.PlayGame.");
+        }
+    }
 
     [RelayCommand]
     private async Task ShowAbout()
@@ -278,20 +297,16 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
-        => explorerService.Open(OutputFolder);
+    {
+        Guard.IsTrue(Directory.Exists(OutputFolder));
+        explorerService.Open(OutputFolder);
+    }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
-        try
-        {
-            Guard.IsTrue(Uri.TryCreate(appSettings.NexusModUrl, UriKind.Absolute, out var _));
-            explorerService.Open(appSettings.NexusModUrl);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Error occurred in MainWindowViewModel.OpenNexusMods.");
-        }
+        Guard.IsTrue(Uri.TryCreate(appSettings.NexusModUrl, UriKind.Absolute, out var _));
+        explorerService.Open(appSettings.NexusModUrl);
     }
 
     [RelayCommand]
@@ -301,17 +316,10 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowTranslateDialog()
     {
-        try
-        {
-            Guard.IsGreaterThan(W3Items.Count, 0);
-            var index = W3Items.IndexOf(SelectedItem);
-            Guard.IsEqualTo(index, -1);
-            await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? index : 0, appSettings, appSettings.IsUseAiTranslate
-                ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Error occurred in MainWindowViewModel.ShowTranslateDialogAsync.");
-        }
+        Guard.IsGreaterThan(W3Items.Count, 0);
+        var index = W3Items.IndexOf(SelectedItem);
+        Guard.IsEqualTo(index, -1);
+        await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? index : 0, appSettings, appSettings.IsUseAiTranslate
+            ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
 }
