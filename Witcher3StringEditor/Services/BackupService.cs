@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using CommunityToolkit.Diagnostics;
+using Serilog;
 using System.IO;
 using System.Security.Cryptography;
 using Witcher3StringEditor.Interfaces;
@@ -31,7 +32,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         try
         {
             var hash = ComputeSha256Hash(path);
-            if (string.IsNullOrWhiteSpace(hash)) return false;
+            Guard.IsNotNullOrWhiteSpace(hash);
             var backupItem = new BackupItem
             {
                 FileName = Path.GetFileName(path),
