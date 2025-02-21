@@ -252,15 +252,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task PlayGame()
     {
-        try
-        {
-            Guard.IsTrue(File.Exists(appSettings.GameExePath));
-            await playGameService.PlayGame();
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Error occurred in MainWindowViewModel.PlayGame.");
-        }
+        Guard.IsTrue(File.Exists(appSettings.GameExePath));
+        await playGameService.PlayGame();
     }
 
     [RelayCommand]
