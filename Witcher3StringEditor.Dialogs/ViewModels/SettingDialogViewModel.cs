@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using FluentValidation;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using System.ComponentModel;
@@ -12,8 +13,10 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogService dialogService)
-    : ObservableObject, IModalDialogViewModel
+public partial class SettingDialogViewModel(IAppSettings appSettings,
+                                            IDialogService dialogService,
+                                            IValidator<IAppSettings> appSettingsValidator,
+                                            IValidator<IModelSettings> modelSettingsValidator): ObservableObject, IModalDialogViewModel
 {
     public bool? DialogResult => true;
 
@@ -62,7 +65,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        var result = await AppSettingsValidator.Instance.ValidateAsync(AppSettings);
+        var result = await appSettingsValidator.ValidateAsync(AppSettings);
         if (!result.IsValid)
         {
             e.Cancel = true;
@@ -71,7 +74,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         }
         else if (AppSettings.IsUseAiTranslate)
         {
-            result = await ModelSettingsValidator.Instance.ValidateAsync(AppSettings.ModelSettings);
+            result = await modelSettingsValidator.ValidateAsync(AppSettings.ModelSettings);
             if (!result.IsValid)
             {
                 if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "IncompleteAiTranslationSettings"))

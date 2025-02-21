@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
+using FluentValidation;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
@@ -17,6 +18,7 @@ using System.Reactive;
 using System.Reflection;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Recipients;
+using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Interfaces;
@@ -64,6 +66,8 @@ public partial class App
     {
         return new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
+            .AddValidatorsFromAssemblyContaining<AppSettingsValidator>()
+            .AddValidatorsFromAssemblyContaining<ModelSettingsValidator>()
             .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
             .AddSingleton<IDialogManager, DialogManager>()

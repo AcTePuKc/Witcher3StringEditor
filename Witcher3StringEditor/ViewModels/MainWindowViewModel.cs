@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using FluentValidation;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
@@ -17,7 +18,6 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Witcher3StringEditor.Dialogs.Recipients;
-using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Locales;
@@ -37,6 +37,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IExplorerService explorerService;
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
+    private readonly IValidator<IAppSettings> appSettingsValidator;
+    private readonly IValidator<IModelSettings> modelSettingsValidator;
 
     [ObservableProperty]
     private bool isUpdateAvailable;
@@ -61,7 +63,9 @@ internal partial class MainWindowViewModel : ObservableObject
                                IDialogService dialogService,
                                ICheckUpdateService checkUpdateService,
                                IPlayGameService playGameService,
-                               IExplorerService explorerService)
+                               IExplorerService explorerService,
+                               IValidator<IAppSettings> appSettingsValidator,
+                               IValidator<IModelSettings> modelSettingsValidator)
     {
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
@@ -70,6 +74,8 @@ internal partial class MainWindowViewModel : ObservableObject
         this.checkUpdateService = checkUpdateService;
         this.playGameService = playGameService;
         this.explorerService = explorerService;
+        this.appSettingsValidator = appSettingsValidator;
+        this.modelSettingsValidator = modelSettingsValidator;
         WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(logEventRecipient, (r, m) =>
         {
             r.Receive(m);
@@ -104,8 +110,8 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private async Task CheckSettings(IAppSettings settings)
     {
-        if (!(await AppSettingsValidator.Instance.ValidateAsync(settings)).IsValid)
-            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService));
+        if (!(await appSettingsValidator.ValidateAsync(settings)).IsValid)
+            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
     }
 
     [RelayCommand]
@@ -228,7 +234,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task ShowSettingsDialog()
-        => await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService));
+        => await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
 
     [RelayCommand]
     private async Task PlayGame()
