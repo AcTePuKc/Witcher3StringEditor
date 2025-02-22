@@ -219,6 +219,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 
     private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
     {
+        Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
         using var process = new Process();
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo
@@ -245,7 +246,14 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         if (File.Exists(path) && !backupService.Backup(path))
             return false;
-        File.Copy(tempPath, path, true);
+        try
+        {
+            File.Copy(tempPath, path, true);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to copy file from {0} to {1}.\n-{2}", tempPath, path, ex.Message);
+        }
         return true;
     }
 }
