@@ -26,7 +26,7 @@ internal class CheckUpdateService(IAppSettings appSettings) : ICheckUpdateServic
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to check for updates.");
+            Log.Error(ex, "Failed to check for updates.\n-{0}", ex.Message);
             return false;
         }
     }
