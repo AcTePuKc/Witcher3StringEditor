@@ -92,6 +92,7 @@ internal class AiTranslator : ITranslator
         Guard.IsNotNullOrWhiteSpace(text);
         await PrepareChatHistory(toLanguage);
         var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
+        Guard.IsNotNull(nodes);
         Guard.IsNotEmpty(nodes);
         var translationResponse = await FetchTranslationResponse(nodes);
         Guard.IsNotNullOrWhiteSpace(translationResponse);
@@ -129,29 +130,23 @@ internal class AiTranslator : ITranslator
         _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
     }
 
-    private async Task<(IDocument document, IText[] nodes)> ProcessDocumentAndExtractNodes(string text)
+    private async Task<(IDocument document, IText[]? nodes)> ProcessDocumentAndExtractNodes(string text)
     {
-        Guard.IsNotNullOrWhiteSpace(text);
         var document = await browsingContext.OpenAsync(req => req.Content(text));
         var nodes = document.Body?.Descendants<IText>().ToArray();
-        Guard.IsNotNull(nodes);
-        Guard.IsEmpty(nodes);
         return (document, nodes);
     }
 
     private async Task<string> FetchTranslationResponse(IText[] nodes)
     {
-        Guard.IsNotEmpty(nodes);
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
         var translation = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
-        Guard.IsNotNullOrWhiteSpace(translation);
         chatHistory.AddAssistantMessage(translation);
         return translation;
     }
 
     private static string ExtractTextContent(IText[] nodes)
     {
-        Guard.IsNotEmpty(nodes);
         string result;
         if (nodes.Length == 1)
         {
