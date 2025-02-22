@@ -159,7 +159,6 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         try
         {
-            Guard.IsNotNullOrWhiteSpace(fileName);
             if (W3Items.Any())
                 if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
                     W3Items.Clear();
