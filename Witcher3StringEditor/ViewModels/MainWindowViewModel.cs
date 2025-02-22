@@ -30,70 +30,60 @@ namespace Witcher3StringEditor.ViewModels;
 internal partial class MainWindowViewModel : ObservableObject
 {
     private readonly IAppSettings appSettings;
-    private readonly IW3Serializer w3Serializer;
+    private readonly IValidator<IAppSettings> appSettingsValidator;
     private readonly IBackupService backupService;
-    private readonly IDialogService dialogService;
     private readonly ICheckUpdateService checkUpdateService;
-    private readonly IPlayGameService playGameService;
+    private readonly IDialogService dialogService;
     private readonly IExplorerService explorerService;
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
-    private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
-    private readonly IValidator<IAppSettings> appSettingsValidator;
     private readonly IValidator<IModelSettings> modelSettingsValidator;
+    private readonly IPlayGameService playGameService;
+    private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
+    private readonly IW3Serializer w3Serializer;
 
-    [ObservableProperty]
-    private bool isUpdateAvailable;
+    [ObservableProperty] private string[] dropFileData = [];
 
-    [ObservableProperty]
-    private object? selectedItem;
-
-    [ObservableProperty]
-    private string[] dropFileData = [];
+    [ObservableProperty] private bool isUpdateAvailable;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
-    private ObservableCollection<LogEvent> LogEvents { get; } = [];
+    [ObservableProperty] private object? selectedItem;
 
-    public ObservableCollection<IW3Item> W3Items { get; set; } = [];
-
-    public MainWindowViewModel(IAppSettings appSettings,
-                               IBackupService backupService,
-                               IW3Serializer w3Serializer,
-                               IDialogService dialogService,
-                               ICheckUpdateService checkUpdateService,
-                               IPlayGameService playGameService,
-                               IExplorerService explorerService,
-                               IValidator<IAppSettings> appSettingsValidator,
-                               IValidator<IModelSettings> modelSettingsValidator)
+    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IW3Serializer w3Serializer,
+        IDialogService dialogService, ICheckUpdateService checkUpdateService, IPlayGameService playGameService,
+        IExplorerService explorerService, IValidator<IAppSettings> appSettingsValidator,
+        IValidator<IModelSettings> modelSettingsValidator)
     {
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
         this.backupService = backupService;
         this.dialogService = dialogService;
-        this.checkUpdateService = checkUpdateService;
         this.playGameService = playGameService;
         this.explorerService = explorerService;
+        this.checkUpdateService = checkUpdateService;
         this.appSettingsValidator = appSettingsValidator;
         this.modelSettingsValidator = modelSettingsValidator;
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(logEventRecipient, (r, m) =>
-        {
-            r.Receive(m);
-            LogEvents.Add(m.Message);
-        });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
-        {
-            try
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
+            logEventRecipient, (r, m) =>
             {
                 r.Receive(m);
-                await OpenFile(m.FileName);
-            }
-            catch (Exception ex)
+                LogEvents.Add(m.Message);
+            });
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(
+            recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
             {
-                Log.Error(ex, "Failed to open file: {0}", m.FileName);
-            }
-        });
+                try
+                {
+                    r.Receive(m);
+                    await OpenFile(m.FileName);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to open file: {0}", m.FileName);
+                }
+            });
         W3Items.CollectionChanged += (_, _) =>
         {
             AddCommand.NotifyCanExecuteChanged();
@@ -101,6 +91,15 @@ internal partial class MainWindowViewModel : ObservableObject
             ShowTranslateDialogCommand.NotifyCanExecuteChanged();
         };
     }
+
+    private ObservableCollection<LogEvent> LogEvents { get; } = [];
+
+    public ObservableCollection<IW3Item> W3Items { get; set; } = [];
+
+    private bool W3ItemsHaveItems => W3Items.Any();
+
+    private bool CanOpenWorkingFolder
+        => Directory.Exists(OutputFolder);
 
     [RelayCommand]
     private async Task WindowLoaded()
@@ -112,19 +111,23 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task CheckSettings(IAppSettings settings)
     {
         if (!(await appSettingsValidator.ValidateAsync(settings)).IsValid)
-            _ = await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+            _ = await dialogService.ShowDialogAsync(this,
+                new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
     }
 
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        if (W3Items.Any() && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "MainWindowClosing"))
+        if (W3Items.Any() &&
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "MainWindowClosing"))
             e.Cancel = true;
     }
 
     [RelayCommand]
     private void WindowClosed()
-        => WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
+    }
 
     [RelayCommand]
     private async Task DropFile()
@@ -133,8 +136,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             var file = DropFileData[0];
             var ext = Path.GetExtension(file);
-            if (ext is ".csv" or ".w3strings" or ".xlsx")
-                await OpenFile(file);
+            if (ext is ".csv" or ".w3strings" or ".xlsx") await OpenFile(file);
         }
     }
 
@@ -160,16 +162,18 @@ internal partial class MainWindowViewModel : ObservableObject
         try
         {
             if (W3Items.Any())
+            {
                 if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
                     W3Items.Clear();
                 else
                     return;
+            }
+
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
             OutputFolder = folder;
-            var foundItem = appSettings.RecentItems
-                .FirstOrDefault(x => x.FilePath == fileName);
+            var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
             if (foundItem == null)
                 appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
             else
@@ -180,8 +184,6 @@ internal partial class MainWindowViewModel : ObservableObject
             Log.Error(ex, "Failed to open file: {0}.", fileName);
         }
     }
-
-    private bool W3ItemsHaveItems => W3Items.Any();
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task Add()
@@ -196,8 +198,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Edit(IW3Item w3Item)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
-        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
-            && dialogViewModel.W3Item != null)
+        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
         {
             var found = W3Items.FirstOrDefault(x => x.Id == w3Item.Id);
             if (found != null) W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
@@ -208,40 +209,49 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Delete(IEnumerable<object> items)
     {
         var w3Items = items.Cast<IW3Item>().ToArray();
-        if (w3Items.Length > 0
-            && await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
-        {
+        if (w3Items.Length > 0 &&
+            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
             w3Items.ForEach(item => W3Items.Remove(item));
-        }
     }
 
     [RelayCommand]
     private async Task ShowBackupDialog()
-        => _ = await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
+    {
+        _ = await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
+    }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowSaveDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this, new SaveDialogViewModel(w3Serializer, new W3Job
-        {
-            Path = OutputFolder,
-            W3Items = W3Items,
-            W3FileType = appSettings.PreferredW3FileType,
-            Language = appSettings.PreferredLanguage
-        }));
+        _ = await dialogService.ShowDialogAsync(this,
+            new SaveDialogViewModel(w3Serializer,
+                new W3Job
+                {
+                    Path = OutputFolder,
+                    W3Items = W3Items,
+                    W3FileType = appSettings.PreferredW3FileType,
+                    Language = appSettings.PreferredLanguage
+                }));
     }
 
     [RelayCommand]
     private async Task ShowLogDialog()
-        => _ = await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
+    {
+        _ = await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
+    }
 
     [RelayCommand]
     private async Task ShowSettingsDialog()
-        => _ = await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+    {
+        _ = await dialogService.ShowDialogAsync(this,
+            new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+    }
 
     [RelayCommand]
     private async Task PlayGame()
-        => await playGameService.PlayGame();
+    {
+        await playGameService.PlayGame();
+    }
 
     [RelayCommand]
     private async Task ShowAbout()
@@ -252,7 +262,7 @@ internal partial class MainWindowViewModel : ObservableObject
             { "BuildTime", RetrieveTimestampAsDateTime() },
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
-            { "Package",DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package")}
+            { "Package", DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package") }
         }));
     }
 
@@ -261,8 +271,9 @@ internal partial class MainWindowViewModel : ObservableObject
         try
         {
             Guard.IsTrue(DateTime.TryParseExact(Assembly.GetExecutingAssembly().GetCustomAttributesData()
-                .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute")?.ConstructorArguments
-                .FirstOrDefault().Value as string, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var buildTime));
+                    .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute")?.ConstructorArguments
+                    .FirstOrDefault().Value as string, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeUniversal, out var buildTime));
             return buildTime.ToLocalTime();
         }
         catch (Exception ex)
@@ -271,9 +282,6 @@ internal partial class MainWindowViewModel : ObservableObject
             return DateTime.MinValue;
         }
     }
-
-    private bool CanOpenWorkingFolder
-        => Directory.Exists(OutputFolder);
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
@@ -296,6 +304,10 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowTranslateDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, appSettings.IsUseAiTranslate ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
+        _ = await dialogService.ShowDialogAsync(this,
+            new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings,
+                appSettings.IsUseAiTranslate
+                    ? new AiTranslator(appSettings.ModelSettings)
+                    : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
 }
