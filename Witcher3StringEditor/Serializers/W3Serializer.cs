@@ -21,9 +21,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
             if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
             if (Path.GetExtension(path) != ".w3strings") return [];
-            var folder = Directory.CreateTempSubdirectory().FullName;
-            var filename = Path.GetFileName(path);
-            var newPath = Path.Combine(folder, filename);
+            var newPath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(path));
             File.Copy(path, newPath);
             return await DeserializeW3Strings(newPath);
         }
@@ -100,7 +98,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
             await process.WaitForExitAsync();
-            return process.ExitCode == 0 ? await DeserializeCsv($"{path}.csv") : [];
+            Guard.IsEqualTo(process.ExitCode, 0);
+            return await DeserializeCsv($"{path}.csv");
         }
         catch (Exception ex)
         {
@@ -135,6 +134,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             Guard.IsTrue(Directory.Exists(folder));
+            Guard.IsGreaterThan(w3Job.W3Items.Count(), 0);
             var saveLang = Enum.GetName(w3Job.Language);
             Guard.IsNotNullOrWhiteSpace(saveLang);
             var stringBuilder = new StringBuilder();
@@ -168,6 +168,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            Guard.IsTrue(Directory.Exists(w3Job.Path));
+            Guard.IsGreaterThan(w3Job.W3Items.Count(), 0);
             var saveLang = Enum.GetName(w3Job.Language);
             Guard.IsNotNullOrWhiteSpace(saveLang);
             var path = $"{Path.Combine(w3Job.Path, saveLang)}.xlsx";
@@ -186,6 +188,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
+            Guard.IsTrue(Directory.Exists(w3Job.Path));
+            Guard.IsGreaterThan(w3Job.W3Items.Count(), 0);
             Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
             var tempFolder = Directory.CreateTempSubdirectory().FullName;
             var saveLang = Enum.GetName(w3Job.Language);
