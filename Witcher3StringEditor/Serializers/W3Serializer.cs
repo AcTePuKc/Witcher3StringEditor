@@ -211,6 +211,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     private static (string csvPath, string w3StringsPath) GenerateW3StringsFilePaths(IW3Job w3Job, string tempFolder)
     {
         Guard.IsTrue(Directory.Exists(w3Job.Path));
+        Guard.IsTrue(Directory.Exists(tempFolder));
         var saveLang = Enum.GetName(w3Job.Language);
         Guard.IsNotNullOrWhiteSpace(saveLang);
         return (Path.Combine(tempFolder, $"{saveLang}.csv"), Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
