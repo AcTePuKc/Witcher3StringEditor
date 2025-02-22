@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Diagnostics;
-using Serilog;
+﻿using Serilog;
 using System.Diagnostics;
 using System.IO;
 using Witcher3StringEditor.Interfaces;
@@ -12,7 +11,6 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
     {
         try
         {
-            Guard.IsTrue(File.Exists(appSettings.GameExePath));
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
