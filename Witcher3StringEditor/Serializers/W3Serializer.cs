@@ -196,9 +196,9 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
             var tempFolder = Directory.CreateTempSubdirectory().FullName;
             var (csvPath, w3StringsPath) = GenerateW3StringsFilePaths(w3Job, tempFolder);
-            await SerializeCsv(w3Job, tempFolder);
-            await StartSerializationProcess(w3Job, csvPath);
-            CopyTempFilesWithBackup(Path.ChangeExtension(csvPath, ".w3strings"), w3StringsPath);
+            Guard.IsTrue(await SerializeCsv(w3Job, tempFolder));
+            Guard.IsTrue(await StartSerializationProcess(w3Job, csvPath));
+            Guard.IsTrue(CopyTempFilesWithBackup(Path.ChangeExtension(csvPath, ".w3strings"), w3StringsPath));
             return true;
         }
         catch (Exception ex)
@@ -216,7 +216,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         return (Path.Combine(tempFolder, $"{saveLang}.csv"), Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
     }
 
-    private async Task StartSerializationProcess(IW3Job w3Job, string csvPath)
+    private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
     {
         using var process = new Process();
         process.EnableRaisingEvents = true;
@@ -237,13 +237,14 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         process.BeginErrorReadLine();
         process.BeginOutputReadLine();
         await process.WaitForExitAsync();
-        Guard.IsEqualTo(process.ExitCode, 0);
+        return process.ExitCode == 0;
     }
 
-    private void CopyTempFilesWithBackup(string tempPath, string Path)
+    private bool CopyTempFilesWithBackup(string tempPath, string Path)
     {
-        if (File.Exists(Path))
-            Guard.IsTrue(backupService.Backup(Path));
+        if (File.Exists(Path) && !backupService.Backup(Path))
+            return false;
         File.Copy(tempPath, Path, true);
+        return true;
     }
 }
