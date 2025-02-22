@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -33,7 +34,7 @@ public partial class TranslateContentViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private int indexOfItems = -1;
-    
+
     partial void OnIndexOfItemsChanged(int value)
     {
         var item = w3Items.ElementAt(value);
@@ -83,6 +84,7 @@ public partial class TranslateContentViewModel : ObservableObject
         {
             try
             {
+                Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
                 IsBusy = true;
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
                 CurrentTranslateItemModel.TranslatedText = (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage)).Translation;
