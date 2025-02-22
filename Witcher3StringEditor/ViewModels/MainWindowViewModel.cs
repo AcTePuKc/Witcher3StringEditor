@@ -242,10 +242,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task PlayGame()
-    {
-        Guard.IsTrue(File.Exists(appSettings.GameExePath));
-        await playGameService.PlayGame();
-    }
+        => await playGameService.PlayGame();
 
     [RelayCommand]
     private async Task ShowAbout()
@@ -280,11 +277,11 @@ internal partial class MainWindowViewModel : ObservableObject
         => Directory.Exists(OutputFolder);
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
-    private void OpenWorkingFolder() 
+    private void OpenWorkingFolder()
         => explorerService.Open(OutputFolder);
 
     [RelayCommand]
-    private void OpenNexusMods() 
+    private void OpenNexusMods()
         => explorerService.Open(appSettings.NexusModUrl);
 
     [RelayCommand]
