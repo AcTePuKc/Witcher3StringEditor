@@ -17,7 +17,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            Guard.IsTrue(File.Exists(path));
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
             if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
             Guard.IsTrue((Path.GetExtension(path) == ".w3strings"));
@@ -36,7 +35,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            Guard.IsTrue(File.Exists(path));
             return from line in await File.ReadAllLinesAsync(path)
                    where !line.StartsWith(';')
                    select line.Split("|")
@@ -62,7 +60,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            Guard.IsTrue(File.Exists(path));
             return await MiniExcel.QueryAsync<W3Item>(path);
         }
         catch (Exception ex)
@@ -76,7 +73,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            Guard.IsTrue(File.Exists(path));
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
@@ -134,10 +130,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            Guard.IsTrue(Directory.Exists(folder));
-            Guard.IsGreaterThan(w3Job.W3Items.Count(), 0);
             var saveLang = Enum.GetName(w3Job.Language);
-            Guard.IsNotNullOrWhiteSpace(saveLang);
             var stringBuilder = new StringBuilder();
             var lang = w3Job.Language
                 is not W3Language.ar
@@ -151,7 +144,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
             foreach (var item in w3Job.W3Items)
                 stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
-            var csvPath = $"{Path.Combine(folder, saveLang)}.csv";
+            var csvPath = Path.Combine(folder, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
             await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
@@ -170,11 +163,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            Guard.IsTrue(Directory.Exists(w3Job.Path));
-            Guard.IsGreaterThan(w3Job.W3Items.Count(), 0);
             var saveLang = Enum.GetName(w3Job.Language);
-            Guard.IsNotNullOrWhiteSpace(saveLang);
-            var path = $"{Path.Combine(w3Job.Path, saveLang)}.xlsx";
+            var path = Path.Combine(w3Job.Path, $"{saveLang}.xlsx");
             if (File.Exists(path))
                 Guard.IsTrue(backupService.Backup(path));
             await MiniExcel.SaveAsAsync(path, w3Job.W3Items.Cast<W3Item>(), overwriteFile: true);
@@ -191,11 +181,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            Guard.IsTrue(Directory.Exists(w3Job.Path));
-            Guard.IsGreaterThan(w3Job.W3Items.Count(), 0);
-            Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
-            var tempFolder = Directory.CreateTempSubdirectory().FullName;
-            var (csvPath, w3StringsPath) = GenerateW3StringsFilePaths(w3Job, tempFolder);
+            var (tempFolder, csvPath, w3StringsPath) = GenerateW3StringsFilePaths(w3Job);
             Guard.IsTrue(await SerializeCsv(w3Job, tempFolder));
             Guard.IsTrue(await StartSerializationProcess(w3Job, csvPath));
             Guard.IsTrue(CopyTempFilesWithBackup(Path.ChangeExtension(csvPath, ".w3strings"), w3StringsPath));
@@ -208,13 +194,11 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
     }
 
-    private static (string csvPath, string w3StringsPath) GenerateW3StringsFilePaths(IW3Job w3Job, string tempFolder)
+    private static (string tempFolder, string csvPath, string w3StringsPath) GenerateW3StringsFilePaths(IW3Job w3Job)
     {
-        Guard.IsTrue(Directory.Exists(w3Job.Path));
-        Guard.IsTrue(Directory.Exists(tempFolder));
         var saveLang = Enum.GetName(w3Job.Language);
-        Guard.IsNotNullOrWhiteSpace(saveLang);
-        return (Path.Combine(tempFolder, $"{saveLang}.csv"), Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
+        var tempFolder = Directory.CreateTempSubdirectory().FullName;
+        return (tempFolder, Path.Combine(tempFolder, $"{saveLang}.csv"), Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
     }
 
     private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
