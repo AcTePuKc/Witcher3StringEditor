@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using CommunityToolkit.Diagnostics;
+using Serilog;
 using System.Diagnostics;
 using System.IO;
 using Witcher3StringEditor.Interfaces;
@@ -11,6 +12,7 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
     {
         try
         {
+            Guard.IsTrue(File.Exists(appSettings.GameExePath));
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
@@ -29,17 +31,19 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to start the game process.");
+            Log.Error(ex, "Failed to start the game process.\n-{0}", ex.Message);
         }
     }
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
-        if (e.Data != null) Log.Error(e.Data);
+        if (!string.IsNullOrWhiteSpace(e.Data)) 
+            Log.Error(e.Data);
     }
 
     private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
-        if (e.Data != null) Log.Information(e.Data);
+        if (!string.IsNullOrWhiteSpace(e.Data))
+            Log.Information(e.Data);
     }
 }
