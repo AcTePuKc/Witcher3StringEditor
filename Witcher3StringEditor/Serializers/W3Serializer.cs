@@ -240,11 +240,11 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         return process.ExitCode == 0;
     }
 
-    private bool CopyTempFilesWithBackup(string tempPath, string Path)
+    private bool CopyTempFilesWithBackup(string tempPath, string path)
     {
-        if (File.Exists(Path) && !backupService.Backup(Path))
+        if (File.Exists(path) && !backupService.Backup(path))
             return false;
-        File.Copy(tempPath, Path, true);
+        File.Copy(tempPath, path, true);
         return true;
     }
 }
