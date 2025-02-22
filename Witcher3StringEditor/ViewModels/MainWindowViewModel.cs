@@ -112,7 +112,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task CheckSettings(IAppSettings settings)
     {
         if (!(await appSettingsValidator.ValidateAsync(settings)).IsValid)
-            await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+            _ = await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
     }
 
     [RelayCommand]
@@ -217,12 +217,12 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task ShowBackupDialog()
-        => await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
+        => _ = await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowSaveDialog()
     {
-        await dialogService.ShowDialogAsync(this, new SaveDialogViewModel(w3Serializer, new W3Job
+        _ = await dialogService.ShowDialogAsync(this, new SaveDialogViewModel(w3Serializer, new W3Job
         {
             Path = OutputFolder,
             W3Items = W3Items,
@@ -233,11 +233,11 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private async Task ShowLogDialog()
-        => await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
+        => _ = await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
 
     [RelayCommand]
     private async Task ShowSettingsDialog()
-        => await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+        => _ = await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
 
     [RelayCommand]
     private async Task PlayGame()
@@ -246,7 +246,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowAbout()
     {
-        await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
+        _ = await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
         {
             { "Version", ThisAssembly.AssemblyInformationalVersion.Trim() },
             { "BuildTime", RetrieveTimestampAsDateTime() },
@@ -277,20 +277,25 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
-        => explorerService.Open(OutputFolder);
+    {
+        explorerService.Open(OutputFolder);
+    }
 
     [RelayCommand]
     private void OpenNexusMods()
-        => explorerService.Open(appSettings.NexusModUrl);
+    {
+        explorerService.Open(appSettings.NexusModUrl);
+    }
 
     [RelayCommand]
     private async Task ShowRecentDialog()
-        => await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
+    {
+        _ = await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
+    }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowTranslateDialog()
     {
-        await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, appSettings.IsUseAiTranslate
-            ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
+        _ = await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, appSettings.IsUseAiTranslate ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
 }
