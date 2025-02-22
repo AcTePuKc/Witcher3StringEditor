@@ -33,9 +33,6 @@ internal class AiTranslator : ITranslator
     {
         chatHistory = [];
         modelSettings = settings;
-        Guard.IsTrue(Uri.TryCreate(modelSettings.EndPoint, UriKind.Absolute, out var _));
-        Guard.IsNotNullOrWhiteSpace(modelSettings.ModelId);
-        Guard.IsNotNullOrWhiteSpace(modelSettings.ApiKey);
         httpClient = new HttpClient
         {
             BaseAddress = new Uri(settings.EndPoint)
