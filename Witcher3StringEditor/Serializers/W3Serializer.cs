@@ -176,7 +176,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             var saveLang = Enum.GetName(w3Job.Language);
             Guard.IsNotNullOrWhiteSpace(saveLang);
             var path = $"{Path.Combine(w3Job.Path, saveLang)}.xlsx";
-            if (File.Exists(path) && !backupService.Backup(path)) return false;
+            if (File.Exists(path))
+                Guard.IsTrue(backupService.Backup(path));
             await MiniExcel.SaveAsAsync(path, w3Job.W3Items.Cast<W3Item>(), overwriteFile: true);
             return true;
         }
