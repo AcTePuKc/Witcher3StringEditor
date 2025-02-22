@@ -178,7 +178,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to open file: {0}", fileName);
+            Log.Error(ex, "Failed to open file: {0}.\n-{1}", fileName, ex.Message);
         }
     }
 
@@ -201,7 +201,9 @@ internal partial class MainWindowViewModel : ObservableObject
             && dialogViewModel.W3Item != null)
         {
             var found = W3Items.First(x => x.Id == w3Item.Id);
-            W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
+            var index = W3Items.IndexOf(found);
+            Guard.IsGreaterThan(index, 0);
+            W3Items[index] = dialogViewModel.W3Item;
         }
     }
 
@@ -237,7 +239,7 @@ internal partial class MainWindowViewModel : ObservableObject
         => await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
 
     [RelayCommand]
-    private async Task ShowSettingsDialog() 
+    private async Task ShowSettingsDialog()
         => await dialogService.ShowDialogAsync(this, new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
 
     [RelayCommand]
