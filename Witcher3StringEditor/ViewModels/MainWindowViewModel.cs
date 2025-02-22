@@ -280,18 +280,12 @@ internal partial class MainWindowViewModel : ObservableObject
         => Directory.Exists(OutputFolder);
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
-    private void OpenWorkingFolder()
-    {
-        Guard.IsTrue(Directory.Exists(OutputFolder));
-        explorerService.Open(OutputFolder);
-    }
+    private void OpenWorkingFolder() 
+        => explorerService.Open(OutputFolder);
 
     [RelayCommand]
-    private void OpenNexusMods()
-    {
-        Guard.IsTrue(Uri.TryCreate(appSettings.NexusModUrl, UriKind.Absolute, out var _));
-        explorerService.Open(appSettings.NexusModUrl);
-    }
+    private void OpenNexusMods() 
+        => explorerService.Open(appSettings.NexusModUrl);
 
     [RelayCommand]
     private async Task ShowRecentDialog()
@@ -300,10 +294,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowTranslateDialog()
     {
-        Guard.IsGreaterThan(W3Items.Count, 0);
-        var index = W3Items.IndexOf(SelectedItem);
-        Guard.IsNotEqualTo(index, -1);
-        await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? index : 0, appSettings, appSettings.IsUseAiTranslate
+        await dialogService.ShowDialogAsync(this, new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, appSettings.IsUseAiTranslate
             ? new AiTranslator(appSettings.ModelSettings) : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
     }
 }
