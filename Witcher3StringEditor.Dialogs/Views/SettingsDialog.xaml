@@ -118,9 +118,11 @@
                 <ui:SettingsCard Description="{lex:Loc TemperatureSettingDescription}" Header="{lex:Loc TemperatureSettingHeader}">
                     <Slider
                         AutoToolTipPrecision="1"
+                        IsSnapToTickEnabled="True"
                         Maximum="2"
                         Minimum="-1"
                         SmallChange="0.1"
+                        TickFrequency="0.1"
                         Value="{Binding AppSettings.ModelSettings.Temperature}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard
@@ -129,9 +131,11 @@
                     Header="{lex:Loc TopPSettingHeader}">
                     <Slider
                         AutoToolTipPrecision="1"
+                        IsSnapToTickEnabled="True"
                         Maximum="2"
                         Minimum="-1"
                         SmallChange="0.1"
+                        TickFrequency="0.1"
                         Value="{Binding AppSettings.ModelSettings.TopP}" />
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
