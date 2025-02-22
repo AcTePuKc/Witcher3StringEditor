@@ -71,13 +71,13 @@ public partial class TranslateContentViewModel : ObservableObject
 
     private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsBusy;
 
-    private partial void OnIndexOfItemsChanged(int value)
+    partial void OnIndexOfItemsChanged(int value)
     {
         var item = w3Items.ElementAt(value);
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
     }
 
-    private partial void OnIsBusyChanged(bool value)
+    partial void OnIsBusyChanged(bool value)
     {
         WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBusy");
     }

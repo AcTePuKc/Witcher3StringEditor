@@ -73,12 +73,12 @@ public partial class BatchTranslateContentViewModel : ObservableObject
 
     private bool CanCancel => IsBusy;
 
-    private partial void OnStartIndexChanged(int value)
+    partial void OnStartIndexChanged(int value)
     {
         EndIndexMin = value > MaxValue ? MaxValue : value;
     }
 
-    private partial void OnIsBusyChanged(bool value)
+    partial void OnIsBusyChanged(bool value)
     {
         WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBatchTranslating");
     }
