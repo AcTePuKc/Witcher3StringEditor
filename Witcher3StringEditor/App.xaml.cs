@@ -53,20 +53,24 @@ public partial class App
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         Ioc.Default.ConfigureServices(InitializeServices(configPath));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
-        DispatcherUnhandledException += (_, eventArgs) =>
-        {
-            eventArgs.Handled = true;
-            var exception = eventArgs.Exception;
-            Log.Error(exception, exception.Message);
-        };
-        TaskScheduler.UnobservedTaskException += (_, eventArgs) =>
-        {
-            eventArgs.SetObserved();
-            var exception = eventArgs.Exception;
-            Log.Error(exception, exception.Message);
-        };
+        DispatcherUnhandledException += App_DispatcherUnhandledException;
+        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
         if (!createdNew) Current.Shutdown();
+    }
+
+    private static void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+    {
+        e.Handled = true;
+        var exception = e.Exception;
+        Log.Error(exception, exception.Message);
+    }
+
+    private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+    {
+        e.SetObserved();
+        var exception = e.Exception;
+        Log.Error(exception, exception.Message);
     }
 
     private static AppSettings LoadAppSettings(string path)
