@@ -17,13 +17,14 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
+            Guard.IsTrue(File.Exists(filePath));
             using var sha256 = SHA256.Create();
             using var stream = File.OpenRead(filePath);
             return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to compute SHA256 hash: {0}", filePath);
+            Log.Error(ex, "Failed to compute SHA256 hash: {0}.\n-{1}", filePath, ex.Message);
             return string.Empty;
         }
     }
@@ -32,6 +33,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
+            Guard.IsTrue(File.Exists(path));
             var hash = ComputeSha256Hash(path);
             Guard.IsNotNullOrWhiteSpace(hash);
             var backupItem = new BackupItem
@@ -51,7 +53,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to backup file: {0}", path);
+            Log.Error(ex, "Failed to backup file: {0}.\n-{1}", path, ex.Message);
             return false;
         }
     }
@@ -60,9 +62,9 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
-            if (!File.Exists(backupItem.BackupPath)) return false;
+            Guard.IsTrue(File.Exists(backupItem.BackupPath));
             var folder = Path.GetDirectoryName(backupItem.OrginPath);
-            if (folder == null) return false;
+            Guard.IsNotNullOrWhiteSpace(folder);
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
@@ -70,7 +72,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to restore backup item: {0}.", backupItem.OrginPath);
+            Log.Error(ex, "Failed to restore backup item: {0}.\n-{1}", backupItem.OrginPath, ex.Message);
             return false;
         }
     }
@@ -81,12 +83,12 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         {
             if (File.Exists(backupItem.BackupPath))
                 File.Delete(backupItem.BackupPath);
-            appSettings.BackupItems.Remove(backupItem);
+            _ = appSettings.BackupItems.Remove(backupItem);
             return true;
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to delete backup item: {0}", backupItem.BackupPath);
+            Log.Error(ex, "Failed to delete backup item: {0}.\n-{1}", backupItem.BackupPath, ex.Message);
             return false;
         }
     }
