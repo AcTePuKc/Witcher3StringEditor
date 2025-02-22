@@ -5,24 +5,17 @@ namespace Witcher3StringEditor.Models;
 
 public partial class ModelSettings : ObservableObject, IModelSettings
 {
-    [ObservableProperty]
-    private string endPoint = string.Empty;
+    [ObservableProperty] private string apiKey = string.Empty;
 
-    [ObservableProperty]
-    private string modelId = string.Empty;
+    [ObservableProperty] private int contextLength;
 
-    [ObservableProperty]
-    private string apiKey = string.Empty;
+    [ObservableProperty] private string endPoint = string.Empty;
 
-    [ObservableProperty]
-    private string prompts = string.Empty;
+    [ObservableProperty] private string modelId = string.Empty;
 
-    [ObservableProperty]
-    private int contextLength;
+    [ObservableProperty] private string prompts = string.Empty;
 
-    [ObservableProperty]
-    private double temperature = -1;
+    [ObservableProperty] private double temperature = -1;
 
-    [ObservableProperty]
-    private double topP = -1;
+    [ObservableProperty] private double topP = -1;
 }

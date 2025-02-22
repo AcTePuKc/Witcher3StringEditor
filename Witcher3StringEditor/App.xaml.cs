@@ -17,6 +17,7 @@ using System.IO;
 using System.Reactive;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Threading;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
@@ -35,20 +36,24 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private Mutex? mutex;
+    private readonly string configPath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
+        "AppSettings.Json");
 
     private ObserverBase<LogEvent>? logObserver;
-
-    private readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                                      Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
-                                                      "AppSettings.Json");
+    private Mutex? mutex;
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        logObserver = new AnonymousObserver<LogEvent>(x => WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
-        Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-            , Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"), rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
-            .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo.Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
+        logObserver = new AnonymousObserver<LogEvent>(x =>
+            WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
+        Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                    , Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
+                rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
+            .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo
+            .Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
             .CreateLogger();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         Ioc.Default.ConfigureServices(InitializeServices(configPath));
@@ -59,7 +64,7 @@ public partial class App
         if (!createdNew) Current.Shutdown();
     }
 
-    private static void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+    private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         e.Handled = true;
         var exception = e.Exception;
@@ -74,7 +79,11 @@ public partial class App
     }
 
     private static AppSettings LoadAppSettings(string path)
-        => File.Exists(path) ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(path)) ?? new AppSettings() : new AppSettings();
+    {
+        return File.Exists(path)
+            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(path)) ?? new AppSettings()
+            : new AppSettings();
+    }
 
     private static ServiceProvider InitializeServices(string path)
     {
@@ -115,7 +124,8 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
+        var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
         if (!Directory.Exists(configFolderPath))
             _ = Directory.CreateDirectory(configFolderPath);
         File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),

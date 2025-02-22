@@ -13,40 +13,38 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class TranslateDialogViewModel : ObservableObject, IModalDialogViewModel
 {
-    private readonly NotificationRecipient<bool> recipient = new();
-
-    public bool? DialogResult => true;
-
-    [ObservableProperty]
-    private string title = Strings.TranslateDialogTitle;
-
-    [ObservableProperty]
-    private object currentViewModel;
-
-    [ObservableProperty]
-    private bool switchIsEnabled = true;
+    private readonly IAppSettings appSettings;
 
     private readonly int index;
-
-    private readonly IEnumerable<IW3Item> w3Items;
-
-    private readonly IAppSettings appSettings;
+    private readonly NotificationRecipient<bool> recipient = new();
 
     private readonly ITranslator translator;
 
-    public TranslateDialogViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)
+    private readonly IEnumerable<IW3Item> w3Items;
+
+    [ObservableProperty] private object currentViewModel;
+
+    [ObservableProperty] private bool switchIsEnabled = true;
+
+    [ObservableProperty] private string title = Strings.TranslateDialogTitle;
+
+    public TranslateDialogViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings,
+        ITranslator translator)
     {
         this.w3Items = w3Items;
         this.index = index;
         this.appSettings = appSettings;
         this.translator = translator;
         CurrentViewModel = new TranslateContentViewModel(this.w3Items, index, appSettings, translator);
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(recipient, "TranslatorIsBatchTranslating", (r, m) =>
-        {
-            r.Receive(m);
-            SwitchIsEnabled = !m.Message;
-        });
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(
+            recipient, "TranslatorIsBatchTranslating", (r, m) =>
+            {
+                r.Receive(m);
+                SwitchIsEnabled = !m.Message;
+            });
     }
+
+    public bool? DialogResult => true;
 
     [RelayCommand]
     private async Task Switch()
@@ -54,16 +52,20 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         if (CurrentViewModel is not TranslateContentViewModel { IsBusy: true }
             || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
         {
-            if (CurrentViewModel is TranslateContentViewModel { CurrentTranslateItemModel.IsSaved: false } translateViewModel
+            if (CurrentViewModel is TranslateContentViewModel
+                {
+                    CurrentTranslateItemModel.IsSaved: false
+                } translateViewModel
                 && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-            {
-                w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel?.Id).Text = translateViewModel.CurrentTranslateItemModel.TranslatedText;
-            }
+                w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel?.Id).Text =
+                    translateViewModel.CurrentTranslateItemModel.TranslatedText;
             CurrentViewModel = CurrentViewModel is TranslateContentViewModel
-                    ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
-                    : new TranslateContentViewModel(w3Items, index, appSettings, translator);
-            Title = CurrentViewModel.GetType() == typeof(BatchTranslateContentViewModel) ? Strings.BatchTranslateDialogTitle : Strings.TranslateDialogTitle;
+                ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
+                : new TranslateContentViewModel(w3Items, index, appSettings, translator);
+            Title = CurrentViewModel.GetType() == typeof(BatchTranslateContentViewModel)
+                ? Strings.BatchTranslateDialogTitle
+                : Strings.TranslateDialogTitle;
         }
     }
 
@@ -72,7 +74,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         switch (CurrentViewModel)
         {
-            case TranslateContentViewModel { IsBusy: true } or BatchTranslateContentViewModel { IsBusy: true } when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"):
+            case TranslateContentViewModel { IsBusy: true } or BatchTranslateContentViewModel { IsBusy: true }
+                when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    "TranslationDialogClosing"):
                 e.Cancel = true;
                 break;
 
@@ -84,13 +88,18 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 {
                     if (translateViewModel.CurrentTranslateItemModel is { IsSaved: false }
                         && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
-                        && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-                        w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text = translateViewModel.CurrentTranslateItemModel.TranslatedText;
+                        && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                            "TranslatedTextNoSaved"))
+                        w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text =
+                            translateViewModel.CurrentTranslateItemModel.TranslatedText;
                     break;
                 }
         }
     }
 
     [RelayCommand]
-    private void Closed() => WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    private void Closed()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    }
 }

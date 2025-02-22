@@ -16,16 +16,19 @@ public partial class SaveDialog
     public SaveDialog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(saveResultRecipient, "Save", static (r, m) =>
-        {
-            r.Receive(m);
-            _ = MessageBox.Show(m.Message ? Strings.SaveSuccess : Strings.SaveFailure,
-                            Strings.SaveResult,
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
-        });
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(
+            saveResultRecipient, "Save", static (r, m) =>
+            {
+                r.Receive(m);
+                _ = MessageBox.Show(m.Message ? Strings.SaveSuccess : Strings.SaveFailure,
+                    Strings.SaveResult,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            });
     }
 
     private void Window_Closed(object sender, EventArgs e)
-        => WeakReferenceMessenger.Default.UnregisterAll(saveResultRecipient);
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(saveResultRecipient);
+    }
 }

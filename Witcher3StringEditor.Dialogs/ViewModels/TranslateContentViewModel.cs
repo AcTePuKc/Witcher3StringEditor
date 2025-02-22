@@ -15,31 +15,19 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class TranslateContentViewModel : ObservableObject
 {
-    private readonly IEnumerable<IW3Item> w3Items;
     private readonly ITranslator translator;
+    private readonly IEnumerable<IW3Item> w3Items;
 
-    [ObservableProperty]
-    private IEnumerable<ILanguage> languages;
+    [ObservableProperty] private TranslateItem? currentTranslateItemModel;
 
-    [ObservableProperty]
-    private ILanguage toLanguage;
-
-    [ObservableProperty]
-    private ILanguage formLanguage;
-
-    [ObservableProperty]
-    private TranslateItem? currentTranslateItemModel;
+    [ObservableProperty] private ILanguage formLanguage;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private int indexOfItems = -1;
 
-    partial void OnIndexOfItemsChanged(int value)
-    {
-        var item = w3Items.ElementAt(value);
-        CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
-    }
+    [ObservableProperty] private bool isAiTranslator;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
@@ -47,19 +35,20 @@ public partial class TranslateContentViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private bool isBusy;
 
-    partial void OnIsBusyChanged(bool value)
-        => WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBusy");
+    [ObservableProperty] private IEnumerable<ILanguage> languages;
 
-    [ObservableProperty]
-    private bool isAiTranslator;
+    [ObservableProperty] private ILanguage toLanguage;
 
-    public TranslateContentViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings, ITranslator translator)
+    public TranslateContentViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings,
+        ITranslator translator)
     {
         this.w3Items = w3Items;
         this.translator = translator;
         IsAiTranslator = translator is not MicrosoftTranslator;
-        Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
-            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
+        Languages = IsAiTranslator
+            ? Language.LanguageDictionary.Values
+            : Language.LanguageDictionary.Values
+                .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         IndexOfItems = index;
         FormLanguage = Language.GetLanguage("en");
         var language = appSettings.PreferredLanguage;
@@ -76,6 +65,23 @@ public partial class TranslateContentViewModel : ObservableObject
         };
     }
 
+    private bool CanSave => !IsBusy;
+
+    private bool CanPrevious => IndexOfItems > 0 && !IsBusy;
+
+    private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsBusy;
+
+    private partial void OnIndexOfItemsChanged(int value)
+    {
+        var item = w3Items.ElementAt(value);
+        CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
+    }
+
+    private partial void OnIsBusyChanged(bool value)
+    {
+        WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBusy");
+    }
+
     [RelayCommand]
     private async Task Translate()
     {
@@ -87,22 +93,24 @@ public partial class TranslateContentViewModel : ObservableObject
                 Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
                 IsBusy = true;
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
-                CurrentTranslateItemModel.TranslatedText = (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage)).Translation;
+                CurrentTranslateItemModel.TranslatedText =
+                    (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
+                    .Translation;
             }
             catch (Exception ex)
             {
                 _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
                 Log.Error(ex, "Translation error occurred.}");
             }
+
             IsBusy = false;
         }
         else
         {
-            _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty), "TranslateCharactersNumberExceedLimit");
+            _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
+                "TranslateCharactersNumberExceedLimit");
         }
     }
-
-    private bool CanSave => !IsBusy;
 
     [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
@@ -114,10 +122,6 @@ public partial class TranslateContentViewModel : ObservableObject
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         CurrentTranslateItemModel.IsSaved = true;
     }
-
-    private bool CanPrevious => IndexOfItems > 0 && !IsBusy;
-
-    private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsBusy;
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
     private async Task Previous()

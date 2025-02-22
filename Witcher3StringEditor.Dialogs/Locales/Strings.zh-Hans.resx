@@ -1,457 +1,462 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
+    <!-- 
+      Microsoft ResX Schema 
+      
+      Version 2.0
+      
+      The primary goals of this format is to allow a simple XML format 
+      that is mostly human readable. The generation and parsing of the 
+      various data types are done through the TypeConverter classes 
+      associated with the data types.
+      
+      Example:
+      
+      ... ado.net/XML headers & schema ...
+      <resheader name="resmimetype">text/microsoft-resx</resheader>
+      <resheader name="version">2.0</resheader>
+      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+          <value>[base64 mime encoded serialized .NET Framework object]</value>
+      </data>
+      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+          <comment>This is a comment</comment>
+      </data>
+                  
+      There are any number of "resheader" rows that contain simple 
+      name/value pairs.
+      
+      Each data row contains a name, and value. The row also contains a 
+      type or mimetype. Type corresponds to a .NET class that support 
+      text/value conversion through the TypeConverter architecture. 
+      Classes that don't support this are serialized and stored with the 
+      mimetype set.
+      
+      The mimetype is used for serialized objects, and tells the 
+      ResXResourceReader how to depersist the object. This is currently not 
+      extensible. For a given mimetype the value must be set accordingly:
+      
+      Note - application/x-microsoft.net.object.binary.base64 is the format 
+      that the ResXResourceWriter will generate, however the reader can 
+      read any of the formats listed below.
+      
+      mimetype: application/x-microsoft.net.object.binary.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+              : and then encoded with base64 encoding.
+      
+      mimetype: application/x-microsoft.net.object.soap.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+              : and then encoded with base64 encoding.
+  
+      mimetype: application/x-microsoft.net.object.bytearray.base64
+      value   : The object must be serialized into a byte array 
+              : using a System.ComponentModel.TypeConverter
+              : and then encoded with base64 encoding.
+      -->
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root"
+                xmlns="">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+        <xsd:element name="root" msdata:IsDataSet="true">
             <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string"/>
+                            <xsd:attribute name="type" type="xsd:string"/>
+                            <xsd:attribute name="mimetype" type="xsd:string"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string"/>
+                            <xsd:attribute name="name" type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+                            <xsd:attribute ref="xml:space"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <data name="InitializationIncompleteMessage" xml:space="preserve">
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="InitializationIncompleteMessage" xml:space="preserve">
     <value>您尚未完成初始化。
 - 点击“是”退出程序。
 - 点击“否”继续完成初始化。</value>
   </data>
-  <data name="BackupRestoreMessage" xml:space="preserve">
+    <data name="BackupRestoreMessage" xml:space="preserve">
     <value>此操作将覆盖当前所在路径的文件且操作无法撤销.是否继续？</value>
   </data>
-  <data name="BackupDeleteMessage" xml:space="preserve">
+    <data name="BackupDeleteMessage" xml:space="preserve">
     <value>此操作将删除备份文件且操作无法撤销。是否继续？</value>
   </data>
-  <data name="SaveSuccess" xml:space="preserve">
+    <data name="SaveSuccess" xml:space="preserve">
     <value>保存成功</value>
   </data>
-  <data name="SaveFailure" xml:space="preserve">
+    <data name="SaveFailure" xml:space="preserve">
     <value>保存失败</value>
   </data>
-  <data name="SaveResult" xml:space="preserve">
+    <data name="SaveResult" xml:space="preserve">
     <value>保存结果</value>
   </data>
-  <data name="AddDialogTitle" xml:space="preserve">
+    <data name="AddDialogTitle" xml:space="preserve">
     <value>添加</value>
   </data>
-  <data name="EditDialogTitle" xml:space="preserve">
+    <data name="EditDialogTitle" xml:space="preserve">
     <value>编辑</value>
   </data>
-  <data name="SelectW3Strings" xml:space="preserve">
+    <data name="SelectW3Strings" xml:space="preserve">
     <value>选择w3strings.exe</value>
   </data>
-  <data name="SelectGameExe" xml:space="preserve">
+    <data name="SelectGameExe" xml:space="preserve">
     <value>选择witcher3.exe</value>
   </data>
-  <data name="SubmitBtnContent" xml:space="preserve">
+    <data name="SubmitBtnContent" xml:space="preserve">
     <value>提交</value>
   </data>
-  <data name="CancelBtnContent" xml:space="preserve">
+    <data name="CancelBtnContent" xml:space="preserve">
     <value>取消</value>
   </data>
-  <data name="DeleteDialogTitle" xml:space="preserve">
+    <data name="DeleteDialogTitle" xml:space="preserve">
     <value>删除</value>
   </data>
-  <data name="DeleteDialogMessage" xml:space="preserve">
+    <data name="DeleteDialogMessage" xml:space="preserve">
     <value>您正在删除以下数据：</value>
   </data>
-  <data name="DeleteBtnContent" xml:space="preserve">
+    <data name="DeleteBtnContent" xml:space="preserve">
     <value>删除</value>
   </data>
-  <data name="TranslateDialogTitle" xml:space="preserve">
+    <data name="TranslateDialogTitle" xml:space="preserve">
     <value>翻译</value>
   </data>
-  <data name="PreviousBtnContent" xml:space="preserve">
+    <data name="PreviousBtnContent" xml:space="preserve">
     <value>上一个</value>
   </data>
-  <data name="NextBtnContent" xml:space="preserve">
+    <data name="NextBtnContent" xml:space="preserve">
     <value>下一个</value>
   </data>
-  <data name="TranslateBtnContent" xml:space="preserve">
+    <data name="TranslateBtnContent" xml:space="preserve">
     <value>翻译</value>
   </data>
-  <data name="SaveBtnContent" xml:space="preserve">
+    <data name="SaveBtnContent" xml:space="preserve">
     <value>保存</value>
   </data>
-  <data name="SrcTxt" xml:space="preserve">
+    <data name="SrcTxt" xml:space="preserve">
     <value>原文</value>
   </data>
-  <data name="TranslatedTxt" xml:space="preserve">
+    <data name="TranslatedTxt" xml:space="preserve">
     <value>译文</value>
   </data>
-  <data name="SaveDialogTitle" xml:space="preserve">
+    <data name="SaveDialogTitle" xml:space="preserve">
     <value>保存</value>
   </data>
-  <data name="TargetFiletype" xml:space="preserve">
+    <data name="TargetFiletype" xml:space="preserve">
     <value>目标文件类型</value>
   </data>
-  <data name="TargetLanguage" xml:space="preserve">
+    <data name="TargetLanguage" xml:space="preserve">
     <value>目标语言</value>
   </data>
-  <data name="IgnoreIDSpaceCheck" xml:space="preserve">
+    <data name="IgnoreIDSpaceCheck" xml:space="preserve">
     <value>跳过ID空间检查</value>
   </data>
-  <data name="IDSpace" xml:space="preserve">
+    <data name="IDSpace" xml:space="preserve">
     <value>ID空间</value>
   </data>
-  <data name="BackupDialogTitle" xml:space="preserve">
+    <data name="BackupDialogTitle" xml:space="preserve">
     <value>备份</value>
   </data>
-  <data name="FileName" xml:space="preserve">
+    <data name="FileName" xml:space="preserve">
     <value>文件名</value>
   </data>
-  <data name="Hash" xml:space="preserve">
+    <data name="Hash" xml:space="preserve">
     <value>哈希值</value>
   </data>
-  <data name="OrginPath" xml:space="preserve">
+    <data name="OrginPath" xml:space="preserve">
     <value>原文件路径</value>
   </data>
-  <data name="BackupPath" xml:space="preserve">
+    <data name="BackupPath" xml:space="preserve">
     <value>备份文件路径</value>
   </data>
-  <data name="BackupTime" xml:space="preserve">
+    <data name="BackupTime" xml:space="preserve">
     <value>备份时间</value>
   </data>
-  <data name="RestoreBtnContent" xml:space="preserve">
+    <data name="RestoreBtnContent" xml:space="preserve">
     <value>恢复</value>
   </data>
-  <data name="CloseBtnContent" xml:space="preserve">
+    <data name="CloseBtnContent" xml:space="preserve">
     <value>关闭</value>
   </data>
-  <data name="LogDialogTitle" xml:space="preserve">
+    <data name="LogDialogTitle" xml:space="preserve">
     <value>日志</value>
   </data>
-  <data name="LogTime" xml:space="preserve">
+    <data name="LogTime" xml:space="preserve">
     <value>日志时间</value>
   </data>
-  <data name="LogLevel" xml:space="preserve">
+    <data name="LogLevel" xml:space="preserve">
     <value>日志级别</value>
   </data>
-  <data name="LogMessage" xml:space="preserve">
+    <data name="LogMessage" xml:space="preserve">
     <value>日志消息</value>
   </data>
-  <data name="SettingsDialogTitle" xml:space="preserve">
+    <data name="SettingsDialogTitle" xml:space="preserve">
     <value>设置</value>
   </data>
-  <data name="W3StringsPath" xml:space="preserve">
+    <data name="W3StringsPath" xml:space="preserve">
     <value>请选择w3strings.exe</value>
   </data>
-  <data name="GameExePath" xml:space="preserve">
+    <data name="GameExePath" xml:space="preserve">
     <value>请选择witcher3.exe</value>
   </data>
-  <data name="PreferredFileType" xml:space="preserve">
+    <data name="PreferredFileType" xml:space="preserve">
     <value>默认目标文件类型</value>
   </data>
-  <data name="PreferredLanguage" xml:space="preserve">
+    <data name="PreferredLanguage" xml:space="preserve">
     <value>默认目标语言</value>
   </data>
-  <data name="IsOn" xml:space="preserve">
+    <data name="IsOn" xml:space="preserve">
     <value>开</value>
   </data>
-  <data name="IsOff" xml:space="preserve">
+    <data name="IsOff" xml:space="preserve">
     <value>关</value>
   </data>
-  <data name="IdSpaceToolTip" xml:space="preserve">
+    <data name="IdSpaceToolTip" xml:space="preserve">
     <value>ID空间的范围是0000-9999的四位整数。程序会自动检测ID空间，当检测出错时会显示为-1。该结果仅供参考。</value>
   </data>
-  <data name="RecentDialogTitle" xml:space="preserve">
+    <data name="RecentDialogTitle" xml:space="preserve">
     <value>最近打开的文件</value>
   </data>
-  <data name="Path" xml:space="preserve">
+    <data name="Path" xml:space="preserve">
     <value>文件路径</value>
   </data>
-  <data name="OpenedTime" xml:space="preserve">
+    <data name="OpenedTime" xml:space="preserve">
     <value>上次访问时间</value>
   </data>
-  <data name="Mark" xml:space="preserve">
+    <data name="Mark" xml:space="preserve">
     <value>标记</value>
   </data>
-  <data name="RecordDeletingMessgae" xml:space="preserve">
+    <data name="RecordDeletingMessgae" xml:space="preserve">
     <value>此操作将删除记录且操作无法撤销.是否继续？</value>
   </data>
-  <data name="Open" xml:space="preserve">
+    <data name="Open" xml:space="preserve">
     <value>打开</value>
   </data>
-  <data name="SearchBoxPlaceholderText" xml:space="preserve">
+    <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>搜索</value>
   </data>
-  <data name="StartIndex" xml:space="preserve">
+    <data name="StartIndex" xml:space="preserve">
     <value>开始位置</value>
   </data>
-  <data name="EndIndex" xml:space="preserve">
+    <data name="EndIndex" xml:space="preserve">
     <value>结束位置</value>
   </data>
-  <data name="BatchTranslateDialogTitle" xml:space="preserve">
+    <data name="BatchTranslateDialogTitle" xml:space="preserve">
     <value>批量翻译</value>
   </data>
-  <data name="TranslateCharactersNumberExceedLimitMessage" xml:space="preserve">
+    <data name="TranslateCharactersNumberExceedLimitMessage" xml:space="preserve">
     <value>文本超过了翻译器允许的最大长度 1000 个字符。</value>
   </data>
-  <data name="TranslateCharactersNumberLimit" xml:space="preserve">
+    <data name="TranslateCharactersNumberLimit" xml:space="preserve">
     <value>翻译器允许的最大翻译长度为1000个字符</value>
   </data>
-  <data name="Pending" xml:space="preserve">
+    <data name="Pending" xml:space="preserve">
     <value>等待</value>
   </data>
-  <data name="Success" xml:space="preserve">
+    <data name="Success" xml:space="preserve">
     <value>成功</value>
   </data>
-  <data name="Failure" xml:space="preserve">
+    <data name="Failure" xml:space="preserve">
     <value>失败</value>
   </data>
-  <data name="TranslatedTextInvalidMessage" xml:space="preserve">
+    <data name="TranslatedTextInvalidMessage" xml:space="preserve">
     <value>译文无效，无法保存。请在保存前检查译文是否有效。</value>
   </data>
-  <data name="BackupFileNoFoundMessage" xml:space="preserve">
+    <data name="BackupFileNoFoundMessage" xml:space="preserve">
     <value>备份文件不存在，是否删除该记录？</value>
   </data>
-  <data name="BackupFileNoFoundCaption" xml:space="preserve">
+    <data name="BackupFileNoFoundCaption" xml:space="preserve">
     <value>备份文件不存在</value>
   </data>
-  <data name="BackupDeleteCaption" xml:space="preserve">
+    <data name="BackupDeleteCaption" xml:space="preserve">
     <value>删除备份文件</value>
   </data>
-  <data name="BackupRestoreCaption" xml:space="preserve">
+    <data name="BackupRestoreCaption" xml:space="preserve">
     <value>备份恢复</value>
   </data>
-  <data name="InitializationIncompleteCaption" xml:space="preserve">
+    <data name="InitializationIncompleteCaption" xml:space="preserve">
     <value>初始化未完成</value>
   </data>
-  <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
+    <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
     <value>文本超长</value>
   </data>
-  <data name="TranslatedTextInvalidCaption" xml:space="preserve">
+    <data name="TranslatedTextInvalidCaption" xml:space="preserve">
     <value>译文无效</value>
   </data>
-  <data name="TranslateErrorCaption" xml:space="preserve">
+    <data name="TranslateErrorCaption" xml:space="preserve">
     <value>翻译出错</value>
   </data>
-  <data name="TextLanguage" xml:space="preserve">
+    <data name="TextLanguage" xml:space="preserve">
     <value>文本语言</value>
   </data>
-  <data name="TranslatedTextNoSavedMessage" xml:space="preserve">
+    <data name="TranslatedTextNoSavedMessage" xml:space="preserve">
     <value>译文未保存，是否保存？</value>
   </data>
-  <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
+    <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
     <value>译文未保存</value>
   </data>
-  <data name="OperationResultCaption" xml:space="preserve">
+    <data name="OperationResultCaption" xml:space="preserve">
     <value>操作结果</value>
   </data>
-  <data name="OperationFailureMessage" xml:space="preserve">
+    <data name="OperationFailureMessage" xml:space="preserve">
     <value>操作失败</value>
   </data>
-  <data name="RecordDeletingCaption" xml:space="preserve">
+    <data name="RecordDeletingCaption" xml:space="preserve">
     <value>记录正在删除</value>
   </data>
-  <data name="AboutDialogTitle" xml:space="preserve">
+    <data name="AboutDialogTitle" xml:space="preserve">
     <value>关于</value>
   </data>
-  <data name="Version" xml:space="preserve">
+    <data name="Version" xml:space="preserve">
     <value>版本:</value>
   </data>
-  <data name="Runtime" xml:space="preserve">
+    <data name="Runtime" xml:space="preserve">
     <value>运行时:</value>
   </data>
-  <data name="OS" xml:space="preserve">
+    <data name="OS" xml:space="preserve">
     <value>操作系统:</value>
   </data>
-  <data name="AppBuildTime" xml:space="preserve">
+    <data name="AppBuildTime" xml:space="preserve">
     <value>编译时间:</value>
   </data>
-  <data name="EncoderSettingCardHeader" xml:space="preserve">
+    <data name="EncoderSettingCardHeader" xml:space="preserve">
     <value>编码器路径</value>
   </data>
-  <data name="GameSettingCardHeader" xml:space="preserve">
+    <data name="GameSettingCardHeader" xml:space="preserve">
     <value>游戏路径</value>
   </data>
-  <data name="GeneralSettingsHeader" xml:space="preserve">
+    <data name="GeneralSettingsHeader" xml:space="preserve">
     <value>通用设置</value>
   </data>
-  <data name="TranslatorTranslatingMessage" xml:space="preserve">
+    <data name="TranslatorTranslatingMessage" xml:space="preserve">
     <value>翻译器正在努力翻译中，你忍心退出吗？</value>
   </data>
-  <data name="TranslatorTranslatingCaption" xml:space="preserve">
+    <data name="TranslatorTranslatingCaption" xml:space="preserve">
     <value>翻译进行中</value>
   </data>
-  <data name="AiTranslatorSettingsHeader" xml:space="preserve">
+    <data name="AiTranslatorSettingsHeader" xml:space="preserve">
     <value>AI翻译器（实验性）</value>
   </data>
-  <data name="AiTranslatorSwitchHeader" xml:space="preserve">
+    <data name="AiTranslatorSwitchHeader" xml:space="preserve">
     <value>AI翻译器</value>
   </data>
-  <data name="AiTranslatorSwitchDescription" xml:space="preserve">
+    <data name="AiTranslatorSwitchDescription" xml:space="preserve">
     <value>启用AI翻译器后，该系统将会自动替换原有的微软翻译器作为默认翻译引擎。</value>
   </data>
-  <data name="ModelSettingsHeader" xml:space="preserve">
+    <data name="ModelSettingsHeader" xml:space="preserve">
     <value>模型设置</value>
   </data>
-  <data name="ModelSettingsDescription" xml:space="preserve">
+    <data name="ModelSettingsDescription" xml:space="preserve">
     <value>支持OpenAI API规范的文本生成模型</value>
   </data>
-  <data name="PromptsSettingsHeader" xml:space="preserve">
+    <data name="PromptsSettingsHeader" xml:space="preserve">
     <value>提示词</value>
   </data>
-  <data name="PromptsSettingsDescription" xml:space="preserve">
+    <data name="PromptsSettingsDescription" xml:space="preserve">
     <value>提示词是提供给AI模型以生成特定响应的输入文本或指令。它们可以是从简单的短语到复杂的句子，指导模型预期输出的内容。</value>
   </data>
-  <data name="ModelSettingsEndpointHeader" xml:space="preserve">
+    <data name="ModelSettingsEndpointHeader" xml:space="preserve">
     <value>端点</value>
   </data>
-  <data name="ModelSettingsModelIDHeader" xml:space="preserve">
+    <data name="ModelSettingsModelIDHeader" xml:space="preserve">
     <value>模型ID</value>
   </data>
-  <data name="ModelSettingsModelIDDescription" xml:space="preserve">
+    <data name="ModelSettingsModelIDDescription" xml:space="preserve">
     <value>模型标识符</value>
   </data>
-  <data name="ModelSettingsApiKeyHeader" xml:space="preserve">
+    <data name="ModelSettingsApiKeyHeader" xml:space="preserve">
     <value>API密钥</value>
   </data>
-  <data name="ModelSettingsEndpointDescription" xml:space="preserve">
+    <data name="ModelSettingsEndpointDescription" xml:space="preserve">
     <value>API URL</value>
   </data>
-  <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
+    <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
     <value>访问密钥</value>
   </data>
-  <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
+    <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
     <value>AI翻译设置不完整</value>
   </data>
-  <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
+    <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
     <value>AI翻译已激活，但设置不完整。立即退出将禁用该功能，直至重新配置。
 - 点击“是”以退出并关闭AI翻译功能。
 - 点击“否”返回设置界面继续完成配置。</value>
   </data>
-  <data name="TemperatureSettingDescription" xml:space="preserve">
+    <data name="TemperatureSettingDescription" xml:space="preserve">
     <value>控制生成文本的随机性和创造性。较低的值使输出更加确定并集中在最高概率选项上，而较高的值增加多样性但可能降低连贯性。推荐范围：0到2。小于0的值表示该选项被禁用。</value>
   </data>
-  <data name="TopPSettingDescription" xml:space="preserve">
+    <data name="TopPSettingDescription" xml:space="preserve">
     <value>通过基于累积概率选择最有可能的最小词汇集来动态调整采样过程。这种方法在保持质量的同时增加了输出的多样性。推荐范围：0到1。小于0的值表示该选项被禁用。</value>
   </data>
-  <data name="TemperatureSettingHeader" xml:space="preserve">
+    <data name="TemperatureSettingHeader" xml:space="preserve">
     <value>文本随机性</value>
   </data>
-  <data name="TopPSettingHeader" xml:space="preserve">
+    <data name="TopPSettingHeader" xml:space="preserve">
     <value>累积概率</value>
   </data>
-  <data name="Translating" xml:space="preserve">
+    <data name="Translating" xml:space="preserve">
     <value>穿梭于语言的奇妙旅程中...</value>
   </data>
-  <data name="TranslationModeSwitchCaption" xml:space="preserve">
+    <data name="TranslationModeSwitchCaption" xml:space="preserve">
     <value>切换翻译模式确认</value>
   </data>
-  <data name="TranslationModeSwitchMessage" xml:space="preserve">
+    <data name="TranslationModeSwitchMessage" xml:space="preserve">
     <value>正在翻译。切换翻译模式将中断此过程。您确定要切换吗？</value>
   </data>
-  <data name="ContextLengthSettingHeader" xml:space="preserve">
+    <data name="ContextLengthSettingHeader" xml:space="preserve">
     <value>上下文长度</value>
   </data>
-  <data name="ContextLengthSettingDescription" xml:space="preserve">
+    <data name="ContextLengthSettingDescription" xml:space="preserve">
     <value>控制模型生成回复时考虑的历史消息数量。增加这个数值可以提升回复的准确性，但可能会降低速度并增加费用。设置为0则表示禁用此选项，模型将不参考任何历史消息。</value>
   </data>
 </root>

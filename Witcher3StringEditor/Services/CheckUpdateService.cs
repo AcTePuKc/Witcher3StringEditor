@@ -7,8 +7,8 @@ namespace Witcher3StringEditor.Services;
 
 internal class CheckUpdateService(IAppSettings appSettings) : ICheckUpdateService
 {
-    private readonly string address = appSettings.NexusModUrl;
     private const string Selectors = "li.stat-version>div>div.stat";
+    private readonly string address = appSettings.NexusModUrl;
 
     public async Task<bool> CheckUpdate()
     {
@@ -18,8 +18,8 @@ internal class CheckUpdateService(IAppSettings appSettings) : ICheckUpdateServic
             using var document = await context.OpenAsync(address);
             var element = document.QuerySelector(Selectors);
             Guard.IsNotNull(element);
-            Guard.IsTrue(Version.TryParse(element.InnerHtml, out Version? lastestVersion));
-            Guard.IsTrue(Version.TryParse(ThisAssembly.AssemblyFileVersion, out Version? currentVersion));
+            Guard.IsTrue(Version.TryParse(element.InnerHtml, out var lastestVersion));
+            Guard.IsTrue(Version.TryParse(ThisAssembly.AssemblyFileVersion, out var currentVersion));
             Guard.IsNotNull(lastestVersion);
             Guard.IsNotNull(currentVersion);
             return lastestVersion > currentVersion;

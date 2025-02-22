@@ -9,17 +9,22 @@ namespace Witcher3StringEditor.Dialogs.Behaviors;
 internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
 {
     protected override void OnAttached()
-        => AssociatedObject.RecordDeleting += AssociatedObject_RecordDeleting;
+    {
+        AssociatedObject.RecordDeleting += AssociatedObject_RecordDeleting;
+    }
 
     protected override void OnDetaching()
-        => AssociatedObject.RecordDeleting -= AssociatedObject_RecordDeleting;
+    {
+        AssociatedObject.RecordDeleting -= AssociatedObject_RecordDeleting;
+    }
 
     private static async void AssociatedObject_RecordDeleting(object? sender, RecordDeletingEventArgs e)
     {
         try
         {
             var recordItemType = e.Items[0].GetType().Name;
-            if (!await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), recordItemType)) e.Cancel = true;
+            if (!await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), recordItemType))
+                e.Cancel = true;
         }
         catch (Exception ex)
         {

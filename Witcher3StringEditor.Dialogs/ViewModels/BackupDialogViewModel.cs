@@ -11,9 +11,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupService backupService)
     : ObservableObject, IModalDialogViewModel
 {
-    public bool? DialogResult => true;
-
     public IAppSettings AppSettings => appSettings;
+    public bool? DialogResult => true;
 
     [RelayCommand]
     private async Task Restore(IBackupItem backupItem)
@@ -21,17 +20,13 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
         if (!File.Exists(backupItem.BackupPath))
         {
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupFileNoFound"))
-            {
                 backupService.Delete(backupItem);
-            }
         }
         else
         {
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupRestore")
                 && !backupService.Restore(backupItem))
-            {
                 _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
-            }
         }
     }
 
@@ -40,8 +35,6 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
     {
         if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupDelete")
             && !backupService.Delete(backupItem))
-        {
             _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
-        }
     }
 }

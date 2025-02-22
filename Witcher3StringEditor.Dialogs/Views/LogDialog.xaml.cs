@@ -15,7 +15,9 @@ public partial class LogDialog
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        => SfDataGrid.SearchHelper.Search(args.QueryText);
+    {
+        SfDataGrid.SearchHelper.Search(args.QueryText);
+    }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {

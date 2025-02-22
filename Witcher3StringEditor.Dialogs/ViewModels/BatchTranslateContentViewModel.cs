@@ -12,65 +12,49 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class BatchTranslateContentViewModel : ObservableObject
 {
-    private CancellationTokenSource? cancellationTokenSource;
-
     private readonly ITranslator translator;
 
-    [ObservableProperty]
-    private ILanguage toLanguage;
+    private readonly IEnumerable<IW3Item> w3Items;
+    private CancellationTokenSource? cancellationTokenSource;
 
-    [ObservableProperty]
-    private ILanguage formLanguage;
+    [ObservableProperty] private int endIndex;
 
-    [ObservableProperty]
-    private int maxValue;
+    [ObservableProperty] private int endIndexMin;
 
-    [ObservableProperty]
-    private int startIndex;
+    [ObservableProperty] private int failureCount;
 
-    [ObservableProperty]
-    private int endIndex;
+    [ObservableProperty] private ILanguage formLanguage;
 
-    [ObservableProperty]
-    private int endIndexMin;
-
-    partial void OnStartIndexChanged(int value)
-        => EndIndexMin = value > MaxValue ? MaxValue : value;
-
-    [ObservableProperty]
-    private int successCount;
-
-    [ObservableProperty]
-    private int failureCount;
-
-    [ObservableProperty]
-    private int pendingCount;
+    [ObservableProperty] private bool isAiTranslator;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isBusy;
 
-    partial void OnIsBusyChanged(bool value)
-        => WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBatchTranslating");
+    [ObservableProperty] private IEnumerable<ILanguage> languages;
 
-    [ObservableProperty]
-    private bool isAiTranslator;
+    [ObservableProperty] private int maxValue;
 
-    [ObservableProperty]
-    private IEnumerable<ILanguage> languages;
+    [ObservableProperty] private int pendingCount;
 
-    private readonly IEnumerable<IW3Item> w3Items;
+    [ObservableProperty] private int startIndex;
+
+    [ObservableProperty] private int successCount;
+
+    [ObservableProperty] private ILanguage toLanguage;
 
     public BatchTranslateContentViewModel(IEnumerable<IW3Item> w3Items,
-                                         int startIndex,
-                                         IAppSettings appSettings,
-                                         ITranslator translator)
+        int startIndex,
+        IAppSettings appSettings,
+        ITranslator translator)
     {
         this.translator = translator;
         this.w3Items = w3Items;
         IsAiTranslator = translator is not MicrosoftTranslator;
-        Languages = IsAiTranslator ? Language.LanguageDictionary.Values : Language.LanguageDictionary.Values
-            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
+        Languages = IsAiTranslator
+            ? Language.LanguageDictionary.Values
+            : Language.LanguageDictionary.Values
+                .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         StartIndex = startIndex;
         EndIndex = MaxValue = this.w3Items.Count();
         FormLanguage = Language.GetLanguage("en");
@@ -87,6 +71,18 @@ public partial class BatchTranslateContentViewModel : ObservableObject
         };
     }
 
+    private bool CanCancel => IsBusy;
+
+    private partial void OnStartIndexChanged(int value)
+    {
+        EndIndexMin = value > MaxValue ? MaxValue : value;
+    }
+
+    private partial void OnIsBusyChanged(bool value)
+    {
+        WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBatchTranslating");
+    }
+
     [RelayCommand]
     private async Task Start()
     {
@@ -95,7 +91,8 @@ public partial class BatchTranslateContentViewModel : ObservableObject
         FailureCount = 0;
         PendingCount = EndIndex - StartIndex + 1;
         cancellationTokenSource = new CancellationTokenSource();
-        var tLanguage = ToLanguage; var fLanguage = FormLanguage;
+        var tLanguage = ToLanguage;
+        var fLanguage = FormLanguage;
         foreach (var item in w3Items.Skip(StartIndex - 1).Take(PendingCount))
         {
             if (cancellationTokenSource.IsCancellationRequested) return;
@@ -117,12 +114,12 @@ public partial class BatchTranslateContentViewModel : ObservableObject
                 Log.Error(ex, "Translation error occurred.");
                 FailureCount++;
             }
+
             PendingCount--;
         }
+
         IsBusy = false;
     }
-
-    private bool CanCancel => IsBusy;
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
     private async Task Cancel()

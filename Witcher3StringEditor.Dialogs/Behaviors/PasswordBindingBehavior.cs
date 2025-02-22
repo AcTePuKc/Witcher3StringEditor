@@ -8,7 +8,8 @@ internal class PasswordBindingBehavior : Behavior<PasswordBox>
 {
     public static readonly DependencyProperty PasswordProperty
         = DependencyProperty.Register(nameof(Password), typeof(string), typeof(PasswordBindingBehavior),
-            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnPasswordChanged));
+            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                OnPasswordChanged));
 
     public string Password
     {
@@ -30,10 +31,7 @@ internal class PasswordBindingBehavior : Behavior<PasswordBox>
 
     private void OnPasswordBoxPasswordChanged(object sender, RoutedEventArgs e)
     {
-        if (Password != AssociatedObject.Password)
-        {
-            Password = AssociatedObject.Password;
-        }
+        if (Password != AssociatedObject.Password) Password = AssociatedObject.Password;
     }
 
     private static void OnPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -41,8 +39,6 @@ internal class PasswordBindingBehavior : Behavior<PasswordBox>
         if (d is PasswordBindingBehavior behavior
             && e.NewValue is string newPassword
             && behavior.AssociatedObject.Password != newPassword)
-        {
             behavior.AssociatedObject.Password = newPassword;
-        }
     }
 }

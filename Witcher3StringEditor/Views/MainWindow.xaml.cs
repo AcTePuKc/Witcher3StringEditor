@@ -31,29 +31,31 @@ public partial class MainWindow
         };
 
         foreach (var (token, message, caption) in messageHandlers)
-        {
             WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(
                 recipient,
                 token,
                 (r, m) =>
                 {
                     r.Receive(m);
-                    m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+                    m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
+                            MessageBoxResult.Yes);
                 });
-        }
 
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(recipient, "MainWindowClosing", static (r, m) =>
-        {
-            r.Receive(m);
-            m.Reply(MessageBox.Show(Strings.AppExitMessage,
-                                    Strings.AppExitCaption,
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question) == MessageBoxResult.No);
-        });
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
+            recipient, "MainWindowClosing", static (r, m) =>
+            {
+                r.Receive(m);
+                m.Reply(MessageBox.Show(Strings.AppExitMessage,
+                    Strings.AppExitCaption,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.No);
+            });
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        => SfDataGrid.SearchHelper.Search(args.QueryText);
+    {
+        SfDataGrid.SearchHelper.Search(args.QueryText);
+    }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
@@ -61,5 +63,7 @@ public partial class MainWindow
     }
 
     private void Window_Closed(object sender, EventArgs e)
-        => WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    }
 }

@@ -6,13 +6,12 @@ namespace Witcher3StringEditor.Models;
 
 internal partial class W3Job : ObservableObject, IW3Job
 {
-    [ObservableProperty] private W3FileType w3FileType;
-
     [ObservableProperty] private int idSpace;
 
     [ObservableProperty] private bool isIgnoreIdSpaceCheck;
 
     [ObservableProperty] private W3Language language;
+    [ObservableProperty] private W3FileType w3FileType;
 
     public required string Path { get; init; }
 

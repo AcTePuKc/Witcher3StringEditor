@@ -5,14 +5,11 @@ namespace Witcher3StringEditor.Models;
 
 internal partial class RecentItem : ObservableObject, IRecentItem
 {
-    [ObservableProperty]
-    private string filePath;
+    [ObservableProperty] private string filePath;
 
-    [ObservableProperty]
-    private DateTime openedTime;
+    [ObservableProperty] private bool isMarked;
 
-    [ObservableProperty]
-    private bool isMarked;
+    [ObservableProperty] private DateTime openedTime;
 
     public RecentItem(string filePath, DateTime openedTime, bool isMarked = false)
     {

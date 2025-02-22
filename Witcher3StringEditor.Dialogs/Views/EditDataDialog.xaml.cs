@@ -6,5 +6,7 @@
 public partial class EditDataDialog
 {
     public EditDataDialog()
-        => InitializeComponent();
+    {
+        InitializeComponent();
+    }
 }

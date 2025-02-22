@@ -6,18 +6,18 @@ namespace Witcher3StringEditor.Dialogs.Behaviors;
 
 public class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
 {
+    // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty DataProperty =
+        DependencyProperty.Register(nameof(Data),
+            typeof(string[]),
+            typeof(FrameworkElementDropFileBehavior),
+            new PropertyMetadata(null));
+
     public string[] Data
     {
         get => (string[])GetValue(DataProperty);
         set => SetValue(DataProperty, value);
     }
-
-    // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty DataProperty =
-        DependencyProperty.Register(nameof(Data),
-                                    typeof(string[]),
-                                    typeof(FrameworkElementDropFileBehavior),
-                                    new PropertyMetadata(null));
 
     protected override void OnAttached()
     {
@@ -40,5 +40,7 @@ public class FrameworkElementDropFileBehavior : Behavior<FrameworkElement>
     }
 
     private void AssociatedObject_Drop(object sender, DragEventArgs e)
-        => Data = e.Data.GetData(DataFormats.FileDrop).As<string[]>();
+    {
+        Data = e.Data.GetData(DataFormats.FileDrop).As<string[]>();
+    }
 }

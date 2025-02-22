@@ -23,14 +23,17 @@ public partial class BackupDialog
 
         var messageHandlers = new[]
         {
-            ("BackupRestore", Strings.BackupRestoreMessage, Strings.BackupRestoreCaption, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("BackupDelete", Strings.BackupDeleteMessage, Strings.BackupDeleteCaption, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("BackupFileNoFound", Strings.BackupFileNoFoundMessage, Strings.BackupFileNoFoundCaption, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("OperationFailed", Strings.OperationFailureMessage, Strings.OperationResultCaption, MessageBoxButton.OK, MessageBoxImage.Warning, MessageBoxResult.OK)
+            ("BackupRestore", Strings.BackupRestoreMessage, Strings.BackupRestoreCaption, MessageBoxButton.YesNo,
+                MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("BackupDelete", Strings.BackupDeleteMessage, Strings.BackupDeleteCaption, MessageBoxButton.YesNo,
+                MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("BackupFileNoFound", Strings.BackupFileNoFoundMessage, Strings.BackupFileNoFoundCaption,
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("OperationFailed", Strings.OperationFailureMessage, Strings.OperationResultCaption, MessageBoxButton.OK,
+                MessageBoxImage.Warning, MessageBoxResult.OK)
         };
 
         foreach (var (token, message, caption, button, icon, expected) in messageHandlers)
-        {
             WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
                 backupRecipient,
                 token,
@@ -39,14 +42,17 @@ public partial class BackupDialog
                     r.Receive(m);
                     m.Reply(MessageBox.Show(message, caption, button, icon) == expected);
                 });
-        }
     }
 
     private void Window_Closed(object sender, EventArgs e)
-        => WeakReferenceMessenger.Default.UnregisterAll(backupRecipient);
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(backupRecipient);
+    }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-        => SfDataGrid.SearchHelper.Search(args.QueryText);
+    {
+        SfDataGrid.SearchHelper.Search(args.QueryText);
+    }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {

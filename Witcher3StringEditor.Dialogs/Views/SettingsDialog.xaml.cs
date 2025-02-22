@@ -20,23 +20,26 @@ public partial class SettingsDialog
 
         var messageHandlers = new[]
         {
-            ("InitializationIncomplete", Strings.InitializationIncompleteMessage, Strings.InitializationIncompleteCaption),
-            ("IncompleteAiTranslationSettings", Strings.IncompleteAiTranslationSettingsMessage, Strings.IncompleteAiTranslationSettingsCaption)
+            ("InitializationIncomplete", Strings.InitializationIncompleteMessage,
+                Strings.InitializationIncompleteCaption),
+            ("IncompleteAiTranslationSettings", Strings.IncompleteAiTranslationSettingsMessage,
+                Strings.IncompleteAiTranslationSettingsCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)
-        {
             WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
                 closingRecipient,
                 token,
                 (r, m) =>
                 {
                     r.Receive(m);
-                    m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
+                    m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
+                            MessageBoxResult.Yes);
                 });
-        }
     }
 
     private void Window_Closed(object sender, EventArgs e)
-        => WeakReferenceMessenger.Default.UnregisterAll(closingRecipient);
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(closingRecipient);
+    }
 }

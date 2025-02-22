@@ -11,23 +11,8 @@ namespace Witcher3StringEditor.Services;
 internal class BackupService(IAppSettings appSettings) : IBackupService
 {
     private readonly string backupFolderPath
-        = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Backup");
-
-    private static string ComputeSha256Hash(string filePath)
-    {
-        try
-        {
-            Guard.IsTrue(File.Exists(filePath));
-            using var sha256 = SHA256.Create();
-            using var stream = File.OpenRead(filePath);
-            return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to compute SHA256 hash: {0}.", filePath);
-            return string.Empty;
-        }
-    }
+        = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Backup");
 
     public bool Backup(string path)
     {
@@ -46,7 +31,9 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             };
             if (!Directory.Exists(backupFolderPath))
                 Directory.CreateDirectory(backupFolderPath);
-            if (appSettings.BackupItems.Any(x => x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath && File.Exists(x.BackupPath))) return true;
+            if (appSettings.BackupItems.Any(x =>
+                    x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath && File.Exists(x.BackupPath)))
+                return true;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
             appSettings.BackupItems.Add(backupItem);
             return true;
@@ -90,6 +77,22 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         {
             Log.Error(ex, "Failed to delete backup item: {0}.", backupItem.BackupPath);
             return false;
+        }
+    }
+
+    private static string ComputeSha256Hash(string filePath)
+    {
+        try
+        {
+            Guard.IsTrue(File.Exists(filePath));
+            using var sha256 = SHA256.Create();
+            using var stream = File.OpenRead(filePath);
+            return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to compute SHA256 hash: {0}.", filePath);
+            return string.Empty;
         }
     }
 }

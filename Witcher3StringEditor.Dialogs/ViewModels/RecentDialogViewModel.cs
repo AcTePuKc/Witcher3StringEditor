@@ -11,11 +11,11 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class RecentDialogViewModel(IAppSettings appSettings)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    public bool? DialogResult => true;
+    public IAppSettings AppSettings => appSettings;
 
     public event EventHandler? RequestClose;
 
-    public IAppSettings AppSettings => appSettings;
+    public bool? DialogResult => true;
 
     [RelayCommand]
     private async Task Open(IRecentItem item)

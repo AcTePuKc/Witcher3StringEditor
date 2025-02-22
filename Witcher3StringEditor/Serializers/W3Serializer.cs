@@ -19,7 +19,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         {
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
             if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
-            Guard.IsTrue((Path.GetExtension(path) == ".w3strings"));
+            Guard.IsTrue(Path.GetExtension(path) == ".w3strings");
             var newPath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(path));
             File.Copy(path, newPath);
             return await DeserializeW3Strings(newPath);
@@ -29,6 +29,17 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             Log.Error(ex, "An error occurred while deserializing the file: {0}.", path);
             return [];
         }
+    }
+
+    public async Task<bool> Serialize(IW3Job w3Job)
+    {
+        return w3Job.W3FileType switch
+        {
+            W3FileType.csv => await SerializeCsv(w3Job),
+            W3FileType.w3Strings => await SerializeW3Strings(w3Job),
+            W3FileType.excel => await SerializeExcel(w3Job),
+            _ => throw new NotSupportedException($"The file type {w3Job.W3FileType} is not supported.")
+        };
     }
 
     private static async Task<IEnumerable<IW3Item>> DeserializeCsv(string path)
@@ -115,17 +126,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             Log.Information("Output: {0}", e.Data);
     }
 
-    public async Task<bool> Serialize(IW3Job w3Job)
-    {
-        return w3Job.W3FileType switch
-        {
-            W3FileType.csv => await SerializeCsv(w3Job),
-            W3FileType.w3Strings => await SerializeW3Strings(w3Job),
-            W3FileType.excel => await SerializeExcel(w3Job),
-            _ => throw new NotSupportedException($"The file type {w3Job.W3FileType} is not supported.")
-        };
-    }
-
     private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
     {
         try
@@ -139,7 +139,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
                 and not W3Language.esmx
                 and not W3Language.kr
                 and not W3Language.tr
-                ? saveLang : "cleartext";
+                ? saveLang
+                : "cleartext";
             stringBuilder.AppendLine($";meta[language={lang}]");
             stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
             foreach (var item in w3Job.W3Items)
@@ -157,7 +158,10 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
     }
 
-    private async Task<bool> SerializeCsv(IW3Job w3Job) => await SerializeCsv(w3Job, w3Job.Path);
+    private async Task<bool> SerializeCsv(IW3Job w3Job)
+    {
+        return await SerializeCsv(w3Job, w3Job.Path);
+    }
 
     private async Task<bool> SerializeExcel(IW3Job w3Job)
     {
@@ -198,7 +202,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         var saveLang = Enum.GetName(w3Job.Language);
         var tempFolder = Directory.CreateTempSubdirectory().FullName;
-        return (tempFolder, Path.Combine(tempFolder, $"{saveLang}.csv"), Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
+        return (tempFolder, Path.Combine(tempFolder, $"{saveLang}.csv"),
+            Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
     }
 
     private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
@@ -237,6 +242,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         {
             Log.Error(ex, "Failed to copy file from {0} to {1}.", tempPath, path);
         }
+
         return true;
     }
 }

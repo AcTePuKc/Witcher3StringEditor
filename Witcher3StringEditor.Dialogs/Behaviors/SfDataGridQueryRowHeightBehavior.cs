@@ -7,7 +7,10 @@ namespace Witcher3StringEditor.Dialogs.Behaviors;
 public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
 {
     public static readonly DependencyProperty MinHeightProperty
-        = DependencyProperty.Register(nameof(MinHeight), typeof(double), typeof(SfDataGridQueryRowHeightBehavior), new PropertyMetadata(25.0));
+        = DependencyProperty.Register(nameof(MinHeight), typeof(double), typeof(SfDataGridQueryRowHeightBehavior),
+            new PropertyMetadata(25.0));
+
+    private readonly GridRowSizingOptions gridRowResizingOptions = new();
 
     public double MinHeight
     {
@@ -15,17 +18,20 @@ public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
         set => SetValue(MinHeightProperty, value);
     }
 
-    private readonly GridRowSizingOptions gridRowResizingOptions = new();
-
     protected override void OnAttached()
-        => AssociatedObject.QueryRowHeight += AssociatedObject_QueryRowHeight;
+    {
+        AssociatedObject.QueryRowHeight += AssociatedObject_QueryRowHeight;
+    }
 
     protected override void OnDetaching()
-        => AssociatedObject.QueryRowHeight -= AssociatedObject_QueryRowHeight;
+    {
+        AssociatedObject.QueryRowHeight -= AssociatedObject_QueryRowHeight;
+    }
 
     private void AssociatedObject_QueryRowHeight(object? sender, QueryRowHeightEventArgs e)
     {
-        if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out var autoHeight)) return;
+        if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions, out var autoHeight))
+            return;
         if (autoHeight <= MinHeight) return;
         e.Height = autoHeight;
         e.Handled = true;

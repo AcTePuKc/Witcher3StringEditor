@@ -18,16 +18,16 @@ namespace Witcher3StringEditor.Translators;
 
 internal class AiTranslator : ITranslator
 {
-    private ILanguage? selectedLanguage;
     private readonly IBrowsingContext browsingContext;
-    private readonly HttpClient httpClient;
-    private readonly ChatHistory chatHistory;
-    private readonly IModelSettings modelSettings;
     private readonly IChatCompletionService chatCompletionService;
-    private readonly PromptExecutionSettings promptExecutionSettings;
+    private readonly ChatHistory chatHistory;
 #pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
-    private readonly ChatHistoryTruncationReducer? chatHistoryReducer;
+    private readonly IChatHistoryReducer? chatHistoryReducer;
 #pragma warning restore SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
+    private readonly HttpClient httpClient;
+    private readonly IModelSettings modelSettings;
+    private readonly PromptExecutionSettings promptExecutionSettings;
+    private ILanguage? selectedLanguage;
 
     public AiTranslator(IModelSettings settings)
     {
@@ -44,9 +44,68 @@ internal class AiTranslator : ITranslator
             chatHistoryReducer = new ChatHistoryTruncationReducer(modelSettings.ContextLength);
 #pragma warning restore SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         chatCompletionService = new OpenAIChatCompletionService(settings.ModelId,
-                                                                apiKey: Unprotect(settings.ApiKey),
-                                                                httpClient: httpClient,
-                                                                loggerFactory: Ioc.Default.GetRequiredService<ILoggerFactory>());
+            Unprotect(settings.ApiKey),
+            httpClient: httpClient,
+            loggerFactory: Ioc.Default.GetRequiredService<ILoggerFactory>());
+    }
+
+    public string Name => "AiTranslator";
+
+    public Task<ILanguage> DetectLanguageAsync(string text)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool IsLanguageSupported(string language)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool IsLanguageSupported(ILanguage language)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
+    {
+        Guard.IsTrue(Language.TryGetLanguage(fromLanguage ?? "en", out var sourceLanguage));
+        Guard.IsTrue(Language.TryGetLanguage(toLanguage, out var targetLanguage));
+        return await TranslateAsync(text, targetLanguage, sourceLanguage);
+    }
+
+    public async Task<ITranslationResult> TranslateAsync(string text, ILanguage toLanguage,
+        ILanguage? fromLanguage = null)
+    {
+        Guard.IsNotNullOrWhiteSpace(text);
+        await PrepareChatHistory(toLanguage);
+        var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
+        Guard.IsNotNull(nodes);
+        Guard.IsNotEmpty(nodes);
+        var translationResponse = await FetchTranslationResponse(nodes);
+        Guard.IsNotNullOrWhiteSpace(translationResponse);
+        UpdateNodeTextContent(nodes, translationResponse);
+        var translation = document.Body?.InnerHtml;
+        Guard.IsNotNullOrWhiteSpace(translation);
+        var translationResult = new AiTranslationResult
+        {
+            Source = text,
+            Translation = translation,
+            SourceLanguage = fromLanguage ?? Language.GetLanguage("en"),
+            TargetLanguage = toLanguage
+        };
+        document.Dispose();
+        return translationResult;
+    }
+
+    public Task<ITransliterationResult> TransliterateAsync(string text, string toLanguage, string? fromLanguage = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<ITransliterationResult> TransliterateAsync(string text, ILanguage toLanguage,
+        ILanguage? fromLanguage = null)
+    {
+        throw new NotImplementedException();
     }
 
     private OpenAIPromptExecutionSettings CreatePromptExecutionSettings()
@@ -72,50 +131,6 @@ internal class AiTranslator : ITranslator
         browsingContext.Dispose();
     }
 
-    public string Name => "AiTranslator";
-
-    public Task<ILanguage> DetectLanguageAsync(string text) => throw new NotImplementedException();
-
-    public bool IsLanguageSupported(string language) => throw new NotImplementedException();
-
-    public bool IsLanguageSupported(ILanguage language) => throw new NotImplementedException();
-
-    public async Task<ITranslationResult> TranslateAsync(string text, string toLanguage, string? fromLanguage = null)
-    {
-        Guard.IsTrue(Language.TryGetLanguage(fromLanguage ?? "en", out var sourceLanguage));
-        Guard.IsTrue(Language.TryGetLanguage(toLanguage, out var targetLanguage));
-        return await TranslateAsync(text, targetLanguage, sourceLanguage);
-    }
-
-    public async Task<ITranslationResult> TranslateAsync(string text, ILanguage toLanguage, ILanguage? fromLanguage = null)
-    {
-        Guard.IsNotNullOrWhiteSpace(text);
-        await PrepareChatHistory(toLanguage);
-        var (document, nodes) = await ProcessDocumentAndExtractNodes(text);
-        Guard.IsNotNull(nodes);
-        Guard.IsNotEmpty(nodes);
-        var translationResponse = await FetchTranslationResponse(nodes);
-        Guard.IsNotNullOrWhiteSpace(translationResponse);
-        UpdateNodeTextContent(nodes, translationResponse);
-        var translation = document.Body?.InnerHtml;
-        Guard.IsNotNullOrWhiteSpace(translation);
-        var translationResult = new AiTranslationResult
-        {
-            Source = text,
-            Translation = translation,
-            SourceLanguage = fromLanguage ?? Language.GetLanguage("en"),
-            TargetLanguage = toLanguage
-        };
-        document.Dispose();
-        return translationResult;
-    }
-
-    public Task<ITransliterationResult> TransliterateAsync(string text, string toLanguage, string? fromLanguage = null)
-        => throw new NotImplementedException();
-
-    public Task<ITransliterationResult> TransliterateAsync(string text, ILanguage toLanguage, ILanguage? fromLanguage = null)
-        => throw new NotImplementedException();
-
     private async Task PrepareChatHistory(ILanguage toLanguage)
     {
         if (selectedLanguage?.Equals(toLanguage) != true)
@@ -123,6 +138,7 @@ internal class AiTranslator : ITranslator
             chatHistory.Clear();
             selectedLanguage = toLanguage;
         }
+
         if (chatHistory.Count == 0)
             chatHistory.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage.Name));
         if (modelSettings.ContextLength == 0 && chatHistory.Count > 1)
@@ -140,7 +156,8 @@ internal class AiTranslator : ITranslator
     private async Task<string> FetchTranslationResponse(IText[] nodes)
     {
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
-        var translation = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings)).ToString();
+        var translation = (await chatCompletionService.GetChatMessageContentAsync(chatHistory, promptExecutionSettings))
+            .ToString();
         chatHistory.AddAssistantMessage(translation);
         return translation;
     }
@@ -163,8 +180,10 @@ internal class AiTranslator : ITranslator
                 stringBuilder.Append(node.Text);
                 isFirst = false;
             }
+
             result = stringBuilder.ToString();
         }
+
         return result;
     }
 

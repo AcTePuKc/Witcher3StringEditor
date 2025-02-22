@@ -8,30 +8,17 @@ namespace Witcher3StringEditor.Models;
 
 internal partial class AppSettings : ObservableObject, IAppSettings
 {
-    [ObservableProperty]
-    private W3FileType preferredW3FileType;
+    [ObservableProperty] private string gameExePath = string.Empty;
 
-    [ObservableProperty]
-    private W3Language preferredLanguage;
+    [ObservableProperty] private bool isUseAiTranslate;
 
-    [ObservableProperty]
-    private string w3StringsPath = string.Empty;
+    [ObservableProperty] private IModelSettings modelSettings = new ModelSettings();
 
-    [ObservableProperty]
-    private string gameExePath = string.Empty;
+    [ObservableProperty] private W3Language preferredLanguage;
 
-    public ObservableCollection<IRecentItem> RecentItems { get; } = [];
+    [ObservableProperty] private W3FileType preferredW3FileType;
 
-    public ObservableCollection<IBackupItem> BackupItems { get; } = [];
-
-    [JsonIgnore]
-    public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
-
-    [ObservableProperty]
-    private bool isUseAiTranslate;
-
-    [ObservableProperty]
-    private IModelSettings modelSettings = new ModelSettings();
+    [ObservableProperty] private string w3StringsPath = string.Empty;
 
     public AppSettings()
     {
@@ -39,12 +26,12 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 
     [JsonConstructor]
     public AppSettings(string w3StringsPath,
-                       W3FileType preferredW3FileType,
-                       W3Language preferredLanguage,
-                       string gameExePath,
-                       ModelSettings? modelSettings,
-                       ObservableCollection<BackupItem> backupItems,
-                       ObservableCollection<RecentItem> recentItems)
+        W3FileType preferredW3FileType,
+        W3Language preferredLanguage,
+        string gameExePath,
+        ModelSettings? modelSettings,
+        ObservableCollection<BackupItem> backupItems,
+        ObservableCollection<RecentItem> recentItems)
     {
         W3StringsPath = w3StringsPath;
         PreferredW3FileType = preferredW3FileType;
@@ -54,4 +41,10 @@ internal partial class AppSettings : ObservableObject, IAppSettings
         RecentItems = [.. recentItems];
         ModelSettings = modelSettings ?? new ModelSettings();
     }
+
+    public ObservableCollection<IRecentItem> RecentItems { get; } = [];
+
+    public ObservableCollection<IBackupItem> BackupItems { get; } = [];
+
+    [JsonIgnore] public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
 }
