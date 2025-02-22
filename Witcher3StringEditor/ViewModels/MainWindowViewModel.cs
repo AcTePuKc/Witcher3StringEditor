@@ -200,9 +200,8 @@ internal partial class MainWindowViewModel : ObservableObject
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
             && dialogViewModel.W3Item != null)
         {
-            var found = W3Items.First(x => x.Id == w3Item.Id);
-            var index = W3Items.IndexOf(found);
-            if (index != -1) W3Items[index] = dialogViewModel.W3Item;
+            var found = W3Items.FirstOrDefault(x => x.Id == w3Item.Id);
+            if (found != null) W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
         }
     }
 
