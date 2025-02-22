@@ -77,7 +77,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             Guard.IsTrue(File.Exists(path));
-            Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
@@ -220,7 +219,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 
     private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
     {
-        Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
         using var process = new Process();
         process.EnableRaisingEvents = true;
         process.StartInfo = new ProcessStartInfo
