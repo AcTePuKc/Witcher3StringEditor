@@ -202,8 +202,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             var found = W3Items.First(x => x.Id == w3Item.Id);
             var index = W3Items.IndexOf(found);
-            if (index == -1) return;
-            W3Items[index] = dialogViewModel.W3Item;
+            if (index != -1) W3Items[index] = dialogViewModel.W3Item;
         }
     }
 
