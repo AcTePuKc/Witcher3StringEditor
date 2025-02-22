@@ -20,7 +20,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             Guard.IsTrue(File.Exists(path));
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
             if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
-            if (Path.GetExtension(path) != ".w3strings") return [];
+            Guard.IsTrue((Path.GetExtension(path) == ".w3strings"));
             var newPath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(path));
             File.Copy(path, newPath);
             return await DeserializeW3Strings(newPath);
@@ -110,12 +110,14 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
-        if (e.Data != null) Log.Error(e.Data);
+        if (!string.IsNullOrEmpty(e.Data))
+            Log.Error("Error: {0}", e.Data);
     }
 
     private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
-        if (e.Data != null) Log.Information(e.Data);
+        if (!string.IsNullOrEmpty(e.Data))
+            Log.Information("Output: {0}", e.Data);
     }
 
     public async Task<bool> Serialize(IW3Job w3Job)
@@ -125,7 +127,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             W3FileType.csv => await SerializeCsv(w3Job),
             W3FileType.w3Strings => await SerializeW3Strings(w3Job),
             W3FileType.excel => await SerializeExcel(w3Job),
-            _ => false
+            _ => throw new NotSupportedException($"The file type {w3Job.W3FileType} is not supported.")
         };
     }
 
@@ -151,7 +153,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             foreach (var item in w3Job.W3Items)
                 stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
             var csvPath = $"{Path.Combine(folder, saveLang)}.csv";
-            if (File.Exists(csvPath) && !backupService.Backup(csvPath)) return false;
+            if (File.Exists(csvPath))
+                Guard.IsTrue(backupService.Backup(csvPath));
             await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
             return true;
         }
@@ -192,34 +195,10 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             Guard.IsGreaterThan(w3Job.W3Items.Count(), 0);
             Guard.IsTrue(File.Exists(appSettings.W3StringsPath));
             var tempFolder = Directory.CreateTempSubdirectory().FullName;
-            var saveLang = Enum.GetName(w3Job.Language);
-            Guard.IsNotNullOrWhiteSpace(saveLang);
-            var csvPath = $"{Path.Combine(tempFolder, saveLang)}.csv";
-            var w3StringsPath = $"{Path.Combine(w3Job.Path, saveLang)}.w3strings";
-            if (!await SerializeCsv(w3Job, tempFolder)) return false;
-            using var process = new Process();
-            process.EnableRaisingEvents = true;
-            process.StartInfo = new ProcessStartInfo
-            {
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                FileName = appSettings.W3StringsPath,
-                Arguments = w3Job.IsIgnoreIdSpaceCheck
-                    ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
-                    : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
-            };
-            process.ErrorDataReceived += Process_ErrorDataReceived;
-            process.OutputDataReceived += Process_OutputDataReceived;
-            process.Start();
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
-            await process.WaitForExitAsync();
-            if (process.ExitCode != 0) return false;
-            var tempW3StringsPath = $"{csvPath}.w3strings";
-            if (File.Exists(w3StringsPath) && !backupService.Backup(w3StringsPath)) return false;
-            File.Copy(tempW3StringsPath, w3StringsPath, true);
+            var (csvPath, w3StringsPath) = GenerateW3StringsFilePaths(w3Job, tempFolder);
+            await SerializeCsv(w3Job, tempFolder);
+            await StartSerializationProcess(w3Job, csvPath);
+            CopyTempFilesWithBackup(Path.ChangeExtension(csvPath, ".w3strings"), w3StringsPath);
             return true;
         }
         catch (Exception ex)
@@ -227,5 +206,44 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             Log.Error(ex, "An error occurred while serializing W3Strings.\n-{0}", ex.Message);
             return false;
         }
+    }
+
+    private static (string csvPath, string w3StringsPath) GenerateW3StringsFilePaths(IW3Job w3Job, string tempFolder)
+    {
+        Guard.IsTrue(Directory.Exists(w3Job.Path));
+        var saveLang = Enum.GetName(w3Job.Language);
+        Guard.IsNotNullOrWhiteSpace(saveLang);
+        return (Path.Combine(tempFolder, $"{saveLang}.csv"), Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
+    }
+
+    private async Task StartSerializationProcess(IW3Job w3Job, string csvPath)
+    {
+        using var process = new Process();
+        process.EnableRaisingEvents = true;
+        process.StartInfo = new ProcessStartInfo
+        {
+            RedirectStandardError = true,
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            FileName = appSettings.W3StringsPath,
+            Arguments = w3Job.IsIgnoreIdSpaceCheck
+                ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
+                : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
+        };
+        process.ErrorDataReceived += Process_ErrorDataReceived;
+        process.OutputDataReceived += Process_OutputDataReceived;
+        process.Start();
+        process.BeginErrorReadLine();
+        process.BeginOutputReadLine();
+        await process.WaitForExitAsync();
+        Guard.IsEqualTo(process.ExitCode, 0);
+    }
+
+    private void CopyTempFilesWithBackup(string tempPath, string Path)
+    {
+        if (File.Exists(Path))
+            Guard.IsTrue(backupService.Backup(Path));
+        File.Copy(tempPath, Path, true);
     }
 }
