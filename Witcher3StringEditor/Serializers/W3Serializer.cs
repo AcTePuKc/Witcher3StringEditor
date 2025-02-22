@@ -26,7 +26,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing the file: {0}\n-{1}", path, ex.Message);
+            Log.Error(ex, "An error occurred while deserializing the file: {0}.", path);
             return [];
         }
     }
@@ -51,7 +51,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing the CSV file: {0}\n-{1}", path, ex.Message);
+            Log.Error(ex, "An error occurred while deserializing the CSV file: {0}.", path);
             return [];
         }
     }
@@ -64,7 +64,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {0}\n-{1}", path, ex.Message);
+            Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {0}.", path);
             return [];
         }
     }
@@ -98,7 +98,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing W3Strings file: {0}\n-{1}", path, ex.Message);
+            Log.Error(ex, "An error occurred while deserializing W3Strings file: {0}.", path);
             return [];
         }
     }
@@ -152,7 +152,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while serializing the CSV file.\n-{0}", ex.Message);
+            Log.Error(ex, "An error occurred while serializing the CSV file.");
             return false;
         }
     }
@@ -172,7 +172,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while serializing the Excel worksheets file.\n-{0}", ex.Message);
+            Log.Error(ex, "An error occurred while serializing the Excel worksheets file.");
             return false;
         }
     }
@@ -189,7 +189,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while serializing W3Strings.\n-{0}", ex.Message);
+            Log.Error(ex, "An error occurred while serializing W3Strings.");
             return false;
         }
     }
@@ -235,7 +235,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to copy file from {0} to {1}.\n-{2}", tempPath, path, ex.Message);
+            Log.Error(ex, "Failed to copy file from {0} to {1}.", tempPath, path);
         }
         return true;
     }

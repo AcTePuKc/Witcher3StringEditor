@@ -29,7 +29,7 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to start the game process.\n-{0}", ex.Message);
+            Log.Error(ex, "Failed to start the game process.");
         }
     }
 
