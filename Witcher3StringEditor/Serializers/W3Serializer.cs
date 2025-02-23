@@ -1,6 +1,8 @@
 ﻿using CommandLine;
 using CommunityToolkit.Diagnostics;
 using MiniExcelLibs;
+using MiniExcelLibs.Attributes;
+using MiniExcelLibs.OpenXml;
 using Serilog;
 using System.Diagnostics;
 using System.IO;
@@ -47,18 +49,18 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             return from line in await File.ReadAllLinesAsync(path)
-                   where !line.StartsWith(';')
-                   select line.Split("|")
+                where !line.StartsWith(';')
+                select line.Split("|")
                 into parts
-                   where parts.Length == 4
-                   select new W3Item
-                   {
-                       StrId = parts[0],
-                       KeyHex = parts[1],
-                       KeyName = parts[2],
-                       OldText = parts[3],
-                       Text = parts[3]
-                   };
+                where parts.Length == 4
+                select new W3Item
+                {
+                    StrId = parts[0],
+                    KeyHex = parts[1],
+                    KeyName = parts[2],
+                    OldText = parts[3],
+                    Text = parts[3]
+                };
         }
         catch (Exception ex)
         {
@@ -171,7 +173,20 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             var path = Path.Combine(w3Job.Path, $"{saveLang}.xlsx");
             if (File.Exists(path))
                 Guard.IsTrue(backupService.Backup(path));
-            await MiniExcel.SaveAsAsync(path, w3Job.W3Items.Cast<W3Item>(), overwriteFile: true);
+            var config = new OpenXmlConfiguration
+            {
+                FastMode = true,
+                DynamicColumns =
+                [
+                    new DynamicExcelColumn("Id") { Ignore = true },
+                    new DynamicExcelColumn("StrId") { Index = 0 },
+                    new DynamicExcelColumn("KeyHex") { Index = 1 },
+                    new DynamicExcelColumn("KeyName") { Index = 2 },
+                    new DynamicExcelColumn("OldText") { Index = 3, Width = 50 },
+                    new DynamicExcelColumn("Text") { Index = 4, Width = 50 }
+                ]
+            };
+            await MiniExcel.SaveAsAsync(path, w3Job.W3Items.Cast<W3Item>(), configuration: config, overwriteFile: true);
             return true;
         }
         catch (Exception ex)
