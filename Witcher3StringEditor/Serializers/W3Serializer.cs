@@ -211,7 +211,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         headerRange.CellStyle.Font.Bold = true;
         headerRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
         headerRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
-        headerRange.CellStyle.ColorIndex = ExcelKnownColors.Light_blue;
+        headerRange.CellStyle.ColorIndex = ExcelKnownColors.Grey_80_percent;
         headerRange.CellStyle.Font.Color = ExcelKnownColors.White;
         var normalRange = worksheet[$"A2:C{rowCount + 1}"];
         normalRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
