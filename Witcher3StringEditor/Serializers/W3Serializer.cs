@@ -165,7 +165,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         return await SerializeCsv(w3Job, w3Job.Path);
     }
-    
+
     private bool SerializeExcel(IW3Job w3Job)
     {
         try
@@ -186,7 +186,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             SetTableStyles(worksheet, items.Length);
             SetColumnWidths(worksheet);
             WriteDataToWorksheet(worksheet, items);
-            worksheet["A2:E2"].FreezePanes();
             workbook.SaveAs(fileStream);
             return true;
         }
@@ -224,6 +223,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         tableRange.NumberFormat = "@";
         var textRange = worksheet[$"D2:E{rowCount + 1}"];
         textRange.WrapText = true;
+        worksheet["A2:E2"].FreezePanes();
     }
 
     private static void SetColumnWidths(IWorksheet worksheet)
