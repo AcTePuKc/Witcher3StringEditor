@@ -165,7 +165,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         return await SerializeCsv(w3Job, w3Job.Path);
     }
-
+    
     private bool SerializeExcel(IW3Job w3Job)
     {
         try
@@ -175,45 +175,17 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             if (File.Exists(path))
                 Guard.IsTrue(backupService.Backup(path));
             var items = w3Job.W3Items.ToArray();
+            Guard.IsGreaterThan(items.Length, 0);
             using var fileStream = File.Create(path);
             using var excelEngine = new ExcelEngine();
             var application = excelEngine.Excel;
             application.DefaultVersion = ExcelVersion.Xlsx;
             var workbook = application.Workbooks.Create(1);
             var worksheet = workbook.Worksheets[0];
-            var tableRange = worksheet[$"A1:E{items.Length + 1}"];
-            tableRange.Borders.LineStyle = ExcelLineStyle.Thin;
-            tableRange.Borders[ExcelBordersIndex.DiagonalUp].ShowDiagonalLine = false;
-            tableRange.Borders[ExcelBordersIndex.DiagonalDown].ShowDiagonalLine = false;
-            tableRange.NumberFormat = "@";
-            var headerRange = worksheet["A1:E1"];
-            headerRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
-            headerRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
-            headerRange.CellStyle.ColorIndex = ExcelKnownColors.Light_blue;
-            headerRange.CellStyle.Font.Bold = true;
-            headerRange.CellStyle.Font.Color = ExcelKnownColors.White;
-            var normalRange = worksheet[$"A2:C{items.Length + 1}"];
-            normalRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
-            normalRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
-            worksheet[$"A1:B{items.Length + 1}"].ColumnWidth = 15;
-            worksheet[$"C1:C{items.Length + 1}"].ColumnWidth = 30;
-            var textRange = worksheet[$"D2:E{items.Length + 1}"];
-            textRange.WrapText = true;
-            textRange.ColumnWidth = 50;
-            worksheet[$"A1"].Value = "StrId";
-            worksheet[$"B1"].Value = "Key(Hex)";
-            worksheet[$"C1"].Value = "Key(Name)";
-            worksheet[$"D1"].Value = "Text(Old)";
-            worksheet[$"E1"].Value = "Text";
-            for (int i = 0; i < items.Length; i++)
-            {
-                var rowIndex = i + 2;
-                worksheet[$"A{rowIndex}"].Value = items[i].StrId;
-                worksheet[$"B{rowIndex}"].Value = items[i].KeyHex;
-                worksheet[$"C{rowIndex}"].Value = items[i].KeyName;
-                worksheet[$"D{rowIndex}"].Value = items[i].OldText;
-                worksheet[$"E{rowIndex}"].Value = items[i].Text;
-            }
+            SetTableHeaders(worksheet);
+            SetTableStyles(worksheet, items.Length);
+            SetColumnWidths(worksheet);
+            WriteDataToWorksheet(worksheet, items);
             workbook.SaveAs(fileStream);
             return true;
         }
@@ -221,6 +193,55 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         {
             Log.Error(ex, "An error occurred while serializing the Excel worksheets file.");
             return false;
+        }
+    }
+
+    private static void SetTableHeaders(IWorksheet worksheet)
+    {
+        worksheet["A1"].Value = "StrId";
+        worksheet["B1"].Value = "Key(Hex)";
+        worksheet["C1"].Value = "Key(Name)";
+        worksheet["D1"].Value = "Text(Old)";
+        worksheet["E1"].Value = "Text";
+    }
+
+    private static void SetTableStyles(IWorksheet worksheet, int rowCount)
+    {
+        var headerRange = worksheet["A1:E1"];
+        headerRange.CellStyle.Font.Bold = true;
+        headerRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
+        headerRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
+        headerRange.CellStyle.ColorIndex = ExcelKnownColors.Light_blue;
+        headerRange.CellStyle.Font.Color = ExcelKnownColors.White;
+        var normalRange = worksheet[$"A2:C{rowCount + 1}"];
+        normalRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
+        normalRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
+        var tableRange = worksheet[$"A1:E{rowCount + 1}"];
+        tableRange.Borders.LineStyle = ExcelLineStyle.Thin;
+        tableRange.Borders[ExcelBordersIndex.DiagonalUp].ShowDiagonalLine = false;
+        tableRange.Borders[ExcelBordersIndex.DiagonalDown].ShowDiagonalLine = false;
+        tableRange.NumberFormat = "@";
+        var textRange = worksheet[$"D2:E{rowCount + 1}"];
+        textRange.WrapText = true;
+    }
+
+    private static void SetColumnWidths(IWorksheet worksheet)
+    {
+        worksheet["A:B"].ColumnWidth = 15;
+        worksheet["C:C"].ColumnWidth = 30;
+        worksheet["D:E"].ColumnWidth = 50;
+    }
+
+    private static void WriteDataToWorksheet(IWorksheet worksheet, IW3Item[] items)
+    {
+        for (var i = 0; i < items.Length; i++)
+        {
+            var rowIndex = i + 2;
+            worksheet[$"A{rowIndex}"].Value = items[i].StrId;
+            worksheet[$"B{rowIndex}"].Value = items[i].KeyHex;
+            worksheet[$"C{rowIndex}"].Value = items[i].KeyName;
+            worksheet[$"D{rowIndex}"].Value = items[i].OldText;
+            worksheet[$"E{rowIndex}"].Value = items[i].Text;
         }
     }
 
