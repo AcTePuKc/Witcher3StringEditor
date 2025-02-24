@@ -72,7 +72,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             using var excelEngine = new ExcelEngine();
-            var worksheet = excelEngine.Excel.Workbooks.Open(path).Worksheets[0];
+            var worksheet = excelEngine.Excel.Workbooks.OpenReadOnly(path).Worksheets[0];
             var usedRange = worksheet.UsedRange;
             return worksheet.ExportData<W3Item>(1, 1, usedRange.LastRow, usedRange.LastColumn);
         }
