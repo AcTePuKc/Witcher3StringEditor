@@ -186,6 +186,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             SetTableStyles(worksheet, items.Length);
             SetColumnWidths(worksheet);
             WriteDataToWorksheet(worksheet, items);
+            worksheet["A2:E2"].FreezePanes();
             workbook.SaveAs(fileStream);
             return true;
         }
