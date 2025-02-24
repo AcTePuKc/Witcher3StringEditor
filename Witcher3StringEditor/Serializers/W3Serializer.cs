@@ -1,9 +1,7 @@
 ﻿using CommandLine;
 using CommunityToolkit.Diagnostics;
-using MiniExcelLibs;
-using MiniExcelLibs.Attributes;
-using MiniExcelLibs.OpenXml;
 using Serilog;
+using Syncfusion.XlsIO;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -20,7 +18,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
-            if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
+            if (Path.GetExtension(path) == ".xlsx") return DeserializeExcel(path);
             Guard.IsTrue(Path.GetExtension(path) == ".w3strings");
             var newPath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(path));
             File.Copy(path, newPath);
@@ -39,7 +37,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         {
             W3FileType.csv => await SerializeCsv(w3Job),
             W3FileType.w3Strings => await SerializeW3Strings(w3Job),
-            W3FileType.excel => await SerializeExcel(w3Job),
+            W3FileType.excel => SerializeExcel(w3Job),
             _ => throw new NotSupportedException($"The file type {w3Job.W3FileType} is not supported.")
         };
     }
@@ -49,18 +47,18 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             return from line in await File.ReadAllLinesAsync(path)
-                where !line.StartsWith(';')
-                select line.Split("|")
+                   where !line.StartsWith(';')
+                   select line.Split("|")
                 into parts
-                where parts.Length == 4
-                select new W3Item
-                {
-                    StrId = parts[0],
-                    KeyHex = parts[1],
-                    KeyName = parts[2],
-                    OldText = parts[3],
-                    Text = parts[3]
-                };
+                   where parts.Length == 4
+                   select new W3Item
+                   {
+                       StrId = parts[0],
+                       KeyHex = parts[1],
+                       KeyName = parts[2],
+                       OldText = parts[3],
+                       Text = parts[3]
+                   };
         }
         catch (Exception ex)
         {
@@ -69,11 +67,16 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
     }
 
-    private static async Task<IEnumerable<IW3Item>> DeserializeExcel(string path)
+    private static List<W3Item> DeserializeExcel(string path)
     {
         try
         {
-            return await MiniExcel.QueryAsync<W3Item>(path);
+            using var excelEngine = new ExcelEngine();
+            var application = excelEngine.Excel;
+            IWorkbook workbook = application.Workbooks.Open(path);
+            var worksheet = workbook.Worksheets[0];
+            var usedRange = worksheet.UsedRange;
+            return worksheet.ExportData<W3Item>(1, 1, usedRange.LastRow, usedRange.LastColumn);
         }
         catch (Exception ex)
         {
@@ -165,7 +168,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         return await SerializeCsv(w3Job, w3Job.Path);
     }
 
-    private async Task<bool> SerializeExcel(IW3Job w3Job)
+    private bool SerializeExcel(IW3Job w3Job)
     {
         try
         {
@@ -173,20 +176,47 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             var path = Path.Combine(w3Job.Path, $"{saveLang}.xlsx");
             if (File.Exists(path))
                 Guard.IsTrue(backupService.Backup(path));
-            var config = new OpenXmlConfiguration
+            var items = w3Job.W3Items.ToArray();
+            using var fileStream = File.Create(path);
+            using var excelEngine = new ExcelEngine();
+            var application = excelEngine.Excel;
+            application.DefaultVersion = ExcelVersion.Xlsx;
+            var workbook = application.Workbooks.Create(1);
+            var worksheet = workbook.Worksheets[0];
+            var tableRange = worksheet[$"A1:E{items.Length + 1}"];
+            tableRange.Borders.LineStyle = ExcelLineStyle.Thin;
+            tableRange.Borders[ExcelBordersIndex.DiagonalUp].ShowDiagonalLine = false;
+            tableRange.Borders[ExcelBordersIndex.DiagonalDown].ShowDiagonalLine = false;
+            tableRange.NumberFormat = "@";
+            var headerRange = worksheet["A1:E1"];
+            headerRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
+            headerRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
+            headerRange.CellStyle.ColorIndex = ExcelKnownColors.Light_blue;
+            headerRange.CellStyle.Font.Bold = true;
+            headerRange.CellStyle.Font.Color = ExcelKnownColors.White;
+            var normalRange = worksheet[$"A2:C{items.Length + 1}"];
+            normalRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
+            normalRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
+            worksheet[$"A1:B{items.Length + 1}"].ColumnWidth = 15;
+            worksheet[$"C1:C{items.Length + 1}"].ColumnWidth = 30;
+            var textRange = worksheet[$"D2:E{items.Length + 1}"];
+            textRange.WrapText = true;
+            textRange.ColumnWidth = 50;
+            worksheet[$"A1"].Value = "StrId";
+            worksheet[$"B1"].Value = "Key(Hex)";
+            worksheet[$"C1"].Value = "Key(Name)";
+            worksheet[$"D1"].Value = "Text(Old)";
+            worksheet[$"E1"].Value = "Text";
+            for (int i = 0; i < items.Length; i++)
             {
-                FastMode = true,
-                DynamicColumns =
-                [
-                    new DynamicExcelColumn("Id") { Ignore = true },
-                    new DynamicExcelColumn("StrId") { Index = 0 },
-                    new DynamicExcelColumn("KeyHex") { Index = 1 },
-                    new DynamicExcelColumn("KeyName") { Index = 2 },
-                    new DynamicExcelColumn("OldText") { Index = 3, Width = 50 },
-                    new DynamicExcelColumn("Text") { Index = 4, Width = 50 }
-                ]
-            };
-            await MiniExcel.SaveAsAsync(path, w3Job.W3Items.Cast<W3Item>(), configuration: config, overwriteFile: true);
+                var rowIndex = i + 2;
+                worksheet[$"A{rowIndex}"].Value = items[i].StrId;
+                worksheet[$"B{rowIndex}"].Value = items[i].KeyHex;
+                worksheet[$"C{rowIndex}"].Value = items[i].KeyName;
+                worksheet[$"D{rowIndex}"].Value = items[i].OldText;
+                worksheet[$"E{rowIndex}"].Value = items[i].Text;
+            }
+            workbook.SaveAs(fileStream);
             return true;
         }
         catch (Exception ex)
