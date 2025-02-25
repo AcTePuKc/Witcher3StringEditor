@@ -18,7 +18,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
-            if (Path.GetExtension(path) == ".xlsx") return DeserializeExcel(path);
+            if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
             Guard.IsTrue(Path.GetExtension(path) == ".w3strings");
             var newPath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(path));
             File.Copy(path, newPath);
@@ -37,7 +37,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         {
             W3FileType.csv => await SerializeCsv(w3Job),
             W3FileType.w3Strings => await SerializeW3Strings(w3Job),
-            W3FileType.excel => SerializeExcel(w3Job),
+            W3FileType.excel => await SerializeExcel(w3Job),
             _ => throw new NotSupportedException($"The file type {w3Job.W3FileType} is not supported.")
         };
     }
@@ -67,19 +67,22 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
     }
 
-    private static List<W3Item> DeserializeExcel(string path)
+    private static async Task<List<W3Item>> DeserializeExcel(string path)
     {
         try
         {
-            using var excelEngine = new ExcelEngine();
-            var worksheet = excelEngine.Excel.Workbooks.OpenReadOnly(path).Worksheets[0];
-            var usedRange = worksheet.UsedRange;
-            return worksheet.ExportData<W3Item>(1, 1, usedRange.LastRow, usedRange.LastColumn);
+            return await Task.Run(() =>
+            {
+                using var excelEngine = new ExcelEngine();
+                var worksheet = excelEngine.Excel.Workbooks.OpenReadOnly(path).Worksheets[0];
+                var usedRange = worksheet.UsedRange;
+                return worksheet.ExportData<W3Item>(1, 1, usedRange.LastRow, usedRange.LastColumn);
+            });
         }
         catch (Exception ex)
         {
             Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {0}.", path);
-            return [];
+            return await Task.FromResult<List<W3Item>>([]);
         }
     }
 
@@ -166,28 +169,31 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         return await SerializeCsv(w3Job, w3Job.Path);
     }
 
-    private bool SerializeExcel(IW3Job w3Job)
+    private async Task<bool> SerializeExcel(IW3Job w3Job)
     {
         try
         {
-            var saveLang = Enum.GetName(w3Job.Language);
-            var path = Path.Combine(w3Job.Path, $"{saveLang}.xlsx");
-            if (File.Exists(path))
-                Guard.IsTrue(backupService.Backup(path));
-            var items = w3Job.W3Items.ToArray();
-            Guard.IsGreaterThan(items.Length, 0);
-            using var fileStream = File.Create(path);
-            using var excelEngine = new ExcelEngine();
-            var application = excelEngine.Excel;
-            application.DefaultVersion = ExcelVersion.Xlsx;
-            var workbook = application.Workbooks.Create(1);
-            var worksheet = workbook.Worksheets[0];
-            SetTableHeaders(worksheet);
-            SetTableStyles(worksheet, items.Length);
-            SetColumnWidths(worksheet);
-            WriteDataToWorksheet(worksheet, items);
-            workbook.SaveAs(fileStream);
-            return true;
+            return await Task.Run(() =>
+            {
+                var saveLang = Enum.GetName(w3Job.Language);
+                var path = Path.Combine(w3Job.Path, $"{saveLang}.xlsx");
+                if (File.Exists(path))
+                    Guard.IsTrue(backupService.Backup(path));
+                var items = w3Job.W3Items.ToArray();
+                Guard.IsGreaterThan(items.Length, 0);
+                using var fileStream = File.Create(path);
+                using var excelEngine = new ExcelEngine();
+                var application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Xlsx;
+                var workbook = application.Workbooks.Create(1);
+                var worksheet = workbook.Worksheets[0];
+                SetTableHeaders(worksheet);
+                SetTableStyles(worksheet, items.Length);
+                SetColumnWidths(worksheet);
+                WriteDataToWorksheet(worksheet, items);
+                workbook.SaveAs(fileStream);
+                return true;
+            });
         }
         catch (Exception ex)
         {
