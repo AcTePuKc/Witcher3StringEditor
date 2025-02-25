@@ -4,8 +4,6 @@ public interface IW3Item
 {
     public Guid Id { get; }
 
-    public bool IsModified { get; set; }
-
     public string StrId { get; set; }
 
     public string KeyHex { get; set; }

@@ -5,7 +5,6 @@ namespace Witcher3StringEditor.Models;
 
 internal partial class W3Item : ObservableObject, IW3Item
 {
-    [ObservableProperty] private bool isModified;
     [ObservableProperty] private string keyHex = string.Empty;
 
     [ObservableProperty] private string keyName = string.Empty;
@@ -15,31 +14,10 @@ internal partial class W3Item : ObservableObject, IW3Item
     [ObservableProperty] private string strId = string.Empty;
 
     [ObservableProperty] private string text = string.Empty;
-
     public Guid Id { get; } = Guid.NewGuid();
 
     public object Clone()
     {
         return MemberwiseClone();
-    }
-
-    partial void OnKeyHexChanged(string? oldValue, string newValue)
-    {
-        if (oldValue != string.Empty) IsModified = true;
-    }
-
-    partial void OnKeyNameChanged(string? oldValue, string newValue)
-    {
-        if (oldValue != string.Empty) IsModified = true;
-    }
-
-    partial void OnStrIdChanged(string? oldValue, string newValue)
-    {
-        if (oldValue != string.Empty) IsModified = true;
-    }
-
-    partial void OnTextChanged(string? oldValue, string newValue)
-    {
-        if (oldValue != string.Empty) IsModified = true;
     }
 }
