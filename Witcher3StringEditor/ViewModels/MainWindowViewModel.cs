@@ -45,8 +45,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private bool isUpdateAvailable;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
     [ObservableProperty] private object? selectedItem;
@@ -118,7 +117,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        if (W3Items.Any() &&
+        if (W3Items.Any() && W3Items.Any(x => x.IsModified) &&
             await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "MainWindowClosing"))
             e.Cancel = true;
     }
