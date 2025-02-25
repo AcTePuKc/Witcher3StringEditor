@@ -45,8 +45,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private bool isUpdateAvailable;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
     [ObservableProperty] private object? selectedItem;
@@ -163,9 +162,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             if (W3Items.Any())
             {
-                if ((W3Items.Any(x => x.IsModified) &&
-                     await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) ||
-                    !W3Items.All(x => x.IsModified))
+                if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
                     W3Items.Clear();
                 else
                     return;
