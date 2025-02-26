@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using FluentValidation;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using Serilog;
 using System.ComponentModel;
 using System.Windows;
 using Witcher3StringEditor.Dialogs.Locales;
@@ -32,7 +33,10 @@ public partial class SettingDialogViewModel(
         };
         using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
         if (storageFile is { Name: "w3strings.exe" })
+        {
             AppSettings.W3StringsPath = storageFile.LocalPath;
+            Log.Information("Encoder Path set to '{0}'.", storageFile.LocalPath);
+        }
     }
 
     [RelayCommand]
@@ -46,7 +50,10 @@ public partial class SettingDialogViewModel(
         };
         using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
         if (storageFile is { Name: "witcher3.exe" })
+        {
             AppSettings.GameExePath = storageFile.LocalPath;
+            Log.Information("Game Path set to '{0}'.", storageFile.LocalPath);
+        }
     }
 
     [RelayCommand]
