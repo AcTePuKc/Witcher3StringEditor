@@ -27,7 +27,7 @@ public partial class RecentDialogViewModel(IAppSettings appSettings)
             if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "OpenedFileNoFound"))
             {
                 _ = AppSettings.RecentItems.Remove(item);
-                Log.Information("The record for file '{0}' has been deleted.", item.FilePath);
+                Log.Information("The recent item for file '{0}' has been deleted.", item.FilePath);
             }
         }
         else
