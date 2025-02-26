@@ -104,8 +104,11 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowLoaded()
     {
+        Log.Information("Application started.");
+        Log.Information("Application version: {0}", ThisAssembly.AssemblyFileVersion);
         await CheckSettings(appSettings);
         IsUpdateAvailable = await checkUpdateService.CheckUpdate();
+        Log.Information("New version detected: {0}.", IsUpdateAvailable);
     }
 
     private async Task CheckSettings(IAppSettings settings)

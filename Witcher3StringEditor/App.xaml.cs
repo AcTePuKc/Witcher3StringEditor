@@ -62,8 +62,6 @@ public partial class App
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
         if (!createdNew) Current.Shutdown();
-        Log.Information("Application started.");
-        Log.Information("Application version: {0}",ThisAssembly.AssemblyFileVersion);
     }
 
     private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
