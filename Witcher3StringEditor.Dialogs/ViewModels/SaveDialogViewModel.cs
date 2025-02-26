@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
+using Serilog;
 using System.Text.RegularExpressions;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
@@ -29,7 +30,11 @@ public partial class SaveDialogViewModel
     [RelayCommand]
     private async Task Save()
     {
-        WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(await serializer.Serialize(W3Job)), "Save");
+        var saveResult = await serializer.Serialize(W3Job);
+        Log.Information("Target filetype {0}.", W3Job.W3FileType);
+        Log.Information("Target language {0}.", W3Job.Language);
+        Log.Information("Sve result {0}.", saveResult);
+        WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(saveResult), "Save");
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
