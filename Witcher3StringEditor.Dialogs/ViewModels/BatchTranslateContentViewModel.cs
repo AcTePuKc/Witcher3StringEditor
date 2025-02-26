@@ -81,6 +81,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject
     partial void OnIsBusyChanged(bool value)
     {
         WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBatchTranslating");
+        Log.Information("The batch translation is in progress: {0}.", value);
     }
 
     [RelayCommand]
@@ -95,27 +96,34 @@ public partial class BatchTranslateContentViewModel : ObservableObject
         var fLanguage = FormLanguage;
         foreach (var item in w3Items.Skip(StartIndex - 1).Take(PendingCount))
         {
-            if (cancellationTokenSource.IsCancellationRequested) return;
-            try
+            if (!cancellationTokenSource.IsCancellationRequested)
             {
-                var translation = (await translator.TranslateAsync(item.Text, tLanguage, fLanguage)).Translation;
-                if (!string.IsNullOrWhiteSpace(translation))
+                try
                 {
-                    item.Text = translation;
-                    SuccessCount++;
+                    var translation = (await translator.TranslateAsync(item.Text, tLanguage, fLanguage)).Translation;
+                    if (!string.IsNullOrWhiteSpace(translation))
+                    {
+                        item.Text = translation;
+                        SuccessCount++;
+                    }
+                    else
+                    {
+                        FailureCount++;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
+                    Log.Error(ex, "Translation error occurred.");
                     FailureCount++;
                 }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Translation error occurred.");
-                FailureCount++;
-            }
 
-            PendingCount--;
+                PendingCount--;
+            }
+            else
+            {
+                Log.Information("Batch translations are canceled by the user.");
+                return;
+            }
         }
 
         IsBusy = false;
