@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
+using Serilog;
 using System.IO;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
@@ -22,13 +23,18 @@ public partial class RecentDialogViewModel(IAppSettings appSettings)
     {
         if (!File.Exists(item.FilePath))
         {
+            Log.Error("The file '{0}' for the recent item being opened does not exist.", item.FilePath);
             if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "OpenedFileNoFound"))
+            {
                 _ = AppSettings.RecentItems.Remove(item);
+                Log.Information("The record for file '{0}' has been deleted.", item.FilePath);
+            }
         }
         else
         {
             RequestClose?.Invoke(this, EventArgs.Empty);
-            _ = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
+            var isApproved = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
+            Log.Information("Recent item opening has been approved: {0}.", isApproved);
         }
     }
 }
