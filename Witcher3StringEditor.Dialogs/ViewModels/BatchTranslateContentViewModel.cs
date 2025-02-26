@@ -109,6 +109,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject
                     else
                     {
                         FailureCount++;
+                        Log.Error("The translator: '{0}' returned empty data.", translator.Name);
                     }
                 }
                 catch (Exception ex)
