@@ -31,9 +31,9 @@ public partial class SaveDialogViewModel
     private async Task Save()
     {
         var saveResult = await serializer.Serialize(W3Job);
-        Log.Information("Target filetype:{0}.", W3Job.W3FileType);
-        Log.Information("Target language:{0}.", W3Job.Language);
-        Log.Information("Sve result:{0}.", saveResult);
+        Log.Information("Target filetype: {0}.", W3Job.W3FileType);
+        Log.Information("Target language: {0}.", W3Job.Language);
+        Log.Information("Sve result: {0}.", saveResult);
         WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(saveResult), "Save");
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
