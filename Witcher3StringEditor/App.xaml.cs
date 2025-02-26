@@ -62,8 +62,8 @@ public partial class App
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
         if (!createdNew) Current.Shutdown();
-        Log.Information("Application Started.");
-        Log.Information("Application Version: {0}",ThisAssembly.AssemblyFileVersion);
+        Log.Information("Application started.");
+        Log.Information("Application version: {0}",ThisAssembly.AssemblyFileVersion);
     }
 
     private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
@@ -133,7 +133,8 @@ public partial class App
         File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
             Formatting.Indented,
             new StringEnumConverter()));
-        logObserver?.Dispose();
+        Log.Information("Application exited.");
         mutex?.Dispose();
+        logObserver?.Dispose();
     }
 }
