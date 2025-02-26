@@ -113,9 +113,13 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private async Task CheckSettings(IAppSettings settings)
     {
+        Log.Information("Checking whether the settings are correct.");
         if (!(await appSettingsValidator.ValidateAsync(settings)).IsValid)
+        {
+            Log.Error("Settings are incorrect or initial setup is incomplete.");
             _ = await dialogService.ShowDialogAsync(this,
                 new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+        }
     }
 
     [RelayCommand]
