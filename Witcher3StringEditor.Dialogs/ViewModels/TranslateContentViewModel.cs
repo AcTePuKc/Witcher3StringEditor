@@ -75,6 +75,7 @@ public partial class TranslateContentViewModel : ObservableObject
     {
         var item = w3Items.ElementAt(value);
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
+        Log.Information("The position of the currently translated item in W3Items is {0}.", value);
     }
 
     partial void OnIsBusyChanged(bool value)
