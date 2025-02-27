@@ -96,6 +96,7 @@ public partial class TranslateContentViewModel : ObservableObject
                 CurrentTranslateItemModel.TranslatedText =
                     (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
                     .Translation;
+                Log.Information("Translation completed.");
             }
             catch (Exception ex)
             {
@@ -122,6 +123,7 @@ public partial class TranslateContentViewModel : ObservableObject
         else
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         CurrentTranslateItemModel.IsSaved = true;
+        Log.Information("Translation have been saved.");
     }
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
