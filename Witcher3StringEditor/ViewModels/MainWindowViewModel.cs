@@ -309,12 +309,14 @@ internal partial class MainWindowViewModel : ObservableObject
     private void OpenWorkingFolder()
     {
         explorerService.Open(OutputFolder);
+        Log.Information("Working folder opened.");
     }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
         explorerService.Open(appSettings.NexusModUrl);
+        Log.Information("NexusMods opened.");
     }
 
     [RelayCommand]
