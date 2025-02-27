@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using CommunityToolkit.Diagnostics;
+using Serilog;
 using System.Diagnostics;
 using System.IO;
 using Witcher3StringEditor.Interfaces;
@@ -11,6 +12,7 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
     {
         try
         {
+            Log.Information("Starting the game.");
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
@@ -26,6 +28,8 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
             await process.WaitForExitAsync();
+            Guard.IsEqualTo(process.ExitCode, 0);
+            Log.Information("Game has exited.");
         }
         catch (Exception ex)
         {
