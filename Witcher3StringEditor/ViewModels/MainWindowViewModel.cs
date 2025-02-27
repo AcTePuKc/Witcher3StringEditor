@@ -216,16 +216,9 @@ internal partial class MainWindowViewModel : ObservableObject
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
         {
-            var found = W3Items.FirstOrDefault(x => x.Id == w3Item.Id);
-            if (found != null)
-            {
-                W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
-                Log.Information("The W3Item has been updated.");
-            }
-            else
-            {
-                Log.Error("The W3Item was unexpectedly deleted in W3Items.");
-            }
+            var found = W3Items.First(x => x.Id == w3Item.Id);
+            W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
+            Log.Information("The W3Item has been updated.");
         }
     }
 
