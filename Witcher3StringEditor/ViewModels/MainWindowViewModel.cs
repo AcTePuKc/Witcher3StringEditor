@@ -170,16 +170,16 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             if (W3Items.Any())
             {
-                if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened"))
-                    W3Items.Clear();
-                else
-                    return;
+                if (!await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) return;
+                W3Items.Clear();
             }
-
+            Log.Information("The file {0} is being opened...", fileName);
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
+            Guard.IsGreaterThan(W3Items.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
             OutputFolder = folder;
+            Log.Information("Working directory set to {0}.", folder);
             var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
             if (foundItem == null)
                 appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
