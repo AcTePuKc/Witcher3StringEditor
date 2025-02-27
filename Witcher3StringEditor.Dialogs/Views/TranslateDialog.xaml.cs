@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Serilog;
 using System.Windows;
 using Windows.Win32;
 using Windows.Win32.System.Power;
@@ -70,9 +71,15 @@ public partial class TranslateDialog
             {
                 r.Receive(m);
                 if (m.Message)
+                {
                     PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
+                    Log.Information("The system's automatic sleep is disabled.");
+                }
                 else
+                {
                     PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
+                    Log.Information("The system's automatic sleep is enabled.");
+                }
             });
     }
 
