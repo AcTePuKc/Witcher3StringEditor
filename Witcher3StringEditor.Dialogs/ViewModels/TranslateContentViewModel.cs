@@ -109,6 +109,7 @@ public partial class TranslateContentViewModel : ObservableObject
         {
             _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
                 "TranslateCharactersNumberExceedLimit");
+            Log.Error("Exceeded the character limit for translator '{0}'.", translator.Name);
         }
     }
 
@@ -131,6 +132,7 @@ public partial class TranslateContentViewModel : ObservableObject
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         IndexOfItems -= 1;
+        Log.Information("Translator '{0}' moved to the previous item.", translator.Name);
     }
 
     [RelayCommand(CanExecute = nameof(CanNext))]
@@ -141,5 +143,6 @@ public partial class TranslateContentViewModel : ObservableObject
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         IndexOfItems += 1;
+        Log.Information("Translator '{0}' moved to the next item.", translator.Name);
     }
 }
