@@ -222,6 +222,10 @@ internal partial class MainWindowViewModel : ObservableObject
                 W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
                 Log.Information("The W3Item has been updated.");
             }
+            else
+            {
+                Log.Error("The W3Item was unexpectedly deleted in W3Items.");
+            }
         }
     }
 
@@ -231,7 +235,10 @@ internal partial class MainWindowViewModel : ObservableObject
         var w3Items = items.Cast<IW3Item>().ToArray();
         if (w3Items.Length > 0 &&
             await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
+        {
             w3Items.ForEach(item => W3Items.Remove(item));
+            Log.Information("The selected W3Items have been deleted.");
+        }
     }
 
     [RelayCommand]
