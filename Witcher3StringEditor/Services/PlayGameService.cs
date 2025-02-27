@@ -12,7 +12,6 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
     {
         try
         {
-            Log.Information("Starting the game.");
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
@@ -29,7 +28,6 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
             process.BeginOutputReadLine();
             await process.WaitForExitAsync();
             Guard.IsEqualTo(process.ExitCode, 0);
-            Log.Information("Game has exited.");
         }
         catch (Exception ex)
         {
