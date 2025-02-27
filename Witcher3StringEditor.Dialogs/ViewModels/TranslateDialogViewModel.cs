@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
+using Serilog;
 using System.ComponentModel;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -66,6 +67,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             Title = CurrentViewModel.GetType() == typeof(BatchTranslateContentViewModel)
                 ? Strings.BatchTranslateDialogTitle
                 : Strings.TranslateDialogTitle;
+            Log.Information("Switch translation mode to {0} mode.", CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
         }
     }
 
