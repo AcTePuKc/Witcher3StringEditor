@@ -275,9 +275,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         var saveLang = Enum.GetName(w3Job.Language);
         var tempFolder = Directory.CreateTempSubdirectory().FullName;
         var csvPath = Path.Combine(tempFolder, $"{saveLang}.csv");
-        var tempW3StringsPath = Path.ChangeExtension(csvPath, ".csv.w3strings");
-        var w3Strings = Path.Combine(w3Job.Path, $"{saveLang}.w3strings");
-        return (tempFolder, csvPath, tempW3StringsPath, w3Strings);
+        return (tempFolder, csvPath, tempW3StringsPath: Path.ChangeExtension(csvPath, ".csv.w3strings"),
+            Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
     }
 
     private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
