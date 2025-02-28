@@ -89,7 +89,6 @@ internal partial class MainWindowViewModel : ObservableObject
             AddCommand.NotifyCanExecuteChanged();
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
             ShowTranslateDialogCommand.NotifyCanExecuteChanged();
-            Log.Information("W3Items has changed.");
         };
     }
 
