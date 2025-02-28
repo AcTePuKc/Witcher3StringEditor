@@ -35,7 +35,7 @@ public partial class SettingDialogViewModel(
         if (storageFile is { Name: "w3strings.exe" })
         {
             AppSettings.W3StringsPath = storageFile.LocalPath;
-            Log.Information("Encoder Path set to '{0}'.", storageFile.LocalPath);
+            Log.Information("Encoder Path set to {0}.", storageFile.LocalPath);
         }
     }
 
@@ -52,7 +52,7 @@ public partial class SettingDialogViewModel(
         if (storageFile is { Name: "witcher3.exe" })
         {
             AppSettings.GameExePath = storageFile.LocalPath;
-            Log.Information("Game Path set to '{0}'.", storageFile.LocalPath);
+            Log.Information("Game Path set to {0}.", storageFile.LocalPath);
         }
     }
 

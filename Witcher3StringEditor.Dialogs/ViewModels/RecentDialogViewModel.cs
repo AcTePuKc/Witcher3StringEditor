@@ -23,11 +23,11 @@ public partial class RecentDialogViewModel(IAppSettings appSettings)
     {
         if (!File.Exists(item.FilePath))
         {
-            Log.Error("The file '{0}' for the recent item being opened does not exist.", item.FilePath);
+            Log.Error("The file {0} for the recent item being opened does not exist.", item.FilePath);
             if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "OpenedFileNoFound"))
             {
                 _ = AppSettings.RecentItems.Remove(item);
-                Log.Information("The recent item for file '{0}' has been deleted.", item.FilePath);
+                Log.Information("The recent item for file {0} has been deleted.", item.FilePath);
             }
         }
         else

@@ -173,13 +173,13 @@ internal partial class MainWindowViewModel : ObservableObject
                 if (!await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) return;
                 W3Items.Clear();
             }
-            Log.Information("The file '{0}' is being opened...", fileName);
+            Log.Information("The file {0} is being opened...", fileName);
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
             Guard.IsGreaterThan(W3Items.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
             OutputFolder = folder;
-            Log.Information("Working directory set to '{0}'.", folder);
+            Log.Information("Working directory set to {0}.", folder);
             var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
             if (foundItem == null)
             {
@@ -189,12 +189,12 @@ internal partial class MainWindowViewModel : ObservableObject
             else
             {
                 foundItem.OpenedTime = DateTime.Now;
-                Log.Information("The last opened time for file '{0}' has been updated.", fileName);
+                Log.Information("The last opened time for file {0} has been updated.", fileName);
             }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to open file: '{0}'.", fileName);
+            Log.Error(ex, "Failed to open file: {0}.", fileName);
         }
     }
 
