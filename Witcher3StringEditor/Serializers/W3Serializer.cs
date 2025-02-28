@@ -47,18 +47,18 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             return from line in await File.ReadAllLinesAsync(path)
-                   where !line.StartsWith(';')
-                   select line.Split("|")
+                where !line.StartsWith(';')
+                select line.Split("|")
                 into parts
-                   where parts.Length == 4
-                   select new W3Item
-                   {
-                       StrId = parts[0],
-                       KeyHex = parts[1],
-                       KeyName = parts[2],
-                       OldText = parts[3],
-                       Text = parts[3]
-                   };
+                where parts.Length == 4
+                select new W3Item
+                {
+                    StrId = parts[0],
+                    KeyHex = parts[1],
+                    KeyName = parts[2],
+                    OldText = parts[3],
+                    Text = parts[3]
+                };
         }
         catch (Exception ex)
         {
@@ -256,10 +256,10 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            var (tempFolder, csvPath, w3StringsPath) = GenerateW3StringsFilePaths(w3Job);
+            var (tempFolder, csvPath, tempW3StringsPath, w3StringsPath) = GenerateW3StringsFilePaths(w3Job);
             Guard.IsTrue(await SerializeCsv(w3Job, tempFolder));
             Guard.IsTrue(await StartSerializationProcess(w3Job, csvPath));
-            Guard.IsTrue(CopyTempFilesWithBackup(Path.ChangeExtension(csvPath, ".w3strings"), w3StringsPath));
+            Guard.IsTrue(CopyTempFilesWithBackup(tempW3StringsPath, w3StringsPath));
             return true;
         }
         catch (Exception ex)
@@ -269,12 +269,15 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
     }
 
-    private static (string tempFolder, string csvPath, string w3StringsPath) GenerateW3StringsFilePaths(IW3Job w3Job)
+    private static (string tempFolder, string csvPath, string tempW3StringsPath, string w3StringsPath)
+        GenerateW3StringsFilePaths(IW3Job w3Job)
     {
         var saveLang = Enum.GetName(w3Job.Language);
         var tempFolder = Directory.CreateTempSubdirectory().FullName;
-        return (tempFolder, Path.Combine(tempFolder, $"{saveLang}.csv"),
-            Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
+        var csvPath = Path.Combine(tempFolder, $"{saveLang}.csv");
+        var tempW3StringsPath = Path.ChangeExtension(csvPath, ".csv.w3strings");
+        var w3Strings = Path.Combine(w3Job.Path, $"{saveLang}.w3strings");
+        return (tempFolder, csvPath, tempW3StringsPath, w3Strings);
     }
 
     private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
