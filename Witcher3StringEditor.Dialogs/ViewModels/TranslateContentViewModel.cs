@@ -102,7 +102,7 @@ public partial class TranslateContentViewModel : ObservableObject
             catch (Exception ex)
             {
                 _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
-                Log.Error(ex, "Translation error occurred.}");
+                Log.Error(ex, "Translation error occurred.");
             }
 
             IsBusy = false;
