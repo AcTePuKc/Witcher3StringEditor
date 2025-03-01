@@ -94,14 +94,16 @@
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
-                    Width="200"
+                    Width="150"
                     HeaderText="{lex:Loc FileName}"
                     MappingName="FileName"
+                    MinimumWidth="150"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
                     Width="200"
                     HeaderText="{lex:Loc Hash}"
                     MappingName="Hash"
+                    MinimumWidth="200"
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
                 <sf:GridTextColumn
@@ -116,6 +118,7 @@
                     Width="200"
                     HeaderText="{lex:Loc BackupTime}"
                     MappingName="BackupTime"
+                    MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <sf:GridTemplateColumn
@@ -123,7 +126,8 @@
                     HorizontalAlignment="Center"
                     AllowSorting="False"
                     HeaderText="{lex:Loc RestoreBtnContent}"
-                    MappingName="Null">
+                    MappingName="Null"
+                    MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button
@@ -142,7 +146,8 @@
                     HorizontalAlignment="Center"
                     AllowSorting="False"
                     HeaderText="{lex:Loc DeleteBtnContent}"
-                    MappingName="Null">
+                    MappingName="Null"
+                    MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button
