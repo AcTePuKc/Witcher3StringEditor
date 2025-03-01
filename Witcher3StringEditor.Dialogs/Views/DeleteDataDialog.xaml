@@ -75,21 +75,21 @@
                     </i:Interaction.Behaviors>
                     <sf:SfDataGrid.Columns>
                         <sf:GridTextColumn
-                            Width="100"
+                            MinimumWidth="100"
                             HeaderText="ID"
                             MappingName="StrId"
                             TextAlignment="Center" />
                         <sf:GridTextColumn
-                            Width="100"
+                            MinimumWidth="100"
                             HeaderText="Key(Hex)"
                             MappingName="KeyHex"
                             TextAlignment="Center" />
                         <sf:GridTextColumn
-                            Width="200"
+                            MinimumWidth="200"
                             HeaderText="Key(String)"
                             MappingName="KeyName"
                             TextAlignment="Center" />
-                        <sf:GridTextColumn MappingName="Text" TextWrapping="WrapWithOverflow" />
+                        <sf:GridTextColumn MinimumWidth="700" MappingName="Text" TextWrapping="WrapWithOverflow" />
                     </sf:SfDataGrid.Columns>
                 </sf:SfDataGrid>
                 <iwk:SimpleStackPanel
