@@ -15,11 +15,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj"/>
+        <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="10.6.0.109712">
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="10.7.0.110445">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
