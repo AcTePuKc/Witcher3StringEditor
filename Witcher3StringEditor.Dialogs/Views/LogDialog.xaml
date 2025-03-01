@@ -109,8 +109,10 @@
                     MinimumWidth="150"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
+                    ColumnSizer="AutoWithLastColumnFill"
                     HeaderText="{lex:Loc LogMessage}"
                     MappingName="Message"
+                    MinimumWidth="700"
                     TextWrapping="WrapWithOverflow" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
