@@ -94,6 +94,7 @@
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
+                    Width="200"
                     HeaderText="{lex:Loc FileName}"
                     MappingName="FileName"
                     TextAlignment="Center" />
@@ -106,13 +107,13 @@
                 <sf:GridTextColumn
                     HeaderText="{lex:Loc OrginPath}"
                     MappingName="OrginPath"
-                    MinimumWidth="200"
                     TextWrapping="Wrap" />
                 <sf:GridTextColumn
                     HeaderText="{lex:Loc BackupPath}"
                     MappingName="BackupPath"
                     TextWrapping="Wrap" />
                 <sf:GridDateTimeColumn
+                    Width="200"
                     HeaderText="{lex:Loc BackupTime}"
                     MappingName="BackupTime"
                     Pattern="FullDateTime"
