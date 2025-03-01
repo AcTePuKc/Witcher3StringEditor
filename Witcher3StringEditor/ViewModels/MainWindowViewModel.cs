@@ -105,9 +105,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         Log.Information("Application started.");
-        Log.Information("Application Version: {0}.", ThisAssembly.AssemblyFileVersion);
-        Log.Information("OS Version: {0}.", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
-        Log.Information(".Net Runtime: {0}.", RuntimeInformation.FrameworkDescription);
+        Log.Information("Application Version: {0}", ThisAssembly.AssemblyFileVersion);
+        Log.Information("OS Version: {0}", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        Log.Information(".Net Runtime: {0}", RuntimeInformation.FrameworkDescription);
         await CheckSettings(appSettings);
         IsUpdateAvailable = await checkUpdateService.CheckUpdate();
         Log.Information("New version detected: {0}.", IsUpdateAvailable);
