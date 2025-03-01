@@ -58,7 +58,6 @@
             AllowDeleting="True"
             AllowResizingColumns="True"
             AutoGenerateColumns="False"
-            ColumnSizer="AutoWithLastColumnFill"
             HeaderRowHeight="25"
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             NavigationMode="Row"
