@@ -111,9 +111,10 @@
             </i:Interaction.Behaviors>
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
-                    ColumnSizer="AutoWithLastColumnFill"
+                    ColumnSizer="AutoLastColumnFill"
                     HeaderText="{lex:Loc Path}"
                     MappingName="FilePath"
+                    MinimumWidth="700"
                     TextWrapping="WrapWithOverflow" />
                 <sf:GridDateTimeColumn
                     ColumnSizer="SizeToHeader"
