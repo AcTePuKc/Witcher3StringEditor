@@ -123,13 +123,13 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
-            Log.Error("Error: {0}", e.Data);
+            Log.Error("Error: {0}.", e.Data);
     }
 
     private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
-            Log.Information("Output: {0}", e.Data);
+            Log.Information("Output: {0}.", e.Data);
     }
 
     private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
