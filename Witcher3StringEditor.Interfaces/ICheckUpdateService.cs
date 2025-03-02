@@ -2,5 +2,5 @@
 
 public interface ICheckUpdateService
 {
-    public ValueTask<bool> CheckUpdate();
+    public Task<bool> CheckUpdate();
 }

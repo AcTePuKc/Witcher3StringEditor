@@ -10,7 +10,7 @@ internal class CheckUpdateService(IAppSettings appSettings) : ICheckUpdateServic
     private const string Selectors = "li.stat-version>div>div.stat";
     private readonly string address = appSettings.NexusModUrl;
 
-    public async  ValueTask<bool> CheckUpdate()
+    public async Task<bool> CheckUpdate()
     {
         try
         {
