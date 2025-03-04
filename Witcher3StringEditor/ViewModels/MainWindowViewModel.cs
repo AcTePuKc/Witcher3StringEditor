@@ -282,7 +282,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         _ = await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
         {
-            { "Version", ThisAssembly.AssemblyInformationalVersion.Trim() },
+            { "Version", ThisAssembly.AssemblyInformationalVersion },
             { "BuildTime", RetrieveTimestampAsDateTime() },
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
