@@ -67,10 +67,17 @@ internal partial class MainWindowViewModel : ObservableObject
         this.appSettingsValidator = appSettingsValidator;
         this.modelSettingsValidator = modelSettingsValidator;
         WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
-            logEventRecipient, async (r, m) =>
+            logEventRecipient, async void (r, m) =>
             {
-                r.Receive(m);
-                await Application.Current.Dispatcher.BeginInvoke(() => LogEvents.Add(m.Message));
+                try
+                {
+                    r.Receive(m);
+                    await Application.Current.Dispatcher.BeginInvoke(() => LogEvents.Add(m.Message));
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Failed to receive log event.");
+                }
             });
         WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(
             recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
