@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using Serilog;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -47,6 +48,12 @@ internal class AiTranslator : ITranslator
             Unprotect(settings.ApiKey),
             httpClient: httpClient,
             loggerFactory: Ioc.Default.GetRequiredService<ILoggerFactory>());
+        Log.Information("AiTranslator initialized");
+        Log.Information("EndPoint: {EndPoint}", settings.EndPoint);
+        Log.Information("ModelId: {ModelId}", settings.ModelId);
+        Log.Information("Prompts: {Prompts}", settings.Prompts);
+        Log.Information("Temperature: {Temperature}", settings.Temperature);
+        Log.Information("TopP: {TopP}", settings.TopP);
     }
 
     public string Name => "AiTranslator";
