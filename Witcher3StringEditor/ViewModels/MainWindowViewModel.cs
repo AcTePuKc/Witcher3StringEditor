@@ -18,6 +18,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Interfaces;
@@ -66,10 +67,10 @@ internal partial class MainWindowViewModel : ObservableObject
         this.appSettingsValidator = appSettingsValidator;
         this.modelSettingsValidator = modelSettingsValidator;
         WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
-            logEventRecipient, (r, m) =>
+            logEventRecipient, async (r, m) =>
             {
                 r.Receive(m);
-                LogEvents.Add(m.Message);
+                await Application.Current.Dispatcher.BeginInvoke(() => LogEvents.Add(m.Message));
             });
         WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(
             recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
