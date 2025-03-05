@@ -32,7 +32,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{lex:Loc DeleteDialogMessage}" />
                 <sf:SfDataGrid
-                    x:Name="sfDataGrid"
+                    x:Name="SfDataGrid"
                     Grid.Row="1"
                     Margin="0,16"
                     AllowDeleting="False"
@@ -71,7 +71,7 @@
                     </sf:SfDataGrid.Resources>
                     <i:Interaction.Behaviors>
                         <b:SfDataGridSizeChangedBehavior />
-                        <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding RowHeight, ElementName=sfDataGrid}" />
+                        <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding RowHeight, ElementName=SfDataGrid}" />
                     </i:Interaction.Behaviors>
                     <sf:SfDataGrid.Columns>
                         <sf:GridTextColumn
