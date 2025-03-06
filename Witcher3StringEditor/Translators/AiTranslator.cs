@@ -55,6 +55,7 @@ internal sealed class AiTranslator : ITranslator, IDisposable
         Log.Information("Prompts: {Prompts}", settings.Prompts);
         Log.Information("Temperature: {Temperature}", settings.Temperature);
         Log.Information("TopP: {TopP}", settings.TopP);
+        Log.Information("ContextLength: {ContextLength}", settings.ContextLength);
     }
 
     public void Dispose()
