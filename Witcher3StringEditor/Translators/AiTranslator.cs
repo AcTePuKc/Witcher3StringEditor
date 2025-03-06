@@ -35,10 +35,8 @@ internal sealed class AiTranslator : ITranslator, IDisposable
     {
         chatHistory = [];
         modelSettings = settings;
-        httpClient = new HttpClient
-        {
-            BaseAddress = new Uri(settings.EndPoint)
-        };
+        httpClient = Ioc.Default.GetRequiredService<HttpClient>();
+        httpClient.BaseAddress = new Uri(settings.EndPoint);
         browsingContext = BrowsingContext.New(Configuration.Default);
         promptExecutionSettings = CreatePromptExecutionSettings();
 #pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。

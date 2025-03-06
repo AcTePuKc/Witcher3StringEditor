@@ -87,7 +87,7 @@ public partial class App
 
     private static ServiceProvider InitializeServices(string path)
     {
-        return new ServiceCollection()
+        return new ServiceCollection().AddHttpClient()
             .AddLogging(builder => builder.AddSerilog())
             .AddValidatorsFromAssemblyContaining<AppSettingsValidator>()
             .AddValidatorsFromAssemblyContaining<ModelSettingsValidator>()
