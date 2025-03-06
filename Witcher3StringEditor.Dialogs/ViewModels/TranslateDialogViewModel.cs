@@ -103,7 +103,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private void Closed()
     {
+        ((IDisposable)translator).Dispose();
         WeakReferenceMessenger.Default.UnregisterAll(recipient);
-        if (translator is IDisposable disposable) disposable.Dispose();
     }
 }
