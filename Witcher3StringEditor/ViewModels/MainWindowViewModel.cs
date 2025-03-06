@@ -182,6 +182,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 if (!await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) return;
                 W3Items.Clear();
             }
+
             Log.Information("The file {0} is being opened...", fileName);
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
             Guard.IsGreaterThan(W3Items.Count, 0);
