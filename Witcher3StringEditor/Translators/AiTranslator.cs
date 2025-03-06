@@ -17,7 +17,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Translators;
 
-internal class AiTranslator : ITranslator
+internal sealed class AiTranslator : ITranslator, IDisposable
 {
     private readonly IBrowsingContext browsingContext;
     private readonly IChatCompletionService chatCompletionService;
@@ -28,6 +28,7 @@ internal class AiTranslator : ITranslator
     private readonly HttpClient httpClient;
     private readonly IModelSettings modelSettings;
     private readonly PromptExecutionSettings promptExecutionSettings;
+    private bool disposedValue;
     private ILanguage? selectedLanguage;
 
     public AiTranslator(IModelSettings settings)
@@ -54,6 +55,12 @@ internal class AiTranslator : ITranslator
         Log.Information("Prompts: {Prompts}", settings.Prompts);
         Log.Information("Temperature: {Temperature}", settings.Temperature);
         Log.Information("TopP: {TopP}", settings.TopP);
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
     public string Name => "AiTranslator";
@@ -132,12 +139,6 @@ internal class AiTranslator : ITranslator
         return Encoding.UTF8.GetString(data);
     }
 
-    ~AiTranslator()
-    {
-        httpClient.Dispose();
-        browsingContext.Dispose();
-    }
-
     private async Task PrepareChatHistory(ILanguage toLanguage)
     {
         if (selectedLanguage?.Equals(toLanguage) != true)
@@ -201,5 +202,25 @@ internal class AiTranslator : ITranslator
             : [translation];
         for (var i = 0; i < nodes.Length; i++)
             nodes[i].TextContent = lines[i];
+    }
+
+    private void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                httpClient.Dispose();
+                browsingContext.Dispose();
+            }
+
+            disposedValue = true;
+            Log.Information("AiTranslator disposed");
+        }
+    }
+
+    ~AiTranslator()
+    {
+        Dispose(false);
     }
 }
