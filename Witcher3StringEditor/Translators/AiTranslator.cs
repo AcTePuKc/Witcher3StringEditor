@@ -206,17 +206,15 @@ internal sealed class AiTranslator : ITranslator, IDisposable
 
     private void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (disposedValue) return;
+        if (disposing)
         {
-            if (disposing)
-            {
-                httpClient.Dispose();
-                browsingContext.Dispose();
-            }
-
-            disposedValue = true;
-            Log.Information("AiTranslator disposed");
+            httpClient.Dispose();
+            browsingContext.Dispose();
         }
+
+        disposedValue = true;
+        Log.Information("AiTranslator disposed");
     }
 
     ~AiTranslator()
