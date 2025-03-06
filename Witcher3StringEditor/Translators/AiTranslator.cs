@@ -35,7 +35,7 @@ internal sealed class AiTranslator : ITranslator, IDisposable
     {
         chatHistory = [];
         modelSettings = settings;
-        httpClient = Ioc.Default.GetRequiredService<HttpClient>();
+        httpClient = Ioc.Default.GetRequiredService<IHttpClientFactory>().CreateClient();
         httpClient.BaseAddress = new Uri(settings.EndPoint);
         browsingContext = BrowsingContext.New(Configuration.Default);
         promptExecutionSettings = CreatePromptExecutionSettings();
