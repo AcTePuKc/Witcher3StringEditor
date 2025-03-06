@@ -67,7 +67,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             Title = CurrentViewModel.GetType() == typeof(BatchTranslateContentViewModel)
                 ? Strings.BatchTranslateDialogTitle
                 : Strings.TranslateDialogTitle;
-            Log.Information("Switch translation mode to {0} mode.", CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
+            Log.Information("Switch translation mode to {0} mode.",
+                CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
         }
     }
 
@@ -87,15 +88,15 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 break;
 
             case TranslateContentViewModel translateViewModel:
-                {
-                    if (translateViewModel.CurrentTranslateItemModel is { IsSaved: false }
-                        && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
-                        && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                            "TranslatedTextNoSaved"))
-                        w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text =
-                            translateViewModel.CurrentTranslateItemModel.TranslatedText;
-                    break;
-                }
+            {
+                if (translateViewModel.CurrentTranslateItemModel is { IsSaved: false }
+                    && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
+                    && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                        "TranslatedTextNoSaved"))
+                    w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text =
+                        translateViewModel.CurrentTranslateItemModel.TranslatedText;
+                break;
+            }
         }
     }
 
@@ -103,5 +104,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     private void Closed()
     {
         WeakReferenceMessenger.Default.UnregisterAll(recipient);
+        if (translator is IDisposable disposable) disposable.Dispose();
     }
 }
