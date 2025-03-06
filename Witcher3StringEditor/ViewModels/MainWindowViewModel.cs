@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -342,6 +341,6 @@ internal partial class MainWindowViewModel : ObservableObject
             new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings,
                 appSettings.IsUseAiTranslate
                     ? new AiTranslator(appSettings.ModelSettings)
-                    : Ioc.Default.GetRequiredService<MicrosoftTranslator>()));
+                    : new MicrosoftTranslator()));
     }
 }
