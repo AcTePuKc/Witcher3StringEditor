@@ -18,100 +18,108 @@
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
+    WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Grid>
-        <Border Margin="16,24">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Text="{lex:Loc DeleteDialogMessage}" />
-                <sf:SfDataGrid
-                    x:Name="SfDataGrid"
-                    Grid.Row="1"
-                    Margin="0,16"
-                    AllowDeleting="False"
-                    AllowEditing="False"
-                    AllowResizingColumns="True"
-                    AutoGenerateColumns="False"
-                    ColumnSizer="AutoWithLastColumnFill"
-                    ItemsSource="{Binding W3Items}"
-                    NavigationMode="Row"
-                    RowHeight="30"
-                    ShowRowHeader="True">
-                    <sf:SfDataGrid.Resources>
-                        <ResourceDictionary>
-                            <Style TargetType="sf:GridRowHeaderCell">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="sf:GridRowHeaderCell">
-                                            <Border
-                                                x:Name="PART_RowHeaderCellBorder"
-                                                Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}">
-                                                <Grid>
-                                                    <TextBlock
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        TextAlignment="Center" />
-                                                </Grid>
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ResourceDictionary>
-                    </sf:SfDataGrid.Resources>
-                    <i:Interaction.Behaviors>
-                        <b:SfDataGridSizeChangedBehavior />
-                        <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding RowHeight, ElementName=SfDataGrid}" />
-                    </i:Interaction.Behaviors>
-                    <sf:SfDataGrid.Columns>
-                        <sf:GridTextColumn
-                            HeaderText="ID"
-                            MappingName="StrId"
-                            MinimumWidth="100"
-                            TextAlignment="Center" />
-                        <sf:GridTextColumn
-                            HeaderText="Key(Hex)"
-                            MappingName="KeyHex"
-                            MinimumWidth="100"
-                            TextAlignment="Center" />
-                        <sf:GridTextColumn
-                            HeaderText="Key(String)"
-                            MappingName="KeyName"
-                            MinimumWidth="200"
-                            TextAlignment="Center" />
-                        <sf:GridTextColumn
-                            MappingName="Text"
-                            MinimumWidth="700"
-                            TextWrapping="WrapWithOverflow" />
-                    </sf:SfDataGrid.Columns>
-                </sf:SfDataGrid>
-                <iwk:SimpleStackPanel
-                    Grid.Row="2"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal"
-                    Spacing="16">
-                    <Button
-                        MinWidth="100"
-                        HorizontalAlignment="Right"
-                        Command="{Binding DeleteCommand}"
-                        Content="{lex:Loc DeleteBtnContent}" />
-                    <Button
-                        MinWidth="100"
-                        HorizontalAlignment="Left"
-                        Command="{Binding CancelCommand}"
-                        Content="{lex:Loc CancelBtnContent}" />
-                </iwk:SimpleStackPanel>
-            </Grid>
-        </Border>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Margin="20,0,0,0"
+            VerticalAlignment="Center"
+            Text="{lex:Loc DeleteDialogTitle}" />
+        <Grid Grid.Row="1" Margin="16,16,16,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="{lex:Loc DeleteDialogMessage}" />
+            <sf:SfDataGrid
+                x:Name="SfDataGrid"
+                Grid.Row="1"
+                Margin="0,16"
+                AllowDeleting="False"
+                AllowEditing="False"
+                AllowResizingColumns="True"
+                AutoGenerateColumns="False"
+                ColumnSizer="AutoWithLastColumnFill"
+                ItemsSource="{Binding W3Items}"
+                NavigationMode="Row"
+                RowHeight="30"
+                ShowRowHeader="True">
+                <sf:SfDataGrid.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="sf:GridRowHeaderCell">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="sf:GridRowHeaderCell">
+                                        <Border
+                                            x:Name="PART_RowHeaderCellBorder"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <Grid>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    TextAlignment="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ResourceDictionary>
+                </sf:SfDataGrid.Resources>
+                <i:Interaction.Behaviors>
+                    <b:SfDataGridSizeChangedBehavior />
+                    <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding RowHeight, ElementName=SfDataGrid}" />
+                </i:Interaction.Behaviors>
+                <sf:SfDataGrid.Columns>
+                    <sf:GridTextColumn
+                        HeaderText="ID"
+                        MappingName="StrId"
+                        MinimumWidth="100"
+                        TextAlignment="Center" />
+                    <sf:GridTextColumn
+                        HeaderText="Key(Hex)"
+                        MappingName="KeyHex"
+                        MinimumWidth="100"
+                        TextAlignment="Center" />
+                    <sf:GridTextColumn
+                        HeaderText="Key(String)"
+                        MappingName="KeyName"
+                        MinimumWidth="200"
+                        TextAlignment="Center" />
+                    <sf:GridTextColumn
+                        MappingName="Text"
+                        MinimumWidth="700"
+                        TextWrapping="WrapWithOverflow" />
+                </sf:SfDataGrid.Columns>
+            </sf:SfDataGrid>
+            <iwk:SimpleStackPanel
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="16">
+                <Button
+                    MinWidth="100"
+                    HorizontalAlignment="Right"
+                    Command="{Binding DeleteCommand}"
+                    Content="{lex:Loc DeleteBtnContent}" />
+                <Button
+                    MinWidth="100"
+                    HorizontalAlignment="Left"
+                    Command="{Binding CancelCommand}"
+                    Content="{lex:Loc CancelBtnContent}" />
+            </iwk:SimpleStackPanel>
+        </Grid>
     </Grid>
 </Window>
