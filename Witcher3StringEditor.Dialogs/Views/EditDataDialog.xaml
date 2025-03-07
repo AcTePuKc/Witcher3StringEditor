@@ -15,45 +15,53 @@
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
+    WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Grid>
-        <Border Padding="24">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <iwk:SimpleStackPanel Spacing="16">
-                    <TextBox ui:ControlHelper.Header="ID" Text="{Binding W3Item.StrId, FallbackValue=''}" />
-                    <TextBox ui:ControlHelper.Header="Key(Hex)" Text="{Binding W3Item.KeyHex, FallbackValue=''}" />
-                    <TextBox ui:ControlHelper.Header="Key(String)" Text="{Binding W3Item.KeyName, FallbackValue=''}" />
-                </iwk:SimpleStackPanel>
-                <TextBox
-                    Grid.Row="1"
-                    Margin="0,16,0,0"
-                    ui:ControlHelper.Header="Text"
-                    Text="{Binding W3Item.Text, FallbackValue=''}"
-                    TextWrapping="WrapWithOverflow" />
-                <iwk:SimpleStackPanel
-                    Grid.Row="2"
-                    Margin="0,24,0,0"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal"
-                    Spacing="16">
-                    <Button
-                        MinWidth="100"
-                        Command="{Binding SubmitCommand}"
-                        Content="{lex:Loc SubmitBtnContent}" />
-                    <Button
-                        MinWidth="100"
-                        Command="{Binding CancelCommand}"
-                        Content="{lex:Loc CancelBtnContent}" />
-                </iwk:SimpleStackPanel>
-            </Grid>
-        </Border>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Margin="20,0,0,0"
+            VerticalAlignment="Center"
+            Text="{Binding Title}" />
+        <Grid Grid.Row="1" Margin="24,16,24,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <iwk:SimpleStackPanel Spacing="16">
+                <TextBox ui:ControlHelper.Header="ID" Text="{Binding W3Item.StrId, FallbackValue=''}" />
+                <TextBox ui:ControlHelper.Header="Key(Hex)" Text="{Binding W3Item.KeyHex, FallbackValue=''}" />
+                <TextBox ui:ControlHelper.Header="Key(String)" Text="{Binding W3Item.KeyName, FallbackValue=''}" />
+            </iwk:SimpleStackPanel>
+            <TextBox
+                Grid.Row="1"
+                Margin="0,16,0,0"
+                ui:ControlHelper.Header="Text"
+                Text="{Binding W3Item.Text, FallbackValue=''}"
+                TextWrapping="WrapWithOverflow" />
+            <iwk:SimpleStackPanel
+                Grid.Row="2"
+                Margin="0,24,0,0"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="16">
+                <Button
+                    MinWidth="100"
+                    Command="{Binding SubmitCommand}"
+                    Content="{lex:Loc SubmitBtnContent}" />
+                <Button
+                    MinWidth="100"
+                    Command="{Binding CancelCommand}"
+                    Content="{lex:Loc CancelBtnContent}" />
+            </iwk:SimpleStackPanel>
+        </Grid>
     </Grid>
 </Window>
