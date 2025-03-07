@@ -15,9 +15,11 @@
     d:DataContext="{d:DesignInstance Type=vm:TranslateDialogViewModel}"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+    ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
     Closed="Window_Closed"
+    WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <i:Interaction.Triggers>
@@ -40,20 +42,31 @@
                 TranslateDataTemplate="{StaticResource TranslateDataTemplate}" />
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Margin="24">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="48" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Button
-            HorizontalAlignment="Right"
-            Command="{Binding SwitchCommand}"
-            IsEnabled="{Binding SwitchIsEnabled}">
-            <ui:FontIcon Glyph="&#xE8AB;" />
-        </Button>
-        <ContentControl
-            Grid.Row="1"
-            Content="{Binding CurrentViewModel}"
-            ContentTemplateSelector="{StaticResource TranslateDataTemplateSelector}" />
+        <TextBlock
+            Margin="20,0,0,0"
+            VerticalAlignment="Center"
+            Text="{Binding Title}" />
+        <Grid Grid.Row="1" Margin="24,16,24,16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button
+                Margin="0,0,0,16"
+                HorizontalAlignment="Right"
+                Command="{Binding SwitchCommand}"
+                IsEnabled="{Binding SwitchIsEnabled}">
+                <ui:FontIcon Glyph="&#xE8AB;" />
+            </Button>
+            <ContentControl
+                Grid.Row="1"
+                Content="{Binding CurrentViewModel}"
+                ContentTemplateSelector="{StaticResource TranslateDataTemplateSelector}" />
+        </Grid>
     </Grid>
 </Window>
