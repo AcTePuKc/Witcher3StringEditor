@@ -11,6 +11,7 @@
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc SaveDialogTitle}"
+    ui:TitleBar.ExtendViewIntoTitleBar="True"
     Width="800"
     Height="500"
     d:DataContext="{d:DesignInstance Type=vm:SaveDialogViewModel}"
@@ -20,6 +21,7 @@
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
     Closed="Window_Closed"
+    WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <Window.Resources>
@@ -45,106 +47,116 @@
             </ObjectDataProvider>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Margin="24">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Expander VerticalAlignment="Top" IsExpanded="True">
-            <Expander.Header>
-                <Grid Height="Auto">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="150" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetFiletype}" />
-                    <ComboBox
-                        Grid.Column="1"
-                        HorizontalAlignment="Stretch"
-                        ItemsSource="{Binding Source={StaticResource FileType}}"
-                        SelectedValue="{Binding W3Job.W3FileType}" />
-                </Grid>
-            </Expander.Header>
-            <Expander.Content>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetLanguage}" />
-                    <ComboBox
-                        Grid.Row="0"
-                        Width="150"
-                        HorizontalAlignment="Right"
-                        ItemsSource="{Binding Source={StaticResource W3Language}}"
-                        SelectedValue="{Binding W3Job.Language}" />
-                    <Grid Grid.Row="1">
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding W3Job.W3FileType}" Value="{x:Static c:W3FileType.w3Strings}">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <TextBlock
-                            Margin="0,16,0,0"
-                            VerticalAlignment="Center"
-                            Text="{lex:Loc IgnoreIDSpaceCheck}" />
-                        <ui:ToggleSwitch
-                            Margin="0,16,0,0"
-                            HorizontalAlignment="Right"
-                            IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
-                            OffContent="{lex:Loc IsOff}"
-                            OnContent="{lex:Loc IsOn}" />
+        <TextBlock
+            Margin="20,0,0,0"
+            VerticalAlignment="Center"
+            Text="{lex:Loc SaveDialogTitle}" />
+        <Grid Grid.Row="1" Margin="24,24,16,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Expander VerticalAlignment="Top" IsExpanded="True">
+                <Expander.Header>
+                    <Grid Height="Auto">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetFiletype}" />
+                        <ComboBox
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding Source={StaticResource FileType}}"
+                            SelectedValue="{Binding W3Job.W3FileType}" />
                     </Grid>
-                    <ui:NumberBox
-                        Grid.Row="2"
-                        Margin="0,16,0,0"
-                        ui:ControlHelper.Header="{lex:Loc IDSpace}"
-                        Maximum="9999"
-                        Minimum="-1"
-                        SmallChange="1"
-                        SpinButtonPlacementMode="Inline"
-                        Value="{Binding W3Job.IdSpace}">
-                        <ui:NumberBox.Style>
-                            <Style TargetType="ui:NumberBox">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding W3Job.W3FileType}" Value="{x:Static c:W3FileType.w3Strings}">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ui:NumberBox.Style>
-                        <ui:NumberBox.ToolTip>
-                            <ToolTip Content="{lex:Loc IdSpaceToolTip}" />
-                        </ui:NumberBox.ToolTip>
-                    </ui:NumberBox>
-                </Grid>
-            </Expander.Content>
-        </Expander>
-        <iwk:SimpleStackPanel
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            Margin="0,24"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal"
-            Spacing="16">
-            <Button
-                MinWidth="100"
-                Command="{Binding SaveCommand}"
-                Content="{lex:Loc SaveBtnContent}" />
-            <Button
-                MinWidth="100"
-                Command="{Binding CancelCommand}"
-                Content="{lex:Loc CancelBtnContent}" />
-        </iwk:SimpleStackPanel>
+                </Expander.Header>
+                <Expander.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock VerticalAlignment="Center" Text="{lex:Loc TargetLanguage}" />
+                        <ComboBox
+                            Grid.Row="0"
+                            Width="150"
+                            HorizontalAlignment="Right"
+                            ItemsSource="{Binding Source={StaticResource W3Language}}"
+                            SelectedValue="{Binding W3Job.Language}" />
+                        <Grid Grid.Row="1">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding W3Job.W3FileType}" Value="{x:Static c:W3FileType.w3Strings}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <TextBlock
+                                Margin="0,16,0,0"
+                                VerticalAlignment="Center"
+                                Text="{lex:Loc IgnoreIDSpaceCheck}" />
+                            <ui:ToggleSwitch
+                                Margin="0,16,0,0"
+                                HorizontalAlignment="Right"
+                                IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
+                                OffContent="{lex:Loc IsOff}"
+                                OnContent="{lex:Loc IsOn}" />
+                        </Grid>
+                        <ui:NumberBox
+                            Grid.Row="2"
+                            Margin="0,16,0,0"
+                            ui:ControlHelper.Header="{lex:Loc IDSpace}"
+                            Maximum="9999"
+                            Minimum="-1"
+                            SmallChange="1"
+                            SpinButtonPlacementMode="Inline"
+                            Value="{Binding W3Job.IdSpace}">
+                            <ui:NumberBox.Style>
+                                <Style TargetType="ui:NumberBox">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding W3Job.W3FileType}" Value="{x:Static c:W3FileType.w3Strings}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:NumberBox.Style>
+                            <ui:NumberBox.ToolTip>
+                                <ToolTip Content="{lex:Loc IdSpaceToolTip}" />
+                            </ui:NumberBox.ToolTip>
+                        </ui:NumberBox>
+                    </Grid>
+                </Expander.Content>
+            </Expander>
+            <iwk:SimpleStackPanel
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Margin="0,24"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="16">
+                <Button
+                    MinWidth="100"
+                    Command="{Binding SaveCommand}"
+                    Content="{lex:Loc SaveBtnContent}" />
+                <Button
+                    MinWidth="100"
+                    Command="{Binding CancelCommand}"
+                    Content="{lex:Loc CancelBtnContent}" />
+            </iwk:SimpleStackPanel>
+        </Grid>
     </Grid>
 </Window>
