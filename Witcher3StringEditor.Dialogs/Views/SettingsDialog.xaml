@@ -140,12 +140,12 @@
                     Description="{lex:Loc TopPSettingDescription}"
                     Header="{lex:Loc TopPSettingHeader}">
                     <Slider
-                        AutoToolTipPrecision="2"
+                        AutoToolTipPrecision="1"
                         IsSnapToTickEnabled="True"
                         Maximum="1"
                         Minimum="0"
-                        SmallChange="0.01"
-                        TickFrequency="0.01"
+                        SmallChange="0.1"
+                        TickFrequency="0.1"
                         Value="{Binding AppSettings.ModelSettings.TopP}" />
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
