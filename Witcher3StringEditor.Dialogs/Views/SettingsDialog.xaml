@@ -142,7 +142,7 @@
                     <Slider
                         AutoToolTipPrecision="1"
                         IsSnapToTickEnabled="True"
-                        Maximum="2"
+                        Maximum="1"
                         Minimum="-1"
                         SmallChange="0.1"
                         TickFrequency="0.1"
