@@ -856,7 +856,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Controls the randomness and creativity of the generated text. Lower values make the output more deterministic and focused on the highest probability options, while higher values increase diversity but may reduce coherence. Recommended range: 0 to 2. Values less than 0 disable this option..
+        ///   Looks up a localized string similar to Controls the randomness and creativity of the generated text. Lower values make the output more deterministic and focused on the highest probability options, while higher values increase diversity but may reduce coherence. Recommended range: 0 to 2. Setting the value to 0 disables this option..
         /// </summary>
         internal static string TemperatureSettingDescription {
             get {
@@ -883,7 +883,7 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dynamically adjusts the sampling process by selecting from the smallest set of most probable tokens based on cumulative probability. This method increases output diversity while maintaining quality. Recommended range: 0 to 1. Values less than 0 disable this option..
+        ///   Looks up a localized string similar to Dynamically adjusts the sampling process by selecting from the smallest set of most probable tokens based on cumulative probability. This method increases output diversity while maintaining quality. Recommended range: 0 to 1. Setting the value to 0 disables this option..
         /// </summary>
         internal static string TopPSettingDescription {
             get {
