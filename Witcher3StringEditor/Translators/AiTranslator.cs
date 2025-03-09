@@ -126,9 +126,9 @@ internal sealed class AiTranslator : ITranslator, IDisposable
     private OpenAIPromptExecutionSettings CreatePromptExecutionSettings()
     {
         var defaultPromptSettings = new OpenAIPromptExecutionSettings();
-        if (modelSettings.Temperature >= 0)
+        if (modelSettings.Temperature > 0)
             defaultPromptSettings.Temperature = modelSettings.Temperature;
-        if (modelSettings.TopP >= 0)
+        if (modelSettings.TopP > 0)
             defaultPromptSettings.TopP = modelSettings.TopP;
         return defaultPromptSettings;
     }
