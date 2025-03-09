@@ -130,7 +130,7 @@
                         AutoToolTipPrecision="1"
                         IsSnapToTickEnabled="True"
                         Maximum="2"
-                        Minimum="-1"
+                        Minimum="0"
                         SmallChange="0.1"
                         TickFrequency="0.1"
                         Value="{Binding AppSettings.ModelSettings.Temperature}" />
@@ -140,12 +140,12 @@
                     Description="{lex:Loc TopPSettingDescription}"
                     Header="{lex:Loc TopPSettingHeader}">
                     <Slider
-                        AutoToolTipPrecision="1"
+                        AutoToolTipPrecision="2"
                         IsSnapToTickEnabled="True"
                         Maximum="1"
-                        Minimum="-1"
-                        SmallChange="0.1"
-                        TickFrequency="0.1"
+                        Minimum="0"
+                        SmallChange="0.01"
+                        TickFrequency="0.01"
                         Value="{Binding AppSettings.ModelSettings.TopP}" />
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
