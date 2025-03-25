@@ -37,7 +37,7 @@
         <PackageReference Include="HanumanInstitute.MvvmDialogs.Wpf" Version="2.1.0" />
         <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.10.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.3" />
-        <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.42.0" />
+        <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.43.0" />
         <PackageReference Include="Nerdbank.GitVersioning" Version="3.7.115">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -46,7 +46,7 @@
         <PackageReference Include="Resourcer.Fody" Version="1.8.1">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.1" />
         <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
         <PackageReference Include="Serilog.Sinks.Observable" Version="3.0.0" />
