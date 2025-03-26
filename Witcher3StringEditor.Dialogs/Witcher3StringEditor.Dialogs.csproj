@@ -34,7 +34,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="28.2.12" />
+        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="29.1.33" />
         <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
     </ItemGroup>
 
