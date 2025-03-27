@@ -20,7 +20,7 @@ public class SecurePasswordConverter : IValueConverter
             var data = ProtectedData.Unprotect(encryptedData, null, DataProtectionScope.CurrentUser);
             return Encoding.UTF8.GetString(data);
         }
-        catch (CryptographicException ex)
+        catch (Exception ex)
         {
             Log.Error(ex, "Failed to decrypt password");
             return DependencyProperty.UnsetValue;
