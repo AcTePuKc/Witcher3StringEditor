@@ -37,7 +37,7 @@ public class SecurePasswordConverter : IValueConverter
             var encryptedData = ProtectedData.Protect(data, null, DataProtectionScope.CurrentUser);
             return System.Convert.ToBase64String(encryptedData);
         }
-        catch (CryptographicException ex)
+        catch (Exception ex)
         {
             Log.Error(ex, "Failed to encrypt password");
             return DependencyProperty.UnsetValue;
