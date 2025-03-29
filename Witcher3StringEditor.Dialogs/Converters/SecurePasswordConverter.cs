@@ -15,7 +15,7 @@ public class SecurePasswordConverter : IValueConverter
         try
         {
             var encryptedPassword = value as string;
-            Guard.IsNotNullOrWhiteSpace(encryptedPassword);
+            if(string.IsNullOrWhiteSpace(encryptedPassword)) return DependencyProperty.UnsetValue;
             var encryptedData = System.Convert.FromBase64String(encryptedPassword);
             var data = ProtectedData.Unprotect(encryptedData, null, DataProtectionScope.CurrentUser);
             return Encoding.UTF8.GetString(data);
@@ -32,7 +32,7 @@ public class SecurePasswordConverter : IValueConverter
         try
         {
             var password = value as string;
-            Guard.IsNotNullOrWhiteSpace(password);
+            if (string.IsNullOrWhiteSpace(password)) return DependencyProperty.UnsetValue;
             var data = Encoding.UTF8.GetBytes(password);
             var encryptedData = ProtectedData.Protect(data, null, DataProtectionScope.CurrentUser);
             return System.Convert.ToBase64String(encryptedData);
