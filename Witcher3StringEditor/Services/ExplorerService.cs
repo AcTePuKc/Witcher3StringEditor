@@ -7,6 +7,6 @@ internal class ExplorerService : IExplorerService
 {
     public void Open(string path)
     {
-        Process.Start("explorer.exe", path);
+        using var _ = Process.Start("explorer.exe", path);
     }
 }
