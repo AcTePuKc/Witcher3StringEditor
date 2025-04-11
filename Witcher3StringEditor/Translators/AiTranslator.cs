@@ -22,9 +22,7 @@ internal sealed class AiTranslator : ITranslator, IDisposable
     private readonly IBrowsingContext browsingContext;
     private readonly IChatCompletionService chatCompletionService;
     private readonly ChatHistory chatHistory;
-#pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
     private readonly IChatHistoryReducer? chatHistoryReducer;
-#pragma warning restore SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
     private readonly HttpClient httpClient;
     private readonly IModelSettings modelSettings;
     private readonly PromptExecutionSettings promptExecutionSettings;
@@ -41,10 +39,8 @@ internal sealed class AiTranslator : ITranslator, IDisposable
         };
         browsingContext = BrowsingContext.New(Configuration.Default);
         promptExecutionSettings = CreatePromptExecutionSettings();
-#pragma warning disable SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         if (modelSettings.ContextLength > 0)
             chatHistoryReducer = new ChatHistoryTruncationReducer(modelSettings.ContextLength);
-#pragma warning restore SKEXP0001 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         chatCompletionService = new OpenAIChatCompletionService(settings.ModelId,
             Unprotect(settings.ApiKey),
             httpClient: httpClient,
