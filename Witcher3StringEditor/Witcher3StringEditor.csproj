@@ -54,8 +54,8 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="29.2.7" />
-        <PackageReference Include="Syncfusion.XlsIO.Wpf" Version="29.2.7" />
+        <PackageReference Include="Syncfusion.SfGrid.WPF" Version="29.2.8" />
+        <PackageReference Include="Syncfusion.XlsIO.Wpf" Version="29.2.8" />
         <PackageReference Include="System.Reactive" Version="6.0.1" />
         <PackageReference Include="Timestamp" Version="1.0.2" />
         <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
