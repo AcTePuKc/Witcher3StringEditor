@@ -56,7 +56,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
                     StrId = parts[0],
                     KeyHex = parts[1],
                     KeyName = parts[2],
-                    OldText = parts[3],
                     Text = parts[3]
                 };
         }

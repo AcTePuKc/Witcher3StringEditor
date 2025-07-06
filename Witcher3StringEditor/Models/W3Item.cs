@@ -16,6 +16,11 @@ internal partial class W3Item : ObservableObject, IW3Item
     [ObservableProperty] private string text = string.Empty;
     public Guid Id { get; } = Guid.NewGuid();
 
+    partial void OnTextChanging(string? oldValue, string newValue)
+    {
+        OldText = Text;
+    }
+
     public object Clone()
     {
         return MemberwiseClone();
