@@ -67,14 +67,14 @@ public partial class App
     {
         e.Handled = true;
         var exception = e.Exception;
-        Log.Error(exception, exception.Message);
+        Log.Error(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
     }
 
     private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
         e.SetObserved();
         var exception = e.Exception;
-        Log.Error(exception, exception.Message);
+        Log.Error(exception, "Unobserved task exception: {ExceptionMessage}", exception.Message);
     }
 
     private static AppSettings LoadAppSettings(string path)

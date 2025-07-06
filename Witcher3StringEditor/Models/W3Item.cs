@@ -16,7 +16,7 @@ internal partial class W3Item : ObservableObject, IW3Item
     [ObservableProperty] private string text = string.Empty;
     public Guid Id { get; } = Guid.NewGuid();
 
-    partial void OnTextChanging(string? oldValue, string newValue)
+    partial void OnTextChanging(string value)
     {
         OldText = Text;
     }
