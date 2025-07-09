@@ -206,8 +206,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         worksheet["A1"].Value = "StrId";
         worksheet["B1"].Value = "Key(Hex)";
         worksheet["C1"].Value = "Key(Name)";
-        worksheet["D1"].Value = "Text(Old)";
-        worksheet["E1"].Value = "Text";
+        worksheet["D1"].Value = "Text";
+        worksheet["E1"].Value = "Text(Old)";
     }
 
     private static void SetTableStyles(IWorksheet worksheet, int rowCount)
@@ -246,8 +246,8 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             worksheet[$"A{rowIndex}"].Value = items[i].StrId;
             worksheet[$"B{rowIndex}"].Value = items[i].KeyHex;
             worksheet[$"C{rowIndex}"].Value = items[i].KeyName;
-            worksheet[$"D{rowIndex}"].Value = items[i].OldText;
-            worksheet[$"E{rowIndex}"].Value = items[i].Text;
+            worksheet[$"D{rowIndex}"].Value = items[i].Text;
+            worksheet[$"E{rowIndex}"].Value = items[i].OldText;
         }
     }
 
