@@ -204,10 +204,10 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     private static void SetTableHeaders(IWorksheet worksheet)
     {
         worksheet["A1"].Value = "StrId";
-        worksheet["B1"].Value = "Key(Hex)";
-        worksheet["C1"].Value = "Key(Name)";
+        worksheet["B1"].Value = "KeyHex";
+        worksheet["C1"].Value = "KeyName";
         worksheet["D1"].Value = "Text";
-        worksheet["E1"].Value = "Text(Old)";
+        worksheet["E1"].Value = "OldText";
     }
 
     private static void SetTableStyles(IWorksheet worksheet, int rowCount)
