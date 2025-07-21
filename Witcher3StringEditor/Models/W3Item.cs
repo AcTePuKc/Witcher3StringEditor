@@ -18,7 +18,10 @@ internal partial class W3Item : ObservableObject, IW3Item
 
     partial void OnTextChanging(string value)
     {
-        OldText = Text;
+        if (string.IsNullOrWhiteSpace(OldText))
+        {
+            OldText = Text;
+        }
     }
 
     public object Clone()
