@@ -116,7 +116,7 @@ public partial class App
         viewLocator.Register<RecentDialogViewModel, RecentDialog>();
         viewLocator.Register<AboutDialogViewModel, AboutDialog>();
         viewLocator.Register<ModelSettingsDialogViewModel, ModelSettingsDialog>();
-        viewLocator.Register<PromptsSettingDialogViewModel, PromotsSettingDialog>();
+        viewLocator.Register<PromptsSettingDialogViewModel, PromptsSettingDialog>();
         return viewLocator;
     }
 
