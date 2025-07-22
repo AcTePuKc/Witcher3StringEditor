@@ -11,7 +11,7 @@ using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
-///     TranslateDiaglogView.xaml 的交互逻辑
+///     TranslateDialogView.xaml 的交互逻辑
 /// </summary>
 public partial class TranslateDialog
 {
