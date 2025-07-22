@@ -459,4 +459,10 @@
     <data name="ContextLengthSettingDescription" xml:space="preserve">
     <value>Controls the number of historical messages considered by the model when generating replies. Increasing this value can improve reply accuracy but may decrease speed and increase costs. Setting it to 0 disables this option, meaning the model will not consider any historical messages.</value>
   </data>
+    <data name="TranslationNotEmptyMessage" xml:space="preserve">
+      <value>The translation already exists. Do you want to overwrite the current result?</value>
+    </data>
+    <data name="TranslationNotEmptyCaption" xml:space="preserve">
+      <value>The translation already exists</value>
+    </data>
 </root>

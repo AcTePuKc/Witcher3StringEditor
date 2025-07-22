@@ -92,6 +92,8 @@ public partial class TranslateContentViewModel : ObservableObject
             try
             {
                 Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
+                if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+                    && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationNotEmpty")) return;
                 IsBusy = true;
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
                 CurrentTranslateItemModel.TranslatedText =

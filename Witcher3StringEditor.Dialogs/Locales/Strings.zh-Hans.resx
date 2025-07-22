@@ -459,4 +459,10 @@
     <data name="ContextLengthSettingDescription" xml:space="preserve">
     <value>控制模型生成回复时考虑的历史消息数量。增加这个数值可以提升回复的准确性，但可能会降低速度并增加费用。设置为0则表示禁用此选项，模型将不参考任何历史消息。</value>
   </data>
+    <data name="TranslationNotEmptyMessage" xml:space="preserve">
+      <value>译文已存在，是否覆盖当前结果？</value>
+    </data>
+    <data name="TranslationNotEmptyCaption" xml:space="preserve">
+      <value>译文已存在</value>
+    </data>
 </root>

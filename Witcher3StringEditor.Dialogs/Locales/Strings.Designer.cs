@@ -1027,6 +1027,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The translation already exists.
+        /// </summary>
+        internal static string TranslationNotEmptyCaption {
+            get {
+                return ResourceManager.GetString("TranslationNotEmptyCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The translation already exists. Do you want to overwrite the current result?.
+        /// </summary>
+        internal static string TranslationNotEmptyMessage {
+            get {
+                return ResourceManager.GetString("TranslationNotEmptyMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Translation is Underway.
         /// </summary>
         internal static string TranslatorTranslatingCaption {

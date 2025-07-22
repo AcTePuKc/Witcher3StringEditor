@@ -353,4 +353,10 @@
     <data name="ContextLengthSettingDescription" xml:space="preserve">
     <value>Állítsa be a kontextus hosszát, hogy meghatározza, hány korábbi üzenetet vesz figyelembe a modell válaszgenerálás során. A számérték növelésével javítható a válaszok pontossága, de ez csökkentheti a sebességet és emelheti a költségeket. Ha 0-ra állítja, letiltja ezt a beállítást, tehát a modell nem vesz figyelembe egyetlen előző üzenetet sem.</value>
   </data>
+  <data name="TranslationNotEmptyMessage" xml:space="preserve">
+    <value>A fordítás már létezik. Szeretné felülírni az aktuális eredményt?</value>
+  </data>
+  <data name="TranslationNotEmptyCaption" xml:space="preserve">
+    <value>A fordítás már létezik</value>
+  </data>
 </root>
