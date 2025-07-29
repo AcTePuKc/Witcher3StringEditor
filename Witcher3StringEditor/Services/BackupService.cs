@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Diagnostics;
-using Serilog;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
+using CommunityToolkit.Diagnostics;
+using Serilog;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
 

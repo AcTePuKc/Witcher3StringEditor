@@ -1,5 +1,5 @@
-﻿using Microsoft.Xaml.Behaviors;
-using System.Windows;
+﻿using System.Windows;
+using Microsoft.Xaml.Behaviors;
 using WinRT;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;

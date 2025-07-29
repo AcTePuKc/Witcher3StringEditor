@@ -1,9 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.IO;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
-using System.IO;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Interfaces;
 
@@ -33,7 +33,8 @@ public partial class RecentDialogViewModel(IAppSettings appSettings)
         else
         {
             RequestClose?.Invoke(this, EventArgs.Empty);
-            var isApproved = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
+            var isApproved =
+                WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
             Log.Information("Recent item opening has been approved: {0}.", isApproved);
         }
     }

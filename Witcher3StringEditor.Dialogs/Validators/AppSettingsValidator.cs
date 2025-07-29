@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using System.IO;
+﻿using System.IO;
+using FluentValidation;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.Validators;

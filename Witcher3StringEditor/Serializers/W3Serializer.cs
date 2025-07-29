@@ -1,10 +1,10 @@
-﻿using CommandLine;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Text;
+using CommandLine;
 using CommunityToolkit.Diagnostics;
 using Serilog;
 using Syncfusion.XlsIO;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;

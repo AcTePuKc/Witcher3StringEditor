@@ -1,6 +1,6 @@
-﻿using Microsoft.Xaml.Behaviors;
+﻿using System.Windows;
+using Microsoft.Xaml.Behaviors;
 using Syncfusion.UI.Xaml.Grid;
-using System.Windows;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 

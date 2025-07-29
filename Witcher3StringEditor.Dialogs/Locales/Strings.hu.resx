@@ -319,10 +319,10 @@
     <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
     <value>Hiányzó AI fordítási beállítások</value>
   </data>
-  <data name="TemperatureSettingDescription" xml:space="preserve">
+    <data name="TemperatureSettingDescription" xml:space="preserve">
     <value>Szabályozza a generált szöveg véletlenszerűségét és kreativitását. Az alacsonyabb értékek determinisztikusabb és a legvalószínűbb opciókra összpontosító kimenetet eredményeznek, míg a magasabb értékek növelik a sokszínűséget, de csökkenthetik a koherenciát. Ajánlott tartomány: 0 és 2 között. A 0 érték beállítása letiltja ezt az opciót.</value>
   </data>
-  <data name="TopPSettingDescription" xml:space="preserve">
+    <data name="TopPSettingDescription" xml:space="preserve">
     <value>A mintavételi folyamatot dinamikusan igazítja a legvalószínűbb tokenek kumulatív valószínűség alapján választott legkisebb halmazon. Ez a módszer növeli a kimenet sokszínűségét, miközben megtartja a minőséget. Ajánlott tartomány: 0 és 1 között.  A 0 érték beállítása letiltja ezt az opciót.</value>
   </data>
     <data name="InitializationIncompleteMessage" xml:space="preserve">
@@ -353,10 +353,10 @@
     <data name="ContextLengthSettingDescription" xml:space="preserve">
     <value>Állítsa be a kontextus hosszát, hogy meghatározza, hány korábbi üzenetet vesz figyelembe a modell válaszgenerálás során. A számérték növelésével javítható a válaszok pontossága, de ez csökkentheti a sebességet és emelheti a költségeket. Ha 0-ra állítja, letiltja ezt a beállítást, tehát a modell nem vesz figyelembe egyetlen előző üzenetet sem.</value>
   </data>
-  <data name="TranslationNotEmptyMessage" xml:space="preserve">
+    <data name="TranslationNotEmptyMessage" xml:space="preserve">
     <value>A fordítás már létezik. Szeretné felülírni az aktuális eredményt?</value>
   </data>
-  <data name="TranslationNotEmptyCaption" xml:space="preserve">
+    <data name="TranslationNotEmptyCaption" xml:space="preserve">
     <value>A fordítás már létezik</value>
   </data>
 </root>

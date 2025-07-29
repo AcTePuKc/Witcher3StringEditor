@@ -27,8 +27,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject
 
     [ObservableProperty] private bool isAiTranslator;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isBusy;
 
     [ObservableProperty] private IEnumerable<ILanguage> languages;
@@ -95,7 +94,6 @@ public partial class BatchTranslateContentViewModel : ObservableObject
         var tLanguage = ToLanguage;
         var fLanguage = FormLanguage;
         foreach (var item in w3Items.Skip(StartIndex - 1).Take(PendingCount))
-        {
             if (!cancellationTokenSource.IsCancellationRequested)
             {
                 try
@@ -125,7 +123,6 @@ public partial class BatchTranslateContentViewModel : ObservableObject
                 Log.Information("Batch translations are canceled by the user.");
                 return;
             }
-        }
 
         IsBusy = false;
     }

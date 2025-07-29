@@ -1,9 +1,9 @@
-﻿using Serilog;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
+using Serilog;
 
 namespace Witcher3StringEditor.Dialogs.Converters;
 
@@ -14,7 +14,7 @@ public class SecurePasswordConverter : IValueConverter
         try
         {
             var encryptedPassword = value as string;
-            if(string.IsNullOrWhiteSpace(encryptedPassword)) return DependencyProperty.UnsetValue;
+            if (string.IsNullOrWhiteSpace(encryptedPassword)) return DependencyProperty.UnsetValue;
             var encryptedData = System.Convert.FromBase64String(encryptedPassword);
             var data = ProtectedData.Unprotect(encryptedData, null, DataProtectionScope.CurrentUser);
             return Encoding.UTF8.GetString(data);

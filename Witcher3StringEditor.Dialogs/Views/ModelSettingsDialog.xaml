@@ -37,9 +37,11 @@
                 ui:ControlHelper.Header="{lex:Loc ModelSettingsModelIDHeader}"
                 ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsModelIDHeader}"
                 Text="{Binding ModelSettings.ModelId}" />
-            <PasswordBox ui:ControlHelper.Header="{lex:Loc ModelSettingsApiKeyHeader}" ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsApiKeyDescription}">
+            <PasswordBox ui:ControlHelper.Header="{lex:Loc ModelSettingsApiKeyHeader}"
+                         ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsApiKeyDescription}">
                 <i:Interaction.Behaviors>
-                    <b:PasswordBindingBehavior Password="{Binding ModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
+                    <b:PasswordBindingBehavior
+                        Password="{Binding ModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
                 </i:Interaction.Behaviors>
             </PasswordBox>
         </iwk:SimpleStackPanel>

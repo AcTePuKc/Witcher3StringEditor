@@ -1,4 +1,7 @@
-﻿using AngleSharp;
+﻿using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using AngleSharp;
 using AngleSharp.Dom;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -10,9 +13,6 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Serilog;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Translators;

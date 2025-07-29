@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
-using System.Windows;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.ViewModels;

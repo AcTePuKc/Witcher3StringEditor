@@ -1,4 +1,11 @@
-﻿using CommunityToolkit.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Windows;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -11,13 +18,6 @@ using Microsoft.Extensions.DependencyModel;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Windows;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Interfaces;
@@ -45,8 +45,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private bool isUpdateAvailable;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
     [ObservableProperty] private object? selectedItem;
