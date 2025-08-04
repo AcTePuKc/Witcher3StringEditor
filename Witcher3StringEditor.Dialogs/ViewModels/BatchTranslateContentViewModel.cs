@@ -79,7 +79,6 @@ public partial class BatchTranslateContentViewModel : ObservableObject
 
     partial void OnIsBusyChanged(bool value)
     {
-        WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBatchTranslating");
         Log.Information("The batch translation is in progress: {0}.", value);
     }
 

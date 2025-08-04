@@ -66,22 +66,6 @@ public partial class TranslateDialog
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question) == MessageBoxResult.Yes);
                 });
-
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(
-            busyNotificationRecipient, "TranslatorIsBatchTranslating", (r, m) =>
-            {
-                r.Receive(m);
-                if (m.Message)
-                {
-                    PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS | EXECUTION_STATE.ES_SYSTEM_REQUIRED);
-                    Log.Information("The system's automatic sleep is disabled.");
-                }
-                else
-                {
-                    PInvoke.SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
-                    Log.Information("The system's automatic sleep is enabled.");
-                }
-            });
     }
 
     private void Window_Closed(object sender, EventArgs e)
