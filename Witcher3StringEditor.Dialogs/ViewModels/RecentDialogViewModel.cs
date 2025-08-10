@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Specialized;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -9,10 +10,19 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class RecentDialogViewModel(IAppSettings appSettings)
-    : ObservableObject, IModalDialogViewModel, ICloseable
+public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    public IAppSettings AppSettings => appSettings;
+    public RecentDialogViewModel(IAppSettings appSettings)
+    {
+        this.AppSettings = appSettings;
+        this.AppSettings.RecentItems.CollectionChanged += (s, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+                Log.Information("Recent items collection changed: {0} items removed.", e.OldItems?.Count ?? 0);
+        };
+    }
+
+    public IAppSettings AppSettings { get; }
 
     public event EventHandler? RequestClose;
 
