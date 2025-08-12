@@ -24,11 +24,6 @@
     WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
-    <Window.InputBindings>
-        <KeyBinding
-            Key="Return"
-            Command="{Binding DeleteCommand}" />
-    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
