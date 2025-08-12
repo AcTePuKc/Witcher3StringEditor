@@ -201,6 +201,10 @@
             SelectedItem="{Binding SelectedItem}"
             SelectionMode="Extended"
             ShowRowHeader="True">
+            <sf:SfDataGrid.InputBindings>
+                <KeyBinding Key="Delete" Command="{Binding DeleteCommand}"
+                            CommandParameter="{Binding SelectedItems, ElementName=SfDataGrid}" />
+            </sf:SfDataGrid.InputBindings>
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
                     <Style TargetType="sf:GridRowHeaderCell">
