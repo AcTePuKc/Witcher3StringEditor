@@ -110,10 +110,12 @@
                 <sf:GridTextColumn
                     HeaderText="{lex:Loc OrginPath}"
                     MappingName="OrginPath"
+                    MinimumWidth="150"
                     TextWrapping="Wrap" />
                 <sf:GridTextColumn
                     HeaderText="{lex:Loc BackupPath}"
                     MappingName="BackupPath"
+                    MinimumWidth="150"
                     TextWrapping="Wrap" />
                 <sf:GridDateTimeColumn
                     Width="200"
