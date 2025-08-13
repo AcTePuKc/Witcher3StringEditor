@@ -4,12 +4,9 @@ using System.Text;
 using AngleSharp;
 using AngleSharp.Dom;
 using CommunityToolkit.Diagnostics;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using GTranslate;
 using GTranslate.Results;
 using GTranslate.Translators;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -20,11 +17,11 @@ namespace Witcher3StringEditor.Translators;
 
 internal sealed class AiTranslator : ITranslator, IDisposable
 {
-    private readonly Kernel kernel;
-    private readonly ChatHistory chatHistory;
     private readonly IBrowsingContext browsingContext;
+    private readonly ChatHistory chatHistory;
     private readonly IChatHistoryReducer? chatHistoryReducer;
     private readonly HttpClient httpClient;
+    private readonly Kernel kernel;
     private readonly IModelSettings modelSettings;
     private readonly PromptExecutionSettings promptExecutionSettings;
     private bool disposedValue;
@@ -42,7 +39,8 @@ internal sealed class AiTranslator : ITranslator, IDisposable
         promptExecutionSettings = CreatePromptExecutionSettings();
         if (modelSettings.ContextLength > 0)
             chatHistoryReducer = new ChatHistoryTruncationReducer(modelSettings.ContextLength);
-        kernel = Kernel.CreateBuilder().AddOpenAIChatCompletion(settings.ModelId, new Uri(settings.EndPoint), Unprotect(settings.ApiKey)).Build();
+        kernel = Kernel.CreateBuilder()
+            .AddOpenAIChatCompletion(settings.ModelId, new Uri(settings.EndPoint), Unprotect(settings.ApiKey)).Build();
         Log.Information("AiTranslator initialized");
         Log.Information("EndPoint: {EndPoint}", settings.EndPoint);
         Log.Information("ModelId: {ModelId}", settings.ModelId);
@@ -160,7 +158,7 @@ internal sealed class AiTranslator : ITranslator, IDisposable
     {
         chatHistory.AddUserMessage(ExtractTextContent(nodes));
         var translation = (await kernel.GetRequiredService<IChatCompletionService>()
-            .GetChatMessageContentAsync(chatHistory, promptExecutionSettings))
+                .GetChatMessageContentAsync(chatHistory, promptExecutionSettings))
             .ToString();
         chatHistory.AddAssistantMessage(translation);
         return translation;
