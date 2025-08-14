@@ -139,11 +139,11 @@ internal sealed class AiTranslator : ITranslator, IDisposable
     {
         if (selectedLanguage?.Equals(toLanguage) != true)
         {
-            chatHistory.Clear();
+            chatHistory.Remove(chatHistory.First(x => x.Role == AuthorRole.System));
             selectedLanguage = toLanguage;
         }
 
-        if (chatHistory.Count == 0)
+        if (chatHistory.All(x => x.Role != AuthorRole.System))
         {
             var prompt =
                 (await kernel.InvokePromptAsync(modelSettings.Prompts,
