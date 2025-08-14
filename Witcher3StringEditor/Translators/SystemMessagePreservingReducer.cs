@@ -16,29 +16,19 @@ internal class SystemMessagePreservingReducer : IChatHistoryReducer
 
     Task<IEnumerable<ChatMessageContent>?> IChatHistoryReducer.ReduceAsync(IReadOnlyList<ChatMessageContent> chatHistory, CancellationToken cancellationToken)
     {
-        var systemMessages = chatHistory
-            .Where(m => m.Role == AuthorRole.System)
-            .ToList();
-
         var nonSystemMessages = chatHistory
             .Where(m => m.Role != AuthorRole.System)
             .ToList();
-
-        List<ChatMessageContent> truncatedNonSystemMessages;
+        
         if (nonSystemMessages.Count <= maxNonSystemMessages)
         {
-            truncatedNonSystemMessages = nonSystemMessages;
-        }
-        else
-        {
-            var skipCount = nonSystemMessages.Count - maxNonSystemMessages;
-            truncatedNonSystemMessages = [.. nonSystemMessages.Skip(skipCount)];
+            return Task.FromResult<IEnumerable<ChatMessageContent>?>(chatHistory);
         }
 
+        var skipCount = nonSystemMessages.Count - maxNonSystemMessages;
         var reducedHistory = new List<ChatMessageContent>();
-        reducedHistory.AddRange(systemMessages);
-        reducedHistory.AddRange(truncatedNonSystemMessages);
-
+        reducedHistory.AddRange([.. chatHistory.Where(m => m.Role == AuthorRole.System)]);
+        reducedHistory.AddRange([.. nonSystemMessages.Skip(skipCount)]);
         return Task.FromResult<IEnumerable<ChatMessageContent>?>(reducedHistory);
     }
 }
