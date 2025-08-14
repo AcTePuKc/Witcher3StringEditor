@@ -32,8 +32,7 @@ internal sealed class AiTranslator : ITranslator
         modelSettings = settings;
         browsingContext = BrowsingContext.New(Configuration.Default);
         promptExecutionSettings = CreatePromptExecutionSettings();
-        chatHistoryReducer =
-            new ChatHistoryTruncationReducer(modelSettings.ContextLength == 0 ? 1 : modelSettings.ContextLength + 1);
+        chatHistoryReducer = new SystemMessagePreservingReducer(modelSettings.ContextLength);
         var builder = Kernel.CreateBuilder()
             .AddOpenAIChatCompletion(settings.ModelId, new Uri(settings.EndPoint), Unprotect(settings.ApiKey));
         builder.Services.AddLogging(x => x.AddSerilog());
