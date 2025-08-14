@@ -8,7 +8,6 @@ using GTranslate;
 using GTranslate.Results;
 using GTranslate.Translators;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -145,7 +144,13 @@ internal sealed class AiTranslator : ITranslator, IDisposable
         }
 
         if (chatHistory.Count == 0)
-            chatHistory.AddSystemMessage(string.Format(modelSettings.Prompts, toLanguage.Name));
+        {
+            var prompt =
+                (await kernel.InvokePromptAsync(modelSettings.Prompts,
+                    new KernelArguments { { "lang", toLanguage.Name } })).RenderedPrompt;
+            if (!string.IsNullOrWhiteSpace(prompt)) chatHistory.AddSystemMessage(prompt);
+        }
+
         if (modelSettings.ContextLength == 0 && chatHistory.Count > 1)
             chatHistory.RemoveRange(1, chatHistory.Count - 1);
         _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
