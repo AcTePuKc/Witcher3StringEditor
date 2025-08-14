@@ -3,11 +3,11 @@ using Microsoft.SemanticKernel.ChatCompletion;
 
 namespace Witcher3StringEditor.Translators;
 
-internal class SystemMessagePreservingReducer : IChatHistoryReducer
+internal class SystemMessageReservedReducer : IChatHistoryReducer
 {
     private readonly int maxNonSystemMessages;
         
-    public SystemMessagePreservingReducer(int maxNonSystemMessages)
+    public SystemMessageReservedReducer(int maxNonSystemMessages)
     {
         if (maxNonSystemMessages < 0)
             throw new ArgumentException(@"The maximum number of preserved messages cannot be negative", nameof(maxNonSystemMessages));
