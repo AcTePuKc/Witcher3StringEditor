@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using AngleSharp;
 using AngleSharp.Dom;
@@ -16,26 +15,20 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Translators;
 
-internal sealed class AiTranslator : ITranslator, IDisposable
+internal sealed class AiTranslator : ITranslator
 {
     private readonly IBrowsingContext browsingContext;
     private readonly ChatHistory chatHistory;
     private readonly IChatHistoryReducer chatHistoryReducer;
-    private readonly HttpClient httpClient;
     private readonly Kernel kernel;
     private readonly IModelSettings modelSettings;
     private readonly PromptExecutionSettings promptExecutionSettings;
-    private bool disposedValue;
     private ILanguage? selectedLanguage;
 
     public AiTranslator(IModelSettings settings)
     {
         chatHistory = [];
         modelSettings = settings;
-        httpClient = new HttpClient
-        {
-            BaseAddress = new Uri(settings.EndPoint)
-        };
         browsingContext = BrowsingContext.New(Configuration.Default);
         promptExecutionSettings = CreatePromptExecutionSettings();
         chatHistoryReducer =
@@ -51,12 +44,6 @@ internal sealed class AiTranslator : ITranslator, IDisposable
         Log.Information("Temperature: {Temperature}", settings.Temperature);
         Log.Information("TopP: {TopP}", settings.TopP);
         Log.Information("ContextLength: {ContextLength}", settings.ContextLength);
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
     }
 
     public string Name => "AiTranslator";
@@ -204,23 +191,5 @@ internal sealed class AiTranslator : ITranslator, IDisposable
             : [translation];
         for (var i = 0; i < nodes.Length; i++)
             nodes[i].TextContent = lines[i];
-    }
-
-    private void Dispose(bool disposing)
-    {
-        if (disposedValue) return;
-        if (disposing)
-        {
-            httpClient.Dispose();
-            browsingContext.Dispose();
-        }
-
-        disposedValue = true;
-        Log.Information("AiTranslator disposed");
-    }
-
-    ~AiTranslator()
-    {
-        Dispose(false);
     }
 }
