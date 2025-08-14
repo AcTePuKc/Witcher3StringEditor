@@ -20,7 +20,7 @@ internal sealed class AiTranslator : ITranslator, IDisposable
 {
     private readonly IBrowsingContext browsingContext;
     private readonly ChatHistory chatHistory;
-    private readonly IChatHistoryReducer? chatHistoryReducer;
+    private readonly IChatHistoryReducer chatHistoryReducer;
     private readonly HttpClient httpClient;
     private readonly Kernel kernel;
     private readonly IModelSettings modelSettings;
