@@ -11,6 +11,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Serilog;
+using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Translators;
@@ -126,17 +127,12 @@ internal sealed class AiTranslator : ITranslator
     {
         if (selectedLanguage?.Equals(toLanguage) != true)
         {
-            chatHistory.Remove(chatHistory.First(x => x.Role == AuthorRole.System));
             selectedLanguage = toLanguage;
-        }
-
-        if (chatHistory.All(x => x.Role != AuthorRole.System))
-        {
+            chatHistory.Where(x => x.Role == AuthorRole.System).ForEach(x => chatHistory.Remove(x));
             var prompt =
                 (await kernel.InvokePromptAsync(modelSettings.Prompts,
                     new KernelArguments { { "lang", toLanguage.Name } })).RenderedPrompt;
-            if (!string.IsNullOrWhiteSpace(prompt))
-                chatHistory.Insert(0, new ChatMessageContent(AuthorRole.System, prompt));
+            if (!string.IsNullOrWhiteSpace(prompt)) chatHistory.AddSystemMessage(prompt);
         }
 
         _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
