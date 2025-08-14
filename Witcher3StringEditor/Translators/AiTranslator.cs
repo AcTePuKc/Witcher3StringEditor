@@ -38,8 +38,8 @@ internal sealed class AiTranslator : ITranslator, IDisposable
         };
         browsingContext = BrowsingContext.New(Configuration.Default);
         promptExecutionSettings = CreatePromptExecutionSettings();
-        if (modelSettings.ContextLength > 0)
-            chatHistoryReducer = new ChatHistoryTruncationReducer(modelSettings.ContextLength);
+        chatHistoryReducer =
+            new ChatHistoryTruncationReducer(modelSettings.ContextLength == 0 ? 1 : modelSettings.ContextLength + 1);
         var builder = Kernel.CreateBuilder()
             .AddOpenAIChatCompletion(settings.ModelId, new Uri(settings.EndPoint), Unprotect(settings.ApiKey));
         builder.Services.AddLogging(x => x.AddSerilog());
