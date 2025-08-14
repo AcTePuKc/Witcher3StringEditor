@@ -148,9 +148,10 @@ internal sealed class AiTranslator : ITranslator, IDisposable
             var prompt =
                 (await kernel.InvokePromptAsync(modelSettings.Prompts,
                     new KernelArguments { { "lang", toLanguage.Name } })).RenderedPrompt;
-            if (!string.IsNullOrWhiteSpace(prompt)) chatHistory.Insert(0,new ChatMessageContent(role:AuthorRole.System, prompt));
+            if (!string.IsNullOrWhiteSpace(prompt))
+                chatHistory.Insert(0, new ChatMessageContent(AuthorRole.System, prompt));
         }
-        
+
         _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
     }
 
