@@ -7,6 +7,8 @@ using CommunityToolkit.Diagnostics;
 using GTranslate;
 using GTranslate.Results;
 using GTranslate.Translators;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -39,8 +41,10 @@ internal sealed class AiTranslator : ITranslator, IDisposable
         promptExecutionSettings = CreatePromptExecutionSettings();
         if (modelSettings.ContextLength > 0)
             chatHistoryReducer = new ChatHistoryTruncationReducer(modelSettings.ContextLength);
-        kernel = Kernel.CreateBuilder()
-            .AddOpenAIChatCompletion(settings.ModelId, new Uri(settings.EndPoint), Unprotect(settings.ApiKey)).Build();
+        var builder = Kernel.CreateBuilder()
+            .AddOpenAIChatCompletion(settings.ModelId, new Uri(settings.EndPoint), Unprotect(settings.ApiKey));
+        builder.Services.AddLogging(x => x.AddSerilog());
+        kernel = builder.Build();
         Log.Information("AiTranslator initialized");
         Log.Information("EndPoint: {EndPoint}", settings.EndPoint);
         Log.Information("ModelId: {ModelId}", settings.ModelId);
