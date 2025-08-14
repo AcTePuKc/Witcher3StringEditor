@@ -150,9 +150,7 @@ internal sealed class AiTranslator : ITranslator, IDisposable
                     new KernelArguments { { "lang", toLanguage.Name } })).RenderedPrompt;
             if (!string.IsNullOrWhiteSpace(prompt)) chatHistory.Insert(0,new ChatMessageContent(role:AuthorRole.System, prompt));
         }
-
-        if (modelSettings.ContextLength == 0 && chatHistory.Count > 1)
-            chatHistory.RemoveRange(1, chatHistory.Count - 1);
+        
         _ = await chatHistory.ReduceInPlaceAsync(chatHistoryReducer, CancellationToken.None);
     }
 
