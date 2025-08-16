@@ -12,6 +12,8 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 
     [ObservableProperty] private bool isUseAiTranslate;
 
+    [ObservableProperty] private bool isUseKnowledgeBase;
+
     [ObservableProperty] private IModelSettings modelSettings = new ModelSettings();
 
     [ObservableProperty] private W3Language preferredLanguage;

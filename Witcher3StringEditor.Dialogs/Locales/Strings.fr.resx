@@ -475,4 +475,10 @@
   <data name="ClearKnowledgeBtnContent" xml:space="preserve">
     <value>Vider la base de connaissances </value>
   </data>
+  <data name="KnowledgeBaseSwitchHeader" xml:space="preserve">
+    <value>Base de connaissances </value>
+  </data>
+  <data name="KnowledgeBaseDescription" xml:space="preserve">
+    <value>Les joueurs doivent ajouter le contenu à cette base de connaissances eux-mêmes pour fournir des références aux traducteurs AI.</value>
+  </data>
 </root>

@@ -475,4 +475,10 @@
   <data name="ClearKnowledgeBtnContent" xml:space="preserve">
     <value>Törölni a tudásbázist </value>
   </data>
+  <data name="KnowledgeBaseSwitchHeader" xml:space="preserve">
+    <value>Tudásbázis</value>
+  </data>
+  <data name="KnowledgeBaseDescription" xml:space="preserve">
+    <value>A játékosoknak maguknak kell hozzáadni a tartalmat ehhez a tudásbázishoz, hogy hivatkozásokat biztosítsanak az AI fordítóknak.</value>
+  </data>
 </root>

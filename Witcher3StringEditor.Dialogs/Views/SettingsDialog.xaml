@@ -69,11 +69,8 @@
             Text="{lex:Loc SettingsDialogTitle}" />
         <ScrollViewer Grid.Row="1">
             <iwk:SimpleStackPanel Margin="36,0" Spacing="4">
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
-                           Text="{lex:Loc GeneralSettingsHeader}" />
-                <ui:SettingsCard
-                    Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}"
-                    Header="{lex:Loc EncoderSettingCardHeader}">
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{lex:Loc GeneralSettingsHeader}" />
+                <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="{lex:Loc EncoderSettingCardHeader}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE90F;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -81,8 +78,7 @@
                         <ui:FontIcon Glyph="&#xe71e;" />
                     </Button>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}"
-                                 Header="{lex:Loc GameSettingCardHeader}">
+                <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}" Header="{lex:Loc GameSettingCardHeader}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7FC;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -94,39 +90,32 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE97C;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}"
-                              SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}" SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{lex:Loc PreferredLanguage}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xF2B7;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}"
-                              SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
                 </ui:SettingsCard>
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
-                           Text="{lex:Loc AiTranslatorSettingsHeader}" />
-                <ui:SettingsCard Description="{lex:Loc AiTranslatorSwitchDescription}"
-                                 Header="{lex:Loc AiTranslatorSwitchHeader}">
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{lex:Loc AiTranslatorSettingsHeader}" />
+                <ui:SettingsCard Description="{lex:Loc AiTranslatorSwitchDescription}" Header="{lex:Loc AiTranslatorSwitchHeader}">
                     <ui:ToggleSwitch
                         IsOn="{Binding AppSettings.IsUseAiTranslate}"
                         OffContent="{lex:Loc IsOff}"
                         OnContent="{lex:Loc IsOn}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{lex:Loc ModelSettingsDescription}"
-                                 Header="{lex:Loc ModelSettingsHeader}">
+                <ui:SettingsCard Description="{lex:Loc ModelSettingsDescription}" Header="{lex:Loc ModelSettingsHeader}">
                     <Button Command="{Binding ShowModelSettingDialogCommand}">
                         <ui:FontIcon Glyph="&#xE70F;" />
                     </Button>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{lex:Loc PromptsSettingsDescription}"
-                                 Header="{lex:Loc PromptsSettingsHeader}">
+                <ui:SettingsCard Description="{lex:Loc PromptsSettingsDescription}" Header="{lex:Loc PromptsSettingsHeader}">
                     <Button Command="{Binding ShowPromotsSettingDialogCommand}">
                         <ui:FontIcon Glyph="&#xE70F;" />
                     </Button>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{lex:Loc ContextLengthSettingDescription}"
-                                 Header="{lex:Loc ContextLengthSettingHeader}">
+                <ui:SettingsCard Description="{lex:Loc ContextLengthSettingDescription}" Header="{lex:Loc ContextLengthSettingHeader}">
                     <Slider
                         IsSnapToTickEnabled="True"
                         Maximum="30"
@@ -136,8 +125,7 @@
                         TickPlacement="BottomRight"
                         Value="{Binding AppSettings.ModelSettings.ContextLength}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{lex:Loc TemperatureSettingDescription}"
-                                 Header="{lex:Loc TemperatureSettingHeader}">
+                <ui:SettingsCard Description="{lex:Loc TemperatureSettingDescription}" Header="{lex:Loc TemperatureSettingHeader}">
                     <Slider
                         AutoToolTipPrecision="1"
                         IsSnapToTickEnabled="True"
@@ -147,10 +135,7 @@
                         TickFrequency="0.1"
                         Value="{Binding AppSettings.ModelSettings.Temperature}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard
-                    Margin="0,0,0,36"
-                    Description="{lex:Loc TopPSettingDescription}"
-                    Header="{lex:Loc TopPSettingHeader}">
+                <ui:SettingsCard Description="{lex:Loc TopPSettingDescription}" Header="{lex:Loc TopPSettingHeader}">
                     <Slider
                         AutoToolTipPrecision="1"
                         IsSnapToTickEnabled="True"
@@ -159,6 +144,15 @@
                         SmallChange="0.1"
                         TickFrequency="0.1"
                         Value="{Binding AppSettings.ModelSettings.TopP}" />
+                </ui:SettingsCard>
+                <ui:SettingsCard
+                    Margin="0,0,0,36"
+                    Description="{lex:Loc KnowledgeBaseDescription}"
+                    Header="{lex:Loc KnowledgeBaseSwitchHeader}">
+                    <ui:ToggleSwitch
+                        IsOn="{Binding AppSettings.IsUseKnowledgeBase}"
+                        OffContent="{lex:Loc IsOff}"
+                        OnContent="{lex:Loc IsOn}" />
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>

@@ -475,4 +475,10 @@
   <data name="ClearKnowledgeBtnContent" xml:space="preserve">
     <value>Clear the Knowledge Base</value>
   </data>
+  <data name="KnowledgeBaseSwitchHeader" xml:space="preserve">
+    <value>Knowledge Base</value>
+  </data>
+  <data name="KnowledgeBaseDescription" xml:space="preserve">
+    <value>Players need to add content to this knowledge base themselves to provide references for AI translators.</value>
+  </data>
 </root>

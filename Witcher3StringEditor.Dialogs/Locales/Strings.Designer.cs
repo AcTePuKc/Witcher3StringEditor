@@ -470,6 +470,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Players need to add content to this knowledge base themselves to provide references for AI translators. 的本地化字符串。
+        /// </summary>
+        internal static string KnowledgeBaseDescription {
+            get {
+                return ResourceManager.GetString("KnowledgeBaseDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Knowledge Base 的本地化字符串。
+        /// </summary>
+        internal static string KnowledgeBaseSwitchHeader {
+            get {
+                return ResourceManager.GetString("KnowledgeBaseSwitchHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Knowledge Base  的本地化字符串。
         /// </summary>
         internal static string KnowledgeDialogTitle {

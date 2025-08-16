@@ -17,6 +17,8 @@ public interface IAppSettings
 
     public bool IsUseAiTranslate { get; set; }
 
+    public bool IsUseKnowledgeBase { get; set; }
+
     public IModelSettings ModelSettings { get; }
 
     public ObservableCollection<IRecentItem> RecentItems { get; }

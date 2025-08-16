@@ -46,6 +46,8 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private bool isUpdateAvailable;
 
+    [ObservableProperty] private bool isUseKnowledgeBase;
+
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
@@ -65,6 +67,7 @@ internal partial class MainWindowViewModel : ObservableObject
         this.checkUpdateService = checkUpdateService;
         this.appSettingsValidator = appSettingsValidator;
         this.modelSettingsValidator = modelSettingsValidator;
+        IsUseKnowledgeBase = appSettings.IsUseKnowledgeBase;
         WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
             logEventRecipient, async void (r, m) =>
             {
@@ -96,6 +99,13 @@ internal partial class MainWindowViewModel : ObservableObject
             AddCommand.NotifyCanExecuteChanged();
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
             ShowTranslateDialogCommand.NotifyCanExecuteChanged();
+        };
+        ((ObservableObject)appSettings).PropertyChanged += (o, e) =>
+        {
+            if (e.PropertyName == "IsUseKnowledgeBase")
+            {
+                IsUseKnowledgeBase = appSettings.IsUseKnowledgeBase;
+            }
         };
     }
 

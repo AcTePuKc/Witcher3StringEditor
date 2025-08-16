@@ -475,4 +475,10 @@
   <data name="ClearKnowledgeBtnContent" xml:space="preserve">
     <value>清空知识库</value>
   </data>
+  <data name="KnowledgeBaseSwitchHeader" xml:space="preserve">
+    <value>知识库</value>
+  </data>
+  <data name="KnowledgeBaseDescription" xml:space="preserve">
+    <value>知识库需玩家自行添加内容，为 AI 翻译器提供参考</value>
+  </data>
 </root>
