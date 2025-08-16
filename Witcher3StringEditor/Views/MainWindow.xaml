@@ -124,7 +124,7 @@
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowKonwledgeDialogCommand}">
+            <ui:AppBarButton Command="{Binding ShowKonwledgeDialogCommand}" Label="{lex:Loc KnowledgeBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe82d;" />
                 </ui:AppBarButton.Icon>

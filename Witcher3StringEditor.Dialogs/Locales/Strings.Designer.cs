@@ -214,6 +214,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Clear the Knowledge Base 的本地化字符串。
+        /// </summary>
+        internal static string ClearKnowledgeBtnContent {
+            get {
+                return ResourceManager.GetString("ClearKnowledgeBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Close 的本地化字符串。
         /// </summary>
         internal static string CloseBtnContent {
@@ -264,6 +273,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string DeleteDialogTitle {
             get {
                 return ResourceManager.GetString("DeleteDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete Knowledge 的本地化字符串。
+        /// </summary>
+        internal static string DelKnowledgeBtnContent {
+            get {
+                return ResourceManager.GetString("DelKnowledgeBtnContent", resourceCulture);
             }
         }
         
@@ -376,6 +394,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Import Knowledge 的本地化字符串。
+        /// </summary>
+        internal static string ImportKnowledgeBtnContent {
+            get {
+                return ResourceManager.GetString("ImportKnowledgeBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Incomplete AI Translation Settings 的本地化字符串。
         /// </summary>
         internal static string IncompleteAiTranslationSettingsCaption {
@@ -439,6 +466,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string IsOn {
             get {
                 return ResourceManager.GetString("IsOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Knowledge Base  的本地化字符串。
+        /// </summary>
+        internal static string KnowledgeDialogTitle {
+            get {
+                return ResourceManager.GetString("KnowledgeDialogTitle", resourceCulture);
             }
         }
         

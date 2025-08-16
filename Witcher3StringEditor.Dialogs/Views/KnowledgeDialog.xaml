@@ -13,7 +13,7 @@
     Width="1200"
     Height="800"
     lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
+    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
@@ -41,7 +41,7 @@
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
-                Text="KnowledgeDialog" />
+                Text="{lex:Loc KnowledgeDialogTitle}" />
             <ui:AutoSuggestBox
                 Grid.Column="1"
                 VerticalAlignment="Center"
@@ -52,17 +52,17 @@
             </ui:AutoSuggestBox>
         </Grid>
         <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left">
-            <ui:AppBarButton>
+            <ui:AppBarButton Label="{lex:Loc ImportKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe8b5;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton>
+            <ui:AppBarButton Label="{lex:Loc DelKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74d;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton>
+            <ui:AppBarButton Label="{lex:Loc ClearKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe894;" />
                 </ui:AppBarButton.Icon>

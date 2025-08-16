@@ -463,4 +463,16 @@
   <data name="IsAiTranslatorHelpTxt" xml:space="preserve">
     <value>Please note the token consumption when using the AI translator</value>
   </data>
+  <data name="KnowledgeDialogTitle" xml:space="preserve">
+    <value>Knowledge Base </value>
+  </data>
+  <data name="ImportKnowledgeBtnContent" xml:space="preserve">
+    <value>Import Knowledge</value>
+  </data>
+  <data name="DelKnowledgeBtnContent" xml:space="preserve">
+    <value>Delete Knowledge</value>
+  </data>
+  <data name="ClearKnowledgeBtnContent" xml:space="preserve">
+    <value>Clear the Knowledge Base</value>
+  </data>
 </root>
