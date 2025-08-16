@@ -481,4 +481,10 @@
   <data name="KnowledgeBaseDescription" xml:space="preserve">
     <value>Les joueurs doivent ajouter le contenu à cette base de connaissances eux-mêmes pour fournir des références aux traducteurs AI.</value>
   </data>
+  <data name="EmbeddedModelSettingsHeader" xml:space="preserve">
+    <value>Paramètres du modèle embarqué </value>
+  </data>
+  <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
+    <value>Pour la création et la récupération des bases de connaissances, il faut utiliser un modèle de vectorisation de texte conformément aux spécifications d'OpenAI</value>
+  </data>
 </root>

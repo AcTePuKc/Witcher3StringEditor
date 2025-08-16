@@ -481,4 +481,10 @@
   <data name="KnowledgeBaseDescription" xml:space="preserve">
     <value>Players need to add content to this knowledge base themselves to provide references for AI translators.</value>
   </data>
+  <data name="EmbeddedModelSettingsHeader" xml:space="preserve">
+    <value>Embedded Model Settings </value>
+  </data>
+  <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
+    <value>For the creation and retrieval of knowledge bases, a text vectorization model that complies with OpenAI specifications must be used</value>
+  </data>
 </root>

@@ -295,6 +295,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 For the creation and retrieval of knowledge bases, a text vectorization model that complies with OpenAI specifications must be used 的本地化字符串。
+        /// </summary>
+        internal static string EmbeddedModelSettingsDescription {
+            get {
+                return ResourceManager.GetString("EmbeddedModelSettingsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Embedded Model Settings  的本地化字符串。
+        /// </summary>
+        internal static string EmbeddedModelSettingsHeader {
+            get {
+                return ResourceManager.GetString("EmbeddedModelSettingsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Encoder Path 的本地化字符串。
         /// </summary>
         internal static string EncoderSettingCardHeader {

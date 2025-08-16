@@ -481,4 +481,10 @@
   <data name="KnowledgeBaseDescription" xml:space="preserve">
     <value>A játékosoknak maguknak kell hozzáadni a tartalmat ehhez a tudásbázishoz, hogy hivatkozásokat biztosítsanak az AI fordítóknak.</value>
   </data>
+  <data name="EmbeddedModelSettingsHeader" xml:space="preserve">
+    <value>Beágyazott modell beállításai </value>
+  </data>
+  <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
+    <value>Tudásbázisok létrehozására és lekérésére egy olyan szövegvectorizációs modellt kell használni, amely megfelel az OpenAI specifikációinak</value>
+  </data>
 </root>

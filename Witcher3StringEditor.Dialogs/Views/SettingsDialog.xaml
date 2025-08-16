@@ -151,8 +151,8 @@
                         OffContent="{lex:Loc IsOff}"
                         OnContent="{lex:Loc IsOn}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{lex:Loc ModelSettingsDescription}" Header="{lex:Loc ModelSettingsHeader}">
-                    <Button Command="{Binding ShowModelSettingDialogCommand}">
+                <ui:SettingsCard Description="{lex:Loc EmbeddedModelSettingsDescription}" Header="{lex:Loc EmbeddedModelSettingsHeader}">
+                    <Button Command="{Binding ShowEmbeddedModelSettingDialogCommand}">
                         <ui:FontIcon Glyph="&#xE70F;" />
                     </Button>
                 </ui:SettingsCard>

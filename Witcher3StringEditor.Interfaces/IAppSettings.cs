@@ -21,6 +21,8 @@ public interface IAppSettings
 
     public IModelSettings ModelSettings { get; }
 
+    public IEmbeddedModelSettings EmbeddedModelSettings { get; }
+
     public ObservableCollection<IRecentItem> RecentItems { get; }
 
     public ObservableCollection<IBackupItem> BackupItems { get; }

@@ -118,6 +118,7 @@ public partial class App
         viewLocator.Register<ModelSettingsDialogViewModel, ModelSettingsDialog>();
         viewLocator.Register<PromptsSettingDialogViewModel, PromptsSettingDialog>();
         viewLocator.Register<KnowledgeDialogViewModel, KnowledgeDialog>();
+        viewLocator.Register<EmbeddedModelSettingsDialogViewModel, EmbeddedModelSettingsDialog>();
         return viewLocator;
     }
 

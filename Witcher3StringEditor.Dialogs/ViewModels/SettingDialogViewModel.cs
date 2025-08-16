@@ -64,6 +64,13 @@ public partial class SettingDialogViewModel(
     }
 
     [RelayCommand]
+    private async Task ShowEmbeddedModelSettingDialog()
+    {
+        await dialogService.ShowDialogAsync<EmbeddedModelSettingsDialogViewModel>(this,
+            new EmbeddedModelSettingsDialogViewModel(AppSettings.EmbeddedModelSettings));
+    }
+
+    [RelayCommand]
     private async Task ShowPromotsSettingDialog()
     {
         await dialogService.ShowDialogAsync<PromptsSettingDialogViewModel>(this,
