@@ -14,7 +14,8 @@ internal class KnowledgeService : IKnowledgeService,IDisposable
     private bool disposedValue;
     private readonly HttpClient httpClient;
     private readonly IEmbeddingGenerator<string, Embedding<float>> generator;
-    private readonly VectorStoreCollection<long, IW3KItem> knowledge;
+    private readonly VectorStoreCollection<long, W3KItem> knowledge;
+    private readonly VectorStore vectorStore;
 
     public KnowledgeService(IEmbeddedModelSettings modelSettings)
     {
@@ -26,19 +27,19 @@ internal class KnowledgeService : IKnowledgeService,IDisposable
         var kernel = Kernel.CreateBuilder().AddOpenAIEmbeddingGenerator(modelSettings.ModelId, modelSettings.ApiKey, httpClient: httpClient).Build();
 #pragma warning restore SKEXP0010 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         generator = kernel.GetRequiredService<IEmbeddingGenerator<string, Embedding<float>>>();
-        var vectorStore = new SqliteVectorStore(new SqliteConnectionStringBuilder
+        vectorStore = new SqliteVectorStore(new SqliteConnectionStringBuilder
         {
             DataSource = "knowledge.db",
             Mode = SqliteOpenMode.ReadWriteCreate
         }.ToString(), new SqliteVectorStoreOptions { EmbeddingGenerator = generator });
-        knowledge = vectorStore.GetCollection<long, IW3KItem>("knowledge", new VectorStoreCollectionDefinition
+        knowledge = vectorStore.GetCollection<long, W3KItem>("knowledge", new VectorStoreCollectionDefinition
         {
             EmbeddingGenerator = generator,
             Properties =
             [
                 new VectorStoreKeyProperty("Id", typeof(long)),
                 new VectorStoreDataProperty("Text", typeof(string)),
-                new VectorStoreVectorProperty("Embedding", typeof(float), modelSettings.Dimensions)
+                new VectorStoreVectorProperty("Embedding", typeof(ReadOnlyMemory<float>), modelSettings.Dimensions)
             ]
         });
     }
@@ -82,6 +83,8 @@ internal class KnowledgeService : IKnowledgeService,IDisposable
         {
             if (disposing)
             {
+                knowledge.Dispose();
+                vectorStore.Dispose();
                 httpClient.Dispose();
             }
 
