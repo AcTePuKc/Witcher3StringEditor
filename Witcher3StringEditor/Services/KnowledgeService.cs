@@ -47,13 +47,24 @@ internal class KnowledgeService
         await knowledge.UpsertAsync(knowledgeItem);
     }
 
-    public async IAsyncEnumerable<IW3KItem>? Query(string text, int count)
+    public async IAsyncEnumerable<IW3KItem>? Search(string text, int count)
     {
         if (await knowledge.CollectionExistsAsync()) await knowledge.EnsureCollectionExistsAsync();
         await foreach (var item in knowledge.SearchAsync(text, count)) yield return item.Record;
     }
 
-    public async Task DeleteAllData()
+    public async IAsyncEnumerable<IW3KItem>? All()
+    {
+        if (await knowledge.CollectionExistsAsync()) await knowledge.EnsureCollectionExistsAsync();
+        await foreach (var item in knowledge.GetAsync(_ => true, int.MaxValue)) yield return item;
+    }
+
+    public async Task Delete(IEnumerable<long> items)
+    {
+        await knowledge.DeleteAsync(items);
+    }
+
+    public async Task Clear()
     {
         await knowledge.EnsureCollectionDeletedAsync();
     }
