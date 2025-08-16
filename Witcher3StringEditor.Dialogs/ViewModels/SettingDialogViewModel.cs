@@ -81,38 +81,44 @@ public partial class SettingDialogViewModel(
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        var result = (await appSettingsValidator.ValidateAsync(AppSettings)).IsValid;
-        if (!result)
+        var isValid = (await appSettingsValidator.ValidateAsync(AppSettings)).IsValid;
+        if (!isValid)
         {
-            e.Cancel = true;
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "InitializationIncomplete"))
+            {
                 Application.Current.Shutdown();
-        }
-        else if (AppSettings.IsUseAiTranslate)
-        {
-            result = (await modelSettingsValidator.ValidateAsync(AppSettings.ModelSettings)).IsValid;
-            if (!result)
+            }
+            else
             {
-                if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                        "IncompleteAiTranslationSettings"))
-                    AppSettings.IsUseAiTranslate = false;
+                e.Cancel = true;
+                return;
+            }
+        }
 
-                else
-                    e.Cancel = true;
-            }
-        }
-        else if (AppSettings.IsUseKnowledgeBase)
+        isValid = AppSettings.IsUseAiTranslate &&
+                  (await modelSettingsValidator.ValidateAsync(AppSettings.ModelSettings)).IsValid;
+        var isValid2 = AppSettings.IsUseKnowledgeBase &&
+                       (await embeddedModelSettingsValidator.ValidateAsync(AppSettings.EmbeddedModelSettings)).IsValid;
+        if (!isValid)
         {
-            result = (await embeddedModelSettingsValidator.ValidateAsync(AppSettings.EmbeddedModelSettings))
-                .IsValid;
-            if (!result)
+            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    "IncompleteAiTranslationSettings"))
             {
-                if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                        "IncompleteKnowledgeBaseSettings"))
-                    AppSettings.IsUseKnowledgeBase = false;
-                else
-                    e.Cancel = true;
+                AppSettings.IsUseAiTranslate = false;
+                AppSettings.IsUseKnowledgeBase = isValid2;
+                return;
             }
+
+            e.Cancel = true;
+        }
+
+        if (!isValid2)
+        {
+            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    "IncompleteKnowledgeBaseSettings"))
+                AppSettings.IsUseKnowledgeBase = false;
+            else
+                e.Cancel = true;
         }
     }
 }
