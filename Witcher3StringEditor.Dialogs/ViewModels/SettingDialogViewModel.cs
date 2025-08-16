@@ -95,24 +95,22 @@ public partial class SettingDialogViewModel(
             }
         }
 
-        isValid = AppSettings.IsUseAiTranslate &&
-                  (await modelSettingsValidator.ValidateAsync(AppSettings.ModelSettings)).IsValid;
-        var isValid2 = AppSettings.IsUseKnowledgeBase &&
-                       (await embeddedModelSettingsValidator.ValidateAsync(AppSettings.EmbeddedModelSettings)).IsValid;
-        if (!isValid)
+        isValid = (await modelSettingsValidator.ValidateAsync(AppSettings.ModelSettings)).IsValid;
+        var isValid2 = (await embeddedModelSettingsValidator.ValidateAsync(AppSettings.EmbeddedModelSettings)).IsValid;
+        if (AppSettings.IsUseAiTranslate && !isValid)
         {
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                     "IncompleteAiTranslationSettings"))
             {
                 AppSettings.IsUseAiTranslate = false;
-                AppSettings.IsUseKnowledgeBase = isValid2;
+                AppSettings.IsUseKnowledgeBase &= isValid2;
                 return;
             }
 
             e.Cancel = true;
         }
 
-        if (!isValid2)
+        if (AppSettings.IsUseKnowledgeBase && !isValid2)
         {
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                     "IncompleteKnowledgeBaseSettings"))
