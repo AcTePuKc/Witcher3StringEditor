@@ -295,6 +295,24 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Replacing models with different dimensions requires clearing the knowledge base. 的本地化字符串。
+        /// </summary>
+        internal static string EmbeddedModelDimensionDescription {
+            get {
+                return ResourceManager.GetString("EmbeddedModelDimensionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Dimension 的本地化字符串。
+        /// </summary>
+        internal static string EmbeddedModelDimensionHeader {
+            get {
+                return ResourceManager.GetString("EmbeddedModelDimensionHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 For the creation and retrieval of knowledge bases, a text vectorization model that complies with OpenAI specifications must be used 的本地化字符串。
         /// </summary>
         internal static string EmbeddedModelSettingsDescription {

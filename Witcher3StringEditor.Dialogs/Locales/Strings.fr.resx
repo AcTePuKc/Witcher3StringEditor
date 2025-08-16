@@ -487,4 +487,10 @@
   <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
     <value>Pour la création et la récupération des bases de connaissances, il faut utiliser un modèle de vectorisation de texte conformément aux spécifications d'OpenAI</value>
   </data>
+  <data name="EmbeddedModelDimensionHeader" xml:space="preserve">
+    <value>Dimension</value>
+  </data>
+  <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
+    <value>Le remplacement de modèles avec différentes dimensions nécessite de vider la base de connaissances.</value>
+  </data>
 </root>

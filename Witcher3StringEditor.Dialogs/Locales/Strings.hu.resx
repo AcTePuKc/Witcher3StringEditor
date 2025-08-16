@@ -487,4 +487,10 @@
   <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
     <value>Tudásbázisok létrehozására és lekérésére egy olyan szövegvectorizációs modellt kell használni, amely megfelel az OpenAI specifikációinak</value>
   </data>
+  <data name="EmbeddedModelDimensionHeader" xml:space="preserve">
+    <value>Dimenzió </value>
+  </data>
+  <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
+    <value>A különböző dimenziós modellek cseréje megköveteli a tudásbázis törlését.</value>
+  </data>
 </root>

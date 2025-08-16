@@ -487,4 +487,10 @@
   <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
     <value>For the creation and retrieval of knowledge bases, a text vectorization model that complies with OpenAI specifications must be used</value>
   </data>
+  <data name="EmbeddedModelDimensionHeader" xml:space="preserve">
+    <value>Dimension</value>
+  </data>
+  <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
+    <value>Replacing models with different dimensions requires clearing the knowledge base.</value>
+  </data>
 </root>

@@ -487,4 +487,10 @@
   <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
     <value>用于知识库的创建与检索，须使用符合 OpenAI 规范的文本向量化模型</value>
   </data>
+  <data name="EmbeddedModelDimensionHeader" xml:space="preserve">
+    <value>模型维度</value>
+  </data>
+  <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
+    <value>更换不同维度的模型需要清空知识库</value>
+  </data>
 </root>

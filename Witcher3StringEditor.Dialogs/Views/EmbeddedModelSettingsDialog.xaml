@@ -12,8 +12,8 @@
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     Title="{lex:Loc ModelSettingsHeader}"
-    Width="500"
-    Height="300"
+    Width="600"
+    Height="400"
     d:DataContext="{d:DesignInstance Type=vm:EmbeddedModelSettingsDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
@@ -32,16 +32,18 @@
             <TextBox
                 ui:ControlHelper.Header="{lex:Loc ModelSettingsEndpointHeader}"
                 ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsEndpointDescription}"
-                Text="{Binding EmbeddedModelSettings.EndPoint}" />
+                Text="{Binding ModelSettings.EndPoint}" />
             <TextBox
                 ui:ControlHelper.Header="{lex:Loc ModelSettingsModelIDHeader}"
                 ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsModelIDHeader}"
-                Text="{Binding EmbeddedModelSettings.ModelId}" />
+                Text="{Binding ModelSettings.ModelId}" />
             <PasswordBox ui:ControlHelper.Header="{lex:Loc ModelSettingsApiKeyHeader}" ui:ControlHelper.PlaceholderText="{lex:Loc ModelSettingsApiKeyDescription}">
                 <i:Interaction.Behaviors>
-                    <b:PasswordBindingBehavior Password="{Binding EmbeddedModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
+                    <b:PasswordBindingBehavior Password="{Binding ModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
                 </i:Interaction.Behaviors>
             </PasswordBox>
+            <ui:NumberBox Value="1536" HorizontalContentAlignment="Right" SpinButtonPlacementMode="Inline" ui:ControlHelper.Header="{lex:Loc EmbeddedModelDimensionHeader}" Text="{Binding ModelSettings.Dimensions}" />
+            <TextBlock Text="{lex:Loc EmbeddedModelDimensionDescription}" />
         </iwk:SimpleStackPanel>
     </Grid>
 </Window>
