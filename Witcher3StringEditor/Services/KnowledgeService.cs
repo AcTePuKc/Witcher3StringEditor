@@ -3,20 +3,27 @@ using Microsoft.Extensions.AI;
 using Microsoft.Extensions.VectorData;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.SqliteVec;
+using System.Net.Http;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;
 
-internal class KnowledgeService : IKnowledgeService
+internal class KnowledgeService : IKnowledgeService,IDisposable
 {
+    private bool disposedValue;
+    private readonly HttpClient httpClient;
     private readonly IEmbeddingGenerator<string, Embedding<float>> generator;
     private readonly VectorStoreCollection<long, IW3KItem> knowledge;
 
-    public KnowledgeService()
+    public KnowledgeService(IEmbeddedModelSettings modelSettings)
     {
+        httpClient = new HttpClient
+        {
+            BaseAddress = new Uri(modelSettings.EndPoint)
+        };
 #pragma warning disable SKEXP0010 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
-        var kernel = Kernel.CreateBuilder().AddOpenAIEmbeddingGenerator("gpt-3.5-turbo", "YOUR_API_KEY_HERE").Build();
+        var kernel = Kernel.CreateBuilder().AddOpenAIEmbeddingGenerator(modelSettings.ModelId, modelSettings.ApiKey, httpClient: httpClient).Build();
 #pragma warning restore SKEXP0010 // 类型仅用于评估，在将来的更新中可能会被更改或删除。取消此诊断以继续。
         generator = kernel.GetRequiredService<IEmbeddingGenerator<string, Embedding<float>>>();
         var vectorStore = new SqliteVectorStore(new SqliteConnectionStringBuilder
@@ -31,7 +38,7 @@ internal class KnowledgeService : IKnowledgeService
             [
                 new VectorStoreKeyProperty("Id", typeof(long)),
                 new VectorStoreDataProperty("Text", typeof(string)),
-                new VectorStoreVectorProperty("Embedding", typeof(float), 2560)
+                new VectorStoreVectorProperty("Embedding", typeof(float), modelSettings.Dimensions)
             ]
         });
     }
@@ -67,5 +74,24 @@ internal class KnowledgeService : IKnowledgeService
     public async Task Clear()
     {
         await knowledge.EnsureCollectionDeletedAsync();
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                httpClient.Dispose();
+            }
+
+            disposedValue = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
     }
 }

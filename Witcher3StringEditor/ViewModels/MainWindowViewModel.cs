@@ -100,7 +100,7 @@ internal partial class MainWindowViewModel : ObservableObject
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
             ShowTranslateDialogCommand.NotifyCanExecuteChanged();
         };
-        ((ObservableObject)appSettings).PropertyChanged += (o, e) =>
+        ((ObservableObject)appSettings).PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == "IsUseKnowledgeBase")
             {
@@ -356,8 +356,8 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task ShowKonwledgeDialog()
+    private async Task ShowKnowledgeDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,new KnowledgeDialogViewModel(new KnowledgeService()));
+        _ = await dialogService.ShowDialogAsync(this,new KnowledgeDialogViewModel(new KnowledgeService(appSettings.EmbeddedModelSettings)));
     }
 }
