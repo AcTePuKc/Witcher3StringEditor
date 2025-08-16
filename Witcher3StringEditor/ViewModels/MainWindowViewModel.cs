@@ -23,6 +23,7 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Services;
 using Witcher3StringEditor.Translators;
 
 namespace Witcher3StringEditor.ViewModels;
@@ -347,6 +348,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowKonwledgeDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,new KnowledgeDialogViewModel());
+        _ = await dialogService.ShowDialogAsync(this,new KnowledgeDialogViewModel(new KnowledgeService()));
     }
 }
