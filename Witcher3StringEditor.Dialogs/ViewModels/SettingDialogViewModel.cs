@@ -108,6 +108,7 @@ public partial class SettingDialogViewModel(
             }
 
             e.Cancel = true;
+            return;
         }
 
         if (AppSettings.IsUseKnowledgeBase && !isValid2)
