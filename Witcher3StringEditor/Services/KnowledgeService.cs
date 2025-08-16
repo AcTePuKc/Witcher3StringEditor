@@ -8,7 +8,7 @@ using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;
 
-internal class KnowledgeService
+internal class KnowledgeService : IKnowledgeService
 {
     private readonly IEmbeddingGenerator<string, Embedding<float>> generator;
     private readonly VectorStoreCollection<long, IW3KItem> knowledge;

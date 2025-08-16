@@ -1,0 +1,14 @@
+﻿namespace Witcher3StringEditor.Interfaces;
+
+public interface IKnowledgeService
+{
+    public  Task Learn(string text);
+
+    public  IAsyncEnumerable<IW3KItem>? Search(string text, int count);
+
+    public IAsyncEnumerable<IW3KItem>? All();
+
+    public  Task Delete(IEnumerable<long> items);
+
+    public  Task Clear();
+}
