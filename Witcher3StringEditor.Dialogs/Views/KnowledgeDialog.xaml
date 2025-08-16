@@ -12,6 +12,7 @@
     Title="KnowledgeDialog"
     Width="1200"
     Height="800"
+    d:DataContext="{d:DesignInstance Type=vm:KnowledgeDialogViewModel}"
     lex:LocalizeDictionary.DesignCulture="en"
     lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
     lex:ResxLocalizationProvider.DefaultDictionary="Strings"
@@ -20,9 +21,6 @@
     ui:WindowHelper.UseModernWindowStyle="True"
     WindowChrome.IsHitTestVisibleInChrome="True"
     mc:Ignorable="d">
-    <Window.DataContext>
-        <vm:KnowledgeDialogViewModel />
-    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
