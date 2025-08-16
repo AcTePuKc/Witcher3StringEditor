@@ -57,11 +57,10 @@
                 TextWrapping="WrapWithOverflow">
                 <TextBox.Style>
                     <Style BasedOn="{StaticResource DefaultTextBoxStyle}" TargetType="TextBox">
-                        <Setter Property="ui:ControlHelper.PlaceholderText"
-                                Value="{lex:Loc TranslateCharactersNumberLimit}" />
+                        <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc TranslateCharactersNumberLimit}" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsAiTranslator}" Value="True">
-                                <Setter Property="ui:ControlHelper.PlaceholderText" Value="" />
+                                <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc IsAiTranslatorHelpTxt}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsBusy}" Value="True">
                                 <Setter Property="ui:ControlHelper.PlaceholderText" Value="{lex:Loc Translating}" />

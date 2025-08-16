@@ -41,12 +41,15 @@
                     SmallChange="1"
                     SpinButtonPlacementMode="Inline"
                     Value="{Binding EndIndex}" />
-                <TextBlock Text="{lex:Loc TranslateCharactersNumberLimit}">
+                <TextBlock>
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsAiTranslator, Mode=OneWay}" Value="False">
+                                    <Setter Property="Text" Value="{lex:Loc TranslateCharactersNumberLimit}" />
+                                </DataTrigger>
                                 <DataTrigger Binding="{Binding IsAiTranslator, Mode=OneWay}" Value="True">
-                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Setter Property="Text" Value="{lex:Loc IsAiTranslatorHelpTxt}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -114,12 +117,8 @@
                             <Style.Triggers>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
-                                        <Condition
-                                            Binding="{Binding ElementName=StartIndexInput, Path=(Validation.HasError)}"
-                                            Value="False" />
-                                        <Condition
-                                            Binding="{Binding ElementName=EndIndexInput, Path=(Validation.HasError)}"
-                                            Value="False" />
+                                        <Condition Binding="{Binding ElementName=StartIndexInput, Path=(Validation.HasError)}" Value="False" />
+                                        <Condition Binding="{Binding ElementName=EndIndexInput, Path=(Validation.HasError)}" Value="False" />
                                     </MultiDataTrigger.Conditions>
                                     <Setter Property="IsEnabled" Value="True" />
                                 </MultiDataTrigger>
