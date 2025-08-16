@@ -90,6 +90,7 @@ public partial class App
             .AddLogging(builder => builder.AddSerilog())
             .AddValidatorsFromAssemblyContaining<AppSettingsValidator>()
             .AddValidatorsFromAssemblyContaining<ModelSettingsValidator>()
+            .AddValidatorsFromAssemblyContaining<EmbeddedModelSettingsValidator>()
             .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
             .AddSingleton<IDialogManager, DialogManager>()

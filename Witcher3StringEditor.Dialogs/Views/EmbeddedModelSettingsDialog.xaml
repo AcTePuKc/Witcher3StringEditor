@@ -42,7 +42,12 @@
                     <b:PasswordBindingBehavior Password="{Binding ModelSettings.ApiKey, Converter={StaticResource SecurePasswordConverter}}" />
                 </i:Interaction.Behaviors>
             </PasswordBox>
-            <ui:NumberBox Value="1536" HorizontalContentAlignment="Right" SpinButtonPlacementMode="Inline" ui:ControlHelper.Header="{lex:Loc EmbeddedModelDimensionHeader}" Text="{Binding ModelSettings.Dimensions}" />
+            <ui:NumberBox
+                HorizontalContentAlignment="Right"
+                ui:ControlHelper.Header="{lex:Loc EmbeddedModelDimensionHeader}"
+                SpinButtonPlacementMode="Inline"
+                Text="{Binding ModelSettings.Dimensions}"
+                Value="1536" />
             <TextBlock Text="{lex:Loc EmbeddedModelDimensionDescription}" />
         </iwk:SimpleStackPanel>
     </Grid>

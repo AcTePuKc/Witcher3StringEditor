@@ -23,6 +23,8 @@ public partial class SettingsDialog
             ("InitializationIncomplete", Strings.InitializationIncompleteMessage,
                 Strings.InitializationIncompleteCaption),
             ("IncompleteAiTranslationSettings", Strings.IncompleteAiTranslationSettingsMessage,
+                Strings.IncompleteAiTranslationSettingsCaption),
+            ("IncompleteKnowledgeBaseSettings", Strings.IncompleteAiTranslationSettingsMessage,
                 Strings.IncompleteAiTranslationSettingsCaption)
         };
 

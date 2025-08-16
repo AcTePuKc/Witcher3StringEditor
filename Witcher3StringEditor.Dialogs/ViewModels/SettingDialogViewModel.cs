@@ -17,7 +17,8 @@ public partial class SettingDialogViewModel(
     IAppSettings appSettings,
     IDialogService dialogService,
     IValidator<IAppSettings> appSettingsValidator,
-    IValidator<IModelSettings> modelSettingsValidator) : ObservableObject, IModalDialogViewModel
+    IValidator<IModelSettings> modelSettingsValidator,
+    IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator) : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings { get; } = appSettings;
     public bool? DialogResult => true;
@@ -80,8 +81,8 @@ public partial class SettingDialogViewModel(
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        var result = await appSettingsValidator.ValidateAsync(AppSettings);
-        if (!result.IsValid)
+        var result = (await appSettingsValidator.ValidateAsync(AppSettings)).IsValid;
+        if (!result)
         {
             e.Cancel = true;
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "InitializationIncomplete"))
@@ -89,14 +90,24 @@ public partial class SettingDialogViewModel(
         }
         else if (AppSettings.IsUseAiTranslate)
         {
-            result = await modelSettingsValidator.ValidateAsync(AppSettings.ModelSettings);
-            if (!result.IsValid)
+            result = (await modelSettingsValidator.ValidateAsync(AppSettings.ModelSettings)).IsValid;
+            if (AppSettings.IsUseKnowledgeBase)
+            {
+                result |= (await embeddedModelSettingsValidator.ValidateAsync(AppSettings.EmbeddedModelSettings)).IsValid;
+
+            }
+            if (!result)
             {
                 if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                         "IncompleteAiTranslationSettings"))
+                {
                     AppSettings.IsUseAiTranslate = false;
+                    AppSettings.IsUseKnowledgeBase = false;
+                }
                 else
+                {
                     e.Cancel = true;
+                }
             }
         }
     }

@@ -38,6 +38,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IExplorerService explorerService;
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
     private readonly IValidator<IModelSettings> modelSettingsValidator;
+    private readonly IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator;
     private readonly IPlayGameService playGameService;
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
     private readonly IW3Serializer w3Serializer;
@@ -56,7 +57,7 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IW3Serializer w3Serializer,
         IDialogService dialogService, ICheckUpdateService checkUpdateService, IPlayGameService playGameService,
         IExplorerService explorerService, IValidator<IAppSettings> appSettingsValidator,
-        IValidator<IModelSettings> modelSettingsValidator)
+        IValidator<IModelSettings> modelSettingsValidator,IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator)
     {
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
@@ -67,6 +68,7 @@ internal partial class MainWindowViewModel : ObservableObject
         this.checkUpdateService = checkUpdateService;
         this.appSettingsValidator = appSettingsValidator;
         this.modelSettingsValidator = modelSettingsValidator;
+        this.embeddedModelSettingsValidator = embeddedModelSettingsValidator;
         IsUseKnowledgeBase = appSettings.IsUseKnowledgeBase;
         WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
             logEventRecipient, async void (r, m) =>
@@ -137,7 +139,8 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             Log.Error("Settings are incorrect or initial setup is incomplete.");
             _ = await dialogService.ShowDialogAsync(this,
-                new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+                new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator,
+                    embeddedModelSettingsValidator));
         }
     }
 
@@ -284,7 +287,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator));
+            new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator,
+                embeddedModelSettingsValidator));
     }
 
     [RelayCommand]
