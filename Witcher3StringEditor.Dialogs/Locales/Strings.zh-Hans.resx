@@ -493,4 +493,12 @@
   <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
     <value>更换不同维度的模型需要清空知识库</value>
   </data>
+  <data name="IncompleteKnowledgeBaseSettingsMessage" xml:space="preserve">
+    <value>知识库已激活，但设置不完整。立即退出将禁用该功能，直至重新配置。
+- 点击“是”以退出并关闭AI翻译功能。
+- 点击“否”返回设置界面继续完成配置。</value>
+  </data>
+  <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">
+    <value>知识库设置不完整</value>
+  </data>
 </root>

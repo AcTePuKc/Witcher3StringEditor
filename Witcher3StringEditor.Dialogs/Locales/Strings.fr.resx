@@ -493,4 +493,12 @@
   <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
     <value>Le remplacement de modèles avec différentes dimensions nécessite de vider la base de connaissances.</value>
   </data>
+  <data name="IncompleteKnowledgeBaseSettingsMessage" xml:space="preserve">
+    <value>La base de connaissances est activée, mais les paramètres sont incomplets. Quitter maintenant désactivera la fonction jusqu'à la reconfiguration.
+- Cliquez sur "Oui" pour quitter et désactiver la traduction IA.
+- Cliquez sur "Non" pour retourner aux paramètres et finaliser la configuration.</value>
+  </data>
+  <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">
+    <value>Paramètres incomplets de la base de connaissances</value>
+  </data>
 </root>

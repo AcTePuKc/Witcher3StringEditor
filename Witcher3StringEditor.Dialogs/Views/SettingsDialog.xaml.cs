@@ -24,8 +24,8 @@ public partial class SettingsDialog
                 Strings.InitializationIncompleteCaption),
             ("IncompleteAiTranslationSettings", Strings.IncompleteAiTranslationSettingsMessage,
                 Strings.IncompleteAiTranslationSettingsCaption),
-            ("IncompleteKnowledgeBaseSettings", Strings.IncompleteAiTranslationSettingsMessage,
-                Strings.IncompleteAiTranslationSettingsCaption)
+            ("IncompleteKnowledgeBaseSettings", Strings.IncompleteKnowledgeBaseSettingsMessage,
+                Strings.IncompleteKnowledgeBaseSettingsCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)

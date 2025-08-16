@@ -493,4 +493,12 @@
   <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
     <value>Replacing models with different dimensions requires clearing the knowledge base.</value>
   </data>
+  <data name="IncompleteKnowledgeBaseSettingsMessage" xml:space="preserve">
+    <value>Knowledge Base is activated but settings are incomplete. Exiting now will disable the feature until re-configured.
+- Click "Yes" to exit and disable AI translation.
+- Click "No" to return to settings and complete configuration.</value>
+  </data>
+  <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">
+    <value>Incomplete Knowledge Base Settings</value>
+  </data>
 </root>

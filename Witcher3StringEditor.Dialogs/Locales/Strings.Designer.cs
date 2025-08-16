@@ -459,6 +459,26 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Incomplete Knowledge Base Settings 的本地化字符串。
+        /// </summary>
+        internal static string IncompleteKnowledgeBaseSettingsCaption {
+            get {
+                return ResourceManager.GetString("IncompleteKnowledgeBaseSettingsCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Knowledge Base is activated but settings are incomplete. Exiting now will disable the feature until re-configured.
+        ///- Click &quot;Yes&quot; to exit and disable AI translation.
+        ///- Click &quot;No&quot; to return to settings and complete configuration. 的本地化字符串。
+        /// </summary>
+        internal static string IncompleteKnowledgeBaseSettingsMessage {
+            get {
+                return ResourceManager.GetString("IncompleteKnowledgeBaseSettingsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Initialization Incomplete 的本地化字符串。
         /// </summary>
         internal static string InitializationIncompleteCaption {
