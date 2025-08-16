@@ -343,4 +343,10 @@ internal partial class MainWindowViewModel : ObservableObject
                     ? new AiTranslator(appSettings.ModelSettings)
                     : new MicrosoftTranslator()));
     }
+
+    [RelayCommand]
+    private async Task ShowKonwledgeDialog()
+    {
+        _ = await dialogService.ShowDialogAsync(this,new KnowledgeDialogViewModel());
+    }
 }

@@ -124,6 +124,11 @@
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <ui:AppBarButton Command="{Binding ShowKonwledgeDialogCommand}">
+                <ui:AppBarButton.Icon>
+                    <ui:FontIcon Glyph="&#xe82d;" />
+                </ui:AppBarButton.Icon>
+            </ui:AppBarButton>
             <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}" Label="{lex:Loc SaveBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74e;" />
