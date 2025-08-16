@@ -495,7 +495,7 @@
   </data>
   <data name="IncompleteKnowledgeBaseSettingsMessage" xml:space="preserve">
     <value>A tudásbázis aktiválva van, de a beállítások nem teljesek. Ha most kilép, a funkció újra konfigurálásáig letiltásra kerül.
-- Kattintson az "Igen" gombra a kilépéshez és az AI fordítás letiltásához.
+- Kattintson az "Igen" gombra a kilépéshez és a tudásbázis letiltásához.
 - Kattintson a "Nem" gombra a beállításokhoz való visszatéréshez és a konfiguráció befejezéséhez.</value>
   </data>
   <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">

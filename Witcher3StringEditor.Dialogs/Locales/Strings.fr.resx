@@ -495,7 +495,7 @@
   </data>
   <data name="IncompleteKnowledgeBaseSettingsMessage" xml:space="preserve">
     <value>La base de connaissances est activée, mais les paramètres sont incomplets. Quitter maintenant désactivera la fonction jusqu'à la reconfiguration.
-- Cliquez sur "Oui" pour quitter et désactiver la traduction IA.
+- Cliquez sur "Oui" pour quitter et désactiver la base de connaissances .
 - Cliquez sur "Non" pour retourner aux paramètres et finaliser la configuration.</value>
   </data>
   <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">
