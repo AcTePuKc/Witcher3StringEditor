@@ -38,6 +38,7 @@
         <PackageReference Include="iNKORE.UI.WPF.Modern" Version="0.10.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.8" />
         <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.62.0" />
+        <PackageReference Include="Microsoft.SemanticKernel.Connectors.SqliteVec" Version="1.62.0-preview" />
         <PackageReference Include="Nerdbank.GitVersioning" Version="3.7.115">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
