@@ -145,14 +145,16 @@
                         TickFrequency="0.1"
                         Value="{Binding AppSettings.ModelSettings.TopP}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard
-                    Margin="0,0,0,36"
-                    Description="{lex:Loc KnowledgeBaseDescription}"
-                    Header="{lex:Loc KnowledgeBaseSwitchHeader}">
+                <ui:SettingsCard Description="{lex:Loc KnowledgeBaseDescription}" Header="{lex:Loc KnowledgeBaseSwitchHeader}">
                     <ui:ToggleSwitch
                         IsOn="{Binding AppSettings.IsUseKnowledgeBase}"
                         OffContent="{lex:Loc IsOff}"
                         OnContent="{lex:Loc IsOn}" />
+                </ui:SettingsCard>
+                <ui:SettingsCard Description="{lex:Loc ModelSettingsDescription}" Header="{lex:Loc ModelSettingsHeader}">
+                    <Button Command="{Binding ShowModelSettingDialogCommand}">
+                        <ui:FontIcon Glyph="&#xE70F;" />
+                    </Button>
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>
