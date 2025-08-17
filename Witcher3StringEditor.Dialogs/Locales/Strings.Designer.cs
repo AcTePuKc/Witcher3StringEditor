@@ -958,6 +958,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Sync Knowledge Base 的本地化字符串。
+        /// </summary>
+        internal static string SyncKnowledgeBaseBtnContent {
+            get {
+                return ResourceManager.GetString("SyncKnowledgeBaseBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Target Filetype 的本地化字符串。
         /// </summary>
         internal static string TargetFiletype {

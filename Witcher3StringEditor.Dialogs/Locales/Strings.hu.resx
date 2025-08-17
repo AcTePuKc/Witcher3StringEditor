@@ -501,4 +501,7 @@
   <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">
     <value>A tudásbázis beállításai nem teljesek</value>
   </data>
+  <data name="SyncKnowledgeBaseBtnContent" xml:space="preserve">
+    <value>Sync Tudásbázis</value>
+  </data>
 </root>

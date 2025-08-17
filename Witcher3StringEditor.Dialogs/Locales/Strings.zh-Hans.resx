@@ -501,4 +501,7 @@
   <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">
     <value>知识库设置不完整</value>
   </data>
+  <data name="SyncKnowledgeBaseBtnContent" xml:space="preserve">
+    <value>同步知识库</value>
+  </data>
 </root>

@@ -52,21 +52,33 @@
         <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left">
             <ui:AppBarButton Label="{lex:Loc ImportKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe8b5;" />
+                    <ui:FontIcon Glyph="&#xe7c0;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Label="{lex:Loc DelKnowledgeBtnContent}">
+            <ui:AppBarButton Command="{Binding SyncCommand}" Label="{lex:Loc SyncKnowledgeBaseBtnContent}">
+                <ui:AppBarButton.Icon>
+                    <ui:FontIcon Glyph="&#xe895;" />
+                </ui:AppBarButton.Icon>
+            </ui:AppBarButton>
+            <ui:AppBarButton
+                Command="{Binding DeleteCommand}"
+                CommandParameter="{Binding SelectedItems, ElementName=sfDataGrid}"
+                Label="{lex:Loc DelKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74d;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Label="{lex:Loc ClearKnowledgeBtnContent}">
+            <ui:AppBarButton Command="{Binding ClearCommand}" Label="{lex:Loc ClearKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe894;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
         </ui:CommandBar>
-        <sf:SfDataGrid Grid.Row="2" Margin="16,16,16,0" />
+        <sf:SfDataGrid
+            x:Name="sfDataGrid"
+            Grid.Row="2"
+            Margin="16,16,16,0"
+            ItemsSource="{Binding KnowledgeItems}" />
         <sf:SfDataPager
             Grid.Row="3"
             Margin="0,4"
