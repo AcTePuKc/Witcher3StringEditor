@@ -63,13 +63,9 @@ public partial class SettingDialogViewModel(
         if (!isValid)
         {
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "InitializationIncomplete"))
-            {
                 Application.Current.Shutdown();
-            }
             else
-            {
                 e.Cancel = true;
-            }
         }
     }
 }

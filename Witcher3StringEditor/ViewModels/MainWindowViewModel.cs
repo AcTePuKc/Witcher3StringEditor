@@ -336,6 +336,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, new MicrosoftTranslator()));
+            new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings,
+                new MicrosoftTranslator()));
     }
 }

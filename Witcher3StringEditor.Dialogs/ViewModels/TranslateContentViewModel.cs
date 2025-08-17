@@ -43,7 +43,7 @@ public partial class TranslateContentViewModel : ObservableObject
         this.w3Items = w3Items;
         this.translator = translator;
         Languages = Language.LanguageDictionary.Values
-                .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
+            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         IndexOfItems = index;
         FormLanguage = Language.GetLanguage("en");
         var language = appSettings.PreferredLanguage;
