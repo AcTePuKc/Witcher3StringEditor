@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using FluentValidation;
+using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
+using Windows.UI.Composition.Interactions;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.Validators;
 using Witcher3StringEditor.Dialogs.ViewModels;
@@ -98,6 +100,7 @@ public partial class App
             .AddSingleton<ICheckUpdateService, CheckUpdateService>()
             .AddSingleton<IPlayGameService, PlayGameService>()
             .AddSingleton<IExplorerService, ExplorerService>()
+            .AddSingleton<ITranslator,MicrosoftTranslator>()
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
     }
