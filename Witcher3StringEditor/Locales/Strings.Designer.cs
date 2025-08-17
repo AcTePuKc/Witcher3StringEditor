@@ -214,15 +214,6 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Knowledge Base  的本地化字符串。
-        /// </summary>
-        internal static string KnowledgeBtnLabel {
-            get {
-                return ResourceManager.GetString("KnowledgeBtnLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Log 的本地化字符串。
         /// </summary>
         internal static string LogBtnLabel {

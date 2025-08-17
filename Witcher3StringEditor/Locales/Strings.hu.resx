@@ -204,7 +204,4 @@
   <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Excel munkalapok</value>
   </data>
-  <data name="KnowledgeBtnLabel" xml:space="preserve">
-    <value>Tudásbázis </value>
-  </data>
 </root>

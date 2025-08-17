@@ -204,7 +204,4 @@
   <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Excel工作簿</value>
   </data>
-  <data name="KnowledgeBtnLabel" xml:space="preserve">
-    <value>知识库</value>
-  </data>
 </root>

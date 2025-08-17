@@ -204,7 +204,4 @@
   <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Feuilles de calcul Excel</value>
   </data>
-  <data name="KnowledgeBtnLabel" xml:space="preserve">
-    <value>Base de connaissances </value>
-  </data>
 </root>
