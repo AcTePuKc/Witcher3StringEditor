@@ -53,7 +53,9 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
     {
         var ids = items?.Cast<IW3KItem>().Select(x => x.Id).ToList();
         if (ids == null || ids.Count == 0) return;
-        _ = await knowledgeService.Delete(ids);
+        if (await knowledgeService.Delete(ids))
+            foreach (var id in ids)
+                _ = KnowledgeItems.Remove(KnowledgeItems.First(x => x.Id == id));
     }
 
     [RelayCommand]
