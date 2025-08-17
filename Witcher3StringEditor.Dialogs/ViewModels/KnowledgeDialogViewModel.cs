@@ -19,6 +19,7 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
 {
     private readonly JsonSerializerOptions jsonSerializerOptions = new()
     {
+        WriteIndented = true,
         Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
     };
 
