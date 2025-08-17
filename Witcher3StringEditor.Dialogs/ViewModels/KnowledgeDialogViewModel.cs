@@ -49,7 +49,7 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
     }
 
     [RelayCommand]
-    private async Task DeleteAsync(IEnumerable<object>? items)
+    private async Task Delete(IEnumerable<object>? items)
     {
         var ids = items?.Cast<IW3KItem>().Select(x => x.Id).ToList();
         if (ids == null || ids.Count == 0) return;
@@ -57,7 +57,7 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
     }
 
     [RelayCommand]
-    private async Task ClearAsync()
+    private async Task Clear()
     {
         await knowledgeService.Clear();
     }
