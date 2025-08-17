@@ -21,11 +21,7 @@ public partial class SettingsDialog
         var messageHandlers = new[]
         {
             ("InitializationIncomplete", Strings.InitializationIncompleteMessage,
-                Strings.InitializationIncompleteCaption),
-            ("IncompleteAiTranslationSettings", Strings.IncompleteAiTranslationSettingsMessage,
-                Strings.IncompleteAiTranslationSettingsCaption),
-            ("IncompleteKnowledgeBaseSettings", Strings.IncompleteKnowledgeBaseSettingsMessage,
-                Strings.IncompleteKnowledgeBaseSettingsCaption)
+                Strings.InitializationIncompleteCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)

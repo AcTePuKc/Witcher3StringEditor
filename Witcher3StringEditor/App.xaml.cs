@@ -89,8 +89,6 @@ public partial class App
         return new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
             .AddValidatorsFromAssemblyContaining<AppSettingsValidator>()
-            .AddValidatorsFromAssemblyContaining<ModelSettingsValidator>()
-            .AddValidatorsFromAssemblyContaining<EmbeddedModelSettingsValidator>()
             .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
             .AddSingleton<IDialogManager, DialogManager>()
@@ -116,10 +114,6 @@ public partial class App
         viewLocator.Register<TranslateDialogViewModel, TranslateDialog>();
         viewLocator.Register<RecentDialogViewModel, RecentDialog>();
         viewLocator.Register<AboutDialogViewModel, AboutDialog>();
-        viewLocator.Register<ModelSettingsDialogViewModel, ModelSettingsDialog>();
-        viewLocator.Register<PromptsSettingDialogViewModel, PromptsSettingDialog>();
-        viewLocator.Register<KnowledgeDialogViewModel, KnowledgeDialog>();
-        viewLocator.Register<EmbeddedModelSettingsDialogViewModel, EmbeddedModelSettingsDialog>();
         return viewLocator;
     }
 

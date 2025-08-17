@@ -10,14 +10,6 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 {
     [ObservableProperty] private string gameExePath = string.Empty;
 
-    [ObservableProperty] private bool isUseAiTranslate;
-
-    [ObservableProperty] private bool isUseKnowledgeBase;
-
-    [ObservableProperty] private IModelSettings modelSettings = new ModelSettings();
-
-    [ObservableProperty] private IEmbeddedModelSettings embeddedModelSettings = new EmbeddedModelSettings();
-
     [ObservableProperty] private W3Language preferredLanguage;
 
     [ObservableProperty] private W3FileType preferredW3FileType;
@@ -33,8 +25,6 @@ internal partial class AppSettings : ObservableObject, IAppSettings
         W3FileType preferredW3FileType,
         W3Language preferredLanguage,
         string gameExePath,
-        ModelSettings? modelSettings,
-        EmbeddedModelSettings? embeddedModelSettings,
         ObservableCollection<BackupItem> backupItems,
         ObservableCollection<RecentItem> recentItems)
     {
@@ -44,8 +34,6 @@ internal partial class AppSettings : ObservableObject, IAppSettings
         GameExePath = gameExePath;
         BackupItems = [.. backupItems];
         RecentItems = [.. recentItems];
-        ModelSettings = modelSettings ?? new ModelSettings();
-        EmbeddedModelSettings = embeddedModelSettings ?? new EmbeddedModelSettings();
     }
 
     public ObservableCollection<IRecentItem> RecentItems { get; } = [];

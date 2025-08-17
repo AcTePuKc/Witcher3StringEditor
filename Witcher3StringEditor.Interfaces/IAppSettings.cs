@@ -15,14 +15,6 @@ public interface IAppSettings
 
     public string NexusModUrl { get; }
 
-    public bool IsUseAiTranslate { get; set; }
-
-    public bool IsUseKnowledgeBase { get; set; }
-
-    public IModelSettings ModelSettings { get; }
-
-    public IEmbeddedModelSettings EmbeddedModelSettings { get; }
-
     public ObservableCollection<IRecentItem> RecentItems { get; }
 
     public ObservableCollection<IBackupItem> BackupItems { get; }

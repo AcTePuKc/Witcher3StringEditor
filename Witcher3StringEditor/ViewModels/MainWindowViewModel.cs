@@ -23,8 +23,6 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
-using Witcher3StringEditor.Services;
-using Witcher3StringEditor.Translators;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -35,10 +33,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IBackupService backupService;
     private readonly ICheckUpdateService checkUpdateService;
     private readonly IDialogService dialogService;
-    private readonly IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator;
     private readonly IExplorerService explorerService;
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
-    private readonly IValidator<IModelSettings> modelSettingsValidator;
     private readonly IPlayGameService playGameService;
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
     private readonly IW3Serializer w3Serializer;
@@ -56,9 +52,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IW3Serializer w3Serializer,
         IDialogService dialogService, ICheckUpdateService checkUpdateService, IPlayGameService playGameService,
-        IExplorerService explorerService, IValidator<IAppSettings> appSettingsValidator,
-        IValidator<IModelSettings> modelSettingsValidator,
-        IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator)
+        IExplorerService explorerService, IValidator<IAppSettings> appSettingsValidator)
     {
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
@@ -68,9 +62,6 @@ internal partial class MainWindowViewModel : ObservableObject
         this.explorerService = explorerService;
         this.checkUpdateService = checkUpdateService;
         this.appSettingsValidator = appSettingsValidator;
-        this.modelSettingsValidator = modelSettingsValidator;
-        this.embeddedModelSettingsValidator = embeddedModelSettingsValidator;
-        IsUseKnowledgeBase = appSettings.IsUseKnowledgeBase;
         WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
             logEventRecipient, async void (r, m) =>
             {
@@ -103,10 +94,6 @@ internal partial class MainWindowViewModel : ObservableObject
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
             ShowTranslateDialogCommand.NotifyCanExecuteChanged();
         };
-        ((ObservableObject)appSettings).PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == "IsUseKnowledgeBase") IsUseKnowledgeBase = appSettings.IsUseKnowledgeBase;
-        };
     }
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
@@ -137,8 +124,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             Log.Error("Settings are incorrect or initial setup is incomplete.");
             _ = await dialogService.ShowDialogAsync(this,
-                new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator,
-                    embeddedModelSettingsValidator));
+                new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator));
         }
     }
 
@@ -285,8 +271,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator, modelSettingsValidator,
-                embeddedModelSettingsValidator));
+            new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator));
     }
 
     [RelayCommand]
@@ -351,16 +336,6 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings,
-                appSettings.IsUseAiTranslate
-                    ? new AiTranslator(appSettings.ModelSettings)
-                    : new MicrosoftTranslator()));
-    }
-
-    [RelayCommand]
-    private async Task ShowKnowledgeDialog()
-    {
-        _ = await dialogService.ShowDialogAsync(this,
-            new KnowledgeDialogViewModel(new KnowledgeService(appSettings.EmbeddedModelSettings), dialogService));
+            new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, new MicrosoftTranslator()));
     }
 }

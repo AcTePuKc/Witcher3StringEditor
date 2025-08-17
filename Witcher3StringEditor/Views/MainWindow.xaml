@@ -124,23 +124,6 @@
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowKnowledgeDialogCommand}" Label="{lex:Loc KnowledgeBtnLabel}">
-                <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe82d;" />
-                </ui:AppBarButton.Icon>
-                <ui:AppBarButton.Style>
-                    <Style TargetType="ui:AppBarButton">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsUseKnowledgeBase}" Value="True">
-                                <Setter Property="IsEnabled" Value="True" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsUseKnowledgeBase}" Value="False">
-                                <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ui:AppBarButton.Style>
-            </ui:AppBarButton>
             <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}" Label="{lex:Loc SaveBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74e;" />

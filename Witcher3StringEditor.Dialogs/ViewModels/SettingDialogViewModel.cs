@@ -16,9 +16,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class SettingDialogViewModel(
     IAppSettings appSettings,
     IDialogService dialogService,
-    IValidator<IAppSettings> appSettingsValidator,
-    IValidator<IModelSettings> modelSettingsValidator,
-    IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator) : ObservableObject, IModalDialogViewModel
+    IValidator<IAppSettings> appSettingsValidator) : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings { get; } = appSettings;
     public bool? DialogResult => true;
@@ -57,26 +55,6 @@ public partial class SettingDialogViewModel(
         }
     }
 
-    [RelayCommand]
-    private async Task ShowModelSettingDialog()
-    {
-        await dialogService.ShowDialogAsync<ModelSettingsDialogViewModel>(this,
-            new ModelSettingsDialogViewModel(AppSettings.ModelSettings));
-    }
-
-    [RelayCommand]
-    private async Task ShowEmbeddedModelSettingDialog()
-    {
-        await dialogService.ShowDialogAsync<EmbeddedModelSettingsDialogViewModel>(this,
-            new EmbeddedModelSettingsDialogViewModel(AppSettings.EmbeddedModelSettings));
-    }
-
-    [RelayCommand]
-    private async Task ShowPromotsSettingDialog()
-    {
-        await dialogService.ShowDialogAsync<PromptsSettingDialogViewModel>(this,
-            new PromptsSettingDialogViewModel(AppSettings.ModelSettings));
-    }
 
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
@@ -91,33 +69,7 @@ public partial class SettingDialogViewModel(
             else
             {
                 e.Cancel = true;
-                return;
             }
-        }
-
-        isValid = (await modelSettingsValidator.ValidateAsync(AppSettings.ModelSettings)).IsValid;
-        var isValid2 = (await embeddedModelSettingsValidator.ValidateAsync(AppSettings.EmbeddedModelSettings)).IsValid;
-        if (AppSettings.IsUseAiTranslate && !isValid)
-        {
-            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                    "IncompleteAiTranslationSettings"))
-            {
-                AppSettings.IsUseAiTranslate = false;
-                AppSettings.IsUseKnowledgeBase &= isValid2;
-                return;
-            }
-
-            e.Cancel = true;
-            return;
-        }
-
-        if (AppSettings.IsUseKnowledgeBase && !isValid2)
-        {
-            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                    "IncompleteKnowledgeBaseSettings"))
-                AppSettings.IsUseKnowledgeBase = false;
-            else
-                e.Cancel = true;
         }
     }
 }
