@@ -96,6 +96,7 @@
             Grid.Row="2"
             Margin="16,16,16,0"
             AllowResizingColumns="True"
+            ColumnSizer="AutoWithLastColumnFill"
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             SelectionMode="Multiple"
             ShowRowHeader="True">
