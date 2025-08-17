@@ -23,8 +23,6 @@ public partial class BatchTranslateContentViewModel : ObservableObject
 
     [ObservableProperty] private ILanguage formLanguage;
 
-    [ObservableProperty] private bool isAiTranslator;
-
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool isBusy;
 
@@ -47,10 +45,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject
     {
         this.translator = translator;
         this.w3Items = w3Items;
-        IsAiTranslator = translator is not MicrosoftTranslator;
-        Languages = IsAiTranslator
-            ? Language.LanguageDictionary.Values
-            : Language.LanguageDictionary.Values
+        Languages = Language.LanguageDictionary.Values
                 .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         StartIndex = startIndex;
         EndIndex = MaxValue = this.w3Items.Count();

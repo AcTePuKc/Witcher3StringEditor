@@ -41,20 +41,7 @@
                     SmallChange="1"
                     SpinButtonPlacementMode="Inline"
                     Value="{Binding EndIndex}" />
-                <TextBlock>
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsAiTranslator, Mode=OneWay}" Value="False">
-                                    <Setter Property="Text" Value="{lex:Loc TranslateCharactersNumberLimit}" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsAiTranslator, Mode=OneWay}" Value="True">
-                                    <Setter Property="Text" Value="{lex:Loc IsAiTranslatorHelpTxt}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <TextBlock Text="{lex:Loc TranslateCharactersNumberLimit}" />
             </iwk:SimpleStackPanel>
             <StackPanel
                 Grid.Row="1"
