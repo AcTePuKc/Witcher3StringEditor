@@ -132,7 +132,10 @@
                 </ResourceDictionary>
             </sf:SfDataGrid.Resources>
             <sf:SfDataGrid.Columns>
-                <sf:GridTextColumn MappingName="Id" MinimumWidth="250" />
+                <sf:GridTextColumn
+                    MappingName="Id"
+                    MinimumWidth="250"
+                    TextAlignment="Center" />
                 <sf:GridTextColumn MappingName="Text" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
