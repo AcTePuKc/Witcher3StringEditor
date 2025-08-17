@@ -349,6 +349,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Export Knowledge 的本地化字符串。
+        /// </summary>
+        internal static string ExportKnowledgeBtnContent {
+            get {
+                return ResourceManager.GetString("ExportKnowledgeBtnContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Failure 的本地化字符串。
         /// </summary>
         internal static string Failure {
@@ -549,6 +558,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string KnowledgeDialogTitle {
             get {
                 return ResourceManager.GetString("KnowledgeDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Vectorize 的本地化字符串。
+        /// </summary>
+        internal static string LearnKnowledgeBtnContent {
+            get {
+                return ResourceManager.GetString("LearnKnowledgeBtnContent", resourceCulture);
             }
         }
         

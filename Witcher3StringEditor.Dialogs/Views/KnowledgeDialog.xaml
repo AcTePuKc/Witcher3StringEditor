@@ -50,9 +50,19 @@
             </ui:AutoSuggestBox>
         </Grid>
         <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left">
-            <ui:AppBarButton Label="{lex:Loc ImportKnowledgeBtnContent}">
+            <ui:AppBarButton Label="{lex:Loc LearnKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe7c0;" />
+                </ui:AppBarButton.Icon>
+            </ui:AppBarButton>
+            <ui:AppBarButton Label="{lex:Loc ImportKnowledgeBtnContent}">
+                <ui:AppBarButton.Icon>
+                    <ui:FontIcon Glyph="&#xe8b5;" />
+                </ui:AppBarButton.Icon>
+            </ui:AppBarButton>
+            <ui:AppBarButton Label="{lex:Loc ExportKnowledgeBtnContent}">
+                <ui:AppBarButton.Icon>
+                    <ui:FontIcon Glyph="&#xede1;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <ui:AppBarButton Command="{Binding SyncCommand}" Label="{lex:Loc SyncKnowledgeBaseBtnContent}">

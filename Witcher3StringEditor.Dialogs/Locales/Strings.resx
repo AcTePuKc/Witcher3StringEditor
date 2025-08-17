@@ -504,4 +504,10 @@
   <data name="SyncKnowledgeBaseBtnContent" xml:space="preserve">
     <value>Sync Knowledge Base</value>
   </data>
+  <data name="ExportKnowledgeBtnContent" xml:space="preserve">
+    <value>Export Knowledge</value>
+  </data>
+  <data name="LearnKnowledgeBtnContent" xml:space="preserve">
+    <value>Vectorize</value>
+  </data>
 </root>

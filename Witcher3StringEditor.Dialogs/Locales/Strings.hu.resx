@@ -504,4 +504,10 @@
   <data name="SyncKnowledgeBaseBtnContent" xml:space="preserve">
     <value>Sync Tudásbázis</value>
   </data>
+  <data name="ExportKnowledgeBtnContent" xml:space="preserve">
+    <value>Export Tudás</value>
+  </data>
+  <data name="LearnKnowledgeBtnContent" xml:space="preserve">
+    <value>Vektorizál</value>
+  </data>
 </root>

@@ -504,4 +504,10 @@
   <data name="SyncKnowledgeBaseBtnContent" xml:space="preserve">
     <value>同步知识库</value>
   </data>
+  <data name="ExportKnowledgeBtnContent" xml:space="preserve">
+    <value>导出知识</value>
+  </data>
+  <data name="LearnKnowledgeBtnContent" xml:space="preserve">
+    <value>向量化知识</value>
+  </data>
 </root>
