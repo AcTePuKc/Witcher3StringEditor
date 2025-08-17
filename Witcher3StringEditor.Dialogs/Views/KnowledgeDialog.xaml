@@ -2,6 +2,7 @@
     x:Class="Witcher3StringEditor.Dialogs.Views.KnowledgeDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
@@ -96,10 +97,15 @@
             Grid.Row="2"
             Margin="16,16,16,0"
             AllowResizingColumns="True"
+            AutoGenerateColumns="False"
             ColumnSizer="AutoWithLastColumnFill"
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             SelectionMode="Multiple"
             ShowRowHeader="True">
+            <i:Interaction.Behaviors>
+                <b:SfDataGridSizeChangedBehavior />
+                <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding ElementName=SfDataGrid, Path=RowHeight}" />
+            </i:Interaction.Behaviors>
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
                     <Style TargetType="sf:GridRowHeaderCell">
@@ -125,6 +131,10 @@
                     </Style>
                 </ResourceDictionary>
             </sf:SfDataGrid.Resources>
+            <sf:SfDataGrid.Columns>
+                <sf:GridTextColumn MappingName="Id" MinimumWidth="250" />
+                <sf:GridTextColumn MappingName="Text" />
+            </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
         <sf:SfDataPager
             x:Name="SfDataPager"
