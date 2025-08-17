@@ -77,7 +77,7 @@
             </ui:AppBarButton>
             <ui:AppBarButton
                 Command="{Binding DeleteCommand}"
-                CommandParameter="{Binding SelectedItems, ElementName=sfDataGrid}"
+                CommandParameter="{Binding SelectedItems, ElementName=SfDataGrid}"
                 Label="{lex:Loc DelKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74d;" />
@@ -90,11 +90,39 @@
             </ui:AppBarButton>
         </ui:CommandBar>
         <sf:SfDataGrid
-            x:Name="sfDataGrid"
+            x:Name="SfDataGrid"
             Grid.Row="2"
             Margin="16,16,16,0"
             AllowResizingColumns="True"
-            ItemsSource="{Binding KnowledgeItems}" />
+            ItemsSource="{Binding KnowledgeItems}"
+            SelectionMode="Multiple"
+            ShowRowHeader="True">
+            <sf:SfDataGrid.Resources>
+                <ResourceDictionary>
+                    <Style TargetType="sf:GridRowHeaderCell">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="sf:GridRowHeaderCell">
+                                    <Border
+                                        x:Name="PART_RowHeaderCellBorder"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                        <Grid>
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding RowIndex, RelativeSource={RelativeSource TemplatedParent}}"
+                                                TextAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ResourceDictionary>
+            </sf:SfDataGrid.Resources>
+        </sf:SfDataGrid>
         <sf:SfDataPager
             Grid.Row="3"
             Margin="0,4"
