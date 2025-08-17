@@ -80,4 +80,40 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
         if (w3KItems == null) return;
         await foreach (var item in w3KItems) KnowledgeItems.Add(item);
     }
+
+    [RelayCommand]
+    public async Task Import()
+    {
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, new OpenFileDialogSettings
+        {
+            Filters =
+            [
+                new FileFilter("Backup File", ".backup")
+            ]
+        });
+        if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".backup")
+        {
+            await knowledgeService.Import(storageFile.LocalPath);
+            KnowledgeItems.Clear();
+            var w3KItems = knowledgeService.All();
+            if (w3KItems == null) return;
+            await foreach (var item in w3KItems) KnowledgeItems.Add(item);
+        }
+    }
+
+    [RelayCommand]
+    public async Task Export()
+    {
+        using var storageFile = await dialogService.ShowSaveFileDialogAsync(this, new SaveFileDialogSettings
+        {
+            Filters =
+            [
+                new FileFilter("Backup File", ".backup")
+            ]
+        });
+        if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".backup")
+        {
+            await knowledgeService.Export(storageFile.LocalPath, KnowledgeItems);
+        }
+    }
 }

@@ -102,6 +102,7 @@ internal sealed class KnowledgeService : IKnowledgeService, IDisposable
 
     public async Task Import(string path)
     {
+        await knowledge.EnsureCollectionExistsAsync();
         await using var stream = File.OpenRead(path);
         (await MessagePackSerializer.DeserializeAsync<List<W3KItem>>(stream)).ForEach(async void (item) =>
         {
@@ -119,7 +120,7 @@ internal sealed class KnowledgeService : IKnowledgeService, IDisposable
     public async Task Export(string path,IEnumerable<IW3KItem> backup)
     {
         await using var fs = File.Create(path);
-        await MessagePackSerializer.SerializeAsync(typeof(IW3KItem), fs, backup);
+        await MessagePackSerializer.SerializeAsync(typeof(IEnumerable<W3KItem>), fs, backup.Cast<W3KItem>());
     }
 
     ~KnowledgeService()

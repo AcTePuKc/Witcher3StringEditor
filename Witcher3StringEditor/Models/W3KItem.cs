@@ -1,4 +1,5 @@
 ﻿using MessagePack;
+using MessagePack.Formatters;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Models
@@ -13,6 +14,7 @@ namespace Witcher3StringEditor.Models
         public required string Text { get; set; }
 
         [Key(2)]
+        [MessagePackFormatter(typeof(ReadOnlyMemoryFormatter<float>))]
         public ReadOnlyMemory<float> Embedding { get; set; }
     }
 }

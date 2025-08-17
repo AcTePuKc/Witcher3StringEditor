@@ -63,12 +63,12 @@
                     <ui:FontIcon Glyph="&#xe7c0;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Label="{lex:Loc ImportKnowledgeBtnContent}">
+            <ui:AppBarButton Command="{Binding ImportCommand}" Label="{lex:Loc ImportKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe8b5;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Label="{lex:Loc ExportKnowledgeBtnContent}">
+            <ui:AppBarButton Command="{Binding ExportCommand}" Label="{lex:Loc ExportKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xede1;" />
                 </ui:AppBarButton.Icon>
