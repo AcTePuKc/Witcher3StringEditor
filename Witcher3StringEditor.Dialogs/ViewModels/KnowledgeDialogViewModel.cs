@@ -7,6 +7,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Interfaces;
 using Syncfusion.XlsIO;
+using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -31,7 +32,7 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
             using var excelEngine = new ExcelEngine();
             var worksheet = excelEngine.Excel.Workbooks.OpenReadOnly(storageFile.LocalPath).Worksheets[0];
             var range = worksheet.UsedRange;
-            
+            var c = worksheet.ExportData<W3KExcelData>(range.Row, range.Column, range.LastRow, range.LastColumn);
         }
     }
 
