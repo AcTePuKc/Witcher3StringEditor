@@ -48,7 +48,9 @@
             <ui:AutoSuggestBox
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                PlaceholderText="{lex:Loc SearchBoxPlaceholderText}">
+                PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
+                QuerySubmitted="SearchBox_QuerySubmitted"
+                TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>
                     <ui:FontIcon Glyph="&#xe721;" />
                 </ui:AutoSuggestBox.QueryIcon>

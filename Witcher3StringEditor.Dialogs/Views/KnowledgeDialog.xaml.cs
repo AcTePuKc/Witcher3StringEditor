@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using iNKORE.UI.WPF.Modern.Controls;
 
 namespace Witcher3StringEditor.Dialogs.Views
 {
@@ -10,6 +11,19 @@ namespace Witcher3StringEditor.Dialogs.Views
         public KnowledgeDialog()
         {
             InitializeComponent();
+            SfDataGrid.SearchHelper.AllowFiltering = true;
+            SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
+        }
+
+        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            SfDataGrid.SearchHelper.Search(args.QueryText);
+        }
+
+        private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (string.IsNullOrEmpty(sender.Text))
+                SfDataGrid.SearchHelper.ClearSearch();
         }
     }
 }
