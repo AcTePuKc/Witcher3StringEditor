@@ -48,15 +48,6 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
     }
 
     [RelayCommand]
-    private async Task Sync()
-    {
-        var w3KItems = knowledgeService.All();
-        if (w3KItems == null) return;
-        KnowledgeItems.Clear();
-        await foreach (var item in w3KItems) KnowledgeItems.Add(item);
-    }
-
-    [RelayCommand]
     private async Task Delete(IEnumerable<object>? items)
     {
         var ids = items?.Cast<IW3KItem>().Select(x => x.Id).ToList();
