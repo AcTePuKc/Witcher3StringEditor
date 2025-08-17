@@ -34,7 +34,10 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
             var worksheet = excelEngine.Excel.Workbooks.OpenReadOnly(storageFile.LocalPath).Worksheets[0];
             var range = worksheet.UsedRange;
             var data = worksheet.ExportData<W3KExcelData>(range.Row, range.Column, range.LastRow, range.LastColumn);
-            foreach (var d in data.ConvertAll(x => JsonSerializer.Serialize(x))) await knowledgeService.Learn(d);
+            foreach (var d in data.ConvertAll(x => JsonSerializer.Serialize(x)))
+            {
+                KnowledgeItems.Add(await knowledgeService.Learn(d));
+            }
         }
     }
 

@@ -2,7 +2,7 @@
 
 public interface IKnowledgeService
 {
-    public  Task Learn(string text);
+    public  Task<IW3KItem> Learn(string text);
 
     public  IAsyncEnumerable<IW3KItem>? Search(string text, int count);
 

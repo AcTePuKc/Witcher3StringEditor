@@ -54,7 +54,7 @@ internal class KnowledgeService : IKnowledgeService, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    public async Task Learn(string text)
+    public async Task<IW3KItem> Learn(string text)
     {
         await knowledge.EnsureCollectionExistsAsync();
         var knowledgeItem = new W3KItem
@@ -63,6 +63,7 @@ internal class KnowledgeService : IKnowledgeService, IDisposable
             Embedding = await generator.GenerateVectorAsync(text)
         };
         await knowledge.UpsertAsync(knowledgeItem);
+        return knowledgeItem;
     }
 
     public async IAsyncEnumerable<IW3KItem>? Search(string text, int count)
