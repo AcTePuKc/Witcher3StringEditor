@@ -60,6 +60,7 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
     private async Task Clear()
     {
         await knowledgeService.Clear();
+        KnowledgeItems.Clear();
     }
 
     [RelayCommand]
