@@ -367,6 +367,15 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
+        ///   查找类似 Excel Worksheets 的本地化字符串。
+        /// </summary>
+        internal static string FileFormatExcelWorkSheets {
+            get {
+                return ResourceManager.GetString("FileFormatExcelWorkSheets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 FileName 的本地化字符串。
         /// </summary>
         internal static string FileName {

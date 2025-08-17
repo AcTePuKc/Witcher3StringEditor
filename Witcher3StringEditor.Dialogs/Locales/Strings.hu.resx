@@ -510,4 +510,7 @@
   <data name="LearnKnowledgeBtnContent" xml:space="preserve">
     <value>Vektorizál</value>
   </data>
+  <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <value>Excel munkalapok</value>
+  </data>
 </root>

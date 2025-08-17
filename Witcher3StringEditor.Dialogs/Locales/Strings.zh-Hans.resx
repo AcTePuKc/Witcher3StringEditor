@@ -510,4 +510,7 @@
   <data name="LearnKnowledgeBtnContent" xml:space="preserve">
     <value>向量化知识</value>
   </data>
+  <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <value>Excel工作簿</value>
+  </data>
 </root>

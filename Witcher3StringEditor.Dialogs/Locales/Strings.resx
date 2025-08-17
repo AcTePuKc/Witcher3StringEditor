@@ -510,4 +510,7 @@
   <data name="LearnKnowledgeBtnContent" xml:space="preserve">
     <value>Vectorize</value>
   </data>
+  <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <value>Excel Worksheets</value>
+  </data>
 </root>
