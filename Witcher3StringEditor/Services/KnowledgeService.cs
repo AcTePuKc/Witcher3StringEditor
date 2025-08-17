@@ -6,12 +6,13 @@ using Microsoft.Extensions.AI;
 using Microsoft.Extensions.VectorData;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.SqliteVec;
+using Serilog;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;
 
-internal class KnowledgeService : IKnowledgeService, IDisposable
+internal sealed class KnowledgeService : IKnowledgeService, IDisposable
 {
     private readonly IEmbeddingGenerator<string, Embedding<float>> generator;
     private readonly HttpClient httpClient;
@@ -78,14 +79,28 @@ internal class KnowledgeService : IKnowledgeService, IDisposable
         await foreach (var item in knowledge.GetAsync(_ => true, int.MaxValue)) yield return item;
     }
 
-    public async Task Delete(IEnumerable<string> items)
+    public async Task<bool> Delete(IEnumerable<string> items)
     {
-        await knowledge.DeleteAsync(items);
+        try
+        {
+            await knowledge.DeleteAsync(items);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to delete knowledge items.");
+            return false;
+        }
     }
 
     public async Task Clear()
     {
         await knowledge.EnsureCollectionDeletedAsync();
+    }
+
+    ~KnowledgeService()
+    {
+        Dispose(false);
     }
 
     private static string Unprotect(string encryptedKey)
@@ -95,18 +110,16 @@ internal class KnowledgeService : IKnowledgeService, IDisposable
         return Encoding.UTF8.GetString(data);
     }
 
-    protected virtual void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (disposedValue) return;
+        if (disposing)
         {
-            if (disposing)
-            {
-                knowledge.Dispose();
-                vectorStore.Dispose();
-                httpClient.Dispose();
-            }
-
-            disposedValue = true;
+            knowledge.Dispose();
+            vectorStore.Dispose();
+            httpClient.Dispose();
         }
+
+        disposedValue = true;
     }
 }

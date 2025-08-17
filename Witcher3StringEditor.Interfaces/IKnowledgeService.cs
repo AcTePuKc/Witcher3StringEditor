@@ -8,7 +8,7 @@ public interface IKnowledgeService
 
     public IAsyncEnumerable<IW3KItem>? All();
 
-    public  Task Delete(IEnumerable<string> items);
+    public  Task<bool> Delete(IEnumerable<string> items);
 
     public  Task Clear();
 }
