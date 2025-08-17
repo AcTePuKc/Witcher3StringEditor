@@ -35,9 +35,7 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
             var range = worksheet.UsedRange;
             var data = worksheet.ExportData<W3KExcelData>(range.Row, range.Column, range.LastRow, range.LastColumn);
             foreach (var d in data.ConvertAll(x => JsonSerializer.Serialize(x)))
-            {
                 KnowledgeItems.Add(await knowledgeService.Learn(d));
-            }
         }
     }
 
@@ -53,13 +51,22 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
     [RelayCommand]
     private async Task DeleteAsync(IEnumerable<object>? items)
     {
-        if (items is not object[] enumerable || enumerable.Length == 0) return;
-        await knowledgeService.Delete(enumerable.Cast<IW3KItem>().Select(x => x.Id));
+        var ids = items?.Cast<IW3KItem>().Select(x => x.Id).ToList();
+        if (ids == null || ids.Count == 0) return;
+        _ = await knowledgeService.Delete(ids);
     }
 
     [RelayCommand]
     private async Task ClearAsync()
     {
         await knowledgeService.Clear();
+    }
+
+    [RelayCommand]
+    private async Task WindowLoaded()
+    {
+        var w3KItems = knowledgeService.All();
+        if (w3KItems == null) return;
+        await foreach (var item in w3KItems) KnowledgeItems.Add(item);
     }
 }
