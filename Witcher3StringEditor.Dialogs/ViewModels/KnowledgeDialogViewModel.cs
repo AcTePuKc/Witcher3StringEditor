@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
@@ -15,6 +17,11 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService, IDialogService dialogService)
     : ObservableObject, IModalDialogViewModel
 {
+    private readonly JsonSerializerOptions jsonSerializerOptions = new()
+    {
+        Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+    };
+
     public ObservableCollection<IW3KItem> KnowledgeItems { get; } = [];
     public bool? DialogResult => true;
 
@@ -34,7 +41,7 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
             var worksheet = excelEngine.Excel.Workbooks.OpenReadOnly(storageFile.LocalPath).Worksheets[0];
             var range = worksheet.UsedRange;
             var data = worksheet.ExportData<W3KExcelData>(range.Row, range.Column, range.LastRow, range.LastColumn);
-            foreach (var d in data.ConvertAll(x => JsonSerializer.Serialize(x)))
+            foreach (var d in data.ConvertAll(x => JsonSerializer.Serialize(x, jsonSerializerOptions)))
                 KnowledgeItems.Add(await knowledgeService.Learn(d));
         }
     }
