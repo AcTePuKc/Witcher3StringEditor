@@ -380,65 +380,6 @@
   <data name="TranslatorTranslatingCaption" xml:space="preserve">
     <value>翻译进行中</value>
   </data>
-  <data name="AiTranslatorSettingsHeader" xml:space="preserve">
-    <value>AI翻译器（实验性）</value>
-  </data>
-  <data name="AiTranslatorSwitchHeader" xml:space="preserve">
-    <value>AI翻译器</value>
-  </data>
-  <data name="AiTranslatorSwitchDescription" xml:space="preserve">
-    <value>启用AI翻译器后，该系统将会自动替换原有的微软翻译器作为默认翻译引擎。</value>
-  </data>
-  <data name="ModelSettingsHeader" xml:space="preserve">
-    <value>模型设置</value>
-  </data>
-  <data name="ModelSettingsDescription" xml:space="preserve">
-    <value>支持OpenAI API规范的文本生成模型</value>
-  </data>
-  <data name="PromptsSettingsHeader" xml:space="preserve">
-    <value>提示词</value>
-  </data>
-  <data name="PromptsSettingsDescription" xml:space="preserve">
-    <value>提示词是提供给AI模型以生成特定响应的输入文本或指令。它们可以是从简单的短语到复杂的句子，指导模型预期输出的内容。</value>
-  </data>
-  <data name="ModelSettingsEndpointHeader" xml:space="preserve">
-    <value>端点</value>
-  </data>
-  <data name="ModelSettingsModelIDHeader" xml:space="preserve">
-    <value>模型ID</value>
-  </data>
-  <data name="ModelSettingsModelIDDescription" xml:space="preserve">
-    <value>模型标识符</value>
-  </data>
-  <data name="ModelSettingsApiKeyHeader" xml:space="preserve">
-    <value>API密钥</value>
-  </data>
-  <data name="ModelSettingsEndpointDescription" xml:space="preserve">
-    <value>API URL</value>
-  </data>
-  <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
-    <value>访问密钥</value>
-  </data>
-  <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
-    <value>AI翻译设置不完整</value>
-  </data>
-  <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
-    <value>AI翻译已激活，但设置不完整。立即退出将禁用该功能，直至重新配置。
-- 点击“是”以退出并关闭AI翻译功能。
-- 点击“否”返回设置界面继续完成配置。</value>
-  </data>
-  <data name="TemperatureSettingDescription" xml:space="preserve">
-    <value>控制生成文本的随机性和创造性。较低的值使输出更加确定并集中在最高概率选项上，而较高的值增加多样性但可能降低连贯性。推荐范围：0到2。将值设为 0 会禁用此选项。</value>
-  </data>
-  <data name="TopPSettingDescription" xml:space="preserve">
-    <value>通过基于累积概率选择最有可能的最小词汇集来动态调整采样过程。这种方法在保持质量的同时增加了输出的多样性。推荐范围：0到1。将值设为 0 会禁用此选项。</value>
-  </data>
-  <data name="TemperatureSettingHeader" xml:space="preserve">
-    <value>文本随机性</value>
-  </data>
-  <data name="TopPSettingHeader" xml:space="preserve">
-    <value>累积概率</value>
-  </data>
   <data name="Translating" xml:space="preserve">
     <value>穿梭于语言的奇妙旅程中...</value>
   </data>
@@ -460,55 +401,14 @@
   <data name="TranslationNotEmptyCaption" xml:space="preserve">
     <value>译文已存在</value>
   </data>
-  <data name="IsAiTranslatorHelpTxt" xml:space="preserve">
-    <value>使用AI翻译器时请注意Tokens消耗</value>
-  </data>
-  <data name="KnowledgeDialogTitle" xml:space="preserve">
-    <value>知识库</value>
-  </data>
-  <data name="ImportKnowledgeBtnContent" xml:space="preserve">
-    <value>导入知识</value>
-  </data>
   <data name="DelKnowledgeBtnContent" xml:space="preserve">
     <value>删除知识</value>
   </data>
   <data name="ClearKnowledgeBtnContent" xml:space="preserve">
     <value>清空知识库</value>
   </data>
-  <data name="KnowledgeBaseSwitchHeader" xml:space="preserve">
-    <value>知识库</value>
-  </data>
-  <data name="KnowledgeBaseDescription" xml:space="preserve">
-    <value>知识库需玩家自行添加内容，为 AI 翻译器提供参考</value>
-  </data>
-  <data name="EmbeddedModelSettingsHeader" xml:space="preserve">
-    <value>嵌入式模型设置</value>
-  </data>
-  <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
-    <value>用于知识库的创建与检索，须使用符合 OpenAI 规范的文本向量化模型</value>
-  </data>
-  <data name="EmbeddedModelDimensionHeader" xml:space="preserve">
-    <value>模型维度</value>
-  </data>
-  <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
-    <value>更换不同维度的模型需要清空知识库</value>
-  </data>
-  <data name="IncompleteKnowledgeBaseSettingsMessage" xml:space="preserve">
-    <value>知识库已激活，但设置不完整。立即退出将禁用该功能，直至重新配置。
-- 点击“是”以退出并关闭知识库功能。
-- 点击“否”返回设置界面继续完成配置。</value>
-  </data>
-  <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">
-    <value>知识库设置不完整</value>
-  </data>
-  <data name="SyncKnowledgeBaseBtnContent" xml:space="preserve">
-    <value>同步知识库</value>
-  </data>
   <data name="ExportKnowledgeBtnContent" xml:space="preserve">
     <value>导出知识</value>
-  </data>
-  <data name="LearnKnowledgeBtnContent" xml:space="preserve">
-    <value>向量化知识</value>
   </data>
   <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Excel工作簿</value>

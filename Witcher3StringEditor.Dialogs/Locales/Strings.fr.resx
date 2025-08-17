@@ -380,65 +380,6 @@
   <data name="TranslatorTranslatingCaption" xml:space="preserve">
     <value>La traduction est en cours</value>
   </data>
-  <data name="AiTranslatorSettingsHeader" xml:space="preserve">
-    <value>Traducteur IA (Expérimental)</value>
-  </data>
-  <data name="AiTranslatorSwitchHeader" xml:space="preserve">
-    <value>Traducteur IA</value>
-  </data>
-  <data name="AiTranslatorSwitchDescription" xml:space="preserve">
-    <value>Une fois que le traducteur IA est activé, le système remplacera automatiquement le traducteur Microsoft existant comme moteur de traduction par défaut.</value>
-  </data>
-  <data name="ModelSettingsHeader" xml:space="preserve">
-    <value>Paramètres du modèle</value>
-  </data>
-  <data name="ModelSettingsDescription" xml:space="preserve">
-    <value>Modèle de génération de texte avec prise en charge des spécifications de l'API OpenAI</value>
-  </data>
-  <data name="PromptsSettingsHeader" xml:space="preserve">
-    <value>Instructions</value>
-  </data>
-  <data name="PromptsSettingsDescription" xml:space="preserve">
-    <value>Les invites sont des textes ou des instructions fournis à un modèle IA pour générer des réponses spécifiques. Elles peuvent aller de phrases simples à des phrases complexes, guidant le modèle sur le type de sortie attendue.</value>
-  </data>
-  <data name="ModelSettingsEndpointHeader" xml:space="preserve">
-    <value>Point de terminaison</value>
-  </data>
-  <data name="ModelSettingsModelIDHeader" xml:space="preserve">
-    <value>ID du modèle</value>
-  </data>
-  <data name="ModelSettingsModelIDDescription" xml:space="preserve">
-    <value>Identifiant du modèle</value>
-  </data>
-  <data name="ModelSettingsApiKeyHeader" xml:space="preserve">
-    <value>Clé API</value>
-  </data>
-  <data name="ModelSettingsEndpointDescription" xml:space="preserve">
-    <value>URL de l'API</value>
-  </data>
-  <data name="ModelSettingsApiKeyDescription" xml:space="preserve">
-    <value>Clé d'accès</value>
-  </data>
-  <data name="IncompleteAiTranslationSettingsCaption" xml:space="preserve">
-    <value>Paramètres de traduction IA incomplets</value>
-  </data>
-  <data name="IncompleteAiTranslationSettingsMessage" xml:space="preserve">
-    <value>La traduction IA est activée, mais les paramètres sont incomplets. Quitter maintenant désactivera la fonction jusqu'à la reconfiguration.
-- Cliquez sur "Oui" pour quitter et désactiver la traduction IA.
-- Cliquez sur "Non" pour retourner aux paramètres et finaliser la configuration.</value>
-  </data>
-  <data name="TemperatureSettingDescription" xml:space="preserve">
-    <value>Contrôle le caractère aléatoire et la créativité du texte généré. Des valeurs plus basses rendent la sortie plus déterministe et concentrée sur les options de plus haute probabilité, tandis que des valeurs plus élevées augmentent la diversité mais peuvent réduire la cohérence. Plage recommandée : de 0 à 2. Définir la valeur à 0 désactive cette option. </value>
-  </data>
-  <data name="TopPSettingDescription" xml:space="preserve">
-    <value>Ajuste dynamiquement le processus d'échantillonnage en sélectionnant le plus petit ensemble de jetons les plus probables basé sur la probabilité cumulative. Cette méthode augmente la diversité de la sortie tout en maintenant la qualité. Plage recommandée : de 0 à 1. Définir la valeur à 0 désactive cette option. </value>
-  </data>
-  <data name="TemperatureSettingHeader" xml:space="preserve">
-    <value>Aléatoire du Texte</value>
-  </data>
-  <data name="TopPSettingHeader" xml:space="preserve">
-    <value>Probabilité cumulative</value>
-  </data>
   <data name="Translating" xml:space="preserve">
     <value>En Route Vers La Traduction Magique...</value>
   </data>
@@ -460,55 +401,14 @@
   <data name="TranslationNotEmptyCaption" xml:space="preserve">
     <value>La traduction existe déjà</value>
   </data>
-  <data name="IsAiTranslatorHelpTxt" xml:space="preserve">
-    <value>Veuillez noter la consommation de tokens lors de l'utilisation du traducteur AI</value>
-  </data>
-  <data name="KnowledgeDialogTitle" xml:space="preserve">
-    <value>Base de connaissances </value>
-  </data>
-  <data name="ImportKnowledgeBtnContent" xml:space="preserve">
-    <value>Importer des connaissances </value>
-  </data>
   <data name="DelKnowledgeBtnContent" xml:space="preserve">
     <value>Supprimer des connaissances </value>
   </data>
   <data name="ClearKnowledgeBtnContent" xml:space="preserve">
     <value>Vider la base de connaissances </value>
   </data>
-  <data name="KnowledgeBaseSwitchHeader" xml:space="preserve">
-    <value>Base de connaissances </value>
-  </data>
-  <data name="KnowledgeBaseDescription" xml:space="preserve">
-    <value>Les joueurs doivent ajouter le contenu à cette base de connaissances eux-mêmes pour fournir des références aux traducteurs AI.</value>
-  </data>
-  <data name="EmbeddedModelSettingsHeader" xml:space="preserve">
-    <value>Paramètres du modèle embarqué </value>
-  </data>
-  <data name="EmbeddedModelSettingsDescription" xml:space="preserve">
-    <value>Pour la création et la récupération des bases de connaissances, il faut utiliser un modèle de vectorisation de texte conformément aux spécifications d'OpenAI</value>
-  </data>
-  <data name="EmbeddedModelDimensionHeader" xml:space="preserve">
-    <value>Dimension</value>
-  </data>
-  <data name="EmbeddedModelDimensionDescription" xml:space="preserve">
-    <value>Le remplacement de modèles avec différentes dimensions nécessite de vider la base de connaissances.</value>
-  </data>
-  <data name="IncompleteKnowledgeBaseSettingsMessage" xml:space="preserve">
-    <value>La base de connaissances est activée, mais les paramètres sont incomplets. Quitter maintenant désactivera la fonction jusqu'à la reconfiguration.
-- Cliquez sur "Oui" pour quitter et désactiver la base de connaissances .
-- Cliquez sur "Non" pour retourner aux paramètres et finaliser la configuration.</value>
-  </data>
-  <data name="IncompleteKnowledgeBaseSettingsCaption" xml:space="preserve">
-    <value>Paramètres incomplets de la base de connaissances</value>
-  </data>
-  <data name="SyncKnowledgeBaseBtnContent" xml:space="preserve">
-    <value>Sync Base Connaiss</value>
-  </data>
   <data name="ExportKnowledgeBtnContent" xml:space="preserve">
     <value>Exporter la Connaiss</value>
-  </data>
-  <data name="LearnKnowledgeBtnContent" xml:space="preserve">
-    <value>Vectoriser</value>
   </data>
   <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Feuilles de calcul Excel</value>

@@ -79,33 +79,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 AI Translator(Experimental) 的本地化字符串。
-        /// </summary>
-        internal static string AiTranslatorSettingsHeader {
-            get {
-                return ResourceManager.GetString("AiTranslatorSettingsHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Once the AI Translator is enabled, the system will automatically replace the existing Microsoft Translator as the default translation engine. 的本地化字符串。
-        /// </summary>
-        internal static string AiTranslatorSwitchDescription {
-            get {
-                return ResourceManager.GetString("AiTranslatorSwitchDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 AI Translator 的本地化字符串。
-        /// </summary>
-        internal static string AiTranslatorSwitchHeader {
-            get {
-                return ResourceManager.GetString("AiTranslatorSwitchHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Build Time: 的本地化字符串。
         /// </summary>
         internal static string AppBuildTime {
@@ -295,42 +268,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Replacing models with different dimensions requires clearing the knowledge base. 的本地化字符串。
-        /// </summary>
-        internal static string EmbeddedModelDimensionDescription {
-            get {
-                return ResourceManager.GetString("EmbeddedModelDimensionDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Dimension 的本地化字符串。
-        /// </summary>
-        internal static string EmbeddedModelDimensionHeader {
-            get {
-                return ResourceManager.GetString("EmbeddedModelDimensionHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 For the creation and retrieval of knowledge bases, a text vectorization model that complies with OpenAI specifications must be used 的本地化字符串。
-        /// </summary>
-        internal static string EmbeddedModelSettingsDescription {
-            get {
-                return ResourceManager.GetString("EmbeddedModelSettingsDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Embedded Model Settings  的本地化字符串。
-        /// </summary>
-        internal static string EmbeddedModelSettingsHeader {
-            get {
-                return ResourceManager.GetString("EmbeddedModelSettingsHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Encoder Path 的本地化字符串。
         /// </summary>
         internal static string EncoderSettingCardHeader {
@@ -448,55 +385,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Import Knowledge 的本地化字符串。
-        /// </summary>
-        internal static string ImportKnowledgeBtnContent {
-            get {
-                return ResourceManager.GetString("ImportKnowledgeBtnContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Incomplete AI Translation Settings 的本地化字符串。
-        /// </summary>
-        internal static string IncompleteAiTranslationSettingsCaption {
-            get {
-                return ResourceManager.GetString("IncompleteAiTranslationSettingsCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 AI translation is activated but settings are incomplete. Exiting now will disable the feature until re-configured.
-        ///- Click &quot;Yes&quot; to exit and disable AI translation.
-        ///- Click &quot;No&quot; to return to settings and complete configuration. 的本地化字符串。
-        /// </summary>
-        internal static string IncompleteAiTranslationSettingsMessage {
-            get {
-                return ResourceManager.GetString("IncompleteAiTranslationSettingsMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Incomplete Knowledge Base Settings 的本地化字符串。
-        /// </summary>
-        internal static string IncompleteKnowledgeBaseSettingsCaption {
-            get {
-                return ResourceManager.GetString("IncompleteKnowledgeBaseSettingsCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Knowledge Base is activated but settings are incomplete. Exiting now will disable the feature until re-configured.
-        ///- Click &quot;Yes&quot; to exit and disable AI translation.
-        ///- Click &quot;No&quot; to return to settings and complete configuration. 的本地化字符串。
-        /// </summary>
-        internal static string IncompleteKnowledgeBaseSettingsMessage {
-            get {
-                return ResourceManager.GetString("IncompleteKnowledgeBaseSettingsMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Initialization Incomplete 的本地化字符串。
         /// </summary>
         internal static string InitializationIncompleteCaption {
@@ -517,15 +405,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Please note the token consumption when using the AI translator 的本地化字符串。
-        /// </summary>
-        internal static string IsAiTranslatorHelpTxt {
-            get {
-                return ResourceManager.GetString("IsAiTranslatorHelpTxt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Off 的本地化字符串。
         /// </summary>
         internal static string IsOff {
@@ -540,42 +419,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string IsOn {
             get {
                 return ResourceManager.GetString("IsOn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Players need to add content to this knowledge base themselves to provide references for AI translators. 的本地化字符串。
-        /// </summary>
-        internal static string KnowledgeBaseDescription {
-            get {
-                return ResourceManager.GetString("KnowledgeBaseDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Knowledge Base 的本地化字符串。
-        /// </summary>
-        internal static string KnowledgeBaseSwitchHeader {
-            get {
-                return ResourceManager.GetString("KnowledgeBaseSwitchHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Knowledge Base  的本地化字符串。
-        /// </summary>
-        internal static string KnowledgeDialogTitle {
-            get {
-                return ResourceManager.GetString("KnowledgeDialogTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Vectorize 的本地化字符串。
-        /// </summary>
-        internal static string LearnKnowledgeBtnContent {
-            get {
-                return ResourceManager.GetString("LearnKnowledgeBtnContent", resourceCulture);
             }
         }
         
@@ -621,78 +464,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string Mark {
             get {
                 return ResourceManager.GetString("Mark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Access Key 的本地化字符串。
-        /// </summary>
-        internal static string ModelSettingsApiKeyDescription {
-            get {
-                return ResourceManager.GetString("ModelSettingsApiKeyDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 API Key 的本地化字符串。
-        /// </summary>
-        internal static string ModelSettingsApiKeyHeader {
-            get {
-                return ResourceManager.GetString("ModelSettingsApiKeyHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Text Generation Model with Support for OpenAI API Specifications 的本地化字符串。
-        /// </summary>
-        internal static string ModelSettingsDescription {
-            get {
-                return ResourceManager.GetString("ModelSettingsDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 API URL 的本地化字符串。
-        /// </summary>
-        internal static string ModelSettingsEndpointDescription {
-            get {
-                return ResourceManager.GetString("ModelSettingsEndpointDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Endpoint 的本地化字符串。
-        /// </summary>
-        internal static string ModelSettingsEndpointHeader {
-            get {
-                return ResourceManager.GetString("ModelSettingsEndpointHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Model Settings 的本地化字符串。
-        /// </summary>
-        internal static string ModelSettingsHeader {
-            get {
-                return ResourceManager.GetString("ModelSettingsHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Model identifier 的本地化字符串。
-        /// </summary>
-        internal static string ModelSettingsModelIDDescription {
-            get {
-                return ResourceManager.GetString("ModelSettingsModelIDDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Model ID 的本地化字符串。
-        /// </summary>
-        internal static string ModelSettingsModelIDHeader {
-            get {
-                return ResourceManager.GetString("ModelSettingsModelIDHeader", resourceCulture);
             }
         }
         
@@ -801,24 +572,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string PreviousBtnContent {
             get {
                 return ResourceManager.GetString("PreviousBtnContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Prompts are input texts or instructions given to an AI model to generate specific responses. They can range from simple phrases to complex sentences, guiding the model on what kind of output is expected. 的本地化字符串。
-        /// </summary>
-        internal static string PromptsSettingsDescription {
-            get {
-                return ResourceManager.GetString("PromptsSettingsDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Prompts 的本地化字符串。
-        /// </summary>
-        internal static string PromptsSettingsHeader {
-            get {
-                return ResourceManager.GetString("PromptsSettingsHeader", resourceCulture);
             }
         }
         
@@ -985,15 +738,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Sync Knowledge Base 的本地化字符串。
-        /// </summary>
-        internal static string SyncKnowledgeBaseBtnContent {
-            get {
-                return ResourceManager.GetString("SyncKnowledgeBaseBtnContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Target Filetype 的本地化字符串。
         /// </summary>
         internal static string TargetFiletype {
@@ -1012,47 +756,11 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Controls the randomness and creativity of the generated text. Lower values make the output more deterministic and focused on the highest probability options, while higher values increase diversity but may reduce coherence. Recommended range: 0 to 2. Setting the value to 0 disables this option. 的本地化字符串。
-        /// </summary>
-        internal static string TemperatureSettingDescription {
-            get {
-                return ResourceManager.GetString("TemperatureSettingDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Text Randomness 的本地化字符串。
-        /// </summary>
-        internal static string TemperatureSettingHeader {
-            get {
-                return ResourceManager.GetString("TemperatureSettingHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Text Language 的本地化字符串。
         /// </summary>
         internal static string TextLanguage {
             get {
                 return ResourceManager.GetString("TextLanguage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Dynamically adjusts the sampling process by selecting from the smallest set of most probable tokens based on cumulative probability. This method increases output diversity while maintaining quality. Recommended range: 0 to 1. Setting the value to 0 disables this option. 的本地化字符串。
-        /// </summary>
-        internal static string TopPSettingDescription {
-            get {
-                return ResourceManager.GetString("TopPSettingDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Cumulative Probability 的本地化字符串。
-        /// </summary>
-        internal static string TopPSettingHeader {
-            get {
-                return ResourceManager.GetString("TopPSettingHeader", resourceCulture);
             }
         }
         
