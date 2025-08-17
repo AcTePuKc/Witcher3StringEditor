@@ -94,7 +94,7 @@
             Grid.Row="2"
             Margin="16,16,16,0"
             AllowResizingColumns="True"
-            ItemsSource="{Binding KnowledgeItems}"
+            ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             SelectionMode="Multiple"
             ShowRowHeader="True">
             <sf:SfDataGrid.Resources>
@@ -124,8 +124,11 @@
             </sf:SfDataGrid.Resources>
         </sf:SfDataGrid>
         <sf:SfDataPager
+            x:Name="SfDataPager"
             Grid.Row="3"
             Margin="0,4"
-            HorizontalAlignment="Center" />
+            HorizontalAlignment="Center"
+            PageSize="20"
+            Source="{Binding KnowledgeItems}" />
     </Grid>
 </Window>
