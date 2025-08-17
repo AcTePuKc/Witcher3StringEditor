@@ -27,8 +27,6 @@ public partial class TranslateContentViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private int indexOfItems = -1;
 
-    [ObservableProperty] private bool isAiTranslator;
-
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
@@ -44,10 +42,7 @@ public partial class TranslateContentViewModel : ObservableObject
     {
         this.w3Items = w3Items;
         this.translator = translator;
-        IsAiTranslator = translator is not MicrosoftTranslator;
-        Languages = IsAiTranslator
-            ? Language.LanguageDictionary.Values
-            : Language.LanguageDictionary.Values
+        Languages = Language.LanguageDictionary.Values
                 .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         IndexOfItems = index;
         FormLanguage = Language.GetLanguage("en");
@@ -87,7 +82,7 @@ public partial class TranslateContentViewModel : ObservableObject
     private async Task Translate()
     {
         if (CurrentTranslateItemModel == null) return;
-        if (CurrentTranslateItemModel.Text.Length <= 1000 || IsAiTranslator)
+        if (CurrentTranslateItemModel.Text.Length <= 1000)
         {
             try
             {
