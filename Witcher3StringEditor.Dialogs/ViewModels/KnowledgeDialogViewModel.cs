@@ -1,13 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.IO;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using Witcher3StringEditor.Dialogs.Locales;
-using Witcher3StringEditor.Interfaces;
 using Syncfusion.XlsIO;
+using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -32,7 +33,8 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
             using var excelEngine = new ExcelEngine();
             var worksheet = excelEngine.Excel.Workbooks.OpenReadOnly(storageFile.LocalPath).Worksheets[0];
             var range = worksheet.UsedRange;
-            var c = worksheet.ExportData<W3KExcelData>(range.Row, range.Column, range.LastRow, range.LastColumn);
+            var data = worksheet.ExportData<W3KExcelData>(range.Row, range.Column, range.LastRow, range.LastColumn);
+            foreach (var d in data.ConvertAll(x => JsonSerializer.Serialize(x))) await knowledgeService.Learn(d);
         }
     }
 
