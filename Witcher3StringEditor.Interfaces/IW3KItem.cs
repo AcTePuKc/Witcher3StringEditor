@@ -2,7 +2,7 @@
 {
     public interface IW3KItem
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         public string Text { get; set; }
 

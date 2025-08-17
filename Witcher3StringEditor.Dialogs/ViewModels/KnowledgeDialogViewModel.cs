@@ -43,6 +43,7 @@ public partial class KnowledgeDialogViewModel(IKnowledgeService knowledgeService
     {
         var w3KItems = knowledgeService.All();
         if (w3KItems == null) return;
+        KnowledgeItems.Clear();
         await foreach (var item in w3KItems) KnowledgeItems.Add(item);
     }
 

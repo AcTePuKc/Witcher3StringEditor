@@ -4,7 +4,7 @@ namespace Witcher3StringEditor.Models
 {
     internal class W3KItem : IW3KItem
     {
-        public long Id { get;set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public required string Text { get; set; }
 
