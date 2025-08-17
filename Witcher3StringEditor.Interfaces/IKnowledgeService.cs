@@ -10,5 +10,9 @@ public interface IKnowledgeService
 
     public  Task<bool> Delete(IEnumerable<string> items);
 
+    public Task Import(string path);
+
+    public Task Export(string path, IEnumerable<IW3KItem> backup);
+
     public  Task Clear();
 }

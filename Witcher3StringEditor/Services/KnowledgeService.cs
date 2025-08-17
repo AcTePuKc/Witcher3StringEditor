@@ -1,6 +1,8 @@
-﻿using System.Net.Http;
+﻿using System.IO;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using MessagePack;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.VectorData;
@@ -96,6 +98,28 @@ internal sealed class KnowledgeService : IKnowledgeService, IDisposable
     public async Task Clear()
     {
         await knowledge.EnsureCollectionDeletedAsync();
+    }
+
+    public async Task Import(string path)
+    {
+        await using var stream = File.OpenRead(path);
+        (await MessagePackSerializer.DeserializeAsync<List<W3KItem>>(stream)).ForEach(async void (item) =>
+        {
+            try
+            {
+                await knowledge.UpsertAsync(item);
+            }
+            catch (Exception e)
+            {
+                Log.Information(e, "Failed to import knowledge item.");
+            }
+        });
+    }
+
+    public async Task Export(string path,IEnumerable<IW3KItem> backup)
+    {
+        await using var fs = File.Create(path);
+        await MessagePackSerializer.SerializeAsync(typeof(IW3KItem), fs, backup);
     }
 
     ~KnowledgeService()
