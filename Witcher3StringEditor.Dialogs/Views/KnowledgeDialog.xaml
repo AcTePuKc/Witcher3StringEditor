@@ -50,7 +50,7 @@
             </ui:AutoSuggestBox>
         </Grid>
         <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left">
-            <ui:AppBarButton Label="{lex:Loc LearnKnowledgeBtnContent}">
+            <ui:AppBarButton Command="{Binding LearnCommand}" Label="{lex:Loc LearnKnowledgeBtnContent}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe7c0;" />
                 </ui:AppBarButton.Icon>

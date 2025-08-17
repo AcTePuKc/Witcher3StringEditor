@@ -35,10 +35,10 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IBackupService backupService;
     private readonly ICheckUpdateService checkUpdateService;
     private readonly IDialogService dialogService;
+    private readonly IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator;
     private readonly IExplorerService explorerService;
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
     private readonly IValidator<IModelSettings> modelSettingsValidator;
-    private readonly IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator;
     private readonly IPlayGameService playGameService;
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
     private readonly IW3Serializer w3Serializer;
@@ -57,7 +57,8 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IW3Serializer w3Serializer,
         IDialogService dialogService, ICheckUpdateService checkUpdateService, IPlayGameService playGameService,
         IExplorerService explorerService, IValidator<IAppSettings> appSettingsValidator,
-        IValidator<IModelSettings> modelSettingsValidator,IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator)
+        IValidator<IModelSettings> modelSettingsValidator,
+        IValidator<IEmbeddedModelSettings> embeddedModelSettingsValidator)
     {
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
@@ -104,10 +105,7 @@ internal partial class MainWindowViewModel : ObservableObject
         };
         ((ObservableObject)appSettings).PropertyChanged += (_, e) =>
         {
-            if (e.PropertyName == "IsUseKnowledgeBase")
-            {
-                IsUseKnowledgeBase = appSettings.IsUseKnowledgeBase;
-            }
+            if (e.PropertyName == "IsUseKnowledgeBase") IsUseKnowledgeBase = appSettings.IsUseKnowledgeBase;
         };
     }
 
@@ -362,6 +360,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowKnowledgeDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,new KnowledgeDialogViewModel(new KnowledgeService(appSettings.EmbeddedModelSettings)));
+        _ = await dialogService.ShowDialogAsync(this,
+            new KnowledgeDialogViewModel(new KnowledgeService(appSettings.EmbeddedModelSettings), dialogService));
     }
 }
