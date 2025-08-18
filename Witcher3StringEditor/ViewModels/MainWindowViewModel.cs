@@ -131,6 +131,15 @@ internal partial class MainWindowViewModel : ObservableObject
             Log.Error("Settings are incorrect or initial setup is incomplete.");
             _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
         }
+        else
+        {
+            Log.Information("Settings are correct.");
+            Log.Information("The W3Strings path has been set to {0}.", settings.W3StringsPath);
+            if (string.IsNullOrWhiteSpace(settings.GameExePath))
+                Log.Warning("The game executable path is not set.");
+            else
+                Log.Information("The game executable path has been set to {0}.", settings.GameExePath);
+        }
     }
 
     [RelayCommand]
