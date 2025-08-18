@@ -28,6 +28,7 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
             process.BeginOutputReadLine();
             await process.WaitForExitAsync();
             Guard.IsEqualTo(process.ExitCode, 0);
+            Log.Information("Game process exited with code {0}.", process.ExitCode);
         }
         catch (Exception ex)
         {
