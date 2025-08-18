@@ -10,7 +10,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using FluentValidation;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
@@ -29,7 +28,6 @@ namespace Witcher3StringEditor.ViewModels;
 internal partial class MainWindowViewModel : ObservableObject
 {
     private readonly IAppSettings appSettings;
-    private readonly IValidator<IAppSettings> appSettingsValidator;
     private readonly IBackupService backupService;
     private readonly ICheckUpdateService checkUpdateService;
     private readonly IDialogService dialogService;
@@ -51,10 +49,9 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private object? selectedItem;
 
-    public MainWindowViewModel(IAppSettings appSettings, IValidator<IAppSettings> appSettingsValidator,
-        IBackupService backupService, ICheckUpdateService checkUpdateService, IDialogService dialogService,
-        IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
-        ITranslator translator)
+    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
+        ICheckUpdateService checkUpdateService, IDialogService dialogService, IExplorerService explorerService,
+        IPlayGameService playGameService, IW3Serializer w3Serializer, ITranslator translator)
     {
         this.translator = translator;
         this.appSettings = appSettings;
@@ -64,7 +61,6 @@ internal partial class MainWindowViewModel : ObservableObject
         this.playGameService = playGameService;
         this.explorerService = explorerService;
         this.checkUpdateService = checkUpdateService;
-        this.appSettingsValidator = appSettingsValidator;
         WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
             logEventRecipient, async void (r, m) =>
             {
@@ -97,6 +93,19 @@ internal partial class MainWindowViewModel : ObservableObject
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
             ShowTranslateDialogCommand.NotifyCanExecuteChanged();
         };
+        ((INotifyPropertyChanged)appSettings).PropertyChanged += (o, e) =>
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(appSettings.W3StringsPath) when !string.IsNullOrWhiteSpace(appSettings.W3StringsPath):
+                    OpenFileCommand.NotifyCanExecuteChanged();
+                    DropFileCommand.NotifyCanExecuteChanged();
+                    break;
+                case nameof(appSettings.GameExePath) when !string.IsNullOrWhiteSpace(appSettings.GameExePath):
+                    PlayGameCommand.NotifyCanExecuteChanged();
+                    break;
+            }
+        };
     }
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
@@ -107,6 +116,10 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private bool CanOpenWorkingFolder
         => Directory.Exists(OutputFolder);
+
+    private bool CanPlayGame => !string.IsNullOrWhiteSpace(appSettings.GameExePath);
+
+    private bool CanOpenFile => !string.IsNullOrWhiteSpace(appSettings.W3StringsPath);
 
     [RelayCommand]
     private async Task WindowLoaded()
@@ -123,11 +136,11 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task CheckSettings(IAppSettings settings)
     {
         Log.Information("Checking whether the settings are correct.");
-        if (!(await appSettingsValidator.ValidateAsync(settings)).IsValid)
+        if (string.IsNullOrWhiteSpace(settings.GameExePath))
         {
             Log.Error("Settings are incorrect or initial setup is incomplete.");
             _ = await dialogService.ShowDialogAsync(this,
-                new SettingDialogViewModel(appSettings, appSettingsValidator, dialogService));
+                new SettingDialogViewModel(settings, dialogService));
         }
     }
 
@@ -145,7 +158,7 @@ internal partial class MainWindowViewModel : ObservableObject
         WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanOpenFile))]
     private async Task DropFile()
     {
         if (DropFileData.Length > 0)
@@ -156,7 +169,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanOpenFile))]
     private async Task OpenFile()
     {
         using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, new OpenFileDialogSettings
@@ -274,10 +287,10 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, appSettingsValidator, dialogService));
+            new SettingDialogViewModel(appSettings, dialogService));
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
         Log.Information("Starting the game.");

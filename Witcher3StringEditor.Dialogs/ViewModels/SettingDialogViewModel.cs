@@ -1,10 +1,5 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
-using FluentValidation;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
@@ -13,10 +8,8 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class SettingDialogViewModel(
-    IAppSettings appSettings,
-    IValidator<IAppSettings> appSettingsValidator,
-    IDialogService dialogService) : ObservableObject, IModalDialogViewModel
+public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogService dialogService)
+    : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings { get; } = appSettings;
     public bool? DialogResult => true;
@@ -52,20 +45,6 @@ public partial class SettingDialogViewModel(
         {
             AppSettings.GameExePath = storageFile.LocalPath;
             Log.Information("Game Path set to {0}.", storageFile.LocalPath);
-        }
-    }
-
-
-    [RelayCommand]
-    private async Task WindowClosing(CancelEventArgs e)
-    {
-        var isValid = (await appSettingsValidator.ValidateAsync(AppSettings)).IsValid;
-        if (!isValid)
-        {
-            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "InitializationIncomplete"))
-                Application.Current.Shutdown();
-            else
-                e.Cancel = true;
         }
     }
 }
