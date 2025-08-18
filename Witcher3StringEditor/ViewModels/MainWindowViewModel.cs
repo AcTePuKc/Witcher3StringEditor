@@ -181,7 +181,10 @@ internal partial class MainWindowViewModel : ObservableObject
             ]
         });
         if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings" or ".xlsx")
+        {
             await OpenFile(storageFile.LocalPath);
+            Log.Information("The file {0} is being opened...", storageFile?.LocalPath);
+        }
     }
 
     private async Task OpenFile(string fileName)
