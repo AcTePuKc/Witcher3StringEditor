@@ -36,7 +36,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.index = index;
         this.appSettings = appSettings;
         this.translator = translator;
-        CurrentViewModel = new TranslateContentViewModel(this.w3Items, index, appSettings, translator);
+        CurrentViewModel = new TranslateContentViewModel(appSettings, translator, this.w3Items, index);
         WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(
             recipient, "TranslatorIsBatchTranslating", (r, m) =>
             {
@@ -63,7 +63,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                     translateViewModel.CurrentTranslateItemModel.TranslatedText;
             CurrentViewModel = CurrentViewModel is TranslateContentViewModel
                 ? new BatchTranslateContentViewModel(appSettings, translator, w3Items, index + 1)
-                : new TranslateContentViewModel(w3Items, index, appSettings, translator);
+                : new TranslateContentViewModel(appSettings, translator, w3Items, index);
             Title = CurrentViewModel.GetType() == typeof(BatchTranslateContentViewModel)
                 ? Strings.BatchTranslateDialogTitle
                 : Strings.TranslateDialogTitle;

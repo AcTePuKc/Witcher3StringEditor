@@ -37,8 +37,8 @@ public partial class TranslateContentViewModel : ObservableObject
 
     [ObservableProperty] private ILanguage toLanguage;
 
-    public TranslateContentViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings,
-        ITranslator translator)
+    public TranslateContentViewModel(IAppSettings appSettings,
+        ITranslator translator, IEnumerable<IW3Item> w3Items, int index)
     {
         this.w3Items = w3Items;
         this.translator = translator;
