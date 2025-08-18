@@ -229,6 +229,10 @@ internal partial class MainWindowViewModel : ObservableObject
             W3Items.Add(dialogViewModel.W3Item);
             Log.Information("New W3Item added.");
         }
+        else
+        {
+            Log.Information("The W3Item has not been added.");
+        }
     }
 
     [RelayCommand]
@@ -240,6 +244,10 @@ internal partial class MainWindowViewModel : ObservableObject
             var found = W3Items.First(x => x.Id == w3Item.Id);
             W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
             Log.Information("The W3Item has been updated.");
+        }
+        else
+        {
+            Log.Information("The W3Item has not been updated.");
         }
     }
 
