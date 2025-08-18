@@ -296,9 +296,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
-        Log.Information("Starting the game.");
         await playGameService.PlayGame();
-        Log.Information("Game has exited.");
     }
 
     [RelayCommand]

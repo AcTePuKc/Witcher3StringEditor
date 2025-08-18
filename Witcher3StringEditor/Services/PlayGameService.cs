@@ -12,6 +12,7 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
     {
         try
         {
+            Log.Information("Starting the game process.");
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
