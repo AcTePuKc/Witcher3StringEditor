@@ -42,8 +42,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
-    [ObservableProperty] private object? selectedItem;
-
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IDialogService dialogService,
         IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
         ITranslator translator)
@@ -340,10 +338,10 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
-    private async Task ShowTranslateDialog()
+    private async Task ShowTranslateDialog(IW3Item? w3Item)
     {
         _ = await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, W3Items,
-                SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0));
+                w3Item != null ? W3Items.IndexOf(w3Item) : 0));
     }
 }

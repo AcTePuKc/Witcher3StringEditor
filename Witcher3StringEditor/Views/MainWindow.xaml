@@ -119,7 +119,10 @@
                     </Style>
                 </ui:AppBarButton.Style>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowTranslateDialogCommand}" Label="{lex:Loc TranslateBtnLabel}">
+            <ui:AppBarButton
+                Command="{Binding ShowTranslateDialogCommand}"
+                CommandParameter="{Binding Path=SelectedItem, ElementName=SfDataGrid}"
+                Label="{lex:Loc TranslateBtnLabel}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>
@@ -198,7 +201,6 @@
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             NavigationMode="Cell"
             RowHeight="30"
-            SelectedItem="{Binding SelectedItem}"
             SelectionMode="Extended"
             ShowRowHeader="True">
             <sf:SfDataGrid.Resources>
