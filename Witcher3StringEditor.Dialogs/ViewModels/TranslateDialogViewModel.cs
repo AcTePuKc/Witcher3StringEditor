@@ -29,8 +29,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     [ObservableProperty] private string title = Strings.TranslateDialogTitle;
 
-    public TranslateDialogViewModel(IEnumerable<IW3Item> w3Items, int index, IAppSettings appSettings,
-        ITranslator translator)
+    public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator, IEnumerable<IW3Item> w3Items,
+        int index)
     {
         this.w3Items = w3Items;
         this.index = index;
