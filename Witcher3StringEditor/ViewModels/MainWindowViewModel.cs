@@ -97,7 +97,6 @@ internal partial class MainWindowViewModel : ObservableObject
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
             ShowTranslateDialogCommand.NotifyCanExecuteChanged();
         };
-        this.translator = translator;
     }
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
