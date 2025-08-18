@@ -1,4 +1,5 @@
 ﻿using iNKORE.UI.WPF.Modern.Controls;
+using Serilog;
 
 namespace Witcher3StringEditor.Dialogs.Views;
 
@@ -17,6 +18,7 @@ public partial class LogDialog
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         SfDataGrid.SearchHelper.Search(args.QueryText);
+        Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
