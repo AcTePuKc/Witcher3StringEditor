@@ -209,4 +209,11 @@
     <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Excel munkalapok</value>
   </data>
+    <data name="FristRunMessage" xml:space="preserve">
+        <value>(Kötelező) Első indításkor először állítsa be az encoder elérési útját.
+(Opcionális) Állítsa be a játék executable elérési útját a játék közvetlen indításához a szoftverben.</value>
+    </data>
+    <data name="FristRunCaption" xml:space="preserve">
+        <value>Első Indítási Konfigurációs Üzenet</value>
+    </data>
 </root>

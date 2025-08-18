@@ -133,14 +133,13 @@ internal partial class MainWindowViewModel : ObservableObject
         Log.Information("New version detected: {0}.", IsUpdateAvailable);
     }
 
-    private async Task CheckSettings(IAppSettings settings)
+    private static async Task CheckSettings(IAppSettings settings)
     {
         Log.Information("Checking whether the settings are correct.");
-        if (string.IsNullOrWhiteSpace(settings.GameExePath))
+        if (string.IsNullOrWhiteSpace(settings.W3StringsPath))
         {
             Log.Error("Settings are incorrect or initial setup is incomplete.");
-            _ = await dialogService.ShowDialogAsync(this,
-                new SettingDialogViewModel(settings, dialogService));
+            _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
         }
     }
 

@@ -27,7 +27,7 @@ public partial class MainWindow
         var messageHandlers = new[]
         {
             ("FileOpened", Strings.FileOpenedMessage, Strings.FileOpenedCaption),
-            ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption)
+            ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption),
         };
 
         foreach (var (token, message, caption) in messageHandlers)
@@ -49,6 +49,15 @@ public partial class MainWindow
                     Strings.AppExitCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.No);
+            });
+        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
+            recipient, "FirstRun", static (r, m) =>
+            {
+                r.Receive(m);
+                m.Reply(MessageBox.Show(Strings.FristRunMessage,
+                    Strings.FristRunCaption,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Question) == MessageBoxResult.OK);
             });
     }
 

@@ -209,4 +209,11 @@
     <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Feuilles de calcul Excel</value>
   </data>
+    <data name="FristRunMessage" xml:space="preserve">
+        <value>(Obligatoire) Lors du premier lancement, veuillez d'abord configurer le chemin de l'encodeur.
+(Optionnel) Configurez le chemin de l'exécutable du jeu pour lancer le jeu directement dans le logiciel.</value>
+    </data>
+    <data name="FristRunCaption" xml:space="preserve">
+        <value>Indication de Configuration au Premier Lancement</value>
+    </data>
 </root>
