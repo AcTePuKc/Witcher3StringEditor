@@ -36,6 +36,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
                 return true;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
             appSettings.BackupItems.Add(backupItem);
+            Log.Information("Backup file: {0}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
@@ -55,6 +56,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
+            Log.Information("Restore backup file: {0}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
@@ -71,6 +73,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             if (File.Exists(backupItem.BackupPath))
                 File.Delete(backupItem.BackupPath);
             _ = appSettings.BackupItems.Remove(backupItem);
+            Log.Information("Delete backup file: {0}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
