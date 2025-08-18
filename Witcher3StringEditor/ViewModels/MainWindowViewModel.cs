@@ -249,10 +249,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var w3Items = items.Cast<IW3Item>().ToArray();
         if (w3Items.Length > 0 &&
             await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
-        {
             w3Items.ForEach(item => W3Items.Remove(item));
-            Log.Information("The selected W3Items have been deleted.");
-        }
     }
 
     [RelayCommand]
