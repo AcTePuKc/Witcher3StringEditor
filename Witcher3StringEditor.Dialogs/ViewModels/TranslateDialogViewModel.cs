@@ -62,7 +62,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel?.Id).Text =
                     translateViewModel.CurrentTranslateItemModel.TranslatedText;
             CurrentViewModel = CurrentViewModel is TranslateContentViewModel
-                ? new BatchTranslateContentViewModel(w3Items, index + 1, appSettings, translator)
+                ? new BatchTranslateContentViewModel(appSettings, translator, w3Items, index + 1)
                 : new TranslateContentViewModel(w3Items, index, appSettings, translator);
             Title = CurrentViewModel.GetType() == typeof(BatchTranslateContentViewModel)
                 ? Strings.BatchTranslateDialogTitle

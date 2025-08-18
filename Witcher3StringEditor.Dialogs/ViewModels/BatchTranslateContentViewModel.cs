@@ -38,10 +38,8 @@ public partial class BatchTranslateContentViewModel : ObservableObject
 
     [ObservableProperty] private ILanguage toLanguage;
 
-    public BatchTranslateContentViewModel(IEnumerable<IW3Item> w3Items,
-        int startIndex,
-        IAppSettings appSettings,
-        ITranslator translator)
+    public BatchTranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
+        IEnumerable<IW3Item> w3Items, int startIndex)
     {
         this.translator = translator;
         this.w3Items = w3Items;
