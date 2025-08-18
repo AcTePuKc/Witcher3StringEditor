@@ -29,7 +29,6 @@ internal partial class MainWindowViewModel : ObservableObject
 {
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
-    private readonly ICheckUpdateService checkUpdateService;
     private readonly IDialogService dialogService;
     private readonly IExplorerService explorerService;
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
@@ -40,18 +39,14 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private string[] dropFileData = [];
 
-    [ObservableProperty] private bool isUpdateAvailable;
-
-    [ObservableProperty] private bool isUseKnowledgeBase;
-
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
     [ObservableProperty] private object? selectedItem;
 
-    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
-        ICheckUpdateService checkUpdateService, IDialogService dialogService, IExplorerService explorerService,
-        IPlayGameService playGameService, IW3Serializer w3Serializer, ITranslator translator)
+    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IDialogService dialogService,
+        IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
+        ITranslator translator)
     {
         this.translator = translator;
         this.appSettings = appSettings;
@@ -60,7 +55,6 @@ internal partial class MainWindowViewModel : ObservableObject
         this.dialogService = dialogService;
         this.playGameService = playGameService;
         this.explorerService = explorerService;
-        this.checkUpdateService = checkUpdateService;
         WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
             logEventRecipient, async void (r, m) =>
             {
@@ -93,7 +87,7 @@ internal partial class MainWindowViewModel : ObservableObject
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
             ShowTranslateDialogCommand.NotifyCanExecuteChanged();
         };
-        ((INotifyPropertyChanged)appSettings).PropertyChanged += (o, e) =>
+        ((INotifyPropertyChanged)appSettings).PropertyChanged += (_, e) =>
         {
             switch (e.PropertyName)
             {
@@ -129,8 +123,6 @@ internal partial class MainWindowViewModel : ObservableObject
         Log.Information("OS Version: {0}", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         Log.Information(".Net Runtime: {0}", RuntimeInformation.FrameworkDescription);
         await CheckSettings(appSettings);
-        IsUpdateAvailable = await checkUpdateService.CheckUpdate();
-        Log.Information("New version detected: {0}.", IsUpdateAvailable);
     }
 
     private static async Task CheckSettings(IAppSettings settings)

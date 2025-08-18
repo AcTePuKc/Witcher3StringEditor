@@ -93,7 +93,6 @@ public partial class App
             .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<IBackupService, BackupService>()
             .AddSingleton<IW3Serializer, W3Serializer>()
-            .AddSingleton<ICheckUpdateService, CheckUpdateService>()
             .AddSingleton<IPlayGameService, PlayGameService>()
             .AddSingleton<IExplorerService, ExplorerService>()
             .AddSingleton<ITranslator,MicrosoftTranslator>()

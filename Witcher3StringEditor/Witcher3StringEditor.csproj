@@ -71,6 +71,7 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Strings.resx</DependentUpon>
         </Compile>
+        <Compile Remove="Services\CheckUpdateService.cs" />
     </ItemGroup>
 
     <ItemGroup>
