@@ -15,8 +15,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class SettingDialogViewModel(
     IAppSettings appSettings,
-    IDialogService dialogService,
-    IValidator<IAppSettings> appSettingsValidator) : ObservableObject, IModalDialogViewModel
+    IValidator<IAppSettings> appSettingsValidator,
+    IDialogService dialogService) : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings { get; } = appSettings;
     public bool? DialogResult => true;

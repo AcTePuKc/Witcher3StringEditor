@@ -128,7 +128,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             Log.Error("Settings are incorrect or initial setup is incomplete.");
             _ = await dialogService.ShowDialogAsync(this,
-                new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator));
+                new SettingDialogViewModel(appSettings, appSettingsValidator, dialogService));
         }
     }
 
@@ -275,7 +275,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService, appSettingsValidator));
+            new SettingDialogViewModel(appSettings, appSettingsValidator, dialogService));
     }
 
     [RelayCommand]
