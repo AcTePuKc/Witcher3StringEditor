@@ -37,8 +37,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
     private readonly IPlayGameService playGameService;
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
-    private readonly IW3Serializer w3Serializer;
     private readonly ITranslator translator;
+    private readonly IW3Serializer w3Serializer;
 
     [ObservableProperty] private string[] dropFileData = [];
 
@@ -51,9 +51,10 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private object? selectedItem;
 
-    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IW3Serializer w3Serializer,
-        IDialogService dialogService, ICheckUpdateService checkUpdateService, IPlayGameService playGameService,
-        IExplorerService explorerService, IValidator<IAppSettings> appSettingsValidator, ITranslator translator)
+    public MainWindowViewModel(IAppSettings appSettings, IValidator<IAppSettings> appSettingsValidator,
+        IBackupService backupService, ICheckUpdateService checkUpdateService, IDialogService dialogService,
+        IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
+        ITranslator translator)
     {
         this.translator = translator;
         this.appSettings = appSettings;
@@ -339,6 +340,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings, translator));
+            new TranslateDialogViewModel(W3Items, SelectedItem != null ? W3Items.IndexOf(SelectedItem) : 0, appSettings,
+                translator));
     }
 }
