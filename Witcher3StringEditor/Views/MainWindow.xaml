@@ -268,16 +268,5 @@
             NumericButtonCount="10"
             PageSize="30"
             Source="{Binding W3Items, Mode=TwoWay}" />
-        <ui:InfoBar
-            Grid.Row="2"
-            Margin="0,0,0,100"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"
-            IsOpen="{Binding IsUpdateAvailable}"
-            Message="{lex:Loc UpdateAvailable}">
-            <ui:InfoBar.ActionButton>
-                <Button Command="{Binding OpenNexusModsCommand}" Content="{lex:Loc UpdateBtnContent}" />
-            </ui:InfoBar.ActionButton>
-        </ui:InfoBar>
     </Grid>
 </Window>
