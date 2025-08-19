@@ -1,24 +1,22 @@
-﻿using AngleSharp;
-using CommunityToolkit.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
 using Serilog;
+using System.Net.Http;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Services;
 
-internal class CheckUpdateService(IAppSettings appSettings) : ICheckUpdateService
+internal class CheckUpdateService() : ICheckUpdateService
 {
-    private const string Selectors = "li.stat-version>div>div.stat";
-    private readonly string address = appSettings.NexusModUrl;
+    private static string UpdateUrl => "https://witcher3stringeditorcheckupdate.azurewebsites.net/api/checkupdate";
 
     public async Task<bool> CheckUpdate()
     {
         try
         {
-            using var context = BrowsingContext.New(Configuration.Default.WithDefaultLoader());
-            using var document = await context.OpenAsync(address);
-            var element = document.QuerySelector(Selectors);
-            Guard.IsNotNull(element);
-            Guard.IsTrue(Version.TryParse(element.InnerHtml, out var lastestVersion));
+            using var httpClient = new HttpClient();
+            var httpResponse = await httpClient.GetAsync(UpdateUrl);
+            if (!httpResponse.IsSuccessStatusCode) return true;
+            Guard.IsTrue(Version.TryParse(await httpResponse.Content.ReadAsStringAsync(), out var lastestVersion));
             Guard.IsTrue(Version.TryParse(ThisAssembly.AssemblyFileVersion, out var currentVersion));
             Guard.IsNotNull(lastestVersion);
             Guard.IsNotNull(currentVersion);

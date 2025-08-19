@@ -15,7 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj"/>
+        <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,10 +23,6 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="ICheckUpdateService.cs" />
     </ItemGroup>
 
 </Project>

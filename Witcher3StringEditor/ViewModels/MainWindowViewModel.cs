@@ -29,6 +29,7 @@ internal partial class MainWindowViewModel : ObservableObject
 {
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
+    private readonly ICheckUpdateService checkUpdateService;
     private readonly IDialogService dialogService;
     private readonly IExplorerService explorerService;
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
@@ -39,10 +40,12 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private string[] dropFileData = [];
 
+    [ObservableProperty] private bool isUpdateAvailable;
+
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
-    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IDialogService dialogService,
+    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,ICheckUpdateService checkUpdateService, IDialogService dialogService,
         IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
         ITranslator translator)
     {
@@ -50,6 +53,7 @@ internal partial class MainWindowViewModel : ObservableObject
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
         this.backupService = backupService;
+        this.checkUpdateService = checkUpdateService;
         this.dialogService = dialogService;
         this.playGameService = playGameService;
         this.explorerService = explorerService;
@@ -121,6 +125,7 @@ internal partial class MainWindowViewModel : ObservableObject
         Log.Information("OS Version: {0}", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         Log.Information(".Net Runtime: {0}", RuntimeInformation.FrameworkDescription);
         await CheckSettings(appSettings);
+        IsUpdateAvailable = await checkUpdateService.CheckUpdate();
     }
 
     private static async Task CheckSettings(IAppSettings settings)
