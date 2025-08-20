@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Microsoft.Xaml.Behaviors;
+using Serilog;
 using Syncfusion.UI.Xaml.Grid;
-using Log = Serilog.Log;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
