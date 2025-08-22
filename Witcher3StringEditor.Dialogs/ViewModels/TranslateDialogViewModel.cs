@@ -21,7 +21,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private readonly ITranslator translator;
 
-    private readonly IEnumerable<IW3Item> w3Items;
+    private readonly IReadOnlyList<IW3Item> w3Items;
 
     [ObservableProperty] private object currentViewModel;
 
@@ -32,7 +32,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator, IEnumerable<IW3Item> w3Items,
         int index)
     {
-        this.w3Items = w3Items;
+        this.w3Items = [.. w3Items];
         this.index = index;
         this.appSettings = appSettings;
         this.translator = translator;
