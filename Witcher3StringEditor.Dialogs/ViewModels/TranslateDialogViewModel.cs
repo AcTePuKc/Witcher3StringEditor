@@ -62,8 +62,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 case BatchTranslateContentViewModel batchVm:
                     await batchVm.CancelCommand.ExecuteAsync(null);
                     break;
-                default:
-                    break;
             }
 
             await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
