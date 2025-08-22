@@ -156,13 +156,13 @@ public partial class TranslateContentViewModel : ObservableObject
                 && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
             {
-                var found = w3Items.FirstOrDefault(x => x.Id == CurrentTranslateItemModel.Id);
+                var found = w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
                 Guard.IsNotNull(found);
                 found.Text = CurrentTranslateItemModel.TranslatedText;
-                IndexOfItems += indexChange;
-                Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
-                    translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
             }
+            IndexOfItems += indexChange;
+            Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
+                translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
         }
         catch (Exception ex)
         {
