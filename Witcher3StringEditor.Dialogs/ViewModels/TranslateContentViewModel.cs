@@ -81,10 +81,10 @@ public partial class TranslateContentViewModel : ObservableObject
     [RelayCommand]
     private async Task Translate()
     {
-        if (CurrentTranslateItemModel == null) return;
-        if (CurrentTranslateItemModel.Text.Length <= 1000)
+        try
         {
-            try
+            Guard.IsNotNull(CurrentTranslateItemModel);
+            if (CurrentTranslateItemModel.Text.Length <= 1000)
             {
                 Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
                 if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
@@ -97,20 +97,20 @@ public partial class TranslateContentViewModel : ObservableObject
                     .Translation;
                 Log.Information("Translation completed.");
             }
-            catch (Exception ex)
+            else
             {
-                _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
-                Log.Error(ex, "Translation error occurred.");
+                _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
+                    "TranslateCharactersNumberExceedLimit");
+                Log.Error("Exceeded the character limit for translator {0}.", translator.Name);
             }
-
-            IsBusy = false;
         }
-        else
+        catch (Exception ex)
         {
-            _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
-                "TranslateCharactersNumberExceedLimit");
-            Log.Error("Exceeded the character limit for translator {0}.", translator.Name);
+            _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
+            Log.Error(ex, "Translation error occurred.");
         }
+
+        IsBusy = false;
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
