@@ -84,7 +84,13 @@ public partial class TranslateContentViewModel : ObservableObject
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (CurrentTranslateItemModel.Text.Length <= 1000)
+            if (CurrentTranslateItemModel.Text.Length > 1000)
+            {
+                _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
+                    "TranslateCharactersNumberExceedLimit");
+                Log.Error("Exceeded the character limit for translator {0}.", translator.Name);
+            }
+            else
             {
                 Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
                 if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
@@ -95,13 +101,8 @@ public partial class TranslateContentViewModel : ObservableObject
                 CurrentTranslateItemModel.TranslatedText =
                     (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
                     .Translation;
-                Log.Information("Translation completed.");
-            }
-            else
-            {
-                _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
-                    "TranslateCharactersNumberExceedLimit");
-                Log.Error("Exceeded the character limit for translator {0}.", translator.Name);
+                Log.Information("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
+                    CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
             }
         }
         catch (Exception ex)
