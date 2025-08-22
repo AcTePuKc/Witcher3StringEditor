@@ -64,7 +64,7 @@ public partial class TranslateContentViewModel : ObservableObject
 
     private bool CanPrevious => IndexOfItems > 0 && !IsBusy;
 
-    private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsBusy;
+    private bool CanNext => IndexOfItems < w3Items.Count - 1 && !IsBusy;
 
     partial void OnIndexOfItemsChanged(int oldValue, int newValue)
     {
