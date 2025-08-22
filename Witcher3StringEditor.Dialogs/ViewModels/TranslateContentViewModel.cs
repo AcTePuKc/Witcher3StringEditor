@@ -98,9 +98,13 @@ public partial class TranslateContentViewModel : ObservableObject
                         "TranslationNotEmpty")) return;
                 IsBusy = true;
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
-                CurrentTranslateItemModel.TranslatedText =
+                Log.Information("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
+                    CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
+                var translation =
                     (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
                     .Translation;
+                Guard.IsNotNullOrWhiteSpace(translation);
+                CurrentTranslateItemModel.TranslatedText = translation;
                 Log.Information("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
                     CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
                 IsBusy = false;
