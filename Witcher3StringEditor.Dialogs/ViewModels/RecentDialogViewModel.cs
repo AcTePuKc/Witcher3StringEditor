@@ -15,7 +15,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     public RecentDialogViewModel(IAppSettings appSettings)
     {
         AppSettings = appSettings;
-        AppSettings.RecentItems.CollectionChanged += static (s, e) =>
+        AppSettings.RecentItems.CollectionChanged += static (_, e) =>
         {
             if (e.Action == NotifyCollectionChangedAction.Remove)
                 Log.Information("Recent items collection changed: {0} items removed.", e.OldItems?.Count ?? 0);

@@ -86,7 +86,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private async Task SaveUnsavedChangesIfNeeded(TranslateContentViewModel? translateViewModel)
     {
-        if (translateViewModel?.CurrentTranslateItemModel is { IsSaved: false, TranslatedText: not null } item
+        if (translateViewModel?.CurrentTranslateItemModel is { IsSaved: false } item
             && !string.IsNullOrWhiteSpace(item.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
         {
