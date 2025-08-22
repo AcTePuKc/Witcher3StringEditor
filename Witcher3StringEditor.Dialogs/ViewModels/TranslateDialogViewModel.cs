@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -50,53 +51,43 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Switch()
     {
-        if (CurrentViewModel is not TranslateContentViewModel { IsBusy: true }
-            || await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+        try
         {
-            if (CurrentViewModel is TranslateContentViewModel
-                {
-                    CurrentTranslateItemModel.IsSaved: false
-                } translateViewModel
-                && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
-                && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-                w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel?.Id).Text =
-                    translateViewModel.CurrentTranslateItemModel.TranslatedText;
-            CurrentViewModel = CurrentViewModel is TranslateContentViewModel
-                ? new BatchTranslateContentViewModel(appSettings, translator, w3Items, index + 1)
-                : new TranslateContentViewModel(appSettings, translator, w3Items, index);
-            Title = CurrentViewModel.GetType() == typeof(BatchTranslateContentViewModel)
-                ? Strings.BatchTranslateDialogTitle
-                : Strings.TranslateDialogTitle;
-            Log.Information("Switch translation mode to {0} mode.",
-                CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
+            if (CurrentViewModel is not TranslateContentViewModel { IsBusy: true } &&
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+            {
+                await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
+                CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
+                    ? new TranslateContentViewModel(appSettings, translator, w3Items, index)
+                    : new BatchTranslateContentViewModel(appSettings, translator, w3Items, index + 1);
+                Title = CurrentViewModel is BatchTranslateContentViewModel
+                    ? Strings.BatchTranslateDialogTitle
+                    : Strings.TranslateDialogTitle;
+                Log.Information("Switched translation mode to {Mode}",
+                    CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
+            }
+            else
+            {
+                Log.Information("Translation mode switch cancelled (busy or user declined)");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to switch translation mode");
         }
     }
 
     [RelayCommand]
     private async Task Closing(CancelEventArgs e)
     {
-        switch (CurrentViewModel)
+        try
         {
-            case TranslateContentViewModel { IsBusy: true } or BatchTranslateContentViewModel { IsBusy: true }
-                when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                    "TranslationDialogClosing"):
-                e.Cancel = true;
-                break;
-
-            case BatchTranslateContentViewModel { IsBusy: true } batchTranslateViewModel:
-                await batchTranslateViewModel.CancelCommand.ExecuteAsync(null);
-                break;
-
-            case TranslateContentViewModel translateViewModel:
-            {
-                if (translateViewModel.CurrentTranslateItemModel is { IsSaved: false }
-                    && !string.IsNullOrWhiteSpace(translateViewModel.CurrentTranslateItemModel.TranslatedText)
-                    && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                        "TranslatedTextNoSaved"))
-                    w3Items.First(x => x.Id == translateViewModel.CurrentTranslateItemModel.Id).Text =
-                        translateViewModel.CurrentTranslateItemModel.TranslatedText;
-                break;
-            }
+            e.Cancel = await HandleClosingAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error during dialog closing");
+            e.Cancel = false;
         }
     }
 
@@ -104,5 +95,39 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     private void Closed()
     {
         WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    }
+
+    private async Task SaveUnsavedChangesIfNeeded(TranslateContentViewModel? translateViewModel)
+    {
+        if (translateViewModel?.CurrentTranslateItemModel is { IsSaved: false, TranslatedText: not null } item
+            && !string.IsNullOrWhiteSpace(item.TranslatedText)
+            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
+        {
+            var found = w3Items.First(x => x.Id == item.Id);
+            Guard.IsNotNull(found);
+            found.Text = item.TranslatedText;
+            Log.Information("Auto-saved unsaved changes for item {ItemId}", item.Id);
+        }
+    }
+
+    private async Task<bool> HandleClosingAsync()
+    {
+        if ((CurrentViewModel is TranslateContentViewModel { IsBusy: true }
+             || CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true })
+            && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
+            return true;
+        if (CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true } batchVm)
+        {
+            await batchVm.CancelCommand.ExecuteAsync(null);
+            return false;
+        }
+
+        if (CurrentViewModel is TranslateContentViewModel singleVm)
+        {
+            await SaveUnsavedChangesIfNeeded(singleVm);
+            return false;
+        }
+
+        return false;
     }
 }
