@@ -114,11 +114,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             if (CurrentViewModel is not TranslateContentViewModel singleVm) return false;
             await SaveUnsavedChangesIfNeeded(singleVm);
             return false;
-
         }
 
         Log.Information("Translation dialog closing cancelled (busy)");
         return true;
-
     }
 }
