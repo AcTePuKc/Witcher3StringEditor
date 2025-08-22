@@ -123,7 +123,7 @@ public partial class TranslateContentViewModel : ObservableObject
         else
             w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
         CurrentTranslateItemModel.IsSaved = true;
-        Log.Information("Translation have been saved.");
+        Log.Information("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
     }
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
