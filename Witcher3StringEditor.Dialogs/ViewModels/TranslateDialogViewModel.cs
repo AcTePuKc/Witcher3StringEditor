@@ -26,8 +26,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     [ObservableProperty] private object currentViewModel;
 
-    [ObservableProperty] private bool switchIsEnabled = true;
-
     [ObservableProperty] private string title = Strings.TranslateDialogTitle;
 
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator, IEnumerable<IW3Item> w3Items,
@@ -38,12 +36,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.appSettings = appSettings;
         this.translator = translator;
         CurrentViewModel = new TranslateContentViewModel(appSettings, translator, this.w3Items, index);
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(
-            recipient, "TranslatorIsBatchTranslating", (r, m) =>
-            {
-                r.Receive(m);
-                SwitchIsEnabled = !m.Message;
-            });
     }
 
     public bool? DialogResult => true;

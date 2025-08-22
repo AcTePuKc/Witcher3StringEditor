@@ -59,8 +59,7 @@
             <Button
                 Margin="0,0,0,16"
                 HorizontalAlignment="Right"
-                Command="{Binding SwitchCommand}"
-                IsEnabled="{Binding SwitchIsEnabled}">
+                Command="{Binding SwitchCommand}">
                 <ui:FontIcon Glyph="&#xE8AB;" />
             </Button>
             <ContentControl
