@@ -53,26 +53,25 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         try
         {
-            if (CurrentViewModel is TranslateContentViewModel { IsBusy: true } ||
-                CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true } &&
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
-            {
-                if (CurrentViewModel is BatchTranslateContentViewModel batchVm)
-                    await batchVm.CancelCommand.ExecuteAsync(null);
-                await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
-                CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
-                    ? new TranslateContentViewModel(appSettings, translator, w3Items, index)
-                    : new BatchTranslateContentViewModel(appSettings, translator, w3Items, index + 1);
-                Title = CurrentViewModel is BatchTranslateContentViewModel
-                    ? Strings.BatchTranslateDialogTitle
-                    : Strings.TranslateDialogTitle;
-                Log.Information("Switched translation mode to {Mode}",
-                    CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
-            }
-            else
+            if ((CurrentViewModel is TranslateContentViewModel { IsBusy: true } ||
+                 CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true }) &&
+                !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
             {
                 Log.Information("Translation mode switch cancelled (busy or user declined)");
+                return;
             }
+
+            if (CurrentViewModel is BatchTranslateContentViewModel batchVm)
+                await batchVm.CancelCommand.ExecuteAsync(null);
+            await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
+            CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
+                ? new TranslateContentViewModel(appSettings, translator, w3Items, index)
+                : new BatchTranslateContentViewModel(appSettings, translator, w3Items, index + 1);
+            Title = CurrentViewModel is BatchTranslateContentViewModel
+                ? Strings.BatchTranslateDialogTitle
+                : Strings.TranslateDialogTitle;
+            Log.Information("Switched translation mode to {Mode}",
+                CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
         }
         catch (Exception ex)
         {
