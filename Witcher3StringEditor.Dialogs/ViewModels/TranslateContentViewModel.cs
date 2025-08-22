@@ -66,11 +66,12 @@ public partial class TranslateContentViewModel : ObservableObject
 
     private bool CanNext => IndexOfItems < w3Items.Count() - 1 && !IsBusy;
 
-    partial void OnIndexOfItemsChanged(int value)
+    partial void OnIndexOfItemsChanged(int oldValue, int newValue)
     {
-        var item = w3Items[value];
+        var item = w3Items[newValue];
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
-        Log.Information("The position of the currently translated item in W3Items is {0}.", value);
+        Log.Information("Translated item index changed from {OldIndex} to {NewIndex} (Item ID: {ItemId})", oldValue,
+            newValue, item.Id);
     }
 
     partial void OnIsBusyChanged(bool value)
