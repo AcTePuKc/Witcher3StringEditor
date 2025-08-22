@@ -53,9 +53,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         try
         {
-            if (CurrentViewModel is TranslateContentViewModel { IsBusy: true } &&
-                 CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true } ||
-                 await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+            if (CurrentViewModel is TranslateContentViewModel { IsBusy: true } ||
+                CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true } &&
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
             {
                 if (CurrentViewModel is BatchTranslateContentViewModel batchVm)
                     await batchVm.CancelCommand.ExecuteAsync(null);
