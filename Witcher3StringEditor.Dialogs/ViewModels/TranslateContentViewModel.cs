@@ -66,12 +66,10 @@ public partial class TranslateContentViewModel : ObservableObject
 
     private bool CanNext => IndexOfItems < w3Items.Count - 1 && !IsBusy;
 
-    partial void OnIndexOfItemsChanged(int oldValue, int newValue)
+    partial void OnIndexOfItemsChanged(int value)
     {
-        var item = w3Items[newValue];
+        var item = w3Items[value];
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
-        Log.Information("Translated item index changed from {OldIndex} to {NewIndex} (Item ID: {ItemId})", oldValue,
-            newValue, item.Id);
     }
 
     partial void OnIsBusyChanged(bool value)
@@ -150,30 +148,7 @@ public partial class TranslateContentViewModel : ObservableObject
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanPrevious))]
-    private async Task Previous()
-    {
-        try
-        {
-            if (CurrentTranslateItemModel is { IsSaved: false } &&
-                !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText) &&
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-            {
-                var found = w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
-                Guard.IsNotNull(found);
-                found.Text = CurrentTranslateItemModel.TranslatedText;
-                IndexOfItems -= 1;
-                Log.Information("Translator {0} moved to the previous item.", translator.Name);
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to move to the previous item.");
-        }
-    }
-
-    [RelayCommand(CanExecute = nameof(CanNext))]
-    private async Task Next()
+    private async Task Navigate(int indexChange)
     {
         try
         {
@@ -181,16 +156,29 @@ public partial class TranslateContentViewModel : ObservableObject
                 && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
             {
-                var found = w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
+                var found = w3Items.FirstOrDefault(x => x.Id == CurrentTranslateItemModel.Id);
                 Guard.IsNotNull(found);
                 found.Text = CurrentTranslateItemModel.TranslatedText;
-                IndexOfItems += 1;
-                Log.Information("Translator {0} moved to the next item.", translator.Name);
+                IndexOfItems += indexChange;
+                Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
+                    translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
             }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to move to the next item.");
+            Log.Error(ex, "Failed to move to {Direction} item", indexChange > 0 ? "next" : "previous");
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanPrevious))]
+    private async Task Previous()
+    {
+        await Navigate(-1);
+    }
+
+    [RelayCommand(CanExecute = nameof(CanNext))]
+    private async Task Next()
+    {
+        await Navigate(1);
     }
 }
