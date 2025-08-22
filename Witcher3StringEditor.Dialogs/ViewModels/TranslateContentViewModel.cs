@@ -125,13 +125,20 @@ public partial class TranslateContentViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
     {
-        if (CurrentTranslateItemModel == null) return;
-        if (string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
-            WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty), "TranslatedTextInvalid");
-        else
-            w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
-        CurrentTranslateItemModel.IsSaved = true;
-        Log.Information("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
+        try
+        {
+            Guard.IsNotNull(CurrentTranslateItemModel);
+            if (string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
+                WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty), "TranslatedTextInvalid");
+            else
+                w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+            CurrentTranslateItemModel.IsSaved = true;
+            Log.Information("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to save translation for item {ItemId}.", CurrentTranslateItemModel?.Id);
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
