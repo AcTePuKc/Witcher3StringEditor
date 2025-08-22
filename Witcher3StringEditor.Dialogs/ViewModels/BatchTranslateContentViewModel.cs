@@ -12,7 +12,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject
 {
     private readonly ITranslator translator;
 
-    private readonly IEnumerable<IW3Item> w3Items;
+    private readonly IReadOnlyList<IW3Item> w3Items;
     private CancellationTokenSource? cancellationTokenSource;
 
     [ObservableProperty] private int endIndex;
@@ -42,11 +42,11 @@ public partial class BatchTranslateContentViewModel : ObservableObject
         IEnumerable<IW3Item> w3Items, int startIndex)
     {
         this.translator = translator;
-        this.w3Items = w3Items;
+        this.w3Items = [.. w3Items];
         Languages = Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         StartIndex = startIndex;
-        EndIndex = MaxValue = this.w3Items.Count();
+        EndIndex = MaxValue = this.w3Items.Count;
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
         {
