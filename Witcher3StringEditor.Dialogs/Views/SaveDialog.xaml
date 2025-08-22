@@ -95,7 +95,8 @@
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding W3Job.W3FileType}" Value="{x:Static c:W3FileType.w3Strings}">
+                                        <DataTrigger Binding="{Binding W3Job.W3FileType}"
+                                                     Value="{x:Static c:W3FileType.w3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -125,7 +126,8 @@
                                 <Style TargetType="ui:NumberBox">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding W3Job.W3FileType}" Value="{x:Static c:W3FileType.w3Strings}">
+                                        <DataTrigger Binding="{Binding W3Job.W3FileType}"
+                                                     Value="{x:Static c:W3FileType.w3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">
