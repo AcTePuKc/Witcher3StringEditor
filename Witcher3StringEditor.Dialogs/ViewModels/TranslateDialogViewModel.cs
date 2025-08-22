@@ -53,8 +53,13 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         try
         {
-            if (CurrentViewModel is not TranslateContentViewModel { IsBusy: true } &&
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+            if ((CurrentViewModel is TranslateContentViewModel { IsBusy: true } ||
+                 CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true }) &&
+                 !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+            {
+                Log.Information("Translation mode switch cancelled (busy or user declined)");
+            }
+            else
             {
                 await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
                 CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
@@ -65,10 +70,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                     : Strings.TranslateDialogTitle;
                 Log.Information("Switched translation mode to {Mode}",
                     CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
-            }
-            else
-            {
-                Log.Information("Translation mode switch cancelled (busy or user declined)");
             }
         }
         catch (Exception ex)
