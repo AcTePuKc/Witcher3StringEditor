@@ -128,10 +128,18 @@ public partial class TranslateContentViewModel : ObservableObject
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
-                WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty), "TranslatedTextInvalid");
+            if (!string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
+            {
+                var found = w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
+                Guard.IsNotNull(found);
+                found.Text = CurrentTranslateItemModel.TranslatedText;
+            }
             else
-                w3Items.First(x => x.Id == CurrentTranslateItemModel.Id).Text = CurrentTranslateItemModel.TranslatedText;
+            {
+                WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
+                    "TranslatedTextInvalid");
+            }
+
             CurrentTranslateItemModel.IsSaved = true;
             Log.Information("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
         }
