@@ -59,7 +59,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                     !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"):
                     Log.Information("Translation mode switch cancelled (busy or user declined)");
                     return;
-                case BatchTranslateContentViewModel batchVm:
+                case BatchTranslateContentViewModel { IsBusy: true } batchVm:
                     await batchVm.CancelCommand.ExecuteAsync(null);
                     break;
             }
