@@ -18,7 +18,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     private readonly IAppSettings appSettings;
 
     private readonly int index;
-    private readonly NotificationRecipient<bool> recipient = new();
 
     private readonly ITranslator translator;
 
@@ -84,12 +83,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             Log.Error(ex, "Error during dialog closing");
             e.Cancel = false;
         }
-    }
-
-    [RelayCommand]
-    private void Closed()
-    {
-        WeakReferenceMessenger.Default.UnregisterAll(recipient);
     }
 
     private async Task SaveUnsavedChangesIfNeeded(TranslateContentViewModel? translateViewModel)
