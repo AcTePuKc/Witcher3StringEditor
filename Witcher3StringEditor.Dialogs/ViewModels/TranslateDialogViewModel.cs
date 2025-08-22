@@ -100,21 +100,25 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private async Task<bool> HandleClosingAsync()
     {
-        switch (CurrentViewModel)
+        if (CurrentViewModel is not (TranslateContentViewModel { IsBusy: true }
+                or BatchTranslateContentViewModel { IsBusy: true }) || await WeakReferenceMessenger.Default.Send(
+                new AsyncRequestMessage<bool>(),
+                "TranslationDialogClosing"))
         {
-            case TranslateContentViewModel { IsBusy: true } or BatchTranslateContentViewModel { IsBusy: true }
-                when !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                    "TranslationDialogClosing"):
-                Log.Information("Translation dialog closing cancelled (busy)");
-                return true;
-            case BatchTranslateContentViewModel { IsBusy: true } batchVm:
+            if (CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true } batchVm)
+            {
                 await batchVm.CancelCommand.ExecuteAsync(null);
                 return false;
-            case TranslateContentViewModel singleVm:
-                await SaveUnsavedChangesIfNeeded(singleVm);
-                return false;
-            default:
-                return false;
+            }
+
+            if (CurrentViewModel is not TranslateContentViewModel singleVm) return false;
+            await SaveUnsavedChangesIfNeeded(singleVm);
+            return false;
+
         }
+
+        Log.Information("Translation dialog closing cancelled (busy)");
+        return true;
+
     }
 }
