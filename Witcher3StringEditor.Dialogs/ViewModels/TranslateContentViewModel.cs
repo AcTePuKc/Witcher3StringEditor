@@ -103,6 +103,7 @@ public partial class TranslateContentViewModel : ObservableObject
                     .Translation;
                 Log.Information("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
                     CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
+                IsBusy = false;
             }
         }
         catch (Exception ex)
@@ -110,8 +111,10 @@ public partial class TranslateContentViewModel : ObservableObject
             _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
             Log.Error(ex, "Translation error occurred.");
         }
-
-        IsBusy = false;
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
