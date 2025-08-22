@@ -16,7 +16,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class TranslateContentViewModel : ObservableObject
 {
     private readonly ITranslator translator;
-    private readonly IEnumerable<IW3Item> w3Items;
+    private readonly IReadOnlyList<IW3Item> w3Items;
 
     [ObservableProperty] private TranslateItem? currentTranslateItemModel;
 
@@ -40,7 +40,7 @@ public partial class TranslateContentViewModel : ObservableObject
     public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator, IEnumerable<IW3Item> w3Items,
         int index)
     {
-        this.w3Items = w3Items;
+        this.w3Items = [.. w3Items];
         this.translator = translator;
         Languages = Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
@@ -68,7 +68,7 @@ public partial class TranslateContentViewModel : ObservableObject
 
     partial void OnIndexOfItemsChanged(int value)
     {
-        var item = w3Items.ElementAt(value);
+        var item = w3Items[value];
         CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
         Log.Information("The position of the currently translated item in W3Items is {0}.", value);
     }
