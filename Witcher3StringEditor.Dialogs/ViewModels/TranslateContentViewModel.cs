@@ -160,6 +160,7 @@ public partial class TranslateContentViewModel : ObservableObject
                 Guard.IsNotNull(found);
                 found.Text = CurrentTranslateItemModel.TranslatedText;
             }
+
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);

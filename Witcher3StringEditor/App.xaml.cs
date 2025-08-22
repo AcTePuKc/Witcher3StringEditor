@@ -96,7 +96,7 @@ public partial class App
             .AddSingleton<IExplorerService, ExplorerService>()
             .AddSingleton<IPlayGameService, PlayGameService>()
             .AddSingleton<IW3Serializer, W3Serializer>()
-            .AddSingleton<ITranslator,MicrosoftTranslator>()
+            .AddSingleton<ITranslator, MicrosoftTranslator>()
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider();
     }

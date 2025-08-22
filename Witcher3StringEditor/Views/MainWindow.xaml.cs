@@ -28,7 +28,7 @@ public partial class MainWindow
         var messageHandlers = new[]
         {
             ("FileOpened", Strings.FileOpenedMessage, Strings.FileOpenedCaption),
-            ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption),
+            ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)

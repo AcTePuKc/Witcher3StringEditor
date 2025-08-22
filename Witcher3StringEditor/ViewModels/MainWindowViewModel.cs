@@ -45,7 +45,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
-    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,ICheckUpdateService checkUpdateService, IDialogService dialogService,
+    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
+        ICheckUpdateService checkUpdateService, IDialogService dialogService,
         IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
         ITranslator translator)
     {

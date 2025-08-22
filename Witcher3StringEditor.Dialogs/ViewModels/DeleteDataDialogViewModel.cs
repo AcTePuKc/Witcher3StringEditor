@@ -29,6 +29,5 @@ public partial class DeleteDataDialogViewModel(IEnumerable<IW3Item> w3Items)
         DialogResult = false;
         RequestClose?.Invoke(this, EventArgs.Empty);
         Log.Information("The selected W3Items have not been deleted.");
-        
     }
 }
