@@ -83,10 +83,10 @@ public partial class App
         switch (placement.showCmd)
         {
             case SHOW_WINDOW_CMD.SW_SHOWMINIMIZED or SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE:
-                PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
+                _ = PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
                 break;
             case SHOW_WINDOW_CMD.SW_HIDE:
-                PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW);
+                _ = PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW);
                 break;
         }
 
