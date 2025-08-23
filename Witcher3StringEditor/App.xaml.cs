@@ -128,5 +128,6 @@ public partial class App
         Log.Information("Application exited.");
         mutex?.Dispose();
         logObserver?.Dispose();
+        Log.CloseAndFlush();
     }
 }
