@@ -38,7 +38,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly ITranslator translator;
     private readonly IW3Serializer w3Serializer;
 
-    [ObservableProperty] private string[] dropFileData = [];
+    [ObservableProperty] private string[]? dropFileData;
 
     [ObservableProperty] private bool isUpdateAvailable;
 
@@ -165,7 +165,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenFile))]
     private async Task DropFile()
     {
-        if (DropFileData.Length > 0)
+        if (DropFileData?.Length > 0)
         {
             var file = DropFileData[0];
             var ext = Path.GetExtension(file);
