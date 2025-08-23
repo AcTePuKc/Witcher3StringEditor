@@ -82,16 +82,11 @@ public partial class App
         var placement = new WINDOWPLACEMENT();
         placement.length = (uint)Marshal.SizeOf<WINDOWPLACEMENT>(placement);
         _ = PInvoke.GetWindowPlacement(mainWindowHandle, ref placement);
-        switch (placement.showCmd)
-        {
-            case SHOW_WINDOW_CMD.SW_SHOWMINIMIZED:
-            case SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE:
-                PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
-                break;
-            case SHOW_WINDOW_CMD.SW_HIDE:
-                PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW);
-                break;
-        }
+        if (placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINIMIZED ||
+            placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE)
+            PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
+        else if (placement.showCmd == SHOW_WINDOW_CMD.SW_HIDE)
+            PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW);
         _ = PInvoke.SetForegroundWindow(mainWindowHandle);
         Current.Shutdown();
     }
