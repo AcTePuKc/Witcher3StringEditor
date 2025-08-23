@@ -251,7 +251,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Multiple instances may cause data to be overwritten incorrectly. Only single instance is supported. Click the button to wake up the open window. 的本地化字符串。
+        ///   查找类似 Multiple instances may cause data to be overwritten incorrectly. Only single-instance operation is supported. Do you want to bring up the already open window? 的本地化字符串。
         /// </summary>
         internal static string MultipleInstanceMessage {
             get {

@@ -212,7 +212,7 @@
     <value>Indication de Configuration au Premier Lancement</value>
   </data>
   <data name="MultipleInstanceMessage" xml:space="preserve">
-    <value>Plusieurs instances peuvent entraîner une écrasement incorrecte des données. Seule une instance est prise en charge. Cliquez sur le bouton pour réveiller la fenêtre ouverte.</value>
+    <value>Plusieurs instances peuvent entraîner une écrasement incorrect des données. Seule l'exécution en mono-instance est prise en charge. Voulez-vous réactiver la fenêtre déjà ouverte ?</value>
   </data>
   <data name="MultipleInstanceCaption" xml:space="preserve">
     <value>Le logiciel est déjà en cours d'exécution</value>

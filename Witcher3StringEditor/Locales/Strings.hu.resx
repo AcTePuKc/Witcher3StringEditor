@@ -212,7 +212,7 @@
     <value>Első Indítási Konfigurációs Üzenet</value>
   </data>
   <data name="MultipleInstanceMessage" xml:space="preserve">
-    <value>Több példány helytelenülülírással okozhatja az adatok felülírását. Csak egyetlen példány támogatott. Kattintson a gombra az megnyitott ablak ébredteti.</value>
+    <value>Több példány helyzetben az adatok helytelenül írhatók felül. Csak egyszeres példány-futtatás támogatott. Aktiválja az már nyitott ablakot?</value>
   </data>
   <data name="MultipleInstanceCaption" xml:space="preserve">
     <value>A szoftver már fut</value>

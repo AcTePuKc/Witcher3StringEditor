@@ -66,9 +66,8 @@ public partial class App
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
         if (createdNew) return;
-        _ = MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.OK,
-            MessageBoxImage.Information);
-        ActivateExistingInstance();
+        if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
+                MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
         Current.Shutdown();
     }
 
