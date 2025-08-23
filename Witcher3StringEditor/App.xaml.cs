@@ -80,10 +80,9 @@ public partial class App
             Process.GetProcessesByName(currentProcess.ProcessName).First(p => p.Id != currentProcess.Id);
         var mainWindowHandle = new HWND(existingProcess.MainWindowHandle);
         var placement = new WINDOWPLACEMENT();
-        placement.length = (uint)Marshal.SizeOf<WINDOWPLACEMENT>(placement);
+        placement.length = (uint)Marshal.SizeOf(placement);
         _ = PInvoke.GetWindowPlacement(mainWindowHandle, ref placement);
-        if (placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINIMIZED ||
-            placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE)
+        if (placement.showCmd is SHOW_WINDOW_CMD.SW_SHOWMINIMIZED or SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE)
             PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
         else if (placement.showCmd == SHOW_WINDOW_CMD.SW_HIDE)
             PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW);
