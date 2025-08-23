@@ -3,8 +3,12 @@ using System.Globalization;
 using System.IO;
 using System.Reactive;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using GTranslate.Translators;
@@ -21,11 +25,13 @@ using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;
 using Witcher3StringEditor.Services;
 using Witcher3StringEditor.ViewModels;
 using WPFLocalizeExtension.Engine;
+using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor;
 
@@ -59,7 +65,35 @@ public partial class App
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
-        if (!createdNew) Current.Shutdown();
+        if (!createdNew)
+        {
+            MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption);
+            ActivateExistingInstance();
+            Current.Shutdown();
+        }
+    }
+
+    private static void ActivateExistingInstance()
+    {
+        using var currentProcess = Process.GetCurrentProcess();
+        using var existingProcess =
+            Process.GetProcessesByName(currentProcess.ProcessName).First(p => p.Id != currentProcess.Id);
+        var mainWindowHandle = new HWND(existingProcess.MainWindowHandle);
+        var placement = new WINDOWPLACEMENT();
+        placement.length = (uint)Marshal.SizeOf<WINDOWPLACEMENT>(placement);
+        _ = PInvoke.GetWindowPlacement(mainWindowHandle, ref placement);
+        switch (placement.showCmd)
+        {
+            case SHOW_WINDOW_CMD.SW_SHOWMINIMIZED:
+            case SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE:
+                PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
+                break;
+            case SHOW_WINDOW_CMD.SW_HIDE:
+                PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW);
+                break;
+        }
+        _ = PInvoke.SetForegroundWindow(mainWindowHandle);
+        Current.Shutdown();
     }
 
     private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
