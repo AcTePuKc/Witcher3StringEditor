@@ -65,12 +65,10 @@ public partial class App
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
-        if (!createdNew)
-        {
-            MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption);
-            ActivateExistingInstance();
-            Current.Shutdown();
-        }
+        if (createdNew) return;
+        MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption);
+        ActivateExistingInstance();
+        Current.Shutdown();
     }
 
     private static void ActivateExistingInstance()
