@@ -53,6 +53,27 @@ public partial class App
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        InitializeLogging();
+        InitializeServices(configPath);
+        logger = Ioc.Default.GetRequiredService<ILogger<App>>();
+        SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
+        LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
+        DispatcherUnhandledException += App_DispatcherUnhandledException;
+        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+        CheckSingleInstance();
+    }
+
+    private void CheckSingleInstance()
+    {
+        mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
+        if (createdNew) return;
+        if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
+                MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
+        Current.Shutdown();
+    }
+
+    private void InitializeLogging()
+    {
         logObserver = new AnonymousObserver<LogEvent>(x =>
             WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
@@ -62,17 +83,6 @@ public partial class App
             .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo
             .Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
             .CreateLogger();
-        Ioc.Default.ConfigureServices(InitializeServices(configPath));
-        logger = Ioc.Default.GetRequiredService<ILogger<App>>();
-        SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
-        LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
-        DispatcherUnhandledException += App_DispatcherUnhandledException;
-        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-        mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
-        if (createdNew) return;
-        if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
-                MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
-        Current.Shutdown();
     }
 
     private static void ActivateExistingInstance()
@@ -119,9 +129,9 @@ public partial class App
             : new AppSettings();
     }
 
-    private static ServiceProvider InitializeServices(string path)
+    private static void InitializeServices(string path)
     {
-        return new ServiceCollection()
+        Ioc.Default.ConfigureServices(new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
             .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
@@ -134,7 +144,7 @@ public partial class App
             .AddSingleton<IW3Serializer, W3Serializer>()
             .AddSingleton<ITranslator, MicrosoftTranslator>()
             .AddTransient<MainWindowViewModel>()
-            .BuildServiceProvider();
+            .BuildServiceProvider());
     }
 
     private static StrongViewLocator CreatStrongViewLocator()
