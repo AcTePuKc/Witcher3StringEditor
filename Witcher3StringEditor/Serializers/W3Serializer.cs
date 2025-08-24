@@ -280,26 +280,34 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
 
     private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
     {
-        using var process = new Process();
-        process.EnableRaisingEvents = true;
-        process.StartInfo = new ProcessStartInfo
+        try
         {
-            RedirectStandardError = true,
-            RedirectStandardOutput = true,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            FileName = appSettings.W3StringsPath,
-            Arguments = w3Job.IsIgnoreIdSpaceCheck
-                ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
-                : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
-        };
-        process.ErrorDataReceived += Process_ErrorDataReceived;
-        process.OutputDataReceived += Process_OutputDataReceived;
-        process.Start();
-        process.BeginErrorReadLine();
-        process.BeginOutputReadLine();
-        await process.WaitForExitAsync();
-        return process.ExitCode == 0;
+            using var process = new Process();
+            process.EnableRaisingEvents = true;
+            process.StartInfo = new ProcessStartInfo
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                FileName = appSettings.W3StringsPath,
+                Arguments = w3Job.IsIgnoreIdSpaceCheck
+                    ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
+                    : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
+            };
+            process.ErrorDataReceived += Process_ErrorDataReceived;
+            process.OutputDataReceived += Process_OutputDataReceived;
+            process.Start();
+            process.BeginErrorReadLine();
+            process.BeginOutputReadLine();
+            await process.WaitForExitAsync();
+            return process.ExitCode == 0;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to start the serialization process.");
+            return false;
+        }
     }
 
     private bool CopyTempFilesWithBackup(string tempPath, string path)
