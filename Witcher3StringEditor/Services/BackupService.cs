@@ -36,12 +36,12 @@ internal class BackupService(IAppSettings appSettings,ILogger<BackupService> log
                 return true;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
             appSettings.BackupItems.Add(backupItem);
-            logger.LogInformation("Backup file: {0}.", backupItem.FileName);
+            logger.LogInformation("Backup file: {FileName}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to backup file: {0}.", path);
+            logger.LogError(ex, "Failed to backup file: {Path}.", path);
             return false;
         }
     }
@@ -56,12 +56,12 @@ internal class BackupService(IAppSettings appSettings,ILogger<BackupService> log
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
-            logger.LogInformation("Restore backup file: {0}.", backupItem.FileName);
+            logger.LogInformation("Restore backup file: {FileName}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to restore backup item: {0}.", backupItem.OrginPath);
+            logger.LogError(ex, "Failed to restore backup item: {Path}.", backupItem.OrginPath);
             return false;
         }
     }
@@ -73,12 +73,12 @@ internal class BackupService(IAppSettings appSettings,ILogger<BackupService> log
             if (File.Exists(backupItem.BackupPath))
                 File.Delete(backupItem.BackupPath);
             _ = appSettings.BackupItems.Remove(backupItem);
-            logger.LogInformation("Delete backup file: {0}.", backupItem.FileName);
+            logger.LogInformation("Delete backup file: {FileName}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to delete backup item: {0}.", backupItem.BackupPath);
+            logger.LogError(ex, "Failed to delete backup item: {Path}.", backupItem.BackupPath);
             return false;
         }
     }
@@ -94,7 +94,7 @@ internal class BackupService(IAppSettings appSettings,ILogger<BackupService> log
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to compute SHA256 hash: {0}.", filePath);
+            logger.LogError(ex, "Failed to compute SHA256 hash: {Path}.", filePath);
             return string.Empty;
         }
     }
