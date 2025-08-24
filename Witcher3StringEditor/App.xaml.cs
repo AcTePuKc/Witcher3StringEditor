@@ -5,7 +5,6 @@ using System.Reactive;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Threading;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
@@ -56,11 +55,26 @@ public partial class App
         InitializeLogging();
         InitializeServices(configPath);
         logger = Ioc.Default.GetRequiredService<ILogger<App>>();
+        SetupExceptionHandling();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
-        DispatcherUnhandledException += App_DispatcherUnhandledException;
-        TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         CheckSingleInstance();
+    }
+
+    private void SetupExceptionHandling()
+    {
+        DispatcherUnhandledException += (_, e) =>
+        {
+            e.Handled = true;
+            var exception = e.Exception;
+            logger?.LogError(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
+        };
+        TaskScheduler.UnobservedTaskException += (_, e) =>
+        {
+            e.SetObserved();
+            var exception = e.Exception;
+            logger?.LogError(exception, "Unobserved task exception: {ExceptionMessage}", exception.Message);
+        };
     }
 
     private void CheckSingleInstance()
@@ -108,19 +122,6 @@ public partial class App
         Current.Shutdown();
     }
 
-    private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-    {
-        e.Handled = true;
-        var exception = e.Exception;
-        logger?.LogError(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
-    }
-
-    private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
-    {
-        e.SetObserved();
-        var exception = e.Exception;
-        logger?.LogError(exception, "Unobserved task exception: {ExceptionMessage}", exception.Message);
-    }
 
     private static AppSettings LoadAppSettings(string path)
     {
