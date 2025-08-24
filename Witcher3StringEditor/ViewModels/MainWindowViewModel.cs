@@ -84,7 +84,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Failed to open file: {0}.", m.FileName);
+                    logger.LogError(ex, "Failed to open file: {FileName}.", m.FileName);
                 }
             });
         W3Items.CollectionChanged += (_, _) =>
@@ -125,10 +125,10 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         logger.LogInformation("Application started.");
-        logger.LogInformation("Application Version: {0}", ThisAssembly.AssemblyFileVersion);
-        logger.LogInformation("OS Version: {0}",
+        logger.LogInformation("Application Version: {Version}", ThisAssembly.AssemblyFileVersion);
+        logger.LogInformation("OS Version: {Version}",
             $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
-        logger.LogInformation(".Net Runtime: {0}", RuntimeInformation.FrameworkDescription);
+        logger.LogInformation(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription);
         await CheckSettings(appSettings);
         IsUpdateAvailable = await checkUpdateService.CheckUpdate();
     }
@@ -144,11 +144,11 @@ internal partial class MainWindowViewModel : ObservableObject
         else
         {
             logger.LogInformation("Settings are correct.");
-            logger.LogInformation("The W3Strings path has been set to {0}.", settings.W3StringsPath);
+            logger.LogInformation("The W3Strings path has been set to {Path}.", settings.W3StringsPath);
             if (string.IsNullOrWhiteSpace(settings.GameExePath))
                 logger.LogWarning("The game executable path is not set.");
             else
-                logger.LogInformation("The game executable path has been set to {0}.", settings.GameExePath);
+                logger.LogInformation("The game executable path has been set to {Path}.", settings.GameExePath);
         }
     }
 
