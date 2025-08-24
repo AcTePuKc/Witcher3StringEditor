@@ -15,8 +15,8 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class RecentDialog
 {
-    private readonly AsyncRequestRecipient<bool> recipient = new();
     private readonly ILogger<RecentDialog> logger;
+    private readonly AsyncRequestRecipient<bool> recipient = new();
 
     public RecentDialog()
     {
