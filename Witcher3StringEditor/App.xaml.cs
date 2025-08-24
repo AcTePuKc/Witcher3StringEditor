@@ -174,7 +174,7 @@ public partial class App
             new StringEnumConverter()));
         logger?.LogInformation("Application exited.");
         logObserver?.Dispose();
-        mutex?.Dispose();
         Log.CloseAndFlush();
+        mutex?.Dispose();
     }
 }
