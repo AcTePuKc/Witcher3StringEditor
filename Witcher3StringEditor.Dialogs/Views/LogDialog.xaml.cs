@@ -1,5 +1,6 @@
-﻿using iNKORE.UI.WPF.Modern.Controls;
-using Serilog;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using iNKORE.UI.WPF.Modern.Controls;
+using Microsoft.Extensions.Logging;
 
 namespace Witcher3StringEditor.Dialogs.Views;
 
@@ -8,9 +9,12 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// </summary>
 public partial class LogDialog
 {
+    private readonly ILogger<LogDialog> logger;
+
     public LogDialog()
     {
         InitializeComponent();
+        logger = Ioc.Default.GetRequiredService<ILogger<LogDialog>>();
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
     }
@@ -18,7 +22,7 @@ public partial class LogDialog
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         SfDataGrid.SearchHelper.Search(args.QueryText);
-        Log.Information("Search query submitted: {QueryText}", args.QueryText);
+        logger.LogInformation("Search query submitted: {QueryText}", args.QueryText);
     }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
