@@ -11,7 +11,8 @@ using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Serializers;
 
-internal class W3Serializer(IAppSettings appSettings, IBackupService backupService,ILogger<W3Serializer> logger) : IW3Serializer
+internal class W3Serializer(IAppSettings appSettings, IBackupService backupService, ILogger<W3Serializer> logger)
+    : IW3Serializer
 {
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
@@ -89,26 +90,11 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            using var process = new Process();
-            process.EnableRaisingEvents = true;
-            process.StartInfo = new ProcessStartInfo
+            using var process = await ExecuteExternalProcess(Parser.Default.FormatCommandLine(new W3Options
             {
-                FileName = appSettings.W3StringsPath,
-                Arguments = Parser.Default.FormatCommandLine(new W3Options
-                {
-                    Decode = path
-                }),
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
-            };
-            process.ErrorDataReceived += Process_ErrorDataReceived;
-            process.OutputDataReceived += Process_OutputDataReceived;
-            process.Start();
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
-            await process.WaitForExitAsync();
+                Decode = path
+            }));
+
             Guard.IsEqualTo(process.ExitCode, 0);
             return await DeserializeCsv($"{path}.csv");
         }
@@ -282,25 +268,9 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            using var process = new Process();
-            process.EnableRaisingEvents = true;
-            process.StartInfo = new ProcessStartInfo
-            {
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                FileName = appSettings.W3StringsPath,
-                Arguments = w3Job.IsIgnoreIdSpaceCheck
-                    ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
-                    : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace })
-            };
-            process.ErrorDataReceived += Process_ErrorDataReceived;
-            process.OutputDataReceived += Process_OutputDataReceived;
-            process.Start();
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
-            await process.WaitForExitAsync();
+            using var process = await ExecuteExternalProcess(w3Job.IsIgnoreIdSpaceCheck
+                ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
+                : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace }));
             return process.ExitCode == 0;
         }
         catch (Exception ex)
@@ -308,6 +278,30 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             logger.LogError(ex, "Failed to start the serialization process.");
             return false;
         }
+    }
+
+    private async Task<Process> ExecuteExternalProcess(string arguments)
+    {
+        var process = new Process
+        {
+            EnableRaisingEvents = true,
+            StartInfo = new ProcessStartInfo
+            {
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                FileName = appSettings.W3StringsPath,
+                Arguments = arguments
+            }
+        };
+        process.ErrorDataReceived += Process_ErrorDataReceived;
+        process.OutputDataReceived += Process_OutputDataReceived;
+        process.Start();
+        process.BeginErrorReadLine();
+        process.BeginOutputReadLine();
+        await process.WaitForExitAsync();
+        return process;
     }
 
     private bool CopyTempFilesWithBackup(string tempPath, string path)
