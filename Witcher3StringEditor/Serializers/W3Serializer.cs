@@ -26,7 +26,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deserializing the file: {0}.", path);
+            logger.LogError(ex, "An error occurred while deserializing the file: {Path}.", path);
             return [];
         }
     }
@@ -61,7 +61,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deserializing the CSV file: {0}.", path);
+            logger.LogError(ex, "An error occurred while deserializing the CSV file: {Path}.", path);
             return [];
         }
     }
@@ -80,7 +80,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deserializing Excel worksheets file: {0}.", path);
+            logger.LogError(ex, "An error occurred while deserializing Excel worksheets file: {Path}.", path);
             return await Task.FromResult<List<W3Item>>([]);
         }
     }
@@ -114,7 +114,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deserializing W3Strings file: {0}.", path);
+            logger.LogError(ex, "An error occurred while deserializing W3Strings file: {Path}.", path);
             return [];
         }
     }
@@ -122,13 +122,13 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
-            logger.LogError("Error: {0}.", e.Data);
+            logger.LogError("Error: {Data}.", e.Data);
     }
 
     private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
-            logger.LogInformation("Output: {0}.", e.Data);
+            logger.LogInformation("Output: {Data}.", e.Data);
     }
 
     private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
@@ -312,7 +312,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to copy file from {0} to {1}.", tempPath, path);
+            logger.LogError(ex, "Failed to copy file from {TempPath} to {Path}.", tempPath, path);
         }
 
         return true;
