@@ -1,8 +1,9 @@
 ﻿using System.Windows;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Dialogs.Recipients;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
@@ -15,10 +16,12 @@ namespace Witcher3StringEditor.Dialogs.Views;
 public partial class BackupDialog
 {
     private readonly AsyncRequestRecipient<bool> backupRecipient = new();
+    private readonly ILogger<BackupDialog> logger;
 
     public BackupDialog()
     {
         InitializeComponent();
+        logger = Ioc.Default.GetRequiredService<ILogger<BackupDialog>>();
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
 
@@ -53,7 +56,7 @@ public partial class BackupDialog
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         SfDataGrid.SearchHelper.Search(args.QueryText);
-        Log.Information("Search query submitted: {QueryText}", args.QueryText);
+        logger.LogInformation("Search query submitted: {QueryText}", args.QueryText);
     }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
