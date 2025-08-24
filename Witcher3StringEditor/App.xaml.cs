@@ -172,9 +172,9 @@ public partial class App
         File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
             Formatting.Indented,
             new StringEnumConverter()));
-        Log.Information("Application exited.");
-        mutex?.Dispose();
+        logger?.LogInformation("Application exited.");
         logObserver?.Dispose();
+        mutex?.Dispose();
         Log.CloseAndFlush();
     }
 }
