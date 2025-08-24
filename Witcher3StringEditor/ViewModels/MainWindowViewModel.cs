@@ -204,28 +204,28 @@ internal partial class MainWindowViewModel : ObservableObject
                 W3Items.Clear();
             }
 
-            logger.LogInformation("The file {0} is being opened...", fileName);
+            logger.LogInformation("The file {FileName} is being opened...", fileName);
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
             Guard.IsGreaterThan(W3Items.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
             OutputFolder = folder;
-            logger.LogInformation("Working directory set to {0}.", folder);
+            logger.LogInformation("Working directory set to {Folder}.", folder);
             var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
             if (foundItem == null)
             {
                 appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
-                logger.LogInformation("Added {0} to recent items.", fileName);
+                logger.LogInformation("Added {FileName} to recent items.", fileName);
             }
             else
             {
                 foundItem.OpenedTime = DateTime.Now;
-                logger.LogInformation("The last opened time for file {0} has been updated.", fileName);
+                logger.LogInformation("The last opened time for file {FileName} has been updated.", fileName);
             }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to open file: {0}.", fileName);
+            logger.LogError(ex, "Failed to open file: {FileName}.", fileName);
         }
     }
 
