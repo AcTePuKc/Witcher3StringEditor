@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -33,11 +34,11 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IDialogService dialogService;
     private readonly IExplorerService explorerService;
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
+    private readonly ILogger<MainWindowViewModel> logger;
     private readonly IPlayGameService playGameService;
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
     private readonly ITranslator translator;
     private readonly IW3Serializer w3Serializer;
-    private readonly ILogger<MainWindowViewModel> logger;
 
     [ObservableProperty] private string[]? dropFileData;
 
@@ -49,7 +50,7 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
         ICheckUpdateService checkUpdateService, IDialogService dialogService,
         IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
-        ITranslator translator,ILogger<MainWindowViewModel> logger)
+        ITranslator translator, ILogger<MainWindowViewModel> logger)
     {
         this.logger = logger;
         this.translator = translator;
@@ -125,7 +126,8 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         logger.LogInformation("Application started.");
         logger.LogInformation("Application Version: {0}", ThisAssembly.AssemblyFileVersion);
-        logger.LogInformation("OS Version: {0}", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        logger.LogInformation("OS Version: {0}",
+            $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         logger.LogInformation(".Net Runtime: {0}", RuntimeInformation.FrameworkDescription);
         await CheckSettings(appSettings);
         IsUpdateAvailable = await checkUpdateService.CheckUpdate();
@@ -264,14 +266,18 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         var w3Items = items.Cast<IW3Item>().ToArray();
         if (w3Items.Length > 0 &&
-            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
+            await dialogService.ShowDialogAsync(this,
+                new DeleteDataDialogViewModel(Ioc.Default.GetRequiredService<ILogger<DeleteDataDialogViewModel>>(),
+                    w3Items)) == true)
             w3Items.ForEach(item => W3Items.Remove(item));
     }
 
     [RelayCommand]
     private async Task ShowBackupDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this, new BackupDialogViewModel(appSettings, backupService));
+        _ = await dialogService.ShowDialogAsync(this,
+            new BackupDialogViewModel(appSettings, backupService,
+                Ioc.Default.GetRequiredService<ILogger<BackupDialogViewModel>>()));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
@@ -279,6 +285,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         _ = await dialogService.ShowDialogAsync(this,
             new SaveDialogViewModel(w3Serializer,
+                Ioc.Default.GetRequiredService<ILogger<SaveDialogViewModel>>(),
                 new W3Job
                 {
                     Path = OutputFolder,
@@ -298,7 +305,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService));
+            new SettingDialogViewModel(appSettings, dialogService,
+                Ioc.Default.GetRequiredService<ILogger<SettingDialogViewModel>>()));
     }
 
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
@@ -354,14 +362,16 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this, new RecentDialogViewModel(appSettings));
+        _ = await dialogService.ShowDialogAsync(this,
+            new RecentDialogViewModel(appSettings, Ioc.Default.GetRequiredService<ILogger<RecentDialogViewModel>>()));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowTranslateDialog(IW3Item? w3Item)
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(appSettings, translator, W3Items,
+            new TranslateDialogViewModel(appSettings, translator,
+                Ioc.Default.GetRequiredService<ILogger<TranslateDialogViewModel>>(), W3Items,
                 w3Item != null ? W3Items.IndexOf(w3Item) : 0));
     }
 }

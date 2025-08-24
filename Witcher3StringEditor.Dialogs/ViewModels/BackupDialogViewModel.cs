@@ -4,12 +4,15 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using HanumanInstitute.MvvmDialogs;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupService backupService)
+public partial class BackupDialogViewModel(
+    IAppSettings appSettings,
+    IBackupService backupService,
+    ILogger<BackupDialogViewModel> logger)
     : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings => appSettings;
@@ -20,7 +23,7 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
     {
         if (!File.Exists(backupItem.BackupPath))
         {
-            Log.Error("The backup file {0} does no exist.", backupItem.BackupPath);
+            logger.LogError("The backup file {0} does no exist.", backupItem.BackupPath);
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupFileNoFound"))
                 _ = backupService.Delete(backupItem);
         }
@@ -28,7 +31,7 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
         {
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupRestore"))
             {
-                Log.Information("The restoration of file {0} has been approved.", backupItem.OrginPath);
+                logger.LogInformation("The restoration of file {Path} has been approved.", backupItem.OrginPath);
                 if (!backupService.Restore(backupItem))
                     _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
             }
@@ -40,7 +43,7 @@ public partial class BackupDialogViewModel(IAppSettings appSettings, IBackupServ
     {
         if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupDelete"))
         {
-            Log.Information("The deletion of file {0} has been approved.", backupItem.BackupPath);
+            logger.LogInformation("The deletion of file {Path} has been approved.", backupItem.BackupPath);
             if (!backupService.Delete(backupItem))
                 _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
         }

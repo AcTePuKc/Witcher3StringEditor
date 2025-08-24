@@ -6,7 +6,7 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Services;
 
-internal class PlayGameService(IAppSettings appSettings,ILogger<PlayGameService> logger) : IPlayGameService
+internal class PlayGameService(IAppSettings appSettings, ILogger<PlayGameService> logger) : IPlayGameService
 {
     public async Task PlayGame()
     {

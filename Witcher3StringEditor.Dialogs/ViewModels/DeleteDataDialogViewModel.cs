@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class DeleteDataDialogViewModel(IEnumerable<IW3Item> w3Items)
+public partial class DeleteDataDialogViewModel(ILogger<DeleteDataDialogViewModel> logger, IEnumerable<IW3Item> w3Items)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public IEnumerable<IW3Item> W3Items { get; } = w3Items;
@@ -20,7 +20,7 @@ public partial class DeleteDataDialogViewModel(IEnumerable<IW3Item> w3Items)
     {
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
-        Log.Information("The selected W3Items have been deleted.");
+        logger.LogInformation("The selected W3Items have been deleted.");
     }
 
     [RelayCommand]
@@ -28,6 +28,6 @@ public partial class DeleteDataDialogViewModel(IEnumerable<IW3Item> w3Items)
     {
         DialogResult = false;
         RequestClose?.Invoke(this, EventArgs.Empty);
-        Log.Information("The selected W3Items have not been deleted.");
+        logger.LogInformation("The selected W3Items have not been deleted.");
     }
 }

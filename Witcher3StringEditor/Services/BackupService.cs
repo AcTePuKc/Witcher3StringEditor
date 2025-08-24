@@ -8,7 +8,7 @@ using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;
 
-internal class BackupService(IAppSettings appSettings,ILogger<BackupService> logger) : IBackupService
+internal class BackupService(IAppSettings appSettings, ILogger<BackupService> logger) : IBackupService
 {
     private readonly string backupFolderPath
         = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

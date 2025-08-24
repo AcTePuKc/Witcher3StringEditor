@@ -2,13 +2,16 @@
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogService dialogService)
+public partial class SettingDialogViewModel(
+    IAppSettings appSettings,
+    IDialogService dialogService,
+    ILogger<SettingDialogViewModel> logger)
     : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings { get; } = appSettings;
@@ -27,7 +30,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         if (storageFile is { Name: "w3strings.exe" })
         {
             AppSettings.W3StringsPath = storageFile.LocalPath;
-            Log.Information("Encoder Path set to {0}.", storageFile.LocalPath);
+            logger.LogInformation("Encoder Path set to {Path}.", storageFile.LocalPath);
         }
     }
 
@@ -44,7 +47,7 @@ public partial class SettingDialogViewModel(IAppSettings appSettings, IDialogSer
         if (storageFile is { Name: "witcher3.exe" })
         {
             AppSettings.GameExePath = storageFile.LocalPath;
-            Log.Information("Game Path set to {0}.", storageFile.LocalPath);
+            logger.LogInformation("Game Path set to {Path}.", storageFile.LocalPath);
         }
     }
 }

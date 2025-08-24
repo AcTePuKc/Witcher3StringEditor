@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.ViewModels;
@@ -16,6 +16,7 @@ namespace Witcher3StringEditor.Views;
 /// </summary>
 public partial class MainWindow
 {
+    private readonly ILogger<MainWindow> logger = Ioc.Default.GetRequiredService<ILogger<MainWindow>>();
     private readonly AsyncRequestRecipient<bool> recipient = new();
 
     public MainWindow()
@@ -65,7 +66,7 @@ public partial class MainWindow
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         SfDataGrid.SearchHelper.Search(args.QueryText);
-        Log.Information("Search query submitted: {QueryText}", args.QueryText);
+        logger.LogInformation("Search query submitted: {QueryText}", args.QueryText);
     }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)

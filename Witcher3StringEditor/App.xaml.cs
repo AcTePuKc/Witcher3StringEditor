@@ -15,6 +15,7 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Resourcer;
@@ -32,7 +33,6 @@ using Witcher3StringEditor.Services;
 using Witcher3StringEditor.ViewModels;
 using WPFLocalizeExtension.Engine;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
-using Microsoft.Extensions.Logging;
 
 namespace Witcher3StringEditor;
 

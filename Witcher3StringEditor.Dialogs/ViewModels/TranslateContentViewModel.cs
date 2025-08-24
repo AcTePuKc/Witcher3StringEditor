@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate;
 using GTranslate.Translators;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -15,6 +15,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class TranslateContentViewModel : ObservableObject
 {
+    private readonly ILogger<TranslateContentViewModel> logger;
     private readonly ITranslator translator;
     private readonly IReadOnlyList<IW3Item> w3Items;
 
@@ -37,9 +38,11 @@ public partial class TranslateContentViewModel : ObservableObject
 
     [ObservableProperty] private ILanguage toLanguage;
 
-    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator, IEnumerable<IW3Item> w3Items,
+    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
+        ILogger<TranslateContentViewModel> logger, IEnumerable<IW3Item> w3Items,
         int index)
     {
+        this.logger = logger;
         this.w3Items = [.. w3Items];
         this.translator = translator;
         Languages = Language.LanguageDictionary.Values
@@ -87,7 +90,7 @@ public partial class TranslateContentViewModel : ObservableObject
             {
                 _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
                     "TranslateCharactersNumberExceedLimit");
-                Log.Error("Exceeded the character limit for translator {0}.", translator.Name);
+                logger.LogError("Exceeded the character limit for translator {Name}.", translator.Name);
             }
             else
             {
@@ -97,14 +100,14 @@ public partial class TranslateContentViewModel : ObservableObject
                         "TranslationNotEmpty")) return;
                 IsBusy = true;
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
-                Log.Information("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
+                logger.LogInformation("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
                     CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
                 var translation =
                     (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
                     .Translation;
                 Guard.IsNotNullOrWhiteSpace(translation);
                 CurrentTranslateItemModel.TranslatedText = translation;
-                Log.Information("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
+                logger.LogInformation("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
                     CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
                 IsBusy = false;
             }
@@ -112,7 +115,7 @@ public partial class TranslateContentViewModel : ObservableObject
         catch (Exception ex)
         {
             _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
-            Log.Error(ex, "Translation failed for item {ItemId} (From: {FromLang} To: {ToLang}).",
+            logger.LogError(ex, "Translation failed for item {ItemId} (From: {FromLang} To: {ToLang}).",
                 CurrentTranslateItemModel?.Id, FormLanguage, ToLanguage);
         }
         finally
@@ -140,11 +143,11 @@ public partial class TranslateContentViewModel : ObservableObject
             }
 
             CurrentTranslateItemModel.IsSaved = true;
-            Log.Information("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
+            logger.LogInformation("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to save translation for item {ItemId}.", CurrentTranslateItemModel?.Id);
+            logger.LogError(ex, "Failed to save translation for item {ItemId}.", CurrentTranslateItemModel?.Id);
         }
     }
 
@@ -162,12 +165,12 @@ public partial class TranslateContentViewModel : ObservableObject
             }
 
             IndexOfItems += indexChange;
-            Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
+            logger.LogInformation("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to move to {Direction} item", indexChange > 0 ? "next" : "previous");
+            logger.LogError(ex, "Failed to move to {Direction} item", indexChange > 0 ? "next" : "previous");
         }
     }
 
