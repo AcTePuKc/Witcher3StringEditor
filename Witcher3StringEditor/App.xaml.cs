@@ -32,6 +32,7 @@ using Witcher3StringEditor.Services;
 using Witcher3StringEditor.ViewModels;
 using WPFLocalizeExtension.Engine;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
+using Microsoft.Extensions.Logging;
 
 namespace Witcher3StringEditor;
 
@@ -44,6 +45,8 @@ public partial class App
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
         "AppSettings.Json");
+
+    private ILogger<App>? logger;
 
     private ObserverBase<LogEvent>? logObserver;
     private Mutex? mutex;
@@ -59,8 +62,9 @@ public partial class App
             .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo
             .Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
             .CreateLogger();
-        SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         Ioc.Default.ConfigureServices(InitializeServices(configPath));
+        logger = Ioc.Default.GetRequiredService<ILogger<App>>();
+        SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
@@ -94,18 +98,18 @@ public partial class App
         Current.Shutdown();
     }
 
-    private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         e.Handled = true;
         var exception = e.Exception;
-        Log.Error(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
+        logger?.LogError(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
     }
 
-    private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+    private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
         e.SetObserved();
         var exception = e.Exception;
-        Log.Error(exception, "Unobserved task exception: {ExceptionMessage}", exception.Message);
+        logger?.LogError(exception, "Unobserved task exception: {ExceptionMessage}", exception.Message);
     }
 
     private static AppSettings LoadAppSettings(string path)

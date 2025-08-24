@@ -14,7 +14,7 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.DependencyModel;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Dialogs.Recipients;
@@ -37,6 +37,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
     private readonly ITranslator translator;
     private readonly IW3Serializer w3Serializer;
+    private readonly ILogger<MainWindowViewModel> logger;
 
     [ObservableProperty] private string[]? dropFileData;
 
@@ -48,8 +49,9 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
         ICheckUpdateService checkUpdateService, IDialogService dialogService,
         IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
-        ITranslator translator)
+        ITranslator translator,ILogger<MainWindowViewModel> logger)
     {
+        this.logger = logger;
         this.translator = translator;
         this.appSettings = appSettings;
         this.w3Serializer = w3Serializer;
@@ -68,7 +70,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "Failed to receive log event.");
+                    logger.LogError(ex, "Failed to receive log event.");
                 }
             });
         WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(
@@ -81,7 +83,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "Failed to open file: {0}.", m.FileName);
+                    logger.LogError(ex, "Failed to open file: {0}.", m.FileName);
                 }
             });
         W3Items.CollectionChanged += (_, _) =>
@@ -121,30 +123,30 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowLoaded()
     {
-        Log.Information("Application started.");
-        Log.Information("Application Version: {0}", ThisAssembly.AssemblyFileVersion);
-        Log.Information("OS Version: {0}", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
-        Log.Information(".Net Runtime: {0}", RuntimeInformation.FrameworkDescription);
+        logger.LogInformation("Application started.");
+        logger.LogInformation("Application Version: {0}", ThisAssembly.AssemblyFileVersion);
+        logger.LogInformation("OS Version: {0}", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        logger.LogInformation(".Net Runtime: {0}", RuntimeInformation.FrameworkDescription);
         await CheckSettings(appSettings);
         IsUpdateAvailable = await checkUpdateService.CheckUpdate();
     }
 
-    private static async Task CheckSettings(IAppSettings settings)
+    private async Task CheckSettings(IAppSettings settings)
     {
-        Log.Information("Checking whether the settings are correct.");
+        logger.LogInformation("Checking whether the settings are correct.");
         if (string.IsNullOrWhiteSpace(settings.W3StringsPath))
         {
-            Log.Error("Settings are incorrect or initial setup is incomplete.");
+            logger.LogError("Settings are incorrect or initial setup is incomplete.");
             _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
         }
         else
         {
-            Log.Information("Settings are correct.");
-            Log.Information("The W3Strings path has been set to {0}.", settings.W3StringsPath);
+            logger.LogInformation("Settings are correct.");
+            logger.LogInformation("The W3Strings path has been set to {0}.", settings.W3StringsPath);
             if (string.IsNullOrWhiteSpace(settings.GameExePath))
-                Log.Warning("The game executable path is not set.");
+                logger.LogWarning("The game executable path is not set.");
             else
-                Log.Information("The game executable path has been set to {0}.", settings.GameExePath);
+                logger.LogInformation("The game executable path has been set to {0}.", settings.GameExePath);
         }
     }
 
@@ -200,28 +202,28 @@ internal partial class MainWindowViewModel : ObservableObject
                 W3Items.Clear();
             }
 
-            Log.Information("The file {0} is being opened...", fileName);
+            logger.LogInformation("The file {0} is being opened...", fileName);
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
             Guard.IsGreaterThan(W3Items.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
             OutputFolder = folder;
-            Log.Information("Working directory set to {0}.", folder);
+            logger.LogInformation("Working directory set to {0}.", folder);
             var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
             if (foundItem == null)
             {
                 appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
-                Log.Information("Added {0} to recent items.", fileName);
+                logger.LogInformation("Added {0} to recent items.", fileName);
             }
             else
             {
                 foundItem.OpenedTime = DateTime.Now;
-                Log.Information("The last opened time for file {0} has been updated.", fileName);
+                logger.LogInformation("The last opened time for file {0} has been updated.", fileName);
             }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to open file: {0}.", fileName);
+            logger.LogError(ex, "Failed to open file: {0}.", fileName);
         }
     }
 
@@ -233,11 +235,11 @@ internal partial class MainWindowViewModel : ObservableObject
             && dialogViewModel.W3Item != null)
         {
             W3Items.Add(dialogViewModel.W3Item);
-            Log.Information("New W3Item added.");
+            logger.LogInformation("New W3Item added.");
         }
         else
         {
-            Log.Information("The W3Item has not been added.");
+            logger.LogInformation("The W3Item has not been added.");
         }
     }
 
@@ -249,11 +251,11 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             var found = W3Items.First(x => x.Id == w3Item.Id);
             W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
-            Log.Information("The W3Item has been updated.");
+            logger.LogInformation("The W3Item has been updated.");
         }
         else
         {
-            Log.Information("The W3Item has not been updated.");
+            logger.LogInformation("The W3Item has not been updated.");
         }
     }
 
@@ -318,7 +320,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }));
     }
 
-    private static DateTime RetrieveTimestampAsDateTime()
+    private DateTime RetrieveTimestampAsDateTime()
     {
         try
         {
@@ -330,7 +332,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to retrieve the build time of the application.");
+            logger.LogError(ex, "Failed to retrieve the build time of the application.");
             return DateTime.MinValue;
         }
     }
@@ -339,14 +341,14 @@ internal partial class MainWindowViewModel : ObservableObject
     private void OpenWorkingFolder()
     {
         explorerService.Open(OutputFolder);
-        Log.Information("Working folder opened.");
+        logger.LogInformation("Working folder opened.");
     }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
         explorerService.Open(appSettings.NexusModUrl);
-        Log.Information("NexusMods opened.");
+        logger.LogInformation("NexusMods opened.");
     }
 
     [RelayCommand]
