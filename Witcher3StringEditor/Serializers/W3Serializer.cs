@@ -1,8 +1,11 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
+using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 using Syncfusion.XlsIO;
 using Witcher3StringEditor.Common;
@@ -14,6 +17,18 @@ namespace Witcher3StringEditor.Serializers;
 internal class W3Serializer(IAppSettings appSettings, IBackupService backupService, ILogger<W3Serializer> logger)
     : IW3Serializer
 {
+    private readonly CsvConfiguration csvConfiguration = new(CultureInfo.InvariantCulture)
+    {
+        Delimiter = "|",
+        Comment = ';',
+        AllowComments = true,
+        HasHeaderRecord = false,
+        IgnoreBlankLines = true,
+        Encoding = Encoding.UTF8,
+        ShouldQuote = _ => false
+    };
+
+
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
         try
@@ -47,18 +62,12 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            return from line in await File.ReadAllLinesAsync(path)
-                where !line.StartsWith(';')
-                select line.Split("|")
-                into parts
-                where parts.Length == 4
-                select new W3Item
-                {
-                    StrId = parts[0],
-                    KeyHex = parts[1],
-                    KeyName = parts[2],
-                    Text = parts[3]
-                };
+            List<W3Item> records = [];
+            using var streamReader = new StreamReader(path);
+            using var csvReader = new CsvReader(streamReader, csvConfiguration);
+            csvReader.Context.RegisterClassMap<W3ItemMap>();
+            await foreach (var record in csvReader.GetRecordsAsync<W3Item>()) records.Add(record);
+            return records;
         }
         catch (Exception ex)
         {
@@ -123,7 +132,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         try
         {
             var saveLang = Enum.GetName(w3Job.Language);
-            var stringBuilder = new StringBuilder();
             var lang = w3Job.Language
                 is not W3Language.ar
                 and not W3Language.br
@@ -133,14 +141,15 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
                 and not W3Language.tr
                 ? saveLang
                 : "cleartext";
-            stringBuilder.AppendLine($";meta[language={lang}]");
-            stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
-            foreach (var item in w3Job.W3Items)
-                stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
             var csvPath = Path.Combine(folder, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
-            await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
+            await using var streamWriter = new StreamWriter(csvPath);
+            await using var csvWriter = new CsvWriter(streamWriter, csvConfiguration);
+            csvWriter.Context.RegisterClassMap<W3ItemMap>();
+            await streamWriter.WriteLineAsync($";meta[language={lang}]");
+            await streamWriter.WriteLineAsync("; id      |key(hex)|key(str)| text");
+            await csvWriter.WriteRecordsAsync(w3Job.W3Items.Cast<W3Item>());
             return true;
         }
         catch (Exception ex)
