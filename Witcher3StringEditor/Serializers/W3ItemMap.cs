@@ -1,7 +1,7 @@
 ﻿using CsvHelper.Configuration;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Models;
 
-namespace Witcher3StringEditor.Models;
+namespace Witcher3StringEditor.Serializers;
 
 internal sealed class W3ItemMap:ClassMap<W3Item>
 {
