@@ -90,10 +90,11 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            using var process = await ExecuteExternalProcess(Parser.Default.FormatCommandLine(new W3Options
-            {
-                Decode = path
-            }));
+            using var process = await ExecuteExternalProcess(appSettings.W3StringsPath,
+                Parser.Default.FormatCommandLine(new W3Options
+                {
+                    Decode = path
+                }));
 
             Guard.IsEqualTo(process.ExitCode, 0);
             return await DeserializeCsv($"{path}.csv");
@@ -268,7 +269,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
     {
         try
         {
-            using var process = await ExecuteExternalProcess(w3Job.IsIgnoreIdSpaceCheck
+            using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, w3Job.IsIgnoreIdSpaceCheck
                 ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
                 : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace }));
             return process.ExitCode == 0;
@@ -280,7 +281,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         }
     }
 
-    private async Task<Process> ExecuteExternalProcess(string arguments)
+    private async Task<Process> ExecuteExternalProcess(string filename, string arguments)
     {
         var process = new Process
         {
@@ -291,7 +292,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                FileName = appSettings.W3StringsPath,
+                FileName = filename,
                 Arguments = arguments
             }
         };
