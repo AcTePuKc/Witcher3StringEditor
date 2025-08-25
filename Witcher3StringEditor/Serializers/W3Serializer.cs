@@ -25,7 +25,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
         HasHeaderRecord = false,
         IgnoreBlankLines = true,
         Encoding = Encoding.UTF8,
-        ShouldQuote = _ => false
+        ShouldQuote = _ => false,
     };
 
 
@@ -144,7 +144,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             var csvPath = Path.Combine(folder, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
-            await using var streamWriter = new StreamWriter(csvPath);
+            await using var streamWriter = new StreamWriter(csvPath, append: false);
             await using var csvWriter = new CsvWriter(streamWriter, csvConfiguration);
             csvWriter.Context.RegisterClassMap<W3ItemMap>();
             await streamWriter.WriteLineAsync($";meta[language={lang}]");
