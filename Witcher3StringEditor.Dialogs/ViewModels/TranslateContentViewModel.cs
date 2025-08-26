@@ -19,7 +19,7 @@ public partial class TranslateContentViewModel : ObservableObject
     private readonly ITranslator translator;
     private readonly IReadOnlyList<IW3Item> w3Items;
 
-    [ObservableProperty] private TranslateItem? currentTranslateItemModel;
+    [ObservableProperty] private TranslateItemModel? currentTranslateItemModel;
 
     [ObservableProperty] private ILanguage formLanguage;
 
@@ -72,7 +72,7 @@ public partial class TranslateContentViewModel : ObservableObject
     partial void OnIndexOfItemsChanged(int value)
     {
         var item = w3Items[value];
-        CurrentTranslateItemModel = new TranslateItem { Id = item.Id, Text = item.Text };
+        CurrentTranslateItemModel = new TranslateItemModel { Id = item.Id, Text = item.Text };
     }
 
     partial void OnIsBusyChanged(bool value)

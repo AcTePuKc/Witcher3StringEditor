@@ -2,7 +2,7 @@
 
 namespace Witcher3StringEditor.Dialogs.Models;
 
-public class LogEventItem(LogEvent logEvent)
+public class LogEventItemModel(LogEvent logEvent)
 {
     public LogEvent EventEntry => logEvent;
 

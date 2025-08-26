@@ -2,7 +2,7 @@
 
 namespace Witcher3StringEditor.Dialogs.Models;
 
-public partial class TranslateItem : ObservableObject
+public partial class TranslateItemModel : ObservableObject
 {
     [ObservableProperty] private bool isSaved;
 
