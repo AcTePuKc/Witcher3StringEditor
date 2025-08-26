@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Security.Cryptography;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,10 @@ internal class BackupService(IAppSettings appSettings, ILogger<BackupService> lo
 {
     private readonly string backupFolderPath
         = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Backup");
+            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Backup");
+
+    private static bool IsDebug =>
+        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
     public bool Backup(string path)
     {

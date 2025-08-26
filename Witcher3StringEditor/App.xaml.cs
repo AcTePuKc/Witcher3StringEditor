@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reactive;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Windows.Win32;
@@ -42,12 +43,15 @@ public partial class App
 {
     private readonly string configPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
+        IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
         "AppSettings.Json");
 
     private ILogger<App>? logger;
 
     private ObserverBase<LogEvent>? logObserver;
+
+    private static bool IsDebug =>
+        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -78,7 +82,7 @@ public partial class App
 
     private static void CheckSingleInstance()
     {
-        using var _ = new Mutex(true, Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
+        using var _ = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
             out var createdNew);
         if (createdNew) return;
         if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
@@ -92,7 +96,7 @@ public partial class App
             WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    , Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
+                    , IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
                 rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
             .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo
             .Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
@@ -166,7 +170,7 @@ public partial class App
     protected override void OnExit(ExitEventArgs e)
     {
         var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
+            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
         if (!Directory.Exists(configFolderPath))
             _ = Directory.CreateDirectory(configFolderPath);
         File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
