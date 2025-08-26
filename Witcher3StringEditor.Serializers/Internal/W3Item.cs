@@ -1,5 +1,4 @@
-﻿using CsvHelper.Configuration.Attributes;
-using Witcher3StringEditor.Abstractions;
+﻿using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Serializers.Internal;
 
@@ -19,7 +18,7 @@ internal class W3Item : IW3Item
         Text = w3Item.Text;
     }
 
-    [Ignore] public Guid Id { get; } = Guid.NewGuid();
+    public Guid Id { get; } = Guid.NewGuid();
 
     public string StrId { get; set; } = string.Empty;
 
@@ -27,7 +26,7 @@ internal class W3Item : IW3Item
 
     public string KeyName { get; set; } = string.Empty;
 
-    [Ignore] public string OldText { get; set; } = string.Empty;
+    public string OldText { get; set; } = string.Empty;
 
     public string Text { get; set; } = string.Empty;
 

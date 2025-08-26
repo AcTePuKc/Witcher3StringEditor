@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
-using System.Globalization;
 using System.Text;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
-using CsvHelper;
-using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 using Syncfusion.XlsIO;
 using Witcher3StringEditor.Abstractions;
@@ -17,18 +14,6 @@ namespace Witcher3StringEditor.Serializers;
 public class W3Serializer(IAppSettings appSettings, IBackupService backupService, ILogger<W3Serializer> logger)
     : IW3Serializer
 {
-    private readonly CsvConfiguration csvConfiguration = new(CultureInfo.InvariantCulture)
-    {
-        Delimiter = "|",
-        Comment = ';',
-        AllowComments = true,
-        HasHeaderRecord = false,
-        IgnoreBlankLines = true,
-        Encoding = Encoding.UTF8,
-        ShouldQuote = _ => false
-    };
-
-
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
     {
         try
@@ -62,11 +47,18 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            List<W3Item> records = [];
-            using var streamReader = new StreamReader(path);
-            using var csvReader = new CsvReader(streamReader, csvConfiguration);
-            await foreach (var record in csvReader.GetRecordsAsync<W3Item>()) records.Add(record);
-            return records;
+            return from line in await File.ReadAllLinesAsync(path)
+                where !line.StartsWith(';')
+                select line.Split("|")
+                into parts
+                where parts.Length == 4
+                select new W3Item
+                {
+                    StrId = parts[0],
+                    KeyHex = parts[1],
+                    KeyName = parts[2],
+                    Text = parts[3]
+                };
         }
         catch (Exception ex)
         {
@@ -140,14 +132,15 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 and not W3Language.tr
                 ? saveLang
                 : "cleartext";
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($";meta[language={lang}]");
+            stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
+            foreach (var item in w3Job.W3Items)
+                stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
             var csvPath = Path.Combine(folder, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
-            await using var streamWriter = new StreamWriter(csvPath, false);
-            await using var csvWriter = new CsvWriter(streamWriter, csvConfiguration);
-            await streamWriter.WriteLineAsync($";meta[language={lang}]");
-            await streamWriter.WriteLineAsync("; id      |key(hex)|key(str)| text");
-            await csvWriter.WriteRecordsAsync(w3Job.W3Items.Select(x => new W3Item(x)));
+            await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
             return true;
         }
         catch (Exception ex)
