@@ -41,10 +41,11 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private readonly string configPath = Path.Combine(
+    private static readonly string ConfigFolderPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
-        "AppSettings.Json");
+        IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
+
+    private static readonly string ConfigPath = Path.Combine(ConfigFolderPath, "AppSettings.Json");
 
     private ILogger<App>? logger;
 
@@ -56,7 +57,7 @@ public partial class App
     protected override void OnStartup(StartupEventArgs e)
     {
         InitializeLogging();
-        InitializeServices(configPath);
+        InitializeServices(ConfigPath);
         logger = Ioc.Default.GetRequiredService<ILogger<App>>();
         SetupExceptionHandling();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
@@ -169,11 +170,9 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        var configFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
-        if (!Directory.Exists(configFolderPath))
-            _ = Directory.CreateDirectory(configFolderPath);
-        File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
+        if (!Directory.Exists(ConfigFolderPath))
+            _ = Directory.CreateDirectory(ConfigFolderPath);
+        File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
             Formatting.Indented,
             new StringEnumConverter()));
         logger?.LogInformation("Application exited.");
