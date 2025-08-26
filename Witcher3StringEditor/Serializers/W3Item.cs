@@ -1,5 +1,5 @@
 ﻿using CsvHelper.Configuration.Attributes;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Serializers;
 

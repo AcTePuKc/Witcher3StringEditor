@@ -24,7 +24,7 @@ using Syncfusion.Licensing;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;

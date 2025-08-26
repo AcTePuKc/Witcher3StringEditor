@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor", "Wit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Dialogs", "Witcher3StringEditor.Dialogs\Witcher3StringEditor.Dialogs.csproj", "{76496957-6B95-426C-8068-82C837192198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Interfaces", "Witcher3StringEditor.Interfaces\Witcher3StringEditor.Interfaces.csproj", "{3F404D86-4F49-4867-B736-5CC4B1F60EFB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Common", "Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj", "{2AC7CD79-6354-408D-AA7A-7543956C15A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Abstractions", "Witcher3StringEditor.Abstractions\Witcher3StringEditor.Abstractions.csproj", "{0747395E-A73F-4D43-8E14-829DFB1FECCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{76496957-6B95-426C-8068-82C837192198}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76496957-6B95-426C-8068-82C837192198}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76496957-6B95-426C-8068-82C837192198}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F404D86-4F49-4867-B736-5CC4B1F60EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F404D86-4F49-4867-B736-5CC4B1F60EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F404D86-4F49-4867-B736-5CC4B1F60EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F404D86-4F49-4867-B736-5CC4B1F60EFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2AC7CD79-6354-408D-AA7A-7543956C15A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AC7CD79-6354-408D-AA7A-7543956C15A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AC7CD79-6354-408D-AA7A-7543956C15A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AC7CD79-6354-408D-AA7A-7543956C15A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0747395E-A73F-4D43-8E14-829DFB1FECCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0747395E-A73F-4D43-8E14-829DFB1FECCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0747395E-A73F-4D43-8E14-829DFB1FECCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0747395E-A73F-4D43-8E14-829DFB1FECCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

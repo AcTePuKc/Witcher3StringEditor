@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Recipients;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

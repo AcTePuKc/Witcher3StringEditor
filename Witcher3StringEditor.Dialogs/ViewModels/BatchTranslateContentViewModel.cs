@@ -4,7 +4,7 @@ using GTranslate;
 using GTranslate.Translators;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Common;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

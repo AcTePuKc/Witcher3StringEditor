@@ -1,4 +1,4 @@
-﻿namespace Witcher3StringEditor.Interfaces;
+﻿namespace Witcher3StringEditor.Abstractions;
 
 public interface IExplorerService
 {

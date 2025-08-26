@@ -34,8 +34,8 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Witcher3StringEditor.Abstractions\Witcher3StringEditor.Abstractions.csproj" />
         <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj"/>
-        <ProjectReference Include="..\Witcher3StringEditor.Interfaces\Witcher3StringEditor.Interfaces.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

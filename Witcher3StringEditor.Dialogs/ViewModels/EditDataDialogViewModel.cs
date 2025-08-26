@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using Witcher3StringEditor.Dialogs.Locales;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

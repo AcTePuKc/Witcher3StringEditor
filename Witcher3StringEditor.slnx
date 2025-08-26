@@ -1,6 +1,6 @@
 <Solution>
   <Project Path="Witcher3StringEditor.Common/Witcher3StringEditor.Common.csproj" />
   <Project Path="Witcher3StringEditor.Dialogs/Witcher3StringEditor.Dialogs.csproj" />
-  <Project Path="Witcher3StringEditor.Interfaces/Witcher3StringEditor.Interfaces.csproj" />
+  <Project Path="Witcher3StringEditor.Abstractions\Witcher3StringEditor.Abstractions.csproj" />
   <Project Path="Witcher3StringEditor/Witcher3StringEditor.csproj" />
 </Solution>

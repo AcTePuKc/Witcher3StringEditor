@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

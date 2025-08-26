@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Witcher3StringEditor.Common;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Models;
 

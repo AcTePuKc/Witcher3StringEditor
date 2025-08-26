@@ -9,7 +9,7 @@ using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 using Syncfusion.XlsIO;
 using Witcher3StringEditor.Common;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 using System.Linq;
 using Syncfusion.Data.Extensions;
 using WinRT;

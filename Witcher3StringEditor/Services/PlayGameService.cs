@@ -2,7 +2,7 @@
 using System.IO;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Interfaces;
+using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
