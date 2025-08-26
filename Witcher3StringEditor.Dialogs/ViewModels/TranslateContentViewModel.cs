@@ -17,7 +17,7 @@ public partial class TranslateContentViewModel : ObservableObject
 {
     private readonly ILogger<TranslateContentViewModel> logger;
     private readonly ITranslator translator;
-    private readonly IReadOnlyList<IW3Item> w3Items;
+    private readonly IReadOnlyList<IEditW3Item> w3Items;
 
     [ObservableProperty] private TranslateItemModel? currentTranslateItemModel;
 
@@ -39,7 +39,7 @@ public partial class TranslateContentViewModel : ObservableObject
     [ObservableProperty] private ILanguage toLanguage;
 
     public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
-        ILogger<TranslateContentViewModel> logger, IEnumerable<IW3Item> w3Items,
+        ILogger<TranslateContentViewModel> logger, IEnumerable<IEditW3Item> w3Items,
         int index)
     {
         this.logger = logger;
