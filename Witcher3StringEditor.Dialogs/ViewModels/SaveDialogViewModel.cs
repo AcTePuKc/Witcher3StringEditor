@@ -6,6 +6,8 @@ using HanumanInstitute.MvvmDialogs;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Abstractions;
+using Witcher3StringEditor.Serializers;
+using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

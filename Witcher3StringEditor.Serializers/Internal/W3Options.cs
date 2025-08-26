@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace Witcher3StringEditor.Serializers;
+namespace Witcher3StringEditor.Serializers.Internal;
 
 internal record W3Options
 {

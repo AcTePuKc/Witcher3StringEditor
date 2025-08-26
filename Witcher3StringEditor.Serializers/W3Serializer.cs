@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Syncfusion.XlsIO;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Abstractions;
+using Witcher3StringEditor.Serializers.Abstractions;
+using Witcher3StringEditor.Serializers.Internal;
 
 namespace Witcher3StringEditor.Serializers;
 

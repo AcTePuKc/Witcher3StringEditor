@@ -1,4 +1,6 @@
-﻿namespace Witcher3StringEditor.Abstractions;
+﻿using Witcher3StringEditor.Abstractions;
+
+namespace Witcher3StringEditor.Serializers.Abstractions;
 
 public interface IW3Serializer
 {

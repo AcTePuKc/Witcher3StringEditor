@@ -1,7 +1,7 @@
 ﻿using CsvHelper.Configuration.Attributes;
 using Witcher3StringEditor.Abstractions;
 
-namespace Witcher3StringEditor.Serializers;
+namespace Witcher3StringEditor.Serializers.Internal;
 
 internal class W3Item : IW3Item
 {

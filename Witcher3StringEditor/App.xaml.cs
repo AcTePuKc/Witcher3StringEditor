@@ -28,6 +28,7 @@ using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;
+using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Services;
 using Witcher3StringEditor.ViewModels;
 using WPFLocalizeExtension.Engine;

@@ -23,6 +23,7 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
+using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.ViewModels;
 
