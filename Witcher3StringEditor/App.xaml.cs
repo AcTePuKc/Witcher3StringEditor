@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reactive;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Windows.Win32;
@@ -79,7 +78,8 @@ public partial class App
 
     private static void CheckSingleInstance()
     {
-        using var _ = new Mutex(true, Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", out var createdNew);
+        using var _ = new Mutex(true, Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
+            out var createdNew);
         if (createdNew) return;
         if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
                 MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
