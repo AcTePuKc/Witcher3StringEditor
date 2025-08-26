@@ -49,7 +49,6 @@ public partial class App
     private ILogger<App>? logger;
 
     private ObserverBase<LogEvent>? logObserver;
-    private Mutex? mutex;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -78,9 +77,9 @@ public partial class App
         };
     }
 
-    private void CheckSingleInstance()
+    private static void CheckSingleInstance()
     {
-        mutex = new Mutex(true, Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", out var createdNew);
+        using var _ = new Mutex(true, Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", out var createdNew);
         if (createdNew) return;
         if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
                 MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
@@ -176,6 +175,5 @@ public partial class App
         logger?.LogInformation("Application exited.");
         logObserver?.Dispose();
         Log.CloseAndFlush();
-        mutex?.Dispose();
     }
 }
