@@ -30,7 +30,12 @@ public partial class W3ItemModel: ObservableObject ,IW3Item
         OldText = w3Item.OldText;
         Text = w3Item.Text;
     }
-    
+
+    public W3ItemModel()
+    {
+
+    }
+
     partial void OnTextChanging(string value)
     {
         if (string.IsNullOrWhiteSpace(OldText)) OldText = Text;

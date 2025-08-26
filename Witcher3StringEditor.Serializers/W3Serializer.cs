@@ -13,7 +13,7 @@ using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Serializers;
 
-internal class W3Serializer(IAppSettings appSettings, IBackupService backupService, ILogger<W3Serializer> logger)
+public class W3Serializer(IAppSettings appSettings, IBackupService backupService, ILogger<W3Serializer> logger)
     : IW3Serializer
 {
     private readonly CsvConfiguration csvConfiguration = new(CultureInfo.InvariantCulture)
@@ -81,7 +81,7 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             return await Task.Run(() =>
             {
                 using var excelEngine = new ExcelEngine();
-                var worksheet = excelEngine.Excel.Workbooks.OpenReadOnly(path).Worksheets[0];
+                var worksheet = excelEngine.Excel.Workbooks.Open(path).Worksheets[0];
                 var usedRange = worksheet.UsedRange;
                 return worksheet.ExportData<W3Item>(1, 1, usedRange.LastRow, usedRange.LastColumn);
             });

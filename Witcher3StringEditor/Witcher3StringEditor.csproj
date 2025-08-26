@@ -66,6 +66,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj"/>
         <ProjectReference Include="..\Witcher3StringEditor.Dialogs\Witcher3StringEditor.Dialogs.csproj"/>
+        <ProjectReference Include="..\Witcher3StringEditor.Serializers\Witcher3StringEditor.Serializers.csproj" />
     </ItemGroup>
 
     <ItemGroup>

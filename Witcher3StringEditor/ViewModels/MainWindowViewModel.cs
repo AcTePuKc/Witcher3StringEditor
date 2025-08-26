@@ -23,7 +23,6 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
-using W3Item = Witcher3StringEditor.Serializers.W3Item;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -233,7 +232,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task Add()
     {
-        var dialogViewModel = new EditDataDialogViewModel(new W3Item());
+        var dialogViewModel = new EditDataDialogViewModel(new W3ItemModel());
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
             && dialogViewModel.W3Item != null)
         {
