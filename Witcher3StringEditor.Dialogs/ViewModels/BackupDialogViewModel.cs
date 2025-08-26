@@ -23,7 +23,7 @@ public partial class BackupDialogViewModel(
     {
         if (!File.Exists(backupItem.BackupPath))
         {
-            logger.LogError("The backup file {0} does no exist.", backupItem.BackupPath);
+            logger.LogError("The backup file {Path} does no exist.", backupItem.BackupPath);
             if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupFileNoFound"))
                 _ = backupService.Delete(backupItem);
         }
