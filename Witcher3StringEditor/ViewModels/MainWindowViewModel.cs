@@ -23,6 +23,7 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Interfaces;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
+using W3Item = Witcher3StringEditor.Serializers.W3Item;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -205,7 +206,7 @@ internal partial class MainWindowViewModel : ObservableObject
             }
 
             logger.LogInformation("The file {FileName} is being opened...", fileName);
-            (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(W3Items.Add);
+            (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(i=>W3Items.Add(new W3ItemModel(i)));
             Guard.IsGreaterThan(W3Items.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);

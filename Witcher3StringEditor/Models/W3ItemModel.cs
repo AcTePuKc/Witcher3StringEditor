@@ -3,7 +3,8 @@ using Witcher3StringEditor.Interfaces;
 
 namespace Witcher3StringEditor.Models;
 
-internal partial class W3Item : ObservableObject, IW3Item
+
+public partial class W3ItemModel: ObservableObject ,IW3Item
 {
     [ObservableProperty] private string keyHex = string.Empty;
 
@@ -21,6 +22,15 @@ internal partial class W3Item : ObservableObject, IW3Item
         return MemberwiseClone();
     }
 
+    public W3ItemModel(IW3Item w3Item)
+    {
+        StrId = w3Item.StrId;
+        KeyHex = w3Item.KeyHex;
+        KeyName = w3Item.KeyName;
+        OldText = w3Item.OldText;
+        Text = w3Item.Text;
+    }
+    
     partial void OnTextChanging(string value)
     {
         if (string.IsNullOrWhiteSpace(OldText)) OldText = Text;

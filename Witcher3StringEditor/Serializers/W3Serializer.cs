@@ -10,7 +10,9 @@ using Microsoft.Extensions.Logging;
 using Syncfusion.XlsIO;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Interfaces;
-using Witcher3StringEditor.Models;
+using System.Linq;
+using Syncfusion.Data.Extensions;
+using WinRT;
 
 namespace Witcher3StringEditor.Serializers;
 
@@ -65,7 +67,6 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
             List<W3Item> records = [];
             using var streamReader = new StreamReader(path);
             using var csvReader = new CsvReader(streamReader, csvConfiguration);
-            csvReader.Context.RegisterClassMap<W3ItemMap>();
             await foreach (var record in csvReader.GetRecordsAsync<W3Item>()) records.Add(record);
             return records;
         }
@@ -146,10 +147,9 @@ internal class W3Serializer(IAppSettings appSettings, IBackupService backupServi
                 Guard.IsTrue(backupService.Backup(csvPath));
             await using var streamWriter = new StreamWriter(csvPath, append: false);
             await using var csvWriter = new CsvWriter(streamWriter, csvConfiguration);
-            csvWriter.Context.RegisterClassMap<W3ItemMap>();
             await streamWriter.WriteLineAsync($";meta[language={lang}]");
             await streamWriter.WriteLineAsync("; id      |key(hex)|key(str)| text");
-            await csvWriter.WriteRecordsAsync(w3Job.W3Items.Cast<W3Item>());
+            await csvWriter.WriteRecordsAsync(w3Job.W3Items.Select(x => new W3Item(x)));
             return true;
         }
         catch (Exception ex)
