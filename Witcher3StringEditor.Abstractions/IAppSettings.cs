@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Shared;
 
 namespace Witcher3StringEditor.Abstractions;
 

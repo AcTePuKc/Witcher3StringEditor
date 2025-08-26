@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor", "Wit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Dialogs", "Witcher3StringEditor.Dialogs\Witcher3StringEditor.Dialogs.csproj", "{76496957-6B95-426C-8068-82C837192198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Common", "Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj", "{2AC7CD79-6354-408D-AA7A-7543956C15A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Shared", "Witcher3StringEditor.Shared\Witcher3StringEditor.Shared.csproj", "{2AC7CD79-6354-408D-AA7A-7543956C15A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Abstractions", "Witcher3StringEditor.Abstractions\Witcher3StringEditor.Abstractions.csproj", "{0747395E-A73F-4D43-8E14-829DFB1FECCF}"
 EndProject

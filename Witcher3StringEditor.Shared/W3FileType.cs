@@ -1,4 +1,4 @@
-﻿namespace Witcher3StringEditor.Common;
+﻿namespace Witcher3StringEditor.Shared;
 
 public enum W3FileType
 {

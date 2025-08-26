@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Witcher3StringEditor.Abstractions;
-using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Shared;
 using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.Models;

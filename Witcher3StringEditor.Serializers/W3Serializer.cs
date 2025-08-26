@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Text;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
@@ -8,7 +7,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 using Syncfusion.XlsIO;
-using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Shared;
 using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Serializers.Internal;

@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Witcher3StringEditor.Abstractions\Witcher3StringEditor.Abstractions.csproj" />
-      <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj" />
+      <ProjectReference Include="..\Witcher3StringEditor.Shared\Witcher3StringEditor.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
