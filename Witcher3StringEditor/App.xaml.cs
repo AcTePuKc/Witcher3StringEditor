@@ -80,7 +80,7 @@ public partial class App
 
     private void CheckSingleInstance()
     {
-        mutex = new Mutex(true, Assembly.GetExecutingAssembly().GetName().Name, out var createdNew);
+        mutex = new Mutex(true, Debugger.IsAttached ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", out var createdNew);
         if (createdNew) return;
         if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
                 MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
