@@ -12,7 +12,7 @@ public interface IW3Job
 
     public W3FileType W3FileType { get; set; }
 
-    public string Path { get; }
+    public string Path { get; set; }
 
-    public IEnumerable<IW3Item> W3Items { get; }
+    public IEnumerable<IW3Item> W3Items { get; set; }
 }

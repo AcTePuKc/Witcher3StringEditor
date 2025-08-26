@@ -287,7 +287,7 @@ internal partial class MainWindowViewModel : ObservableObject
         _ = await dialogService.ShowDialogAsync(this,
             new SaveDialogViewModel(w3Serializer,
                 Ioc.Default.GetRequiredService<ILogger<SaveDialogViewModel>>(),
-                new W3Job
+                new W3JobModel
                 {
                     Path = OutputFolder,
                     W3Items = W3Items,
