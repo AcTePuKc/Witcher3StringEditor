@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Witcher3StringEditor.Abstractions;
-using Witcher3StringEditor.Shared;
 using Witcher3StringEditor.Serializers.Abstractions;
+using Witcher3StringEditor.Shared;
 
 namespace Witcher3StringEditor.Dialogs.Models;
 
@@ -17,6 +17,4 @@ internal partial class W3JobModel : ObservableObject, IW3Job
     public required string Path { get; set; }
 
     public required IEnumerable<IW3Item> W3Items { get; set; }
-    
-
 }

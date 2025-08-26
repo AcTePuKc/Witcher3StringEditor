@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Abstractions;
+using Witcher3StringEditor.Dialogs.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

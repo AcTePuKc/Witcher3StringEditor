@@ -7,20 +7,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Witcher3StringEditor.Abstractions\Witcher3StringEditor.Abstractions.csproj" />
-      <ProjectReference Include="..\Witcher3StringEditor.Shared\Witcher3StringEditor.Shared.csproj" />
+        <ProjectReference Include="..\Witcher3StringEditor.Abstractions\Witcher3StringEditor.Abstractions.csproj"/>
+        <ProjectReference Include="..\Witcher3StringEditor.Shared\Witcher3StringEditor.Shared.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
-      <PackageReference Include="CsvHelper" Version="33.1.0" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
-      <PackageReference Include="SonarAnalyzer.CSharp" Version="10.15.0.120848">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="30.2.7" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1"/>
+        <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0"/>
+        <PackageReference Include="CsvHelper" Version="33.1.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8"/>
+        <PackageReference Include="SonarAnalyzer.CSharp" Version="10.15.0.120848">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="30.2.7"/>
     </ItemGroup>
 
 </Project>

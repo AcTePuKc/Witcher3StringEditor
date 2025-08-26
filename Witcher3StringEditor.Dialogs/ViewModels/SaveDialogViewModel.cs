@@ -4,9 +4,9 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -19,7 +19,8 @@ public partial class SaveDialogViewModel
 
     [ObservableProperty] private IW3Job w3Job;
 
-    public SaveDialogViewModel(IAppSettings appSettings,IW3Serializer serializer, ILogger<SaveDialogViewModel> logger, IEnumerable<IW3Item> w3Items,string path)
+    public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer, ILogger<SaveDialogViewModel> logger,
+        IEnumerable<IW3Item> w3Items, string path)
     {
         this.logger = logger;
         this.serializer = serializer;
@@ -30,7 +31,7 @@ public partial class SaveDialogViewModel
             W3Items = [..items],
             IdSpace = FindIdSpace(items[0]),
             Language = appSettings.PreferredLanguage,
-            W3FileType = appSettings.PreferredW3FileType,
+            W3FileType = appSettings.PreferredW3FileType
         };
     }
 

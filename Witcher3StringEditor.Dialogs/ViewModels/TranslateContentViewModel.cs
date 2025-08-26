@@ -6,10 +6,10 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate;
 using GTranslate.Translators;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Shared;
+using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
-using Witcher3StringEditor.Abstractions;
+using Witcher3StringEditor.Shared;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

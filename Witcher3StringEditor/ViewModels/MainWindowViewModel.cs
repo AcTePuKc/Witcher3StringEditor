@@ -18,9 +18,9 @@ using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Logging;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
+using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
-using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
@@ -206,7 +206,8 @@ internal partial class MainWindowViewModel : ObservableObject
             }
 
             logger.LogInformation("The file {FileName} is being opened...", fileName);
-            (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).ForEach(i=>W3Items.Add(new W3ItemModel(i)));
+            (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId)
+                .ForEach(i => W3Items.Add(new W3ItemModel(i)));
             Guard.IsGreaterThan(W3Items.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);

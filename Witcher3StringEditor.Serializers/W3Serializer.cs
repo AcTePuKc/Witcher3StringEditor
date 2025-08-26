@@ -7,10 +7,10 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Extensions.Logging;
 using Syncfusion.XlsIO;
-using Witcher3StringEditor.Shared;
 using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Serializers.Internal;
+using Witcher3StringEditor.Shared;
 
 namespace Witcher3StringEditor.Serializers;
 
@@ -25,7 +25,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         HasHeaderRecord = false,
         IgnoreBlankLines = true,
         Encoding = Encoding.UTF8,
-        ShouldQuote = _ => false,
+        ShouldQuote = _ => false
     };
 
 
@@ -143,7 +143,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             var csvPath = Path.Combine(folder, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
-            await using var streamWriter = new StreamWriter(csvPath, append: false);
+            await using var streamWriter = new StreamWriter(csvPath, false);
             await using var csvWriter = new CsvWriter(streamWriter, csvConfiguration);
             await streamWriter.WriteLineAsync($";meta[language={lang}]");
             await streamWriter.WriteLineAsync("; id      |key(hex)|key(str)| text");
