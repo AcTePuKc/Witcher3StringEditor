@@ -111,7 +111,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
 
-    public ObservableCollection<IW3Item> W3Items { get; set; } = [];
+    public ObservableCollection<IEditW3Item> W3Items { get; set; } = [];
 
     private bool W3ItemsHaveItems => W3Items.Any();
 
@@ -248,7 +248,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task Edit(IW3Item w3Item)
+    private async Task Edit(IEditW3Item w3Item)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
@@ -266,7 +266,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task Delete(IEnumerable<object> items)
     {
-        var w3Items = items.Cast<IW3Item>().ToArray();
+        var w3Items = items.Cast<IEditW3Item>().ToArray();
         if (w3Items.Length > 0 &&
             await dialogService.ShowDialogAsync(this,
                 new DeleteDataDialogViewModel(Ioc.Default.GetRequiredService<ILogger<DeleteDataDialogViewModel>>(),

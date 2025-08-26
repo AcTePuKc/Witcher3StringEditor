@@ -10,7 +10,6 @@ internal class W3Item : IW3Item
 
     public W3Item(IW3Item w3Item)
     {
-        Id = w3Item.Id;
         StrId = w3Item.StrId;
         KeyHex = w3Item.KeyHex;
         KeyName = w3Item.KeyName;
@@ -29,9 +28,4 @@ internal class W3Item : IW3Item
     public string OldText { get; set; } = string.Empty;
 
     public string Text { get; set; } = string.Empty;
-
-    public object Clone()
-    {
-        return MemberwiseClone();
-    }
 }

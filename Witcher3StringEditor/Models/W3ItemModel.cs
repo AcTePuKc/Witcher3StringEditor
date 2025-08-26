@@ -3,7 +3,7 @@ using Witcher3StringEditor.Abstractions;
 
 namespace Witcher3StringEditor.Models;
 
-public partial class W3ItemModel : ObservableObject, IW3Item
+public partial class W3ItemModel : ObservableObject, IEditW3Item
 {
     [ObservableProperty] private string keyHex = string.Empty;
 
@@ -17,7 +17,6 @@ public partial class W3ItemModel : ObservableObject, IW3Item
 
     public W3ItemModel(IW3Item w3Item)
     {
-        Id = w3Item.Id;
         StrId = w3Item.StrId;
         KeyHex = w3Item.KeyHex;
         KeyName = w3Item.KeyName;

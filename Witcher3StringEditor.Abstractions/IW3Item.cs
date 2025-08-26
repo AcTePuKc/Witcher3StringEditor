@@ -2,8 +2,6 @@
 
 public interface IW3Item
 {
-    public Guid Id { get; }
-
     public string StrId { get; set; }
 
     public string KeyHex { get; set; }
@@ -13,6 +11,4 @@ public interface IW3Item
     public string OldText { get; set; }
 
     public string Text { get; set; }
-
-    object Clone();
 }
