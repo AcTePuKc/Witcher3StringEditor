@@ -3,7 +3,7 @@ using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Serializers.Abstractions;
 
-namespace Witcher3StringEditor.Models;
+namespace Witcher3StringEditor.Dialogs.Models;
 
 internal partial class W3JobModel : ObservableObject, IW3Job
 {

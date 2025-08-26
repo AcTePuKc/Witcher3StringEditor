@@ -6,7 +6,7 @@ using HanumanInstitute.MvvmDialogs;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Abstractions;
-using Witcher3StringEditor.Serializers;
+using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -19,12 +19,19 @@ public partial class SaveDialogViewModel
 
     [ObservableProperty] private IW3Job w3Job;
 
-    public SaveDialogViewModel(IW3Serializer serializer, ILogger<SaveDialogViewModel> logger, IW3Job w3Job)
+    public SaveDialogViewModel(IAppSettings appSettings,IW3Serializer serializer, ILogger<SaveDialogViewModel> logger, IEnumerable<IW3Item> w3Items,string path)
     {
-        W3Job = w3Job;
-        W3Job.IdSpace = FindIdSpace(W3Job.W3Items.First());
-        this.serializer = serializer;
         this.logger = logger;
+        this.serializer = serializer;
+        var items = w3Items.ToList();
+        W3Job = new W3JobModel
+        {
+            Path = path,
+            W3Items = [..items],
+            IdSpace = FindIdSpace(items[0]),
+            Language = appSettings.PreferredLanguage,
+            W3FileType = appSettings.PreferredW3FileType,
+        };
     }
 
     public event EventHandler? RequestClose;

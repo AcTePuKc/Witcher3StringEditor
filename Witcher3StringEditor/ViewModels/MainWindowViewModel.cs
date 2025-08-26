@@ -285,15 +285,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSaveDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(w3Serializer,
-                Ioc.Default.GetRequiredService<ILogger<SaveDialogViewModel>>(),
-                new W3JobModel
-                {
-                    Path = OutputFolder,
-                    W3Items = W3Items,
-                    W3FileType = appSettings.PreferredW3FileType,
-                    Language = appSettings.PreferredLanguage
-                }));
+            new SaveDialogViewModel(appSettings, w3Serializer,
+                Ioc.Default.GetRequiredService<ILogger<SaveDialogViewModel>>(), W3Items, OutputFolder));
     }
 
     [RelayCommand]
