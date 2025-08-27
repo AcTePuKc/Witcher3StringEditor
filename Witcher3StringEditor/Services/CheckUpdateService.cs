@@ -5,7 +5,7 @@ using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class CheckUpdateService(ILogger<CheckUpdateService> logger) : ICheckUpdateService
+internal class CheckUpdateService(ILogger<ICheckUpdateService> logger) : ICheckUpdateService
 {
     private static string UpdateUrl => "https://witcher3stringeditorcheckupdate.azurewebsites.net/api/checkupdate";
 

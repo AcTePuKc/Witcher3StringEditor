@@ -9,7 +9,7 @@ using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class BackupService(IAppSettings appSettings, ILogger<BackupService> logger) : IBackupService
+internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> logger) : IBackupService
 {
     private readonly string backupFolderPath
         = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

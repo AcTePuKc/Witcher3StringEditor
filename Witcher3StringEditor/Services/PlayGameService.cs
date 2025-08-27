@@ -6,7 +6,7 @@ using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class PlayGameService(IAppSettings appSettings, ILogger<PlayGameService> logger) : IPlayGameService
+internal class PlayGameService(IAppSettings appSettings, ILogger<IPlayGameService> logger) : IPlayGameService
 {
     public async Task PlayGame()
     {
