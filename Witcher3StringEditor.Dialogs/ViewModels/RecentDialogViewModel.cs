@@ -38,10 +38,10 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
         {
             logger.LogError("The file {Path} for the recent item being opened does not exist.", item.FilePath);
             if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "OpenedFileNoFound"))
-            {
-                _ = AppSettings.RecentItems.Remove(item);
-                logger.LogInformation("The recent item for file {Path} has been removed.", item.FilePath);
-            }
+                if (AppSettings.RecentItems.Remove(item))
+                    logger.LogInformation("The recent item for file {Path} has been removed.", item.FilePath);
+                else
+                    logger.LogError("The recent item for file {Path} could not be removed.", item.FilePath);
         }
         else
         {
