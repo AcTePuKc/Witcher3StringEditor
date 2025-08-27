@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -9,7 +10,7 @@ using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> logger) : IBackupService
+internal class BackupService(ObservableCollection<IBackupItem> backupItems, ILogger<IBackupService> logger) : IBackupService
 {
     private readonly string backupFolderPath
         = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -35,11 +36,11 @@ internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> l
             };
             if (!Directory.Exists(backupFolderPath))
                 Directory.CreateDirectory(backupFolderPath);
-            if (appSettings.BackupItems.Any(x =>
+            if (backupItems.Any(x =>
                     x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath && File.Exists(x.BackupPath)))
                 return true;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
-            appSettings.BackupItems.Add(backupItem);
+            backupItems.Add(backupItem);
             logger.LogInformation("Backup file: {FileName}.", backupItem.FileName);
             return true;
         }
@@ -76,7 +77,7 @@ internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> l
         {
             if (File.Exists(backupItem.BackupPath))
                 File.Delete(backupItem.BackupPath);
-            _ = appSettings.BackupItems.Remove(backupItem);
+            _ = backupItems.Remove(backupItem);
             logger.LogInformation("Delete backup file: {FileName}.", backupItem.FileName);
             return true;
         }

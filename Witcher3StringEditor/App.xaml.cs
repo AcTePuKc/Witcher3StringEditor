@@ -141,7 +141,9 @@ public partial class App
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
             .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
-            .AddSingleton<IBackupService, BackupService>()
+            .AddSingleton<IBackupService, BackupService>(_ =>
+                new BackupService(Ioc.Default.GetRequiredService<IAppSettings>().BackupItems,
+                    Ioc.Default.GetRequiredService<ILogger<IBackupService>>()))
             .AddSingleton<ICheckUpdateService, CheckUpdateService>()
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()
