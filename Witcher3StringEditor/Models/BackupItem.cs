@@ -1,4 +1,4 @@
-﻿using Witcher3StringEditor.Abstractions;
+﻿using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Models;
 

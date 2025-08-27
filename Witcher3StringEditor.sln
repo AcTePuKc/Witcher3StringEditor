@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Dialog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Shared", "Witcher3StringEditor.Shared\Witcher3StringEditor.Shared.csproj", "{2AC7CD79-6354-408D-AA7A-7543956C15A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Abstractions", "Witcher3StringEditor.Abstractions\Witcher3StringEditor.Abstractions.csproj", "{0747395E-A73F-4D43-8E14-829DFB1FECCF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Serializers", "Witcher3StringEditor.Serializers\Witcher3StringEditor.Serializers.csproj", "{EA511C01-41B7-4BFF-AA48-16419CCB2FE1}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{2AC7CD79-6354-408D-AA7A-7543956C15A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AC7CD79-6354-408D-AA7A-7543956C15A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AC7CD79-6354-408D-AA7A-7543956C15A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0747395E-A73F-4D43-8E14-829DFB1FECCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0747395E-A73F-4D43-8E14-829DFB1FECCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0747395E-A73F-4D43-8E14-829DFB1FECCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0747395E-A73F-4D43-8E14-829DFB1FECCF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA511C01-41B7-4BFF-AA48-16419CCB2FE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA511C01-41B7-4BFF-AA48-16419CCB2FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA511C01-41B7-4BFF-AA48-16419CCB2FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU

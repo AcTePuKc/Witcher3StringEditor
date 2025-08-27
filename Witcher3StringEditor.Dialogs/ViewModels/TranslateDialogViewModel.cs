@@ -8,8 +8,8 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

@@ -4,10 +4,10 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Serializers.Abstractions;
+using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

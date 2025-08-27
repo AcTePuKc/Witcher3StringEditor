@@ -5,7 +5,7 @@
     xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:interfaces="clr-namespace:Witcher3StringEditor.Abstractions;assembly=Witcher3StringEditor.Abstractions"
+    xmlns:interfaces="clr-namespace:Witcher3StringEditor.Shared.Abstractions;assembly=Witcher3StringEditor.Shared"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"

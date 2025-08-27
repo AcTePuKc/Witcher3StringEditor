@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using Witcher3StringEditor.Shared;
 
-namespace Witcher3StringEditor.Abstractions;
+namespace Witcher3StringEditor.Shared.Abstractions;
 
 public interface IAppSettings
 {

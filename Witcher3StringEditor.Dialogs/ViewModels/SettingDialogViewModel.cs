@@ -3,8 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Abstractions;
 using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
