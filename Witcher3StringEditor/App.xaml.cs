@@ -56,13 +56,13 @@ public partial class App
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        CheckSingleInstance();
         InitializeLogging();
         InitializeServices(ConfigPath);
         logger = Ioc.Default.GetRequiredService<ILogger<App>>();
         SetupExceptionHandling();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
-        CheckSingleInstance();
     }
 
     private void SetupExceptionHandling()
