@@ -41,20 +41,11 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private readonly AppSettings appSettings;
-    private readonly string configFolderPath;
-    private readonly string configPath;
+    private AppSettings? appSettings;
+    private string configFolderPath;
+    private string configPath;
     private ILogger<App>? logger;
     private ObserverBase<LogEvent>? logObserver;
-
-    public App()
-    {
-        configFolderPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
-        configPath = Path.Combine(configFolderPath, "AppSettings.Json");
-        appSettings = LoadAppSettings();
-    }
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
@@ -67,14 +58,16 @@ public partial class App
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
             Current.Shutdown();
-            return;
         }
-
-        SetupExceptionHandling();
-        InitializeServices();
-        InitializeLogging();
-        SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
-        LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
+        else
+        {
+            appSettings = LoadAppSettings();
+            SetupExceptionHandling();
+            InitializeServices();
+            InitializeLogging();
+            SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
+            LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
+        }
     }
 
     private void SetupExceptionHandling()
@@ -135,6 +128,10 @@ public partial class App
 
     private AppSettings LoadAppSettings()
     {
+        configFolderPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
+        configPath = Path.Combine(configFolderPath, "AppSettings.Json");
         return File.Exists(configPath)
             ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
             : new AppSettings();
