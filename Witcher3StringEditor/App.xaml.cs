@@ -47,6 +47,8 @@ public partial class App
 
     private static readonly string ConfigPath = Path.Combine(ConfigFolderPath, "AppSettings.Json");
 
+    private readonly AppSettings appSettings = LoadAppSettings(ConfigPath);
+
     private ILogger<App>? logger;
 
     private ObserverBase<LogEvent>? logObserver;
@@ -56,11 +58,18 @@ public partial class App
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        CheckSingleInstance();
-        InitializeLogging();
-        InitializeServices(ConfigPath);
-        logger = Ioc.Default.GetRequiredService<ILogger<App>>();
+        if (IsAnotherInstanceRunning())
+        {
+            if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
+            Current.Shutdown();
+            return;
+        }
+
         SetupExceptionHandling();
+        InitializeServices();
+        InitializeLogging();
         SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
         LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
     }
@@ -81,14 +90,11 @@ public partial class App
         };
     }
 
-    private static void CheckSingleInstance()
+    private static bool IsAnotherInstanceRunning()
     {
         using var _ = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
             out var createdNew);
-        if (createdNew) return;
-        if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
-                MessageBoxImage.Information) == MessageBoxResult.Yes)  ActivateExistingInstance();
-        Current.Shutdown();
+        return !createdNew;
     }
 
     private void InitializeLogging()
@@ -102,6 +108,7 @@ public partial class App
             .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo
             .Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
             .CreateLogger();
+        logger = Ioc.Default.GetRequiredService<ILogger<App>>();
     }
 
     private static void ActivateExistingInstance()
@@ -113,7 +120,6 @@ public partial class App
         var placement = new WINDOWPLACEMENT();
         placement.length = (uint)Marshal.SizeOf(placement);
         if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value != 0)
-        {
             _ = placement.showCmd switch
             {
                 SHOW_WINDOW_CMD.SW_SHOWMINIMIZED or SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE => PInvoke.ShowWindow(
@@ -121,7 +127,6 @@ public partial class App
                 SHOW_WINDOW_CMD.SW_HIDE => PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW),
                 _ => new BOOL()
             };
-        }
     }
 
 
@@ -132,12 +137,12 @@ public partial class App
             : new AppSettings();
     }
 
-    private static void InitializeServices(string path)
+    private void InitializeServices()
     {
         Ioc.Default.ConfigureServices(new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
-            .AddSingleton<IAppSettings, AppSettings>(_ => LoadAppSettings(path))
+            .AddSingleton<IAppSettings, AppSettings>(_ => appSettings)
             .AddSingleton<IBackupService, BackupService>()
             .AddSingleton<ICheckUpdateService, CheckUpdateService>()
             .AddSingleton<IDialogManager, DialogManager>()
