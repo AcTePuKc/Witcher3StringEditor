@@ -30,6 +30,7 @@ using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Services;
 using Witcher3StringEditor.Shared.Abstractions;
 using Witcher3StringEditor.ViewModels;
+using Witcher3StringEditor.Views;
 using WPFLocalizeExtension.Engine;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
@@ -44,6 +45,7 @@ public partial class App
     private ConfigManger? configManger;
     private ILogger<App>? logger;
     private ObserverBase<LogEvent>? logObserver;
+    private Mutex? mutex;
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
@@ -75,6 +77,7 @@ public partial class App
             logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
             LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
+            new MainWindow().Show();
         }
     }
 
@@ -94,9 +97,9 @@ public partial class App
         };
     }
 
-    private static bool IsAnotherInstanceRunning()
+    private bool IsAnotherInstanceRunning()
     {
-        using var _ = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
+        mutex = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
             out var createdNew);
         return !createdNew;
     }
@@ -165,6 +168,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
+        mutex?.Dispose();
         configManger?.Save(appSettings);
         logger?.LogInformation("Application exited.");
         logObserver?.Dispose();
