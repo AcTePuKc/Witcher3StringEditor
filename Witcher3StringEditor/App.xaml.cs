@@ -81,7 +81,7 @@ public partial class App
         };
     }
 
-    private void CheckSingleInstance()
+    private static void CheckSingleInstance()
     {
         using var _ = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
             out var createdNew);
@@ -104,7 +104,7 @@ public partial class App
             .CreateLogger();
     }
 
-    private void ActivateExistingInstance()
+    private static void ActivateExistingInstance()
     {
         using var currentProcess = Process.GetCurrentProcess();
         using var existingProcess =
@@ -114,25 +114,14 @@ public partial class App
         placement.length = (uint)Marshal.SizeOf(placement);
         if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value != 0)
         {
-            var result = placement.showCmd switch
+            _ = placement.showCmd switch
             {
                 SHOW_WINDOW_CMD.SW_SHOWMINIMIZED or SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE => PInvoke.ShowWindow(
                     mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE),
                 SHOW_WINDOW_CMD.SW_HIDE => PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW),
                 _ => new BOOL()
             };
-            if (result.Value == 0)
-                logger?.LogError("Failed to restore window for process {ProcessId}", existingProcess.Id);
-            if (PInvoke.SetForegroundWindow(mainWindowHandle).Value == 0)
-                logger?.LogError("Failed to set foreground window for process {ProcessId}", existingProcess.Id);
         }
-        else
-        {
-            logger?.LogError("Failed to get window placement for process {ProcessId}", existingProcess.Id);
-        }
-        logObserver?.Dispose();
-        Log.CloseAndFlush();
-        Current.Shutdown();
     }
 
 
