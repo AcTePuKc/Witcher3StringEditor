@@ -41,17 +41,20 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private static readonly string ConfigFolderPath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
-
-    private static readonly string ConfigPath = Path.Combine(ConfigFolderPath, "AppSettings.Json");
-
-    private readonly AppSettings appSettings = LoadAppSettings(ConfigPath);
-
+    private readonly AppSettings appSettings;
+    private readonly string configFolderPath;
+    private readonly string configPath;
     private ILogger<App>? logger;
-
     private ObserverBase<LogEvent>? logObserver;
+
+    public App()
+    {
+        configFolderPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
+        configPath = Path.Combine(configFolderPath, "AppSettings.Json");
+        appSettings = LoadAppSettings();
+    }
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
@@ -130,10 +133,10 @@ public partial class App
     }
 
 
-    private static AppSettings LoadAppSettings(string path)
+    private AppSettings LoadAppSettings()
     {
-        return File.Exists(path)
-            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(path)) ?? new AppSettings()
+        return File.Exists(configPath)
+            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
             : new AppSettings();
     }
 
@@ -172,9 +175,9 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        if (!Directory.Exists(ConfigFolderPath))
-            _ = Directory.CreateDirectory(ConfigFolderPath);
-        File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
+        if (!Directory.Exists(configFolderPath))
+            _ = Directory.CreateDirectory(configFolderPath);
+        File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
             Formatting.Indented,
             new StringEnumConverter()));
         logger?.LogInformation("Application exited.");
