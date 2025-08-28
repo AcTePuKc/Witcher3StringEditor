@@ -41,7 +41,7 @@ namespace Witcher3StringEditor;
 public partial class App
 {
     private IAppSettings? appSettings;
-    private IConfigService? configManger;
+    private IConfigService? configService;
     private ILogger<App>? logger;
     private ObserverBase<LogEvent>? logObserver;
     private Mutex? mutex;
@@ -68,7 +68,7 @@ public partial class App
                 Directory.CreateDirectory(configFolderPath);
             SetupExceptionHandling();
             InitializeServices(configPath);
-            configManger = Ioc.Default.GetRequiredService<IConfigService>();
+            configService = Ioc.Default.GetRequiredService<IConfigService>();
             appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
             logObserver = new AnonymousObserver<LogEvent>(x =>
                 WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
@@ -170,7 +170,7 @@ public partial class App
     protected override void OnExit(ExitEventArgs e)
     {
         mutex?.Dispose();
-        configManger?.Save(appSettings);
+        configService?.Save(appSettings);
         logger?.LogInformation("Application exited.");
         logObserver?.Dispose();
         Log.CloseAndFlush();
