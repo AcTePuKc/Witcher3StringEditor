@@ -81,7 +81,7 @@ public partial class App
         };
     }
 
-    private static void CheckSingleInstance()
+    private void CheckSingleInstance()
     {
         using var _ = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
             out var createdNew);
@@ -104,7 +104,7 @@ public partial class App
             .CreateLogger();
     }
 
-    private static void ActivateExistingInstance()
+    private void ActivateExistingInstance()
     {
         using var currentProcess = Process.GetCurrentProcess();
         using var existingProcess =
@@ -112,18 +112,25 @@ public partial class App
         var mainWindowHandle = new HWND(existingProcess.MainWindowHandle);
         var placement = new WINDOWPLACEMENT();
         placement.length = (uint)Marshal.SizeOf(placement);
-        _ = PInvoke.GetWindowPlacement(mainWindowHandle, ref placement);
-        switch (placement.showCmd)
+        if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value != 0)
         {
-            case SHOW_WINDOW_CMD.SW_SHOWMINIMIZED or SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE:
-                _ = PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
-                break;
-            case SHOW_WINDOW_CMD.SW_HIDE:
-                _ = PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW);
-                break;
+            var result = placement.showCmd switch
+            {
+                SHOW_WINDOW_CMD.SW_SHOWMINIMIZED or SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE => PInvoke.ShowWindow(
+                    mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE),
+                SHOW_WINDOW_CMD.SW_HIDE => PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW),
+                _ => new BOOL()
+            };
+            if (result.Value == 0)
+                logger?.LogError("Failed to restore window for process {ProcessId}", existingProcess.Id);
+            if (PInvoke.SetForegroundWindow(mainWindowHandle).Value == 0)
+                logger?.LogError("Failed to set foreground window for process {ProcessId}", existingProcess.Id);
+        }
+        else
+        {
+            logger?.LogError("Failed to get window placement for process {ProcessId}", existingProcess.Id);
         }
 
-        _ = PInvoke.SetForegroundWindow(mainWindowHandle);
         Current.Shutdown();
     }
 
