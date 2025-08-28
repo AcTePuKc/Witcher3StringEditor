@@ -40,12 +40,15 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private readonly AppSettings? appSettings;
-    private readonly ConfigManger? configManger;
-    private readonly ILogger<App>? logger;
-    private readonly ObserverBase<LogEvent>? logObserver;
+    private AppSettings? appSettings;
+    private ConfigManger? configManger;
+    private ILogger<App>? logger;
+    private ObserverBase<LogEvent>? logObserver;
 
-    public App()
+    private static bool IsDebug =>
+        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
+
+    protected override void OnStartup(StartupEventArgs e)
     {
         if (IsAnotherInstanceRunning())
         {
@@ -74,9 +77,6 @@ public partial class App
             LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
         }
     }
-
-    private static bool IsDebug =>
-        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
     private void SetupExceptionHandling()
     {
