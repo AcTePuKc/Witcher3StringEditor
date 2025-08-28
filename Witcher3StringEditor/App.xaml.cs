@@ -22,7 +22,6 @@ using Syncfusion.Licensing;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
-using Witcher3StringEditor.Helpers;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;
@@ -41,8 +40,8 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private AppSettings? appSettings;
-    private ConfigManger? configManger;
+    private IAppSettings? appSettings;
+    private IConfigService? configManger;
     private ILogger<App>? logger;
     private ObserverBase<LogEvent>? logObserver;
     private Mutex? mutex;
@@ -67,10 +66,10 @@ public partial class App
             var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
             if (!Directory.Exists(configFolderPath))
                 Directory.CreateDirectory(configFolderPath);
-            configManger = new ConfigManger(configPath);
-            appSettings = configManger.Load<AppSettings>();
             SetupExceptionHandling();
-            InitializeServices(appSettings);
+            InitializeServices(configPath);
+            configManger = Ioc.Default.GetRequiredService<IConfigService>();
+            appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
             logObserver = new AnonymousObserver<LogEvent>(x =>
                 WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
             InitializeLogging(logObserver);
@@ -133,14 +132,16 @@ public partial class App
             };
     }
 
-    private static void InitializeServices(AppSettings appSettings)
+    private static void InitializeServices(string configPath)
     {
         Ioc.Default.ConfigureServices(new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
-            .AddSingleton<IAppSettings, AppSettings>(_ => appSettings)
+            .AddSingleton<IAppSettings, AppSettings>(_ =>
+                Ioc.Default.GetRequiredService<IConfigService>().Load<AppSettings>())
             .AddSingleton<IBackupService, BackupService>()
             .AddSingleton<ICheckUpdateService, CheckUpdateService>()
+            .AddSingleton<IConfigService, ConfigService>(_ => new ConfigService(configPath))
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<IExplorerService, ExplorerService>()

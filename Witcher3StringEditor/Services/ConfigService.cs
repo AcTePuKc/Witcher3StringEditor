@@ -1,10 +1,11 @@
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Witcher3StringEditor.Shared.Abstractions;
 
-namespace Witcher3StringEditor.Helpers;
+namespace Witcher3StringEditor.Services;
 
-internal class ConfigManger(string path)
+internal class ConfigService(string path) : IConfigService
 {
     public void Save<T>(T settings)
     {
