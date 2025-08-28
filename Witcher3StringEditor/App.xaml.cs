@@ -87,7 +87,7 @@ public partial class App
             out var createdNew);
         if (createdNew) return;
         if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption, MessageBoxButton.YesNo,
-                MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
+                MessageBoxImage.Information) == MessageBoxResult.Yes)  ActivateExistingInstance();
         Current.Shutdown();
     }
 
@@ -130,7 +130,8 @@ public partial class App
         {
             logger?.LogError("Failed to get window placement for process {ProcessId}", existingProcess.Id);
         }
-
+        logObserver?.Dispose();
+        Log.CloseAndFlush();
         Current.Shutdown();
     }
 
