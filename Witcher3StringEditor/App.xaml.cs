@@ -56,7 +56,7 @@ public partial class App
             if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
-            Current.Shutdown();
+            Shutdown();
         }
         else
         {
