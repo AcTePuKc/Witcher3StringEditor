@@ -12,7 +12,7 @@ internal class ConfigService(string path) : IConfigService
         File.WriteAllText(path,
             JsonConvert.SerializeObject(settings, Formatting.Indented, new StringEnumConverter()));
     }
-    
+
     public T Load<T>() where T : new()
     {
         return File.Exists(path)
