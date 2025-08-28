@@ -15,8 +15,6 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Resourcer;
 using Serilog;
 using Serilog.Events;
@@ -24,6 +22,7 @@ using Syncfusion.Licensing;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
+using Witcher3StringEditor.Helpers;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;
@@ -41,16 +40,12 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private AppSettings? appSettings;
-    private string configFolderPath;
-    private string configPath;
-    private ILogger<App>? logger;
-    private ObserverBase<LogEvent>? logObserver;
+    private readonly AppSettings? appSettings;
+    private readonly ConfigManger? configManger;
+    private readonly ILogger<App>? logger;
+    private readonly ObserverBase<LogEvent>? logObserver;
 
-    private static bool IsDebug =>
-        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
-
-    protected override void OnStartup(StartupEventArgs e)
+    public App()
     {
         if (IsAnotherInstanceRunning())
         {
@@ -61,14 +56,27 @@ public partial class App
         }
         else
         {
-            appSettings = LoadAppSettings();
+            var configFolderPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
+            var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
+            if (!Directory.Exists(configFolderPath))
+                Directory.CreateDirectory(configFolderPath);
+            configManger = new ConfigManger(configPath);
+            appSettings = configManger.Load<AppSettings>();
             SetupExceptionHandling();
-            InitializeServices();
-            InitializeLogging();
+            InitializeServices(appSettings);
+            logObserver = new AnonymousObserver<LogEvent>(x =>
+                WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
+            InitializeLogging(logObserver);
+            logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
             LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
         }
     }
+
+    private static bool IsDebug =>
+        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
     private void SetupExceptionHandling()
     {
@@ -93,18 +101,15 @@ public partial class App
         return !createdNew;
     }
 
-    private void InitializeLogging()
+    private static void InitializeLogging(IObserver<LogEvent> observer)
     {
-        logObserver = new AnonymousObserver<LogEvent>(x =>
-            WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
                     , IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
                 rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
             .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo
-            .Observers(observable => observable.Subscribe(logObserver)).Enrich.FromLogContext()
+            .Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
             .CreateLogger();
-        logger = Ioc.Default.GetRequiredService<ILogger<App>>();
     }
 
     private static void ActivateExistingInstance()
@@ -125,19 +130,7 @@ public partial class App
             };
     }
 
-
-    private AppSettings LoadAppSettings()
-    {
-        configFolderPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
-        configPath = Path.Combine(configFolderPath, "AppSettings.Json");
-        return File.Exists(configPath)
-            ? JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(configPath)) ?? new AppSettings()
-            : new AppSettings();
-    }
-
-    private void InitializeServices()
+    private static void InitializeServices(AppSettings appSettings)
     {
         Ioc.Default.ConfigureServices(new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
@@ -172,11 +165,7 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        if (!Directory.Exists(configFolderPath))
-            _ = Directory.CreateDirectory(configFolderPath);
-        File.WriteAllText(configPath, JsonConvert.SerializeObject(Ioc.Default.GetRequiredService<IAppSettings>(),
-            Formatting.Indented,
-            new StringEnumConverter()));
+        configManger?.Save(appSettings);
         logger?.LogInformation("Application exited.");
         logObserver?.Dispose();
         Log.CloseAndFlush();
