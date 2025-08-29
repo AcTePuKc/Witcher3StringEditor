@@ -14,6 +14,8 @@ public interface IAppSettings
 
     public string NexusModUrl { get; }
 
+    public string Translator { get; set; }
+
     public ObservableCollection<IRecentItem> RecentItems { get; }
 
     public ObservableCollection<IBackupItem> BackupItems { get; }

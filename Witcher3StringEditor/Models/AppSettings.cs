@@ -16,6 +16,8 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 
     [ObservableProperty] private string w3StringsPath = string.Empty;
 
+    [ObservableProperty] private string translator = "MicrosoftTranslator";
+
     public AppSettings()
     {
     }
@@ -39,6 +41,7 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     public ObservableCollection<IRecentItem> RecentItems { get; } = [];
 
     public ObservableCollection<IBackupItem> BackupItems { get; } = [];
+
 
     [JsonIgnore] public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
 }

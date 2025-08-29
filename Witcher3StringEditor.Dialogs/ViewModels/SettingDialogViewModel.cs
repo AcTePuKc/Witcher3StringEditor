@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
@@ -11,10 +12,14 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class SettingDialogViewModel(
     IAppSettings appSettings,
     IDialogService dialogService,
+    IEnumerable<ITranslator> translators,
     ILogger<SettingDialogViewModel> logger)
     : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings { get; } = appSettings;
+
+    public IEnumerable<ITranslator> Translators { get; } = translators;
+
     public bool? DialogResult => true;
 
     [RelayCommand]

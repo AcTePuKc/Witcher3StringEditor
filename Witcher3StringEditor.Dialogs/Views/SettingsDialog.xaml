@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:Witcher3StringEditor.Shared;assembly=Witcher3StringEditor.Shared"
+    xmlns:converters="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
@@ -49,6 +50,7 @@
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
             </Style>
+            <converters:TranslatorToStringConverter x:Key="TranslatorToStringConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -62,11 +64,8 @@
             Text="{lex:Loc SettingsDialogTitle}" />
         <ScrollViewer Grid.Row="1">
             <iwk:SimpleStackPanel Margin="36,0" Spacing="4">
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
-                           Text="{lex:Loc GeneralSettingsHeader}" />
-                <ui:SettingsCard
-                    Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}"
-                    Header="{lex:Loc EncoderSettingCardHeader}">
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{lex:Loc GeneralSettingsHeader}" />
+                <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="{lex:Loc EncoderSettingCardHeader}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE90F;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -74,8 +73,7 @@
                         <ui:FontIcon Glyph="&#xe71e;" />
                     </Button>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}"
-                                 Header="{lex:Loc GameSettingCardHeader}">
+                <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}" Header="{lex:Loc GameSettingCardHeader}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7FC;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -87,15 +85,22 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE97C;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}"
-                              SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}" SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{lex:Loc PreferredLanguage}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xF2B7;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}"
-                              SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
+                </ui:SettingsCard>
+                <ui:SettingsCard Header="Translator">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Glyph="&#xF2B7;" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <ComboBox
+                        DisplayMemberPath="Name"
+                        ItemsSource="{Binding Translators}"
+                        SelectedItem="{Binding AppSettings.Translator, Converter={StaticResource TranslatorToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>

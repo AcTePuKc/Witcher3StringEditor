@@ -148,6 +148,8 @@ public partial class App
             .AddSingleton<IPlayGameService, PlayGameService>()
             .AddSingleton<IW3Serializer, W3Serializer>()
             .AddSingleton<ITranslator, MicrosoftTranslator>()
+            .AddSingleton<ITranslator, GoogleTranslator>()
+            .AddSingleton<ITranslator, YandexTranslator>()
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider());
     }

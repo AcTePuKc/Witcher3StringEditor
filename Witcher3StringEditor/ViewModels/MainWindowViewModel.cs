@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Logging;
 using Serilog.Events;
@@ -38,8 +39,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly ILogger<MainWindowViewModel> logger;
     private readonly IPlayGameService playGameService;
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
-    private readonly ITranslator translator;
     private readonly IW3Serializer w3Serializer;
+    private readonly IEnumerable<ITranslator> translators;
 
     [ObservableProperty] private string[]? dropFileData;
 
@@ -50,12 +51,12 @@ internal partial class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
         ICheckUpdateService checkUpdateService, IDialogService dialogService,
-        IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
-        ITranslator translator, ILogger<MainWindowViewModel> logger)
+        IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,IEnumerable<ITranslator> translators,
+        ILogger<MainWindowViewModel> logger)
     {
         this.logger = logger;
-        this.translator = translator;
         this.appSettings = appSettings;
+        this.translators = translators;
         this.w3Serializer = w3Serializer;
         this.backupService = backupService;
         this.checkUpdateService = checkUpdateService;
@@ -300,7 +301,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService,
+            new SettingDialogViewModel(appSettings, dialogService,translators,
                 Ioc.Default.GetRequiredService<ILogger<SettingDialogViewModel>>()));
     }
 
@@ -365,7 +366,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(IW3Item? w3Item)
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(appSettings, translator,
+            new TranslateDialogViewModel(appSettings, Ioc.Default.GetServices<ITranslator>().First(x=>x.Name == "MicrosoftTranslator"),
                 Ioc.Default.GetRequiredService<ILogger<TranslateDialogViewModel>>(), W3Items,
                 w3Item != null ? W3Items.IndexOf(w3Item) : 0));
     }
