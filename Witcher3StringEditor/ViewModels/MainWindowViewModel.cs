@@ -51,9 +51,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private string outputFolder = string.Empty;
 
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
-        ICheckUpdateService checkUpdateService, IDialogService dialogService,
-        IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
-        IEnumerable<ITranslator> translators,
+        ICheckUpdateService checkUpdateService, IDialogService dialogService, IExplorerService explorerService,
+        IPlayGameService playGameService, IW3Serializer w3Serializer, IEnumerable<ITranslator> translators,
         ILogger<MainWindowViewModel> logger)
     {
         this.logger = logger;
@@ -369,7 +368,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         _ = await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings,
-                Ioc.Default.GetServices<ITranslator>().First(x => x.Name == appSettings.Translator),
+                translators.First(x => x.Name == appSettings.Translator),
                 Ioc.Default.GetRequiredService<ILogger<TranslateDialogViewModel>>(), W3Items,
                 w3Item != null ? W3Items.IndexOf(w3Item) : 0));
     }
