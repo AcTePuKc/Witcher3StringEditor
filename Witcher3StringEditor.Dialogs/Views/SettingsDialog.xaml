@@ -93,7 +93,7 @@
                     </ui:SettingsCard.HeaderIcon>
                     <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard Header="Translator">
+                <ui:SettingsCard Header="{lex:Loc TranslatorSelection}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xF2B7;" />
                     </ui:SettingsCard.HeaderIcon>
