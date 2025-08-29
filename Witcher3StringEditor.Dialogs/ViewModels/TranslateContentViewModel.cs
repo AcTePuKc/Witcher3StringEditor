@@ -95,31 +95,22 @@ public partial class TranslateContentViewModel : ObservableObject
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (CurrentTranslateItemModel.Text.Length > 1000)
-            {
-                _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
-                    "TranslateCharactersNumberExceedLimit");
-                logger.LogError("Exceeded the character limit for translator {Name}.", translator.Name);
-            }
-            else
-            {
-                Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
-                if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-                    && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                        "TranslationNotEmpty")) return;
-                IsBusy = true;
-                CurrentTranslateItemModel.TranslatedText = string.Empty;
-                logger.LogInformation("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
-                    CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
-                var translation =
-                    (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
-                    .Translation;
-                Guard.IsNotNullOrWhiteSpace(translation);
-                CurrentTranslateItemModel.TranslatedText = translation;
-                logger.LogInformation("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
-                    CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
-                IsBusy = false;
-            }
+            Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
+            if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+                && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    "TranslationNotEmpty")) return;
+            IsBusy = true;
+            CurrentTranslateItemModel.TranslatedText = string.Empty;
+            logger.LogInformation("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
+                CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
+            var translation =
+                (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
+                .Translation;
+            Guard.IsNotNullOrWhiteSpace(translation);
+            CurrentTranslateItemModel.TranslatedText = translation;
+            logger.LogInformation("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
+                CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
+            IsBusy = false;
         }
         catch (Exception ex)
         {

@@ -30,8 +30,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary
-                    Source="/Witcher3StringEditor.Dialogs;component/Views/BatchTranslateDataTemplate.xaml" />
+                <ResourceDictionary Source="/Witcher3StringEditor.Dialogs;component/Views/BatchTranslateDataTemplate.xaml" />
                 <ResourceDictionary Source="/Witcher3StringEditor.Dialogs;component/Views/TranslateDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <h:TranslateDataTemplateSelector
