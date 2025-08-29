@@ -45,8 +45,17 @@ public partial class TranslateContentViewModel : ObservableObject
         this.logger = logger;
         this.w3Items = [.. w3Items];
         this.translator = translator;
-        Languages = Language.LanguageDictionary.Values
-            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
+        Languages = translator.Name switch
+        {
+            "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Microsoft)),
+            "GoogleTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Google)),
+            "YandexTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Google)),
+            _ => Language.LanguageDictionary.Values
+        };
+
         IndexOfItems = index;
         FormLanguage = Language.GetLanguage("en");
         var language = appSettings.PreferredLanguage;
