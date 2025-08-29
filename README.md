@@ -1,20 +1,77 @@
-# Witcher3StringEditor
-
-A powerful tool for editing string resources in *The Witcher 3: Wild Hunt*, allowing users to modify in-game text such as dialogues, quest descriptions, and UI elements with ease.
-
-## Features
-
-- **String Editing**: Add, modify, or delete string entries in Witcher 3 string files.
-- **Automatic Backups**: Files are automatically backed up when saved, with no manual intervention required. Backups are stored securely and can be managed via the backup dialog.
-- **File Management**: Open, save, and handle string files with support for drag-and-drop operations. Supported formats include:
-  - Witcher3 Strings File (`.w3strings`)
-  - CSV Files (`.csv`)
-  - Excel Worksheets (`.xlsx`)
-- **Recent Files**: Track and quickly access recently opened files through the "Recent" dialog.
-- **Localization**: The application automatically adapts to your system's language settings, selecting the closest matching language for the interface.
-- **Translation Helper**: Built-in translation tool to assist with localizing string entries, with support for batch translation and character limits (max 1,000 characters per translation).
-- **Update Checks**: Automatic update checks to ensure you're using the latest version.
-- **Integration**: Directly launch the game from the tool (with correct game path setup in settings).
+Witcher3StringEditor
+ 
+A powerful tool for editing string resources in The Witcher 3: Wild Hunt, allowing users to modify in-game text such as dialogues, quest descriptions, and UI elements with ease.
+ 
+Features
+ 
+- String Editing: Add, modify, or delete string entries in Witcher 3 string files.
+- Automatic Backups: Files are automatically backed up when saved (no manual intervention needed), with backups manageable via the backup dialog.
+- File Management: Open/save string files with drag-and-drop support; compatible with  .w3strings  (Witcher 3 native),  .csv , and  .xlsx  formats.
+- Recent Files: Track and quickly access recently opened files via the "Recent" dialog.
+- Localization: Auto-adapts to system language settings for the interface.
+- Translation Helper: Built-in tool for localizing entries (batch translation support, max 1,000 characters per translation).
+- Update Checks: Automatic checks to ensure you’re using the latest version.
+- Game Integration: Launch The Witcher 3 directly from the tool (requires setting  witcher3.exe  path in settings).
+- Search & Pagination: Efficiently find entries with search, and handle large files via paginated display.
+ 
+Installation
+ 
+1. Download the latest release from the Nexus Mods page.
+2. Extract the zip file to your desired location.
+3. Run  Witcher3StringEditor.exe  to launch the application.
+ 
+Required External Dependencies (For End Users)
+ 
+These are mandatory tools/libraries you must install/configure to use the software:
+ 
+1. .NET 8 Runtime
+- Required for the application to launch and run.
+- Download the matching version for your system architecture (x64/x86) from the Microsoft Official Page.
+2. w3strings Encoder
+- Required for encoding/decoding Witcher 3’s  .w3strings  files.
+- Download from the official Nexus Mods page, then specify its path during the tool’s first-run setup.
+ 
+First-Run Setup
+ 
+On your first launch, you’ll be prompted to:
+ 
+1. Set the path to  w3strings.exe  (from the w3strings Encoder download) – this is mandatory for  .w3strings  file handling.
+2. Optionally set the path to  witcher3.exe  to enable direct game launching.
+ 
+Usage
+ 
+Basic Operations
+ 
+- Open a File: Click "Open", use the "Recent" menu, or drag-and-drop a supported file ( .w3strings / .csv / .xlsx ). A prompt warns if unsaved changes will be overwritten.
+- Edit Entries: Select an entry in the table to modify; use "Add" or "Delete" to manage entries.
+- Save Changes: Click "Save" to persist edits – backups are auto-created (stored in  %AppData%\Witcher3StringEditor\Backup ).
+- Manage Backups: Access the backup dialog to view, restore, or delete backups (restoring overwrites the current file with confirmation).
+ 
+Advanced Features
+ 
+- Translation Tool: Select an entry and click "Translate" to use the tool. Note: Switching modes mid-translation interrupts progress; overwriting existing translations requires confirmation.
+- Settings: Customize preferences (encoder path, game path, preferred save file type) in the Settings dialog.
+- Log Viewer: Check operation history (with timestamps) via the log dialog.
+- Nexus Mods Integration: Click "Nexus Mods" to visit the tool’s mod page for updates.
+ 
+Screenshots
+ 
+Main Window
+Main interface with string entries, search, and pagination
+ 
+Backup Dialog
+Backup management with restore/delete options
+ 
+Translation Tool
+Built-in translation helper with source/target language support
+ 
+License
+ 
+This project is licensed under the MIT License – see the LICENSE file for details.
+ 
+Support
+ 
+For issues, feature requests, or questions, visit the Nexus Mods page to report problems, leave comments, or get community support.
 - **Search & Pagination**: Efficiently find entries with search functionality and handle large files with paginated display.
 
 ## Installation
