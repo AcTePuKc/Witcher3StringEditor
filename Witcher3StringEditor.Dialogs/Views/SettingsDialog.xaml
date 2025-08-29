@@ -64,8 +64,11 @@
             Text="{lex:Loc SettingsDialogTitle}" />
         <ScrollViewer Grid.Row="1">
             <iwk:SimpleStackPanel Margin="36,0" Spacing="4">
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{lex:Loc GeneralSettingsHeader}" />
-                <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}" Header="{lex:Loc EncoderSettingCardHeader}">
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                           Text="{lex:Loc GeneralSettingsHeader}" />
+                <ui:SettingsCard
+                    Description="{Binding AppSettings.W3StringsPath, FallbackValue={lex:Loc W3StringsPath}}"
+                    Header="{lex:Loc EncoderSettingCardHeader}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE90F;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -73,7 +76,8 @@
                         <ui:FontIcon Glyph="&#xe71e;" />
                     </Button>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}" Header="{lex:Loc GameSettingCardHeader}">
+                <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={lex:Loc GameExePath}}"
+                                 Header="{lex:Loc GameSettingCardHeader}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7FC;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -85,17 +89,19 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE97C;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}" SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}"
+                              SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{lex:Loc PreferredLanguage}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xF2B7;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}"
+                              SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{lex:Loc TranslatorSelection}">
                     <ui:SettingsCard.HeaderIcon>
-                        <ui:FontIcon Glyph="&#xE774;" />
+                        <ui:FontIcon Glyph="&#xEE56;" />
                     </ui:SettingsCard.HeaderIcon>
                     <ComboBox
                         DisplayMemberPath="Name"
