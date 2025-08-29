@@ -285,12 +285,6 @@
   <data name="BatchTranslateDialogTitle" xml:space="preserve">
     <value>Kötegelt fordítás</value>
   </data>
-  <data name="TranslateCharactersNumberExceedLimitMessage" xml:space="preserve">
-    <value>Az Ön által megadott szöveg meghaladja a fordításhoz megengedett 1000 karakteres maximális hosszúságot.</value>
-  </data>
-  <data name="TranslateCharactersNumberLimit" xml:space="preserve">
-    <value>A fordító maximum 1000 karaktert engedélyez</value>
-  </data>
   <data name="Pending" xml:space="preserve">
     <value>Függőben</value>
   </data>
@@ -314,9 +308,6 @@
   </data>
   <data name="BackupRestoreCaption" xml:space="preserve">
     <value>Biztonsági mentés visszaállítása</value>
-  </data>
-  <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
-    <value>A szöveg túl hosszú</value>
   </data>
   <data name="TranslatedTextInvalidCaption" xml:space="preserve">
     <value>A lefordított szöveg érvénytelen</value>

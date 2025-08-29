@@ -754,33 +754,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   查找类似 Text Too Long 的本地化字符串。
-        /// </summary>
-        internal static string TranslateCharactersNumberExceedLimitCaption {
-            get {
-                return ResourceManager.GetString("TranslateCharactersNumberExceedLimitCaption", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The text you&apos;ve entered exceeds the maximum allowed length of 1,000 characters for translation. 的本地化字符串。
-        /// </summary>
-        internal static string TranslateCharactersNumberExceedLimitMessage {
-            get {
-                return ResourceManager.GetString("TranslateCharactersNumberExceedLimitMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The translator allows a maximum of 1,000 characters 的本地化字符串。
-        /// </summary>
-        internal static string TranslateCharactersNumberLimit {
-            get {
-                return ResourceManager.GetString("TranslateCharactersNumberLimit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Translate 的本地化字符串。
         /// </summary>
         internal static string TranslateDialogTitle {

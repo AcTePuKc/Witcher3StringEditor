@@ -22,8 +22,6 @@ public partial class TranslateDialog
         var notificationHandlers =
             new (string token, Func<NotificationMessage<string>, string> message, string caption)[]
             {
-                ("TranslateCharactersNumberExceedLimit", _ => Strings.TranslateCharactersNumberExceedLimitMessage,
-                    Strings.TranslateCharactersNumberExceedLimitCaption),
                 ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
                     Strings.TranslatedTextInvalidCaption),
                 ("TranslateError", m => m.Message, Strings.TranslateErrorCaption)

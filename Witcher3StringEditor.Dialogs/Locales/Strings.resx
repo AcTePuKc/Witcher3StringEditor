@@ -285,12 +285,6 @@
   <data name="BatchTranslateDialogTitle" xml:space="preserve">
     <value>Batch Translate</value>
   </data>
-  <data name="TranslateCharactersNumberExceedLimitMessage" xml:space="preserve">
-    <value>The text you've entered exceeds the maximum allowed length of 1,000 characters for translation.</value>
-  </data>
-  <data name="TranslateCharactersNumberLimit" xml:space="preserve">
-    <value>The translator allows a maximum of 1,000 characters</value>
-  </data>
   <data name="Pending" xml:space="preserve">
     <value>Pending</value>
   </data>
@@ -314,9 +308,6 @@
   </data>
   <data name="BackupRestoreCaption" xml:space="preserve">
     <value>Backup Restore</value>
-  </data>
-  <data name="TranslateCharactersNumberExceedLimitCaption" xml:space="preserve">
-    <value>Text Too Long</value>
   </data>
   <data name="TranslatedTextInvalidCaption" xml:space="preserve">
     <value>Translated Text Invalid</value>

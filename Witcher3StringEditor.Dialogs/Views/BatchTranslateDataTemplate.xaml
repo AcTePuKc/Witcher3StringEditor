@@ -41,7 +41,6 @@
                     SmallChange="1"
                     SpinButtonPlacementMode="Inline"
                     Value="{Binding EndIndex}" />
-                <TextBlock Text="{lex:Loc TranslateCharactersNumberLimit}" />
             </iwk:SimpleStackPanel>
             <StackPanel
                 Grid.Row="1"
