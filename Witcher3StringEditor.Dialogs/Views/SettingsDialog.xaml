@@ -2,8 +2,8 @@
     x:Class="Witcher3StringEditor.Dialogs.Views.SettingsDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:c="clr-namespace:Witcher3StringEditor.Shared;assembly=Witcher3StringEditor.Shared"
-    xmlns:converters="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
+    xmlns:s="clr-namespace:Witcher3StringEditor.Shared;assembly=Witcher3StringEditor.Shared"
+    xmlns:c="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
@@ -31,7 +31,7 @@
                 MethodName="GetValues"
                 ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="c:W3FileType" />
+                    <x:Type TypeName="s:W3FileType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <ObjectDataProvider
@@ -39,7 +39,7 @@
                 MethodName="GetValues"
                 ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="c:W3Language" />
+                    <x:Type TypeName="s:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <Style
@@ -50,7 +50,7 @@
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
             </Style>
-            <converters:TranslatorToStringConverter x:Key="TranslatorToStringConverter" />
+            <c:TranslatorToStringConverter x:Key="TranslatorToStringConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
