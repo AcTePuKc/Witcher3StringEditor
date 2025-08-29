@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using CommandLine;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -112,7 +113,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
 
-    public ObservableCollection<IEditW3Item> W3Items { get; set; } = [];
+    public ObservableCollection<W3ItemModel> W3Items { get; set; } = [];
 
     private bool W3ItemsHaveItems => W3Items.Any();
 
@@ -239,7 +240,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
             && dialogViewModel.W3Item != null)
         {
-            W3Items.Add(dialogViewModel.W3Item);
+            W3Items.Add(dialogViewModel.W3Item.Cast<W3ItemModel>());
             logger.LogInformation("New W3Item added.");
         }
         else
@@ -255,7 +256,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
         {
             var found = W3Items.First(x => x.Id == w3Item.Id);
-            W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item;
+            W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3ItemModel>();
             logger.LogInformation("The W3Item has been updated.");
         }
         else
@@ -272,7 +273,7 @@ internal partial class MainWindowViewModel : ObservableObject
             await dialogService.ShowDialogAsync(this,
                 new DeleteDataDialogViewModel(Ioc.Default.GetRequiredService<ILogger<DeleteDataDialogViewModel>>(),
                     w3Items)) == true)
-            w3Items.ForEach(item => W3Items.Remove(item));
+            w3Items.ForEach(item => W3Items.Remove(item.Cast<W3ItemModel>()));
     }
 
     [RelayCommand]
