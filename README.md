@@ -80,7 +80,7 @@ To build the project locally:
 3. Restore NuGet packages.
 4. Build the solution (supports Debug/Release configurations).
 
-**Note**: The `.gitignore` file excludes Visual Studio temporary files, build outputs, and sensitive data (e.g., `NexusApiKey.txt`), ensuring clean version control.
+**Note**: The `.gitignore` file excludes Visual Studio temporary files, build outputs, and sensitive data , ensuring clean version control.
 
 ## License
 
