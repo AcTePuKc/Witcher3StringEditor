@@ -14,9 +14,9 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 
     [ObservableProperty] private W3FileType preferredW3FileType;
 
-    [ObservableProperty] private string w3StringsPath = string.Empty;
-
     [ObservableProperty] private string translator = "MicrosoftTranslator";
+
+    [ObservableProperty] private string w3StringsPath = string.Empty;
 
     public AppSettings()
     {

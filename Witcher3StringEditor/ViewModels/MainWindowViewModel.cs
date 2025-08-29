@@ -40,8 +40,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly ILogger<MainWindowViewModel> logger;
     private readonly IPlayGameService playGameService;
     private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
-    private readonly IW3Serializer w3Serializer;
     private readonly IEnumerable<ITranslator> translators;
+    private readonly IW3Serializer w3Serializer;
 
     [ObservableProperty] private string[]? dropFileData;
 
@@ -52,7 +52,8 @@ internal partial class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
         ICheckUpdateService checkUpdateService, IDialogService dialogService,
-        IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,IEnumerable<ITranslator> translators,
+        IExplorerService explorerService, IPlayGameService playGameService, IW3Serializer w3Serializer,
+        IEnumerable<ITranslator> translators,
         ILogger<MainWindowViewModel> logger)
     {
         this.logger = logger;
@@ -302,7 +303,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService,translators,
+            new SettingDialogViewModel(appSettings, dialogService, translators,
                 Ioc.Default.GetRequiredService<ILogger<SettingDialogViewModel>>()));
     }
 
@@ -367,7 +368,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(IW3Item? w3Item)
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(appSettings, Ioc.Default.GetServices<ITranslator>().First(x=>x.Name == appSettings.Translator),
+            new TranslateDialogViewModel(appSettings,
+                Ioc.Default.GetServices<ITranslator>().First(x => x.Name == appSettings.Translator),
                 Ioc.Default.GetRequiredService<ILogger<TranslateDialogViewModel>>(), W3Items,
                 w3Item != null ? W3Items.IndexOf(w3Item) : 0));
     }
