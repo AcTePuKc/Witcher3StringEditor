@@ -328,9 +328,10 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         try
         {
-            Guard.IsTrue(DateTime.TryParseExact(Assembly.GetExecutingAssembly().GetCustomAttributesData()
-                    .FirstOrDefault(static x => x.AttributeType.Name == "TimestampAttribute")?.ConstructorArguments
-                    .FirstOrDefault().Value as string, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture,
+            Guard.IsTrue(DateTime.TryParseExact(
+                Assembly.GetExecutingAssembly().GetCustomAttributesData()
+                    .First(static x => x.AttributeType.Name == "TimestampAttribute").ConstructorArguments[0]
+                    .Value as string, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture,
                 DateTimeStyles.AssumeUniversal, out var buildTime));
             return buildTime.ToLocalTime();
         }
