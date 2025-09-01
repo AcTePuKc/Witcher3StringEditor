@@ -186,38 +186,11 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear the Knowledge Base.
-        /// </summary>
-        internal static string ClearKnowledgeBtnContent {
-            get {
-                return ResourceManager.GetString("ClearKnowledgeBtnContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         internal static string CloseBtnContent {
             get {
                 return ResourceManager.GetString("CloseBtnContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Controls the number of historical messages considered by the model when generating replies. Increasing this value can improve reply accuracy but may decrease speed and increase costs. Setting it to 0 disables this option, meaning the model will not consider any historical messages..
-        /// </summary>
-        internal static string ContextLengthSettingDescription {
-            get {
-                return ResourceManager.GetString("ContextLengthSettingDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Context Length.
-        /// </summary>
-        internal static string ContextLengthSettingHeader {
-            get {
-                return ResourceManager.GetString("ContextLengthSettingHeader", resourceCulture);
             }
         }
         
@@ -249,15 +222,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Knowledge.
-        /// </summary>
-        internal static string DelKnowledgeBtnContent {
-            get {
-                return ResourceManager.GetString("DelKnowledgeBtnContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string EditDialogTitle {
@@ -281,15 +245,6 @@ namespace Witcher3StringEditor.Dialogs.Locales {
         internal static string EndIndex {
             get {
                 return ResourceManager.GetString("EndIndex", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Export Knowledge.
-        /// </summary>
-        internal static string ExportKnowledgeBtnContent {
-            get {
-                return ResourceManager.GetString("ExportKnowledgeBtnContent", resourceCulture);
             }
         }
         
