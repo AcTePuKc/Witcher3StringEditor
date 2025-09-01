@@ -44,11 +44,14 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Height="48" Loaded="AppTitleBar_OnLoaded" SizeChanged="AppTitleBar_OnSizeChanged">
+        <Grid
+            Height="48"
+            Loaded="AppTitleBar_OnLoaded"
+            SizeChanged="AppTitleBar_OnSizeChanged">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" MinWidth="400"/>
+                <ColumnDefinition Width="*" MinWidth="400" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition x:Name="RightPaddingColumn" Width="0" />
@@ -68,8 +71,25 @@
                     <ui:FontIcon Glyph="&#xe721;" />
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
-            <Button Grid.Column="4" Click="ThemeSwitchBtn_OnClick">
-                <ui:FontIcon Glyph="&#xe706;" />
+            <Button
+                Grid.Column="4"
+                Background="Transparent"
+                BorderThickness="0"
+                Click="ThemeSwitchBtn_OnClick">
+                <ui:FontIcon>
+                    <ui:FontIcon.Style>
+                        <Style TargetType="ui:FontIcon">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}" Value="{x:Static ui:ApplicationTheme.Light}">
+                                    <Setter Property="Glyph" Value="&#xF0CE;" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}" Value="{x:Static ui:ApplicationTheme.Dark}">
+                                    <Setter Property="Glyph" Value="&#xE706;" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:FontIcon.Style>
+                </ui:FontIcon>
             </Button>
         </Grid>
         <ui:CommandBar
