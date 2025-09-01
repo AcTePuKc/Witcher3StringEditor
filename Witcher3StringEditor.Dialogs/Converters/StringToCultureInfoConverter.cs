@@ -8,9 +8,8 @@ internal class StringToCultureInfoConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is string ci) return !string.IsNullOrWhiteSpace(ci) ? new CultureInfo(ci) : new CultureInfo("en");
-
-        return DependencyProperty.UnsetValue;
+        if (value is not string ci) return DependencyProperty.UnsetValue;
+        return !string.IsNullOrWhiteSpace(ci) ? new CultureInfo(ci) : DependencyProperty.UnsetValue;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
