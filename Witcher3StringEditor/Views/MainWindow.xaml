@@ -50,8 +50,8 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="4*" MinWidth="220" />
-                <ColumnDefinition Width="*" MinWidth="48" />
+                <ColumnDefinition Width="*" MinWidth="400"/>
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition x:Name="RightPaddingColumn" Width="0" />
             </Grid.ColumnDefinitions>

@@ -20,7 +20,7 @@ public partial class MainWindow
 {
     private readonly ILogger<MainWindow> logger = Ioc.Default.GetRequiredService<ILogger<MainWindow>>();
     private readonly AsyncRequestRecipient<bool> recipient = new();
-    
+
     public MainWindow()
     {
         InitializeComponent();
