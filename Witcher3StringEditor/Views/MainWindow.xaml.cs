@@ -2,7 +2,9 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Controls;
+using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Locales;
@@ -18,6 +20,7 @@ public partial class MainWindow
 {
     private readonly ILogger<MainWindow> logger = Ioc.Default.GetRequiredService<ILogger<MainWindow>>();
     private readonly AsyncRequestRecipient<bool> recipient = new();
+    private double scaleAdjustment = 1;
 
     public MainWindow()
     {
@@ -77,5 +80,34 @@ public partial class MainWindow
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(recipient);
+    }
+
+    private void AppTitleBar_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (TitleBar.GetExtendViewIntoTitleBar(this)) SetRegionsForCustomTitleBar();
+    }
+
+    private void AppTitleBar_OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        if (TitleBar.GetExtendViewIntoTitleBar(this)) SetRegionsForCustomTitleBar();
+    }
+
+    private void MainWindow_OnDpiChanged(object sender, DpiChangedEventArgs e)
+    {
+        scaleAdjustment = e.NewDpi.PixelsPerDip;
+    }
+
+    private void SetRegionsForCustomTitleBar()
+    {
+        RightPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayRightInset(this) / scaleAdjustment);
+        LeftPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayLeftInset(this) / scaleAdjustment);
+    }
+
+    private void ThemeSwitchBtn_OnClick(object sender, RoutedEventArgs e)
+    {
+        ThemeManager.Current.ApplicationTheme =
+            ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Light
+                ? ApplicationTheme.Dark
+                : ApplicationTheme.Light;
     }
 }
