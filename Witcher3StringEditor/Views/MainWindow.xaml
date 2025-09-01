@@ -46,8 +46,6 @@
         </Grid.RowDefinitions>
         <Grid Height="48" Loaded="AppTitleBar_OnLoaded" SizeChanged="AppTitleBar_OnSizeChanged">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="LeftPaddingColumn" Width="0" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" MinWidth="400"/>
@@ -56,12 +54,12 @@
                 <ColumnDefinition x:Name="RightPaddingColumn" Width="0" />
             </Grid.ColumnDefinitions>
             <TextBlock
-                Grid.Column="2"
+                Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 Text="{lex:Loc AppTitle}" />
             <ui:AutoSuggestBox
-                Grid.Column="4"
+                Grid.Column="2"
                 VerticalAlignment="Center"
                 PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
                 QuerySubmitted="SearchBox_QuerySubmitted"
@@ -70,7 +68,7 @@
                     <ui:FontIcon Glyph="&#xe721;" />
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
-            <Button Grid.Column="6" x:Name="ThemeSwitchBtn" Click="ThemeSwitchBtn_OnClick">
+            <Button Grid.Column="4" Click="ThemeSwitchBtn_OnClick">
                 <ui:FontIcon Glyph="&#xe706;" />
             </Button>
         </Grid>

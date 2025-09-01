@@ -94,7 +94,6 @@ public partial class MainWindow
     private void SetRegionsForCustomTitleBar()
     {
         RightPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayRightInset(this));
-        LeftPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayLeftInset(this));
     }
 
     private void ThemeSwitchBtn_OnClick(object sender, RoutedEventArgs e)
