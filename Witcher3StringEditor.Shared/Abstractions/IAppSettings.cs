@@ -19,4 +19,6 @@ public interface IAppSettings
     public ObservableCollection<IRecentItem> RecentItems { get; }
 
     public ObservableCollection<IBackupItem> BackupItems { get; }
+
+    public string Language { get; set; }
 }

@@ -4,6 +4,7 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using Witcher3StringEditor.Dialogs.Locales;
 using Witcher3StringEditor.Shared.Abstractions;
 
@@ -21,6 +22,14 @@ public partial class SettingDialogViewModel(
     public IEnumerable<ITranslator> Translators { get; } = translators;
 
     public bool? DialogResult => true;
+
+    public IEnumerable<CultureInfo> SupportedCultures { get; } =
+    [
+        new CultureInfo("en"),
+        new CultureInfo("fr"),
+        new CultureInfo("hu"),
+        new CultureInfo("zh-Hans")
+    ];
 
     [RelayCommand]
     private async Task SetW3StringsPath()
