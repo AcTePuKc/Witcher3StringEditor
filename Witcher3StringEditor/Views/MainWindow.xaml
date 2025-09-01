@@ -80,10 +80,14 @@
                     <ui:FontIcon.Style>
                         <Style TargetType="ui:FontIcon">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}" Value="{x:Static ui:ApplicationTheme.Light}">
+                                <DataTrigger
+                                    Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
+                                    Value="{x:Static ui:ApplicationTheme.Light}">
                                     <Setter Property="Glyph" Value="&#xF0CE;" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}" Value="{x:Static ui:ApplicationTheme.Dark}">
+                                <DataTrigger
+                                    Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
+                                    Value="{x:Static ui:ApplicationTheme.Dark}">
                                     <Setter Property="Glyph" Value="&#xE706;" />
                                 </DataTrigger>
                             </Style.Triggers>

@@ -10,6 +10,8 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 {
     [ObservableProperty] private string gameExePath = string.Empty;
 
+    [ObservableProperty] private string language = string.Empty;
+
     [ObservableProperty] private W3Language preferredLanguage;
 
     [ObservableProperty] private W3FileType preferredW3FileType;
@@ -17,8 +19,6 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private string translator = "MicrosoftTranslator";
 
     [ObservableProperty] private string w3StringsPath = string.Empty;
-
-    [ObservableProperty] private string language = string.Empty;
 
     public AppSettings()
     {
