@@ -75,9 +75,32 @@ public partial class App
             InitializeLogging(logObserver);
             logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
-            LocalizeDictionary.Instance.Culture = Thread.CurrentThread.CurrentCulture;
+            LocalizeDictionary.Instance.Culture = appSettings.Language == string.Empty
+                ? ResolveSupportedCulture(Thread.CurrentThread.CurrentCulture)
+                : new CultureInfo(appSettings.Language);
+            if (appSettings.Language == string.Empty)
+                appSettings.Language = LocalizeDictionary.Instance.Culture.Name;
             new MainWindow().Show();
         }
+    }
+
+    private static CultureInfo ResolveSupportedCulture(CultureInfo cultureInfo)
+    {
+        var supportedCultures = new[]
+        {
+            new CultureInfo("en"),
+            new CultureInfo("fr"),
+            new CultureInfo("hu"),
+            new CultureInfo("zh-Hans")
+        };
+        if (supportedCultures.Any(c => Equals(c, cultureInfo))) return cultureInfo;
+        while (!Equals(cultureInfo.Parent, CultureInfo.InvariantCulture))
+        {
+            if (supportedCultures.Any(c => Equals(c, cultureInfo))) return cultureInfo;
+            cultureInfo = cultureInfo.Parent;
+        }
+
+        return new CultureInfo("en");
     }
 
     private void SetupExceptionHandling()
