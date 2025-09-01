@@ -44,7 +44,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Height="48" x:Name="AppTitleBar" Loaded="AppTitleBar_OnLoaded" SizeChanged="AppTitleBar_OnSizeChanged">
+        <Grid Height="48" Loaded="AppTitleBar_OnLoaded" SizeChanged="AppTitleBar_OnSizeChanged">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition x:Name="LeftPaddingColumn" Width="0" />
                 <ColumnDefinition Width="Auto" />
@@ -61,9 +61,7 @@
                 VerticalAlignment="Center"
                 Text="{lex:Loc AppTitle}" />
             <ui:AutoSuggestBox
-                x:Name="TitleBarSearchBox"
                 Grid.Column="4"
-                MaxWidth="400"
                 VerticalAlignment="Center"
                 PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
                 QuerySubmitted="SearchBox_QuerySubmitted"
