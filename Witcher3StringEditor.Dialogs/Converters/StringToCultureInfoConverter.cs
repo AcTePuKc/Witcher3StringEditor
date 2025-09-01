@@ -13,7 +13,7 @@ internal class StringToCultureInfoConverter : IValueConverter
             if (value is not string ci) return DependencyProperty.UnsetValue;
             return !string.IsNullOrWhiteSpace(ci) ? new CultureInfo(ci) : DependencyProperty.UnsetValue;
         }
-        catch (CultureNotFoundException e)
+        catch (CultureNotFoundException)
         {
             return DependencyProperty.UnsetValue;
         }
