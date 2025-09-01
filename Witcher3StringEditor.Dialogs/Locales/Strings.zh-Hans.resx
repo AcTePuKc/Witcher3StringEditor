@@ -382,15 +382,6 @@
   <data name="TranslationNotEmptyCaption" xml:space="preserve">
     <value>译文已存在</value>
   </data>
-  <data name="DelKnowledgeBtnContent" xml:space="preserve">
-    <value>删除知识</value>
-  </data>
-  <data name="ClearKnowledgeBtnContent" xml:space="preserve">
-    <value>清空知识库</value>
-  </data>
-  <data name="ExportKnowledgeBtnContent" xml:space="preserve">
-    <value>导出知识</value>
-  </data>
   <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Excel工作簿</value>
   </data>

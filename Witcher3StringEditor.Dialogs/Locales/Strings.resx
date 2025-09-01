@@ -382,15 +382,6 @@
   <data name="TranslationNotEmptyCaption" xml:space="preserve">
     <value>The translation already exists</value>
   </data>
-  <data name="DelKnowledgeBtnContent" xml:space="preserve">
-    <value>Delete Knowledge</value>
-  </data>
-  <data name="ClearKnowledgeBtnContent" xml:space="preserve">
-    <value>Clear the Knowledge Base</value>
-  </data>
-  <data name="ExportKnowledgeBtnContent" xml:space="preserve">
-    <value>Export Knowledge</value>
-  </data>
   <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Excel Worksheets</value>
   </data>

@@ -382,15 +382,6 @@
   <data name="TranslationNotEmptyCaption" xml:space="preserve">
     <value>A fordítás már létezik</value>
   </data>
-  <data name="DelKnowledgeBtnContent" xml:space="preserve">
-    <value>Tudás törlése </value>
-  </data>
-  <data name="ClearKnowledgeBtnContent" xml:space="preserve">
-    <value>Törölni a tudásbázist </value>
-  </data>
-  <data name="ExportKnowledgeBtnContent" xml:space="preserve">
-    <value>Export Tudás</value>
-  </data>
   <data name="FileFormatExcelWorkSheets" xml:space="preserve">
     <value>Excel munkalapok</value>
   </data>
