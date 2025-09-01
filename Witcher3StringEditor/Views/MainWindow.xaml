@@ -24,7 +24,7 @@
     WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
-    mc:Ignorable="d" DpiChanged="MainWindow_OnDpiChanged">
+    mc:Ignorable="d">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />

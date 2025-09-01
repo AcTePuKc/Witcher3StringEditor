@@ -20,8 +20,7 @@ public partial class MainWindow
 {
     private readonly ILogger<MainWindow> logger = Ioc.Default.GetRequiredService<ILogger<MainWindow>>();
     private readonly AsyncRequestRecipient<bool> recipient = new();
-    private double scaleAdjustment = 1;
-
+    
     public MainWindow()
     {
         InitializeComponent();
@@ -92,15 +91,10 @@ public partial class MainWindow
         if (TitleBar.GetExtendViewIntoTitleBar(this)) SetRegionsForCustomTitleBar();
     }
 
-    private void MainWindow_OnDpiChanged(object sender, DpiChangedEventArgs e)
-    {
-        scaleAdjustment = e.NewDpi.PixelsPerDip;
-    }
-
     private void SetRegionsForCustomTitleBar()
     {
-        RightPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayRightInset(this) / scaleAdjustment);
-        LeftPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayLeftInset(this) / scaleAdjustment);
+        RightPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayRightInset(this));
+        LeftPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayLeftInset(this));
     }
 
     private void ThemeSwitchBtn_OnClick(object sender, RoutedEventArgs e)
