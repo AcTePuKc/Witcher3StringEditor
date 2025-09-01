@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:c="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -110,7 +111,13 @@
                     <ComboBox
                         DisplayMemberPath="NativeName"
                         ItemsSource="{Binding SupportedCultures}"
-                        SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}" />
+                        SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding ChangeLanguageCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ComboBox>
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>

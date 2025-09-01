@@ -1,11 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Globalization;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
-using System.Globalization;
 using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -21,15 +23,15 @@ public partial class SettingDialogViewModel(
 
     public IEnumerable<ITranslator> Translators { get; } = translators;
 
-    public bool? DialogResult => true;
-
     public IEnumerable<CultureInfo> SupportedCultures { get; } =
     [
-        new CultureInfo("en"),
-        new CultureInfo("fr"),
-        new CultureInfo("hu"),
-        new CultureInfo("zh-Hans")
+        new("en"),
+        new("fr"),
+        new("hu"),
+        new("zh-Hans")
     ];
+
+    public bool? DialogResult => true;
 
     [RelayCommand]
     private async Task SetW3StringsPath()
@@ -63,5 +65,12 @@ public partial class SettingDialogViewModel(
             AppSettings.GameExePath = storageFile.LocalPath;
             logger.LogInformation("Game Path set to {Path}.", storageFile.LocalPath);
         }
+    }
+
+    [RelayCommand]
+    private void ChangeLanguage()
+    {
+        WeakReferenceMessenger.Default.Send(
+            new NotificationMessage<CultureInfo>(new CultureInfo(AppSettings.Language)));
     }
 }

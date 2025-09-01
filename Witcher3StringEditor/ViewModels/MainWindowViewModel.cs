@@ -25,6 +25,7 @@ using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Shared.Abstractions;
+using WPFLocalizeExtension.Engine;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -35,6 +36,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly ICheckUpdateService checkUpdateService;
     private readonly IDialogService dialogService;
     private readonly IExplorerService explorerService;
+    private readonly NotificationRecipient<CultureInfo> languageRecipient = new();
     private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
     private readonly ILogger<MainWindowViewModel> logger;
     private readonly IPlayGameService playGameService;
@@ -89,6 +91,20 @@ internal partial class MainWindowViewModel : ObservableObject
                     logger.LogError(ex, "Failed to open file: {FileName}.", m.FileName);
                 }
             });
+        WeakReferenceMessenger.Default.Register<NotificationRecipient<CultureInfo>,
+            NotificationMessage<CultureInfo>>(languageRecipient, (r, m) =>
+        {
+            try
+            {
+                r.Receive(m);
+                LocalizeDictionary.Instance.Culture = m.Message;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to change language.");
+            }
+        });
+
         W3Items.CollectionChanged += (_, _) =>
         {
             AddCommand.NotifyCanExecuteChanged();
@@ -165,6 +181,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void WindowClosed()
     {
+        WeakReferenceMessenger.Default.UnregisterAll(languageRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(logEventRecipient);
         WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
     }
 
