@@ -1,4 +1,6 @@
-﻿namespace Witcher3StringEditor.Shared.Abstractions;
+﻿using JetBrains.Annotations;
+
+namespace Witcher3StringEditor.Shared.Abstractions;
 
 public interface IBackupItem
 {
@@ -10,5 +12,5 @@ public interface IBackupItem
 
     public string BackupPath { get; }
 
-    public DateTime BackupTime { get; }
+    [UsedImplicitly] public DateTime BackupTime { get; }
 }
