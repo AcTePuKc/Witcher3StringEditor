@@ -56,6 +56,7 @@
                 Text="{Binding CurrentTranslateItemModel.TranslatedText, FallbackValue=''}"
                 TextWrapping="WrapWithOverflow">
                 <TextBox.Style>
+                    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                     <Style BasedOn="{StaticResource DefaultTextBoxStyle}" TargetType="TextBox">
                         <Setter Property="ui:ControlHelper.PlaceholderText" Value="" />
                         <Style.Triggers>

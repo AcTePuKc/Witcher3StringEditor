@@ -23,6 +23,7 @@
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
+            <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
             <Style BasedOn="{StaticResource ExpanderCardStyle}" TargetType="Expander">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
             </Style>

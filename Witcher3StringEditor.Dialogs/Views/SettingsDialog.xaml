@@ -40,6 +40,7 @@
                     <x:Type TypeName="s:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+            <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
             <Style
                 x:Key="SettingsSectionHeaderTextBlockStyle"
                 BasedOn="{StaticResource BodyStrongTextBlockStyle}"
