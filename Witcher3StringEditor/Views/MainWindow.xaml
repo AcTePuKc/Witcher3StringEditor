@@ -77,10 +77,14 @@
                     <ui:FontIcon.Style>
                         <Style TargetType="ui:FontIcon">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}" Value="{x:Static ui:ApplicationTheme.Light}">
+                                <DataTrigger
+                                    Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
+                                    Value="{x:Static ui:ApplicationTheme.Light}">
                                     <Setter Property="Glyph" Value="&#xF0CE;" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}" Value="{x:Static ui:ApplicationTheme.Dark}">
+                                <DataTrigger
+                                    Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
+                                    Value="{x:Static ui:ApplicationTheme.Dark}">
                                     <Setter Property="Glyph" Value="&#xE706;" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -98,7 +102,8 @@
                     <ui:FontIcon Glyph="&#xe8e5;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowRecentDialogCommand}" Label="{I18N {x:Static l:LangKeys.RecentBtnLabel}}">
+            <ui:AppBarButton Command="{Binding ShowRecentDialogCommand}"
+                             Label="{I18N {x:Static l:LangKeys.RecentBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe823;" />
                 </ui:AppBarButton.Icon>
@@ -150,12 +155,14 @@
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}" Label="{I18N {x:Static l:LangKeys.SaveBtnLabel}}">
+            <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}"
+                             Label="{I18N {x:Static l:LangKeys.SaveBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74e;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowBackupDialogCommand}" Label="{I18N {x:Static l:LangKeys.BackupBtnLabel}}">
+            <ui:AppBarButton Command="{Binding ShowBackupDialogCommand}"
+                             Label="{I18N {x:Static l:LangKeys.BackupBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe81c;" />
                 </ui:AppBarButton.Icon>
@@ -165,12 +172,14 @@
                     <ui:FontIcon Glyph="&#xf000;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowSettingsDialogCommand}" Label="{I18N {x:Static l:LangKeys.SettingsBtnLabel}}">
+            <ui:AppBarButton Command="{Binding ShowSettingsDialogCommand}"
+                             Label="{I18N {x:Static l:LangKeys.SettingsBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe713;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding OpenWorkingFolderCommand}" Label="{I18N {x:Static l:LangKeys.OpenWorkingFolderBtnLabel}}">
+            <ui:AppBarButton Command="{Binding OpenWorkingFolderCommand}"
+                             Label="{I18N {x:Static l:LangKeys.OpenWorkingFolderBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xec50;" />
                 </ui:AppBarButton.Icon>
@@ -301,7 +310,8 @@
             IsOpen="{Binding IsUpdateAvailable}"
             Message="{I18N {x:Static l:LangKeys.UpdateAvailable}}">
             <ui:InfoBar.ActionButton>
-                <Button Command="{Binding OpenNexusModsCommand}" Content="{I18N {x:Static l:LangKeys.UpdateBtnContent}}" />
+                <Button Command="{Binding OpenNexusModsCommand}"
+                        Content="{I18N {x:Static l:LangKeys.UpdateBtnContent}}" />
             </ui:InfoBar.ActionButton>
         </ui:InfoBar>
     </Grid>

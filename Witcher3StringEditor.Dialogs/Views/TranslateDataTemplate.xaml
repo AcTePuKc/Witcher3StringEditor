@@ -60,7 +60,8 @@
                         <Setter Property="ui:ControlHelper.PlaceholderText" Value="" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsBusy}" Value="True">
-                                <Setter Property="ui:ControlHelper.PlaceholderText" Value="{I18N {x:Static l:LangKeys.Translating}}" />
+                                <Setter Property="ui:ControlHelper.PlaceholderText"
+                                        Value="{I18N {x:Static l:LangKeys.Translating}}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

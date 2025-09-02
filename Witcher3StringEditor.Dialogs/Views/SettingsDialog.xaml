@@ -63,8 +63,11 @@
             Text="{I18N {x:Static l:LangKeys.SettingsDialogTitle}}" />
         <ScrollViewer Grid.Row="1">
             <iwk:SimpleStackPanel Margin="36,0" Spacing="4">
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{I18N {x:Static l:LangKeys.GeneralSettingsHeader}}" />
-                <ui:SettingsCard Description="{Binding AppSettings.W3StringsPath, FallbackValue={I18N {x:Static l:LangKeys.W3StringsPath}}}" Header="{I18N {x:Static l:LangKeys.EncoderSettingCardHeader}}">
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                           Text="{I18N {x:Static l:LangKeys.GeneralSettingsHeader}}" />
+                <ui:SettingsCard
+                    Description="{Binding AppSettings.W3StringsPath, FallbackValue={I18N {x:Static l:LangKeys.W3StringsPath}}}"
+                    Header="{I18N {x:Static l:LangKeys.EncoderSettingCardHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE90F;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -72,7 +75,9 @@
                         <ui:FontIcon Glyph="&#xe71e;" />
                     </Button>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{Binding AppSettings.GameExePath, FallbackValue={I18N {x:Static l:LangKeys.GameExePath}}}" Header="{I18N {x:Static l:LangKeys.GameSettingCardHeader}}">
+                <ui:SettingsCard
+                    Description="{Binding AppSettings.GameExePath, FallbackValue={I18N {x:Static l:LangKeys.GameExePath}}}"
+                    Header="{I18N {x:Static l:LangKeys.GameSettingCardHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7FC;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -84,13 +89,15 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE97C;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}" SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}"
+                              SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.PreferredLanguage}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xF2B7;" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}" SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}"
+                              SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}" />
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.TranslatorSelection}}">
                     <ui:SettingsCard.HeaderIcon>
@@ -101,7 +108,8 @@
                         ItemsSource="{Binding Translators}"
                         SelectedItem="{Binding AppSettings.Translator, Converter={StaticResource TranslatorToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </ui:SettingsCard>
-                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="{I18N {x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
+                           Text="{I18N {x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />
                 <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.LanguageHelpText}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE774;" />
