@@ -441,6 +441,7 @@
     <data name="Version" xml:space="preserve">
     <value>Version:</value>
   </data>
+    <!-- ReSharper disable once OverriddenWithSameValue -->
     <data name="OS" xml:space="preserve">
     <value>OS:</value>
   </data>
