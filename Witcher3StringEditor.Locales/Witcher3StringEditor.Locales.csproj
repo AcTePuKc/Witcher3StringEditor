@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="Antelcat.I18N.WPF" Version="1.1.0"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
     </ItemGroup>
 
     <ItemGroup>
