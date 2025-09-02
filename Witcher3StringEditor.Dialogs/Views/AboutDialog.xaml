@@ -5,17 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dependencyModel="clr-namespace:Microsoft.Extensions.DependencyModel;assembly=Microsoft.Extensions.DependencyModel"
     xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{lex:Loc AboutDialogTitle}"
+    Title="{I18N {x:Static l:LangKeys.AboutDialogTitle}}"
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:AboutDialogViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -30,7 +27,7 @@
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
-            Text="{lex:Loc AboutDialogTitle}" />
+            Text="{I18N {x:Static l:LangKeys.AboutDialogTitle}}" />
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -64,7 +61,7 @@
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Right" Text="{lex:Loc Version}" />
+                <TextBlock HorizontalAlignment="Right" Text="{I18N {x:Static l:LangKeys.Version}}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="2"
@@ -73,7 +70,7 @@
                     Grid.Row="2"
                     Grid.Column="0"
                     HorizontalAlignment="Right"
-                    Text="{lex:Loc AppBuildTime}" />
+                    Text="{I18N {x:Static l:LangKeys.AppBuildTime}}" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="2"
@@ -82,7 +79,7 @@
                     Grid.Row="4"
                     Grid.Column="0"
                     HorizontalAlignment="Right"
-                    Text="{lex:Loc OS}" />
+                    Text="{I18N {x:Static l:LangKeys.OS}}" />
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="2"
@@ -91,7 +88,7 @@
                     Grid.Row="6"
                     Grid.Column="0"
                     HorizontalAlignment="Right"
-                    Text="{lex:Loc Runtime}" />
+                    Text="{I18N {x:Static l:LangKeys.Runtime}}" />
                 <TextBlock
                     Grid.Row="6"
                     Grid.Column="2"

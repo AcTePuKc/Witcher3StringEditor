@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;
@@ -17,9 +17,9 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
         var notificationHandlers =
             new (string token, Func<ValueChangedMessage<string>, string> message, string caption)[]
             {
-                ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
-                    Strings.TranslatedTextInvalidCaption),
-                ("TranslateError", m => m.Value, Strings.TranslateErrorCaption)
+                ("TranslatedTextInvalid", _ => LangKeys.TranslatedTextInvalidMessage,
+                    LangKeys.TranslatedTextInvalidCaption),
+                ("TranslateError", m => m.Value, LangKeys.TranslateErrorCaption)
             };
 
         foreach (var (token, message, caption) in notificationHandlers)
@@ -36,10 +36,10 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
 
         var messageHandlers = new[]
         {
-            ("TranslatedTextNoSaved", Strings.TranslatedTextNoSavedMessage, Strings.TranslatedTextNoSavedCaption),
-            ("TranslationDialogClosing", Strings.TranslatorTranslatingMessage, Strings.TranslatorTranslatingCaption),
-            ("TranslationModeSwitch", Strings.TranslationModeSwitchMessage, Strings.TranslationModeSwitchCaption),
-            ("TranslationNotEmpty", Strings.TranslationNotEmptyMessage, Strings.TranslationNotEmptyCaption)
+            ("TranslatedTextNoSaved", LangKeys.TranslatedTextNoSavedMessage, LangKeys.TranslatedTextNoSavedCaption),
+            ("TranslationDialogClosing", LangKeys.TranslatorTranslatingMessage, LangKeys.TranslatorTranslatingCaption),
+            ("TranslationModeSwitch", LangKeys.TranslationModeSwitchMessage, LangKeys.TranslationModeSwitchCaption),
+            ("TranslationNotEmpty", LangKeys.TranslationNotEmptyMessage, LangKeys.TranslationNotEmptyCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)

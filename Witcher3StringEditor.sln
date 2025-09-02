@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Serializers", "Witcher3StringEditor.Serializers\Witcher3StringEditor.Serializers.csproj", "{EA511C01-41B7-4BFF-AA48-16419CCB2FE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Witcher3StringEditor.Locales", "Witcher3StringEditor.Locales\Witcher3StringEditor.Locales.csproj", "{BE1781D7-453B-5EC7-7B35-A156B0B718EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EA511C01-41B7-4BFF-AA48-16419CCB2FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA511C01-41B7-4BFF-AA48-16419CCB2FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA511C01-41B7-4BFF-AA48-16419CCB2FE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE1781D7-453B-5EC7-7B35-A156B0B718EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE1781D7-453B-5EC7-7B35-A156B0B718EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE1781D7-453B-5EC7-7B35-A156B0B718EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE1781D7-453B-5EC7-7B35-A156B0B718EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

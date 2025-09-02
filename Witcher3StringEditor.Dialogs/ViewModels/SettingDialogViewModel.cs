@@ -7,7 +7,7 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -39,7 +39,7 @@ public partial class SettingDialogViewModel(
         var dialogSettings = new OpenFileDialogSettings
         {
             Filters = [new FileFilter("w3strings.exe", ".exe")],
-            Title = Strings.SelectW3Strings,
+            Title = LangKeys.SelectW3Strings,
             SuggestedFileName = "w3strings"
         };
         using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);

@@ -30,7 +30,6 @@ using Witcher3StringEditor.Services;
 using Witcher3StringEditor.Shared.Abstractions;
 using Witcher3StringEditor.ViewModels;
 using Witcher3StringEditor.Views;
-using WPFLocalizeExtension.Engine;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor;
@@ -53,7 +52,7 @@ public partial class App
     {
         if (IsAnotherInstanceRunning())
         {
-            if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption,
+            if (MessageBox.Show(LangKeys.MultipleInstanceMessage, LangKeys.MultipleInstanceCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
             Shutdown();
@@ -75,11 +74,12 @@ public partial class App
             InitializeLogging(logObserver);
             logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
-            LocalizeDictionary.Instance.Culture = appSettings.Language == string.Empty
+            var cultureInfo = appSettings.Language == string.Empty
                 ? ResolveSupportedCulture(Thread.CurrentThread.CurrentCulture)
                 : new CultureInfo(appSettings.Language);
             if (appSettings.Language == string.Empty)
-                appSettings.Language = LocalizeDictionary.Instance.Culture.Name;
+                appSettings.Language = cultureInfo.Name;
+            I18NExtension.Culture = cultureInfo;
             new MainWindow().Show();
         }
     }

@@ -5,18 +5,15 @@
     xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors;assembly=Witcher3StringEditor.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.ViewModels"
-    Title="{lex:Loc AppTitle}"
+    Title="{I18N {x:Static l:LangKeys.AppTitle}}"
     Width="1200"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -60,11 +57,11 @@
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
-                Text="{lex:Loc AppTitle}" />
+                Text="{I18N {x:Static l:LangKeys.AppTitle}}" />
             <ui:AutoSuggestBox
                 Grid.Column="2"
                 VerticalAlignment="Center"
-                PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
+                PlaceholderText="{I18N {x:Static l:LangKeys.SearchBoxPlaceholderText}}"
                 QuerySubmitted="SearchBox_QuerySubmitted"
                 TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>
@@ -80,14 +77,10 @@
                     <ui:FontIcon.Style>
                         <Style TargetType="ui:FontIcon">
                             <Style.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
-                                    Value="{x:Static ui:ApplicationTheme.Light}">
+                                <DataTrigger Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}" Value="{x:Static ui:ApplicationTheme.Light}">
                                     <Setter Property="Glyph" Value="&#xF0CE;" />
                                 </DataTrigger>
-                                <DataTrigger
-                                    Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
-                                    Value="{x:Static ui:ApplicationTheme.Dark}">
+                                <DataTrigger Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}" Value="{x:Static ui:ApplicationTheme.Dark}">
                                     <Setter Property="Glyph" Value="&#xE706;" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -100,17 +93,17 @@
             Grid.Row="1"
             HorizontalAlignment="Left"
             Background="Transparent">
-            <ui:AppBarButton Command="{Binding OpenFileCommand}" Label="{lex:Loc OpenFileBtnLabel}">
+            <ui:AppBarButton Command="{Binding OpenFileCommand}" Label="{I18N {x:Static l:LangKeys.OpenFileBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe8e5;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowRecentDialogCommand}" Label="{lex:Loc RecentBtnLabel}">
+            <ui:AppBarButton Command="{Binding ShowRecentDialogCommand}" Label="{I18N {x:Static l:LangKeys.RecentBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe823;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding AddCommand}" Label="{lex:Loc AddBtnLabel}">
+            <ui:AppBarButton Command="{Binding AddCommand}" Label="{I18N {x:Static l:LangKeys.AddBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe710;" />
                 </ui:AppBarButton.Icon>
@@ -118,7 +111,7 @@
             <ui:AppBarButton
                 Command="{Binding EditCommand}"
                 CommandParameter="{Binding SelectedItem, ElementName=SfDataGrid}"
-                Label="{lex:Loc EditBtnLabel}">
+                Label="{I18N {x:Static l:LangKeys.EditBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe70f;" />
                 </ui:AppBarButton.Icon>
@@ -135,7 +128,7 @@
             <ui:AppBarButton
                 Command="{Binding DeleteCommand}"
                 CommandParameter="{Binding SelectedItems, ElementName=SfDataGrid}"
-                Label="{lex:Loc DeleteBtnLabel}">
+                Label="{I18N {x:Static l:LangKeys.DeleteBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74d;" />
                 </ui:AppBarButton.Icon>
@@ -152,37 +145,37 @@
             <ui:AppBarButton
                 Command="{Binding ShowTranslateDialogCommand}"
                 CommandParameter="{Binding Path=SelectedItem, ElementName=SfDataGrid}"
-                Label="{lex:Loc TranslateBtnLabel}">
+                Label="{I18N {x:Static l:LangKeys.TranslateBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}" Label="{lex:Loc SaveBtnLabel}">
+            <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}" Label="{I18N {x:Static l:LangKeys.SaveBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74e;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowBackupDialogCommand}" Label="{lex:Loc BackupBtnLabel}">
+            <ui:AppBarButton Command="{Binding ShowBackupDialogCommand}" Label="{I18N {x:Static l:LangKeys.BackupBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe81c;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowLogDialogCommand}" Label="{lex:Loc LogBtnLabel}">
+            <ui:AppBarButton Command="{Binding ShowLogDialogCommand}" Label="{I18N {x:Static l:LangKeys.LogBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xf000;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowSettingsDialogCommand}" Label="{lex:Loc SettingsBtnLabel}">
+            <ui:AppBarButton Command="{Binding ShowSettingsDialogCommand}" Label="{I18N {x:Static l:LangKeys.SettingsBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe713;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding OpenWorkingFolderCommand}" Label="{lex:Loc OpenWorkingFolderBtnLabel}">
+            <ui:AppBarButton Command="{Binding OpenWorkingFolderCommand}" Label="{I18N {x:Static l:LangKeys.OpenWorkingFolderBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xec50;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding PlayGameCommand}" Label="{lex:Loc PlayBtnLabel}">
+            <ui:AppBarButton Command="{Binding PlayGameCommand}" Label="{I18N {x:Static l:LangKeys.PlayBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe768;" />
                 </ui:AppBarButton.Icon>
@@ -192,7 +185,7 @@
                     <ui:FontIcon Glyph="&#xe71b;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
-            <ui:AppBarButton Command="{Binding ShowAboutCommand}" Label="{lex:Loc AboutBtnLabel}">
+            <ui:AppBarButton Command="{Binding ShowAboutCommand}" Label="{I18N {x:Static l:LangKeys.AboutBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe946;" />
                 </ui:AppBarButton.Icon>
@@ -204,7 +197,7 @@
             VerticalAlignment="Center"
             FontSize="18"
             Opacity="0.5"
-            Text="{lex:Loc DropHereTxt}">
+            Text="{I18N {x:Static l:LangKeys.DropHereTxt}}">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Hidden" />
@@ -306,9 +299,9 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             IsOpen="{Binding IsUpdateAvailable}"
-            Message="{lex:Loc UpdateAvailable}">
+            Message="{I18N {x:Static l:LangKeys.UpdateAvailable}}">
             <ui:InfoBar.ActionButton>
-                <Button Command="{Binding OpenNexusModsCommand}" Content="{lex:Loc UpdateBtnContent}" />
+                <Button Command="{Binding OpenNexusModsCommand}" Content="{I18N {x:Static l:LangKeys.UpdateBtnContent}}" />
             </ui:InfoBar.ActionButton>
         </ui:InfoBar>
     </Grid>

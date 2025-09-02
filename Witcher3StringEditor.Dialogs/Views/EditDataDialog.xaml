@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
@@ -12,9 +12,6 @@
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:EditDataDialogViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -56,11 +53,11 @@
                 <Button
                     MinWidth="100"
                     Command="{Binding SubmitCommand}"
-                    Content="{lex:Loc SubmitBtnContent}" />
+                    Content="{I18N {x:Static l:LangKeys.SubmitBtnContent}}" />
                 <Button
                     MinWidth="100"
                     Command="{Binding CancelCommand}"
-                    Content="{lex:Loc CancelBtnContent}" />
+                    Content="{I18N {x:Static l:LangKeys.CancelBtnContent}}" />
             </iwk:SimpleStackPanel>
         </Grid>
     </Grid>

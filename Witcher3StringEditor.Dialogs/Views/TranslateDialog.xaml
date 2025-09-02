@@ -13,8 +13,6 @@
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:TranslateDialogViewModel}"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -30,8 +28,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary
-                    Source="/Witcher3StringEditor.Dialogs;component/Views/BatchTranslateDataTemplate.xaml" />
+                <ResourceDictionary Source="/Witcher3StringEditor.Dialogs;component/Views/BatchTranslateDataTemplate.xaml" />
                 <ResourceDictionary Source="/Witcher3StringEditor.Dialogs;component/Views/TranslateDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <h:TranslateDataTemplateSelector

@@ -25,7 +25,6 @@ using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Shared.Abstractions;
-using WPFLocalizeExtension.Engine;
 
 namespace Witcher3StringEditor.ViewModels;
 
@@ -120,7 +119,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     {
         try
         {
-            LocalizeDictionary.Instance.Culture = message.Value;
+            I18NExtension.Culture = message.Value;
         }
         catch (Exception ex)
         {
@@ -196,10 +195,10 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         {
             Filters =
             [
-                new FileFilter(Strings.FileFormatSupported, [".csv", ".xlsx", ".w3strings"]),
-                new FileFilter(Strings.FileFormatTextFile, ".csv"),
-                new FileFilter(Strings.FileFormatExcelWorkSheets, ".xlsx"),
-                new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
+                new FileFilter(LangKeys.FileFormatSupported, [".csv", ".xlsx", ".w3strings"]),
+                new FileFilter(LangKeys.FileFormatTextFile, ".csv"),
+                new FileFilter(LangKeys.FileFormatExcelWorkSheets, ".xlsx"),
+                new FileFilter(LangKeys.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
         if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings" or ".xlsx")

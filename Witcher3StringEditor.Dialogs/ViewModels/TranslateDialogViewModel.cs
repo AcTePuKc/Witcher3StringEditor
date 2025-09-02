@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -27,7 +27,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     [ObservableProperty] private object currentViewModel;
 
-    [ObservableProperty] private string title = Strings.TranslateDialogTitle;
+    [ObservableProperty] private string title = LangKeys.TranslateDialogTitle;
 
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator,
         ILogger<TranslateDialogViewModel> logger, IEnumerable<IEditW3Item> w3Items,
@@ -63,8 +63,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                     : new BatchTranslateContentViewModel(appSettings, translator,
                         Ioc.Default.GetRequiredService<ILogger<BatchTranslateContentViewModel>>(), w3Items, index + 1);
                 Title = CurrentViewModel is BatchTranslateContentViewModel
-                    ? Strings.BatchTranslateDialogTitle
-                    : Strings.TranslateDialogTitle;
+                    ? LangKeys.BatchTranslateDialogTitle
+                    : LangKeys.TranslateDialogTitle;
                 logger.LogInformation("Switched translation mode to {Mode}",
                     CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
             }

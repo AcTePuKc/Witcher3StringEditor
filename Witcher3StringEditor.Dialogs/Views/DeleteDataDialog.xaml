@@ -6,18 +6,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{lex:Loc DeleteDialogTitle}"
+    Title="{I18N {x:Static l:LangKeys.DeleteDialogTitle}}"
     Width="1200"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:DeleteDataDialogViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -32,14 +29,14 @@
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
-            Text="{lex:Loc DeleteDialogTitle}" />
+            Text="{I18N {x:Static l:LangKeys.DeleteDialogTitle}}" />
         <Grid Grid.Row="1" Margin="16,16,16,24">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Text="{lex:Loc DeleteDialogMessage}" />
+            <TextBlock Text="{I18N {x:Static l:LangKeys.DeleteDialogMessage}}" />
             <sf:SfDataGrid
                 x:Name="SfDataGrid"
                 Grid.Row="1"
@@ -113,12 +110,12 @@
                     MinWidth="100"
                     HorizontalAlignment="Right"
                     Command="{Binding DeleteCommand}"
-                    Content="{lex:Loc DeleteBtnContent}" />
+                    Content="{I18N {x:Static l:LangKeys.DeleteBtnContent}}" />
                 <Button
                     MinWidth="100"
                     HorizontalAlignment="Left"
                     Command="{Binding CancelCommand}"
-                    Content="{lex:Loc CancelBtnContent}" />
+                    Content="{I18N {x:Static l:LangKeys.CancelBtnContent}}" />
             </iwk:SimpleStackPanel>
         </Grid>
     </Grid>

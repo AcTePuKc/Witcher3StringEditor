@@ -5,18 +5,15 @@
     xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{lex:Loc LogDialogTitle}"
+    Title="{I18N {x:Static l:LangKeys.LogDialogTitle}}"
     Width="1200"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:LogDialogViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -39,11 +36,11 @@
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
-                Text="{lex:Loc LogDialogTitle}" />
+                Text="{I18N {x:Static l:LangKeys.LogDialogTitle}}" />
             <ui:AutoSuggestBox
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
+                PlaceholderText="{I18N {x:Static l:LangKeys.SearchBoxPlaceholderText}}"
                 QuerySubmitted="SearchBox_QuerySubmitted"
                 TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>
@@ -96,20 +93,20 @@
             <sf:SfDataGrid.Columns>
                 <sf:GridDateTimeColumn
                     ColumnSizer="SizeToHeader"
-                    HeaderText="{lex:Loc LogTime}"
+                    HeaderText="{I18N {x:Static l:LangKeys.LogTime}}"
                     MappingName="Timestamp"
                     MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
                     ColumnSizer="SizeToHeader"
-                    HeaderText="{lex:Loc LogLevel}"
+                    HeaderText="{I18N {x:Static l:LangKeys.LogLevel}}"
                     MappingName="Level"
                     MinimumWidth="150"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
                     ColumnSizer="AutoWithLastColumnFill"
-                    HeaderText="{lex:Loc LogMessage}"
+                    HeaderText="{I18N {x:Static l:LangKeys.LogMessage}}"
                     MappingName="Message"
                     MinimumWidth="700"
                     TextWrapping="WrapWithOverflow" />

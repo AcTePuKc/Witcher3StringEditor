@@ -5,18 +5,15 @@
     xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+    xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{lex:Loc BackupDialogTitle}"
+    Title="{I18N {x:Static l:LangKeys.BackupDialogTitle}}"
     Width="1200"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:BackupDialogViewModel}"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:ResxLocalizationProvider.DefaultAssembly="Witcher3StringEditor.Dialogs"
-    lex:ResxLocalizationProvider.DefaultDictionary="Strings"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"
@@ -40,11 +37,11 @@
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
-                Text="{lex:Loc BackupDialogTitle}" />
+                Text="{I18N {x:Static l:LangKeys.BackupDialogTitle}}" />
             <ui:AutoSuggestBox
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                PlaceholderText="{lex:Loc SearchBoxPlaceholderText}"
+                PlaceholderText="{I18N {x:Static l:LangKeys.SearchBoxPlaceholderText}}"
                 QuerySubmitted="SearchBox_QuerySubmitted"
                 TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>
@@ -96,30 +93,30 @@
             <sf:SfDataGrid.Columns>
                 <sf:GridTextColumn
                     Width="150"
-                    HeaderText="{lex:Loc FileName}"
+                    HeaderText="{I18N {x:Static l:LangKeys.FileName}}"
                     MappingName="FileName"
                     MinimumWidth="150"
                     TextAlignment="Center" />
                 <sf:GridTextColumn
                     Width="200"
-                    HeaderText="{lex:Loc Hash}"
+                    HeaderText="{I18N {x:Static l:LangKeys.Hash}}"
                     MappingName="Hash"
                     MinimumWidth="200"
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
                 <sf:GridTextColumn
-                    HeaderText="{lex:Loc OrginPath}"
+                    HeaderText="{I18N {x:Static l:LangKeys.OrginPath}}"
                     MappingName="OrginPath"
                     MinimumWidth="150"
                     TextWrapping="Wrap" />
                 <sf:GridTextColumn
-                    HeaderText="{lex:Loc BackupPath}"
+                    HeaderText="{I18N {x:Static l:LangKeys.BackupPath}}"
                     MappingName="BackupPath"
                     MinimumWidth="150"
                     TextWrapping="Wrap" />
                 <sf:GridDateTimeColumn
                     Width="200"
-                    HeaderText="{lex:Loc BackupTime}"
+                    HeaderText="{I18N {x:Static l:LangKeys.BackupTime}}"
                     MappingName="BackupTime"
                     MinimumWidth="200"
                     Pattern="FullDateTime"
@@ -128,7 +125,7 @@
                     Width="100"
                     HorizontalAlignment="Center"
                     AllowSorting="False"
-                    HeaderText="{lex:Loc RestoreBtnContent}"
+                    HeaderText="{I18N {x:Static l:LangKeys.RestoreBtnContent}}"
                     MappingName="Null"
                     MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
@@ -148,7 +145,7 @@
                     Width="100"
                     HorizontalAlignment="Center"
                     AllowSorting="False"
-                    HeaderText="{lex:Loc DeleteBtnContent}"
+                    HeaderText="{I18N {x:Static l:LangKeys.DeleteBtnContent}}"
                     MappingName="Null"
                     MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>

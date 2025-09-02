@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;
@@ -24,8 +24,8 @@ public partial class RecentDialog : IRecipient<AsyncRequestMessage<bool>>
         WeakReferenceMessenger.Default.Register<RecentDialog, AsyncRequestMessage<bool>, string>(
             this, "RecentItem", (_, m) =>
             {
-                m.Reply(MessageBox.Show(Strings.RecordDeletingMessgae,
-                    Strings.RecordDeletingCaption,
+                m.Reply(MessageBox.Show(LangKeys.RecordDeletingMessgae,
+                    LangKeys.RecordDeletingCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) == MessageBoxResult.Yes);
             });

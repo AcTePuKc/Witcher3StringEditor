@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -10,8 +10,8 @@ public partial class EditDataDialogViewModel(IEditW3Item w3Item)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public string Title { get; } = string.IsNullOrWhiteSpace(w3Item.StrId)
-        ? Strings.AddDialogTitle
-        : Strings.EditDialogTitle;
+        ? LangKeys.AddDialogTitle
+        : LangKeys.EditDialogTitle;
 
     public IEditW3Item? W3Item { get; } = w3Item.Clone() as IEditW3Item;
 

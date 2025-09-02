@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;
@@ -25,13 +25,13 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
 
         var messageHandlers = new[]
         {
-            ("BackupRestore", Strings.BackupRestoreMessage, Strings.BackupRestoreCaption, MessageBoxButton.YesNo,
+            ("BackupRestore", LangKeys.BackupRestoreMessage, LangKeys.BackupRestoreCaption, MessageBoxButton.YesNo,
                 MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("BackupDelete", Strings.BackupDeleteMessage, Strings.BackupDeleteCaption, MessageBoxButton.YesNo,
+            ("BackupDelete", LangKeys.BackupDeleteMessage, LangKeys.BackupDeleteCaption, MessageBoxButton.YesNo,
                 MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("BackupFileNoFound", Strings.BackupFileNoFoundMessage, Strings.BackupFileNoFoundCaption,
+            ("BackupFileNoFound", LangKeys.BackupFileNoFoundMessage, LangKeys.BackupFileNoFoundCaption,
                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("OperationFailed", Strings.OperationFailureMessage, Strings.OperationResultCaption, MessageBoxButton.OK,
+            ("OperationFailed", LangKeys.OperationFailureMessage, LangKeys.OperationResultCaption, MessageBoxButton.OK,
                 MessageBoxImage.Warning, MessageBoxResult.OK)
         };
 

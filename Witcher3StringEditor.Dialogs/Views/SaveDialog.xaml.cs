@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Witcher3StringEditor.Dialogs.Locales;
+using Witcher3StringEditor.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;
@@ -17,8 +17,8 @@ public partial class SaveDialog : IRecipient<ValueChangedMessage<bool>>
         WeakReferenceMessenger.Default.Register<SaveDialog, ValueChangedMessage<bool>, string>(
             this, "Save", static (r, m) =>
             {
-                _ = MessageBox.Show(m.Value ? Strings.SaveSuccess : Strings.SaveFailure,
-                    Strings.SaveResult,
+                _ = MessageBox.Show(m.Value ? LangKeys.SaveSuccess : LangKeys.SaveFailure,
+                    LangKeys.SaveResult,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             });
