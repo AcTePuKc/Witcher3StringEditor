@@ -1,4 +1,6 @@
-﻿namespace Witcher3StringEditor.Shared.Abstractions;
+﻿using JetBrains.Annotations;
+
+namespace Witcher3StringEditor.Shared.Abstractions;
 
 public interface IW3Item
 {
@@ -8,7 +10,7 @@ public interface IW3Item
 
     public string KeyName { get; set; }
 
-    public string OldText { get; set; }
+    [UsedImplicitly] public string OldText { get; set; }
 
     public string Text { get; set; }
 }
