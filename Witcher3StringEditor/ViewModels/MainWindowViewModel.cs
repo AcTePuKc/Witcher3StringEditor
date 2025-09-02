@@ -29,18 +29,16 @@ using WPFLocalizeExtension.Engine;
 
 namespace Witcher3StringEditor.ViewModels;
 
-internal partial class MainWindowViewModel : ObservableObject
+internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOpenedMessage>,
+    IRecipient<ValueChangedMessage<LogEvent>>, IRecipient<ValueChangedMessage<CultureInfo>>
 {
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
     private readonly ICheckUpdateService checkUpdateService;
     private readonly IDialogService dialogService;
     private readonly IExplorerService explorerService;
-    private readonly NotificationRecipient<CultureInfo> languageRecipient = new();
-    private readonly NotificationRecipient<LogEvent> logEventRecipient = new();
     private readonly ILogger<MainWindowViewModel> logger;
     private readonly IPlayGameService playGameService;
-    private readonly AsyncRequestRecipient<bool> recentFileOpenedRecipient = new();
     private readonly IEnumerable<ITranslator> translators;
     private readonly IW3Serializer w3Serializer;
 
@@ -65,45 +63,12 @@ internal partial class MainWindowViewModel : ObservableObject
         this.dialogService = dialogService;
         this.playGameService = playGameService;
         this.explorerService = explorerService;
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<LogEvent>, NotificationMessage<LogEvent>>(
-            logEventRecipient, async void (r, m) =>
-            {
-                try
-                {
-                    r.Receive(m);
-                    await Application.Current.Dispatcher.BeginInvoke(() => LogEvents.Add(m.Message));
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Failed to receive log event.");
-                }
-            });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(
-            recentFileOpenedRecipient, "RecentFileOpened", async void (r, m) =>
-            {
-                try
-                {
-                    r.Receive(m);
-                    await OpenFile(m.FileName);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Failed to open file: {FileName}.", m.FileName);
-                }
-            });
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<CultureInfo>,
-            NotificationMessage<CultureInfo>>(languageRecipient, (r, m) =>
-        {
-            try
-            {
-                r.Receive(m);
-                LocalizeDictionary.Instance.Culture = m.Message;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to change language.");
-            }
-        });
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
+            this, (r, m) => { r.Receive(m); });
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, FileOpenedMessage, string>(
+            this, "RecentFileOpened", (r, m) => { r.Receive(m); });
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel,
+            ValueChangedMessage<CultureInfo>>(this, (r, m) => { r.Receive(m); });
 
         W3Items.CollectionChanged += (_, _) =>
         {
@@ -138,6 +103,35 @@ internal partial class MainWindowViewModel : ObservableObject
     private bool CanPlayGame => !string.IsNullOrWhiteSpace(appSettings.GameExePath);
 
     private bool CanOpenFile => !string.IsNullOrWhiteSpace(appSettings.W3StringsPath);
+
+    public async void Receive(FileOpenedMessage message)
+    {
+        try
+        {
+            await OpenFile(message.FileName);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to open file: {FileName}.", message.FileName);
+        }
+    }
+
+    public void Receive(ValueChangedMessage<CultureInfo> message)
+    {
+        try
+        {
+            LocalizeDictionary.Instance.Culture = message.Value;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to change language.");
+        }
+    }
+
+    public void Receive(ValueChangedMessage<LogEvent> message)
+    {
+        Application.Current.Dispatcher.Invoke(() => LogEvents.Add(message.Value));
+    }
 
     [RelayCommand]
     private async Task WindowLoaded()
@@ -181,9 +175,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void WindowClosed()
     {
-        WeakReferenceMessenger.Default.UnregisterAll(languageRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(logEventRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(recentFileOpenedRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenFile))]

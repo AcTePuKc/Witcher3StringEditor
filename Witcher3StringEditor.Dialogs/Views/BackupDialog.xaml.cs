@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Locales;
-using Witcher3StringEditor.Dialogs.Recipients;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;
@@ -13,9 +12,8 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 ///     HistoryDialog.xaml 的交互逻辑
 /// </summary>
-public partial class BackupDialog
+public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
 {
-    private readonly AsyncRequestRecipient<bool> backupRecipient = new();
     private readonly ILogger<BackupDialog> logger;
 
     public BackupDialog()
@@ -38,19 +36,19 @@ public partial class BackupDialog
         };
 
         foreach (var (token, message, caption, button, icon, expected) in messageHandlers)
-            WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
-                backupRecipient,
+            WeakReferenceMessenger.Default.Register<BackupDialog, AsyncRequestMessage<bool>, string>(
+                this,
                 token,
-                (r, m) =>
-                {
-                    r.Receive(m);
-                    m.Reply(MessageBox.Show(message, caption, button, icon) == expected);
-                });
+                (_, m) => { m.Reply(MessageBox.Show(message, caption, button, icon) == expected); });
+    }
+
+    public void Receive(AsyncRequestMessage<bool> message)
+    {
     }
 
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(backupRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

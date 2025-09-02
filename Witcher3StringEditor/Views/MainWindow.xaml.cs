@@ -16,10 +16,9 @@ namespace Witcher3StringEditor.Views;
 /// <summary>
 ///     Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow
+public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
 {
     private readonly ILogger<MainWindow> logger = Ioc.Default.GetRequiredService<ILogger<MainWindow>>();
-    private readonly AsyncRequestRecipient<bool> recipient = new();
 
     public MainWindow()
     {
@@ -35,34 +34,35 @@ public partial class MainWindow
         };
 
         foreach (var (token, message, caption) in messageHandlers)
-            WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, FileOpenedMessage, string>(
-                recipient,
+            WeakReferenceMessenger.Default.Register<MainWindow, FileOpenedMessage, string>(
+                this,
                 token,
-                (r, m) =>
+                (_, m) =>
                 {
-                    r.Receive(m);
                     m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
                             MessageBoxResult.Yes);
                 });
 
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
-            recipient, "MainWindowClosing", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
+            this, "MainWindowClosing", static (_, m) =>
             {
-                r.Receive(m);
                 m.Reply(MessageBox.Show(Strings.AppExitMessage,
                     Strings.AppExitCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.No);
             });
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
-            recipient, "FirstRun", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
+            this, "FirstRun", static (_, m) =>
             {
-                r.Receive(m);
                 m.Reply(MessageBox.Show(Strings.FristRunMessage,
                     Strings.FristRunCaption,
                     MessageBoxButton.OK,
                     MessageBoxImage.Question) == MessageBoxResult.OK);
             });
+    }
+
+    public void Receive(AsyncRequestMessage<bool> message)
+    {
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -78,7 +78,7 @@ public partial class MainWindow
 
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(recipient);
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
     private void AppTitleBar_OnLoaded(object sender, RoutedEventArgs e)

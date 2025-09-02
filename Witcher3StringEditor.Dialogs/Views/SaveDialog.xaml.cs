@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using Witcher3StringEditor.Dialogs.Locales;
-using Witcher3StringEditor.Dialogs.Recipients;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;
@@ -9,26 +9,28 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 ///     SaveDialog.xaml 的交互逻辑
 /// </summary>
-public partial class SaveDialog
+public partial class SaveDialog : IRecipient<ValueChangedMessage<bool>>
 {
-    private readonly NotificationRecipient<bool> saveResultRecipient = new();
-
     public SaveDialog()
     {
         InitializeComponent();
-        WeakReferenceMessenger.Default.Register<NotificationRecipient<bool>, NotificationMessage<bool>, string>(
-            saveResultRecipient, "Save", static (r, m) =>
+        WeakReferenceMessenger.Default.Register<SaveDialog, ValueChangedMessage<bool>, string>(
+            this, "Save", static (r, m) =>
             {
                 r.Receive(m);
-                _ = MessageBox.Show(m.Message ? Strings.SaveSuccess : Strings.SaveFailure,
+                _ = MessageBox.Show(m.Value ? Strings.SaveSuccess : Strings.SaveFailure,
                     Strings.SaveResult,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             });
     }
 
+    public void Receive(ValueChangedMessage<bool> message)
+    {
+    }
+
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(saveResultRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 }

@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Locales;
-using Witcher3StringEditor.Dialogs.Recipients;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;
@@ -13,25 +12,27 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 ///     RecentDialog.xaml 的交互逻辑
 /// </summary>
-public partial class RecentDialog
+public partial class RecentDialog : IRecipient<AsyncRequestMessage<bool>>
 {
     private readonly ILogger<RecentDialog> logger;
-    private readonly AsyncRequestRecipient<bool> recipient = new();
 
     public RecentDialog()
     {
         InitializeComponent();
         logger = Ioc.Default.GetRequiredService<ILogger<RecentDialog>>();
         SfDataGrid.SearchHelper.AllowFiltering = true;
-        WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
-            recipient, "RecentItem", (r, m) =>
+        WeakReferenceMessenger.Default.Register<RecentDialog, AsyncRequestMessage<bool>, string>(
+            this, "RecentItem", (_, m) =>
             {
-                r.Receive(m);
                 m.Reply(MessageBox.Show(Strings.RecordDeletingMessgae,
                     Strings.RecordDeletingCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) == MessageBoxResult.Yes);
             });
+    }
+
+    public void Receive(AsyncRequestMessage<bool> message)
+    {
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -48,6 +49,6 @@ public partial class RecentDialog
 
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(recipient);
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 }

@@ -7,7 +7,6 @@ using GTranslate;
 using GTranslate.Translators;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Models;
-using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Shared;
 using Witcher3StringEditor.Shared.Abstractions;
 
@@ -86,7 +85,7 @@ public partial class TranslateContentViewModel : ObservableObject
 
     partial void OnIsBusyChanged(bool value)
     {
-        WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(value), "TranslatorIsBusy");
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(value), "TranslatorIsBusy");
     }
 
     [RelayCommand]
@@ -114,7 +113,7 @@ public partial class TranslateContentViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _ = WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(ex.Message), "TranslateError");
+            _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(ex.Message), "TranslateError");
             logger.LogError(ex, "Translation failed for item {ItemId} (From: {FromLang} To: {ToLang}).",
                 CurrentTranslateItemModel?.Id, FormLanguage, ToLanguage);
         }
@@ -138,7 +137,7 @@ public partial class TranslateContentViewModel : ObservableObject
             }
             else
             {
-                WeakReferenceMessenger.Default.Send(new NotificationMessage<string>(string.Empty),
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
                     "TranslatedTextInvalid");
             }
 

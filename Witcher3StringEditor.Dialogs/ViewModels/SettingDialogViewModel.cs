@@ -2,12 +2,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Locales;
-using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -71,6 +71,6 @@ public partial class SettingDialogViewModel(
     private void ChangeLanguage()
     {
         WeakReferenceMessenger.Default.Send(
-            new NotificationMessage<CultureInfo>(new CultureInfo(AppSettings.Language)));
+            new ValueChangedMessage<CultureInfo>(new CultureInfo(AppSettings.Language)));
     }
 }

@@ -10,6 +10,7 @@ using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
@@ -19,7 +20,6 @@ using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
-using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Locales;
@@ -71,7 +71,7 @@ public partial class App
             configService = Ioc.Default.GetRequiredService<IConfigService>();
             appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
             logObserver = new AnonymousObserver<LogEvent>(x =>
-                WeakReferenceMessenger.Default.Send(new NotificationMessage<LogEvent>(x)));
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
             InitializeLogging(logObserver);
             logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));

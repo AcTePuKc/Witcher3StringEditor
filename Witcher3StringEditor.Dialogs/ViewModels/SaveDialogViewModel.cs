@@ -2,10 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using HanumanInstitute.MvvmDialogs;
 using Microsoft.Extensions.Logging;
 using Witcher3StringEditor.Dialogs.Models;
-using Witcher3StringEditor.Dialogs.Recipients;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Shared.Abstractions;
 
@@ -46,7 +46,7 @@ public partial class SaveDialogViewModel
         logger.LogInformation("Target filetype: {FileType}.", W3Job.W3FileType);
         logger.LogInformation("Target language: {Language}.", W3Job.Language);
         logger.LogInformation("Sve result: {Result}.", saveResult);
-        WeakReferenceMessenger.Default.Send(new NotificationMessage<bool>(saveResult), "Save");
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult), "Save");
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }

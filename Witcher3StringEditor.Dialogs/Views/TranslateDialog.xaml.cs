@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Witcher3StringEditor.Dialogs.Locales;
-using Witcher3StringEditor.Dialogs.Recipients;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;
@@ -10,30 +9,25 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 ///     TranslateDialogView.xaml 的交互逻辑
 /// </summary>
-public partial class TranslateDialog
+public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, IRecipient<AsyncRequestMessage<bool>>
 {
-    private readonly NotificationRecipient<bool> busyNotificationRecipient = new();
-    private readonly NotificationRecipient<string> notificationRecipient = new();
-    private readonly AsyncRequestRecipient<bool> requestRecipient = new();
-
     public TranslateDialog()
     {
         InitializeComponent();
         var notificationHandlers =
-            new (string token, Func<NotificationMessage<string>, string> message, string caption)[]
+            new (string token, Func<ValueChangedMessage<string>, string> message, string caption)[]
             {
                 ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
                     Strings.TranslatedTextInvalidCaption),
-                ("TranslateError", m => m.Message, Strings.TranslateErrorCaption)
+                ("TranslateError", m => m.Value, Strings.TranslateErrorCaption)
             };
 
         foreach (var (token, message, caption) in notificationHandlers)
-            WeakReferenceMessenger.Default.Register<NotificationRecipient<string>, NotificationMessage<string>, string>(
-                notificationRecipient,
+            WeakReferenceMessenger.Default.Register<TranslateDialog, ValueChangedMessage<string>, string>(
+                this,
                 token,
                 (r, m) =>
                 {
-                    r.Receive(m);
                     _ = MessageBox.Show(message.Invoke(m),
                         caption,
                         MessageBoxButton.OK,
@@ -49,12 +43,11 @@ public partial class TranslateDialog
         };
 
         foreach (var (token, message, caption) in messageHandlers)
-            WeakReferenceMessenger.Default.Register<AsyncRequestRecipient<bool>, AsyncRequestMessage<bool>, string>(
-                requestRecipient,
+            WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
+                this,
                 token,
-                (r, m) =>
+                (_, m) =>
                 {
-                    r.Receive(m);
                     m.Reply(MessageBox.Show(
                         message,
                         caption,
@@ -63,10 +56,16 @@ public partial class TranslateDialog
                 });
     }
 
+    public void Receive(AsyncRequestMessage<bool> message)
+    {
+    }
+
+    public void Receive(ValueChangedMessage<string> message)
+    {
+    }
+
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(requestRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(notificationRecipient);
-        WeakReferenceMessenger.Default.UnregisterAll(busyNotificationRecipient);
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 }
