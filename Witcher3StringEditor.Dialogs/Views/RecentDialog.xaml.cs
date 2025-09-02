@@ -24,8 +24,8 @@ public partial class RecentDialog : IRecipient<AsyncRequestMessage<bool>>
         WeakReferenceMessenger.Default.Register<RecentDialog, AsyncRequestMessage<bool>, string>(
             this, "RecentItem", (_, m) =>
             {
-                m.Reply(MessageBox.Show(LangKeys.RecordDeletingMessgae,
-                    LangKeys.RecordDeletingCaption,
+                m.Reply(MessageBox.Show(Strings.RecordDeletingMessgae,
+                    Strings.RecordDeletingCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning) == MessageBoxResult.Yes);
             });

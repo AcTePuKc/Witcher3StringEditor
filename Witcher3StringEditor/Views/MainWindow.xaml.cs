@@ -29,8 +29,8 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
 
         var messageHandlers = new[]
         {
-            ("FileOpened", LangKeys.FileOpenedMessage, LangKeys.FileOpenedCaption),
-            ("OpenedFileNoFound", LangKeys.FileOpenedNoFoundMessage, LangKeys.FileOpenedNoFoundCaption)
+            ("FileOpened", Strings.FileOpenedMessage, Strings.FileOpenedCaption),
+            ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)
@@ -46,16 +46,16 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
         WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
             this, "MainWindowClosing", static (_, m) =>
             {
-                m.Reply(MessageBox.Show(LangKeys.AppExitMessage,
-                    LangKeys.AppExitCaption,
+            m.Reply(MessageBox.Show(Strings.AppExitMessage,
+                    Strings.AppExitCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.No);
             });
         WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
             this, "FirstRun", static (_, m) =>
             {
-                m.Reply(MessageBox.Show(LangKeys.FristRunMessage,
-                    LangKeys.FristRunCaption,
+                m.Reply(MessageBox.Show(Strings.FristRunMessage,
+                    Strings.FristRunCaption,
                     MessageBoxButton.OK,
                     MessageBoxImage.Question) == MessageBoxResult.OK);
             });

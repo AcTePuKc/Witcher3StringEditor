@@ -17,9 +17,9 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
         var notificationHandlers =
             new (string token, Func<ValueChangedMessage<string>, string> message, string caption)[]
             {
-                ("TranslatedTextInvalid", _ => LangKeys.TranslatedTextInvalidMessage,
-                    LangKeys.TranslatedTextInvalidCaption),
-                ("TranslateError", m => m.Value, LangKeys.TranslateErrorCaption)
+                ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
+                    Strings.TranslatedTextInvalidCaption),
+                ("TranslateError", m => m.Value, Strings.TranslateErrorCaption)
             };
 
         foreach (var (token, message, caption) in notificationHandlers)
@@ -36,10 +36,10 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
 
         var messageHandlers = new[]
         {
-            ("TranslatedTextNoSaved", LangKeys.TranslatedTextNoSavedMessage, LangKeys.TranslatedTextNoSavedCaption),
-            ("TranslationDialogClosing", LangKeys.TranslatorTranslatingMessage, LangKeys.TranslatorTranslatingCaption),
-            ("TranslationModeSwitch", LangKeys.TranslationModeSwitchMessage, LangKeys.TranslationModeSwitchCaption),
-            ("TranslationNotEmpty", LangKeys.TranslationNotEmptyMessage, LangKeys.TranslationNotEmptyCaption)
+            ("TranslatedTextNoSaved", Strings.TranslatedTextNoSavedMessage, Strings.TranslatedTextNoSavedCaption),
+            ("TranslationDialogClosing", Strings.TranslatorTranslatingMessage, Strings.TranslatorTranslatingCaption),
+            ("TranslationModeSwitch", Strings.TranslationModeSwitchMessage, Strings.TranslationModeSwitchCaption),
+            ("TranslationNotEmpty", Strings.TranslationNotEmptyMessage, Strings.TranslationNotEmptyCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)

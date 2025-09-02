@@ -52,7 +52,7 @@ public partial class App
     {
         if (IsAnotherInstanceRunning())
         {
-            if (MessageBox.Show(LangKeys.MultipleInstanceMessage, LangKeys.MultipleInstanceCaption,
+            if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
             Shutdown();

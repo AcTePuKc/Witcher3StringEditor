@@ -39,7 +39,7 @@ public partial class SettingDialogViewModel(
         var dialogSettings = new OpenFileDialogSettings
         {
             Filters = [new FileFilter("w3strings.exe", ".exe")],
-            Title = LangKeys.SelectW3Strings,
+            Title = Strings.SelectW3Strings,
             SuggestedFileName = "w3strings"
         };
         using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);

@@ -27,7 +27,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     [ObservableProperty] private object currentViewModel;
 
-    [ObservableProperty] private string title = LangKeys.TranslateDialogTitle;
+    [ObservableProperty] private string title = Strings.TranslateDialogTitle;
 
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator,
         ILogger<TranslateDialogViewModel> logger, IEnumerable<IEditW3Item> w3Items,
@@ -63,8 +63,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                     : new BatchTranslateContentViewModel(appSettings, translator,
                         Ioc.Default.GetRequiredService<ILogger<BatchTranslateContentViewModel>>(), w3Items, index + 1);
                 Title = CurrentViewModel is BatchTranslateContentViewModel
-                    ? LangKeys.BatchTranslateDialogTitle
-                    : LangKeys.TranslateDialogTitle;
+                    ? Strings.BatchTranslateDialogTitle
+                    : Strings.TranslateDialogTitle;
                 logger.LogInformation("Switched translation mode to {Mode}",
                     CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
             }
