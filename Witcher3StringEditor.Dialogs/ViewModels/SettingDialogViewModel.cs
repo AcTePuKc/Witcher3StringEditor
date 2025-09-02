@@ -70,7 +70,7 @@ public partial class SettingDialogViewModel(
     [RelayCommand]
     private void ChangeLanguage()
     {
-        WeakReferenceMessenger.Default.Send(
+        _ = WeakReferenceMessenger.Default.Send(
             new NotificationMessage<CultureInfo>(new CultureInfo(AppSettings.Language)));
     }
 }
