@@ -6,7 +6,7 @@ using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Controls;
 using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Dialogs.Recipients;
+using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
