@@ -35,6 +35,7 @@ public partial class W3ItemModel : ObservableObject, IEditW3Item
         return MemberwiseClone();
     }
 
+    // ReSharper disable once UnusedParameterInPartialMethod
     partial void OnTextChanging(string value)
     {
         if (string.IsNullOrWhiteSpace(OldText)) OldText = Text;
