@@ -120,6 +120,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         try
         {
             I18NExtension.Culture = message.Value;
+            logger.LogInformation("Language changed to {Language}.", message.Value.Name);
         }
         catch (Exception ex)
         {
