@@ -142,6 +142,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         logger.LogInformation(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription);
         logger.LogInformation("Current Directory: {Directory}", Environment.CurrentDirectory);
+        logger.LogInformation("Current Culture: {Culture}", CultureInfo.CurrentCulture);
         await CheckSettings(appSettings);
         IsUpdateAvailable = await checkUpdateService.CheckUpdate();
     }
