@@ -109,9 +109,9 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         {
             await OpenFile(message.FileName);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            logger.LogError(ex, "Failed to open file: {FileName}.", message.FileName);
+            //ignored
         }
     }
 
