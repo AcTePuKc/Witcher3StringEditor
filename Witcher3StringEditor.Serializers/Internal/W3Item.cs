@@ -18,8 +18,6 @@ internal class W3Item : IW3Item
         OldText = w3Item.OldText;
         Text = w3Item.Text;
     }
-    
-    public Guid Id { get; } = Guid.NewGuid();
 
     public string StrId { get; set; } = string.Empty;
 
