@@ -40,6 +40,10 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.logger = logger;
         CurrentViewModel = new TranslateContentViewModel(appSettings, translator,
             Ioc.Default.GetRequiredService<ILogger<TranslateContentViewModel>>(), this.w3Items, index);
+        logger.LogInformation("Current translator: {Translator}.", appSettings.Translator);
+        logger.LogInformation("Translation dialog initialized in single mode.");
+        logger.LogInformation("Total items to translate: {Count}.", this.w3Items.Count);
+        logger.LogInformation("Starting index: {Index}.", index);
     }
 
     public bool? DialogResult => true;
