@@ -1,4 +1,5 @@
-﻿using Witcher3StringEditor.Shared.Abstractions;
+﻿using JetBrains.Annotations;
+using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Serializers.Internal;
 
@@ -8,6 +9,7 @@ internal class W3Item : IW3Item
     {
     }
 
+    [UsedImplicitly]
     public W3Item(IW3Item w3Item)
     {
         StrId = w3Item.StrId;
@@ -16,7 +18,7 @@ internal class W3Item : IW3Item
         OldText = w3Item.OldText;
         Text = w3Item.Text;
     }
-
+    
     public Guid Id { get; } = Guid.NewGuid();
 
     public string StrId { get; set; } = string.Empty;
