@@ -17,7 +17,6 @@ public partial class SaveDialog : IRecipient<ValueChangedMessage<bool>>
         WeakReferenceMessenger.Default.Register<SaveDialog, ValueChangedMessage<bool>, string>(
             this, "Save", static (r, m) =>
             {
-                r.Receive(m);
                 _ = MessageBox.Show(m.Value ? Strings.SaveSuccess : Strings.SaveFailure,
                     Strings.SaveResult,
                     MessageBoxButton.OK,
