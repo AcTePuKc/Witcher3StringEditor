@@ -1,4 +1,6 @@
-﻿namespace Witcher3StringEditor.Shared;
+﻿using JetBrains.Annotations;
+
+namespace Witcher3StringEditor.Shared;
 
 public enum W3Language
 {
@@ -6,17 +8,17 @@ public enum W3Language
     br = 1,
     cn = 2,
     cz = 3,
-    de = 4,
-    en = 5,
-    es = 6,
+    [UsedImplicitly] de = 4,
+    [UsedImplicitly] en = 5,
+    [UsedImplicitly] es = 6,
     esmx = 7,
-    fr = 8,
-    hu = 9,
-    it = 10,
+    [UsedImplicitly] fr = 8,
+    [UsedImplicitly] hu = 9,
+    [UsedImplicitly] it = 10,
     jp = 11,
     kr = 12,
-    pl = 13,
-    ru = 14,
+    [UsedImplicitly] pl = 13,
+    [UsedImplicitly] ru = 14,
     zh = 15,
     tr = 16
 }
