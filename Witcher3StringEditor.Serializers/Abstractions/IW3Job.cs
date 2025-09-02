@@ -1,4 +1,5 @@
-﻿using Witcher3StringEditor.Shared;
+﻿using JetBrains.Annotations;
+using Witcher3StringEditor.Shared;
 using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Serializers.Abstractions;
@@ -13,7 +14,7 @@ public interface IW3Job
 
     public W3FileType W3FileType { get; set; }
 
-    public string Path { get; set; }
+    public string Path { get; }
 
-    public IEnumerable<IW3Item> W3Items { get; set; }
+    public IEnumerable<IW3Item> W3Items { get; }
 }
