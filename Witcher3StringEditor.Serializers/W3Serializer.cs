@@ -83,7 +83,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         catch (Exception ex)
         {
             Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {Path}.", path);
-            return await Task.FromResult<List<W3Item>>([]);
+            return [];
         }
     }
 
