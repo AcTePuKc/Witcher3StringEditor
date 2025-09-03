@@ -75,7 +75,7 @@ public partial class App
             logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
             var cultureInfo = appSettings.Language == string.Empty
-                ? ResolveSupportedCulture(Thread.CurrentThread.CurrentCulture)
+                ? ResolveSupportedCulture(CultureInfo.InstalledUICulture)
                 : new CultureInfo(appSettings.Language);
             if (appSettings.Language == string.Empty)
                 appSettings.Language = cultureInfo.Name;
