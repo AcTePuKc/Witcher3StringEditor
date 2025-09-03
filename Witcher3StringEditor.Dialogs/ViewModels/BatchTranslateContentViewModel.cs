@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using GTranslate;
 using GTranslate.Translators;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
 
@@ -10,7 +10,6 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class BatchTranslateContentViewModel : ObservableObject
 {
-    private readonly ILogger<BatchTranslateContentViewModel> logger;
     private readonly ITranslator translator;
     private readonly IReadOnlyList<IW3Item> w3Items;
     private CancellationTokenSource? cancellationTokenSource;
@@ -39,10 +38,8 @@ public partial class BatchTranslateContentViewModel : ObservableObject
     [ObservableProperty] private ILanguage toLanguage;
 
     public BatchTranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
-        ILogger<BatchTranslateContentViewModel> logger,
         IEnumerable<IW3Item> w3Items, int startIndex)
     {
-        this.logger = logger;
         this.translator = translator;
         this.w3Items = [.. w3Items];
         Languages = Language.LanguageDictionary.Values
@@ -72,7 +69,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject
 
     partial void OnIsBusyChanged(bool value)
     {
-        logger.LogInformation("The batch translation is in progress: {0}.", value);
+        Log.Information("The batch translation is in progress: {0}.", value);
     }
 
     [RelayCommand]
@@ -99,12 +96,12 @@ public partial class BatchTranslateContentViewModel : ObservableObject
                     else
                     {
                         FailureCount++;
-                        logger.LogError("The translator: {Name} returned empty data.", translator.Name);
+                        Log.Error("The translator: {Name} returned empty data.", translator.Name);
                     }
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "Translation error occurred.");
+                    Log.Error(ex, "Translation error occurred.");
                     FailureCount++;
                 }
 
@@ -112,7 +109,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject
             }
             else
             {
-                logger.LogInformation("Batch translations are canceled by the user.");
+                Log.Information("Batch translations are canceled by the user.");
                 return;
             }
 

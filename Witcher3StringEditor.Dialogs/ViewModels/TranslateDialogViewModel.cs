@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -38,8 +37,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.appSettings = appSettings;
         this.translator = translator;
         this.logger = logger;
-        CurrentViewModel = new TranslateContentViewModel(appSettings, translator,
-            Ioc.Default.GetRequiredService<ILogger<TranslateContentViewModel>>(), this.w3Items, index);
+        CurrentViewModel = new TranslateContentViewModel(appSettings, translator, this.w3Items, index);
         logger.LogInformation("Current translator: {Translator}.", appSettings.Translator);
         logger.LogInformation("Translation dialog initialized in single mode.");
         logger.LogInformation("Total items to translate: {Count}.", this.w3Items.Count);
@@ -62,10 +60,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
                 await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
                 CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
-                    ? new TranslateContentViewModel(appSettings, translator,
-                        Ioc.Default.GetRequiredService<ILogger<TranslateContentViewModel>>(), w3Items, index)
+                    ? new TranslateContentViewModel(appSettings, translator,w3Items, index)
                     : new BatchTranslateContentViewModel(appSettings, translator,
-                        Ioc.Default.GetRequiredService<ILogger<BatchTranslateContentViewModel>>(), w3Items, index + 1);
+                        w3Items, index + 1);
                 Title = CurrentViewModel is BatchTranslateContentViewModel
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;

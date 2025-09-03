@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Locales;
 
@@ -16,8 +16,7 @@ public partial class SettingDialogViewModel(
     IAppSettings appSettings,
     IDialogService dialogService,
     IEnumerable<ITranslator> translators,
-    ICultureResolver cultureResolver,
-    ILogger<SettingDialogViewModel> logger)
+    ICultureResolver cultureResolver)
     : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings { get; } = appSettings;
@@ -41,7 +40,7 @@ public partial class SettingDialogViewModel(
         if (storageFile is { Name: "w3strings.exe" })
         {
             AppSettings.W3StringsPath = storageFile.LocalPath;
-            logger.LogInformation("Encoder Path set to {Path}.", storageFile.LocalPath);
+            Log.Information("Encoder Path set to {Path}.", storageFile.LocalPath);
         }
     }
 
@@ -58,7 +57,7 @@ public partial class SettingDialogViewModel(
         if (storageFile is { Name: "witcher3.exe" })
         {
             AppSettings.GameExePath = storageFile.LocalPath;
-            logger.LogInformation("Game Path set to {Path}.", storageFile.LocalPath);
+            Log.Information("Game Path set to {Path}.", storageFile.LocalPath);
         }
     }
 

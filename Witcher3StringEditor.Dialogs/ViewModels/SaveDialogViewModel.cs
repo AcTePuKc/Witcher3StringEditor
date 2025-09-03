@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using HanumanInstitute.MvvmDialogs;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
@@ -14,15 +14,13 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class SaveDialogViewModel
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    private readonly ILogger<SaveDialogViewModel> logger;
     private readonly IW3Serializer serializer;
 
     [ObservableProperty] private IW3Job w3Job;
 
-    public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer, ILogger<SaveDialogViewModel> logger,
+    public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
         IEnumerable<IW3Item> w3Items, string path)
     {
-        this.logger = logger;
         this.serializer = serializer;
         var items = w3Items.ToList();
         W3Job = new W3JobModel
@@ -43,9 +41,9 @@ public partial class SaveDialogViewModel
     private async Task Save()
     {
         var saveResult = await serializer.Serialize(W3Job);
-        logger.LogInformation("Target filetype: {FileType}.", W3Job.W3FileType);
-        logger.LogInformation("Target language: {Language}.", W3Job.Language);
-        logger.LogInformation("Sve result: {Result}.", saveResult);
+        Log.Information("Target filetype: {FileType}.", W3Job.W3FileType);
+        Log.Information("Target language: {Language}.", W3Job.Language);
+        Log.Information("Sve result: {Result}.", saveResult);
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult), "Save");
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);

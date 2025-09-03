@@ -17,6 +17,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
@@ -37,7 +38,6 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private readonly ICultureResolver cultureResolver;
     private readonly IDialogService dialogService;
     private readonly IExplorerService explorerService;
-    private readonly ILogger<MainWindowViewModel> logger;
     private readonly IPlayGameService playGameService;
     private readonly IEnumerable<ITranslator> translators;
     private readonly IW3Serializer w3Serializer;
@@ -52,9 +52,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
         ICheckUpdateService checkUpdateService, IDialogService dialogService, IExplorerService explorerService,
         IPlayGameService playGameService, IW3Serializer w3Serializer, IEnumerable<ITranslator> translators,
-        ICultureResolver cultureResolver, ILogger<MainWindowViewModel> logger)
+        ICultureResolver cultureResolver)
     {
-        this.logger = logger;
         this.appSettings = appSettings;
         this.translators = translators;
         this.w3Serializer = w3Serializer;
@@ -122,11 +121,11 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         try
         {
             I18NExtension.Culture = message.Value;
-            logger.LogInformation("Language changed to {Language}.", message.Value.Name);
+            Log.Information("Language changed to {Language}.", message.Value.Name);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to change language.");
+            Log.Error(ex, "Failed to change language.");
         }
     }
 
@@ -138,33 +137,33 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [RelayCommand]
     private async Task WindowLoaded()
     {
-        logger.LogInformation("Application started.");
-        logger.LogInformation("Application Version: {Version}", ThisAssembly.AssemblyFileVersion);
-        logger.LogInformation("OS Version: {Version}",
+        Log.Information("Application started.");
+        Log.Information("Application Version: {Version}", ThisAssembly.AssemblyFileVersion);
+        Log.Information("OS Version: {Version}",
             $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
-        logger.LogInformation(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription);
-        logger.LogInformation("Current Directory: {Directory}", Environment.CurrentDirectory);
-        logger.LogInformation("Current Culture: {Culture}", CultureInfo.CurrentCulture);
+        Log.Information(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription);
+        Log.Information("Current Directory: {Directory}", Environment.CurrentDirectory);
+        Log.Information("Current Culture: {Culture}", CultureInfo.CurrentCulture);
         await CheckSettings(appSettings);
         IsUpdateAvailable = await checkUpdateService.CheckUpdate();
     }
 
-    private async Task CheckSettings(IAppSettings settings)
+    private static async Task CheckSettings(IAppSettings settings)
     {
-        logger.LogInformation("Checking whether the settings are correct.");
+        Log.Information("Checking whether the settings are correct.");
         if (string.IsNullOrWhiteSpace(settings.W3StringsPath))
         {
-            logger.LogError("Settings are incorrect or initial setup is incomplete.");
+            Log.Error("Settings are incorrect or initial setup is incomplete.");
             _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
         }
         else
         {
-            logger.LogInformation("Settings are correct.");
-            logger.LogInformation("The W3Strings path has been set to {Path}.", settings.W3StringsPath);
+            Log.Information("Settings are correct.");
+            Log.Information("The W3Strings path has been set to {Path}.", settings.W3StringsPath);
             if (string.IsNullOrWhiteSpace(settings.GameExePath))
-                logger.LogWarning("The game executable path is not set.");
+                Log.Warning("The game executable path is not set.");
             else
-                logger.LogInformation("The game executable path has been set to {Path}.", settings.GameExePath);
+                Log.Information("The game executable path has been set to {Path}.", settings.GameExePath);
         }
     }
 
@@ -220,29 +219,29 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                 W3Items.Clear();
             }
 
-            logger.LogInformation("The file {FileName} is being opened...", fileName);
+            Log.Information("The file {FileName} is being opened...", fileName);
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId)
                 .ForEach(i => W3Items.Add(new W3ItemModel(i)));
             Guard.IsGreaterThan(W3Items.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
             OutputFolder = folder;
-            logger.LogInformation("Working directory set to {Folder}.", folder);
+            Log.Information("Working directory set to {Folder}.", folder);
             var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
             if (foundItem == null)
             {
                 appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
-                logger.LogInformation("Added {FileName} to recent items.", fileName);
+                Log.Information("Added {FileName} to recent items.", fileName);
             }
             else
             {
                 foundItem.OpenedTime = DateTime.Now;
-                logger.LogInformation("The last opened time for file {FileName} has been updated.", fileName);
+                Log.Information("The last opened time for file {FileName} has been updated.", fileName);
             }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to open file: {FileName}.", fileName);
+            Log.Error(ex, "Failed to open file: {FileName}.", fileName);
         }
     }
 
@@ -254,11 +253,11 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             && dialogViewModel.W3Item != null)
         {
             W3Items.Add(dialogViewModel.W3Item.Cast<W3ItemModel>());
-            logger.LogInformation("New W3Item added.");
+            Log.Information("New W3Item added.");
         }
         else
         {
-            logger.LogInformation("The W3Item has not been added.");
+            Log.Information("The W3Item has not been added.");
         }
     }
 
@@ -270,11 +269,11 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         {
             var found = W3Items.First(x => x.Id == w3Item.Id);
             W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3ItemModel>();
-            logger.LogInformation("The W3Item has been updated.");
+            Log.Information("The W3Item has been updated.");
         }
         else
         {
-            logger.LogInformation("The W3Item has not been updated.");
+            Log.Information("The W3Item has not been updated.");
         }
     }
 
@@ -283,9 +282,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     {
         var w3Items = items.Cast<IEditW3Item>().ToArray();
         if (w3Items.Length > 0 &&
-            await dialogService.ShowDialogAsync(this,
-                new DeleteDataDialogViewModel(Ioc.Default.GetRequiredService<ILogger<DeleteDataDialogViewModel>>(),
-                    w3Items)) == true)
+            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel( w3Items)) == true)
             w3Items.ForEach(item => W3Items.Remove(item.Cast<W3ItemModel>()));
     }
 
@@ -293,16 +290,14 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowBackupDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new BackupDialogViewModel(appSettings, backupService,
-                Ioc.Default.GetRequiredService<ILogger<BackupDialogViewModel>>()));
+            new BackupDialogViewModel(appSettings, backupService));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]
     private async Task ShowSaveDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(appSettings, w3Serializer,
-                Ioc.Default.GetRequiredService<ILogger<SaveDialogViewModel>>(), W3Items, OutputFolder));
+            new SaveDialogViewModel(appSettings, w3Serializer, W3Items, OutputFolder));
     }
 
     [RelayCommand]
@@ -315,8 +310,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService, translators, cultureResolver,
-                Ioc.Default.GetRequiredService<ILogger<SettingDialogViewModel>>()));
+            new SettingDialogViewModel(appSettings, dialogService, translators, cultureResolver));
     }
 
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
@@ -338,7 +332,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         }));
     }
 
-    private DateTime RetrieveTimestampAsDateTime()
+    private static DateTime RetrieveTimestampAsDateTime()
     {
         try
         {
@@ -351,7 +345,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to retrieve the build time of the application.");
+            Log.Error(ex, "Failed to retrieve the build time of the application.");
             return DateTime.MinValue;
         }
     }
@@ -360,21 +354,21 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private void OpenWorkingFolder()
     {
         explorerService.Open(OutputFolder);
-        logger.LogInformation("Working folder opened.");
+        Log.Information("Working folder opened.");
     }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
         explorerService.Open(appSettings.NexusModUrl);
-        logger.LogInformation("NexusMods opened.");
+        Log.Information("NexusMods opened.");
     }
 
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new RecentDialogViewModel(appSettings, Ioc.Default.GetRequiredService<ILogger<RecentDialogViewModel>>()));
+            new RecentDialogViewModel(appSettings));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemsHaveItems))]

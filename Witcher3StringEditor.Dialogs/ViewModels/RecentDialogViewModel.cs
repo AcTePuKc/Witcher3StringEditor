@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Messaging;
 
@@ -12,16 +12,13 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    private readonly ILogger<RecentDialogViewModel> logger;
-
-    public RecentDialogViewModel(IAppSettings appSettings, ILogger<RecentDialogViewModel> logger)
+    public RecentDialogViewModel(IAppSettings appSettings)
     {
-        this.logger = logger;
         AppSettings = appSettings;
         AppSettings.RecentItems.CollectionChanged += (_, e) =>
         {
             if (e.Action == NotifyCollectionChangedAction.Remove)
-                logger.LogInformation("Recent items collection changed: {Count} items removed.",
+                Log.Information("Recent items collection changed: {Count} items removed.",
                     e.OldItems?.Count ?? 0);
         };
     }
@@ -36,19 +33,19 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     {
         if (!File.Exists(item.FilePath))
         {
-            logger.LogError("The file {Path} for the recent item being opened does not exist.", item.FilePath);
+            Log.Error("The file {Path} for the recent item being opened does not exist.", item.FilePath);
             if (await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "OpenedFileNoFound"))
                 if (AppSettings.RecentItems.Remove(item))
-                    logger.LogInformation("The recent item for file {Path} has been removed.", item.FilePath);
+                    Log.Information("The recent item for file {Path} has been removed.", item.FilePath);
                 else
-                    logger.LogError("The recent item for file {Path} could not be removed.", item.FilePath);
+                    Log.Error("The recent item for file {Path} could not be removed.", item.FilePath);
         }
         else
         {
             RequestClose?.Invoke(this, EventArgs.Empty);
             var isApproved =
                 WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
-            logger.LogInformation("Recent item opening has been approved: {IsApproved}.", isApproved);
+            Log.Information("Recent item opening has been approved: {IsApproved}.", isApproved);
         }
     }
 }

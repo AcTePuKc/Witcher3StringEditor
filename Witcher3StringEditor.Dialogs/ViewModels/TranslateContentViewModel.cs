@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate;
 using GTranslate.Translators;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Models;
@@ -14,7 +14,6 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class TranslateContentViewModel : ObservableObject
 {
-    private readonly ILogger<TranslateContentViewModel> logger;
     private readonly ITranslator translator;
     private readonly IReadOnlyList<IEditW3Item> w3Items;
 
@@ -37,11 +36,9 @@ public partial class TranslateContentViewModel : ObservableObject
 
     [ObservableProperty] private ILanguage toLanguage;
 
-    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
-        ILogger<TranslateContentViewModel> logger, IEnumerable<IEditW3Item> w3Items,
+    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator, IEnumerable<IEditW3Item> w3Items,
         int index)
     {
-        this.logger = logger;
         this.w3Items = [.. w3Items];
         this.translator = translator;
         Languages = translator.Name switch
@@ -100,21 +97,21 @@ public partial class TranslateContentViewModel : ObservableObject
                     "TranslationNotEmpty")) return;
             IsBusy = true;
             CurrentTranslateItemModel.TranslatedText = string.Empty;
-            logger.LogInformation("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
+            Log.Information("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
                 CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
             var translation =
                 (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
                 .Translation;
             Guard.IsNotNullOrWhiteSpace(translation);
             CurrentTranslateItemModel.TranslatedText = translation;
-            logger.LogInformation("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
+            Log.Information("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
                 CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
             IsBusy = false;
         }
         catch (Exception ex)
         {
             _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(ex.Message), "TranslateError");
-            logger.LogError(ex, "Translation failed for item {ItemId} (From: {FromLang} To: {ToLang}).",
+            Log.Error(ex, "Translation failed for item {ItemId} (From: {FromLang} To: {ToLang}).",
                 CurrentTranslateItemModel?.Id, FormLanguage, ToLanguage);
         }
         finally
@@ -142,11 +139,11 @@ public partial class TranslateContentViewModel : ObservableObject
             }
 
             CurrentTranslateItemModel.IsSaved = true;
-            logger.LogInformation("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
+            Log.Information("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to save translation for item {ItemId}.", CurrentTranslateItemModel?.Id);
+            Log.Error(ex, "Failed to save translation for item {ItemId}.", CurrentTranslateItemModel?.Id);
         }
     }
 
@@ -164,12 +161,12 @@ public partial class TranslateContentViewModel : ObservableObject
             }
 
             IndexOfItems += indexChange;
-            logger.LogInformation("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
+            Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to move to {Direction} item", indexChange > 0 ? "next" : "previous");
+            Log.Error(ex, "Failed to move to {Direction} item", indexChange > 0 ? "next" : "previous");
         }
     }
 
