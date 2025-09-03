@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using System.IO;
-using Witcher3StringEditor.Shared.Abstractions;
+using System.Reflection;
 
-namespace Witcher3StringEditor.Services;
+namespace Witcher3StringEditor.Locales;
 
 public class CultureResolver: ICultureResolver
 {
@@ -10,7 +10,10 @@ public class CultureResolver: ICultureResolver
 
     public CultureResolver()
     {
-        List<CultureInfo> supportedCultures = [];
+        List<CultureInfo> supportedCultures =
+        [
+            new CultureInfo("en")
+        ];
         foreach (var directory in Directory.GetDirectories(Directory.GetCurrentDirectory()))
         {
             try

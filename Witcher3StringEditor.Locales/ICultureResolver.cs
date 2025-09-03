@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Witcher3StringEditor.Shared.Abstractions;
+namespace Witcher3StringEditor.Locales;
 
 public interface ICultureResolver
 {
