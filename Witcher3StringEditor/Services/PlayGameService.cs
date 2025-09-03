@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 
