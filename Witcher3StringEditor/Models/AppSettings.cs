@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using Witcher3StringEditor.Shared;
-using Witcher3StringEditor.Shared.Abstractions;
+using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Models;
 

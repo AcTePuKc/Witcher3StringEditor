@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Witcher3StringEditor.Shared.Abstractions;
+namespace Witcher3StringEditor.Common.Abstractions;
 
 public interface IRecentItem
 {

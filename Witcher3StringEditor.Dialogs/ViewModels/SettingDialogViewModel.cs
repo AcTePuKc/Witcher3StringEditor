@@ -7,8 +7,8 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
+using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Witcher3StringEditor.Shared.Abstractions;
+using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Models;
 

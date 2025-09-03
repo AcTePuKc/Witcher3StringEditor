@@ -19,12 +19,12 @@ using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Logging;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
+using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
-using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.ViewModels;
 

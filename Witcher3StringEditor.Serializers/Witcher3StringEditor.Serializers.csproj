@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Witcher3StringEditor.Shared\Witcher3StringEditor.Shared.csproj"/>
+        <ProjectReference Include="..\Witcher3StringEditor.Common\Witcher3StringEditor.Common.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

@@ -5,12 +5,12 @@
     xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:interfaces="clr-namespace:Witcher3StringEditor.Shared.Abstractions;assembly=Witcher3StringEditor.Shared"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
+    xmlns:abstractions="clr-namespace:Witcher3StringEditor.Common.Abstractions;assembly=Witcher3StringEditor.Common"
     Title="{I18N {x:Static l:LangKeys.RecentDialogTitle}}"
     Width="1200"
     Height="800"
@@ -128,7 +128,7 @@
                     MappingName="IsMarked"
                     MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="{x:Type interfaces:IRecentItem}">
+                        <DataTemplate DataType="{x:Type abstractions:IRecentItem}">
                             <CheckBox
                                 HorizontalAlignment="Center"
                                 IsChecked="{Binding IsMarked}"

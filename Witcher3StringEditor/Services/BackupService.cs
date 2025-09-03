@@ -4,8 +4,8 @@ using System.Reflection;
 using System.Security.Cryptography;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Models;
-using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 

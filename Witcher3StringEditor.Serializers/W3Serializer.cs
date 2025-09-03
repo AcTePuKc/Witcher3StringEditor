@@ -5,10 +5,10 @@ using CommandLine;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Syncfusion.XlsIO;
+using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Serializers.Internal;
-using Witcher3StringEditor.Shared;
-using Witcher3StringEditor.Shared.Abstractions;
 
 namespace Witcher3StringEditor.Serializers;
 

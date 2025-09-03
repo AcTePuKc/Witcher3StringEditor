@@ -1,5 +1,5 @@
-﻿using Witcher3StringEditor.Shared;
-using Witcher3StringEditor.Shared.Abstractions;
+﻿using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Serializers.Abstractions;
 

@@ -1,7 +1,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Witcher3StringEditor.Shared.Abstractions;
+using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 

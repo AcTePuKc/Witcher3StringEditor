@@ -3,8 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using GTranslate;
 using GTranslate.Translators;
 using Microsoft.Extensions.Logging;
-using Witcher3StringEditor.Shared;
-using Witcher3StringEditor.Shared.Abstractions;
+using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

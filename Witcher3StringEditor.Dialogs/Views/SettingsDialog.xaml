@@ -8,10 +8,10 @@
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:s="clr-namespace:Witcher3StringEditor.Shared;assembly=Witcher3StringEditor.Shared"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
+    xmlns:common="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
     Title="{I18N {x:Static l:LangKeys.SettingsDialogTitle}}"
     Width="800"
     Height="800"
@@ -29,7 +29,7 @@
                 MethodName="GetValues"
                 ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="s:W3FileType" />
+                    <x:Type TypeName="common:W3FileType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <ObjectDataProvider
@@ -37,7 +37,7 @@
                 MethodName="GetValues"
                 ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="s:W3Language" />
+                    <x:Type TypeName="common:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->

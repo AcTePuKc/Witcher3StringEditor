@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Witcher3StringEditor.Shared;
+namespace Witcher3StringEditor.Common;
 
 public enum W3Language
 {
