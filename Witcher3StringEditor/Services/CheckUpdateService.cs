@@ -1,11 +1,11 @@
 ﻿using System.Net.Http;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class CheckUpdateService(ILogger<ICheckUpdateService> logger) : ICheckUpdateService
+internal class CheckUpdateService() : ICheckUpdateService
 {
     private static string UpdateUrl => "https://witcher3stringeditorcheckupdate.azurewebsites.net/api/checkupdate";
 
@@ -13,7 +13,7 @@ internal class CheckUpdateService(ILogger<ICheckUpdateService> logger) : ICheckU
     {
         try
         {
-            logger.LogInformation("Checking for updates...");
+            Log.Information("Checking for updates...");
             using var httpClient = new HttpClient();
             var httpResponse = await httpClient.GetAsync(UpdateUrl);
             if (!httpResponse.IsSuccessStatusCode) return true;
@@ -22,14 +22,14 @@ internal class CheckUpdateService(ILogger<ICheckUpdateService> logger) : ICheckU
             Guard.IsNotNull(lastestVersion);
             Guard.IsNotNull(currentVersion);
             var isUpdateAvailable = lastestVersion > currentVersion;
-            logger.LogInformation(
+            Log.Information(
                 "Update check completed. Current version: {CurrentVersion}, Latest version: {LatestVersion}, Update available: {IsUpdateAvailable}",
                 currentVersion, lastestVersion, isUpdateAvailable);
             return isUpdateAvailable;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to check for updates.");
+            Log.Error(ex, "Failed to check for updates.");
             return false;
         }
     }
