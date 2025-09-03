@@ -149,8 +149,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor"));
         Log.Information("Current Language: {Language}", appSettings.Language);
-        IsUpdateAvailable = await checkUpdateService.CheckUpdate();
         await CheckSettings(appSettings);
+        IsUpdateAvailable = await checkUpdateService.CheckUpdate();
     }
 
     private static async Task CheckSettings(IAppSettings settings)
