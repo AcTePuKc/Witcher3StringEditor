@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -50,6 +51,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
     }
 
+    [SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don\'t access instance data should be static")]
     public bool Restore(IBackupItem backupItem)
     {
         try
