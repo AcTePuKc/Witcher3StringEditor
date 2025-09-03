@@ -86,19 +86,10 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                     PlayGameCommand.NotifyCanExecuteChanged();
                     break;
                 case nameof(appSettings.Translator):
-                    Log.Information("Translator changed to {Translator}", appSettings.Translator);
+                    ApplyTranslatorChange(appSettings);
                     break;
                 case nameof(appSettings.Language):
-                    try
-                    {
-                        I18NExtension.Culture = new CultureInfo(appSettings.Language);
-                        Log.Information("Language changed to {Language}.", appSettings.Language);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Failed to change language.");
-                    }
-
+                    ApplyLanguageChange(appSettings.Language);
                     break;
             }
         };
@@ -135,6 +126,24 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     public void Receive(ValueChangedMessage<LogEvent> message)
     {
         Application.Current.Dispatcher.Invoke(() => LogEvents.Add(message.Value));
+    }
+
+    private static void ApplyTranslatorChange(IAppSettings appSettings)
+    {
+        Log.Information("Translator changed to {Translator}", appSettings.Translator);
+    }
+
+    private static void ApplyLanguageChange(string language)
+    {
+        try
+        {
+            I18NExtension.Culture = new CultureInfo(language);
+            Log.Information("Language changed to {Language}.", language);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to change language.");
+        }
     }
 
     [RelayCommand]
