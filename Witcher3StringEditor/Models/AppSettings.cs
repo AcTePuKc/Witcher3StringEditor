@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
@@ -40,10 +42,12 @@ internal partial class AppSettings : ObservableObject, IAppSettings
         RecentItems = [.. recentItems];
     }
 
+    [JsonIgnore]
+    [UsedImplicitly]
+    [SuppressMessage("Performance", "CA1822:将成员标记为 static")]
+    public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
+
     public ObservableCollection<IRecentItem> RecentItems { get; } = [];
 
     public ObservableCollection<IBackupItem> BackupItems { get; } = [];
-
-
-    [JsonIgnore] public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
 }
