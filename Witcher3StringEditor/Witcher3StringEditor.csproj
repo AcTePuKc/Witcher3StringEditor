@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="cmdwtf.BuildTimestampGenerator" Version="1.1.0" />
+        <PackageReference Include="cmdwtf.BuildTimestampGenerator" Version="1.1.0"/>
         <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
         <PackageReference Include="GTranslate" Version="2.3.1"/>

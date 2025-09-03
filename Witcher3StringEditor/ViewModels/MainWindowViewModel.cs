@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
+using cmdwtf;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -322,7 +323,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         _ = await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
         {
             { "Version", ThisAssembly.AssemblyInformationalVersion },
-            { "BuildTime", cmdwtf.BuildTimestamp.BuildTime.ToLocalTime() },
+            { "BuildTime", BuildTimestamp.BuildTime.ToLocalTime() },
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
             { "Package", DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package") }
