@@ -183,6 +183,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             else
                 Log.Information("The game executable path has been set to {Path}.", settings.GameExePath);
             Log.Information("The current translator is {Translator}.", settings.Translator);
+            Log.Information("The preferred filetype is {Filetype}", settings.PreferredW3FileType);
+            Log.Information("The preferred language is {Language}", settings.PreferredLanguage);
         }
     }
 
