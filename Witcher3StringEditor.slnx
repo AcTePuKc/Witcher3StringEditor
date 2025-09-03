@@ -1,6 +1,7 @@
 <Solution>
+  <Project Path="Witcher3StringEditor.Common/Witcher3StringEditor.Common.csproj" />
   <Project Path="Witcher3StringEditor.Dialogs/Witcher3StringEditor.Dialogs.csproj" />
+  <Project Path="Witcher3StringEditor.Locales/Witcher3StringEditor.Locales.csproj" />
   <Project Path="Witcher3StringEditor.Serializers/Witcher3StringEditor.Serializers.csproj" />
-  <Project Path="Witcher3StringEditor.Shared/Witcher3StringEditor.Shared.csproj" />
   <Project Path="Witcher3StringEditor/Witcher3StringEditor.csproj" />
 </Solution>
