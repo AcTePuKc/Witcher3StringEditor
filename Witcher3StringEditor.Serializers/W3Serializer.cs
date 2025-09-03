@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
@@ -133,10 +134,11 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 ? saveLang
                 : "cleartext";
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($";meta[language={lang}]");
+            stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]");
             stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
             foreach (var item in w3Job.W3Items)
-                stringBuilder.AppendLine($"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
+                stringBuilder.AppendLine(CultureInfo.InvariantCulture,
+                    $"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
             var csvPath = Path.Combine(folder, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
