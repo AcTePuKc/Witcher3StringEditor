@@ -41,9 +41,7 @@ internal partial class AppSettings : ObservableObject, IAppSettings
         RecentItems = [.. recentItems];
     }
 
-    [JsonIgnore]
-    [UsedImplicitly]
-    public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
+    [JsonIgnore] [UsedImplicitly] public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
 
     public ObservableCollection<IRecentItem> RecentItems { get; } = [];
 

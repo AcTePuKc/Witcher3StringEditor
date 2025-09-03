@@ -49,7 +49,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             return false;
         }
     }
-    
+
     public bool Restore(IBackupItem backupItem)
     {
         try
