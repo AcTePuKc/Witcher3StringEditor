@@ -56,6 +56,10 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
                     MessageBoxButton.OK,
                     MessageBoxImage.Question) == MessageBoxResult.OK);
             });
+        ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
+        {
+            Log.Information("Theme changed to {Theme}", ThemeManager.Current.ActualApplicationTheme);
+        };
     }
 
     public void Receive(AsyncRequestMessage<bool> message)
@@ -99,6 +103,5 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
             ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Light
                 ? ApplicationTheme.Dark
                 : ApplicationTheme.Light;
-        Log.Information("Theme changed to {Theme}", ThemeManager.Current.ActualApplicationTheme);
     }
 }
