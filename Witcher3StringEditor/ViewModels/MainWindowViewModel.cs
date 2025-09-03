@@ -142,7 +142,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     {
         Log.Information("Application started.");
         Log.Information("Application Version: {Version}", ThisAssembly.AssemblyFileVersion);
-        Log.Information("OS Version: {Version}", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        Log.Information("OS Version: {Version}",
+            $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         Log.Information(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription);
         Log.Information("Is Debug: {IsDebug}", IsDebug);
         Log.Information("Current Directory: {Directory}", Environment.CurrentDirectory);
