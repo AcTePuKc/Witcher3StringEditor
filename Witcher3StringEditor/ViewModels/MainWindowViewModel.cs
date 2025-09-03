@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using cmdwtf;
@@ -102,6 +104,9 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
 
     private bool CanOpenFile => !string.IsNullOrWhiteSpace(appSettings.W3StringsPath);
 
+    private static bool IsDebug =>
+        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
+
     public async void Receive(FileOpenedMessage message)
     {
         try
@@ -137,10 +142,12 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     {
         Log.Information("Application started.");
         Log.Information("Application Version: {Version}", ThisAssembly.AssemblyFileVersion);
-        Log.Information("OS Version: {Version}",
-            $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
+        Log.Information("OS Version: {Version}", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         Log.Information(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription);
         Log.Information("Current Directory: {Directory}", Environment.CurrentDirectory);
+        Log.Information("AppData Folder: {Folder}",
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor"));
         Log.Information("Current Language: {Language}", appSettings.Language);
         await CheckSettings(appSettings);
         IsUpdateAvailable = await checkUpdateService.CheckUpdate();
