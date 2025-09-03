@@ -8,6 +8,7 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
+// ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public partial class BatchTranslateContentViewModel : ObservableObject, IDisposable
 {
     private readonly ITranslator translator;
@@ -68,6 +69,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IDisposa
         Dispose(true);
         GC.SuppressFinalize(this);
     }
+
 
     partial void OnStartIndexChanged(int value)
     {
