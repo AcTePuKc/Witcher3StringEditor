@@ -46,7 +46,7 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
         WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
             this, "MainWindowClosing", static (_, m) =>
             {
-            m.Reply(MessageBox.Show(Strings.AppExitMessage,
+                m.Reply(MessageBox.Show(Strings.AppExitMessage,
                     Strings.AppExitCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.No);

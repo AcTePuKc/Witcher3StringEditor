@@ -83,7 +83,7 @@ public partial class App
             new MainWindow().Show();
         }
     }
-    
+
     private void SetupExceptionHandling()
     {
         DispatcherUnhandledException += (_, e) =>

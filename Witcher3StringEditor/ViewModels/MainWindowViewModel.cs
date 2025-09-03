@@ -315,7 +315,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService, translators,cultureResolver,
+            new SettingDialogViewModel(appSettings, dialogService, translators, cultureResolver,
                 Ioc.Default.GetRequiredService<ILogger<SettingDialogViewModel>>()));
     }
 

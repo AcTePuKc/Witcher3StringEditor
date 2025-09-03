@@ -1,21 +1,17 @@
 ﻿using System.Globalization;
 using System.IO;
-using System.Reflection;
 
 namespace Witcher3StringEditor.Locales;
 
-public class CultureResolver: ICultureResolver
+public class CultureResolver : ICultureResolver
 {
-    public IEnumerable<CultureInfo> SupportedCultures { get; }
-
     public CultureResolver()
     {
         List<CultureInfo> supportedCultures =
         [
-            new CultureInfo("en")
+            new("en")
         ];
         foreach (var directory in Directory.GetDirectories(Directory.GetCurrentDirectory()))
-        {
             try
             {
                 var directoryInfo = new DirectoryInfo(directory);
@@ -25,10 +21,12 @@ public class CultureResolver: ICultureResolver
             {
                 //ignored
             }
-        }
+
         SupportedCultures = supportedCultures;
     }
-    
+
+    public IEnumerable<CultureInfo> SupportedCultures { get; }
+
     public CultureInfo ResolveSupportedCulture()
     {
         var cultureInfo = CultureInfo.InstalledUICulture;
@@ -38,6 +36,7 @@ public class CultureResolver: ICultureResolver
             if (SupportedCultures.Contains(cultureInfo)) return cultureInfo;
             cultureInfo = cultureInfo.Parent;
         }
+
         return new CultureInfo("en");
     }
 }
