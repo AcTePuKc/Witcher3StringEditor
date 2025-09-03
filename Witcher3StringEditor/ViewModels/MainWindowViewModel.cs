@@ -30,7 +30,7 @@ using Witcher3StringEditor.Serializers.Abstractions;
 namespace Witcher3StringEditor.ViewModels;
 
 internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOpenedMessage>,
-    IRecipient<ValueChangedMessage<LogEvent>>, IRecipient<ValueChangedMessage<CultureInfo>>
+    IRecipient<ValueChangedMessage<LogEvent>>
 {
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
@@ -67,8 +67,6 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             this, (r, m) => { r.Receive(m); });
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, FileOpenedMessage, string>(
             this, "RecentFileOpened", (r, m) => { r.Receive(m); });
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel,
-            ValueChangedMessage<CultureInfo>>(this, (r, m) => { r.Receive(m); });
 
         W3Items.CollectionChanged += (_, _) =>
         {
@@ -122,19 +120,6 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         }
     }
 
-    public void Receive(ValueChangedMessage<CultureInfo> message)
-    {
-        try
-        {
-            I18NExtension.Culture = message.Value;
-            Log.Information("Language changed to {Language}.", message.Value.Name);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to change language.");
-        }
-    }
-
     public void Receive(ValueChangedMessage<LogEvent> message)
     {
         Application.Current.Dispatcher.Invoke(() => LogEvents.Add(message.Value));
@@ -176,7 +161,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                 Log.Warning("The game executable path is not set.");
             else
                 Log.Information("The game executable path has been set to {Path}.", settings.GameExePath);
-            Log.Information("The preferred translator is {Translator}.", settings.Translator);
+            Log.Information("The current translator is {Translator}.", settings.Translator);
         }
     }
 
