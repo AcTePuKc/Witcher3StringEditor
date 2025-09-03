@@ -75,7 +75,7 @@ public partial class App
             logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
             var cultureInfo = appSettings.Language == string.Empty
-                ? ResolveSupportedCulture(CultureInfo.InstalledUICulture)
+                ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
                 : new CultureInfo(appSettings.Language);
             if (appSettings.Language == string.Empty)
                 appSettings.Language = cultureInfo.Name;
@@ -83,26 +83,7 @@ public partial class App
             new MainWindow().Show();
         }
     }
-
-    private static CultureInfo ResolveSupportedCulture(CultureInfo cultureInfo)
-    {
-        var supportedCultures = new[]
-        {
-            new CultureInfo("en"),
-            new CultureInfo("fr"),
-            new CultureInfo("hu"),
-            new CultureInfo("zh-Hans")
-        };
-        if (supportedCultures.Any(c => Equals(c, cultureInfo))) return cultureInfo;
-        while (!Equals(cultureInfo.Parent, CultureInfo.InvariantCulture))
-        {
-            if (supportedCultures.Any(c => Equals(c, cultureInfo))) return cultureInfo;
-            cultureInfo = cultureInfo.Parent;
-        }
-
-        return new CultureInfo("en");
-    }
-
+    
     private void SetupExceptionHandling()
     {
         DispatcherUnhandledException += (_, e) =>
@@ -173,6 +154,7 @@ public partial class App
             .AddSingleton<ITranslator, MicrosoftTranslator>()
             .AddSingleton<ITranslator, GoogleTranslator>()
             .AddSingleton<ITranslator, YandexTranslator>()
+            .AddSingleton<ICultureResolver, CultureResolver>()
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider());
     }

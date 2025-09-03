@@ -34,6 +34,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
     private readonly ICheckUpdateService checkUpdateService;
+    private readonly ICultureResolver cultureResolver;
     private readonly IDialogService dialogService;
     private readonly IExplorerService explorerService;
     private readonly ILogger<MainWindowViewModel> logger;
@@ -51,7 +52,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
         ICheckUpdateService checkUpdateService, IDialogService dialogService, IExplorerService explorerService,
         IPlayGameService playGameService, IW3Serializer w3Serializer, IEnumerable<ITranslator> translators,
-        ILogger<MainWindowViewModel> logger)
+        ICultureResolver cultureResolver, ILogger<MainWindowViewModel> logger)
     {
         this.logger = logger;
         this.appSettings = appSettings;
@@ -62,6 +63,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         this.dialogService = dialogService;
         this.playGameService = playGameService;
         this.explorerService = explorerService;
+        this.cultureResolver = cultureResolver;
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
             this, (r, m) => { r.Receive(m); });
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, FileOpenedMessage, string>(
@@ -313,7 +315,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSettingsDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService, translators,
+            new SettingDialogViewModel(appSettings, dialogService, translators,cultureResolver,
                 Ioc.Default.GetRequiredService<ILogger<SettingDialogViewModel>>()));
     }
 

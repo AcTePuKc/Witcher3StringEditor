@@ -16,6 +16,7 @@ public partial class SettingDialogViewModel(
     IAppSettings appSettings,
     IDialogService dialogService,
     IEnumerable<ITranslator> translators,
+    ICultureResolver cultureResolver,
     ILogger<SettingDialogViewModel> logger)
     : ObservableObject, IModalDialogViewModel
 {
@@ -23,13 +24,7 @@ public partial class SettingDialogViewModel(
 
     public IEnumerable<ITranslator> Translators { get; } = translators;
 
-    public IEnumerable<CultureInfo> SupportedCultures { get; } =
-    [
-        new("en"),
-        new("fr"),
-        new("hu"),
-        new("zh-Hans")
-    ];
+    public IEnumerable<CultureInfo> SupportedCultures { get; } = cultureResolver.SupportedCultures;
 
     public bool? DialogResult => true;
 
