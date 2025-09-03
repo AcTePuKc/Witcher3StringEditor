@@ -8,11 +8,12 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class BatchTranslateContentViewModel : ObservableObject
+public partial class BatchTranslateContentViewModel : ObservableObject, IDisposable
 {
     private readonly ITranslator translator;
     private readonly IReadOnlyList<IW3Item> w3Items;
     private CancellationTokenSource? cancellationTokenSource;
+    private bool disposedValue;
 
     [ObservableProperty] private int endIndex;
 
@@ -61,6 +62,12 @@ public partial class BatchTranslateContentViewModel : ObservableObject
     }
 
     private bool CanCancel => IsBusy;
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
     partial void OnStartIndexChanged(int value)
     {
@@ -125,5 +132,17 @@ public partial class BatchTranslateContentViewModel : ObservableObject
             cancellationTokenSource.Dispose();
             IsBusy = false;
         }
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposedValue) return;
+        if (disposing) cancellationTokenSource?.Dispose();
+        disposedValue = true;
+    }
+
+    ~BatchTranslateContentViewModel()
+    {
+        Dispose(false);
     }
 }
