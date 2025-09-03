@@ -21,13 +21,13 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
 
         var messageHandlers = new[]
         {
-            ("BackupRestore", LangKeys.BackupRestoreMessage, LangKeys.BackupRestoreCaption, MessageBoxButton.YesNo,
+            ("BackupRestore", Strings.BackupRestoreMessage, Strings.BackupRestoreCaption, MessageBoxButton.YesNo,
                 MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("BackupDelete", LangKeys.BackupDeleteMessage, LangKeys.BackupDeleteCaption, MessageBoxButton.YesNo,
+            ("BackupDelete", Strings.BackupDeleteMessage, Strings.BackupDeleteCaption, MessageBoxButton.YesNo,
                 MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("BackupFileNoFound", LangKeys.BackupFileNoFoundMessage, LangKeys.BackupFileNoFoundCaption,
+            ("BackupFileNoFound", Strings.BackupFileNoFoundMessage, Strings.BackupFileNoFoundCaption,
                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
-            ("OperationFailed", LangKeys.OperationFailureMessage, LangKeys.OperationResultCaption, MessageBoxButton.OK,
+            ("OperationFailed", Strings.OperationFailureMessage, Strings.OperationResultCaption, MessageBoxButton.OK,
                 MessageBoxImage.Warning, MessageBoxResult.OK)
         };
 
