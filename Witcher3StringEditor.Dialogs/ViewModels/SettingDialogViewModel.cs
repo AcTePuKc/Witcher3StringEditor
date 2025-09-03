@@ -1,14 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Globalization;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Forms;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Locales;
 
@@ -60,20 +56,6 @@ public partial class SettingDialogViewModel(
         {
             AppSettings.GameExePath = storageFile.LocalPath;
             Log.Information("Game Path set to {Path}.", storageFile.LocalPath);
-        }
-    }
-
-    [RelayCommand]
-    private void ChangeLanguage()
-    {
-        try
-        {
-            I18NExtension.Culture = new CultureInfo(AppSettings.Language);
-            Log.Information("Language changed to {Language}.", AppSettings.Language);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to change language.");
         }
     }
 }

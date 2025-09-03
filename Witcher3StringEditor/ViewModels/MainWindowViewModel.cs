@@ -88,6 +88,18 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                 case nameof(appSettings.Translator):
                     Log.Information("Translator changed to {Translator}", appSettings.Translator);
                     break;
+                case nameof(appSettings.Language):
+                    try
+                    {
+                        I18NExtension.Culture = new CultureInfo(appSettings.Language);
+                        Log.Information("Language changed to {Language}.", appSettings.Language);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Failed to change language.");
+                    }
+
+                    break;
             }
         };
     }
