@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -44,7 +43,6 @@ internal partial class AppSettings : ObservableObject, IAppSettings
 
     [JsonIgnore]
     [UsedImplicitly]
-    [SuppressMessage("Performance", "CA1822:将成员标记为 static")]
     public string NexusModUrl => "https://www.nexusmods.com/witcher3/mods/10032";
 
     public ObservableCollection<IRecentItem> RecentItems { get; } = [];
