@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -61,7 +62,7 @@ public partial class SaveDialogViewModel
         var match = IdSpaceRegex().Match(w3Item.StrId);
         if (!match.Success) return -1;
         var foundIdSpace = match.Groups[1].Value;
-        return int.Parse(foundIdSpace);
+        return int.Parse(foundIdSpace, CultureInfo.InvariantCulture);
     }
 
     [GeneratedRegex(@"^211(\d{4})\d{3}$")]

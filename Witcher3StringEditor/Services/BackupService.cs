@@ -3,13 +3,13 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;
 
-internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> logger) : IBackupService
+internal class BackupService(IAppSettings appSettings) : IBackupService
 {
     private readonly string backupFolderPath
         = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -40,12 +40,12 @@ internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> l
                 return true;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
             appSettings.BackupItems.Add(backupItem);
-            logger.LogInformation("Backup file: {FileName}.", backupItem.FileName);
+            Log.Information("Backup file: {FileName}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to backup file: {Path}.", path);
+            Log.Error(ex, "Failed to backup file: {Path}.", path);
             return false;
         }
     }
@@ -60,12 +60,12 @@ internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> l
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
-            logger.LogInformation("Restore backup file: {FileName}.", backupItem.FileName);
+            Log.Information("Restore backup file: {FileName}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to restore backup item: {Path}.", backupItem.OrginPath);
+            Log.Error(ex, "Failed to restore backup item: {Path}.", backupItem.OrginPath);
             return false;
         }
     }
@@ -77,17 +77,17 @@ internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> l
             if (File.Exists(backupItem.BackupPath))
                 File.Delete(backupItem.BackupPath);
             _ = appSettings.BackupItems.Remove(backupItem);
-            logger.LogInformation("Delete backup file: {FileName}.", backupItem.FileName);
+            Log.Information("Delete backup file: {FileName}.", backupItem.FileName);
             return true;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to delete backup item: {Path}.", backupItem.BackupPath);
+            Log.Error(ex, "Failed to delete backup item: {Path}.", backupItem.BackupPath);
             return false;
         }
     }
 
-    private string ComputeSha256Hash(string filePath)
+    private static string ComputeSha256Hash(string filePath)
     {
         try
         {
@@ -98,7 +98,7 @@ internal class BackupService(IAppSettings appSettings, ILogger<IBackupService> l
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to compute SHA256 hash: {Path}.", filePath);
+            Log.Error(ex, "Failed to compute SHA256 hash: {Path}.", filePath);
             return string.Empty;
         }
     }

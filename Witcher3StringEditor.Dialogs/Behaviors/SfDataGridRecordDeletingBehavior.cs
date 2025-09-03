@@ -1,17 +1,13 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Microsoft.Extensions.Logging;
 using Microsoft.Xaml.Behaviors;
+using Serilog;
 using Syncfusion.UI.Xaml.Grid;
 
 namespace Witcher3StringEditor.Dialogs.Behaviors;
 
 internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
 {
-    private readonly ILogger<SfDataGridRecordDeletingBehavior> logger =
-        Ioc.Default.GetRequiredService<ILogger<SfDataGridRecordDeletingBehavior>>();
-
     protected override void OnAttached()
     {
         AssociatedObject.RecordDeleting += AssociatedObject_RecordDeleting;
@@ -22,7 +18,7 @@ internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
         AssociatedObject.RecordDeleting -= AssociatedObject_RecordDeleting;
     }
 
-    private async void AssociatedObject_RecordDeleting(object? sender, RecordDeletingEventArgs e)
+    private static async void AssociatedObject_RecordDeleting(object? sender, RecordDeletingEventArgs e)
     {
         try
         {
@@ -32,7 +28,7 @@ internal class SfDataGridRecordDeletingBehavior : Behavior<SfDataGrid>
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deleting a record.");
+            Log.Error(ex, "An error occurred while deleting a record.");
         }
     }
 }

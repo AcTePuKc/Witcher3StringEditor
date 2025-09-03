@@ -2,17 +2,18 @@
 using System.IO;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class PlayGameService(IAppSettings appSettings, ILogger<IPlayGameService> logger) : IPlayGameService
+internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
 {
     public async Task PlayGame()
     {
         try
         {
-            logger.LogInformation("Starting the game process.");
+            Log.Information("Starting the game process.");
             using var process = new Process();
             process.EnableRaisingEvents = true;
             process.StartInfo = new ProcessStartInfo
@@ -29,23 +30,23 @@ internal class PlayGameService(IAppSettings appSettings, ILogger<IPlayGameServic
             process.BeginOutputReadLine();
             await process.WaitForExitAsync();
             Guard.IsEqualTo(process.ExitCode, 0);
-            logger.LogInformation("Game process exited with code {ExitCode}.", process.ExitCode);
+            Log.Information("Game process exited with code {ExitCode}.", process.ExitCode);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to start the game process.");
+            Log.Error(ex, "Failed to start the game process.");
         }
     }
 
-    private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
-            logger.LogError("Error: {Data}.", e.Data);
+            Log.Error("Error: {Data}.", e.Data);
     }
 
-    private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
-            logger.LogInformation("Output: {Data}.", e.Data);
+            Log.Information("Output: {Data}.", e.Data);
     }
 }

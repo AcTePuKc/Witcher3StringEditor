@@ -8,7 +8,6 @@ using System.Windows;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -16,7 +15,6 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.DependencyModel;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
@@ -282,7 +280,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     {
         var w3Items = items.Cast<IEditW3Item>().ToArray();
         if (w3Items.Length > 0 &&
-            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel( w3Items)) == true)
+            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
             w3Items.ForEach(item => W3Items.Remove(item.Cast<W3ItemModel>()));
     }
 
@@ -377,7 +375,6 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         _ = await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings,
                 translators.First(x => x.Name == appSettings.Translator),
-                Ioc.Default.GetRequiredService<ILogger<TranslateDialogViewModel>>(), W3Items,
-                w3Item != null ? W3Items.IndexOf(w3Item) : 0));
+                W3Items, w3Item != null ? W3Items.IndexOf(w3Item) : 0));
     }
 }

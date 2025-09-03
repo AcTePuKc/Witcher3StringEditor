@@ -44,7 +44,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         };
     }
 
-    private async Task<IEnumerable<IW3Item>> DeserializeCsv(string path)
+    private static async Task<IEnumerable<IW3Item>> DeserializeCsv(string path)
     {
         try
         {
@@ -283,7 +283,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<Process> ExecuteExternalProcess(string filename, string arguments)
+    private static async Task<Process> ExecuteExternalProcess(string filename, string arguments)
     {
         var process = new Process
         {

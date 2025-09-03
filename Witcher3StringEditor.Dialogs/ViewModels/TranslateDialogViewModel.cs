@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Locales;
 
@@ -18,8 +18,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private readonly int index;
 
-    private readonly ILogger<TranslateDialogViewModel> logger;
-
     private readonly ITranslator translator;
 
     private readonly IReadOnlyList<IEditW3Item> w3Items;
@@ -29,19 +27,18 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [ObservableProperty] private string title = Strings.TranslateDialogTitle;
 
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator,
-        ILogger<TranslateDialogViewModel> logger, IEnumerable<IEditW3Item> w3Items,
+        IEnumerable<IEditW3Item> w3Items,
         int index)
     {
         this.w3Items = [.. w3Items];
         this.index = index;
         this.appSettings = appSettings;
         this.translator = translator;
-        this.logger = logger;
         CurrentViewModel = new TranslateContentViewModel(appSettings, translator, this.w3Items, index);
-        logger.LogInformation("Current translator: {Translator}.", appSettings.Translator);
-        logger.LogInformation("Translation dialog initialized in single mode.");
-        logger.LogInformation("Total items to translate: {Count}.", this.w3Items.Count);
-        logger.LogInformation("Starting index: {Index}.", index);
+        Log.Information("Current translator: {Translator}.", appSettings.Translator);
+        Log.Information("Translation dialog initialized in single mode.");
+        Log.Information("Total items to translate: {Count}.", this.w3Items.Count);
+        Log.Information("Starting index: {Index}.", index);
     }
 
     public bool? DialogResult => true;
@@ -66,17 +63,17 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 Title = CurrentViewModel is BatchTranslateContentViewModel
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;
-                logger.LogInformation("Switched translation mode to {Mode}",
+                Log.Information("Switched translation mode to {Mode}",
                     CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
             }
             else
             {
-                logger.LogInformation("Translation mode switch cancelled (busy or user declined)");
+                Log.Information("Translation mode switch cancelled (busy or user declined)");
             }
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to switch translation mode");
+            Log.Error(ex, "Failed to switch translation mode");
         }
     }
 
@@ -89,7 +86,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error during dialog closing");
+            Log.Error(ex, "Error during dialog closing");
             e.Cancel = false;
         }
     }
@@ -103,7 +100,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             var found = w3Items.First(x => x.Id == item.Id);
             Guard.IsNotNull(found);
             found.Text = item.TranslatedText;
-            logger.LogInformation("Auto-saved unsaved changes for item {ItemId}", item.Id);
+            Log.Information("Auto-saved unsaved changes for item {ItemId}", item.Id);
         }
     }
 
@@ -125,7 +122,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             return false;
         }
 
-        logger.LogInformation("Translation dialog closing cancelled (busy)");
+        Log.Information("Translation dialog closing cancelled (busy)");
         return true;
     }
 }

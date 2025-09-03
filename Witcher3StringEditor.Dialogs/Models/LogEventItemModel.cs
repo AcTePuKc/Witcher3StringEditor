@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Globalization;
+using JetBrains.Annotations;
 using Serilog.Events;
 
 namespace Witcher3StringEditor.Dialogs.Models;
@@ -11,5 +12,5 @@ public class LogEventItemModel(LogEvent logEvent)
 
     [UsedImplicitly] public LogEventLevel Level => logEvent.Level;
 
-    [UsedImplicitly] public string Message => logEvent.RenderMessage();
+    [UsedImplicitly] public string Message => logEvent.RenderMessage(CultureInfo.InvariantCulture);
 }
