@@ -7,7 +7,7 @@ namespace Witcher3StringEditor.Services;
 
 internal class CheckUpdateService : ICheckUpdateService
 {
-    private readonly Uri updateUrl = new($"https://witcher3stringeditorcheckupdate.azurewebsites.net/api/checkupdate"); 
+    private readonly Uri updateUrl = new("https://witcher3stringeditorcheckupdate.azurewebsites.net/api/checkupdate");
 
     public async Task<bool> CheckUpdate()
     {

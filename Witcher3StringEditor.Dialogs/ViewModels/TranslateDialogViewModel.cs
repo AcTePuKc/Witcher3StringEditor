@@ -57,7 +57,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
                 await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
                 CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
-                    ? new TranslateContentViewModel(appSettings, translator,w3Items, index)
+                    ? new TranslateContentViewModel(appSettings, translator, w3Items, index)
                     : new BatchTranslateContentViewModel(appSettings, translator,
                         w3Items, index + 1);
                 Title = CurrentViewModel is BatchTranslateContentViewModel
