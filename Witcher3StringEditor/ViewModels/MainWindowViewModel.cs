@@ -87,6 +87,9 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                 case nameof(appSettings.GameExePath) when !string.IsNullOrWhiteSpace(appSettings.GameExePath):
                     PlayGameCommand.NotifyCanExecuteChanged();
                     break;
+                case nameof(appSettings.Translator):
+                    Log.Information("Translator changed to {Translator}", appSettings.Translator);
+                    break;
             }
         };
     }
@@ -173,6 +176,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                 Log.Warning("The game executable path is not set.");
             else
                 Log.Information("The game executable path has been set to {Path}.", settings.GameExePath);
+            Log.Information("The preferred translator is {Translator}.", settings.Translator);
         }
     }
 
