@@ -24,7 +24,6 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
-
         var messageHandlers = new[]
         {
             ("FileOpened", Strings.FileOpenedMessage, Strings.FileOpenedCaption),
@@ -100,5 +99,6 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
             ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Light
                 ? ApplicationTheme.Dark
                 : ApplicationTheme.Light;
+        Log.Information("Theme changed to {Theme}", ThemeManager.Current.ActualApplicationTheme);
     }
 }
