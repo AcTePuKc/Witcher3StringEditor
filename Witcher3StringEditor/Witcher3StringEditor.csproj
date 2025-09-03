@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="cmdwtf.BuildTimestampGenerator" Version="1.1.0" />
         <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
         <PackageReference Include="GTranslate" Version="2.3.1"/>
@@ -57,7 +58,6 @@
         </PackageReference>
         <PackageReference Include="Syncfusion.SfGrid.WPF" Version="30.2.7"/>
         <PackageReference Include="System.Reactive" Version="6.0.2"/>
-        <PackageReference Include="Timestamp" Version="1.0.2"/>
     </ItemGroup>
 
     <ItemGroup>

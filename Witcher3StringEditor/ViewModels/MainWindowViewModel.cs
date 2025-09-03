@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using CommandLine;
@@ -323,29 +322,11 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         _ = await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
         {
             { "Version", ThisAssembly.AssemblyInformationalVersion },
-            { "BuildTime", RetrieveTimestampAsDateTime() },
+            { "BuildTime", cmdwtf.BuildTimestamp.BuildTime.ToLocalTime() },
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
             { "Package", DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package") }
         }));
-    }
-
-    private static DateTime RetrieveTimestampAsDateTime()
-    {
-        try
-        {
-            Guard.IsTrue(DateTime.TryParseExact(
-                Assembly.GetExecutingAssembly().GetCustomAttributesData()
-                    .First(static x => x.AttributeType.Name == "TimestampAttribute").ConstructorArguments[0]
-                    .Value as string, "yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal, out var buildTime));
-            return buildTime.ToLocalTime();
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to retrieve the build time of the application.");
-            return DateTime.MinValue;
-        }
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
