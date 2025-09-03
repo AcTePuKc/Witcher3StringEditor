@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -277,7 +276,6 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     }
 
     [RelayCommand]
-    [SuppressMessage("Minor Code Smell", "S1125:Boolean literals should not be redundant")]
     private async Task Delete(IEnumerable<object> items)
     {
         var w3Items = items.Cast<IEditW3Item>().ToArray();
