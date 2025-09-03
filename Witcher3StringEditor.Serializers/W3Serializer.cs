@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Syncfusion.XlsIO;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
@@ -12,7 +12,7 @@ using Witcher3StringEditor.Serializers.Internal;
 
 namespace Witcher3StringEditor.Serializers;
 
-public class W3Serializer(IAppSettings appSettings, IBackupService backupService, ILogger<W3Serializer> logger)
+public class W3Serializer(IAppSettings appSettings, IBackupService backupService)
     : IW3Serializer
 {
     public async Task<IEnumerable<IW3Item>> Deserialize(string path)
@@ -28,7 +28,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deserializing the file: {Path}.", path);
+            Log.Error(ex, "An error occurred while deserializing the file: {Path}.", path);
             return [];
         }
     }
@@ -63,12 +63,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deserializing the CSV file: {Path}.", path);
+            Log.Error(ex, "An error occurred while deserializing the CSV file: {Path}.", path);
             return [];
         }
     }
 
-    private async Task<List<W3Item>> DeserializeExcel(string path)
+    private static async Task<List<W3Item>> DeserializeExcel(string path)
     {
         try
         {
@@ -82,7 +82,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deserializing Excel worksheets file: {Path}.", path);
+            Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {Path}.", path);
             return await Task.FromResult<List<W3Item>>([]);
         }
     }
@@ -102,21 +102,21 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deserializing W3Strings file: {Path}.", path);
+            Log.Error(ex, "An error occurred while deserializing W3Strings file: {Path}.", path);
             return [];
         }
     }
 
-    private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
-            logger.LogError("Error: {Data}.", e.Data);
+            Log.Error("Error: {Data}.", e.Data);
     }
 
-    private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
-            logger.LogInformation("Output: {Data}.", e.Data);
+            Log.Information("Output: {Data}.", e.Data);
     }
 
     private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
@@ -147,7 +147,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while serializing the CSV file.");
+            Log.Error(ex, "An error occurred while serializing the CSV file.");
             return false;
         }
     }
@@ -185,7 +185,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while serializing the Excel worksheets file.");
+            Log.Error(ex, "An error occurred while serializing the Excel worksheets file.");
             return false;
         }
     }
@@ -252,7 +252,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while serializing W3Strings.");
+            Log.Error(ex, "An error occurred while serializing W3Strings.");
             return false;
         }
     }
@@ -278,7 +278,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to start the serialization process.");
+            Log.Error(ex, "Failed to start the serialization process.");
             return false;
         }
     }
@@ -317,7 +317,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to copy file from {TempPath} to {Path}.", tempPath, path);
+            Log.Error(ex, "Failed to copy file from {TempPath} to {Path}.", tempPath, path);
         }
 
         return true;

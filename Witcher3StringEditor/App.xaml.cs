@@ -15,7 +15,6 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Resourcer;
 using Serilog;
 using Serilog.Events;
@@ -41,7 +40,6 @@ public partial class App
 {
     private IAppSettings? appSettings;
     private IConfigService? configService;
-    private ILogger<App>? logger;
     private ObserverBase<LogEvent>? logObserver;
     private Mutex? mutex;
 
@@ -72,7 +70,6 @@ public partial class App
             logObserver = new AnonymousObserver<LogEvent>(x =>
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
             InitializeLogging(logObserver);
-            logger = Ioc.Default.GetRequiredService<ILogger<App>>();
             SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
             var cultureInfo = appSettings.Language == string.Empty
                 ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
@@ -90,13 +87,13 @@ public partial class App
         {
             e.Handled = true;
             var exception = e.Exception;
-            logger?.LogError(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
+            Log.Error(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
         };
         TaskScheduler.UnobservedTaskException += (_, e) =>
         {
             e.SetObserved();
             var exception = e.Exception;
-            logger?.LogError(exception, "Unobserved task exception: {ExceptionMessage}", exception.Message);
+            Log.Error(exception, "Unobserved task exception: {ExceptionMessage}", exception.Message);
         };
     }
 
@@ -178,7 +175,7 @@ public partial class App
     {
         mutex?.Dispose();
         configService?.Save(appSettings);
-        logger?.LogInformation("Application exited.");
+        Log.Information("Application exited.");
         logObserver?.Dispose();
         Log.CloseAndFlush();
     }
