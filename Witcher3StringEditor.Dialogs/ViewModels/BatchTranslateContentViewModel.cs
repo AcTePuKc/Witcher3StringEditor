@@ -66,17 +66,19 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
 
     public async ValueTask DisposeAsync()
     {
-        if (disposedValue) return;
-        if (cancellationTokenSource != null)
+        if (!disposedValue)
         {
-            if (!cancellationTokenSource.IsCancellationRequested)
-                await cancellationTokenSource.CancelAsync();
-            cancellationTokenSource.Dispose();
+            if (cancellationTokenSource != null)
+            {
+                if (!cancellationTokenSource.IsCancellationRequested)
+                    await cancellationTokenSource.CancelAsync();
+                cancellationTokenSource.Dispose();
+            }
+
+            disposedValue = true;
+            GC.SuppressFinalize(this);
+            Log.Information("BatchTranslateContentViewModel is being disposed.");
         }
-
-        disposedValue = true;
-
-        GC.SuppressFinalize(this);
     }
 
     partial void OnStartIndexChanged(int value)
@@ -146,10 +148,14 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
 
     ~BatchTranslateContentViewModel()
     {
-        if (disposedValue) return;
-        if (cancellationTokenSource == null) return;
-        if (!cancellationTokenSource.IsCancellationRequested)
-            cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
+        if (!disposedValue)
+        {
+            if (cancellationTokenSource == null) return;
+            if (!cancellationTokenSource.IsCancellationRequested)
+                cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+        }
+
+        Log.Information("BatchTranslateContentViewModel is being finalized.");
     }
 }
