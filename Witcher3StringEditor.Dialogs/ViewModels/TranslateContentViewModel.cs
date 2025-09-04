@@ -78,17 +78,19 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
 
     public async ValueTask DisposeAsync()
     {
-        if (disposedValue) return;
-        if (cancellationTokenSource != null)
+        if (!disposedValue)
         {
-            if (!cancellationTokenSource.IsCancellationRequested)
-                await cancellationTokenSource.CancelAsync();
-            cancellationTokenSource.Dispose();
+            if (cancellationTokenSource != null)
+            {
+                if (!cancellationTokenSource.IsCancellationRequested)
+                    await cancellationTokenSource.CancelAsync();
+                cancellationTokenSource.Dispose();
+            }
+
+            disposedValue = true;
+            GC.SuppressFinalize(this);
+            Log.Information("TranslateContentViewModel is being disposed.");
         }
-
-        disposedValue = true;
-
-        GC.SuppressFinalize(this);
     }
 
     partial void OnIndexOfItemsChanged(int value)
@@ -218,10 +220,14 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
 
     ~TranslateContentViewModel()
     {
-        if (disposedValue) return;
-        if (cancellationTokenSource == null) return;
-        if (!cancellationTokenSource.IsCancellationRequested)
-            cancellationTokenSource.Cancel();
-        cancellationTokenSource.Dispose();
+        if (!disposedValue)
+        {
+            if (cancellationTokenSource == null) return;
+            if (!cancellationTokenSource.IsCancellationRequested)
+                cancellationTokenSource.Cancel();
+            cancellationTokenSource.Dispose();
+        }
+
+        Log.Information("TranslateContentViewModel is being finalized.");
     }
 }
