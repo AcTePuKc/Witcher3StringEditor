@@ -9,7 +9,7 @@ using Witcher3StringEditor.Common.Abstractions;
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-public partial class BatchTranslateContentViewModel : ObservableObject, IDisposable
+public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDisposable
 {
     private readonly ITranslator translator;
     private readonly IReadOnlyList<IW3Item> w3Items;
@@ -64,12 +64,20 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IDisposa
 
     private bool CanCancel => IsBusy;
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
-        Dispose(true);
+        if (disposedValue) return;
+        if (cancellationTokenSource != null)
+        {
+            if (!cancellationTokenSource.IsCancellationRequested)
+                await cancellationTokenSource.CancelAsync();
+            cancellationTokenSource.Dispose();
+        }
+
+        disposedValue = true;
+
         GC.SuppressFinalize(this);
     }
-
 
     partial void OnStartIndexChanged(int value)
     {
@@ -136,21 +144,12 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IDisposa
         }
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposedValue) return;
-        if (disposing && cancellationTokenSource != null)
-        {
-            if(!cancellationTokenSource.IsCancellationRequested)
-                cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
-        }
-
-        disposedValue = true;
-    }
-
     ~BatchTranslateContentViewModel()
     {
-        Dispose(false);
+        if (disposedValue) return;
+        if (cancellationTokenSource == null) return;
+        if (!cancellationTokenSource.IsCancellationRequested)
+            cancellationTokenSource.Cancel();
+        cancellationTokenSource.Dispose();
     }
 }
