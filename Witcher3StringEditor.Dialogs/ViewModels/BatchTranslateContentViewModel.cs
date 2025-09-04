@@ -139,7 +139,13 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IDisposa
     protected virtual void Dispose(bool disposing)
     {
         if (disposedValue) return;
-        if (disposing) cancellationTokenSource?.Dispose();
+        if (disposing && cancellationTokenSource != null)
+        {
+            if(!cancellationTokenSource.IsCancellationRequested)
+                cancellationTokenSource.Cancel();
+            cancellationTokenSource?.Dispose();
+        }
+
         disposedValue = true;
     }
 
