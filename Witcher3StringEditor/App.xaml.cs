@@ -15,7 +15,6 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
-using Resourcer;
 using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
@@ -70,7 +69,14 @@ public partial class App
             logObserver = new AnonymousObserver<LogEvent>(x =>
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
             InitializeLogging(logObserver);
-            SyncfusionLicenseProvider.RegisterLicense(Resource.AsString("License.txt"));
+            using var stream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("Witcher3StringEditor.License.txt");
+            if (stream != null)
+            {
+                using var reader = new StreamReader(stream);
+                SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
+            }
+
             var cultureInfo = appSettings.Language == string.Empty
                 ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
                 : new CultureInfo(appSettings.Language);
