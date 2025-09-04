@@ -92,6 +92,12 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         }
     }
 
+    [RelayCommand]
+    private async Task Closed()
+    {
+        await ((IAsyncDisposable)CurrentViewModel).DisposeAsync();
+    }
+
     private async Task SaveUnsavedChangesIfNeeded(TranslateContentViewModel? translateViewModel)
     {
         if (translateViewModel?.CurrentTranslateItemModel is { IsSaved: false } item
