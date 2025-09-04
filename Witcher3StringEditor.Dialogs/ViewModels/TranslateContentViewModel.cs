@@ -12,12 +12,14 @@ using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class TranslateContentViewModel : ObservableObject
+public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposable
 {
     private readonly ITranslator translator;
     private readonly IReadOnlyList<IEditW3Item> w3Items;
+    private CancellationTokenSource? cancellationTokenSource;
 
     [ObservableProperty] private TranslateItemModel? currentTranslateItemModel;
+    private bool disposedValue;
 
     [ObservableProperty] private ILanguage formLanguage;
 
@@ -74,6 +76,21 @@ public partial class TranslateContentViewModel : ObservableObject
 
     private bool CanNext => IndexOfItems < w3Items.Count - 1 && !IsBusy;
 
+    public async ValueTask DisposeAsync()
+    {
+        if (disposedValue) return;
+        if (cancellationTokenSource != null)
+        {
+            if (!cancellationTokenSource.IsCancellationRequested)
+                await cancellationTokenSource.CancelAsync();
+            cancellationTokenSource.Dispose();
+        }
+
+        disposedValue = true;
+
+        GC.SuppressFinalize(this);
+    }
+
     partial void OnIndexOfItemsChanged(int value)
     {
         var item = w3Items[value];
@@ -99,9 +116,26 @@ public partial class TranslateContentViewModel : ObservableObject
             CurrentTranslateItemModel.TranslatedText = string.Empty;
             Log.Information("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
                 CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
-            var translation =
-                (await translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage))
-                .Translation;
+            cancellationTokenSource = new CancellationTokenSource();
+            var translateTask = translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage);
+            var completedTask = await Task.WhenAny(
+                translateTask,
+                Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
+            );
+            if (completedTask is { IsCanceled: true })
+            {
+                _ = translateTask.ContinueWith(task =>
+                {
+                    if (task.Exception != null)
+                    {
+                        //ignored
+                    }
+                }, TaskContinuationOptions.ExecuteSynchronously);
+                IsBusy = false;
+                return;
+            }
+
+            var translation = (await translateTask).Translation;
             Guard.IsNotNullOrWhiteSpace(translation);
             CurrentTranslateItemModel.TranslatedText = translation;
             Log.Information("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
@@ -180,5 +214,14 @@ public partial class TranslateContentViewModel : ObservableObject
     private async Task Next()
     {
         await Navigate(1);
+    }
+
+    ~TranslateContentViewModel()
+    {
+        if (disposedValue) return;
+        if (cancellationTokenSource == null) return;
+        if (!cancellationTokenSource.IsCancellationRequested)
+            cancellationTokenSource.Cancel();
+        cancellationTokenSource.Dispose();
     }
 }
