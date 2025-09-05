@@ -236,7 +236,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         {
             if (W3Items.Any())
             {
-                if (!await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "FileOpened")) return;
+                if (!await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "ReOpenFile")) return;
                 W3Items.Clear();
             }
 

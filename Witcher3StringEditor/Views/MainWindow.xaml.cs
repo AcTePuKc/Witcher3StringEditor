@@ -26,7 +26,7 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
         var messageHandlers = new[]
         {
-            ("FileOpened", Strings.FileOpenedMessage, Strings.FileOpenedCaption),
+            ("ReOpenFile", Strings.ReOpenFileMessage, Strings.ReOpenFileCaption),
             ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption)
         };
 
