@@ -117,7 +117,7 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             IsBusy = true;
             CurrentTranslateItemModel.TranslatedText = string.Empty;
             Log.Information("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
-                CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
+                CurrentTranslateItemModel.Id, FormLanguage.Name, ToLanguage.Name);
             cancellationTokenSource = new CancellationTokenSource();
             var translateTask = translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage);
             var completedTask = await Task.WhenAny(
@@ -141,14 +141,14 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             Guard.IsNotNullOrWhiteSpace(translation);
             CurrentTranslateItemModel.TranslatedText = translation;
             Log.Information("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
-                CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
+                CurrentTranslateItemModel.Id, FormLanguage.Name, ToLanguage.Name);
             IsBusy = false;
         }
         catch (Exception ex)
         {
             _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(ex.Message), "TranslateError");
             Log.Error(ex, "Translation failed for item {ItemId} (From: {FromLang} To: {ToLang}).",
-                CurrentTranslateItemModel?.Id, FormLanguage, ToLanguage);
+                CurrentTranslateItemModel?.Id, FormLanguage.Name, ToLanguage.Name);
         }
         finally
         {
