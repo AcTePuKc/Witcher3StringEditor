@@ -40,7 +40,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
                 return true;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
             appSettings.BackupItems.Add(backupItem);
-            Log.Information("Backup file: {FileName}.", backupItem.FileName);
+            Log.Information("Backup file: {Path}.", path);
             return true;
         }
         catch (Exception ex)
