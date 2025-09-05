@@ -69,7 +69,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             }
             else
             {
-                Log.Information("Translation mode switch cancelled (busy or user declined)");
+                Log.Information("Translation mode switch cancelled.");
             }
         }
         catch (Exception ex)
@@ -129,7 +129,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             return false;
         }
 
-        Log.Information("Translation dialog closing cancelled (busy)");
+        Log.Information("Translation dialog closing cancelled.");
         return true;
     }
 }
