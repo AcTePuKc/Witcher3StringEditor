@@ -87,18 +87,18 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
     }
 
-    private static string ComputeSha256Hash(string filePath)
+    private static string ComputeSha256Hash(string path)
     {
         try
         {
-            Guard.IsTrue(File.Exists(filePath));
+            Guard.IsTrue(File.Exists(path));
             using var sha256 = SHA256.Create();
-            using var stream = File.OpenRead(filePath);
+            using var stream = File.OpenRead(path);
             return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to compute SHA256 hash: {Path}.", filePath);
+            Log.Error(ex, "Failed to compute SHA256 hash: {Path}.", path);
             return string.Empty;
         }
     }
