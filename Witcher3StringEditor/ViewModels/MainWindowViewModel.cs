@@ -176,7 +176,6 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         }
         else
         {
-            Log.Information("Settings are correct.");
             Log.Information("The W3Strings path has been set to {Path}.", settings.W3StringsPath);
             if (string.IsNullOrWhiteSpace(settings.GameExePath))
                 Log.Warning("The game executable path is not set.");
@@ -185,6 +184,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             Log.Information("The current translator is {Translator}.", settings.Translator);
             Log.Information("The preferred filetype is {Filetype}", settings.PreferredW3FileType);
             Log.Information("The preferred language is {Language}", settings.PreferredLanguage);
+            Log.Information("Settings are correct.");
         }
     }
 
