@@ -119,10 +119,6 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             Log.Information("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
                 CurrentTranslateItemModel.Id, FormLanguage, ToLanguage);
             cancellationTokenSource = new CancellationTokenSource();
-            cancellationTokenSource.Token.Register(() =>
-            {
-                Log.Information("Translation is canceled by the user.");
-            });
             var translateTask = translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage);
             var completedTask = await Task.WhenAny(
                 translateTask,
