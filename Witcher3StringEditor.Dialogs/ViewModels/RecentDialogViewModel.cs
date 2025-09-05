@@ -43,9 +43,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
         else
         {
             RequestClose?.Invoke(this, EventArgs.Empty);
-            var isApproved =
-                WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
-            Log.Information("Recent item opening has been approved: {IsApproved}.", isApproved.Response);
+            _ = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
         }
     }
 }
