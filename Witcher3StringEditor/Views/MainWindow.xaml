@@ -72,6 +72,8 @@
                 Grid.Column="4"
                 Background="Transparent"
                 BorderThickness="0"
+                Width="48"
+                Height="48"
                 Click="ThemeSwitchBtn_OnClick">
                 <ui:FontIcon>
                     <ui:FontIcon.Style>
