@@ -70,13 +70,9 @@ public partial class App
                 _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
             InitializeLogging(logObserver);
             using var stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("Witcher3StringEditor.License.txt");
-            if (stream != null)
-            {
-                using var reader = new StreamReader(stream);
-                SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
-            }
-
+                .GetManifestResourceStream("Witcher3StringEditor.License.txt")!;
+            using var reader = new StreamReader(stream);
+            SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
             var cultureInfo = appSettings.Language == string.Empty
                 ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
                 : new CultureInfo(appSettings.Language);
