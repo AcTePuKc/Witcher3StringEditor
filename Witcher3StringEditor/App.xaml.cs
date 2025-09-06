@@ -56,14 +56,8 @@ public partial class App
         }
         else
         {
-            var configFolderPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
-            var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
-            if (!Directory.Exists(configFolderPath))
-                _ = Directory.CreateDirectory(configFolderPath);
             SetupExceptionHandling();
-            InitializeServices(configPath);
+            InitializeServices(GetAppSettingsPath());
             configService = Ioc.Default.GetRequiredService<IConfigService>();
             appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
             logObserver = new AnonymousObserver<LogEvent>(static x =>
@@ -73,6 +67,17 @@ public partial class App
             InitializeCulture();
             new MainWindow().Show();
         }
+    }
+
+    private static string GetAppSettingsPath()
+    {
+        var configFolderPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
+        var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
+        if (!Directory.Exists(configFolderPath))
+            _ = Directory.CreateDirectory(configFolderPath);
+        return configPath;
     }
 
     private void InitializeCulture()
