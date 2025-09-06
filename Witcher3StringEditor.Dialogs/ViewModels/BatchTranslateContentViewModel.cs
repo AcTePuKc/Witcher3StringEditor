@@ -124,6 +124,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
         cancellationTokenSource = new CancellationTokenSource();
         var tLanguage = ToLanguage;
         var fLanguage = FormLanguage;
+        ResetTranslationCounts();
         foreach (var item in w3Items.Skip(StartIndex - 1).Take(PendingCount))
             if (!cancellationTokenSource.IsCancellationRequested)
             {
