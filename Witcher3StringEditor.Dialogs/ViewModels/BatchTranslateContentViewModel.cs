@@ -82,6 +82,16 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
         }
     }
 
+    partial void OnFormLanguageChanged(ILanguage value)
+    {
+        Log.Information("The source language has been changed to: {Name}.", value.Name);
+    }
+
+    partial void OnToLanguageChanged(ILanguage value)
+    {
+        Log.Information("The target language has been changed to: {Name}.", value.Name);
+    }
+
     partial void OnStartIndexChanged(int value)
     {
         EndIndexMin = value > MaxValue ? MaxValue : value;
