@@ -56,14 +56,19 @@ public partial class App
         }
         else
         {
-            SetupExceptionHandling();
-            InitializeServices(GetAppSettingsPath());
-            InitializeAppSettings();
-            InitializeLogging();
-            InitializeSyncfusionLicense();
-            InitializeCulture();
-            new MainWindow().Show();
+            InitializeApplication();
         }
+    }
+
+    private void InitializeApplication()
+    {
+        SetupExceptionHandling();
+        InitializeServices(GetAppSettingsPath());
+        InitializeAppSettings();
+        InitializeLogging();
+        InitializeSyncfusionLicense();
+        InitializeCulture();
+        new MainWindow().Show();
     }
 
     private void InitializeLogging()
