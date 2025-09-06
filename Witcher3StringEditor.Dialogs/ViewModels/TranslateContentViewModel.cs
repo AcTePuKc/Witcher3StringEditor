@@ -68,7 +68,7 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             W3Language.zh => Language.GetLanguage("zh-TW"),
             _ => Language.GetLanguage(Enum.GetName(language) ?? "en")
         };
-        Log.Information("Translation dialog initialized in single mode.");
+        Log.Information("TranslateContentViewModel initialized.");
     }
 
     private bool CanSave => !IsBusy;

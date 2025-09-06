@@ -60,6 +60,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
             W3Language.zh => Language.GetLanguage("zh-TW"),
             _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
         };
+        Log.Information("BatchTranslateContentViewModel is initialized.");
     }
 
     private bool CanCancel => IsBusy;
