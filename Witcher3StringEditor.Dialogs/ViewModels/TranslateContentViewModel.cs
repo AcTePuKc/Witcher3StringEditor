@@ -126,7 +126,7 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             );
             if (completedTask is { IsCanceled: true })
             {
-                _ = translateTask.ContinueWith(task =>
+                _ = translateTask.ContinueWith(static task =>
                 {
                     if (task.Exception != null)
                     {
