@@ -117,27 +117,17 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
                     "TranslationNotEmpty")) return;
             IsBusy = true;
             CurrentTranslateItemModel.TranslatedText = string.Empty;
-            Log.Information("Starting translation.");
             cancellationTokenSource = new CancellationTokenSource();
-            var translateTask = translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage);
-            var completedTask = await Task.WhenAny(
-                translateTask,
-                Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
-            );
-            if (completedTask is { IsCanceled: true })
+            Log.Information("Starting translation.");
+            var (result, translation) = await ExecuteTranslationTask(translator, CurrentTranslateItemModel.Text,
+                ToLanguage,
+                FormLanguage, cancellationTokenSource);
+            if (!result)
             {
-                _ = translateTask.ContinueWith(static task =>
-                {
-                    if (task.Exception != null)
-                    {
-                        //ignored
-                    }
-                }, TaskContinuationOptions.ExecuteSynchronously);
                 IsBusy = false;
                 return;
             }
 
-            var translation = (await translateTask).Translation;
             Guard.IsNotNullOrWhiteSpace(translation);
             CurrentTranslateItemModel.TranslatedText = translation;
             Log.Information("Translation completed.");
@@ -146,12 +136,32 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
         catch (Exception ex)
         {
             _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(ex.Message), "TranslateError");
-            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", translator.Name, ex.Message);
+            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", translator.Name,
+                ex.Message);
         }
         finally
         {
             IsBusy = false;
         }
+    }
+
+    private static async Task<(bool, string)> ExecuteTranslationTask(ITranslator translator, string text,
+        ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
+    {
+        var translateTask = translator.TranslateAsync(text, toLanguage, formLanguage);
+        var completedTask = await Task.WhenAny(
+            translateTask,
+            Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
+        );
+        if (completedTask is not { IsCanceled: true }) return (true, (await translateTask).Translation);
+        _ = translateTask.ContinueWith(static task =>
+        {
+            if (task.Exception != null)
+            {
+                //ignored
+            }
+        }, TaskContinuationOptions.ExecuteSynchronously);
+        return (false, string.Empty);
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
