@@ -13,8 +13,21 @@ public class LogDialogViewModel
 {
     public LogDialogViewModel(ObservableCollection<LogEvent> logEvents)
     {
+        PopulateInitialLogEvents(logEvents);
+        SetupLogCollectionEventHandlers(logEvents);
+    }
+
+    public ObservableCollection<LogEventItemModel> LogEvents { get; } = [];
+    public bool? DialogResult => true;
+
+    private void PopulateInitialLogEvents(ObservableCollection<LogEvent> logEvents)
+    {
         foreach (var logEvent in logEvents)
             LogEvents.Add(new LogEventItemModel(logEvent));
+    }
+
+    private void SetupLogCollectionEventHandlers(ObservableCollection<LogEvent> logEvents)
+    {
         logEvents.CollectionChanged += async (_, e) =>
         {
             if (e is not { Action: NotifyCollectionChangedAction.Add, NewItems: not null }) return;
@@ -28,7 +41,4 @@ public class LogDialogViewModel
                 await Application.Current.Dispatcher.BeginInvoke(() => logEvents.Remove(item.EventEntry));
         };
     }
-
-    public ObservableCollection<LogEventItemModel> LogEvents { get; } = [];
-    public bool? DialogResult => true;
 }
