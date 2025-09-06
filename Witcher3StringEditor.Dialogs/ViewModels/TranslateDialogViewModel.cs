@@ -105,7 +105,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             var found = w3Items.First(x => x.Id == item.Id);
             Guard.IsNotNull(found);
             found.Text = item.TranslatedText;
-            Log.Information("Auto-saved unsaved changes for item {ItemId}", item.Id);
+            Log.Information("Auto-saved unsaved changes.");
         }
     }
 
