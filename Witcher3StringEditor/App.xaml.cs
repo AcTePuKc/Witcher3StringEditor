@@ -58,15 +58,25 @@ public partial class App
         {
             SetupExceptionHandling();
             InitializeServices(GetAppSettingsPath());
-            configService = Ioc.Default.GetRequiredService<IConfigService>();
-            appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
-            logObserver = new AnonymousObserver<LogEvent>(static x =>
-                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
-            InitializeLogging(logObserver);
+            InitializeAppSettings();
+            InitializeLogging();
             InitializeSyncfusionLicense();
             InitializeCulture();
             new MainWindow().Show();
         }
+    }
+
+    private void InitializeLogging()
+    {
+        logObserver = new AnonymousObserver<LogEvent>(static x =>
+            _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
+        InitializeLogging(logObserver);
+    }
+
+    private void InitializeAppSettings()
+    {
+        configService = Ioc.Default.GetRequiredService<IConfigService>();
+        appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
     }
 
     private static string GetAppSettingsPath()
