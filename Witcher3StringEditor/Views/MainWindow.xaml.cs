@@ -21,9 +21,32 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
     public MainWindow()
     {
         InitializeComponent();
+        SetupSearchHelper();
+        RegisterMessageHandlers();
+        RegisterThemeChangedHandler();
+        DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+    }
+
+    public void Receive(AsyncRequestMessage<bool> message)
+    {
+    }
+
+    private static void RegisterThemeChangedHandler()
+    {
+        ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
+        {
+            Log.Information("Theme changed to {Theme}", ThemeManager.Current.ActualApplicationTheme);
+        };
+    }
+
+    private void SetupSearchHelper()
+    {
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
-        DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+    }
+
+    private void RegisterMessageHandlers()
+    {
         var messageHandlers = new[]
         {
             ("ReOpenFile", Strings.ReOpenFileMessage, Strings.ReOpenFileCaption),
@@ -56,14 +79,6 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
                     MessageBoxButton.OK,
                     MessageBoxImage.Question) == MessageBoxResult.OK);
             });
-        ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
-        {
-            Log.Information("Theme changed to {Theme}", ThemeManager.Current.ActualApplicationTheme);
-        };
-    }
-
-    public void Receive(AsyncRequestMessage<bool> message)
-    {
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
