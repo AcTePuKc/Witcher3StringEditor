@@ -97,15 +97,13 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
     partial void OnStartIndexChanged(int value)
     {
         EndIndexMin = value > MaxValue ? MaxValue : value;
-        if (IsBusy) return;
-        ResetTranslationCounts();
+        if (!IsBusy) ResetTranslationCounts();
     }
 
     // ReSharper disable once UnusedParameterInPartialMethod
     partial void OnEndIndexChanged(int value)
     {
-        if (IsBusy) return;
-        ResetTranslationCounts();
+        if (!IsBusy) ResetTranslationCounts();
     }
 
     private void ResetTranslationCounts()
