@@ -14,6 +14,11 @@ public partial class SaveDialog : IRecipient<ValueChangedMessage<bool>>
     public SaveDialog()
     {
         InitializeComponent();
+        RegisterMessageHandler();
+    }
+
+    private void RegisterMessageHandler()
+    {
         WeakReferenceMessenger.Default.Register<SaveDialog, ValueChangedMessage<bool>, string>(
             this, "Save", static (r, m) =>
             {

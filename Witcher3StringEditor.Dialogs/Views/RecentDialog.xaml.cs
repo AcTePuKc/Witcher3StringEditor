@@ -16,7 +16,12 @@ public partial class RecentDialog : IRecipient<AsyncRequestMessage<bool>>
     public RecentDialog()
     {
         InitializeComponent();
-        SfDataGrid.SearchHelper.AllowFiltering = true;
+        SetupSearchHelper();
+        RegisterMessageHandler();
+    }
+
+    private void RegisterMessageHandler()
+    {
         WeakReferenceMessenger.Default.Register<RecentDialog, AsyncRequestMessage<bool>, string>(
             this, "RecentItem", (_, m) =>
             {
@@ -27,6 +32,11 @@ public partial class RecentDialog : IRecipient<AsyncRequestMessage<bool>>
             });
     }
 
+    private void SetupSearchHelper()
+    {
+        SfDataGrid.SearchHelper.AllowFiltering = true;
+        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
+    }
     public void Receive(AsyncRequestMessage<bool> message)
     {
     }

@@ -16,9 +16,23 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
     public BackupDialog()
     {
         InitializeComponent();
+        SetupSearchHelper();
+
+        RegisterMessageHandlers();
+    }
+
+    public void Receive(AsyncRequestMessage<bool> message)
+    {
+    }
+
+    private void SetupSearchHelper()
+    {
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
+    }
 
+    private void RegisterMessageHandlers()
+    {
         var messageHandlers = new[]
         {
             ("BackupRestore", Strings.BackupRestoreMessage, Strings.BackupRestoreCaption, MessageBoxButton.YesNo,
@@ -36,10 +50,6 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
                 this,
                 token,
                 (_, m) => { m.Reply(MessageBox.Show(message, caption, button, icon) == expected); });
-    }
-
-    public void Receive(AsyncRequestMessage<bool> message)
-    {
     }
 
     private void Window_Closed(object sender, EventArgs e)

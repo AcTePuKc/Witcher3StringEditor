@@ -11,6 +11,11 @@ public partial class LogDialog
     public LogDialog()
     {
         InitializeComponent();
+        SetupSearchHelper();
+    }
+
+    private void SetupSearchHelper()
+    {
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
     }
