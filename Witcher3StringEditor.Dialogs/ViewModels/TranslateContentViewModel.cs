@@ -173,11 +173,11 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             }
 
             CurrentTranslateItemModel.IsSaved = true;
-            Log.Information("Translation saved for item {Id}.", CurrentTranslateItemModel.Id);
+            Log.Information("Translation saved.");
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to save translation for item {ItemId}.", CurrentTranslateItemModel?.Id);
+            Log.Error(ex, "Failed to save translation.");
         }
     }
 
