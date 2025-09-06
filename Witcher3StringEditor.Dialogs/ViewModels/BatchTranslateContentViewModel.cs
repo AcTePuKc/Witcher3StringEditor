@@ -131,8 +131,8 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
             {
                 try
                 {
-                    var translation = (await translator.TranslateAsync(item.Text, tLanguage, fLanguage)).Translation;
-                    if (!string.IsNullOrWhiteSpace(translation))
+                    var (result, translation) = await TranslateItem(translator, item.Text, tLanguage, fLanguage);
+                    if (result)
                     {
                         item.Text = translation;
                         SuccessCount++;
@@ -140,7 +140,6 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
                     else
                     {
                         FailureCount++;
-                        Log.Error("The translator: {Name} returned empty data.", translator.Name);
                     }
                 }
                 catch (Exception ex)
@@ -159,6 +158,16 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
             }
 
         IsBusy = false;
+    }
+
+    private static async Task<(bool, string)> TranslateItem(ITranslator translator, string text, ILanguage tLanguage,
+        ILanguage fLanguage)
+    {
+        var translation = (await translator.TranslateAsync(text, tLanguage, fLanguage)).Translation;
+        if (!string.IsNullOrWhiteSpace(translation)) return (true, translation);
+
+        Log.Error("The translator: {Name} returned empty data.", translator.Name);
+        return (false, string.Empty);
     }
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
