@@ -69,18 +69,28 @@ public partial class App
             logObserver = new AnonymousObserver<LogEvent>(static x =>
                 _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
             InitializeLogging(logObserver);
-            using var stream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("Witcher3StringEditor.License.txt")!;
-            using var reader = new StreamReader(stream);
-            SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
-            var cultureInfo = appSettings.Language == string.Empty
-                ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
-                : new CultureInfo(appSettings.Language);
-            if (appSettings.Language == string.Empty)
-                appSettings.Language = cultureInfo.Name;
-            I18NExtension.Culture = cultureInfo;
+            InitializeSyncfusionLicense();
+            InitializeCulture();
             new MainWindow().Show();
         }
+    }
+
+    private void InitializeCulture()
+    {
+        var cultureInfo = appSettings!.Language == string.Empty
+            ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
+            : new CultureInfo(appSettings.Language);
+        if (appSettings.Language == string.Empty)
+            appSettings.Language = cultureInfo.Name;
+        I18NExtension.Culture = cultureInfo;
+    }
+
+    private static void InitializeSyncfusionLicense()
+    {
+        using var stream = Assembly.GetExecutingAssembly()
+            .GetManifestResourceStream("Witcher3StringEditor.License.txt")!;
+        using var reader = new StreamReader(stream);
+        SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
     }
 
     private void SetupExceptionHandling()
