@@ -95,6 +95,22 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
     partial void OnStartIndexChanged(int value)
     {
         EndIndexMin = value > MaxValue ? MaxValue : value;
+        if(!IsBusy)
+        {
+            SuccessCount = 0;
+            FailureCount = 0;
+            PendingCount = EndIndex - StartIndex + 1;
+        }
+    }
+
+    partial void OnEndIndexChanged(int value)
+    {
+        if(!IsBusy)
+        {
+            SuccessCount = 0;
+            FailureCount = 0;
+            PendingCount = EndIndex - StartIndex + 1;
+        }
     }
 
     partial void OnIsBusyChanged(bool value)
@@ -106,9 +122,6 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
     private async Task Start()
     {
         IsBusy = true;
-        SuccessCount = 0;
-        FailureCount = 0;
-        PendingCount = EndIndex - StartIndex + 1;
         cancellationTokenSource = new CancellationTokenSource();
         var tLanguage = ToLanguage;
         var fLanguage = FormLanguage;
