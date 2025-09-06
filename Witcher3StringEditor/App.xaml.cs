@@ -149,10 +149,13 @@ public partial class App
 
     private static void ActivateExistingInstance()
     {
-        using var currentProcess = Process.GetCurrentProcess();
-        using var existingProcess =
-            Process.GetProcessesByName(currentProcess.ProcessName).First(p => p.Id != currentProcess.Id);
+        using var existingProcess = FindExistingProcessInstance();
         var mainWindowHandle = new HWND(existingProcess.MainWindowHandle);
+        ActivateExistingInstanceWindow(mainWindowHandle);
+    }
+
+    private static void ActivateExistingInstanceWindow(HWND mainWindowHandle)
+    {
         var placement = new WINDOWPLACEMENT();
         placement.length = (uint)Marshal.SizeOf(placement);
         if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value != 0)
@@ -163,6 +166,12 @@ public partial class App
                 SHOW_WINDOW_CMD.SW_HIDE => PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW),
                 _ => new BOOL()
             };
+    }
+
+    private static Process FindExistingProcessInstance()
+    {
+        using var currentProcess = Process.GetCurrentProcess();
+        return Process.GetProcessesByName(currentProcess.ProcessName).First(p => p.Id != currentProcess.Id);
     }
 
     private static void InitializeServices(string configPath)
