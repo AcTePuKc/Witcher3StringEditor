@@ -159,13 +159,11 @@ public partial class App
         var placement = new WINDOWPLACEMENT();
         placement.length = (uint)Marshal.SizeOf(placement);
         if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value != 0)
-            _ = placement.showCmd switch
-            {
-                SHOW_WINDOW_CMD.SW_SHOWMINIMIZED or SHOW_WINDOW_CMD.SW_SHOWMINNOACTIVE => PInvoke.ShowWindow(
-                    mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE),
-                SHOW_WINDOW_CMD.SW_HIDE => PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_SHOW),
-                _ => new BOOL()
-            };
+        {
+            if (placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINIMIZED)
+                _ = PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
+            _ = PInvoke.SetForegroundWindow(mainWindowHandle);
+        }
     }
 
     private static Process FindExistingProcessInstance()
