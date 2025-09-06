@@ -89,13 +89,13 @@ public partial class App
 
     private void SetupExceptionHandling()
     {
-        DispatcherUnhandledException += (_, e) =>
+        DispatcherUnhandledException += static (_, e) =>
         {
             e.Handled = true;
             var exception = e.Exception;
             Log.Error(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
         };
-        TaskScheduler.UnobservedTaskException += (_, e) =>
+        TaskScheduler.UnobservedTaskException += static (_, e) =>
         {
             e.SetObserved();
             var exception = e.Exception;
