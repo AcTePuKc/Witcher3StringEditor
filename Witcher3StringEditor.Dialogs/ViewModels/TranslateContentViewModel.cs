@@ -117,8 +117,7 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
                     "TranslationNotEmpty")) return;
             IsBusy = true;
             CurrentTranslateItemModel.TranslatedText = string.Empty;
-            Log.Information("Starting translation for item {Id} (from {FromLang} to {ToLang}).",
-                CurrentTranslateItemModel.Id, FormLanguage.Name, ToLanguage.Name);
+            Log.Information("Starting translation.");
             cancellationTokenSource = new CancellationTokenSource();
             var translateTask = translator.TranslateAsync(CurrentTranslateItemModel.Text, ToLanguage, FormLanguage);
             var completedTask = await Task.WhenAny(
@@ -141,8 +140,7 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             var translation = (await translateTask).Translation;
             Guard.IsNotNullOrWhiteSpace(translation);
             CurrentTranslateItemModel.TranslatedText = translation;
-            Log.Information("Translation completed for item {Id} (from {FromLang} to {ToLang}).",
-                CurrentTranslateItemModel.Id, FormLanguage.Name, ToLanguage.Name);
+            Log.Information("Translation completed.");
             IsBusy = false;
         }
         catch (Exception ex)
