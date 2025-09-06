@@ -63,36 +63,9 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         this.playGameService = playGameService;
         this.explorerService = explorerService;
         this.cultureResolver = cultureResolver;
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
-            this, (r, m) => { r.Receive(m); });
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, FileOpenedMessage, string>(
-            this, "RecentFileOpened", (r, m) => { r.Receive(m); });
-
-        W3Items.CollectionChanged += (_, _) =>
-        {
-            AddCommand.NotifyCanExecuteChanged();
-            ShowSaveDialogCommand.NotifyCanExecuteChanged();
-            ShowTranslateDialogCommand.NotifyCanExecuteChanged();
-        };
-        ((INotifyPropertyChanged)appSettings).PropertyChanged += (_, e) =>
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(appSettings.W3StringsPath) when !string.IsNullOrWhiteSpace(appSettings.W3StringsPath):
-                    OpenFileCommand.NotifyCanExecuteChanged();
-                    DropFileCommand.NotifyCanExecuteChanged();
-                    break;
-                case nameof(appSettings.GameExePath) when !string.IsNullOrWhiteSpace(appSettings.GameExePath):
-                    PlayGameCommand.NotifyCanExecuteChanged();
-                    break;
-                case nameof(appSettings.Translator):
-                    ApplyTranslatorChange(appSettings);
-                    break;
-                case nameof(appSettings.Language):
-                    ApplyLanguageChange(appSettings.Language);
-                    break;
-            }
-        };
+        RegisterMessengerHandlers();
+        SetupW3ItemsEventHandlers();
+        SetupAppSettingsEventHandlers();
     }
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
@@ -126,6 +99,47 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     public void Receive(ValueChangedMessage<LogEvent> message)
     {
         Application.Current.Dispatcher.Invoke(() => LogEvents.Add(message.Value));
+    }
+
+    private void SetupW3ItemsEventHandlers()
+    {
+        W3Items.CollectionChanged += (_, _) =>
+        {
+            AddCommand.NotifyCanExecuteChanged();
+            ShowSaveDialogCommand.NotifyCanExecuteChanged();
+            ShowTranslateDialogCommand.NotifyCanExecuteChanged();
+        };
+    }
+
+    private void SetupAppSettingsEventHandlers()
+    {
+        ((INotifyPropertyChanged)appSettings).PropertyChanged += (_, e) =>
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(appSettings.W3StringsPath) when !string.IsNullOrWhiteSpace(appSettings.W3StringsPath):
+                    OpenFileCommand.NotifyCanExecuteChanged();
+                    DropFileCommand.NotifyCanExecuteChanged();
+                    break;
+                case nameof(appSettings.GameExePath) when !string.IsNullOrWhiteSpace(appSettings.GameExePath):
+                    PlayGameCommand.NotifyCanExecuteChanged();
+                    break;
+                case nameof(appSettings.Translator):
+                    ApplyTranslatorChange(appSettings);
+                    break;
+                case nameof(appSettings.Language):
+                    ApplyLanguageChange(appSettings.Language);
+                    break;
+            }
+        };
+    }
+
+    private void RegisterMessengerHandlers()
+    {
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
+            this, (r, m) => { r.Receive(m); });
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, FileOpenedMessage, string>(
+            this, "RecentFileOpened", (r, m) => { r.Receive(m); });
     }
 
     private static void ApplyTranslatorChange(IAppSettings appSettings)
