@@ -69,8 +69,6 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             _ => Language.GetLanguage(Enum.GetName(language) ?? "en")
         };
         Log.Information("Translation dialog initialized in single mode.");
-        Log.Information("Total items to translate: {Count}.", this.w3Items.Count);
-        Log.Information("Starting index: {Index}.", index);
     }
 
     private bool CanSave => !IsBusy;
