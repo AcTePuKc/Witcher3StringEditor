@@ -143,7 +143,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "Translation error occurred.");
+                    Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", translator.Name, ex.Message);
                     FailureCount++;
                 }
 
