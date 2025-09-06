@@ -1,5 +1,8 @@
-﻿using System.Globalization;
+﻿using JetBrains.Annotations;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 
 namespace Witcher3StringEditor.Locales;
 
@@ -11,7 +14,7 @@ public class CultureResolver : ICultureResolver
         [
             new("en")
         ];
-        foreach (var directory in Directory.GetDirectories(Directory.GetCurrentDirectory()))
+        foreach (var directory in Directory.GetDirectories(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!))
             try
             {
                 var directoryInfo = new DirectoryInfo(directory);
