@@ -65,6 +65,8 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
 
     private bool CanCancel => IsBusy;
 
+    private bool CanStart => !IsBusy && PendingCount > 0;
+
     public async ValueTask DisposeAsync()
     {
         if (!disposedValue)
@@ -95,18 +97,19 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
     partial void OnStartIndexChanged(int value)
     {
         EndIndexMin = value > MaxValue ? MaxValue : value;
+        if (IsBusy) return;
         ResetTranslationCounts();
     }
 
     // ReSharper disable once UnusedParameterInPartialMethod
     partial void OnEndIndexChanged(int value)
     {
+        if (IsBusy) return;
         ResetTranslationCounts();
     }
 
     private void ResetTranslationCounts()
     {
-        if (IsBusy) return;
         SuccessCount = 0;
         FailureCount = 0;
         PendingCount = EndIndex - StartIndex + 1;
@@ -117,7 +120,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
         Log.Information("The batch translation is in progress: {0}.", value);
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanStart))]
     private async Task Start()
     {
         IsBusy = true;
@@ -144,7 +147,8 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", translator.Name, ex.Message);
+                    Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}",
+                        translator.Name, ex.Message);
                     FailureCount++;
                 }
 
