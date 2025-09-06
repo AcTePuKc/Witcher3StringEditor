@@ -61,13 +61,13 @@ public partial class App
                 IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
             var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
             if (!Directory.Exists(configFolderPath))
-                Directory.CreateDirectory(configFolderPath);
+                _ = Directory.CreateDirectory(configFolderPath);
             SetupExceptionHandling();
             InitializeServices(configPath);
             configService = Ioc.Default.GetRequiredService<IConfigService>();
             appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
-            logObserver = new AnonymousObserver<LogEvent>(x =>
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
+            logObserver = new AnonymousObserver<LogEvent>(static x =>
+                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
             InitializeLogging(logObserver);
             using var stream = Assembly.GetExecutingAssembly()
                 .GetManifestResourceStream("Witcher3StringEditor.License.txt");
