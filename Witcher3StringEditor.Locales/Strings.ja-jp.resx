@@ -302,7 +302,7 @@
         <value>成功</value>
     </data>
   <data name="TargetFiletype" xml:space="preserve">
-        <value>対象ファイルタイプ</value>
+        <value>ファイルタイプ</value>
     </data>
   <data name="TargetLanguage" xml:space="preserve">
         <value>翻訳後の言語</value>
