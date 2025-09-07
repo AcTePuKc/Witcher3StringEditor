@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.Reflection;
 
@@ -14,7 +12,8 @@ public class CultureResolver : ICultureResolver
         [
             new("en")
         ];
-        foreach (var directory in Directory.GetDirectories(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!))
+        foreach (var directory in Directory.GetDirectories(
+                     Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!))
             try
             {
                 var directoryInfo = new DirectoryInfo(directory);
