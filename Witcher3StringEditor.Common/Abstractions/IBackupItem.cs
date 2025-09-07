@@ -4,7 +4,7 @@ namespace Witcher3StringEditor.Common.Abstractions;
 
 public interface IBackupItem
 {
-    public string FileName { get; }
+    [UsedImplicitly] public string FileName { get; }
 
     public string Hash { get; }
 
