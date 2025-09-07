@@ -117,7 +117,7 @@
                     <ComboBox
                         DisplayMemberPath="NativeName"
                         ItemsSource="{Binding SupportedCultures}"
-                        SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}"/>
+                        SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}" />
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>
