@@ -137,7 +137,8 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
         {
             _ = WeakReferenceMessenger.Default.Send(
                 new ValueChangedMessage<string>(
-                    $"The translator: {translator.Name} returned an error.\nException: {ex.Message}"), "TranslateError");
+                    $"The translator: {translator.Name} returned an error.\nException: {ex.Message}"),
+                "TranslateError");
             Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", translator.Name,
                 ex.Message);
         }
