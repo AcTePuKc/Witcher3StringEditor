@@ -17,6 +17,10 @@ public partial class SaveDialog : IRecipient<ValueChangedMessage<bool>>
         RegisterMessageHandler();
     }
 
+    public void Receive(ValueChangedMessage<bool> message)
+    {
+    }
+
     private void RegisterMessageHandler()
     {
         WeakReferenceMessenger.Default.Register<SaveDialog, ValueChangedMessage<bool>, string>(
@@ -27,10 +31,6 @@ public partial class SaveDialog : IRecipient<ValueChangedMessage<bool>>
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             });
-    }
-
-    public void Receive(ValueChangedMessage<bool> message)
-    {
     }
 
     private void Window_Closed(object sender, EventArgs e)

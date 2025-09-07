@@ -20,6 +20,10 @@ public partial class RecentDialog : IRecipient<AsyncRequestMessage<bool>>
         RegisterMessageHandler();
     }
 
+    public void Receive(AsyncRequestMessage<bool> message)
+    {
+    }
+
     private void RegisterMessageHandler()
     {
         WeakReferenceMessenger.Default.Register<RecentDialog, AsyncRequestMessage<bool>, string>(
@@ -36,9 +40,6 @@ public partial class RecentDialog : IRecipient<AsyncRequestMessage<bool>>
     {
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
-    }
-    public void Receive(AsyncRequestMessage<bool> message)
-    {
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
