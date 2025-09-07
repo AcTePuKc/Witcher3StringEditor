@@ -17,7 +17,6 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
     {
         InitializeComponent();
         SetupSearchHelper();
-
         RegisterMessageHandlers();
     }
 
