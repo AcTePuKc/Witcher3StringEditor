@@ -66,7 +66,7 @@ public partial class App
         InitializeServices(GetAppSettingsPath());
         InitializeAppSettings();
         InitializeLogging();
-        InitializeSyncfusionLicense();
+        RegisterSyncfusionLicense();
         InitializeCulture();
         new MainWindow().Show();
     }
@@ -105,7 +105,7 @@ public partial class App
         I18NExtension.Culture = cultureInfo;
     }
 
-    private static void InitializeSyncfusionLicense()
+    private static void RegisterSyncfusionLicense()
     {
         using var stream = Assembly.GetExecutingAssembly()
             .GetManifestResourceStream("Witcher3StringEditor.License.txt")!;
