@@ -47,10 +47,10 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
 
     private void RegisterMessageHandlers()
     {
-        var messageHandlers = new[]
+        var messageHandlers = new (string, Func<string>, Func<string>)[]
         {
-            ("ReOpenFile", Strings.ReOpenFileMessage, Strings.ReOpenFileCaption),
-            ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption)
+            ("ReOpenFile", () => Strings.ReOpenFileMessage, () => Strings.ReOpenFileCaption),
+            ("OpenedFileNoFound", () => Strings.FileOpenedNoFoundMessage, () => Strings.FileOpenedNoFoundCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)
@@ -59,7 +59,7 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
                 token,
                 (_, m) =>
                 {
-                    m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
+                    m.Reply(MessageBox.Show(message(), caption(), MessageBoxButton.YesNo, MessageBoxImage.Question) ==
                             MessageBoxResult.Yes);
                 });
 
