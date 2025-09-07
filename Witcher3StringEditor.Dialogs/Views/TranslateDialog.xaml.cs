@@ -33,12 +33,12 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
 
     private void RegisterAsyncRequestMessageHandlers()
     {
-        var messageHandlers = new[]
+        var messageHandlers = new(string,Func<string>,Func<string>)[]
         {
-            ("TranslatedTextNoSaved", Strings.TranslatedTextNoSavedMessage, Strings.TranslatedTextNoSavedCaption),
-            ("TranslationDialogClosing", Strings.TranslatorTranslatingMessage, Strings.TranslatorTranslatingCaption),
-            ("TranslationModeSwitch", Strings.TranslationModeSwitchMessage, Strings.TranslationModeSwitchCaption),
-            ("TranslationNotEmpty", Strings.TranslationNotEmptyMessage, Strings.TranslationNotEmptyCaption)
+            ("TranslatedTextNoSaved", () => Strings.TranslatedTextNoSavedMessage, () => Strings.TranslatedTextNoSavedCaption),
+            ("TranslationDialogClosing", () => Strings.TranslatorTranslatingMessage, () => Strings.TranslatorTranslatingCaption),
+            ("TranslationModeSwitch", () => Strings.TranslationModeSwitchMessage, () => Strings.TranslationModeSwitchCaption),
+            ("TranslationNotEmpty", () => Strings.TranslationNotEmptyMessage, () => Strings.TranslationNotEmptyCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)
@@ -48,8 +48,8 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
                 (_, m) =>
                 {
                     m.Reply(MessageBox.Show(
-                        message,
-                        caption,
+                        message(),
+                        caption(),
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question) == MessageBoxResult.Yes);
                 });
