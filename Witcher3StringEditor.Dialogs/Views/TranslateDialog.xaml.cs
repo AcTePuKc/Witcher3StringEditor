@@ -82,25 +82,27 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
 
     private void RegisterNotificationMessageHandlers()
     {
-        var notificationHandlers =
-            new (string token, Func<ValueChangedMessage<string>, string> message, string caption)[]
+        WeakReferenceMessenger.Default.Register<TranslateDialog, ValueChangedMessage<string>, string>(
+            this,
+            "TranslatedTextInvalid",
+            (r, m) =>
             {
-                ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
-                    Strings.TranslatedTextInvalidCaption),
-                ("TranslateError", m => m.Value, Strings.TranslateErrorCaption)
-            };
+                _ = MessageBox.Show(Strings.TranslatedTextInvalidMessage,
+                    Strings.TranslatedTextInvalidCaption,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            });
 
-        foreach (var (token, message, caption) in notificationHandlers)
-            WeakReferenceMessenger.Default.Register<TranslateDialog, ValueChangedMessage<string>, string>(
-                this,
-                token,
-                (r, m) =>
-                {
-                    _ = MessageBox.Show(message.Invoke(m),
-                        caption,
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
-                });
+        WeakReferenceMessenger.Default.Register<TranslateDialog, ValueChangedMessage<string>, string>(
+            this,
+            "TranslateError",
+            (r, m) =>
+            {
+                _ = MessageBox.Show(m.Value,
+                    Strings.TranslateErrorCaption,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            });
     }
 
     private void Window_Closed(object sender, EventArgs e)
