@@ -33,11 +33,14 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
 
     private void RegisterAsyncRequestMessageHandlers()
     {
-        var messageHandlers = new(string,Func<string>,Func<string>)[]
+        var messageHandlers = new (string, Func<string>, Func<string>)[]
         {
-            ("TranslatedTextNoSaved", () => Strings.TranslatedTextNoSavedMessage, () => Strings.TranslatedTextNoSavedCaption),
-            ("TranslationDialogClosing", () => Strings.TranslatorTranslatingMessage, () => Strings.TranslatorTranslatingCaption),
-            ("TranslationModeSwitch", () => Strings.TranslationModeSwitchMessage, () => Strings.TranslationModeSwitchCaption),
+            ("TranslatedTextNoSaved", () => Strings.TranslatedTextNoSavedMessage,
+                () => Strings.TranslatedTextNoSavedCaption),
+            ("TranslationDialogClosing", () => Strings.TranslatorTranslatingMessage,
+                () => Strings.TranslatorTranslatingCaption),
+            ("TranslationModeSwitch", () => Strings.TranslationModeSwitchMessage,
+                () => Strings.TranslationModeSwitchCaption),
             ("TranslationNotEmpty", () => Strings.TranslationNotEmptyMessage, () => Strings.TranslationNotEmptyCaption)
         };
 
@@ -58,11 +61,11 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
     private void RegisterNotificationMessageHandlers()
     {
         var notificationHandlers =
-            new (string token, Func<ValueChangedMessage<string>, string> message, string caption)[]
+            new (string, Func<ValueChangedMessage<string>, string>, Func<string>)[]
             {
                 ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
-                    Strings.TranslatedTextInvalidCaption),
-                ("TranslateError", m => m.Value, Strings.TranslateErrorCaption)
+                    () => Strings.TranslatedTextInvalidCaption),
+                ("TranslateError", m => m.Value, () => Strings.TranslateErrorCaption)
             };
 
         foreach (var (token, message, caption) in notificationHandlers)
@@ -72,7 +75,7 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
                 (r, m) =>
                 {
                     _ = MessageBox.Show(message.Invoke(m),
-                        caption,
+                        caption(),
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                 });
