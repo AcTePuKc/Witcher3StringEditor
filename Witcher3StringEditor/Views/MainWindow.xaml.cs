@@ -47,25 +47,21 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
 
     private void RegisterMessageHandlers()
     {
-        WeakReferenceMessenger.Default.Register<MainWindow, FileOpenedMessage, string>(
-            this,
-            "ReOpenFile",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(Strings.ReOpenFileMessage, Strings.ReOpenFileCaption, MessageBoxButton.YesNo,
-                            MessageBoxImage.Question) ==
-                        MessageBoxResult.Yes);
-            });
+        var messageHandlers = new[]
+        {
+            ("ReOpenFile", Strings.ReOpenFileMessage, Strings.ReOpenFileCaption),
+            ("OpenedFileNoFound", Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption)
+        };
 
-        WeakReferenceMessenger.Default.Register<MainWindow, FileOpenedMessage, string>(
-            this,
-            "OpenedFileNoFound",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(Strings.FileOpenedNoFoundMessage, Strings.FileOpenedNoFoundCaption,
-                            MessageBoxButton.YesNo, MessageBoxImage.Question) ==
-                        MessageBoxResult.Yes);
-            });
+        foreach (var (token, message, caption) in messageHandlers)
+            WeakReferenceMessenger.Default.Register<MainWindow, FileOpenedMessage, string>(
+                this,
+                token,
+                (_, m) =>
+                {
+                    m.Reply(MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
+                            MessageBoxResult.Yes);
+                });
 
         WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
             this, "MainWindowClosing", static (_, m) =>
