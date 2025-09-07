@@ -33,51 +33,26 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
 
     private void RegisterAsyncRequestMessageHandlers()
     {
-        WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
-            this,
-            "TranslatedTextNoSaved",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(
-                    Strings.TranslatedTextNoSavedMessage,
-                    Strings.TranslatedTextNoSavedCaption,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-            });
-        WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
-            this,
-            "TranslationDialogClosing",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(
-                    Strings.TranslatorTranslatingMessage,
-                    Strings.TranslatorTranslatingCaption,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-            });
-        WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
-            this,
-            "TranslationModeSwitch",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(
-                    Strings.TranslationModeSwitchMessage,
-                    Strings.TranslationModeSwitchCaption,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-            });
+        var messageHandlers = new[]
+        {
+            ("TranslatedTextNoSaved", Strings.TranslatedTextNoSavedMessage, Strings.TranslatedTextNoSavedCaption),
+            ("TranslationDialogClosing", Strings.TranslatorTranslatingMessage, Strings.TranslatorTranslatingCaption),
+            ("TranslationModeSwitch", Strings.TranslationModeSwitchMessage, Strings.TranslationModeSwitchCaption),
+            ("TranslationNotEmpty", Strings.TranslationNotEmptyMessage, Strings.TranslationNotEmptyCaption)
+        };
 
-        WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
-            this,
-            "TranslationNotEmpty",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(
-                    Strings.TranslationNotEmptyMessage,
-                    Strings.TranslationNotEmptyCaption,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) == MessageBoxResult.Yes);
-            });
+        foreach (var (token, message, caption) in messageHandlers)
+            WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
+                this,
+                token,
+                (_, m) =>
+                {
+                    m.Reply(MessageBox.Show(
+                        message,
+                        caption,
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question) == MessageBoxResult.Yes);
+                });
     }
 
     private void RegisterNotificationMessageHandlers()
