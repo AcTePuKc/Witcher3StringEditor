@@ -63,22 +63,23 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
                             MessageBoxResult.Yes);
                 });
 
-        WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
-            this, "MainWindowClosing", static (_, m) =>
-            {
-                m.Reply(MessageBox.Show(Strings.AppExitMessage,
-                    Strings.AppExitCaption,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) == MessageBoxResult.No);
-            });
-        WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
-            this, "FirstRun", static (_, m) =>
-            {
-                m.Reply(MessageBox.Show(Strings.FristRunMessage,
-                    Strings.FristRunCaption,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Question) == MessageBoxResult.OK);
-            });
+        var requestMessageHandlers = new (string, Func<string>, Func<string>,MessageBoxButton,MessageBoxResult)[]
+        {
+            ("MainWindowClosing", () => Strings.AppExitMessage, () => Strings.AppExitCaption,MessageBoxButton.YesNo,MessageBoxResult.No),
+            ("FirstRun", () => Strings.FristRunMessage, () => Strings.FristRunCaption,MessageBoxButton.OK,MessageBoxResult.OK)
+        };
+
+        foreach (var (token, message, caption,button,excepted) in requestMessageHandlers)
+            WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
+                this,
+                token,
+                (_, m) =>
+                {
+                    m.Reply(MessageBox.Show(message(),
+                        caption(),
+                        button,
+                        MessageBoxImage.Question) == excepted);
+                });
     }
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
