@@ -12,7 +12,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="AboutBtnLabel" xml:space="preserve">
-        <value>情報</value>
+        <value>について</value>
     </data>
     <data name="AboutDialogTitle" xml:space="preserve">
         <value>について</value>
@@ -217,7 +217,7 @@
         <value>パス</value>
     </data>
     <data name="Pending" xml:space="preserve">
-        <value>保留中</value>
+        <value>処理待ち</value>
     </data>
     <data name="PlayBtnLabel" xml:space="preserve">
         <value>ゲームをプレイ</value>
@@ -232,10 +232,10 @@
         <value>前へ</value>
     </data>
     <data name="RecentBtnLabel" xml:space="preserve">
-        <value>最近使用</value>
+        <value>最近ファイル</value>
     </data>
     <data name="RecentDialogTitle" xml:space="preserve">
-        <value>最近</value>
+        <value>最近ファイル</value>
     </data>
     <data name="RecordDeletingCaption" xml:space="preserve">
         <value>記録を削除中</value>
@@ -253,7 +253,7 @@
         <value>復元</value>
     </data>
     <data name="Runtime" xml:space="preserve">
-        <value>実行時間:</value>
+        <value>ランタイム環境:</value>
     </data>
     <data name="SaveBtnContent" xml:space="preserve">
         <value>保存</value>
