@@ -32,38 +32,23 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
 
     private void RegisterMessageHandlers()
     {
-        WeakReferenceMessenger.Default.Register<BackupDialog, AsyncRequestMessage<bool>, string>(
-            this,
-            "BackupRestore",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(Strings.BackupRestoreMessage, Strings.BackupRestoreCaption,
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
-            });
-        WeakReferenceMessenger.Default.Register<BackupDialog, AsyncRequestMessage<bool>, string>(
-            this,
-            "BackupDelete",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(Strings.BackupDeleteMessage, Strings.BackupDeleteMessage,
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
-            });
-        WeakReferenceMessenger.Default.Register<BackupDialog, AsyncRequestMessage<bool>, string>(
-            this,
-            "BackupFileNoFound",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(Strings.BackupFileNoFoundMessage, Strings.BackupFileNoFoundCaption,
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes);
-            });
-        WeakReferenceMessenger.Default.Register<BackupDialog, AsyncRequestMessage<bool>, string>(
-            this,
-            "OperationFailed",
-            (_, m) =>
-            {
-                m.Reply(MessageBox.Show(Strings.OperationFailureMessage, Strings.OperationResultCaption,
-                    MessageBoxButton.OK, MessageBoxImage.Warning) == MessageBoxResult.OK);
-            });
+        var messageHandlers = new[]
+        {
+            ("BackupRestore", Strings.BackupRestoreMessage, Strings.BackupRestoreCaption, MessageBoxButton.YesNo,
+                MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("BackupDelete", Strings.BackupDeleteMessage, Strings.BackupDeleteCaption, MessageBoxButton.YesNo,
+                MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("BackupFileNoFound", Strings.BackupFileNoFoundMessage, Strings.BackupFileNoFoundCaption,
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes),
+            ("OperationFailed", Strings.OperationFailureMessage, Strings.OperationResultCaption, MessageBoxButton.OK,
+                MessageBoxImage.Warning, MessageBoxResult.OK)
+        };
+
+        foreach (var (token, message, caption, button, icon, expected) in messageHandlers)
+            WeakReferenceMessenger.Default.Register<BackupDialog, AsyncRequestMessage<bool>, string>(
+                this,
+                token,
+                (_, m) => { m.Reply(MessageBox.Show(message, caption, button, icon) == expected); });
     }
 
     private void Window_Closed(object sender, EventArgs e)
