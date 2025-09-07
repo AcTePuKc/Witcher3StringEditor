@@ -47,6 +47,35 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
 
     private void RegisterMessageHandlers()
     {
+        RegisterFileOpenedMessageHandlers();
+        RegisterAsyncRequestMessageHandlers();
+    }
+
+    private void RegisterAsyncRequestMessageHandlers()
+    {
+        var requestMessageHandlers = new (string, Func<string>, Func<string>, MessageBoxButton, MessageBoxResult)[]
+        {
+            ("MainWindowClosing", () => Strings.AppExitMessage, () => Strings.AppExitCaption, MessageBoxButton.YesNo,
+                MessageBoxResult.No),
+            ("FirstRun", () => Strings.FristRunMessage, () => Strings.FristRunCaption, MessageBoxButton.OK,
+                MessageBoxResult.OK)
+        };
+
+        foreach (var (token, message, caption, button, excepted) in requestMessageHandlers)
+            WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
+                this,
+                token,
+                (_, m) =>
+                {
+                    m.Reply(MessageBox.Show(message(),
+                        caption(),
+                        button,
+                        MessageBoxImage.Question) == excepted);
+                });
+    }
+
+    private void RegisterFileOpenedMessageHandlers()
+    {
         var messageHandlers = new (string, Func<string>, Func<string>)[]
         {
             ("ReOpenFile", () => Strings.ReOpenFileMessage, () => Strings.ReOpenFileCaption),
@@ -61,24 +90,6 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
                 {
                     m.Reply(MessageBox.Show(message(), caption(), MessageBoxButton.YesNo, MessageBoxImage.Question) ==
                             MessageBoxResult.Yes);
-                });
-
-        var requestMessageHandlers = new (string, Func<string>, Func<string>,MessageBoxButton,MessageBoxResult)[]
-        {
-            ("MainWindowClosing", () => Strings.AppExitMessage, () => Strings.AppExitCaption,MessageBoxButton.YesNo,MessageBoxResult.No),
-            ("FirstRun", () => Strings.FristRunMessage, () => Strings.FristRunCaption,MessageBoxButton.OK,MessageBoxResult.OK)
-        };
-
-        foreach (var (token, message, caption,button,excepted) in requestMessageHandlers)
-            WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
-                this,
-                token,
-                (_, m) =>
-                {
-                    m.Reply(MessageBox.Show(message(),
-                        caption(),
-                        button,
-                        MessageBoxImage.Question) == excepted);
                 });
     }
 
