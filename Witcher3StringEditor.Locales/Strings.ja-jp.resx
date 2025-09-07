@@ -304,7 +304,7 @@
   <data name="TargetFiletype" xml:space="preserve">
         <value>ファイルタイプ</value>
     </data>
-  <data name="TargetLanguage" xml:space="preserve">
+    <data name="TargetLanguage" xml:space="preserve">
         <value>翻訳後の言語</value>
     </data>
   <data name="TextLanguage" xml:space="preserve">
