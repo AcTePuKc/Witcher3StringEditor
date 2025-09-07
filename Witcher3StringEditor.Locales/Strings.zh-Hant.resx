@@ -253,7 +253,7 @@
         <value>恢復</value>
     </data>
     <data name="Runtime" xml:space="preserve">
-        <value>執行時間:</value>
+        <value>執行階段環境:</value>
     </data>
     <data name="SaveBtnContent" xml:space="preserve">
         <value>儲存</value>

@@ -123,8 +123,8 @@
         </value>
     </resheader>
     <data name="Runtime" xml:space="preserve">
-    <value>Futtatás ideje:</value>
-  </data>
+      <value>Futtatókörnyezet:</value>
+    </data>
     <data name="OpenFileBtnLabel" xml:space="preserve">
     <value>Fájl megnyitása</value>
   </data>

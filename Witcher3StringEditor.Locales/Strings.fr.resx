@@ -123,8 +123,8 @@
         </value>
     </resheader>
     <data name="Runtime" xml:space="preserve">
-    <value>Durée d'exécution:</value>
-  </data>
+      <value>Environnement d'exécution:</value>
+    </data>
     <data name="OpenFileBtnLabel" xml:space="preserve">
     <value>Ouvrir un fichier</value>
   </data>

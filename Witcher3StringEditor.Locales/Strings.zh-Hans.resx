@@ -123,8 +123,8 @@
         </value>
     </resheader>
     <data name="Runtime" xml:space="preserve">
-    <value>运行时:</value>
-  </data>
+      <value>运行时环境:</value>
+    </data>
     <data name="OpenFileBtnLabel" xml:space="preserve">
     <value>打开文件</value>
   </data>
