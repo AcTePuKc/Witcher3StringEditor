@@ -206,7 +206,7 @@
     <data name="DropHereTxt" xml:space="preserve">
     <value>拖放单个文件至此处打开</value>
   </data>
-    <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <data name="FileFormatExcelWorkbook" xml:space="preserve">
     <value>Excel工作簿</value>
   </data>
     <data name="FristRunMessage" xml:space="preserve">
@@ -309,7 +309,7 @@
     <data name="Hash" xml:space="preserve">
     <value>哈希值</value>
   </data>
-    <data name="OrginPath" xml:space="preserve">
+    <data name="OriginPath" xml:space="preserve">
     <value>原文件路径</value>
   </data>
     <data name="BackupPath" xml:space="preserve">

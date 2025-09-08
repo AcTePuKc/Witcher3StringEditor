@@ -206,7 +206,7 @@
     <data name="DropHereTxt" xml:space="preserve">
     <value>Glissez-déposez un seul fichier ici pour l'ouvrir</value>
   </data>
-    <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <data name="FileFormatExcelWorkbook" xml:space="preserve">
     <value>Feuilles de calcul Excel</value>
   </data>
     <data name="FristRunMessage" xml:space="preserve">
@@ -309,7 +309,7 @@
     <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
-    <data name="OrginPath" xml:space="preserve">
+    <data name="OriginPath" xml:space="preserve">
     <value>Origine du chemin</value>
   </data>
     <data name="BackupPath" xml:space="preserve">

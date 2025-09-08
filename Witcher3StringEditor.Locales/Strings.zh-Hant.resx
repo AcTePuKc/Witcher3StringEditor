@@ -104,7 +104,7 @@
     <data name="Failure" xml:space="preserve">
         <value>失敗</value>
     </data>
-    <data name="FileFormatExcelWorkSheets" xml:space="preserve">
+    <data name="FileFormatExcelWorkbook" xml:space="preserve">
         <value>Excel工作簿</value>
     </data>
     <data name="FileFormatSupported" xml:space="preserve">
@@ -207,7 +207,7 @@
     <data name="OperationResultCaption" xml:space="preserve">
         <value>操作結果</value>
     </data>
-    <data name="OrginPath" xml:space="preserve">
+    <data name="OriginPath" xml:space="preserve">
         <value>原始檔案路徑</value>
     </data>
     <data name="OS" xml:space="preserve">

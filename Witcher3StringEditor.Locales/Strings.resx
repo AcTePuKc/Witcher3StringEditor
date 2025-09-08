@@ -203,10 +203,10 @@
     <value>Update</value>
   </data>
   <data name="DropHereTxt" xml:space="preserve">
-    <value>Drag and Drop A Single File Here To Open</value>
+    <value>Drag and Drop a Single File Here To Open</value>
   </data>
-  <data name="FileFormatExcelWorkSheets" xml:space="preserve">
-    <value>Excel Worksheets</value>
+  <data name="FileFormatExcelWorkbook" xml:space="preserve">
+    <value>Excel Workbook</value>
   </data>
   <data name="FristRunMessage" xml:space="preserve">
     <value>(Required) When running for the first time, please set the encoder path first.
@@ -308,8 +308,8 @@
   <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
-  <data name="OrginPath" xml:space="preserve">
-    <value>Orgin Path</value>
+  <data name="OriginPath" xml:space="preserve">
+    <value>Origin Path</value>
   </data>
   <data name="BackupPath" xml:space="preserve">
     <value>Backup Path</value>
@@ -423,7 +423,7 @@
     <value>Translation not saved. Save now?</value>
   </data>
   <data name="TranslatedTextNoSavedCaption" xml:space="preserve">
-    <value>Translation Not Save</value>
+    <value>Translation Not Saved</value>
   </data>
   <data name="OperationResultCaption" xml:space="preserve">
     <value>Operation Result</value>

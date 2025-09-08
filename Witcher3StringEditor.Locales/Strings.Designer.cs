@@ -285,7 +285,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag and Drop A Single File Here To Open.
+        ///   Looks up a localized string similar to Drag and Drop a Single File Here To Open.
         /// </summary>
         public static string DropHereTxt {
             get {
@@ -339,11 +339,11 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Excel Worksheets.
+        ///   Looks up a localized string similar to Excel Workbook.
         /// </summary>
-        public static string FileFormatExcelWorkSheets {
+        public static string FileFormatExcelWorkbook {
             get {
-                return ResourceManager.GetString("FileFormatExcelWorkSheets", resourceCulture);
+                return ResourceManager.GetString("FileFormatExcelWorkbook", resourceCulture);
             }
         }
         
@@ -475,7 +475,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ignore ID Space Check    .
+        ///   Looks up a localized string similar to Ignore ID Space Check.
         /// </summary>
         public static string IgnoreIDSpaceCheck {
             get {
@@ -646,11 +646,11 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Orgin Path.
+        ///   Looks up a localized string similar to Origin Path.
         /// </summary>
-        public static string OrginPath {
+        public static string OriginPath {
             get {
-                return ResourceManager.GetString("OrginPath", resourceCulture);
+                return ResourceManager.GetString("OriginPath", resourceCulture);
             }
         }
         
@@ -997,7 +997,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Translation Not Save.
+        ///   Looks up a localized string similar to Translation Not Saved.
         /// </summary>
         public static string TranslatedTextNoSavedCaption {
             get {

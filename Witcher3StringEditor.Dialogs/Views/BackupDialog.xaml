@@ -105,7 +105,7 @@
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
                 <sf:GridTextColumn
-                    HeaderText="{I18N {x:Static l:LangKeys.OrginPath}}"
+                    HeaderText="{I18N {x:Static l:LangKeys.OriginPath}}"
                     MappingName="OrginPath"
                     MinimumWidth="150"
                     TextWrapping="Wrap" />
