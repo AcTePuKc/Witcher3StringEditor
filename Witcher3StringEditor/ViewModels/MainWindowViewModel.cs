@@ -324,7 +324,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSaveDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(appSettings, w3Serializer, W3ItemModels!.AsReadOnly(), OutputFolder));
+            new SaveDialogViewModel(appSettings, w3Serializer, W3ItemModels!, OutputFolder));
     }
 
     [RelayCommand]
@@ -356,7 +356,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
             { "Package", DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package") }
-        }.ToFrozenDictionary()));
+        }));
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]

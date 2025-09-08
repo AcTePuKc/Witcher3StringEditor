@@ -65,7 +65,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 });
             }
 
-            return items.AsReadOnly();
+            return items;
         }
         catch (Exception ex)
         {
