@@ -147,8 +147,8 @@
     <value>Mentés</value>
   </data>
     <data name="BackupBtnLabel" xml:space="preserve">
-    <value>Visszaállítás</value>
-  </data>
+      <value>Biztonsági mentés</value>
+    </data>
     <data name="LogBtnLabel" xml:space="preserve">
     <value>Napló</value>
   </data>
@@ -156,8 +156,8 @@
     <value>Beállítások</value>
   </data>
     <data name="PlayBtnLabel" xml:space="preserve">
-    <value>Játék</value>
-  </data>
+      <value>Játék indítása</value>
+    </data>
     <data name="TranslateBtnLabel" xml:space="preserve">
     <value>Fordítás</value>
   </data>
@@ -168,8 +168,8 @@
     <value>Frissítés elérhető</value>
   </data>
     <data name="RecentBtnLabel" xml:space="preserve">
-    <value>A legutóbbi</value>
-  </data>
+      <value>Legutóbbiak</value>
+    </data>
     <data name="AboutBtnLabel" xml:space="preserve">
     <value>Rólunk</value>
   </data>
@@ -301,8 +301,8 @@
     <value>ID Terület</value>
   </data>
     <data name="BackupDialogTitle" xml:space="preserve">
-    <value>Visszaállítás</value>
-  </data>
+      <value>Biztonsági mentés</value>
+    </data>
     <data name="FileName" xml:space="preserve">
     <value>Fájlnév</value>
   </data>
@@ -340,11 +340,11 @@
     <value>Beállítások</value>
   </data>
     <data name="W3StringsPath" xml:space="preserve">
-    <value>Kérlek, válaszd ki a w3strings.exe fájlt</value>
-  </data>
+      <value>Kérem, válaszd ki a w3strings.exe fájlt</value>
+    </data>
     <data name="GameExePath" xml:space="preserve">
-    <value>Kérlek, válaszd ki a witcher3.exe fájlt</value>
-  </data>
+      <value>Kérem, válaszd ki a witcher3.exe fájlt</value>
+    </data>
     <data name="PreferredFileType" xml:space="preserve">
     <value>Kedvelt fájltípus</value>
   </data>
@@ -361,8 +361,8 @@
     <value>Az ID hely tartománya egy négyjegyű egész szám (0000 és 9999 között). Ha hiba van az észlelésben, a program automatikusan jelzi ezt az ID-tér negatív egységként való megjelenítésével. Kérjük, vegye figyelembe, hogy az eredmények csak referenciaként szolgálnak.</value>
   </data>
     <data name="RecentDialogTitle" xml:space="preserve">
-    <value>A legújabb</value>
-  </data>
+      <value>Legutóbbiak</value>
+    </data>
     <data name="Path" xml:space="preserve">
     <value>Elérési útvonal</value>
   </data>
