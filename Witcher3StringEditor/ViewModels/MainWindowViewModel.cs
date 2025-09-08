@@ -71,9 +71,9 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
 
-    public ObservableCollection<W3ItemModel> W3Items { get; set; } = [];
+    public ObservableCollection<W3ItemModel> W3ItemModels { get; set; } = [];
 
-    private bool W3ItemsHaveItems => W3Items.Any();
+    private bool W3ItemsHaveItems => W3ItemModels.Any();
 
     private bool CanOpenWorkingFolder
         => Directory.Exists(OutputFolder);
@@ -104,7 +104,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
 
     private void SetupW3ItemsEventHandlers()
     {
-        W3Items.CollectionChanged += (_, _) =>
+        W3ItemModels.CollectionChanged += (_, _) =>
         {
             AddCommand.NotifyCanExecuteChanged();
             ShowSaveDialogCommand.NotifyCanExecuteChanged();
@@ -206,7 +206,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        if (W3Items.Any() &&
+        if (W3ItemModels.Any() &&
             await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "MainWindowClosing"))
             e.Cancel = true;
     }
@@ -249,16 +249,16 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     {
         try
         {
-            if (W3Items.Any())
+            if (W3ItemModels.Any())
             {
                 if (!await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "ReOpenFile")) return;
-                W3Items.Clear();
+                W3ItemModels.Clear();
             }
 
             Log.Information("The file {FileName} is being opened...", fileName);
             (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId)
-                .ForEach(i => W3Items.Add(new W3ItemModel(i)));
-            Guard.IsGreaterThan(W3Items.Count, 0);
+                .ForEach(i => W3ItemModels.Add(new W3ItemModel(i)));
+            Guard.IsGreaterThan(W3ItemModels.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
             OutputFolder = folder;
@@ -288,7 +288,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
             && dialogViewModel.W3Item != null)
         {
-            W3Items.Add(dialogViewModel.W3Item.Cast<W3ItemModel>());
+            W3ItemModels.Add(dialogViewModel.W3Item.Cast<W3ItemModel>());
             Log.Information("New W3Item added.");
         }
         else
@@ -303,8 +303,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
         {
-            var found = W3Items.First(x => x.Id == w3Item.Id);
-            W3Items[W3Items.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3ItemModel>();
+            var found = W3ItemModels.First(x => x.Id == w3Item.Id);
+            W3ItemModels[W3ItemModels.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3ItemModel>();
             Log.Information("The W3Item has been updated.");
         }
         else
@@ -319,7 +319,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         var w3Items = items.Cast<IEditW3Item>().ToArray();
         if (w3Items.Length > 0 &&
             await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
-            w3Items.ForEach(item => W3Items.Remove(item.Cast<W3ItemModel>()));
+            w3Items.ForEach(item => W3ItemModels.Remove(item.Cast<W3ItemModel>()));
     }
 
     [RelayCommand]
@@ -333,7 +333,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSaveDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(appSettings, w3Serializer, W3Items.ToFrozenSet(), OutputFolder));
+            new SaveDialogViewModel(appSettings, w3Serializer, W3ItemModels.ToFrozenSet(), OutputFolder));
     }
 
     [RelayCommand]
@@ -395,6 +395,6 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         _ = await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings,
                 translators.First(x => x.Name == appSettings.Translator),
-                W3Items, w3Item != null ? W3Items.IndexOf(w3Item) : 0));
+                W3ItemModels, w3Item != null ? W3ItemModels.IndexOf(w3Item) : 0));
     }
 }
