@@ -48,7 +48,8 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            return from line in await File.ReadAllLinesAsync(path)
+            var lines = await File.ReadAllLinesAsync(path);
+            return from line in lines
                 where !line.StartsWith(';')
                 select line.Split("|")
                 into parts
