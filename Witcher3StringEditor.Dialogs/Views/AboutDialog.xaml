@@ -3,8 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dependencyModel="clr-namespace:Microsoft.Extensions.DependencyModel;assembly=Microsoft.Extensions.DependencyModel"
-    xmlns:globalization="clr-namespace:System.Globalization;assembly=mscorlib"
+    xmlns:dm="clr-namespace:Microsoft.Extensions.DependencyModel;assembly=Microsoft.Extensions.DependencyModel"
+    xmlns:g="clr-namespace:System.Globalization;assembly=mscorlib"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
@@ -74,7 +74,7 @@
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="2"
-                    Text="{Binding AboutInfo[BuildTime], ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture},Mode=OneTime}" />
+                    Text="{Binding AboutInfo[BuildTime], ConverterCulture={x:Static g:CultureInfo.CurrentCulture},Mode=OneTime}" />
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="0"
@@ -103,7 +103,7 @@
                 BorderThickness="1">
                 <ItemsControl ItemsSource="{Binding AboutInfo[Package],Mode=OneTime}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type dependencyModel:Dependency}">
+                        <DataTemplate DataType="{x:Type dm:Dependency}">
                             <StackPanel Margin="16,16,0,0" Orientation="Horizontal">
                                 <TextBlock Text="{Binding Name}" />
                                 <TextBlock Margin="12,0,0,0" Text="{Binding Version}" />
