@@ -3,8 +3,8 @@ using HanumanInstitute.MvvmDialogs;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public class AboutDialogViewModel(Dictionary<string, object?> aboutInfo) : ObservableObject, IModalDialogViewModel
+public class AboutDialogViewModel(IDictionary<string, object?> aboutInfo) : ObservableObject, IModalDialogViewModel
 {
-    public Dictionary<string, object?> AboutInfo => aboutInfo;
+    public IDictionary<string, object?> AboutInfo => aboutInfo;
     public bool? DialogResult => true;
 }

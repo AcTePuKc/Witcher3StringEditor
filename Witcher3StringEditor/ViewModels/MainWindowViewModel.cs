@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Frozen;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -364,7 +365,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
             { "Package", DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package") }
-        }));
+        }.ToFrozenDictionary()));
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
