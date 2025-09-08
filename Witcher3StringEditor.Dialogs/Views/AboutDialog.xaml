@@ -65,7 +65,7 @@
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="2"
-                    Text="{Binding AboutInfo[Version]}" />
+                    Text="{Binding AboutInfo[Version],Mode=OneTime}" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="0"
@@ -74,7 +74,7 @@
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="2"
-                    Text="{Binding AboutInfo[BuildTime], ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture}}" />
+                    Text="{Binding AboutInfo[BuildTime], ConverterCulture={x:Static globalization:CultureInfo.CurrentCulture},Mode=OneTime}" />
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="0"
@@ -83,7 +83,7 @@
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="2"
-                    Text="{Binding AboutInfo[OS]}" />
+                    Text="{Binding AboutInfo[OS],Mode=OneTime}" />
                 <TextBlock
                     Grid.Row="6"
                     Grid.Column="0"
@@ -92,7 +92,7 @@
                 <TextBlock
                     Grid.Row="6"
                     Grid.Column="2"
-                    Text="{Binding AboutInfo[Runtime]}" />
+                    Text="{Binding AboutInfo[Runtime],Mode=OneTime}" />
             </Grid>
             <ScrollViewer
                 Grid.Row="1"
