@@ -20,7 +20,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private readonly ITranslator translator;
 
-    private readonly IReadOnlyList<IEditW3Item> w3Items;
+    private readonly IReadOnlyCollection<IEditW3Item> w3Items;
 
     [ObservableProperty] private object currentViewModel;
 
