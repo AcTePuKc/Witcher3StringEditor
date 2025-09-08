@@ -333,7 +333,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSaveDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(appSettings, w3Serializer, W3Items, OutputFolder));
+            new SaveDialogViewModel(appSettings, w3Serializer, W3Items.ToFrozenSet(), OutputFolder));
     }
 
     [RelayCommand]
