@@ -101,7 +101,7 @@
                 Margin="16"
                 BorderBrush="LightGray"
                 BorderThickness="1">
-                <ItemsControl ItemsSource="{Binding AboutInfo[Package]}">
+                <ItemsControl ItemsSource="{Binding AboutInfo[Package],Mode=OneTime}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type dependencyModel:Dependency}">
                             <StackPanel Margin="16,16,0,0" Orientation="Horizontal">
