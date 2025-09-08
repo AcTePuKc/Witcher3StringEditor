@@ -48,18 +48,24 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            var lines = await File.ReadAllLinesAsync(path);
-            return (from line in lines
-                where !string.IsNullOrWhiteSpace(line) && !line.StartsWith(';')
-                let parts = line.Split('|')
-                where parts.Length == 4
-                select new W3Item
+            var items = new List<W3Item>();
+            await foreach (var line in File.ReadLinesAsync(path))
+            {
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
+                    continue;
+                var parts = line.Split('|');
+                if (parts.Length != 4) continue;
+
+                items.Add(new W3Item
                 {
-                    StrId = parts[0],
-                    KeyHex = parts[1],
-                    KeyName = parts[2],
-                    Text = parts[3]
-                }).ToList().AsReadOnly();
+                    StrId = parts[0].Trim(),
+                    KeyHex = parts[1].Trim(),
+                    KeyName = parts[2].Trim(),
+                    Text = parts[3].Trim()
+                });
+            }
+
+            return items.AsReadOnly();
         }
         catch (Exception ex)
         {
