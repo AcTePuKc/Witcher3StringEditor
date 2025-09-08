@@ -112,11 +112,11 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         {
             switch (e.PropertyName)
             {
-                case nameof(appSettings.W3StringsPath) when !string.IsNullOrWhiteSpace(appSettings.W3StringsPath):
+                case nameof(appSettings.W3StringsPath):
                     OpenFileCommand.NotifyCanExecuteChanged();
                     DropFileCommand.NotifyCanExecuteChanged();
                     break;
-                case nameof(appSettings.GameExePath) when !string.IsNullOrWhiteSpace(appSettings.GameExePath):
+                case nameof(appSettings.GameExePath):
                     PlayGameCommand.NotifyCanExecuteChanged();
                     break;
                 case nameof(appSettings.Translator):
