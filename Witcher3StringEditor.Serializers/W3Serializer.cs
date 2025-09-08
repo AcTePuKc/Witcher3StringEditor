@@ -1,5 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using CommandLine;
@@ -51,9 +50,8 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         {
             var lines = await File.ReadAllLinesAsync(path);
             return (from line in lines
-                where !line.StartsWith(';')
-                select line.Split("|")
-                into parts
+                where !string.IsNullOrWhiteSpace(line) && !line.StartsWith(';')
+                let parts = line.Split('|')
                 where parts.Length == 4
                 select new W3Item
                 {
@@ -61,7 +59,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                     KeyHex = parts[1],
                     KeyName = parts[2],
                     Text = parts[3]
-                }).ToFrozenSet();
+                }).ToList().AsReadOnly();
         }
         catch (Exception ex)
         {
