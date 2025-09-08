@@ -82,9 +82,9 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private bool CanOpenWorkingFolder
         => Directory.Exists(OutputFolder);
 
-    private bool CanPlayGame => !string.IsNullOrWhiteSpace(appSettings.GameExePath);
+    private bool CanPlayGame => File.Exists(appSettings.GameExePath);
 
-    private bool CanOpenFile => !string.IsNullOrWhiteSpace(appSettings.W3StringsPath);
+    private bool CanOpenFile => File.Exists(appSettings.W3StringsPath);
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
