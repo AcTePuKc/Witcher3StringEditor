@@ -248,8 +248,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                 !await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "ReOpenFile")) return;
             Log.Information("The file {FileName} is being opened...", fileName);
             W3ItemModels = new ObservableCollection<W3ItemModel>(
-                (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).Select(x => new W3ItemModel(x))
-                .ToArray());
+                [.. (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).Select(x => new W3ItemModel(x))]);
             Guard.IsGreaterThan(W3ItemModels.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
@@ -325,7 +324,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSaveDialog()
     {
         _ = await dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(appSettings, w3Serializer, W3ItemModels!.ToFrozenSet(), OutputFolder));
+            new SaveDialogViewModel(appSettings, w3Serializer, W3ItemModels!.AsReadOnly(), OutputFolder));
     }
 
     [RelayCommand]
