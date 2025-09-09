@@ -175,9 +175,8 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (!GetValue(CurrentTranslateItemModel)) return;
+            if (!IsValidTranslation(CurrentTranslateItemModel)) return;
             SaveTranslatedTextToItem(CurrentTranslateItemModel);
-            UpdateTranslateItemSavedState(CurrentTranslateItemModel);
             Log.Information("Translation saved.");
         }
         catch (Exception ex)
@@ -186,7 +185,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private static bool GetValue(TranslateItemModel currentTranslateItemModel)
+    private static bool IsValidTranslation(TranslateItemModel currentTranslateItemModel)
     {
         if (!string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)) return true;
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
@@ -198,13 +197,9 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         var found = _w3Items.First(x => x.TrackingId == currentTranslateItemModel.Id);
         Guard.IsNotNull(found);
         found.Text = currentTranslateItemModel.TranslatedText;
+        currentTranslateItemModel.IsSaved = true;
     }
-
-    private static void UpdateTranslateItemSavedState(TranslateItemModel currentTranslateItemModel,bool isSaved = true)
-    {
-        currentTranslateItemModel.IsSaved = isSaved;
-    }
-
+    
     private static void LogSaveError(Exception ex)
     {
         Log.Error(ex, "Failed to save translation.");
