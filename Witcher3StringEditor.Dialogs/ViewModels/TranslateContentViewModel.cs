@@ -112,72 +112,42 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
     {
         try
         {
-            if (!ValidateTranslationPreconditions()) return;
-            if (!await HandleExistingTranslation()) return;
-            await ExecuteTranslationProcess();
-        }
-        catch (OperationCanceledException)
-        {
-            HandleCancellation();
+            Guard.IsNotNull(CurrentTranslateItemModel);
+            Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
+            if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+                && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    "TranslationNotEmpty")) return;
+            IsBusy = true;
+            CurrentTranslateItemModel.TranslatedText = string.Empty;
+            _cancellationTokenSource = new CancellationTokenSource();
+            Log.Information("Starting translation.");
+            var (result, translation) = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text,
+                ToLanguage,
+                FormLanguage, _cancellationTokenSource);
+            if (!result)
+            {
+                IsBusy = false;
+                return;
+            }
+
+            Guard.IsNotNullOrWhiteSpace(translation);
+            CurrentTranslateItemModel.TranslatedText = translation;
+            Log.Information("Translation completed.");
+            IsBusy = false;
         }
         catch (Exception ex)
         {
-            HandleTranslationError(ex);
+            _ = WeakReferenceMessenger.Default.Send(
+                new ValueChangedMessage<string>(
+                    $"The translator: {_translator.Name} returned an error.\nException: {ex.Message}"),
+                "TranslateError");
+            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", _translator.Name,
+                ex.Message);
         }
         finally
         {
-            CleanupTranslationProcess();
+            IsBusy = false;
         }
-    }
-
-    private void CleanupTranslationProcess()
-    {
-        IsBusy = false;
-    }
-
-    private void HandleTranslationError(Exception ex)
-    {
-        _ = WeakReferenceMessenger.Default.Send(
-            new ValueChangedMessage<string>(
-                $"The translator: {_translator.Name} returned an error.\nException: {ex.Message}"),
-            "TranslateError");
-        Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", _translator.Name,
-            ex.Message);
-    }
-
-    private static void HandleCancellation()
-    {
-        Log.Information("Translation was cancelled by user.");
-    }
-
-    private async Task ExecuteTranslationProcess()
-    {
-        IsBusy = true;
-        CurrentTranslateItemModel!.TranslatedText = string.Empty;
-        _cancellationTokenSource?.Dispose();
-        _cancellationTokenSource = new CancellationTokenSource();
-        Log.Information("Starting translation.");
-        var (result, translation) =
-            await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text, ToLanguage, FormLanguage, _cancellationTokenSource);
-        if (!result) return;
-        Guard.IsNotNullOrWhiteSpace(translation);
-        CurrentTranslateItemModel.TranslatedText = translation;
-        Log.Information("Translation completed.");
-    }
-
-    private async Task<bool> HandleExistingTranslation()
-    {
-        if (string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
-            return true;
-        return await WeakReferenceMessenger.Default.Send(
-            new AsyncRequestMessage<bool>(), "TranslationNotEmpty");
-    }
-
-    private bool ValidateTranslationPreconditions()
-    {
-        Guard.IsNotNull(CurrentTranslateItemModel);
-        Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
-        return true;
     }
 
     private static async Task<(bool, string)> ExecuteTranslationTask(ITranslator translator, string text,
