@@ -60,25 +60,33 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
 
     private void RegisterNotificationMessageHandlers()
     {
-        var notificationHandlers =
-            new (string, Func<ValueChangedMessage<string>, string>, Func<string>)[]
-            {
-                ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
-                    () => Strings.TranslatedTextInvalidCaption),
-                ("TranslateError", m => m.Value, () => Strings.TranslateErrorCaption)
-            };
-
+        var notificationHandlers = CreateNotificationHandlers();
         foreach (var (token, message, caption) in notificationHandlers)
-            WeakReferenceMessenger.Default.Register<TranslateDialog, ValueChangedMessage<string>, string>(
-                this,
-                token,
-                (r, m) =>
-                {
-                    _ = MessageBox.Show(message.Invoke(m),
-                        caption(),
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
-                });
+            RegisterNotificationHandler(token, message, caption);
+    }
+
+    private void RegisterNotificationHandler(string token, Func<ValueChangedMessage<string>, string> message, Func<string> caption)
+    {
+        WeakReferenceMessenger.Default.Register<TranslateDialog, ValueChangedMessage<string>, string>(
+            this,
+            token,
+            (r, m) =>
+            {
+                _ = MessageBox.Show(message.Invoke(m),
+                    caption(),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            });
+    }
+
+    private static (string, Func<ValueChangedMessage<string>, string>, Func<string>)[] CreateNotificationHandlers()
+    {
+        return
+        [
+            ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
+                () => Strings.TranslatedTextInvalidCaption),
+            ("TranslateError", m => m.Value, () => Strings.TranslateErrorCaption)
+        ];
     }
 
     private void Window_Closed(object sender, EventArgs e)
