@@ -21,9 +21,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             if (Path.GetExtension(filePath) == ".csv") return await DeserializeCsv(filePath);
             if (Path.GetExtension(filePath) == ".xlsx") return await DeserializeExcel(filePath);
             Guard.IsTrue(Path.GetExtension(filePath) == ".w3strings");
-            var temporaryFilePath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(filePath));
-            File.Copy(filePath, temporaryFilePath);
-            return await DeserializeW3Strings(temporaryFilePath);
+            return await DeserializeW3Strings(GenerateTemporaryFilePathAndCopy(filePath));
         }
         catch (Exception ex)
         {
@@ -41,6 +39,13 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             W3FileType.Excel => await SerializeExcel(w3Items, context),
             _ => throw new NotSupportedException($"The file type {context.TargetFileType} is not supported.")
         };
+    }
+
+    private static string GenerateTemporaryFilePathAndCopy(string sourceFilePath)
+    {
+        var temporaryFilePath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(sourceFilePath));
+        File.Copy(sourceFilePath, temporaryFilePath);
+        return temporaryFilePath;
     }
 
     private static async Task<IReadOnlyList<IW3StringItem>> DeserializeCsv(string path)
