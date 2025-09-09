@@ -167,10 +167,11 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
     [RelayCommand(CanExecute = nameof(CanCancel))]
     private async Task Cancel()
     {
-        if (IsBusy && _cancellationTokenSource != null)
+        if (_cancellationTokenSource != null)
         {
             await _cancellationTokenSource.CancelAsync();
             _cancellationTokenSource.Dispose();
+            _cancellationTokenSource = null;
             IsBusy = false;
         }
     }
