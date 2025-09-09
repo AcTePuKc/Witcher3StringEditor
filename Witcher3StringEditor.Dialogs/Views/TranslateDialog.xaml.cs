@@ -33,8 +33,30 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
 
     private void RegisterAsyncRequestMessageHandlers()
     {
-        var messageHandlers = new (string, Func<string>, Func<string>)[]
-        {
+        var messageHandlers = CreateAsyncRequestHandlers();
+        foreach (var (token, message, caption) in messageHandlers)
+            RegisterAsyncRequestHandler(token, message, caption);
+    }
+
+    private void RegisterAsyncRequestHandler(string token, Func<string> message, Func<string> caption)
+    {
+        WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
+            this,
+            token,
+            (_, m) =>
+            {
+                m.Reply(MessageBox.Show(
+                    message(),
+                    caption(),
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question) == MessageBoxResult.Yes);
+            });
+    }
+
+    private static (string, Func<string>, Func<string>)[] CreateAsyncRequestHandlers()
+    {
+        return
+        [
             ("TranslatedTextNoSaved", () => Strings.TranslatedTextNoSavedMessage,
                 () => Strings.TranslatedTextNoSavedCaption),
             ("TranslationDialogClosing", () => Strings.TranslatorTranslatingMessage,
@@ -42,20 +64,7 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
             ("TranslationModeSwitch", () => Strings.TranslationModeSwitchMessage,
                 () => Strings.TranslationModeSwitchCaption),
             ("TranslationNotEmpty", () => Strings.TranslationNotEmptyMessage, () => Strings.TranslationNotEmptyCaption)
-        };
-
-        foreach (var (token, message, caption) in messageHandlers)
-            WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
-                this,
-                token,
-                (_, m) =>
-                {
-                    m.Reply(MessageBox.Show(
-                        message(),
-                        caption(),
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question) == MessageBoxResult.Yes);
-                });
+        ];
     }
 
     private void RegisterNotificationMessageHandlers()
