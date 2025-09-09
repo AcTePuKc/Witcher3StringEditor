@@ -60,16 +60,10 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             {
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
                     continue;
-                var parts = line.Split('|');
-                if (parts.Length != 4) continue;
 
-                items.Add(new W3StringStringItem
-                {
-                    StrId = parts[0].Trim(),
-                    KeyHex = parts[1].Trim(),
-                    KeyName = parts[2].Trim(),
-                    Text = parts[3].Trim()
-                });
+                var item = ParseCsvLine(line);
+                if (item != null)
+                    items.Add(item);
             }
 
             return items;
@@ -79,6 +73,22 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Error(ex, "An error occurred while deserializing the CSV file: {Path}.", path);
             return [];
         }
+    }
+
+    private static W3StringStringItem? ParseCsvLine(string line)
+    {
+        if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
+            return null;
+        var parts = line.Split('|');
+        if (parts.Length != 4) return null;
+
+        return new W3StringStringItem
+        {
+            StrId = parts[0].Trim(),
+            KeyHex = parts[1].Trim(),
+            KeyName = parts[2].Trim(),
+            Text = parts[3].Trim()
+        };
     }
 
     private static async Task<List<W3StringStringItem>> DeserializeExcel(string path)
