@@ -115,43 +115,58 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
     [RelayCommand(CanExecute = nameof(CanStart))]
     private async Task Start()
     {
-        IsBusy = true;
-        _cancellationTokenSource = new CancellationTokenSource();
-        var tLanguage = ToLanguage;
-        var fLanguage = FormLanguage;
-        ResetTranslationCounts();
-        foreach (var item in _w3Items.Skip(StartIndex - 1).Take(PendingCount))
-            if (!_cancellationTokenSource.IsCancellationRequested)
-            {
-                try
-                {
-                    var (result, translation) = await TranslateItem(_translator, item.Text, tLanguage, fLanguage);
-                    if (result)
-                    {
-                        item.Text = translation;
-                        SuccessCount++;
-                    }
-                    else
-                    {
-                        FailureCount++;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}",
-                        _translator.Name, ex.Message);
-                    FailureCount++;
-                }
+        try
+        {
+            await ExecuteBatchTranslation();
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
 
-                PendingCount--;
+    private async Task ExecuteBatchTranslation()
+    {
+        IsBusy = true;
+        ResetTranslationCounts();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = new CancellationTokenSource();
+        var items = _w3Items.Skip(StartIndex - 1).Take(PendingCount);
+        await ProcessTranslationItems(items, ToLanguage, FormLanguage, _cancellationTokenSource.Token);
+    }
+
+    private async Task ProcessTranslationItems(IEnumerable<IW3StringItem> items, ILanguage toLanguage, ILanguage fromLanguage,
+        CancellationToken cancellationToken)
+    {
+        foreach (var item in items)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            await ProcessSingleItem(item, toLanguage, fromLanguage);
+            PendingCount--;
+        }
+    }
+
+    private async Task ProcessSingleItem(IW3StringItem item, ILanguage toLanguage, ILanguage fromLanguage)
+    {
+        try
+        {
+            var (result, translation) = await TranslateItem(_translator, item.Text, toLanguage, fromLanguage);
+            if (result)
+            {
+                item.Text = translation;
+                SuccessCount++;
             }
             else
             {
-                Log.Information("Batch translations are canceled by the user.");
-                return;
+                FailureCount++;
             }
-
-        IsBusy = false;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}",
+                _translator.Name, ex.Message);
+            FailureCount++;
+        }
     }
 
     private static async Task<(bool, string)> TranslateItem(ITranslator translator, string text, ILanguage tLanguage,
