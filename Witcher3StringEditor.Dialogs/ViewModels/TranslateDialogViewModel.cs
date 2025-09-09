@@ -20,14 +20,14 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private readonly ITranslator _translator;
 
-    private readonly IReadOnlyCollection<ITrackableW3StringItem> _w3Items;
+    private readonly IReadOnlyList<ITrackableW3StringItem> _w3Items;
 
     [ObservableProperty] private object _currentViewModel;
 
     [ObservableProperty] private string _title = Strings.TranslateDialogTitle;
 
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator,
-        IReadOnlyCollection<ITrackableW3StringItem> w3Items,
+        IReadOnlyList<ITrackableW3StringItem> w3Items,
         int index)
     {
         _index = index;
