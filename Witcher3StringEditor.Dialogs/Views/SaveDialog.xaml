@@ -71,7 +71,7 @@
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding Source={StaticResource FileType}}"
-                            SelectedValue="{Binding W3Job.W3FileType}" />
+                            SelectedValue="{Binding FileType}" />
                     </Grid>
                 </Expander.Header>
                 <Expander.Content>
@@ -87,13 +87,13 @@
                             Width="150"
                             HorizontalAlignment="Right"
                             ItemsSource="{Binding Source={StaticResource W3Language}}"
-                            SelectedValue="{Binding W3Job.Language}" />
+                            SelectedValue="{Binding Language}" />
                         <Grid Grid.Row="1">
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding W3Job.W3FileType}"
+                                        <DataTrigger Binding="{Binding FileType}"
                                                      Value="{x:Static common:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
@@ -107,7 +107,7 @@
                             <ui:ToggleSwitch
                                 Margin="0,16,0,0"
                                 HorizontalAlignment="Right"
-                                IsOn="{Binding W3Job.IsIgnoreIdSpaceCheck}"
+                                IsOn="{Binding IsIgnoreIdSpaceCheck}"
                                 OffContent="{I18N {x:Static l:LangKeys.IsOff}}"
                                 OnContent="{I18N {x:Static l:LangKeys.IsOn}}" />
                         </Grid>
@@ -119,16 +119,16 @@
                             Minimum="-1"
                             SmallChange="1"
                             SpinButtonPlacementMode="Inline"
-                            Value="{Binding W3Job.IdSpace}">
+                            Value="{Binding IdSpace}">
                             <ui:NumberBox.Style>
                                 <Style TargetType="ui:NumberBox">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding W3Job.W3FileType}"
+                                        <DataTrigger Binding="{Binding FileType}"
                                                      Value="{x:Static common:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">
+                                        <DataTrigger Binding="{Binding IsIgnoreIdSpaceCheck}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>

@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace Witcher3StringEditor.Serializers.Internal;
 
-internal record W3Options
+internal record W3StringsOptions
 {
     [UsedImplicitly] [Option('d')] public string Decode { get; init; } = string.Empty;
 
@@ -13,5 +13,5 @@ internal record W3Options
 
     [UsedImplicitly]
     [Option("force-ignore-id-space-check-i-know-what-i-am-doing")]
-    public bool IsIgnoreIdSpaceCheck { get; init; }
+    public bool IgnoreIdSpaceCheck { get; init; }
 }

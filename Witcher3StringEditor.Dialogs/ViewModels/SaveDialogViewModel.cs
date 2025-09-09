@@ -6,8 +6,9 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
+using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
-using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Serializers;
 using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -17,20 +18,32 @@ public partial class SaveDialogViewModel
 {
     private readonly IW3Serializer _serializer;
 
-    [ObservableProperty] private IW3Job _w3Job;
+    private readonly IReadOnlyList<IW3Item> _w3Items;
+
+    [ObservableProperty]
+    private W3FileType _fileType;
+
+    [ObservableProperty]
+    private int _idSpace;
+
+    [ObservableProperty]
+    private bool _isIgnoreIdSpaceCheck;
+
+    [ObservableProperty]
+    private W3Language _language;
+
+    [ObservableProperty]
+    private string _path;
 
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
         IReadOnlyList<IW3Item> w3Items, string path)
     {
+        Path = path;
+        _w3Items = w3Items;
         _serializer = serializer;
-        W3Job = new W3JobModel
-        {
-            Path = path,
-            W3Items = w3Items,
-            IdSpace = FindIdSpace(w3Items[0]),
-            Language = appSettings.PreferredLanguage,
-            W3FileType = appSettings.PreferredW3FileType
-        };
+        IdSpace = FindIdSpace(w3Items[0]);
+        Language = appSettings.PreferredLanguage;
+        FileType = appSettings.PreferredW3FileType;
     }
 
     public event EventHandler? RequestClose;
@@ -40,9 +53,16 @@ public partial class SaveDialogViewModel
     [RelayCommand]
     private async Task Save()
     {
-        Log.Information("Target filetype: {FileType}.", W3Job.W3FileType);
-        Log.Information("Target language: {Language}.", W3Job.Language);
-        var saveResult = await _serializer.Serialize(W3Job);
+        Log.Information("Target filetype: {FileType}.", FileType);
+        Log.Information("Target language: {Language}.", Language);
+        var saveResult = await _serializer.Serialize(_w3Items, new W3SerializationContext
+        {
+            Output = Path,
+            IdSpace = IdSpace,
+            FileType = FileType,
+            Language = Language,
+            IsIgnoreIdSpaceCheck = IsIgnoreIdSpaceCheck
+        });
         Log.Information("Sve result: {Result}.", saveResult);
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult), "Save");
         DialogResult = true;

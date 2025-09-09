@@ -12,10 +12,9 @@ using Witcher3StringEditor.Serializers.Internal;
 
 namespace Witcher3StringEditor.Serializers;
 
-public class W3Serializer(IAppSettings appSettings, IBackupService backupService)
-    : IW3Serializer
+public class W3Serializer(IAppSettings appSettings, IBackupService backupService) : IW3Serializer
 {
-    public async Task<IReadOnlyCollection<IW3Item>> Deserialize(string path)
+    public async Task<IReadOnlyList<IW3Item>> Deserialize(string path)
     {
         try
         {
@@ -33,18 +32,18 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    public async Task<bool> Serialize(IW3Job w3Job)
+    public async Task<bool> Serialize(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context)
     {
-        return w3Job.W3FileType switch
+        return context.FileType switch
         {
-            W3FileType.Csv => await SerializeCsv(w3Job),
-            W3FileType.W3Strings => await SerializeW3Strings(w3Job),
-            W3FileType.Excel => await SerializeExcel(w3Job),
-            _ => throw new NotSupportedException($"The file type {w3Job.W3FileType} is not supported.")
+            W3FileType.Csv => await SerializeCsv(w3Items, context),
+            W3FileType.W3Strings => await SerializeW3Strings(w3Items, context),
+            W3FileType.Excel => await SerializeExcel(w3Items, context),
+            _ => throw new NotSupportedException($"The file type {context.FileType} is not supported.")
         };
     }
 
-    private static async Task<IReadOnlyCollection<IW3Item>> DeserializeCsv(string path)
+    private static async Task<IReadOnlyList<IW3Item>> DeserializeCsv(string path)
     {
         try
         {
@@ -93,12 +92,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<IReadOnlyCollection<IW3Item>> DeserializeW3Strings(string path)
+    private async Task<IReadOnlyList<IW3Item>> DeserializeW3Strings(string path)
     {
         try
         {
             using var process = await ExecuteExternalProcess(appSettings.W3StringsPath,
-                Parser.Default.FormatCommandLine(new W3Options
+                Parser.Default.FormatCommandLine(new W3StringsOptions
                 {
                     Decode = path
                 }));
@@ -125,12 +124,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Information("Output: {Data}.", e.Data);
     }
 
-    private async Task<bool> SerializeCsv(IW3Job w3Job, string folder)
+    private async Task<bool> SerializeCsv(IReadOnlyCollection<IW3Item> w3Items, W3SerializationContext context)
     {
         try
         {
-            var saveLang = Enum.GetName(w3Job.Language);
-            var lang = w3Job.Language
+            var saveLang = Enum.GetName(context.Language)!.ToLowerInvariant();
+            var lang = context.Language
                 is not W3Language.Ar
                 and not W3Language.Br
                 and not W3Language.Cn
@@ -142,10 +141,10 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]");
             stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
-            foreach (var item in w3Job.W3Items)
+            foreach (var item in w3Items)
                 stringBuilder.AppendLine(CultureInfo.InvariantCulture,
                     $"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
-            var csvPath = Path.Combine(folder, $"{saveLang}.csv");
+            var csvPath = Path.Combine(context.Output, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
             await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
@@ -158,23 +157,17 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<bool> SerializeCsv(IW3Job w3Job)
-    {
-        return await SerializeCsv(w3Job, w3Job.Path);
-    }
-
-    private async Task<bool> SerializeExcel(IW3Job w3Job)
+    private async Task<bool> SerializeExcel(IReadOnlyList<IW3Item> w3Items, W3SerializationContext ctx)
     {
         try
         {
             return await Task.Run(() =>
             {
-                var saveLang = Enum.GetName(w3Job.Language);
-                var path = Path.Combine(w3Job.Path, $"{saveLang}.xlsx");
+                var saveLang = Enum.GetName(ctx.Language)!.ToLowerInvariant();
+                var path = Path.Combine(ctx.Output, $"{saveLang}.xlsx");
                 if (File.Exists(path))
                     Guard.IsTrue(backupService.Backup(path));
-                var items = w3Job.W3Items.ToArray();
-                Guard.IsGreaterThan(items.Length, 0);
+                Guard.IsGreaterThan(w3Items.Count, 0);
                 using var fileStream = File.Create(path);
                 using var excelEngine = new ExcelEngine();
                 var application = excelEngine.Excel;
@@ -182,9 +175,9 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 var workbook = application.Workbooks.Create(1);
                 var worksheet = workbook.Worksheets[0];
                 SetTableHeaders(worksheet);
-                SetTableStyles(worksheet, items.Length);
+                SetTableStyles(worksheet, w3Items.Count);
                 SetColumnWidths(worksheet);
-                WriteDataToWorksheet(worksheet, items);
+                WriteDataToWorksheet(worksheet, w3Items);
                 workbook.SaveAs(fileStream);
                 return true;
             });
@@ -233,9 +226,9 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         worksheet["D:E"].ColumnWidth = 50;
     }
 
-    private static void WriteDataToWorksheet(IWorksheet worksheet, IW3Item[] items)
+    private static void WriteDataToWorksheet(IWorksheet worksheet, IReadOnlyList<IW3Item> items)
     {
-        for (var i = 0; i < items.Length; i++)
+        for (var i = 0; i < items.Count; i++)
         {
             var rowIndex = i + 2;
             worksheet[$"A{rowIndex}"].Value = items[i].StrId;
@@ -246,14 +239,19 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<bool> SerializeW3Strings(IW3Job w3Job)
+    private async Task<bool> SerializeW3Strings(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context)
     {
         try
         {
-            var (tempFolder, csvPath, tempW3StringsPath, w3StringsPath) = GenerateW3StringsFilePaths(w3Job);
-            Guard.IsTrue(await SerializeCsv(w3Job, tempFolder));
-            Guard.IsTrue(await StartSerializationProcess(w3Job, csvPath));
-            Guard.IsTrue(CopyTempFilesWithBackup(tempW3StringsPath, w3StringsPath));
+            var saveLang = Enum.GetName(context.Language)!.ToLowerInvariant();
+            var tempDirectory = Directory.CreateTempSubdirectory().FullName;
+            var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
+            var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
+            var outputW3StringsPath = Path.Combine(context.Output, $"{saveLang}.w3strings");
+            context.Output = tempDirectory;
+            Guard.IsTrue(await SerializeCsv(w3Items, context));
+            Guard.IsTrue(await StartSerializationProcess(context, tempCsvPath));
+            Guard.IsTrue(CopyTempFilesWithBackup(tempW3StringsPath, outputW3StringsPath));
             return true;
         }
         catch (Exception ex)
@@ -263,23 +261,13 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private static (string tempFolder, string csvPath, string tempW3StringsPath, string w3StringsPath)
-        GenerateW3StringsFilePaths(IW3Job w3Job)
-    {
-        var saveLang = Enum.GetName(w3Job.Language);
-        var tempFolder = Directory.CreateTempSubdirectory().FullName;
-        var csvPath = Path.Combine(tempFolder, $"{saveLang}.csv");
-        return (tempFolder, csvPath, tempW3StringsPath: Path.ChangeExtension(csvPath, ".csv.w3strings"),
-            Path.Combine(w3Job.Path, $"{saveLang}.w3strings"));
-    }
-
-    private async Task<bool> StartSerializationProcess(IW3Job w3Job, string csvPath)
+    private async Task<bool> StartSerializationProcess(W3SerializationContext context, string path)
     {
         try
         {
-            using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, w3Job.IsIgnoreIdSpaceCheck
-                ? Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IsIgnoreIdSpaceCheck = true })
-                : Parser.Default.FormatCommandLine(new W3Options { Encode = csvPath, IdSpace = w3Job.IdSpace }));
+            using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, context.IsIgnoreIdSpaceCheck
+                ? Parser.Default.FormatCommandLine(new W3StringsOptions { Encode = path, IgnoreIdSpaceCheck = true })
+                : Parser.Default.FormatCommandLine(new W3StringsOptions { Encode = path, IdSpace = context.IdSpace }));
             return process.ExitCode == 0;
         }
         catch (Exception ex)

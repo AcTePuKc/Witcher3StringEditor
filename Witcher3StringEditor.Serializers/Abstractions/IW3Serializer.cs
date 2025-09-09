@@ -1,10 +1,11 @@
-﻿using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common;
+using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Serializers.Abstractions;
 
 public interface IW3Serializer
 {
-    public Task<IReadOnlyCollection<IW3Item>> Deserialize(string path);
+    public Task<IReadOnlyList<IW3Item>> Deserialize(string path);
 
-    public Task<bool> Serialize(IW3Job w3Job);
+    public Task<bool> Serialize(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context);
 }
