@@ -21,20 +21,26 @@ public partial class BackupDialogViewModel(
     private async Task Restore(IBackupItem backupItem)
     {
         if (!File.Exists(backupItem.BackupPath))
-        {
-            Log.Error("The backup file {Path} does no exist.", backupItem.BackupPath);
-            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupFileNoFound"))
-                _ = backupService.Delete(backupItem);
-        }
+            await HandleMissingBackupFile(backupItem);
         else
+            await HandleExistingBackupFile(backupItem);
+    }
+
+    private async Task HandleExistingBackupFile(IBackupItem backupItem)
+    {
+        if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupRestore"))
         {
-            if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupRestore"))
-            {
-                Log.Information("The restoration of file {Path} has been approved.", backupItem.OrginPath);
-                if (!backupService.Restore(backupItem))
-                    _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
-            }
+            Log.Information("The restoration of file {Path} has been approved.", backupItem.OrginPath);
+            if (!backupService.Restore(backupItem))
+                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
         }
+    }
+
+    private async Task HandleMissingBackupFile(IBackupItem backupItem)
+    {
+        Log.Error("The backup file {Path} does no exist.", backupItem.BackupPath);
+        if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupFileNoFound"))
+            _ = backupService.Delete(backupItem);
     }
 
     [RelayCommand]
