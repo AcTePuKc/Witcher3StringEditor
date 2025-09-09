@@ -139,16 +139,11 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 W3Language.Ar or W3Language.Br or W3Language.Cn or W3Language.Esmx or W3Language.Kr or W3Language.Tr => "cleartext",
                 _ => saveLang
             };
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]");
-            stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
-            foreach (var item in w3Items)
-                stringBuilder.AppendLine(CultureInfo.InvariantCulture,
-                    $"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
+            var csvContent = BuildCsvContent(w3Items, lang);
             var csvPath = Path.Combine(context.OutputDirectory, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
-            await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
+            await File.WriteAllTextAsync(csvPath, csvContent);
             return true;
         }
         catch (Exception ex)
@@ -156,6 +151,17 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Error(ex, "An error occurred while serializing the CSV file.");
             return false;
         }
+    }
+
+    private static string BuildCsvContent(IReadOnlyCollection<IW3StringItem> w3Items, string lang)
+    {
+        var stringBuilder = new StringBuilder();
+        stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]");
+        stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
+        foreach (var item in w3Items)
+            stringBuilder.AppendLine(CultureInfo.InvariantCulture,
+                $"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
+        return stringBuilder.ToString();
     }
 
     private async Task<bool> SerializeExcel(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context)
