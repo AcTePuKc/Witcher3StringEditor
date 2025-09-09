@@ -175,25 +175,39 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (!string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
-            {
-                var found = _w3Items.First(x => x.TrackingId == CurrentTranslateItemModel.Id);
-                Guard.IsNotNull(found);
-                found.Text = CurrentTranslateItemModel.TranslatedText;
-            }
-            else
-            {
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
-                    "TranslatedTextInvalid");
-            }
-
-            CurrentTranslateItemModel.IsSaved = true;
+            if (!GetValue(CurrentTranslateItemModel)) return;
+            SaveTranslatedTextToItem(CurrentTranslateItemModel);
+            UpdateTranslateItemSavedState(CurrentTranslateItemModel);
             Log.Information("Translation saved.");
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to save translation.");
+            LogSaveError(ex);
         }
+    }
+
+    private static bool GetValue(TranslateItemModel currentTranslateItemModel)
+    {
+        if (!string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)) return true;
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
+        return false;
+    }
+
+    private void SaveTranslatedTextToItem(TranslateItemModel currentTranslateItemModel)
+    {
+        var found = _w3Items.First(x => x.TrackingId == currentTranslateItemModel.Id);
+        Guard.IsNotNull(found);
+        found.Text = currentTranslateItemModel.TranslatedText;
+    }
+
+    private static void UpdateTranslateItemSavedState(TranslateItemModel currentTranslateItemModel,bool isSaved = true)
+    {
+        currentTranslateItemModel.IsSaved = isSaved;
+    }
+
+    private static void LogSaveError(Exception ex)
+    {
+        Log.Error(ex, "Failed to save translation.");
     }
 
     private async Task Navigate(int indexChange)
@@ -203,11 +217,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             if (CurrentTranslateItemModel is { IsSaved: false }
                 && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-            {
-                var found = _w3Items.First(x => x.TrackingId == CurrentTranslateItemModel.Id);
-                Guard.IsNotNull(found);
-                found.Text = CurrentTranslateItemModel.TranslatedText;
-            }
+                SaveTranslatedTextToItem(CurrentTranslateItemModel);
 
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
