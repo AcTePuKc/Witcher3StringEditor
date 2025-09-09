@@ -99,7 +99,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             using var process = await ExecuteExternalProcess(appSettings.W3StringsPath,
                 Parser.Default.FormatCommandLine(new W3StringsOptions
                 {
-                    Decode = path
+                    InputFileToDecode = path
                 }));
 
             Guard.IsEqualTo(process.ExitCode, 0);
@@ -266,8 +266,8 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         try
         {
             using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, context.IsIgnoreIdSpaceCheck
-                ? Parser.Default.FormatCommandLine(new W3StringsOptions { Encode = path, IgnoreIdSpaceCheck = true })
-                : Parser.Default.FormatCommandLine(new W3StringsOptions { Encode = path, IdSpace = context.IdSpace }));
+                ? Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, IgnoreIdSpaceCheck = true })
+                : Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, ExpectedIdSpace = context.IdSpace }));
             return process.ExitCode == 0;
         }
         catch (Exception ex)
