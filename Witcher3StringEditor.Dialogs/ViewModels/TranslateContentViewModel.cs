@@ -176,7 +176,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
             if (!IsValidTranslation(CurrentTranslateItemModel)) return;
-            SaveTranslatedTextToItem(CurrentTranslateItemModel);
+            if(!SaveTranslatedTextToItem(CurrentTranslateItemModel)) return;
             Log.Information("Translation saved.");
         }
         catch (Exception ex)
@@ -192,12 +192,13 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         return false;
     }
 
-    private void SaveTranslatedTextToItem(TranslateItemModel currentTranslateItemModel)
+    private bool SaveTranslatedTextToItem(TranslateItemModel currentTranslateItemModel)
     {
-        var found = _w3Items.First(x => x.TrackingId == currentTranslateItemModel.Id);
-        Guard.IsNotNull(found);
+        var found = _w3Items.FirstOrDefault(x => x.TrackingId == currentTranslateItemModel.Id);
+        if (found == null) return false;
         found.Text = currentTranslateItemModel.TranslatedText;
         currentTranslateItemModel.IsSaved = true;
+        return true;
     }
     
     private static void LogSaveError(Exception ex)
