@@ -12,14 +12,13 @@ using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposable
+public sealed partial class TranslateContentViewModel : ObservableObject, IAsyncDisposable
 {
     private readonly ITranslator _translator;
     private readonly IReadOnlyList<IEditW3Item> _w3Items;
     private CancellationTokenSource? _cancellationTokenSource;
 
     [ObservableProperty] private TranslateItemModel? _currentTranslateItemModel;
-    private bool _disposedValue;
 
     [ObservableProperty] private ILanguage _formLanguage;
 
@@ -79,19 +78,14 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
 
     public async ValueTask DisposeAsync()
     {
-        if (!_disposedValue)
+        if (_cancellationTokenSource != null)
         {
-            if (_cancellationTokenSource != null)
-            {
-                if (!_cancellationTokenSource.IsCancellationRequested)
-                    await _cancellationTokenSource.CancelAsync();
-                _cancellationTokenSource.Dispose();
-            }
-
-            _disposedValue = true;
-            GC.SuppressFinalize(this);
-            Log.Information("TranslateContentViewModel is being disposed.");
+            if (!_cancellationTokenSource.IsCancellationRequested)
+                await _cancellationTokenSource.CancelAsync();
+            _cancellationTokenSource.Dispose();
         }
+
+        Log.Information("TranslateContentViewModel is being disposed.");
     }
 
     partial void OnIndexOfItemsChanged(int value)
@@ -229,18 +223,6 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
         await Navigate(1);
     }
 
-    ~TranslateContentViewModel()
-    {
-        if (!_disposedValue)
-        {
-            if (_cancellationTokenSource == null) return;
-            if (!_cancellationTokenSource.IsCancellationRequested)
-                _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
-        }
-
-        Log.Information("TranslateContentViewModel is being finalized.");
-    }
 
     partial void OnFormLanguageChanged(ILanguage value)
     {

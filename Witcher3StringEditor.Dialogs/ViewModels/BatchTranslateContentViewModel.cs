@@ -9,12 +9,11 @@ using Witcher3StringEditor.Common.Abstractions;
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDisposable
+public sealed partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDisposable
 {
     private readonly ITranslator _translator;
     private readonly IReadOnlyCollection<IW3Item> _w3Items;
     private CancellationTokenSource? _cancellationTokenSource;
-    private bool _disposedValue;
 
     [ObservableProperty] private int _endIndex;
 
@@ -69,19 +68,14 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
 
     public async ValueTask DisposeAsync()
     {
-        if (!_disposedValue)
+        if (_cancellationTokenSource != null)
         {
-            if (_cancellationTokenSource != null)
-            {
-                if (!_cancellationTokenSource.IsCancellationRequested)
-                    await _cancellationTokenSource.CancelAsync();
-                _cancellationTokenSource.Dispose();
-            }
-
-            _disposedValue = true;
-            GC.SuppressFinalize(this);
-            Log.Information("BatchTranslateContentViewModel is being disposed.");
+            if (!_cancellationTokenSource.IsCancellationRequested)
+                await _cancellationTokenSource.CancelAsync();
+            _cancellationTokenSource.Dispose();
         }
+
+        Log.Information("BatchTranslateContentViewModel is being disposed.");
     }
 
     partial void OnFormLanguageChanged(ILanguage value)
@@ -179,18 +173,5 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
             _cancellationTokenSource.Dispose();
             IsBusy = false;
         }
-    }
-
-    ~BatchTranslateContentViewModel()
-    {
-        if (!_disposedValue)
-        {
-            if (_cancellationTokenSource == null) return;
-            if (!_cancellationTokenSource.IsCancellationRequested)
-                _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
-        }
-
-        Log.Information("BatchTranslateContentViewModel is being finalized.");
     }
 }
