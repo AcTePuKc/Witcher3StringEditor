@@ -5,15 +5,15 @@ namespace Witcher3StringEditor.Models;
 
 public partial class W3ItemModel : ObservableObject, IEditW3Item
 {
-    [ObservableProperty] private string keyHex = string.Empty;
+    [ObservableProperty] private string _keyHex = string.Empty;
 
-    [ObservableProperty] private string keyName = string.Empty;
+    [ObservableProperty] private string _keyName = string.Empty;
 
-    [ObservableProperty] private string oldText = string.Empty;
+    [ObservableProperty] private string _oldText = string.Empty;
 
-    [ObservableProperty] private string strId = string.Empty;
+    [ObservableProperty] private string _strId = string.Empty;
 
-    [ObservableProperty] private string text = string.Empty;
+    [ObservableProperty] private string _text = string.Empty;
 
     public W3ItemModel(IW3Item w3Item)
     {

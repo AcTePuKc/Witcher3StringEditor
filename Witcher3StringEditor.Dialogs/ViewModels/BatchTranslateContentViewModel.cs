@@ -11,43 +11,43 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDisposable
 {
-    private readonly ITranslator translator;
-    private readonly IReadOnlyCollection<IW3Item> w3Items;
-    private CancellationTokenSource? cancellationTokenSource;
-    private bool disposedValue;
+    private readonly ITranslator _translator;
+    private readonly IReadOnlyCollection<IW3Item> _w3Items;
+    private CancellationTokenSource? _cancellationTokenSource;
+    private bool _disposedValue;
 
-    [ObservableProperty] private int endIndex;
+    [ObservableProperty] private int _endIndex;
 
-    [ObservableProperty] private int endIndexMin;
+    [ObservableProperty] private int _endIndexMin;
 
-    [ObservableProperty] private int failureCount;
+    [ObservableProperty] private int _failureCount;
 
-    [ObservableProperty] private ILanguage formLanguage;
+    [ObservableProperty] private ILanguage _formLanguage;
 
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
-    private bool isBusy;
+    private bool _isBusy;
 
-    [ObservableProperty] private IEnumerable<ILanguage> languages;
+    [ObservableProperty] private IEnumerable<ILanguage> _languages;
 
-    [ObservableProperty] private int maxValue;
+    [ObservableProperty] private int _maxValue;
 
-    [ObservableProperty] private int pendingCount;
+    [ObservableProperty] private int _pendingCount;
 
-    [ObservableProperty] private int startIndex;
+    [ObservableProperty] private int _startIndex;
 
-    [ObservableProperty] private int successCount;
+    [ObservableProperty] private int _successCount;
 
-    [ObservableProperty] private ILanguage toLanguage;
+    [ObservableProperty] private ILanguage _toLanguage;
 
     public BatchTranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
         IEnumerable<IW3Item> w3Items, int startIndex)
     {
-        this.translator = translator;
-        this.w3Items = [.. w3Items];
+        _translator = translator;
+        _w3Items = [.. w3Items];
         Languages = Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         StartIndex = startIndex;
-        EndIndex = MaxValue = this.w3Items.Count;
+        EndIndex = MaxValue = this._w3Items.Count;
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
         {
@@ -69,16 +69,16 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
 
     public async ValueTask DisposeAsync()
     {
-        if (!disposedValue)
+        if (!_disposedValue)
         {
-            if (cancellationTokenSource != null)
+            if (_cancellationTokenSource != null)
             {
-                if (!cancellationTokenSource.IsCancellationRequested)
-                    await cancellationTokenSource.CancelAsync();
-                cancellationTokenSource.Dispose();
+                if (!_cancellationTokenSource.IsCancellationRequested)
+                    await _cancellationTokenSource.CancelAsync();
+                _cancellationTokenSource.Dispose();
             }
 
-            disposedValue = true;
+            _disposedValue = true;
             GC.SuppressFinalize(this);
             Log.Information("BatchTranslateContentViewModel is being disposed.");
         }
@@ -122,16 +122,16 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
     private async Task Start()
     {
         IsBusy = true;
-        cancellationTokenSource = new CancellationTokenSource();
+        _cancellationTokenSource = new CancellationTokenSource();
         var tLanguage = ToLanguage;
         var fLanguage = FormLanguage;
         ResetTranslationCounts();
-        foreach (var item in w3Items.Skip(StartIndex - 1).Take(PendingCount))
-            if (!cancellationTokenSource.IsCancellationRequested)
+        foreach (var item in _w3Items.Skip(StartIndex - 1).Take(PendingCount))
+            if (!_cancellationTokenSource.IsCancellationRequested)
             {
                 try
                 {
-                    var (result, translation) = await TranslateItem(translator, item.Text, tLanguage, fLanguage);
+                    var (result, translation) = await TranslateItem(_translator, item.Text, tLanguage, fLanguage);
                     if (result)
                     {
                         item.Text = translation;
@@ -145,7 +145,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
                 catch (Exception ex)
                 {
                     Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}",
-                        translator.Name, ex.Message);
+                        _translator.Name, ex.Message);
                     FailureCount++;
                 }
 
@@ -173,22 +173,22 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
     [RelayCommand(CanExecute = nameof(CanCancel))]
     private async Task Cancel()
     {
-        if (IsBusy && cancellationTokenSource != null)
+        if (IsBusy && _cancellationTokenSource != null)
         {
-            await cancellationTokenSource.CancelAsync();
-            cancellationTokenSource.Dispose();
+            await _cancellationTokenSource.CancelAsync();
+            _cancellationTokenSource.Dispose();
             IsBusy = false;
         }
     }
 
     ~BatchTranslateContentViewModel()
     {
-        if (!disposedValue)
+        if (!_disposedValue)
         {
-            if (cancellationTokenSource == null) return;
-            if (!cancellationTokenSource.IsCancellationRequested)
-                cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
+            if (_cancellationTokenSource == null) return;
+            if (!_cancellationTokenSource.IsCancellationRequested)
+                _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
 
         Log.Information("BatchTranslateContentViewModel is being finalized.");

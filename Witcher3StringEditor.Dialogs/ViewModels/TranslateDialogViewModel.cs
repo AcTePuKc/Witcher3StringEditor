@@ -14,29 +14,29 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class TranslateDialogViewModel : ObservableObject, IModalDialogViewModel
 {
-    private readonly IAppSettings appSettings;
+    private readonly IAppSettings _appSettings;
 
-    private readonly int index;
+    private readonly int _index;
 
-    private readonly ITranslator translator;
+    private readonly ITranslator _translator;
 
-    private readonly IReadOnlyCollection<IEditW3Item> w3Items;
+    private readonly IReadOnlyCollection<IEditW3Item> _w3Items;
 
-    [ObservableProperty] private object currentViewModel;
+    [ObservableProperty] private object _currentViewModel;
 
-    [ObservableProperty] private string title = Strings.TranslateDialogTitle;
+    [ObservableProperty] private string _title = Strings.TranslateDialogTitle;
 
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator,
         IEnumerable<IEditW3Item> w3Items,
         int index)
     {
-        this.w3Items = [.. w3Items];
-        this.index = index;
-        this.appSettings = appSettings;
-        this.translator = translator;
-        Log.Information("Total items to translate: {Count}.", this.w3Items.Count);
+        _w3Items = [.. w3Items];
+        _index = index;
+        _appSettings = appSettings;
+        _translator = translator;
+        Log.Information("Total items to translate: {Count}.", this._w3Items.Count);
         Log.Information("Starting index: {Index}.", index);
-        CurrentViewModel = new TranslateContentViewModel(appSettings, translator, this.w3Items, index);
+        CurrentViewModel = new TranslateContentViewModel(appSettings, translator, this._w3Items, index);
     }
 
     public bool? DialogResult => true;
@@ -56,9 +56,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
                 await ((IAsyncDisposable)CurrentViewModel).DisposeAsync();
                 CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
-                    ? new TranslateContentViewModel(appSettings, translator, w3Items, index)
-                    : new BatchTranslateContentViewModel(appSettings, translator,
-                        w3Items, index + 1);
+                    ? new TranslateContentViewModel(_appSettings, _translator, _w3Items, _index)
+                    : new BatchTranslateContentViewModel(_appSettings, _translator,
+                        _w3Items, _index + 1);
                 Title = CurrentViewModel is BatchTranslateContentViewModel
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;
@@ -102,7 +102,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             && !string.IsNullOrWhiteSpace(item.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
         {
-            var found = w3Items.First(x => x.Id == item.Id);
+            var found = _w3Items.First(x => x.Id == item.Id);
             Guard.IsNotNull(found);
             found.Text = item.TranslatedText;
             Log.Information("Auto-saved unsaved changes.");

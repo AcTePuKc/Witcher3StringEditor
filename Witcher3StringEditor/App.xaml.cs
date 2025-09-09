@@ -37,10 +37,10 @@ namespace Witcher3StringEditor;
 /// </summary>
 public partial class App
 {
-    private IAppSettings? appSettings;
-    private IConfigService? configService;
+    private IAppSettings? _appSettings;
+    private IConfigService? _configService;
     private ObserverBase<LogEvent>? logObserver;
-    private Mutex? mutex;
+    private Mutex? _mutex;
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
@@ -80,8 +80,8 @@ public partial class App
 
     private void InitializeAppSettings()
     {
-        configService = Ioc.Default.GetRequiredService<IConfigService>();
-        appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
+        _configService = Ioc.Default.GetRequiredService<IConfigService>();
+        _appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
     }
 
     private static string GetAppSettingsPath()
@@ -97,11 +97,11 @@ public partial class App
 
     private void InitializeCulture()
     {
-        var cultureInfo = appSettings!.Language == string.Empty
+        var cultureInfo = _appSettings!.Language == string.Empty
             ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
-            : new CultureInfo(appSettings.Language);
-        if (appSettings.Language == string.Empty)
-            appSettings.Language = cultureInfo.Name;
+            : new CultureInfo(_appSettings.Language);
+        if (_appSettings.Language == string.Empty)
+            _appSettings.Language = cultureInfo.Name;
         I18NExtension.Culture = cultureInfo;
     }
 
@@ -131,7 +131,7 @@ public partial class App
 
     private bool IsAnotherInstanceRunning()
     {
-        mutex = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
+        _mutex = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
             out var createdNew);
         return !createdNew;
     }
@@ -210,8 +210,8 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        mutex?.Dispose();
-        configService?.Save(appSettings);
+        _mutex?.Dispose();
+        _configService?.Save(_appSettings);
         Log.Information("Application exited.");
         logObserver?.Dispose();
         Log.CloseAndFlush();

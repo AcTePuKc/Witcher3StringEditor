@@ -14,35 +14,35 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposable
 {
-    private readonly ITranslator translator;
-    private readonly IReadOnlyList<IEditW3Item> w3Items;
-    private CancellationTokenSource? cancellationTokenSource;
+    private readonly ITranslator _translator;
+    private readonly IReadOnlyList<IEditW3Item> _w3Items;
+    private CancellationTokenSource? _cancellationTokenSource;
 
-    [ObservableProperty] private TranslateItemModel? currentTranslateItemModel;
-    private bool disposedValue;
+    [ObservableProperty] private TranslateItemModel? _currentTranslateItemModel;
+    private bool _disposedValue;
 
-    [ObservableProperty] private ILanguage formLanguage;
+    [ObservableProperty] private ILanguage _formLanguage;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
-    private int indexOfItems = -1;
+    private int _indexOfItems = -1;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private bool isBusy;
+    private bool _isBusy;
 
-    [ObservableProperty] private IEnumerable<ILanguage> languages;
+    [ObservableProperty] private IEnumerable<ILanguage> _languages;
 
-    [ObservableProperty] private ILanguage toLanguage;
+    [ObservableProperty] private ILanguage _toLanguage;
 
     public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator, IEnumerable<IEditW3Item> w3Items,
         int index)
     {
-        this.w3Items = [.. w3Items];
-        this.translator = translator;
+        _w3Items = [.. w3Items];
+        _translator = translator;
         Languages = translator.Name switch
         {
             "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x =>
@@ -75,20 +75,20 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
 
     private bool CanPrevious => IndexOfItems > 0 && !IsBusy;
 
-    private bool CanNext => IndexOfItems < w3Items.Count - 1 && !IsBusy;
+    private bool CanNext => IndexOfItems < _w3Items.Count - 1 && !IsBusy;
 
     public async ValueTask DisposeAsync()
     {
-        if (!disposedValue)
+        if (!_disposedValue)
         {
-            if (cancellationTokenSource != null)
+            if (_cancellationTokenSource != null)
             {
-                if (!cancellationTokenSource.IsCancellationRequested)
-                    await cancellationTokenSource.CancelAsync();
-                cancellationTokenSource.Dispose();
+                if (!_cancellationTokenSource.IsCancellationRequested)
+                    await _cancellationTokenSource.CancelAsync();
+                _cancellationTokenSource.Dispose();
             }
 
-            disposedValue = true;
+            _disposedValue = true;
             GC.SuppressFinalize(this);
             Log.Information("TranslateContentViewModel is being disposed.");
         }
@@ -96,7 +96,7 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
 
     partial void OnIndexOfItemsChanged(int value)
     {
-        var item = w3Items[value];
+        var item = _w3Items[value];
         CurrentTranslateItemModel = new TranslateItemModel { Id = item.Id, Text = item.Text };
     }
 
@@ -117,11 +117,11 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
                     "TranslationNotEmpty")) return;
             IsBusy = true;
             CurrentTranslateItemModel.TranslatedText = string.Empty;
-            cancellationTokenSource = new CancellationTokenSource();
+            _cancellationTokenSource = new CancellationTokenSource();
             Log.Information("Starting translation.");
-            var (result, translation) = await ExecuteTranslationTask(translator, CurrentTranslateItemModel.Text,
+            var (result, translation) = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text,
                 ToLanguage,
-                FormLanguage, cancellationTokenSource);
+                FormLanguage, _cancellationTokenSource);
             if (!result)
             {
                 IsBusy = false;
@@ -137,9 +137,9 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
         {
             _ = WeakReferenceMessenger.Default.Send(
                 new ValueChangedMessage<string>(
-                    $"The translator: {translator.Name} returned an error.\nException: {ex.Message}"),
+                    $"The translator: {_translator.Name} returned an error.\nException: {ex.Message}"),
                 "TranslateError");
-            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", translator.Name,
+            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", _translator.Name,
                 ex.Message);
         }
         finally
@@ -175,7 +175,7 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
             Guard.IsNotNull(CurrentTranslateItemModel);
             if (!string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
             {
-                var found = w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
+                var found = _w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
                 Guard.IsNotNull(found);
                 found.Text = CurrentTranslateItemModel.TranslatedText;
             }
@@ -202,14 +202,14 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
                 && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
             {
-                var found = w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
+                var found = _w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
                 Guard.IsNotNull(found);
                 found.Text = CurrentTranslateItemModel.TranslatedText;
             }
 
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
-                translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
+                _translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
         }
         catch (Exception ex)
         {
@@ -231,12 +231,12 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
 
     ~TranslateContentViewModel()
     {
-        if (!disposedValue)
+        if (!_disposedValue)
         {
-            if (cancellationTokenSource == null) return;
-            if (!cancellationTokenSource.IsCancellationRequested)
-                cancellationTokenSource.Cancel();
-            cancellationTokenSource.Dispose();
+            if (_cancellationTokenSource == null) return;
+            if (!_cancellationTokenSource.IsCancellationRequested)
+                _cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Dispose();
         }
 
         Log.Information("TranslateContentViewModel is being finalized.");

@@ -10,7 +10,7 @@ public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
         = DependencyProperty.Register(nameof(MinHeight), typeof(double), typeof(SfDataGridQueryRowHeightBehavior),
             new PropertyMetadata(25.0));
 
-    private readonly GridRowSizingOptions gridRowResizingOptions = new();
+    private readonly GridRowSizingOptions _gridRowResizingOptions = new();
 
     public double MinHeight
     {
@@ -30,7 +30,7 @@ public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
 
     private void AssociatedObject_QueryRowHeight(object? sender, QueryRowHeightEventArgs e)
     {
-        if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions,
+        if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, _gridRowResizingOptions,
                 out var autoHeight) || autoHeight <= MinHeight) return;
         e.Height = autoHeight;
         e.Handled = true;

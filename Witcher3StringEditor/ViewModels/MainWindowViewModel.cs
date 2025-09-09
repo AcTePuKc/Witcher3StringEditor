@@ -32,22 +32,22 @@ namespace Witcher3StringEditor.ViewModels;
 internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOpenedMessage>,
     IRecipient<ValueChangedMessage<LogEvent>>
 {
-    private readonly IAppSettings appSettings;
-    private readonly IBackupService backupService;
-    private readonly ICheckUpdateService checkUpdateService;
-    private readonly ICultureResolver cultureResolver;
-    private readonly IDialogService dialogService;
-    private readonly IExplorerService explorerService;
-    private readonly IPlayGameService playGameService;
-    private readonly IEnumerable<ITranslator> translators;
-    private readonly IW3Serializer w3Serializer;
+    private readonly IAppSettings _appSettings;
+    private readonly IBackupService _backupService;
+    private readonly ICheckUpdateService _checkUpdateService;
+    private readonly ICultureResolver _cultureResolver;
+    private readonly IDialogService _dialogService;
+    private readonly IExplorerService _explorerService;
+    private readonly IPlayGameService _playGameService;
+    private readonly IEnumerable<ITranslator> _translators;
+    private readonly IW3Serializer _w3Serializer;
 
-    [ObservableProperty] private string[]? dropFileData;
+    [ObservableProperty] private string[]? _dropFileData;
 
-    [ObservableProperty] private bool isUpdateAvailable;
+    [ObservableProperty] private bool _isUpdateAvailable;
 
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
-    private string outputFolder = string.Empty;
+    private string _outputFolder = string.Empty;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCommand))]
@@ -55,22 +55,22 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [NotifyCanExecuteChangedFor(nameof(DeleteCommand))]
     [NotifyCanExecuteChangedFor(nameof(ShowSaveDialogCommand))]
     [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
-    private ObservableCollection<W3ItemModel>? w3ItemModels;
+    private ObservableCollection<W3ItemModel>? _w3ItemModels;
 
     public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
         ICheckUpdateService checkUpdateService, IDialogService dialogService, IExplorerService explorerService,
         IPlayGameService playGameService, IW3Serializer w3Serializer, IEnumerable<ITranslator> translators,
         ICultureResolver cultureResolver)
     {
-        this.appSettings = appSettings;
-        this.translators = translators;
-        this.w3Serializer = w3Serializer;
-        this.backupService = backupService;
-        this.checkUpdateService = checkUpdateService;
-        this.dialogService = dialogService;
-        this.playGameService = playGameService;
-        this.explorerService = explorerService;
-        this.cultureResolver = cultureResolver;
+        _appSettings = appSettings;
+        _translators = translators;
+        _w3Serializer = w3Serializer;
+        _backupService = backupService;
+        _checkUpdateService = checkUpdateService;
+        _dialogService = dialogService;
+        _playGameService = playGameService;
+        _explorerService = explorerService;
+        _cultureResolver = cultureResolver;
         RegisterMessengerHandlers();
         SetupAppSettingsEventHandlers();
     }
@@ -82,9 +82,9 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private bool CanOpenWorkingFolder
         => Directory.Exists(OutputFolder);
 
-    private bool CanPlayGame => File.Exists(appSettings.GameExePath);
+    private bool CanPlayGame => File.Exists(_appSettings.GameExePath);
 
-    private bool CanOpenFile => File.Exists(appSettings.W3StringsPath);
+    private bool CanOpenFile => File.Exists(_appSettings.W3StringsPath);
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
@@ -108,22 +108,22 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
 
     private void SetupAppSettingsEventHandlers()
     {
-        ((INotifyPropertyChanged)appSettings).PropertyChanged += (_, e) =>
+        ((INotifyPropertyChanged)_appSettings).PropertyChanged += (_, e) =>
         {
             switch (e.PropertyName)
             {
-                case nameof(appSettings.W3StringsPath):
+                case nameof(_appSettings.W3StringsPath):
                     OpenFileCommand.NotifyCanExecuteChanged();
                     DropFileCommand.NotifyCanExecuteChanged();
                     break;
-                case nameof(appSettings.GameExePath):
+                case nameof(_appSettings.GameExePath):
                     PlayGameCommand.NotifyCanExecuteChanged();
                     break;
-                case nameof(appSettings.Translator):
-                    ApplyTranslatorChange(appSettings);
+                case nameof(_appSettings.Translator):
+                    ApplyTranslatorChange(_appSettings);
                     break;
-                case nameof(appSettings.Language):
-                    ApplyLanguageChange(appSettings.Language);
+                case nameof(_appSettings.Language):
+                    ApplyLanguageChange(_appSettings.Language);
                     break;
             }
         };
@@ -169,10 +169,10 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor"));
         Log.Information("Installed Language Packs: {Languages}",
-            string.Join(", ", cultureResolver.SupportedCultures.Select(x => x.Name)));
-        Log.Information("Current Language: {Language}", appSettings.Language);
-        await CheckSettings(appSettings);
-        IsUpdateAvailable = await checkUpdateService.CheckUpdate();
+            string.Join(", ", _cultureResolver.SupportedCultures.Select(x => x.Name)));
+        Log.Information("Current Language: {Language}", _appSettings.Language);
+        await CheckSettings(_appSettings);
+        IsUpdateAvailable = await _checkUpdateService.CheckUpdate();
     }
 
     private static async Task CheckSettings(IAppSettings settings)
@@ -225,7 +225,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [RelayCommand(CanExecute = nameof(CanOpenFile))]
     private async Task OpenFile()
     {
-        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, new OpenFileDialogSettings
+        using var storageFile = await _dialogService.ShowOpenFileDialogAsync(this, new OpenFileDialogSettings
         {
             Filters =
             [
@@ -247,16 +247,16 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                 !await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "ReOpenFile")) return;
             Log.Information("The file {FileName} is being opened...", fileName);
             W3ItemModels = new ObservableCollection<W3ItemModel>(
-                [.. (await w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).Select(x => new W3ItemModel(x))]);
+                [.. (await _w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).Select(x => new W3ItemModel(x))]);
             Guard.IsGreaterThan(W3ItemModels.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
             OutputFolder = folder;
             Log.Information("Working directory set to {Folder}.", folder);
-            var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
+            var foundItem = _appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
             if (foundItem == null)
             {
-                appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
+                _appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
                 Log.Information("Added {FileName} to recent items.", fileName);
             }
             else
@@ -275,7 +275,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task Add()
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3ItemModel());
-        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
+        if (await _dialogService.ShowDialogAsync(this, dialogViewModel) == true
             && dialogViewModel.W3Item != null)
         {
             W3ItemModels!.Add(dialogViewModel.W3Item.Cast<W3ItemModel>());
@@ -291,7 +291,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task Edit(IEditW3Item w3Item)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
-        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
+        if (await _dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
         {
             var found = W3ItemModels!.First(x => x.Id == w3Item.Id);
             W3ItemModels![W3ItemModels.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3ItemModel>();
@@ -308,47 +308,47 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     {
         var w3Items = items.Cast<IEditW3Item>().ToArray();
         if (w3Items.Length > 0 &&
-            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
+            await _dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
             w3Items.ForEach(item => W3ItemModels!.Remove(item.Cast<W3ItemModel>()));
     }
 
     [RelayCommand]
     private async Task ShowBackupDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,
-            new BackupDialogViewModel(appSettings, backupService));
+        _ = await _dialogService.ShowDialogAsync(this,
+            new BackupDialogViewModel(_appSettings, _backupService));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
     private async Task ShowSaveDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(appSettings, w3Serializer, W3ItemModels!, OutputFolder));
+        _ = await _dialogService.ShowDialogAsync(this,
+            new SaveDialogViewModel(_appSettings, _w3Serializer, W3ItemModels!, OutputFolder));
     }
 
     [RelayCommand]
     private async Task ShowLogDialog()
     {
-        _ = await dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
+        _ = await _dialogService.ShowDialogAsync<LogDialogViewModel>(this, new LogDialogViewModel(LogEvents));
     }
 
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(appSettings, dialogService, translators, cultureResolver));
+        _ = await _dialogService.ShowDialogAsync(this,
+            new SettingDialogViewModel(_appSettings, _dialogService, _translators, _cultureResolver));
     }
 
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
-        await playGameService.PlayGame();
+        await _playGameService.PlayGame();
     }
 
     [RelayCommand]
     private async Task ShowAbout()
     {
-        _ = await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
+        _ = await _dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
         {
             { "Version", ThisAssembly.AssemblyInformationalVersion },
             { "BuildTime", BuildTimestamp.BuildTime.ToLocalTime() },
@@ -361,30 +361,30 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
-        explorerService.Open(OutputFolder);
+        _explorerService.Open(OutputFolder);
         Log.Information("Working folder opened.");
     }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
-        explorerService.Open(appSettings.NexusModUrl);
+        _explorerService.Open(_appSettings.NexusModUrl);
         Log.Information("NexusMods opened.");
     }
 
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,
-            new RecentDialogViewModel(appSettings));
+        _ = await _dialogService.ShowDialogAsync(this,
+            new RecentDialogViewModel(_appSettings));
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
     private async Task ShowTranslateDialog(IW3Item? w3Item)
     {
-        _ = await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(appSettings,
-                translators.First(x => x.Name == appSettings.Translator),
+        _ = await _dialogService.ShowDialogAsync(this,
+            new TranslateDialogViewModel(_appSettings,
+                _translators.First(x => x.Name == _appSettings.Translator),
                 W3ItemModels!, w3Item != null ? W3ItemModels.IndexOf(w3Item) : 0));
     }
 }

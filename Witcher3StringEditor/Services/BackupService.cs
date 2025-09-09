@@ -11,7 +11,7 @@ namespace Witcher3StringEditor.Services;
 
 internal class BackupService(IAppSettings appSettings) : IBackupService
 {
-    private readonly string backupFolderPath
+    private readonly string _backupFolderPath
         = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Backup");
 
@@ -30,11 +30,11 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
                 FileName = Path.GetFileName(path),
                 Hash = hash,
                 OrginPath = path,
-                BackupPath = Path.Combine(backupFolderPath, $"{Guid.NewGuid():N}.bak"),
+                BackupPath = Path.Combine(_backupFolderPath, $"{Guid.NewGuid():N}.bak"),
                 BackupTime = DateTime.Now
             };
-            if (!Directory.Exists(backupFolderPath))
-                Directory.CreateDirectory(backupFolderPath);
+            if (!Directory.Exists(_backupFolderPath))
+                Directory.CreateDirectory(_backupFolderPath);
             if (appSettings.BackupItems.Any(x =>
                     x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath && File.Exists(x.BackupPath)))
                 return true;

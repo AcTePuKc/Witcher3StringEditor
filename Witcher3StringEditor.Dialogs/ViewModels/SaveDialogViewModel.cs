@@ -15,14 +15,14 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class SaveDialogViewModel
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    private readonly IW3Serializer serializer;
+    private readonly IW3Serializer _serializer;
 
-    [ObservableProperty] private IW3Job w3Job;
+    [ObservableProperty] private IW3Job _w3Job;
 
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
         IEnumerable<IW3Item> w3Items, string path)
     {
-        this.serializer = serializer;
+        this._serializer = serializer;
         var items = w3Items.ToList();
         W3Job = new W3JobModel
         {
@@ -43,7 +43,7 @@ public partial class SaveDialogViewModel
     {
         Log.Information("Target filetype: {FileType}.", W3Job.W3FileType);
         Log.Information("Target language: {Language}.", W3Job.Language);
-        var saveResult = await serializer.Serialize(W3Job);
+        var saveResult = await _serializer.Serialize(W3Job);
         Log.Information("Sve result: {Result}.", saveResult);
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult), "Save");
         DialogResult = true;
