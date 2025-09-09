@@ -136,17 +136,14 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            var saveLang = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
-            var lang = context.TargetLanguage switch
+            var languageName = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
+            var csvLanguageIdentifier = context.TargetLanguage switch
             {
                 W3Language.Ar or W3Language.Br or W3Language.Cn or W3Language.Esmx or W3Language.Kr or W3Language.Tr => "cleartext",
-                _ => saveLang
+                _ => languageName
             };
-            var csvContent = BuildCsvContent(w3Items, lang);
-            var csvPath = Path.Combine(context.OutputDirectory, $"{saveLang}.csv");
-            if (File.Exists(csvPath))
-                Guard.IsTrue(backupService.Backup(csvPath));
-            await File.WriteAllTextAsync(csvPath, csvContent);
+            await WriteFileWithBackup(Path.Combine(context.OutputDirectory, $"{languageName}.csv"),
+                BuildCsvContent(w3Items, csvLanguageIdentifier));
             return true;
         }
         catch (Exception ex)
@@ -154,6 +151,13 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Error(ex, "An error occurred while serializing the CSV file.");
             return false;
         }
+    }
+
+    private async Task WriteFileWithBackup(string filePath, string content)
+    {
+        if (File.Exists(filePath))
+            Guard.IsTrue(backupService.Backup(filePath));
+        await File.WriteAllTextAsync(filePath, content);
     }
 
     private static string BuildCsvContent(IReadOnlyCollection<IW3StringItem> w3Items, string lang)
