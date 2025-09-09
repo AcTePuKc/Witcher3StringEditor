@@ -158,11 +158,16 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         CancellationToken cancellationToken)
     {
         foreach (var item in items)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            await ProcessSingleItem(item, toLanguage, fromLanguage);
-            PendingCount--;
-        }
+            if (!cancellationToken.IsCancellationRequested)
+            {
+                await ProcessSingleItem(item, toLanguage, fromLanguage);
+                PendingCount--;
+            }
+            else
+            {
+                Log.Information("The batch translation has been cancelled.");
+                break;
+            }
     }
 
     private async Task ProcessSingleItem(IW3StringItem item, ILanguage toLanguage, ILanguage fromLanguage)
@@ -179,10 +184,6 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
             {
                 FailureCount++;
             }
-        }
-        catch (OperationCanceledException) when (_cancellationTokenSource?.IsCancellationRequested == true)
-        {
-            throw;
         }
         catch (Exception ex)
         {
