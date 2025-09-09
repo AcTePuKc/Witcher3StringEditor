@@ -28,7 +28,7 @@ public partial class W3StringItemModel : ObservableObject, ITrackableW3StringIte
     {
     }
 
-    public Guid Id { get; } = Guid.NewGuid();
+    public Guid TrackingId { get; } = Guid.NewGuid();
 
     public object Clone()
     {

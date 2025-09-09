@@ -103,7 +103,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             && !string.IsNullOrWhiteSpace(item.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
         {
-            var found = _w3Items.First(x => x.Id == item.Id);
+            var found = _w3Items.First(x => x.TrackingId == item.Id);
             Guard.IsNotNull(found);
             found.Text = item.TranslatedText;
             Log.Information("Auto-saved unsaved changes.");

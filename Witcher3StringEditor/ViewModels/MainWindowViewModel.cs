@@ -294,7 +294,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         var dialogViewModel = new EditDataDialogViewModel(w3StringItem);
         if (await _dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
         {
-            var found = W3ItemModels!.First(x => x.Id == w3StringItem.Id);
+            var found = W3ItemModels!.First(x => x.TrackingId == w3StringItem.TrackingId);
             W3ItemModels![W3ItemModels.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3StringItemModel>();
             Log.Information("The W3Item has been updated.");
         }

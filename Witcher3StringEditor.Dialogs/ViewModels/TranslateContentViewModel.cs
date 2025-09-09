@@ -91,7 +91,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
     partial void OnIndexOfItemsChanged(int value)
     {
         var item = _w3Items[value];
-        CurrentTranslateItemModel = new TranslateItemModel { Id = item.Id, Text = item.Text };
+        CurrentTranslateItemModel = new TranslateItemModel { Id = item.TrackingId, Text = item.Text };
     }
 
     partial void OnIsBusyChanged(bool value)
@@ -169,7 +169,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             Guard.IsNotNull(CurrentTranslateItemModel);
             if (!string.IsNullOrEmpty(CurrentTranslateItemModel.TranslatedText))
             {
-                var found = _w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
+                var found = _w3Items.First(x => x.TrackingId == CurrentTranslateItemModel.Id);
                 Guard.IsNotNull(found);
                 found.Text = CurrentTranslateItemModel.TranslatedText;
             }
@@ -196,7 +196,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
                 && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
             {
-                var found = _w3Items.First(x => x.Id == CurrentTranslateItemModel.Id);
+                var found = _w3Items.First(x => x.TrackingId == CurrentTranslateItemModel.Id);
                 Guard.IsNotNull(found);
                 found.Text = CurrentTranslateItemModel.TranslatedText;
             }
