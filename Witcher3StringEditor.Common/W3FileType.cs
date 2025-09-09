@@ -2,7 +2,7 @@
 
 public enum W3FileType
 {
-    csv = 0,
-    w3Strings = 1,
-    excel = 2
+    Csv = 0,
+    W3Strings = 1,
+    Excel = 2
 }

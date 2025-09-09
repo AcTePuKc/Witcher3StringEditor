@@ -59,13 +59,13 @@ public partial class TranslateContentViewModel : ObservableObject, IAsyncDisposa
         var language = appSettings.PreferredLanguage;
         ToLanguage = language switch
         {
-            W3Language.br => Language.GetLanguage("pt"),
-            W3Language.cn => Language.GetLanguage("zh-CN"),
-            W3Language.esmx => Language.GetLanguage("es"),
-            W3Language.cz => Language.GetLanguage("cs"),
-            W3Language.jp => Language.GetLanguage("ja"),
-            W3Language.kr => Language.GetLanguage("ko"),
-            W3Language.zh => Language.GetLanguage("zh-TW"),
+            W3Language.Br => Language.GetLanguage("pt"),
+            W3Language.Cn => Language.GetLanguage("zh-CN"),
+            W3Language.Esmx => Language.GetLanguage("es"),
+            W3Language.Cz => Language.GetLanguage("cs"),
+            W3Language.Jp => Language.GetLanguage("ja"),
+            W3Language.Kr => Language.GetLanguage("ko"),
+            W3Language.Zh => Language.GetLanguage("zh-TW"),
             _ => Language.GetLanguage(Enum.GetName(language) ?? "en")
         };
         Log.Information("TranslateContentViewModel initialized.");

@@ -4,21 +4,21 @@ namespace Witcher3StringEditor.Common;
 
 public enum W3Language
 {
-    ar = 0,
-    br = 1,
-    cn = 2,
-    cz = 3,
-    [UsedImplicitly] de = 4,
-    [UsedImplicitly] en = 5,
-    [UsedImplicitly] es = 6,
-    esmx = 7,
-    [UsedImplicitly] fr = 8,
-    [UsedImplicitly] hu = 9,
-    [UsedImplicitly] it = 10,
-    jp = 11,
-    kr = 12,
-    [UsedImplicitly] pl = 13,
-    [UsedImplicitly] ru = 14,
-    zh = 15,
-    tr = 16
+    Ar = 0,
+    Br = 1,
+    Cn = 2,
+    Cz = 3,
+    [UsedImplicitly] De = 4,
+    [UsedImplicitly] En = 5,
+    [UsedImplicitly] Es = 6,
+    Esmx = 7,
+    [UsedImplicitly] Fr = 8,
+    [UsedImplicitly] Hu = 9,
+    [UsedImplicitly] It = 10,
+    Jp = 11,
+    Kr = 12,
+    [UsedImplicitly] Pl = 13,
+    [UsedImplicitly] Ru = 14,
+    Zh = 15,
+    Tr = 16
 }

@@ -94,7 +94,7 @@
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding W3Job.W3FileType}"
-                                                     Value="{x:Static common:W3FileType.w3Strings}">
+                                                     Value="{x:Static common:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -125,7 +125,7 @@
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding W3Job.W3FileType}"
-                                                     Value="{x:Static common:W3FileType.w3Strings}">
+                                                     Value="{x:Static common:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding W3Job.IsIgnoreIdSpaceCheck}" Value="True">

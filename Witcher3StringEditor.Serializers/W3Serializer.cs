@@ -37,9 +37,9 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         return w3Job.W3FileType switch
         {
-            W3FileType.csv => await SerializeCsv(w3Job),
-            W3FileType.w3Strings => await SerializeW3Strings(w3Job),
-            W3FileType.excel => await SerializeExcel(w3Job),
+            W3FileType.Csv => await SerializeCsv(w3Job),
+            W3FileType.W3Strings => await SerializeW3Strings(w3Job),
+            W3FileType.Excel => await SerializeExcel(w3Job),
             _ => throw new NotSupportedException($"The file type {w3Job.W3FileType} is not supported.")
         };
     }
@@ -131,12 +131,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         {
             var saveLang = Enum.GetName(w3Job.Language);
             var lang = w3Job.Language
-                is not W3Language.ar
-                and not W3Language.br
-                and not W3Language.cn
-                and not W3Language.esmx
-                and not W3Language.kr
-                and not W3Language.tr
+                is not W3Language.Ar
+                and not W3Language.Br
+                and not W3Language.Cn
+                and not W3Language.Esmx
+                and not W3Language.Kr
+                and not W3Language.Tr
                 ? saveLang
                 : "cleartext";
             var stringBuilder = new StringBuilder();
