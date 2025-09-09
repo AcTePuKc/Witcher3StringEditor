@@ -47,7 +47,7 @@ public partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDi
         Languages = Language.LanguageDictionary.Values
             .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         StartIndex = startIndex;
-        EndIndex = MaxValue = this._w3Items.Count;
+        EndIndex = MaxValue = _w3Items.Count;
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = appSettings.PreferredLanguage switch
         {

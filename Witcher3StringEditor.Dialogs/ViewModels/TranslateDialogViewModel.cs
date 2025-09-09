@@ -34,9 +34,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         _index = index;
         _appSettings = appSettings;
         _translator = translator;
-        Log.Information("Total items to translate: {Count}.", this._w3Items.Count);
+        Log.Information("Total items to translate: {Count}.", _w3Items.Count);
         Log.Information("Starting index: {Index}.", index);
-        CurrentViewModel = new TranslateContentViewModel(appSettings, translator, this._w3Items, index);
+        CurrentViewModel = new TranslateContentViewModel(appSettings, translator, _w3Items, index);
     }
 
     public bool? DialogResult => true;
