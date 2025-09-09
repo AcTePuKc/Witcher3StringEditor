@@ -22,8 +22,8 @@ public partial class SaveDialogViewModel
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
         IEnumerable<IW3Item> w3Items, string path)
     {
-        this._serializer = serializer;
-        var items = w3Items.ToList();
+        _serializer = serializer;
+        var items = w3Items.ToList().AsReadOnly();
         W3Job = new W3JobModel
         {
             Path = path,
