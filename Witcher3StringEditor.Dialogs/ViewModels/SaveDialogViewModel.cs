@@ -26,7 +26,7 @@ public partial class SaveDialogViewModel
         W3Job = new W3JobModel
         {
             Path = path,
-            W3Items = [..w3Items],
+            W3Items = w3Items,
             IdSpace = FindIdSpace(w3Items[0]),
             Language = appSettings.PreferredLanguage,
             W3FileType = appSettings.PreferredW3FileType

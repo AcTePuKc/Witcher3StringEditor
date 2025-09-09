@@ -15,7 +15,7 @@ namespace Witcher3StringEditor.Serializers;
 public class W3Serializer(IAppSettings appSettings, IBackupService backupService)
     : IW3Serializer
 {
-    public async Task<IEnumerable<IW3Item>> Deserialize(string path)
+    public async Task<IReadOnlyCollection<IW3Item>> Deserialize(string path)
     {
         try
         {
@@ -44,7 +44,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         };
     }
 
-    private static async Task<IEnumerable<IW3Item>> DeserializeCsv(string path)
+    private static async Task<IReadOnlyCollection<IW3Item>> DeserializeCsv(string path)
     {
         try
         {
@@ -93,7 +93,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<IEnumerable<IW3Item>> DeserializeW3Strings(string path)
+    private async Task<IReadOnlyCollection<IW3Item>> DeserializeW3Strings(string path)
     {
         try
         {

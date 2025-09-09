@@ -16,5 +16,5 @@ internal partial class W3JobModel : ObservableObject, IW3Job
 
     public required string Path { get; init; }
 
-    public required IEnumerable<IW3Item> W3Items { get; init; }
+    public required IReadOnlyCollection<IW3Item> W3Items { get; init; }
 }
