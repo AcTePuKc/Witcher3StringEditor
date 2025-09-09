@@ -37,36 +37,15 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
 
     [ObservableProperty] private ILanguage _toLanguage;
 
-    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator, IEnumerable<ITrackableW3StringItem> w3Items,
+    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator, IReadOnlyList<ITrackableW3StringItem> w3Items,
         int index)
     {
-        _w3Items = [.. w3Items];
-        _translator = translator;
-        Languages = translator.Name switch
-        {
-            "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Microsoft)),
-            "GoogleTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Google)),
-            "YandexTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Google)),
-            _ => Language.LanguageDictionary.Values
-        };
-
+        _w3Items = w3Items;
         IndexOfItems = index;
+        _translator = translator;
+        Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
-        var language = appSettings.PreferredLanguage;
-        ToLanguage = language switch
-        {
-            W3Language.Br => Language.GetLanguage("pt"),
-            W3Language.Cn => Language.GetLanguage("zh-CN"),
-            W3Language.Esmx => Language.GetLanguage("es"),
-            W3Language.Cz => Language.GetLanguage("cs"),
-            W3Language.Jp => Language.GetLanguage("ja"),
-            W3Language.Kr => Language.GetLanguage("ko"),
-            W3Language.Zh => Language.GetLanguage("zh-TW"),
-            _ => Language.GetLanguage(Enum.GetName(language) ?? "en")
-        };
+        ToLanguage = GetPreferredLanguage(appSettings);
         Log.Information("TranslateContentViewModel initialized.");
     }
 
@@ -86,6 +65,35 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
 
         Log.Information("TranslateContentViewModel is being disposed.");
+    }
+
+    private static Language GetPreferredLanguage(IAppSettings appSettings)
+    {
+        return appSettings.PreferredLanguage switch
+        {
+            W3Language.Br => Language.GetLanguage("pt"),
+            W3Language.Cn => Language.GetLanguage("zh-CN"),
+            W3Language.Esmx => Language.GetLanguage("es"),
+            W3Language.Cz => Language.GetLanguage("cs"),
+            W3Language.Jp => Language.GetLanguage("ja"),
+            W3Language.Kr => Language.GetLanguage("ko"),
+            W3Language.Zh => Language.GetLanguage("zh-TW"),
+            _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
+        };
+    }
+
+    private static IEnumerable<Language> GetSupportedLanguages(ITranslator translator)
+    {
+        return translator.Name switch
+        {
+            "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Microsoft)),
+            "GoogleTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Google)),
+            "YandexTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Google)),
+            _ => Language.LanguageDictionary.Values
+        };
     }
 
     partial void OnIndexOfItemsChanged(int value)
