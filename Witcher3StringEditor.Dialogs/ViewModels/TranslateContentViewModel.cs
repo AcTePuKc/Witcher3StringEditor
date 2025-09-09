@@ -175,7 +175,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (!IsValidTranslation(CurrentTranslateItemModel.TranslatedText)) return;
+            if (!IsValidTranslation(CurrentTranslateItemModel)) return;
             SaveTranslatedTextToItem(CurrentTranslateItemModel);
             Log.Information("Translation saved.");
         }
@@ -185,9 +185,9 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private static bool IsValidTranslation(string translation)
+    private static bool IsValidTranslation(TranslateItemModel currentTranslateItemModel)
     {
-        if (!string.IsNullOrWhiteSpace(translation)) return true;
+        if (!string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)) return true;
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
         return false;
     }
@@ -209,8 +209,11 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
     {
         try
         {
-            Guard.IsNotNull(CurrentTranslateItemModel);
-            await HandleUnsavedTranslation(CurrentTranslateItemModel);
+            if (CurrentTranslateItemModel is { IsSaved: false }
+                && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+                && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
+                SaveTranslatedTextToItem(CurrentTranslateItemModel);
+
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 _translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
@@ -219,14 +222,6 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         {
             Log.Error(ex, "Failed to move to {Direction} item", indexChange > 0 ? "next" : "previous");
         }
-    }
-
-    private async Task HandleUnsavedTranslation(TranslateItemModel currentTranslateItemModel)
-    {
-        if (currentTranslateItemModel is { IsSaved: false }
-            && !string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)
-            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-            SaveTranslatedTextToItem(currentTranslateItemModel);
     }
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
