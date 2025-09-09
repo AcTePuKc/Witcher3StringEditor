@@ -34,12 +34,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
 
     public async Task<bool> Serialize(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context)
     {
-        return context.FileType switch
+        return context.TargetFileType switch
         {
             W3FileType.Csv => await SerializeCsv(w3Items, context),
             W3FileType.W3Strings => await SerializeW3Strings(w3Items, context),
             W3FileType.Excel => await SerializeExcel(w3Items, context),
-            _ => throw new NotSupportedException($"The file type {context.FileType} is not supported.")
+            _ => throw new NotSupportedException($"The file type {context.TargetFileType} is not supported.")
         };
     }
 
@@ -128,8 +128,8 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            var saveLang = Enum.GetName(context.Language)!.ToLowerInvariant();
-            var lang = context.Language
+            var saveLang = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
+            var lang = context.TargetLanguage
                 is not W3Language.Ar
                 and not W3Language.Br
                 and not W3Language.Cn
@@ -144,7 +144,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             foreach (var item in w3Items)
                 stringBuilder.AppendLine(CultureInfo.InvariantCulture,
                     $"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
-            var csvPath = Path.Combine(context.Output, $"{saveLang}.csv");
+            var csvPath = Path.Combine(context.OutputDirectory, $"{saveLang}.csv");
             if (File.Exists(csvPath))
                 Guard.IsTrue(backupService.Backup(csvPath));
             await File.WriteAllTextAsync(csvPath, stringBuilder.ToString());
@@ -157,14 +157,14 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<bool> SerializeExcel(IReadOnlyList<IW3Item> w3Items, W3SerializationContext ctx)
+    private async Task<bool> SerializeExcel(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context)
     {
         try
         {
             return await Task.Run(() =>
             {
-                var saveLang = Enum.GetName(ctx.Language)!.ToLowerInvariant();
-                var path = Path.Combine(ctx.Output, $"{saveLang}.xlsx");
+                var saveLang = Enum.GetName(context.TargetFileType)!.ToLowerInvariant();
+                var path = Path.Combine(context.OutputDirectory, $"{saveLang}.xlsx");
                 if (File.Exists(path))
                     Guard.IsTrue(backupService.Backup(path));
                 Guard.IsGreaterThan(w3Items.Count, 0);
@@ -243,12 +243,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            var saveLang = Enum.GetName(context.Language)!.ToLowerInvariant();
+            var saveLang = Enum.GetName(context.TargetFileType)!.ToLowerInvariant();
             var tempDirectory = Directory.CreateTempSubdirectory().FullName;
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
-            var outputW3StringsPath = Path.Combine(context.Output, $"{saveLang}.w3strings");
-            context.Output = tempDirectory;
+            var outputW3StringsPath = Path.Combine(context.OutputDirectory, $"{saveLang}.w3strings");
+            context.OutputDirectory = tempDirectory;
             Guard.IsTrue(await SerializeCsv(w3Items, context));
             Guard.IsTrue(await StartSerializationProcess(context, tempCsvPath));
             Guard.IsTrue(CopyTempFilesWithBackup(tempW3StringsPath, outputW3StringsPath));
@@ -265,9 +265,9 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, context.IsIgnoreIdSpaceCheck
+            using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, context.IgnoreIdSpaceCheck
                 ? Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, IgnoreIdSpaceCheck = true })
-                : Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, ExpectedIdSpace = context.IdSpace }));
+                : Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, ExpectedIdSpace = context.ExpectedIdSpace }));
             return process.ExitCode == 0;
         }
         catch (Exception ex)

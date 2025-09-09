@@ -57,11 +57,11 @@ public partial class SaveDialogViewModel
         Log.Information("Target language: {Language}.", Language);
         var saveResult = await _serializer.Serialize(_w3Items, new W3SerializationContext
         {
-            Output = Path,
-            IdSpace = IdSpace,
-            FileType = FileType,
-            Language = Language,
-            IsIgnoreIdSpaceCheck = IsIgnoreIdSpaceCheck
+            OutputDirectory = Path,
+            ExpectedIdSpace = IdSpace,
+            TargetFileType = FileType,
+            TargetLanguage = Language,
+            IgnoreIdSpaceCheck = IsIgnoreIdSpaceCheck
         });
         Log.Information("Sve result: {Result}.", saveResult);
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult), "Save");
