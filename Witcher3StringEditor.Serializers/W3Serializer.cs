@@ -134,15 +134,11 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         try
         {
             var saveLang = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
-            var lang = context.TargetLanguage
-                is not W3Language.Ar
-                and not W3Language.Br
-                and not W3Language.Cn
-                and not W3Language.Esmx
-                and not W3Language.Kr
-                and not W3Language.Tr
-                ? saveLang
-                : "cleartext";
+            var lang = context.TargetLanguage switch
+            {
+                W3Language.Ar or W3Language.Br or W3Language.Cn or W3Language.Esmx or W3Language.Kr or W3Language.Tr => "cleartext",
+                _ => saveLang
+            };
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]");
             stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
