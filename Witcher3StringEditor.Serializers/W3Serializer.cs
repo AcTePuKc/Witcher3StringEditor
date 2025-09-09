@@ -251,7 +251,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             context.OutputDirectory = tempDirectory;
             Guard.IsTrue(await SerializeCsv(w3Items, context));
             Guard.IsTrue(await StartSerializationProcess(context, tempCsvPath));
-            Guard.IsTrue(CopyTempFilesWithBackup(tempW3StringsPath, outputW3StringsPath));
+            Guard.IsTrue(BackupAndCopyFile(tempW3StringsPath, outputW3StringsPath));
             return true;
         }
         catch (Exception ex)
@@ -301,17 +301,17 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         return process;
     }
 
-    private bool CopyTempFilesWithBackup(string tempPath, string path)
+    private bool BackupAndCopyFile(string sourceFilePath, string destinationFilePath)
     {
-        if (File.Exists(path) && !backupService.Backup(path))
+        if (File.Exists(destinationFilePath) && !backupService.Backup(destinationFilePath))
             return false;
         try
         {
-            File.Copy(tempPath, path, true);
+            File.Copy(sourceFilePath, destinationFilePath, true);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to copy file from {TempPath} to {Path}.", tempPath, path);
+            Log.Error(ex, "Failed to copy file from {TempPath} to {Path}.", sourceFilePath, destinationFilePath);
         }
 
         return true;
