@@ -7,5 +7,6 @@ public class AboutDialogViewModel(IReadOnlyDictionary<string, object?> aboutInfo
     : ObservableObject, IModalDialogViewModel
 {
     public IReadOnlyDictionary<string, object?> AboutInfo => aboutInfo;
+    
     public bool? DialogResult => true;
 }
