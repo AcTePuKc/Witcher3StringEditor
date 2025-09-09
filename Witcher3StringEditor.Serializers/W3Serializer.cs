@@ -188,21 +188,10 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             return await Task.Run(() =>
             {
                 var saveLang = Enum.GetName(context.TargetFileType)!.ToLowerInvariant();
-                var path = Path.Combine(context.OutputDirectory, $"{saveLang}.xlsx");
-                if (File.Exists(path))
-                    Guard.IsTrue(backupService.Backup(path));
+                var filePath = Path.Combine(context.OutputDirectory, $"{saveLang}.xlsx");
+                BackupExistingFileIfNeeded(filePath);
                 Guard.IsGreaterThan(w3Items.Count, 0);
-                using var fileStream = File.Create(path);
-                using var excelEngine = new ExcelEngine();
-                var application = excelEngine.Excel;
-                application.DefaultVersion = ExcelVersion.Xlsx;
-                var workbook = application.Workbooks.Create(1);
-                var worksheet = workbook.Worksheets[0];
-                SetTableHeaders(worksheet);
-                SetTableStyles(worksheet, w3Items.Count);
-                SetColumnWidths(worksheet);
-                WriteDataToWorksheet(worksheet, w3Items);
-                workbook.SaveAs(fileStream);
+                CreateAndPopulateExcelFile(filePath, w3Items);
                 return true;
             });
         }
@@ -211,6 +200,32 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Error(ex, "An error occurred while serializing the Excel worksheets file.");
             return false;
         }
+    }
+
+    private static void CreateAndPopulateExcelFile(string path, IReadOnlyList<IW3StringItem> w3Items)
+    {
+        using var fileStream = File.Create(path);
+        using var excelEngine = new ExcelEngine();
+        var application = excelEngine.Excel;
+        application.DefaultVersion = ExcelVersion.Xlsx;
+        var workbook = application.Workbooks.Create(1);
+        var worksheet = workbook.Worksheets[0];
+        SetupWorksheet(worksheet, w3Items);
+        WriteDataToWorksheet(worksheet, w3Items);
+        workbook.SaveAs(fileStream);
+    }
+
+    private static void SetupWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> w3Items)
+    {
+        SetTableHeaders(worksheet);
+        SetTableStyles(worksheet, w3Items.Count);
+        SetColumnWidths(worksheet);
+    }
+
+    private void BackupExistingFileIfNeeded(string path)
+    {
+        if (File.Exists(path))
+            Guard.IsTrue(backupService.Backup(path));
     }
 
     private static void SetTableHeaders(IWorksheet worksheet)
