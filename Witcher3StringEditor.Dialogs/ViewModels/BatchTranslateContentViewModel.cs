@@ -45,8 +45,7 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         _w3Items = [.. w3Items];
         StartIndex = startIndex;
         EndIndex = MaxValue = _w3Items.Count;
-        Languages = Language.LanguageDictionary.Values
-            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
+        Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = GetPreferredLanguage(appSettings);
         Log.Information("BatchTranslateContentViewModel is initialized.");
@@ -68,7 +67,22 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         Log.Information("BatchTranslateContentViewModel is being disposed.");
     }
 
-    private static ILanguage GetPreferredLanguage(IAppSettings appSettings)
+
+    private static IEnumerable<ILanguage> GetSupportedLanguages(ITranslator translator)
+    {
+        return translator.Name switch
+        {
+            "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Microsoft)),
+            "GoogleTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Google)),
+            "YandexTranslator" => Language.LanguageDictionary.Values.Where(x =>
+                x.SupportedServices.HasFlag(TranslationServices.Google)),
+            _ => Language.LanguageDictionary.Values
+        };
+    }
+
+    private static Language GetPreferredLanguage(IAppSettings appSettings)
     {
         return appSettings.PreferredLanguage switch
         {
