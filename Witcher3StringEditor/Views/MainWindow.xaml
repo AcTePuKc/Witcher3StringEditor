@@ -213,7 +213,7 @@
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Hidden" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding W3ItemModels.Count, FallbackValue=0}" Value="0">
+                        <DataTrigger Binding="{Binding W3StringItems.Count, FallbackValue=0}" Value="0">
                             <Setter Property="Visibility" Value="Visible" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -303,7 +303,7 @@
             HorizontalAlignment="Center"
             NumericButtonCount="10"
             PageSize="30"
-            Source="{Binding W3ItemModels, Mode=TwoWay}" />
+            Source="{Binding W3StringItems, Mode=TwoWay}" />
         <ui:InfoBar
             Grid.Row="2"
             Margin="0,0,0,100"
