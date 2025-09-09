@@ -27,13 +27,13 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [ObservableProperty] private string _title = Strings.TranslateDialogTitle;
 
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator,
-        IEnumerable<IEditW3Item> w3Items,
+        IReadOnlyCollection<IEditW3Item> w3Items,
         int index)
     {
-        _w3Items = [.. w3Items];
         _index = index;
-        _appSettings = appSettings;
+        _w3Items = w3Items;
         _translator = translator;
+        _appSettings = appSettings;
         Log.Information("Total items to translate: {Count}.", _w3Items.Count);
         Log.Information("Starting index: {Index}.", index);
         CurrentViewModel = new TranslateContentViewModel(appSettings, translator, _w3Items, index);
