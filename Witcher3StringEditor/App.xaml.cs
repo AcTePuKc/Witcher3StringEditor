@@ -49,7 +49,6 @@ public sealed partial class App : IDisposable
     public void Dispose()
     {
         Dispose(true);
-        GC.SuppressFinalize(this);
     }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -233,10 +232,5 @@ public sealed partial class App : IDisposable
         }
 
         _disposedValue = true;
-    }
-
-    ~App()
-    {
-        Dispose(false);
     }
 }
