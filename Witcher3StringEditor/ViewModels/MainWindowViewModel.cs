@@ -108,25 +108,26 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
 
     private void SetupAppSettingsEventHandlers()
     {
-        ((INotifyPropertyChanged)_appSettings).PropertyChanged += (_, e) =>
-        {
-            switch (e.PropertyName)
+        if (_appSettings is INotifyPropertyChanged notifyPropertyChanged)
+            notifyPropertyChanged.PropertyChanged += (_, e) =>
             {
-                case nameof(_appSettings.W3StringsPath):
-                    OpenFileCommand.NotifyCanExecuteChanged();
-                    DropFileCommand.NotifyCanExecuteChanged();
-                    break;
-                case nameof(_appSettings.GameExePath):
-                    PlayGameCommand.NotifyCanExecuteChanged();
-                    break;
-                case nameof(_appSettings.Translator):
-                    ApplyTranslatorChange(_appSettings);
-                    break;
-                case nameof(_appSettings.Language):
-                    ApplyLanguageChange(_appSettings.Language);
-                    break;
-            }
-        };
+                switch (e.PropertyName)
+                {
+                    case nameof(_appSettings.W3StringsPath):
+                        OpenFileCommand.NotifyCanExecuteChanged();
+                        DropFileCommand.NotifyCanExecuteChanged();
+                        break;
+                    case nameof(_appSettings.GameExePath):
+                        PlayGameCommand.NotifyCanExecuteChanged();
+                        break;
+                    case nameof(_appSettings.Translator):
+                        ApplyTranslatorChange(_appSettings);
+                        break;
+                    case nameof(_appSettings.Language):
+                        ApplyLanguageChange(_appSettings.Language);
+                        break;
+                }
+            };
     }
 
     private void RegisterMessengerHandlers()
