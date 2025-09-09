@@ -39,7 +39,7 @@ public partial class App
 {
     private IAppSettings? _appSettings;
     private IConfigService? _configService;
-    private ObserverBase<LogEvent>? logObserver;
+    private ObserverBase<LogEvent>? _logObserver;
     private Mutex? _mutex;
 
     private static bool IsDebug =>
@@ -73,9 +73,9 @@ public partial class App
 
     private void InitializeLogging()
     {
-        logObserver = new AnonymousObserver<LogEvent>(static x =>
+        _logObserver = new AnonymousObserver<LogEvent>(static x =>
             _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
-        InitializeLogging(logObserver);
+        InitializeLogging(_logObserver);
     }
 
     private void InitializeAppSettings()
@@ -213,7 +213,7 @@ public partial class App
         _mutex?.Dispose();
         _configService?.Save(_appSettings);
         Log.Information("Application exited.");
-        logObserver?.Dispose();
+        _logObserver?.Dispose();
         Log.CloseAndFlush();
     }
 }
