@@ -20,15 +20,14 @@ public partial class SaveDialogViewModel
     [ObservableProperty] private IW3Job _w3Job;
 
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
-        IEnumerable<IW3Item> w3Items, string path)
+        IReadOnlyList<IW3Item> w3Items, string path)
     {
         _serializer = serializer;
-        var items = w3Items.ToList().AsReadOnly();
         W3Job = new W3JobModel
         {
             Path = path,
-            W3Items = [..items],
-            IdSpace = FindIdSpace(items[0]),
+            W3Items = [..w3Items],
+            IdSpace = FindIdSpace(w3Items[0]),
             Language = appSettings.PreferredLanguage,
             W3FileType = appSettings.PreferredW3FileType
         };
