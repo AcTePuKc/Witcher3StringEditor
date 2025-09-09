@@ -52,21 +52,6 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         Log.Information("BatchTranslateContentViewModel is initialized.");
     }
 
-    private static ILanguage GetPreferredLanguage(IAppSettings appSettings)
-    {
-        return appSettings.PreferredLanguage switch
-        {
-            W3Language.Br => Language.GetLanguage("pt"),
-            W3Language.Cn => Language.GetLanguage("zh-CN"),
-            W3Language.Esmx => Language.GetLanguage("es"),
-            W3Language.Cz => Language.GetLanguage("cs"),
-            W3Language.Jp => Language.GetLanguage("ja"),
-            W3Language.Kr => Language.GetLanguage("ko"),
-            W3Language.Zh => Language.GetLanguage("zh-TW"),
-            _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
-        };
-    }
-
     private bool CanCancel => IsBusy;
 
     private bool CanStart => !IsBusy && PendingCount > 0;
@@ -81,6 +66,21 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         }
 
         Log.Information("BatchTranslateContentViewModel is being disposed.");
+    }
+
+    private static ILanguage GetPreferredLanguage(IAppSettings appSettings)
+    {
+        return appSettings.PreferredLanguage switch
+        {
+            W3Language.Br => Language.GetLanguage("pt"),
+            W3Language.Cn => Language.GetLanguage("zh-CN"),
+            W3Language.Esmx => Language.GetLanguage("es"),
+            W3Language.Cz => Language.GetLanguage("cs"),
+            W3Language.Jp => Language.GetLanguage("ja"),
+            W3Language.Kr => Language.GetLanguage("ko"),
+            W3Language.Zh => Language.GetLanguage("zh-TW"),
+            _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
+        };
     }
 
     partial void OnFormLanguageChanged(ILanguage value)
@@ -166,6 +166,10 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
                 FailureCount++;
             }
         }
+        catch (OperationCanceledException) when (_cancellationTokenSource?.IsCancellationRequested == true)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}",
@@ -174,12 +178,12 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         }
     }
 
-    private static async Task<(bool, string)> TranslateItem(ITranslator translator, string text, ILanguage tLanguage,
+    private static async Task<(bool, string)> TranslateItem(ITranslator translator, string? text, ILanguage tLanguage,
         ILanguage fLanguage)
     {
+        if (string.IsNullOrWhiteSpace(text)) return (true, string.Empty);
         var translation = (await translator.TranslateAsync(text, tLanguage, fLanguage)).Translation;
         if (IsTranslationValid(translation)) return (true, translation);
-
         LogEmptyTranslationResult(translator.Name);
         return (false, string.Empty);
     }
