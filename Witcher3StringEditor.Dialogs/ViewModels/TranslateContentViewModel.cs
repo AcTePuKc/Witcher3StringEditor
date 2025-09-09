@@ -209,11 +209,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
     {
         try
         {
-            if (CurrentTranslateItemModel is { IsSaved: false }
-                && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-                && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-                SaveTranslatedTextToItem(CurrentTranslateItemModel);
-
+            await HandleUnsavedTranslation();
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 _translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
@@ -222,6 +218,14 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         {
             Log.Error(ex, "Failed to move to {Direction} item", indexChange > 0 ? "next" : "previous");
         }
+    }
+
+    private async Task HandleUnsavedTranslation()
+    {
+        if (CurrentTranslateItemModel is { IsSaved: false }
+            && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
+            SaveTranslatedTextToItem(CurrentTranslateItemModel);
     }
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
