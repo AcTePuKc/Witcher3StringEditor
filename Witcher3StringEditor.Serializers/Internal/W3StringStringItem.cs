@@ -3,14 +3,14 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Serializers.Internal;
 
-internal class Iw3StringStringItem : IW3StringItem
+internal class W3StringStringItem : IW3StringItem
 {
-    public Iw3StringStringItem()
+    public W3StringStringItem()
     {
     }
 
     [UsedImplicitly]
-    public Iw3StringStringItem(IW3StringItem iw3StringItem)
+    public W3StringStringItem(IW3StringItem iw3StringItem)
     {
         StrId = iw3StringItem.StrId;
         KeyHex = iw3StringItem.KeyHex;

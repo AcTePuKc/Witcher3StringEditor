@@ -55,7 +55,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            var items = new List<Iw3StringStringItem>();
+            var items = new List<W3StringStringItem>();
             await foreach (var line in File.ReadLinesAsync(path))
             {
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
@@ -63,7 +63,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 var parts = line.Split('|');
                 if (parts.Length != 4) continue;
 
-                items.Add(new Iw3StringStringItem
+                items.Add(new W3StringStringItem
                 {
                     StrId = parts[0].Trim(),
                     KeyHex = parts[1].Trim(),
@@ -81,7 +81,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private static async Task<List<Iw3StringStringItem>> DeserializeExcel(string path)
+    private static async Task<List<W3StringStringItem>> DeserializeExcel(string path)
     {
         try
         {
@@ -90,7 +90,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 using var excelEngine = new ExcelEngine();
                 var worksheet = excelEngine.Excel.Workbooks.Open(path).Worksheets[0];
                 var usedRange = worksheet.UsedRange;
-                return worksheet.ExportData<Iw3StringStringItem>(1, 1, usedRange.LastRow, usedRange.LastColumn);
+                return worksheet.ExportData<W3StringStringItem>(1, 1, usedRange.LastRow, usedRange.LastColumn);
             });
         }
         catch (Exception ex)
