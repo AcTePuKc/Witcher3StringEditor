@@ -14,20 +14,20 @@ namespace Witcher3StringEditor.Serializers;
 
 public class W3Serializer(IAppSettings appSettings, IBackupService backupService) : IW3Serializer
 {
-    public async Task<IReadOnlyList<IW3Item>> Deserialize(string path)
+    public async Task<IReadOnlyList<IW3Item>> Deserialize(string filePath)
     {
         try
         {
-            if (Path.GetExtension(path) == ".csv") return await DeserializeCsv(path);
-            if (Path.GetExtension(path) == ".xlsx") return await DeserializeExcel(path);
-            Guard.IsTrue(Path.GetExtension(path) == ".w3strings");
-            var newPath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(path));
-            File.Copy(path, newPath);
-            return await DeserializeW3Strings(newPath);
+            if (Path.GetExtension(filePath) == ".csv") return await DeserializeCsv(filePath);
+            if (Path.GetExtension(filePath) == ".xlsx") return await DeserializeExcel(filePath);
+            Guard.IsTrue(Path.GetExtension(filePath) == ".w3strings");
+            var temporaryFilePath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(filePath));
+            File.Copy(filePath, temporaryFilePath);
+            return await DeserializeW3Strings(temporaryFilePath);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing the file: {Path}.", path);
+            Log.Error(ex, "An error occurred while deserializing the file: {Path}.", filePath);
             return [];
         }
     }
