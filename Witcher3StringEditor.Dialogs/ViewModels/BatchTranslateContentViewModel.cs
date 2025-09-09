@@ -43,12 +43,18 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
     {
         _translator = translator;
         _w3Items = [.. w3Items];
-        Languages = Language.LanguageDictionary.Values
-            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         StartIndex = startIndex;
         EndIndex = MaxValue = _w3Items.Count;
+        Languages = Language.LanguageDictionary.Values
+            .Where(x => x.SupportedServices.HasFlag(TranslationServices.Microsoft));
         FormLanguage = Language.GetLanguage("en");
-        ToLanguage = appSettings.PreferredLanguage switch
+        ToLanguage = GetPreferredLanguage(appSettings);
+        Log.Information("BatchTranslateContentViewModel is initialized.");
+    }
+
+    private static ILanguage GetPreferredLanguage(IAppSettings appSettings)
+    {
+        return appSettings.PreferredLanguage switch
         {
             W3Language.Br => Language.GetLanguage("pt"),
             W3Language.Cn => Language.GetLanguage("zh-CN"),
@@ -59,7 +65,6 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
             W3Language.Zh => Language.GetLanguage("zh-TW"),
             _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
         };
-        Log.Information("BatchTranslateContentViewModel is initialized.");
     }
 
     private bool CanCancel => IsBusy;
