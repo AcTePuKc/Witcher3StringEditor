@@ -18,10 +18,13 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            if (Path.GetExtension(filePath) == ".csv") return await DeserializeCsv(filePath);
-            if (Path.GetExtension(filePath) == ".xlsx") return await DeserializeExcel(filePath);
-            if (Path.GetExtension(filePath) == ".w3strings") return await DeserializeW3Strings(GenerateTemporaryFilePathAndCopy(filePath));
-            return [];
+            return Path.GetExtension(filePath) switch
+            {
+                ".csv" => await DeserializeCsv(filePath),
+                ".xlsx" => await DeserializeExcel(filePath),
+                ".w3strings" => await DeserializeW3Strings(GenerateTemporaryFilePathAndCopy(filePath)),
+                _ => []
+            };
         }
         catch (Exception ex)
         {
