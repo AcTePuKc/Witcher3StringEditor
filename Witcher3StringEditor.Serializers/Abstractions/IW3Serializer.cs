@@ -4,7 +4,7 @@ namespace Witcher3StringEditor.Serializers.Abstractions;
 
 public interface IW3Serializer
 {
-    public Task<IReadOnlyList<IW3Item>> Deserialize(string filePath);
+    public Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath);
 
-    public Task<bool> Serialize(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context);
+    public Task<bool> Serialize(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context);
 }

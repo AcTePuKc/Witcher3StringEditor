@@ -14,7 +14,7 @@ namespace Witcher3StringEditor.Serializers;
 
 public class W3Serializer(IAppSettings appSettings, IBackupService backupService) : IW3Serializer
 {
-    public async Task<IReadOnlyList<IW3Item>> Deserialize(string filePath)
+    public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {
         try
         {
@@ -32,7 +32,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    public async Task<bool> Serialize(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context)
+    public async Task<bool> Serialize(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context)
     {
         return context.TargetFileType switch
         {
@@ -43,11 +43,11 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         };
     }
 
-    private static async Task<IReadOnlyList<IW3Item>> DeserializeCsv(string path)
+    private static async Task<IReadOnlyList<IW3StringItem>> DeserializeCsv(string path)
     {
         try
         {
-            var items = new List<W3Item>();
+            var items = new List<Iw3StringStringItem>();
             await foreach (var line in File.ReadLinesAsync(path))
             {
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
@@ -55,7 +55,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 var parts = line.Split('|');
                 if (parts.Length != 4) continue;
 
-                items.Add(new W3Item
+                items.Add(new Iw3StringStringItem
                 {
                     StrId = parts[0].Trim(),
                     KeyHex = parts[1].Trim(),
@@ -73,7 +73,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private static async Task<List<W3Item>> DeserializeExcel(string path)
+    private static async Task<List<Iw3StringStringItem>> DeserializeExcel(string path)
     {
         try
         {
@@ -82,7 +82,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 using var excelEngine = new ExcelEngine();
                 var worksheet = excelEngine.Excel.Workbooks.Open(path).Worksheets[0];
                 var usedRange = worksheet.UsedRange;
-                return worksheet.ExportData<W3Item>(1, 1, usedRange.LastRow, usedRange.LastColumn);
+                return worksheet.ExportData<Iw3StringStringItem>(1, 1, usedRange.LastRow, usedRange.LastColumn);
             });
         }
         catch (Exception ex)
@@ -92,7 +92,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<IReadOnlyList<IW3Item>> DeserializeW3Strings(string path)
+    private async Task<IReadOnlyList<IW3StringItem>> DeserializeW3Strings(string path)
     {
         try
         {
@@ -124,7 +124,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Information("Output: {Data}.", e.Data);
     }
 
-    private async Task<bool> SerializeCsv(IReadOnlyCollection<IW3Item> w3Items, W3SerializationContext context)
+    private async Task<bool> SerializeCsv(IReadOnlyCollection<IW3StringItem> w3Items, W3SerializationContext context)
     {
         try
         {
@@ -157,7 +157,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<bool> SerializeExcel(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context)
+    private async Task<bool> SerializeExcel(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context)
     {
         try
         {
@@ -226,7 +226,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         worksheet["D:E"].ColumnWidth = 50;
     }
 
-    private static void WriteDataToWorksheet(IWorksheet worksheet, IReadOnlyList<IW3Item> items)
+    private static void WriteDataToWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> items)
     {
         for (var i = 0; i < items.Count; i++)
         {
@@ -239,7 +239,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<bool> SerializeW3Strings(IReadOnlyList<IW3Item> w3Items, W3SerializationContext context)
+    private async Task<bool> SerializeW3Strings(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context)
     {
         try
         {

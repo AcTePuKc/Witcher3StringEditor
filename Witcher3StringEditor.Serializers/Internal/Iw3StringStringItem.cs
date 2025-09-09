@@ -3,20 +3,20 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Serializers.Internal;
 
-internal class W3Item : IW3Item
+internal class Iw3StringStringItem : IW3StringItem
 {
-    public W3Item()
+    public Iw3StringStringItem()
     {
     }
 
     [UsedImplicitly]
-    public W3Item(IW3Item w3Item)
+    public Iw3StringStringItem(IW3StringItem iw3StringItem)
     {
-        StrId = w3Item.StrId;
-        KeyHex = w3Item.KeyHex;
-        KeyName = w3Item.KeyName;
-        OldText = w3Item.OldText;
-        Text = w3Item.Text;
+        StrId = iw3StringItem.StrId;
+        KeyHex = iw3StringItem.KeyHex;
+        KeyName = iw3StringItem.KeyName;
+        OldText = iw3StringItem.OldText;
+        Text = iw3StringItem.Text;
     }
 
     public string StrId { get; set; } = string.Empty;

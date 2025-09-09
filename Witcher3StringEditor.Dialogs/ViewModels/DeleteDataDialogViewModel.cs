@@ -6,10 +6,10 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class DeleteDataDialogViewModel(IEnumerable<IW3Item> w3Items)
+public partial class DeleteDataDialogViewModel(IEnumerable<IW3StringItem> w3Items)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    public IEnumerable<IW3Item> W3Items { get; } = w3Items;
+    public IEnumerable<IW3StringItem> W3Items { get; } = w3Items;
 
     public event EventHandler? RequestClose;
 

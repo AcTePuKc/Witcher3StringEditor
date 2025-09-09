@@ -2,7 +2,7 @@
 
 namespace Witcher3StringEditor.Common.Abstractions;
 
-public interface IW3Item
+public interface IW3StringItem
 {
     public string StrId { get; set; }
 

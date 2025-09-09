@@ -12,7 +12,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public sealed partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDisposable
 {
     private readonly ITranslator _translator;
-    private readonly IReadOnlyCollection<IW3Item> _w3Items;
+    private readonly IReadOnlyCollection<IW3StringItem> _w3Items;
     private CancellationTokenSource? _cancellationTokenSource;
 
     [ObservableProperty] private int _endIndex;
@@ -39,7 +39,7 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
     [ObservableProperty] private ILanguage _toLanguage;
 
     public BatchTranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
-        IEnumerable<IW3Item> w3Items, int startIndex)
+        IEnumerable<IW3StringItem> w3Items, int startIndex)
     {
         _translator = translator;
         _w3Items = [.. w3Items];

@@ -18,7 +18,7 @@ public partial class SaveDialogViewModel
 {
     private readonly IW3Serializer _serializer;
 
-    private readonly IReadOnlyList<IW3Item> _w3Items;
+    private readonly IReadOnlyList<IW3StringItem> _w3Items;
 
     [ObservableProperty]
     private W3FileType _fileType;
@@ -36,7 +36,7 @@ public partial class SaveDialogViewModel
     private string _path;
 
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
-        IReadOnlyList<IW3Item> w3Items, string path)
+        IReadOnlyList<IW3StringItem> w3Items, string path)
     {
         Path = path;
         _w3Items = w3Items;
@@ -76,9 +76,9 @@ public partial class SaveDialogViewModel
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
 
-    private static int FindIdSpace(IW3Item w3Item)
+    private static int FindIdSpace(IW3StringItem iw3StringItem)
     {
-        var match = IdSpaceRegex().Match(w3Item.StrId);
+        var match = IdSpaceRegex().Match(iw3StringItem.StrId);
         if (!match.Success) return -1;
         var foundIdSpace = match.Groups[1].Value;
         return int.Parse(foundIdSpace, CultureInfo.InvariantCulture);
