@@ -51,12 +51,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         return temporaryFilePath;
     }
 
-    private static async Task<IReadOnlyList<IW3StringItem>> DeserializeCsv(string path)
+    private static async Task<IReadOnlyList<IW3StringItem>> DeserializeCsv(string filePath)
     {
         try
         {
             var items = new List<W3StringStringItem>();
-            await foreach (var line in File.ReadLinesAsync(path))
+            await foreach (var line in File.ReadLinesAsync(filePath))
             {
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
                     continue;
@@ -70,7 +70,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing the CSV file: {Path}.", path);
+            Log.Error(ex, "An error occurred while deserializing the CSV file: {Path}.", filePath);
             return [];
         }
     }
@@ -91,41 +91,41 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         };
     }
 
-    private static async Task<List<W3StringStringItem>> DeserializeExcel(string path)
+    private static async Task<List<W3StringStringItem>> DeserializeExcel(string filePath)
     {
         try
         {
             return await Task.Run(() =>
             {
                 using var excelEngine = new ExcelEngine();
-                var worksheet = excelEngine.Excel.Workbooks.Open(path).Worksheets[0];
+                var worksheet = excelEngine.Excel.Workbooks.Open(filePath).Worksheets[0];
                 var usedRange = worksheet.UsedRange;
                 return worksheet.ExportData<W3StringStringItem>(1, 1, usedRange.LastRow, usedRange.LastColumn);
             });
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {Path}.", path);
+            Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {Path}.", filePath);
             return [];
         }
     }
 
-    private async Task<IReadOnlyList<IW3StringItem>> DeserializeW3Strings(string path)
+    private async Task<IReadOnlyList<IW3StringItem>> DeserializeW3Strings(string filePath)
     {
         try
         {
             using var process = await ExecuteExternalProcess(appSettings.W3StringsPath,
                 Parser.Default.FormatCommandLine(new W3StringsOptions
                 {
-                    InputFileToDecode = path
+                    InputFileToDecode = filePath
                 }));
 
             Guard.IsEqualTo(process.ExitCode, 0);
-            return await DeserializeCsv($"{path}.csv");
+            return await DeserializeCsv($"{filePath}.csv");
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred while deserializing W3Strings file: {Path}.", path);
+            Log.Error(ex, "An error occurred while deserializing W3Strings file: {Path}.", filePath);
             return [];
         }
     }
