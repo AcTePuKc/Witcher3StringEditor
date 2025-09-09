@@ -248,9 +248,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
             var outputW3StringsPath = Path.Combine(context.OutputDirectory, $"{saveLang}.w3strings");
-            context.OutputDirectory = tempDirectory;
-            Guard.IsTrue(await SerializeCsv(w3Items, context));
-            Guard.IsTrue(await StartSerializationProcess(context, tempCsvPath));
+            var tempContext = context with
+            {
+                OutputDirectory = tempDirectory
+            };
+            Guard.IsTrue(await SerializeCsv(w3Items, tempContext));
+            Guard.IsTrue(await StartSerializationProcess(tempContext, tempCsvPath));
             Guard.IsTrue(BackupAndCopyFile(tempW3StringsPath, outputW3StringsPath));
             return true;
         }
