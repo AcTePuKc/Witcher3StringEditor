@@ -173,10 +173,20 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         ILanguage fLanguage)
     {
         var translation = (await translator.TranslateAsync(text, tLanguage, fLanguage)).Translation;
-        if (!string.IsNullOrWhiteSpace(translation)) return (true, translation);
+        if (IsTranslationValid(translation)) return (true, translation);
 
-        Log.Error("The translator: {Name} returned empty data.", translator.Name);
+        LogEmptyTranslationResult(translator.Name);
         return (false, string.Empty);
+    }
+
+    private static bool IsTranslationValid(string translation)
+    {
+        return !string.IsNullOrWhiteSpace(translation);
+    }
+
+    private static void LogEmptyTranslationResult(string translatorName)
+    {
+        Log.Error("The translator: {Name} returned empty data.", translatorName);
     }
 
     [RelayCommand(CanExecute = nameof(CanCancel))]
