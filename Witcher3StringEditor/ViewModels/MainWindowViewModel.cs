@@ -289,7 +289,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     }
 
     [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
-    private async Task Edit(IEditW3Item w3Item)
+    private async Task Edit(IEditableW3Item w3Item)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3Item);
         if (await _dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
@@ -307,7 +307,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
     private async Task Delete(IEnumerable<object> items)
     {
-        var w3Items = items.Cast<IEditW3Item>().ToArray();
+        var w3Items = items.Cast<IEditableW3Item>().ToArray();
         if (w3Items.Length > 0 &&
             await _dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
             w3Items.ForEach(item => W3ItemModels!.Remove(item.Cast<W3ItemModel>()));
