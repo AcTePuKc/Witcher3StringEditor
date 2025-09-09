@@ -77,7 +77,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
 
-    private bool W3ItemModelsNoEmpty => W3StringItems?.Any() == true;
+    private bool HasW3StringItems => W3StringItems?.Any() == true;
 
     private bool CanOpenWorkingFolder
         => Directory.Exists(OutputFolder);
@@ -272,7 +272,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         }
     }
 
-    [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
+    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Add()
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3StringItemModel());
@@ -288,7 +288,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         }
     }
 
-    [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
+    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Edit(ITrackableW3StringItem w3StringItem)
     {
         var dialogViewModel = new EditDataDialogViewModel(w3StringItem);
@@ -304,7 +304,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         }
     }
 
-    [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
+    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Delete(IEnumerable<object> items)
     {
         var w3Items = items.Cast<ITrackableW3StringItem>().ToArray();
@@ -320,7 +320,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             new BackupDialogViewModel(_appSettings, _backupService));
     }
 
-    [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
+    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task ShowSaveDialog()
     {
         _ = await _dialogService.ShowDialogAsync(this,
@@ -380,7 +380,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             new RecentDialogViewModel(_appSettings));
     }
 
-    [RelayCommand(CanExecute = nameof(W3ItemModelsNoEmpty))]
+    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task ShowTranslateDialog(IW3StringItem? w3Item)
     {
         _ = await _dialogService.ShowDialogAsync(this,
