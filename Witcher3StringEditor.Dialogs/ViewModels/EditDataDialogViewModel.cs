@@ -6,14 +6,14 @@ using Witcher3StringEditor.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public partial class EditDataDialogViewModel(IEditableW3StringItem w3StringItem)
+public partial class EditDataDialogViewModel(ITrackableW3StringItem w3StringItem)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     public string Title { get; } = string.IsNullOrWhiteSpace(w3StringItem.StrId)
         ? Strings.AddDialogTitle
         : Strings.EditDialogTitle;
 
-    public IEditableW3StringItem? W3Item { get; } = w3StringItem.Clone() as IEditableW3StringItem;
+    public ITrackableW3StringItem? W3Item { get; } = w3StringItem.Clone() as ITrackableW3StringItem;
 
     public event EventHandler? RequestClose;
 
