@@ -35,15 +35,22 @@ namespace Witcher3StringEditor;
 /// <summary>
 ///     Interaction logic for App.xaml
 /// </summary>
-public partial class App
+public sealed partial class App : IDisposable
 {
     private IAppSettings? _appSettings;
     private IConfigService? _configService;
+    private bool _disposedValue;
     private ObserverBase<LogEvent>? _logObserver;
     private Mutex? _mutex;
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -210,10 +217,26 @@ public partial class App
 
     protected override void OnExit(ExitEventArgs e)
     {
-        _mutex?.Dispose();
         _configService?.Save(_appSettings);
         Log.Information("Application exited.");
-        _logObserver?.Dispose();
         Log.CloseAndFlush();
+        Dispose();
+    }
+
+    private void Dispose(bool disposing)
+    {
+        if (_disposedValue) return;
+        if (disposing)
+        {
+            _mutex?.Dispose();
+            _logObserver?.Dispose();
+        }
+
+        _disposedValue = true;
+    }
+
+    ~App()
+    {
+        Dispose(false);
     }
 }
