@@ -281,7 +281,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             };
             Guard.IsTrue(await SerializeCsv(w3Items, tempContext));
             Guard.IsTrue(await StartSerializationProcess(tempContext, tempCsvPath));
-            ReplaceFileWithBackup(tempW3StringsPath, outputW3StringsPath);
+            Guard.IsTrue(ReplaceFileWithBackup(tempW3StringsPath, outputW3StringsPath)); 
             return true;
         }
         catch (Exception ex)
@@ -291,11 +291,12 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private void ReplaceFileWithBackup(string sourceFilePath, string destinationFilePath)
+    private bool ReplaceFileWithBackup(string sourceFilePath, string destinationFilePath)
     {
-        if (File.Exists(destinationFilePath))
-            backupService.Backup(destinationFilePath);
+        if (File.Exists(destinationFilePath) && !backupService.Backup(destinationFilePath))
+            return false;
         File.Copy(sourceFilePath, destinationFilePath);
+        return true;
     }
 
     private async Task<bool> StartSerializationProcess(W3SerializationContext context, string path)
