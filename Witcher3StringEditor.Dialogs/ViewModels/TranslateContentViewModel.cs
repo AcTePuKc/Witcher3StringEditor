@@ -180,7 +180,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (!IsValidTranslation(CurrentTranslateItemModel)) return;
+            if (!CheckTranslationNotEmpty(CurrentTranslateItemModel)) return;
             if(!SaveTranslatedTextToItem(CurrentTranslateItemModel)) return;
             Log.Information("Translation saved.");
         }
@@ -190,7 +190,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private static bool IsValidTranslation(TranslateItemModel currentTranslateItemModel)
+    private static bool CheckTranslationNotEmpty(TranslateItemModel currentTranslateItemModel)
     {
         if (!string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)) return true;
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
