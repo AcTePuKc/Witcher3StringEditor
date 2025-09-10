@@ -20,7 +20,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         {
             ".csv" => await DeserializeCsv(filePath),
             ".xlsx" => await DeserializeExcel(filePath),
-            ".w3strings" => await DeserializeW3Strings(GenerateTemporaryFilePathAndCopy(filePath)),
+            ".w3strings" => await DeserializeW3Strings(CreateTemporaryCopyOfFile(filePath)),
             _ => []
         };
     }
@@ -36,11 +36,11 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         };
     }
 
-    private static string GenerateTemporaryFilePathAndCopy(string sourceFilePath)
+    private static string CreateTemporaryCopyOfFile(string sourceFilePath)
     {
-        var temporaryFilePath = Path.Combine(Directory.CreateTempSubdirectory().FullName, Path.GetFileName(sourceFilePath));
-        File.Copy(sourceFilePath, temporaryFilePath);
-        return temporaryFilePath;
+        var randomFileName = Path.GetRandomFileName();
+        File.Copy(sourceFilePath, randomFileName);
+        return randomFileName;
     }
 
     private static async Task<IReadOnlyList<IW3StringItem>> DeserializeCsv(string filePath)
