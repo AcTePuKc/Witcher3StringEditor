@@ -16,21 +16,13 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
 {
     public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {
-        try
+        return Path.GetExtension(filePath) switch
         {
-            return Path.GetExtension(filePath) switch
-            {
-                ".csv" => await DeserializeCsv(filePath),
-                ".xlsx" => await DeserializeExcel(filePath),
-                ".w3strings" => await DeserializeW3Strings(GenerateTemporaryFilePathAndCopy(filePath)),
-                _ => []
-            };
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "An error occurred while deserializing the file: {Path}.", filePath);
-            return [];
-        }
+            ".csv" => await DeserializeCsv(filePath),
+            ".xlsx" => await DeserializeExcel(filePath),
+            ".w3strings" => await DeserializeW3Strings(GenerateTemporaryFilePathAndCopy(filePath)),
+            _ => []
+        };
     }
 
     public async Task<bool> Serialize(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context)
@@ -191,7 +183,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 var filePath = Path.Combine(context.OutputDirectory,
                     $"{Enum.GetName(context.TargetFileType)!.ToLowerInvariant()}.xlsx");
                 if (File.Exists(filePath))
-                   Guard.IsTrue(backupService.Backup(filePath));
+                    Guard.IsTrue(backupService.Backup(filePath));
                 GenerateExcelFile(filePath, w3Items);
                 return true;
             });
