@@ -190,7 +190,8 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 Guard.IsGreaterThan(w3Items.Count, 0);
                 var filePath = Path.Combine(context.OutputDirectory,
                     $"{Enum.GetName(context.TargetFileType)!.ToLowerInvariant()}.xlsx");
-                BackupExistingFileIfNeeded(filePath);
+                if (File.Exists(filePath))
+                   Guard.IsTrue(backupService.Backup(filePath));
                 GenerateExcelFile(filePath, w3Items);
                 return true;
             });
@@ -220,12 +221,6 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         SetTableHeaders(worksheet);
         SetTableStyles(worksheet, w3Items.Count);
         SetColumnWidths(worksheet);
-    }
-
-    private void BackupExistingFileIfNeeded(string path)
-    {
-        if (File.Exists(path))
-            Guard.IsTrue(backupService.Backup(path));
     }
 
     private static void SetTableHeaders(IWorksheet worksheet)
