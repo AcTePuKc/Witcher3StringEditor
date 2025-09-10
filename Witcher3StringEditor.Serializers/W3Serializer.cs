@@ -269,6 +269,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
+            Guard.IsNotEmpty(w3Items);
             var saveLang = Enum.GetName(context.TargetFileType)!.ToLowerInvariant();
             var tempDirectory = Directory.CreateTempSubdirectory().FullName;
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
