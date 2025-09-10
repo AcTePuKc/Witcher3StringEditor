@@ -121,7 +121,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
                 _cancellationTokenSource = new CancellationTokenSource();
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
                 Log.Information("Starting translation.");
-                var result = await ExecuteTranslationTask(CurrentTranslateItemModel.Text, 
+                var result = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
                     ToLanguage, FormLanguage, _cancellationTokenSource);
                 if (result.IsSuccess)
                 {
@@ -174,9 +174,19 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (!CheckTranslationNotEmpty()) return;
-            if (!SaveTranslatedTextToItem(_w3Items, CurrentTranslateItemModel)) return;
-            Log.Information("Translation saved.");
+            Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText);
+            if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
+            {
+                var found = _w3Items.First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
+                found.Text = CurrentTranslateItemModel.TranslatedText;
+                CurrentTranslateItemModel.IsSaved = true;
+                CurrentTranslateItemModel.IsSaved = true;
+                Log.Information("Translation saved.");
+            }
+            else
+            {
+                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
+            }
         }
         catch (Exception ex)
         {
@@ -184,27 +194,11 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private bool CheckTranslationNotEmpty()
-    {
-        if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText)) return true;
-        _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
-        return false;
-    }
-
-    private static bool SaveTranslatedTextToItem(IReadOnlyList<ITrackableW3StringItem> w3Items, TranslateItemModel currentTranslateItemModel)
-    {
-        var found = w3Items.FirstOrDefault(x => x.TrackingId == currentTranslateItemModel.Id);
-        if (found == null) return false;
-        found.Text = currentTranslateItemModel.TranslatedText;
-        currentTranslateItemModel.IsSaved = true;
-        return true;
-    }
-
     private async Task Navigate(int indexChange)
     {
         try
         {
-            await HandleUnsavedTranslation(_w3Items, CurrentTranslateItemModel!);
+            await HandleUnsavedTranslation();
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 _translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
@@ -215,12 +209,16 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private static async Task HandleUnsavedTranslation(IReadOnlyList<ITrackableW3StringItem> w3Items, TranslateItemModel currentTranslateItemModel)
+    private async Task HandleUnsavedTranslation()
     {
-        if (currentTranslateItemModel is { IsSaved: false }
-            && !string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)
+        if (CurrentTranslateItemModel is { IsSaved: false }
+            && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-            SaveTranslatedTextToItem(w3Items, currentTranslateItemModel);
+        {
+            var found = _w3Items.First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
+            found.Text = CurrentTranslateItemModel.TranslatedText;
+            CurrentTranslateItemModel.IsSaved = true;
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
