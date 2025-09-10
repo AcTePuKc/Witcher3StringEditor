@@ -121,8 +121,8 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
                 _cancellationTokenSource = new CancellationTokenSource();
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
                 Log.Information("Starting translation.");
-                var result = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text, ToLanguage, FormLanguage,
-                    _cancellationTokenSource);
+                var result = await ExecuteTranslationTask(CurrentTranslateItemModel.Text, 
+                    ToLanguage, FormLanguage, _cancellationTokenSource);
                 if (result.IsSuccess)
                 {
                     Guard.IsNotNullOrWhiteSpace(result.Value);
@@ -149,10 +149,10 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private static async Task<Result<string>> ExecuteTranslationTask(ITranslator translator, string text,
+    private async Task<Result<string>> ExecuteTranslationTask(string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
     {
-        var translateTask = translator.TranslateAsync(text, toLanguage, formLanguage);
+        var translateTask = _translator.TranslateAsync(text, toLanguage, formLanguage);
         var completedTask = await Task.WhenAny(
             translateTask,
             Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
@@ -174,7 +174,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            if (!CheckTranslationNotEmpty(CurrentTranslateItemModel)) return;
+            if (!CheckTranslationNotEmpty()) return;
             if (!SaveTranslatedTextToItem(_w3Items, CurrentTranslateItemModel)) return;
             Log.Information("Translation saved.");
         }
@@ -184,10 +184,10 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private static bool CheckTranslationNotEmpty(TranslateItemModel currentTranslateItemModel)
+    private bool CheckTranslationNotEmpty()
     {
-        if (!string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)) return true;
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
+        if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText)) return true;
+        _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
         return false;
     }
 
