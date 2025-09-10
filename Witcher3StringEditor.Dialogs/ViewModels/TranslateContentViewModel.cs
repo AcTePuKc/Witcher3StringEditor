@@ -173,19 +173,10 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
     {
         try
         {
-            Guard.IsNotNull(CurrentTranslateItemModel);
             if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
-            {
-                var found = _w3Items
-                    .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
-                found.Text = CurrentTranslateItemModel.TranslatedText;
-                CurrentTranslateItemModel.IsSaved = true;
-                Log.Information("Translation saved.");
-            }
+                SaveTranslation();
             else
-            {
                 _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
-            }
         }
         catch (Exception ex)
         {
@@ -197,28 +188,29 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
     {
         try
         {
-            await HandleUnsavedTranslation();
+            if (CurrentTranslateItemModel is { IsSaved: false }
+                && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
+                && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    "TranslatedTextNoSaved"))
+                SaveTranslation();
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 _translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to move to {Direction} item", indexChange > 0 ? "next" : "previous");
+            Log.Error(ex, "Failed to move to {Direction} item", 
+                indexChange > 0 ? "next" : "previous");
         }
     }
 
-    private async Task HandleUnsavedTranslation()
+    private void SaveTranslation()
     {
-        if (CurrentTranslateItemModel is { IsSaved: false }
-            && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-        {
-            var found = _w3Items
-                .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
-            found.Text = CurrentTranslateItemModel.TranslatedText;
-            CurrentTranslateItemModel.IsSaved = true;
-        }
+        Guard.IsNotNull(CurrentTranslateItemModel);
+        var found = _w3Items
+            .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
+        found.Text = CurrentTranslateItemModel.TranslatedText;
+        CurrentTranslateItemModel.IsSaved = true;
     }
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
