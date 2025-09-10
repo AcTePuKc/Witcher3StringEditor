@@ -270,7 +270,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         try
         {
             Guard.IsNotEmpty(w3Items);
-            var saveLang = Enum.GetName(context.TargetFileType)!.ToLowerInvariant();
+            var saveLang = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
             var tempDirectory = Directory.CreateTempSubdirectory().FullName;
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
@@ -281,7 +281,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             };
             Guard.IsTrue(await SerializeCsv(w3Items, tempContext));
             Guard.IsTrue(await StartSerializationProcess(tempContext, tempCsvPath));
-            ReplaceFileWithBackup(outputW3StringsPath, tempW3StringsPath);
+            ReplaceFileWithBackup(tempW3StringsPath, outputW3StringsPath);
             return true;
         }
         catch (Exception ex)
