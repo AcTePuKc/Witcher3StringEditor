@@ -114,7 +114,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
             Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.Text);
-            if (!await CheckUserDecisionOnOverwrite()) return;
+            if (!await CheckUserDecisionOnOverwrite(CurrentTranslateItemModel)) return;
             IsBusy = true;
             CurrentTranslateItemModel.TranslatedText = string.Empty;
             _cancellationTokenSource = new CancellationTokenSource();
@@ -148,9 +148,9 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private async Task<bool> CheckUserDecisionOnOverwrite()
+    private static async Task<bool> CheckUserDecisionOnOverwrite(TranslateItemModel currentTranslateItemModel)
     {
-        return !string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText)
+        return !string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)
                && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                    "TranslationNotEmpty");
     }
