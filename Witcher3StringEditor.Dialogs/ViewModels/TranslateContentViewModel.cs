@@ -200,7 +200,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to move to {Direction} item", 
+            Log.Error(ex, "Failed to move to {Direction} item",
                 indexChange > 0 ? "next" : "previous");
         }
     }
@@ -225,7 +225,6 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
     {
         await Navigate(1);
     }
-
 
     partial void OnFormLanguageChanged(ILanguage value)
     {
