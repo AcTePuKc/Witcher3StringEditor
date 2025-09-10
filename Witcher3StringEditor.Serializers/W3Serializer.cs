@@ -191,7 +191,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 var filePath = Path.Combine(context.OutputDirectory,
                     $"{Enum.GetName(context.TargetFileType)!.ToLowerInvariant()}.xlsx");
                 BackupExistingFileIfNeeded(filePath);
-                CreateAndPopulateExcelFile(filePath, w3Items);
+                GenerateExcelFile(filePath, w3Items);
                 return true;
             });
         }
@@ -202,7 +202,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private static void CreateAndPopulateExcelFile(string path, IReadOnlyList<IW3StringItem> w3Items)
+    private static void GenerateExcelFile(string path, IReadOnlyList<IW3StringItem> w3Items)
     {
         using var fileStream = File.Create(path);
         using var excelEngine = new ExcelEngine();
