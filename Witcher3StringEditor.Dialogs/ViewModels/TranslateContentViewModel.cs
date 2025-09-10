@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Diagnostics;
+﻿using System.Globalization;
+using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -137,11 +138,11 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
         catch (Exception ex)
         {
+            const string errorMessage = "The translator: {0} returned an error. Exception: {1}";
             _ = WeakReferenceMessenger.Default.Send(
-                new ValueChangedMessage<string>($"The translator: {_translator.Name} returned an error.\nException: {ex.Message}"),
+                new ValueChangedMessage<string>(string.Format(CultureInfo.InvariantCulture, errorMessage, _translator.Name, ex.Message)),
                 "TranslateError");
-            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", _translator.Name,
-                ex.Message);
+            Log.Error(ex, errorMessage, _translator.Name, ex.Message);
         }
         finally
         {
