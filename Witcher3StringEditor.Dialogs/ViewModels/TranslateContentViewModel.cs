@@ -158,7 +158,8 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             translateTask,
             Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
         );
-        if (completedTask is not { IsCanceled: true }) return Result.Ok((await translateTask).Translation);
+        if (completedTask is not { IsCanceled: true }) 
+            return Result.Ok((await translateTask).Translation);
         _ = translateTask.ContinueWith(static task =>
         {
             if (task.Exception != null)
