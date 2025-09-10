@@ -115,8 +115,10 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             if (string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
             {
                 IsBusy = true;
+                Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel?.Text);
+                _cancellationTokenSource?.Dispose();
                 _cancellationTokenSource = new CancellationTokenSource();
-                CurrentTranslateItemModel!.TranslatedText = string.Empty;
+                CurrentTranslateItemModel.TranslatedText = string.Empty;
                 Log.Information("Starting translation.");
                 var (result, translation) = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text,
                     ToLanguage,
