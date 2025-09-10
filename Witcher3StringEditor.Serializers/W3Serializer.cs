@@ -181,7 +181,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             {
                 Guard.IsGreaterThan(w3Items.Count, 0);
                 var filePath = Path.Combine(context.OutputDirectory,
-                    $"{Enum.GetName(context.TargetFileType)!.ToLowerInvariant()}.xlsx");
+                    $"{Enum.GetName(context.TargetLanguage)!.ToLowerInvariant()}.xlsx");
                 if (File.Exists(filePath))
                     Guard.IsTrue(backupService.Backup(filePath));
                 GenerateExcelFile(filePath, w3Items);
