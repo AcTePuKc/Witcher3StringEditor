@@ -177,9 +177,9 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText);
             if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
             {
-                var found = _w3Items.First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
+                var found = _w3Items
+                    .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
                 found.Text = CurrentTranslateItemModel.TranslatedText;
-                CurrentTranslateItemModel.IsSaved = true;
                 CurrentTranslateItemModel.IsSaved = true;
                 Log.Information("Translation saved.");
             }
@@ -215,7 +215,8 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
         {
-            var found = _w3Items.First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
+            var found = _w3Items
+                .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
             found.Text = CurrentTranslateItemModel.TranslatedText;
             CurrentTranslateItemModel.IsSaved = true;
         }
