@@ -174,7 +174,6 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         try
         {
             Guard.IsNotNull(CurrentTranslateItemModel);
-            Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText);
             if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
             {
                 var found = _w3Items
