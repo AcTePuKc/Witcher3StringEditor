@@ -312,18 +312,10 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
 
     private async Task<bool> StartSerializationProcess(W3SerializationContext context, string path)
     {
-        try
-        {
-            using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, context.IgnoreIdSpaceCheck
-                ? Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, IgnoreIdSpaceCheck = true })
-                : Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, ExpectedIdSpace = context.ExpectedIdSpace }));
-            return process.ExitCode == 0;
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to start the serialization process.");
-            return false;
-        }
+        using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, context.IgnoreIdSpaceCheck
+            ? Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, IgnoreIdSpaceCheck = true })
+            : Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, ExpectedIdSpace = context.ExpectedIdSpace }));
+        return process.ExitCode == 0;
     }
 
     private static async Task<Process> ExecuteExternalProcess(string filename, string arguments)
