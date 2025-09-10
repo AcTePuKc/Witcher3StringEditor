@@ -187,10 +187,10 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         {
             return await Task.Run(() =>
             {
-                var saveLang = Enum.GetName(context.TargetFileType)!.ToLowerInvariant();
-                var filePath = Path.Combine(context.OutputDirectory, $"{saveLang}.xlsx");
-                BackupExistingFileIfNeeded(filePath);
                 Guard.IsGreaterThan(w3Items.Count, 0);
+                var filePath = Path.Combine(context.OutputDirectory,
+                    $"{Enum.GetName(context.TargetFileType)!.ToLowerInvariant()}.xlsx");
+                BackupExistingFileIfNeeded(filePath);
                 CreateAndPopulateExcelFile(filePath, w3Items);
                 return true;
             });
