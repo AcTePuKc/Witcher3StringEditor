@@ -113,10 +113,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         try
         {
             if (!await CheckUserDecisionOnOverwrite(CurrentTranslateItemModel!)) return;
-            IsBusy = true;
-            CurrentTranslateItemModel!.TranslatedText = string.Empty;
-            _cancellationTokenSource = new CancellationTokenSource();
-            Log.Information("Starting translation.");
+            PrepareTranslation();
             var (result, translation) = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text,
                 ToLanguage,
                 FormLanguage, _cancellationTokenSource);
@@ -144,6 +141,14 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         {
             IsBusy = false;
         }
+    }
+
+    private void PrepareTranslation()
+    {
+        IsBusy = true;
+        _cancellationTokenSource = new CancellationTokenSource();
+        CurrentTranslateItemModel!.TranslatedText = string.Empty;
+        Log.Information("Starting translation.");
     }
 
     private static async Task<bool> CheckUserDecisionOnOverwrite(TranslateItemModel currentTranslateItemModel)
