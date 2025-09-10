@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using FluentResults;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
@@ -120,19 +121,14 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
                 _cancellationTokenSource = new CancellationTokenSource();
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
                 Log.Information("Starting translation.");
-                var (result, translation) = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text,
-                    ToLanguage,
-                    FormLanguage, _cancellationTokenSource);
-                if (!result)
+                var result = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text, ToLanguage, FormLanguage,
+                    _cancellationTokenSource);
+                if (result.IsSuccess)
                 {
-                    IsBusy = false;
-                    return;
+                    Guard.IsNotNullOrWhiteSpace(result.Value);
+                    CurrentTranslateItemModel.TranslatedText = result.Value;
+                    Log.Information("Translation completed.");
                 }
-
-                Guard.IsNotNullOrWhiteSpace(translation);
-                CurrentTranslateItemModel.TranslatedText = translation;
-                Log.Information("Translation completed.");
-                IsBusy = false;
             }
             else
             {
@@ -142,8 +138,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         catch (Exception ex)
         {
             _ = WeakReferenceMessenger.Default.Send(
-                new ValueChangedMessage<string>(
-                    $"The translator: {_translator.Name} returned an error.\nException: {ex.Message}"),
+                new ValueChangedMessage<string>($"The translator: {_translator.Name} returned an error.\nException: {ex.Message}"),
                 "TranslateError");
             Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", _translator.Name,
                 ex.Message);
@@ -154,7 +149,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private static async Task<(bool, string)> ExecuteTranslationTask(ITranslator translator, string text,
+    private static async Task<Result<string>> ExecuteTranslationTask(ITranslator translator, string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
     {
         var translateTask = translator.TranslateAsync(text, toLanguage, formLanguage);
@@ -162,7 +157,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             translateTask,
             Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
         );
-        if (completedTask is not { IsCanceled: true }) return (true, (await translateTask).Translation);
+        if (completedTask is not { IsCanceled: true }) return Result.Ok((await translateTask).Translation);
         _ = translateTask.ContinueWith(static task =>
         {
             if (task.Exception != null)
@@ -170,7 +165,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
                 //ignored
             }
         }, TaskContinuationOptions.ExecuteSynchronously);
-        return (false, string.Empty);
+        return Result.Fail(string.Empty);
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
