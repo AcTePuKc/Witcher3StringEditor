@@ -112,21 +112,30 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
     {
         try
         {
-            if (!await CheckUserDecisionOnOverwrite(CurrentTranslateItemModel!)) return;
-            PrepareTranslation();
-            var (result, translation) = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text,
-                ToLanguage,
-                FormLanguage, _cancellationTokenSource);
-            if (!result)
+            if (string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
             {
-                IsBusy = false;
-                return;
-            }
+                IsBusy = true;
+                _cancellationTokenSource = new CancellationTokenSource();
+                CurrentTranslateItemModel!.TranslatedText = string.Empty;
+                Log.Information("Starting translation.");
+                var (result, translation) = await ExecuteTranslationTask(_translator, CurrentTranslateItemModel.Text,
+                    ToLanguage,
+                    FormLanguage, _cancellationTokenSource);
+                if (!result)
+                {
+                    IsBusy = false;
+                    return;
+                }
 
-            Guard.IsNotNullOrWhiteSpace(translation);
-            CurrentTranslateItemModel.TranslatedText = translation;
-            Log.Information("Translation completed.");
-            IsBusy = false;
+                Guard.IsNotNullOrWhiteSpace(translation);
+                CurrentTranslateItemModel.TranslatedText = translation;
+                Log.Information("Translation completed.");
+                IsBusy = false;
+            }
+            else
+            {
+                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationNotEmpty");
+            }
         }
         catch (Exception ex)
         {
@@ -141,21 +150,6 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         {
             IsBusy = false;
         }
-    }
-
-    private void PrepareTranslation()
-    {
-        IsBusy = true;
-        _cancellationTokenSource = new CancellationTokenSource();
-        CurrentTranslateItemModel!.TranslatedText = string.Empty;
-        Log.Information("Starting translation.");
-    }
-
-    private static async Task<bool> CheckUserDecisionOnOverwrite(TranslateItemModel currentTranslateItemModel)
-    {
-        return !string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)
-               && !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                   "TranslationNotEmpty");
     }
 
     private static async Task<(bool, string)> ExecuteTranslationTask(ITranslator translator, string text,
@@ -200,7 +194,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         return false;
     }
 
-    private static bool SaveTranslatedTextToItem(IReadOnlyList<ITrackableW3StringItem>  w3Items,TranslateItemModel currentTranslateItemModel)
+    private static bool SaveTranslatedTextToItem(IReadOnlyList<ITrackableW3StringItem> w3Items, TranslateItemModel currentTranslateItemModel)
     {
         var found = w3Items.FirstOrDefault(x => x.TrackingId == currentTranslateItemModel.Id);
         if (found == null) return false;
@@ -208,12 +202,12 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         currentTranslateItemModel.IsSaved = true;
         return true;
     }
-    
+
     private async Task Navigate(int indexChange)
     {
         try
         {
-            await HandleUnsavedTranslation(_w3Items,CurrentTranslateItemModel!);
+            await HandleUnsavedTranslation(_w3Items, CurrentTranslateItemModel!);
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 _translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
@@ -224,12 +218,12 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
     }
 
-    private static async Task HandleUnsavedTranslation(IReadOnlyList<ITrackableW3StringItem> w3Items,TranslateItemModel currentTranslateItemModel)
+    private static async Task HandleUnsavedTranslation(IReadOnlyList<ITrackableW3StringItem> w3Items, TranslateItemModel currentTranslateItemModel)
     {
         if (currentTranslateItemModel is { IsSaved: false }
             && !string.IsNullOrWhiteSpace(currentTranslateItemModel.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
-            SaveTranslatedTextToItem(w3Items,currentTranslateItemModel);
+            SaveTranslatedTextToItem(w3Items, currentTranslateItemModel);
     }
 
     [RelayCommand(CanExecute = nameof(CanPrevious))]
