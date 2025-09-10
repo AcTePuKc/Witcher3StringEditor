@@ -293,7 +293,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             };
             Guard.IsTrue(await SerializeCsv(w3Items, tempContext));
             Guard.IsTrue(await StartSerializationProcess(tempContext, tempCsvPath));
-            Guard.IsTrue(BackupAndCopyFile(tempW3StringsPath, outputW3StringsPath));
+            ReplaceFileWithBackup(outputW3StringsPath, tempW3StringsPath);
             return true;
         }
         catch (Exception ex)
@@ -301,6 +301,13 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Error(ex, "An error occurred while serializing W3Strings.");
             return false;
         }
+    }
+
+    private void ReplaceFileWithBackup(string sourceFilePath, string destinationFilePath)
+    {
+        if (File.Exists(destinationFilePath))
+            backupService.Backup(destinationFilePath);
+        File.Copy(sourceFilePath, destinationFilePath);
     }
 
     private async Task<bool> StartSerializationProcess(W3SerializationContext context, string path)
@@ -341,21 +348,5 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         process.BeginOutputReadLine();
         await process.WaitForExitAsync();
         return process;
-    }
-
-    private bool BackupAndCopyFile(string sourceFilePath, string destinationFilePath)
-    {
-        if (File.Exists(destinationFilePath) && !backupService.Backup(destinationFilePath))
-            return false;
-        try
-        {
-            File.Copy(sourceFilePath, destinationFilePath, true);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to copy file from {TempPath} to {Path}.", sourceFilePath, destinationFilePath);
-        }
-
-        return true;
     }
 }
