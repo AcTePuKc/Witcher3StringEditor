@@ -186,7 +186,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         }
         catch (Exception ex)
         {
-            LogSaveError(ex);
+            Log.Error(ex, "Failed to save translation.");
         }
     }
 
@@ -206,11 +206,6 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         return true;
     }
     
-    private static void LogSaveError(Exception ex)
-    {
-        Log.Error(ex, "Failed to save translation.");
-    }
-
     private async Task Navigate(int indexChange)
     {
         try
