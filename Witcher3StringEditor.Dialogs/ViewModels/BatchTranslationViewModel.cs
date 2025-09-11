@@ -11,7 +11,7 @@ using Witcher3StringEditor.Common.Abstractions;
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-public sealed partial class BatchTranslateContentViewModel : ObservableObject, IAsyncDisposable
+public sealed partial class BatchTranslationViewModel : ObservableObject, IAsyncDisposable
 {
     private readonly ITranslator _translator;
     private readonly IReadOnlyCollection<IW3StringItem> _w3Items;
@@ -40,7 +40,7 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
 
     [ObservableProperty] private ILanguage _toLanguage;
 
-    public BatchTranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
+    public BatchTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         IEnumerable<IW3StringItem> w3Items, int startIndex)
     {
         _translator = translator;

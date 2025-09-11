@@ -16,7 +16,7 @@ using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public sealed partial class TranslateContentViewModel : ObservableObject, IAsyncDisposable
+public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyncDisposable
 {
     private readonly ITranslator _translator;
     private readonly IReadOnlyList<ITrackableW3StringItem> _w3Items;
@@ -41,7 +41,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
 
     [ObservableProperty] private ILanguage _toLanguage;
 
-    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
+    public SingleTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3Items,
         int index)
     {

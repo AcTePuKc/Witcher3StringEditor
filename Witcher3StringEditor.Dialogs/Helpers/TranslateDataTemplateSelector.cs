@@ -14,8 +14,8 @@ internal class TranslateDataTemplateSelector : DataTemplateSelector
     {
         return item switch
         {
-            TranslateContentViewModel => TranslateDataTemplate,
-            BatchTranslateContentViewModel => BatchTranslateDataTemplate,
+            SingleTranslationViewModel => TranslateDataTemplate,
+            BatchTranslationViewModel => BatchTranslateDataTemplate,
             _ => null
         };
     }

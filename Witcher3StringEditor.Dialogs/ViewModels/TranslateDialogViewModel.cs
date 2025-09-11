@@ -36,7 +36,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         _appSettings = appSettings;
         Log.Information("Total items to translate: {Count}.", _w3Items.Count);
         Log.Information("Starting index: {Index}.", index);
-        CurrentViewModel = new TranslateContentViewModel(appSettings, translator, _w3Items, index);
+        CurrentViewModel = new SingleTranslationViewModel(appSettings, translator, _w3Items, index);
     }
 
     public bool? DialogResult => true;
@@ -46,21 +46,21 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         try
         {
-            if (CurrentViewModel is not (TranslateContentViewModel { IsBusy: true }
-                    or BatchTranslateContentViewModel { IsBusy: true }) ||
+            if (CurrentViewModel is not (SingleTranslationViewModel { IsBusy: true }
+                    or BatchTranslationViewModel { IsBusy: true }) ||
                 await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
             {
                 await CleanupCurrentViewModelAsync();
                 await DisposeCurrentViewModelAsync();
-                CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
-                    ? new TranslateContentViewModel(_appSettings, _translator, _w3Items, _index)
-                    : new BatchTranslateContentViewModel(_appSettings, _translator,
+                CurrentViewModel = CurrentViewModel is BatchTranslationViewModel
+                    ? new SingleTranslationViewModel(_appSettings, _translator, _w3Items, _index)
+                    : new BatchTranslationViewModel(_appSettings, _translator,
                         _w3Items, _index + 1);
-                Title = CurrentViewModel is BatchTranslateContentViewModel
+                Title = CurrentViewModel is BatchTranslationViewModel
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;
                 Log.Information("Switched translation mode to {Mode}",
-                    CurrentViewModel is BatchTranslateContentViewModel ? "batch" : "single");
+                    CurrentViewModel is BatchTranslationViewModel ? "batch" : "single");
             }
             else
             {
@@ -77,10 +77,10 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         switch (CurrentViewModel)
         {
-            case BatchTranslateContentViewModel { IsBusy: true } batchVm:
+            case BatchTranslationViewModel { IsBusy: true } batchVm:
                 await batchVm.CancelCommand.ExecuteAsync(null);
                 break;
-            case TranslateContentViewModel singleVm:
+            case SingleTranslationViewModel singleVm:
                 await SaveUnsavedChangesIfNeeded(singleVm);
                 break;
         }
@@ -112,7 +112,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         await DisposeCurrentViewModelAsync();
     }
 
-    private async Task SaveUnsavedChangesIfNeeded(TranslateContentViewModel? translateViewModel)
+    private async Task SaveUnsavedChangesIfNeeded(SingleTranslationViewModel? translateViewModel)
     {
         if (translateViewModel?.CurrentTranslateItemModel is { IsSaved: false } item
             && !string.IsNullOrWhiteSpace(item.TranslatedText)
@@ -127,8 +127,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private async Task<bool> HandleClosingAsync()
     {
-        if (CurrentViewModel is not (TranslateContentViewModel { IsBusy: true }
-                or BatchTranslateContentViewModel { IsBusy: true }) || await WeakReferenceMessenger.Default.Send(
+        if (CurrentViewModel is not (SingleTranslationViewModel { IsBusy: true }
+                or BatchTranslationViewModel { IsBusy: true }) || await WeakReferenceMessenger.Default.Send(
                 new AsyncRequestMessage<bool>(),
                 "TranslationDialogClosing"))
         {
