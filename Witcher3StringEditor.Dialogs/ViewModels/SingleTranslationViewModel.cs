@@ -15,8 +15,6 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public sealed partial class SingleTranslationViewModel : TranslationViewModelBase
 {
-    private CancellationTokenSource? _cancellationTokenSource;
-
     [ObservableProperty] private TranslateItemModel? _currentTranslateItemModel;
 
     [ObservableProperty]
@@ -46,11 +44,11 @@ public sealed partial class SingleTranslationViewModel : TranslationViewModelBas
 
     public override async ValueTask DisposeAsync()
     {
-        if (_cancellationTokenSource != null)
+        if (CancellationTokenSource != null)
         {
-            if (!_cancellationTokenSource.IsCancellationRequested)
-                await _cancellationTokenSource.CancelAsync();
-            _cancellationTokenSource.Dispose();
+            if (!CancellationTokenSource.IsCancellationRequested)
+                await CancellationTokenSource.CancelAsync();
+            CancellationTokenSource.Dispose();
         }
 
         Log.Information("TranslateContentViewModel is being disposed.");
@@ -76,12 +74,12 @@ public sealed partial class SingleTranslationViewModel : TranslationViewModelBas
             {
                 IsBusy = true;
                 Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel?.Text);
-                _cancellationTokenSource?.Dispose();
-                _cancellationTokenSource = new CancellationTokenSource();
+                CancellationTokenSource?.Dispose();
+                CancellationTokenSource = new CancellationTokenSource();
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
                 Log.Information("Starting translation.");
                 var result = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
-                    ToLanguage, FormLanguage, _cancellationTokenSource);
+                    ToLanguage, FormLanguage, CancellationTokenSource);
                 if (result.IsSuccess)
                 {
                     Guard.IsNotNullOrWhiteSpace(result.Value);

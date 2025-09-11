@@ -13,7 +13,6 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
 {
     protected readonly ITranslator Translator;
     protected readonly IReadOnlyList<ITrackableW3StringItem> W3Items;
-
     [ObservableProperty] private ILanguage _formLanguage;
     [ObservableProperty] private IEnumerable<ILanguage> _languages;
     [ObservableProperty] private ILanguage _toLanguage;
