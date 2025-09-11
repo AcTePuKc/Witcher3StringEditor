@@ -54,8 +54,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                     await batchVm.CancelCommand.ExecuteAsync(null);
 
                 await SaveUnsavedChangesIfNeeded(CurrentViewModel as TranslateContentViewModel);
-                if (CurrentViewModel is IAsyncDisposable asyncDisposable)
-                    await asyncDisposable.DisposeAsync();
+                await DisposeCurrentViewModelAsync();
                 CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
                     ? new TranslateContentViewModel(_appSettings, _translator, _w3Items, _index)
                     : new BatchTranslateContentViewModel(_appSettings, _translator,
@@ -77,6 +76,12 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         }
     }
 
+    private async Task DisposeCurrentViewModelAsync()
+    {
+        if (CurrentViewModel is IAsyncDisposable asyncDisposable)
+            await asyncDisposable.DisposeAsync();
+    }
+
     [RelayCommand]
     private async Task Closing(CancelEventArgs e)
     {
@@ -94,8 +99,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Closed()
     {
-        if (CurrentViewModel is IAsyncDisposable asyncDisposable)
-            await asyncDisposable.DisposeAsync();
+        await DisposeCurrentViewModelAsync();
     }
 
     private async Task SaveUnsavedChangesIfNeeded(TranslateContentViewModel? translateViewModel)
