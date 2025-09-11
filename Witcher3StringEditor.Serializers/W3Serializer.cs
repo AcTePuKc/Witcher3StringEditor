@@ -300,7 +300,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         if (File.Exists(destinationFilePath) && !backupService.Backup(destinationFilePath))
             return false;
-        File.Copy(sourceFilePath, destinationFilePath);
+        File.Copy(sourceFilePath, destinationFilePath, true);
         return true;
     }
 
