@@ -55,7 +55,7 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
 
     private bool CanCancel => IsBusy;
 
-    private bool CanStart => !IsBusy && PendingCount > 0;
+    private bool CanStart => !IsBusy;
 
     public async ValueTask DisposeAsync()
     {
@@ -144,8 +144,9 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         ResetTranslationCounts();
         _cancellationTokenSource?.Dispose();
         _cancellationTokenSource = new CancellationTokenSource();
-        var items = _w3Items.Skip(StartIndex - 1).Take(PendingCount);
-        await ProcessTranslationItems(items, ToLanguage, FormLanguage, _cancellationTokenSource.Token);
+        await ProcessTranslationItems(_w3Items.Skip(StartIndex - 1).Take(PendingCount), 
+            ToLanguage, FormLanguage, _cancellationTokenSource.Token);
+        IsBusy = false;
     }
 
     private async Task ProcessTranslationItems(IEnumerable<IW3StringItem> items, ILanguage toLanguage,
