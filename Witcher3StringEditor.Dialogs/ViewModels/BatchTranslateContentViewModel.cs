@@ -144,7 +144,7 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         ResetTranslationCounts();
         _cancellationTokenSource?.Dispose();
         _cancellationTokenSource = new CancellationTokenSource();
-        await ProcessTranslationItems(_w3Items.Skip(StartIndex - 1).Take(PendingCount), 
+        await ProcessTranslationItems(_w3Items.Skip(StartIndex - 1).Take(PendingCount),
             ToLanguage, FormLanguage, _cancellationTokenSource.Token);
         IsBusy = false;
     }
@@ -213,8 +213,6 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
     private async Task Cancel()
     {
         if (_cancellationTokenSource != null)
-        {
             await _cancellationTokenSource.CancelAsync();
-        }
     }
 }
