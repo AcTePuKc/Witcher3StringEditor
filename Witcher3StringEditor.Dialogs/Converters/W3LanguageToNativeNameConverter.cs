@@ -7,7 +7,7 @@ using Witcher3StringEditor.Common;
 
 namespace Witcher3StringEditor.Dialogs.Converters;
 
-public class EnumToDescriptionConverter:IValueConverter
+public class W3LanguageToNativeNameConverter:IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -16,7 +16,7 @@ public class EnumToDescriptionConverter:IValueConverter
           .GetCustomAttribute<DescriptionAttribute>()!.Description).NativeName;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }
