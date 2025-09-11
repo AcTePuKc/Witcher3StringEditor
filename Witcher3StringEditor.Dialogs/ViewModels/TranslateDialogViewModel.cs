@@ -50,7 +50,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                     or BatchTranslateContentViewModel { IsBusy: true }) ||
                 await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
             {
-                await HandleCurrentViewModelBeforeSwitchAsync();
+                await CleanupCurrentViewModelAsync();
                 await DisposeCurrentViewModelAsync();
                 CurrentViewModel = CurrentViewModel is BatchTranslateContentViewModel
                     ? new TranslateContentViewModel(_appSettings, _translator, _w3Items, _index)
@@ -73,7 +73,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         }
     }
 
-    private async Task HandleCurrentViewModelBeforeSwitchAsync()
+    private async Task CleanupCurrentViewModelAsync()
     {
         switch (CurrentViewModel)
         {
@@ -132,7 +132,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 new AsyncRequestMessage<bool>(),
                 "TranslationDialogClosing"))
         {
-            await HandleCurrentViewModelBeforeSwitchAsync();
+            await CleanupCurrentViewModelAsync();
             return false;
         }
 
