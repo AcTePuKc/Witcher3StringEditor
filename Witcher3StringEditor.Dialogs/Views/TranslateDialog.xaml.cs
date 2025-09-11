@@ -74,7 +74,8 @@ public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, 
             RegisterNotificationHandler(token, message, caption);
     }
 
-    private void RegisterNotificationHandler(string token, Func<ValueChangedMessage<string>, string> message, Func<string> caption)
+    private void RegisterNotificationHandler(string token, Func<ValueChangedMessage<string>, string> message,
+        Func<string> caption)
     {
         WeakReferenceMessenger.Default.Register<TranslateDialog, ValueChangedMessage<string>, string>(
             this,

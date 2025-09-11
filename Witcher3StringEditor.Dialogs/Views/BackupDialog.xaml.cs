@@ -37,7 +37,8 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
             RegisterMessageHandler(token, message, caption, button, icon, expected);
     }
 
-    private void RegisterMessageHandler(string token, Func<string> message, Func<string> caption, MessageBoxButton button, MessageBoxImage icon,
+    private void RegisterMessageHandler(string token, Func<string> message, Func<string> caption,
+        MessageBoxButton button, MessageBoxImage icon,
         MessageBoxResult expected)
     {
         WeakReferenceMessenger.Default.Register<BackupDialog, AsyncRequestMessage<bool>, string>(
@@ -46,7 +47,8 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
             (_, m) => { m.Reply(MessageBox.Show(message(), caption(), button, icon) == expected); });
     }
 
-    private static (string, Func<string>, Func<string>, MessageBoxButton, MessageBoxImage, MessageBoxResult)[] CreateMessageHandlers()
+    private static (string, Func<string>, Func<string>, MessageBoxButton, MessageBoxImage, MessageBoxResult)[]
+        CreateMessageHandlers()
     {
         return
         [

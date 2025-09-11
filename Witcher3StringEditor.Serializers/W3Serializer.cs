@@ -141,7 +141,8 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             var languageName = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
             var csvLanguageIdentifier = context.TargetLanguage switch
             {
-                W3Language.Ar or W3Language.Br or W3Language.Cn or W3Language.Esmx or W3Language.Kr or W3Language.Tr => "cleartext",
+                W3Language.Ar or W3Language.Br or W3Language.Cn or W3Language.Esmx or W3Language.Kr
+                    or W3Language.Tr => "cleartext",
                 _ => languageName
             };
             await WriteFileWithBackup(Path.Combine(context.OutputDirectory, $"{languageName}.csv"),
@@ -281,7 +282,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             };
             Guard.IsTrue(await SerializeCsv(w3Items, tempContext));
             Guard.IsTrue(await StartSerializationProcess(tempContext, tempCsvPath));
-            Guard.IsTrue(ReplaceFileWithBackup(tempW3StringsPath, outputW3StringsPath)); 
+            Guard.IsTrue(ReplaceFileWithBackup(tempW3StringsPath, outputW3StringsPath));
             return true;
         }
         catch (Exception ex)
@@ -302,8 +303,10 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     private async Task<bool> StartSerializationProcess(W3SerializationContext context, string path)
     {
         using var process = await ExecuteExternalProcess(appSettings.W3StringsPath, context.IgnoreIdSpaceCheck
-            ? Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, IgnoreIdSpaceCheck = true })
-            : Parser.Default.FormatCommandLine(new W3StringsOptions { InputFileToEncode = path, ExpectedIdSpace = context.ExpectedIdSpace }));
+            ? Parser.Default.FormatCommandLine(new W3StringsOptions
+                { InputFileToEncode = path, IgnoreIdSpaceCheck = true })
+            : Parser.Default.FormatCommandLine(new W3StringsOptions
+                { InputFileToEncode = path, ExpectedIdSpace = context.ExpectedIdSpace }));
         return process.ExitCode == 0;
     }
 

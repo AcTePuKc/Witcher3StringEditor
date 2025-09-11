@@ -248,7 +248,10 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
                 !await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(fileName), "ReOpenFile")) return;
             Log.Information("The file {FileName} is being opened...", fileName);
             W3StringItems = new ObservableCollection<W3StringItemModel>(
-                [.. (await _w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId).Select(x => new W3StringItemModel(x))]);
+            [
+                .. (await _w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId)
+                .Select(x => new W3StringItemModel(x))
+            ]);
             Guard.IsGreaterThan(W3StringItems.Count, 0);
             var folder = Path.GetDirectoryName(fileName);
             Guard.IsNotNull(folder);
