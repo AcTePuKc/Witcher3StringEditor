@@ -141,7 +141,11 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             var languageName = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
             var csvLanguageIdentifier = context.TargetLanguage switch
             {
-                W3Language.Ar or W3Language.Br or W3Language.Cn or W3Language.Esmx or W3Language.Kr
+                W3Language.Ar
+                    or W3Language.Br
+                    or W3Language.Cn
+                    or W3Language.Esmx
+                    or W3Language.Kr
                     or W3Language.Tr => "cleartext",
                 _ => languageName
             };
