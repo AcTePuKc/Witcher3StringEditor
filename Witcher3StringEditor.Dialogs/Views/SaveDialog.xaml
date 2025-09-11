@@ -9,7 +9,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
+    xmlns:com="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
     xmlns:con="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
     Title="{I18N {x:Static l:LangKeys.SaveDialogTitle}}"
     Width="800"
@@ -33,7 +33,7 @@
                 MethodName="GetValues"
                 ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="c:W3FileType" />
+                    <x:Type TypeName="com:W3FileType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <ObjectDataProvider
@@ -41,10 +41,11 @@
                 MethodName="GetValues"
                 ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="c:W3Language" />
+                    <x:Type TypeName="com:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <con:W3LanguageToNativeNameConverter x:Key="W3LanguageToNativeNameConverter"/>
+            <con:W3LanguageToNativeNameConverter x:Key="W3LanguageToNativeNameConverter" />
+            <con:W3FileTypeToLocalizedStringConverter x:Key="W3FileTypeToLocalizedStringConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -66,14 +67,27 @@
                     <Grid Height="Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock VerticalAlignment="Center" Text="{I18N {x:Static l:LangKeys.TargetFiletype}}" />
                         <ComboBox
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding Source={StaticResource FileType}}"
-                            SelectedValue="{Binding FileType}" />
+                            SelectedValue="{Binding FileType}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding
+                                                Converter="{StaticResource W3FileTypeToLocalizedStringConverter}">
+                                                <Binding />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </Grid>
                 </Expander.Header>
                 <Expander.Content>
@@ -91,7 +105,8 @@
                             SelectedValue="{Binding Language}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource W3LanguageToNativeNameConverter}}"/>
+                                    <TextBlock
+                                        Text="{Binding Converter={StaticResource W3LanguageToNativeNameConverter}}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
@@ -101,7 +116,7 @@
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding FileType}"
-                                                     Value="{x:Static c:W3FileType.W3Strings}">
+                                                     Value="{x:Static com:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -132,7 +147,7 @@
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding FileType}"
-                                                     Value="{x:Static c:W3FileType.W3Strings}">
+                                                     Value="{x:Static com:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsIgnoreIdSpaceCheck}" Value="True">
