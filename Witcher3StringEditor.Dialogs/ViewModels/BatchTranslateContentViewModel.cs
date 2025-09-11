@@ -215,9 +215,6 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         if (_cancellationTokenSource != null)
         {
             await _cancellationTokenSource.CancelAsync();
-            _cancellationTokenSource.Dispose();
-            _cancellationTokenSource = null;
-            IsBusy = false;
         }
     }
 }
