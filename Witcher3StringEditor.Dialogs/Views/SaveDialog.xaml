@@ -86,7 +86,6 @@
                         <TextBlock VerticalAlignment="Center" Text="{I18N {x:Static l:LangKeys.TargetLanguage}}" />
                         <ComboBox
                             Grid.Row="0"
-                            Width="150"
                             HorizontalAlignment="Right"
                             ItemsSource="{Binding Source={StaticResource W3Language}}"
                             SelectedValue="{Binding Language}">
