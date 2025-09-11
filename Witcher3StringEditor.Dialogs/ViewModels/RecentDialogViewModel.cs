@@ -46,7 +46,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     private async Task HandleMissingFile(IRecentItem item)
     {
         LogMissingFile(item.FilePath);
-        if (await NotifyFileNotFound(item.FilePath)) 
+        if (await NotifyFileNotFound(item.FilePath))
             TryRemoveRecentItem(item);
     }
 
