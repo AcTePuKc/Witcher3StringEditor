@@ -9,7 +9,8 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    xmlns:common="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
+    xmlns:c="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
+    xmlns:con="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
     Title="{I18N {x:Static l:LangKeys.SaveDialogTitle}}"
     Width="800"
     Height="500"
@@ -32,7 +33,7 @@
                 MethodName="GetValues"
                 ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="common:W3FileType" />
+                    <x:Type TypeName="c:W3FileType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <ObjectDataProvider
@@ -40,9 +41,10 @@
                 MethodName="GetValues"
                 ObjectType="{x:Type sys:Enum}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="common:W3Language" />
+                    <x:Type TypeName="c:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+            <con:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -87,14 +89,20 @@
                             Width="150"
                             HorizontalAlignment="Right"
                             ItemsSource="{Binding Source={StaticResource W3Language}}"
-                            SelectedValue="{Binding Language}" />
+                            SelectedValue="{Binding Language}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <Grid Grid.Row="1">
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding FileType}"
-                                                     Value="{x:Static common:W3FileType.W3Strings}">
+                                                     Value="{x:Static c:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -125,7 +133,7 @@
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding FileType}"
-                                                     Value="{x:Static common:W3FileType.W3Strings}">
+                                                     Value="{x:Static c:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsIgnoreIdSpaceCheck}" Value="True">
