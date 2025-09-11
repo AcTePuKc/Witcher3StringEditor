@@ -8,7 +8,7 @@ using Witcher3StringEditor.Common.Abstractions;
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-public sealed partial class BatchTranslationViewModel : TranslationViewModelBase, IAsyncDisposable
+public sealed partial class BatchTranslationViewModel : TranslationViewModelBase
 {
     [ObservableProperty] private int _endIndex;
 
@@ -39,7 +39,7 @@ public sealed partial class BatchTranslationViewModel : TranslationViewModelBase
 
     private bool CanStart => !IsBusy;
 
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         if (CancellationTokenSource != null)
         {

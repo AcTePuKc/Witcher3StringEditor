@@ -13,7 +13,7 @@ using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public sealed partial class SingleTranslationViewModel : TranslationViewModelBase, IAsyncDisposable
+public sealed partial class SingleTranslationViewModel : TranslationViewModelBase
 {
     private CancellationTokenSource? _cancellationTokenSource;
 
@@ -44,7 +44,7 @@ public sealed partial class SingleTranslationViewModel : TranslationViewModelBas
 
     private bool CanNext => IndexOfItems < W3Items.Count - 1 && !IsBusy;
 
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         if (_cancellationTokenSource != null)
         {

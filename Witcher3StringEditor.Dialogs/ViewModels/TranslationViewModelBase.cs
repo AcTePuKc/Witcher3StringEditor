@@ -9,7 +9,7 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public abstract partial class TranslationViewModelBase : ObservableObject
+public abstract partial class TranslationViewModelBase : ObservableObject, IAsyncDisposable
 {
     protected readonly ITranslator Translator;
     protected readonly IReadOnlyList<ITrackableW3StringItem> W3Items;
@@ -30,6 +30,8 @@ public abstract partial class TranslationViewModelBase : ObservableObject
         ToLanguage = GetPreferredLanguage(appSettings);
         Log.Information("TranslateContentViewModel initialized.");
     }
+
+    public abstract ValueTask DisposeAsync();
 
     private static IEnumerable<ILanguage> GetSupportedLanguages(ITranslator translator)
     {
