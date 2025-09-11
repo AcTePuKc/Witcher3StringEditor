@@ -132,14 +132,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 new AsyncRequestMessage<bool>(),
                 "TranslationDialogClosing"))
         {
-            if (CurrentViewModel is BatchTranslateContentViewModel { IsBusy: true } batchVm)
-            {
-                await batchVm.CancelCommand.ExecuteAsync(null);
-                return false;
-            }
-
-            if (CurrentViewModel is not TranslateContentViewModel singleVm) return false;
-            await SaveUnsavedChangesIfNeeded(singleVm);
+            await HandleCurrentViewModelBeforeSwitchAsync();
             return false;
         }
 
