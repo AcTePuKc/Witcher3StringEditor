@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using System.Reflection;
+﻿using System.Globalization;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,21 +8,16 @@ using FluentResults;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
-using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyncDisposable
+public sealed partial class SingleTranslationViewModel : TranslationViewModelBase, IAsyncDisposable
 {
-    private readonly ITranslator _translator;
-    private readonly IReadOnlyList<ITrackableW3StringItem> _w3Items;
     private CancellationTokenSource? _cancellationTokenSource;
 
     [ObservableProperty] private TranslateItemModel? _currentTranslateItemModel;
-
-    [ObservableProperty] private ILanguage _formLanguage;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
@@ -37,20 +30,11 @@ public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyn
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private bool _isBusy;
 
-    [ObservableProperty] private IEnumerable<ILanguage> _languages;
-
-    [ObservableProperty] private ILanguage _toLanguage;
-
     public SingleTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3Items,
-        int index)
+        int index) : base(appSettings, translator, w3Items)
     {
-        _w3Items = w3Items;
         IndexOfItems = index;
-        _translator = translator;
-        Languages = GetSupportedLanguages(translator);
-        FormLanguage = Language.GetLanguage("en");
-        ToLanguage = GetPreferredLanguage(appSettings);
         Log.Information("TranslateContentViewModel initialized.");
     }
 
@@ -58,7 +42,7 @@ public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyn
 
     private bool CanPrevious => IndexOfItems > 0 && !IsBusy;
 
-    private bool CanNext => IndexOfItems < _w3Items.Count - 1 && !IsBusy;
+    private bool CanNext => IndexOfItems < W3Items.Count - 1 && !IsBusy;
 
     public async ValueTask DisposeAsync()
     {
@@ -72,30 +56,9 @@ public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyn
         Log.Information("TranslateContentViewModel is being disposed.");
     }
 
-    private static Language GetPreferredLanguage(IAppSettings appSettings)
-    {
-        var description = typeof(W3Language).GetField(appSettings.PreferredLanguage.ToString())!
-            .GetCustomAttribute<DescriptionAttribute>()!.Description;
-        return description == "es-MX" ? new Language("es") : new Language(description);
-    }
-
-    private static IEnumerable<Language> GetSupportedLanguages(ITranslator translator)
-    {
-        return translator.Name switch
-        {
-            "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Microsoft)),
-            "GoogleTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Google)),
-            "YandexTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Google)),
-            _ => Language.LanguageDictionary.Values
-        };
-    }
-
     partial void OnIndexOfItemsChanged(int value)
     {
-        var item = _w3Items[value];
+        var item = W3Items[value];
         CurrentTranslateItemModel = new TranslateItemModel { Id = item.TrackingId, Text = item.Text };
     }
 
@@ -136,9 +99,9 @@ public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyn
             const string errorMessage = "The translator: {0} returned an error. Exception: {1}";
             _ = WeakReferenceMessenger.Default.Send(
                 new ValueChangedMessage<string>(string.Format(CultureInfo.InvariantCulture, errorMessage,
-                    _translator.Name, ex.Message)),
+                    Translator.Name, ex.Message)),
                 "TranslateError");
-            Log.Error(ex, errorMessage, _translator.Name, ex.Message);
+            Log.Error(ex, errorMessage, Translator.Name, ex.Message);
         }
         finally
         {
@@ -149,7 +112,7 @@ public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyn
     private async Task<Result<string>> ExecuteTranslationTask(string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
     {
-        var translateTask = _translator.TranslateAsync(text, toLanguage, formLanguage);
+        var translateTask = Translator.TranslateAsync(text, toLanguage, formLanguage);
         var completedTask = await Task.WhenAny(
             translateTask,
             Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
@@ -194,7 +157,7 @@ public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyn
                 SaveTranslation();
             IndexOfItems += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
-                _translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
+                Translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
         }
         catch (Exception ex)
         {
@@ -206,7 +169,7 @@ public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyn
     private void SaveTranslation()
     {
         Guard.IsNotNull(CurrentTranslateItemModel);
-        var found = _w3Items
+        var found = W3Items
             .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
         found.Text = CurrentTranslateItemModel.TranslatedText;
         CurrentTranslateItemModel.IsSaved = true;
@@ -222,15 +185,5 @@ public sealed partial class SingleTranslationViewModel : ObservableObject, IAsyn
     private async Task Next()
     {
         await Navigate(1);
-    }
-
-    partial void OnFormLanguageChanged(ILanguage value)
-    {
-        Log.Information("The source language has been changed to: {Name}.", value.Name);
-    }
-
-    partial void OnToLanguageChanged(ILanguage value)
-    {
-        Log.Information("The target language has been changed to: {Name}.", value.Name);
     }
 }

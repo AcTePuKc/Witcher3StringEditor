@@ -12,16 +12,16 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public abstract partial class TranslationViewModelBase : ObservableObject
 {
     protected readonly ITranslator Translator;
-    protected readonly IReadOnlyCollection<IW3StringItem> W3Items;
-    protected CancellationTokenSource? CancellationTokenSource;
+    protected readonly IReadOnlyList<ITrackableW3StringItem> W3Items;
 
-    
+
     [ObservableProperty] private ILanguage _formLanguage;
     [ObservableProperty] private IEnumerable<ILanguage> _languages;
     [ObservableProperty] private ILanguage _toLanguage;
+    protected CancellationTokenSource? CancellationTokenSource;
 
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
-        IReadOnlyList<IW3StringItem> w3Items) 
+        IReadOnlyList<ITrackableW3StringItem> w3Items)
     {
         Translator = translator;
         W3Items = [.. w3Items];
