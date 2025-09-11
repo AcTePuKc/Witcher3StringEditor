@@ -74,8 +74,9 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
 
     private static Language GetPreferredLanguage(IAppSettings appSettings)
     {
-        return new Language(typeof(W3Language).GetField(appSettings.PreferredLanguage.ToString())!
-            .GetCustomAttribute<DescriptionAttribute>()!.Description);
+        var description = typeof(W3Language).GetField(appSettings.PreferredLanguage.ToString())!
+            .GetCustomAttribute<DescriptionAttribute>()!.Description;
+        return description == "es-MX" ? new Language("es") : new Language(description);
     }
 
     private static IEnumerable<Language> GetSupportedLanguages(ITranslator translator)

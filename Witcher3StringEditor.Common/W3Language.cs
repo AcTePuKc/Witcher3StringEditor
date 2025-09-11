@@ -12,7 +12,7 @@ public enum W3Language
     [Description("de")] [UsedImplicitly] De = 4,
     [Description("en")] [UsedImplicitly] En = 5,
     [Description("es")] [UsedImplicitly] Es = 6,
-    [Description("es")] Esmx = 7,
+    [Description("es-MX")] Esmx = 7,
     [Description("fr")] [UsedImplicitly] Fr = 8,
     [Description("hu")] [UsedImplicitly] Hu = 9,
     [Description("it")] [UsedImplicitly] It = 10,
