@@ -1,34 +1,23 @@
-﻿using System.ComponentModel;
-using System.Reflection;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
-using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-public sealed partial class BatchTranslationViewModel : ObservableObject, IAsyncDisposable
+public sealed partial class BatchTranslationViewModel : TranslationViewModelBase, IAsyncDisposable
 {
-    private readonly ITranslator _translator;
-    private readonly IReadOnlyCollection<IW3StringItem> _w3Items;
-    private CancellationTokenSource? _cancellationTokenSource;
-
     [ObservableProperty] private int _endIndex;
 
     [ObservableProperty] private int _endIndexMin;
 
     [ObservableProperty] private int _failureCount;
 
-    [ObservableProperty] private ILanguage _formLanguage;
-
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     private bool _isBusy;
-
-    [ObservableProperty] private IEnumerable<ILanguage> _languages;
 
     [ObservableProperty] private int _maxValue;
 
@@ -38,18 +27,11 @@ public sealed partial class BatchTranslationViewModel : ObservableObject, IAsync
 
     [ObservableProperty] private int _successCount;
 
-    [ObservableProperty] private ILanguage _toLanguage;
-
     public BatchTranslationViewModel(IAppSettings appSettings, ITranslator translator,
-        IEnumerable<IW3StringItem> w3Items, int startIndex)
+        IReadOnlyList<IW3StringItem> w3Items, int startIndex) : base(appSettings, translator,w3Items)
     {
-        _translator = translator;
-        _w3Items = [.. w3Items];
         StartIndex = startIndex;
-        EndIndex = MaxValue = _w3Items.Count;
-        Languages = GetSupportedLanguages(translator);
-        FormLanguage = Language.GetLanguage("en");
-        ToLanguage = GetPreferredLanguage(appSettings);
+        EndIndex = MaxValue = W3Items.Count;
         Log.Information("BatchTranslateContentViewModel is initialized.");
     }
 
@@ -59,46 +41,14 @@ public sealed partial class BatchTranslationViewModel : ObservableObject, IAsync
 
     public async ValueTask DisposeAsync()
     {
-        if (_cancellationTokenSource != null)
+        if (CancellationTokenSource != null)
         {
-            if (!_cancellationTokenSource.IsCancellationRequested)
-                await _cancellationTokenSource.CancelAsync();
-            _cancellationTokenSource.Dispose();
+            if (!CancellationTokenSource.IsCancellationRequested)
+                await CancellationTokenSource.CancelAsync();
+            CancellationTokenSource.Dispose();
         }
 
         Log.Information("BatchTranslateContentViewModel is being disposed.");
-    }
-
-
-    private static IEnumerable<ILanguage> GetSupportedLanguages(ITranslator translator)
-    {
-        return translator.Name switch
-        {
-            "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Microsoft)),
-            "GoogleTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Google)),
-            "YandexTranslator" => Language.LanguageDictionary.Values.Where(x =>
-                x.SupportedServices.HasFlag(TranslationServices.Google)),
-            _ => Language.LanguageDictionary.Values
-        };
-    }
-
-    private static Language GetPreferredLanguage(IAppSettings appSettings)
-    {
-        var description = typeof(W3Language).GetField(appSettings.PreferredLanguage.ToString())!
-            .GetCustomAttribute<DescriptionAttribute>()!.Description;
-        return description == "es-MX" ? new Language("es") : new Language(description);
-    }
-
-    partial void OnFormLanguageChanged(ILanguage value)
-    {
-        Log.Information("The source language has been changed to: {Name}.", value.Name);
-    }
-
-    partial void OnToLanguageChanged(ILanguage value)
-    {
-        Log.Information("The target language has been changed to: {Name}.", value.Name);
     }
 
     partial void OnStartIndexChanged(int value)
@@ -142,10 +92,10 @@ public sealed partial class BatchTranslationViewModel : ObservableObject, IAsync
     {
         IsBusy = true;
         ResetTranslationCounts();
-        _cancellationTokenSource?.Dispose();
-        _cancellationTokenSource = new CancellationTokenSource();
-        await ProcessTranslationItems(_w3Items.Skip(StartIndex - 1).Take(PendingCount),
-            ToLanguage, FormLanguage, _cancellationTokenSource.Token);
+        CancellationTokenSource?.Dispose();
+        CancellationTokenSource = new CancellationTokenSource();
+        await ProcessTranslationItems(W3Items.Skip(StartIndex - 1).Take(PendingCount),
+            ToLanguage, FormLanguage, CancellationTokenSource.Token);
     }
 
     private async Task ProcessTranslationItems(IEnumerable<IW3StringItem> items, ILanguage toLanguage,
@@ -169,7 +119,7 @@ public sealed partial class BatchTranslationViewModel : ObservableObject, IAsync
     {
         try
         {
-            var (result, translation) = await TranslateItem(_translator, item.Text, toLanguage, fromLanguage);
+            var (result, translation) = await TranslateItem(Translator, item.Text, toLanguage, fromLanguage);
             if (result)
             {
                 item.Text = translation;
@@ -183,7 +133,7 @@ public sealed partial class BatchTranslationViewModel : ObservableObject, IAsync
         catch (Exception ex)
         {
             Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}",
-                _translator.Name, ex.Message);
+                Translator.Name, ex.Message);
             FailureCount++;
         }
     }
@@ -211,7 +161,7 @@ public sealed partial class BatchTranslationViewModel : ObservableObject, IAsync
     [RelayCommand(CanExecute = nameof(CanCancel))]
     private async Task Cancel()
     {
-        if (_cancellationTokenSource != null)
-            await _cancellationTokenSource.CancelAsync();
+        if (CancellationTokenSource != null)
+            await CancellationTokenSource.CancelAsync();
     }
 }
