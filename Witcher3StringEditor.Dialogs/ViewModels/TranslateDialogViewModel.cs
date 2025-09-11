@@ -94,7 +94,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task Closed()
     {
-        await ((IAsyncDisposable)CurrentViewModel).DisposeAsync();
+        if (CurrentViewModel is IAsyncDisposable asyncDisposable)
+            await asyncDisposable.DisposeAsync();
     }
 
     private async Task SaveUnsavedChangesIfNeeded(TranslateContentViewModel? translateViewModel)
