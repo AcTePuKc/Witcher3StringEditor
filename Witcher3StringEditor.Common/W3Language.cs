@@ -1,24 +1,25 @@
-﻿using JetBrains.Annotations;
+﻿using System.ComponentModel;
+using JetBrains.Annotations;
 
 namespace Witcher3StringEditor.Common;
 
 public enum W3Language
 {
-    Ar = 0,
-    Br = 1,
-    Cn = 2,
-    Cz = 3,
-    [UsedImplicitly] De = 4,
-    [UsedImplicitly] En = 5,
-    [UsedImplicitly] Es = 6,
-    Esmx = 7,
-    [UsedImplicitly] Fr = 8,
-    [UsedImplicitly] Hu = 9,
-    [UsedImplicitly] It = 10,
-    Jp = 11,
-    Kr = 12,
-    [UsedImplicitly] Pl = 13,
-    [UsedImplicitly] Ru = 14,
-    Zh = 15,
-    Tr = 16
+    [Description("ar")] Ar = 0,
+    [Description("pt")] Br = 1,
+    [Description("zh-Hans")] Cn = 2,
+    [Description("cs")] Cz = 3,
+    [Description("de")] [UsedImplicitly] De = 4,
+    [Description("en")] [UsedImplicitly] En = 5,
+    [Description("es")] [UsedImplicitly] Es = 6,
+    [Description("es")] Esmx = 7,
+    [Description("fr")] [UsedImplicitly] Fr = 8,
+    [Description("hu")] [UsedImplicitly] Hu = 9,
+    [Description("it")] [UsedImplicitly] It = 10,
+    [Description("jp")] Jp = 11,
+    [Description("ko")] Kr = 12,
+    [Description("pl")] [UsedImplicitly] Pl = 13,
+    [Description("ru")] [UsedImplicitly] Ru = 14,
+    [Description("zh-Hant")] Zh = 15,
+    [Description("tr")] Tr = 16
 }
