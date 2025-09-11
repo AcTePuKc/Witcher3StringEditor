@@ -4,7 +4,7 @@ using Witcher3StringEditor.Dialogs.ViewModels;
 
 namespace Witcher3StringEditor.Dialogs.Helpers;
 
-public class TranslateDataTemplateSelector : DataTemplateSelector
+internal class TranslateDataTemplateSelector : DataTemplateSelector
 {
     public DataTemplate? TranslateDataTemplate { get; set; }
 
