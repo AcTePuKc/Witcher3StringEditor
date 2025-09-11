@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
+using System.Reflection;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -39,7 +41,8 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
 
     [ObservableProperty] private ILanguage _toLanguage;
 
-    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator, IReadOnlyList<ITrackableW3StringItem> w3Items,
+    public TranslateContentViewModel(IAppSettings appSettings, ITranslator translator,
+        IReadOnlyList<ITrackableW3StringItem> w3Items,
         int index)
     {
         _w3Items = w3Items;
@@ -71,17 +74,8 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
 
     private static Language GetPreferredLanguage(IAppSettings appSettings)
     {
-        return appSettings.PreferredLanguage switch
-        {
-            W3Language.Br => Language.GetLanguage("pt"),
-            W3Language.Cn => Language.GetLanguage("zh-CN"),
-            W3Language.Esmx => Language.GetLanguage("es"),
-            W3Language.Cz => Language.GetLanguage("cs"),
-            W3Language.Jp => Language.GetLanguage("ja"),
-            W3Language.Kr => Language.GetLanguage("ko"),
-            W3Language.Zh => Language.GetLanguage("zh-TW"),
-            _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
-        };
+        return new Language(typeof(W3Language).GetField(appSettings.PreferredLanguage.ToString())!
+            .GetCustomAttribute<DescriptionAttribute>()!.Description);
     }
 
     private static IEnumerable<Language> GetSupportedLanguages(ITranslator translator)
@@ -140,7 +134,8 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
         {
             const string errorMessage = "The translator: {0} returned an error. Exception: {1}";
             _ = WeakReferenceMessenger.Default.Send(
-                new ValueChangedMessage<string>(string.Format(CultureInfo.InvariantCulture, errorMessage, _translator.Name, ex.Message)),
+                new ValueChangedMessage<string>(string.Format(CultureInfo.InvariantCulture, errorMessage,
+                    _translator.Name, ex.Message)),
                 "TranslateError");
             Log.Error(ex, errorMessage, _translator.Name, ex.Message);
         }
@@ -158,7 +153,7 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             translateTask,
             Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
         );
-        if (completedTask is not { IsCanceled: true }) 
+        if (completedTask is not { IsCanceled: true })
             return Result.Ok((await translateTask).Translation);
         _ = translateTask.ContinueWith(static task =>
         {
@@ -178,7 +173,8 @@ public sealed partial class TranslateContentViewModel : ObservableObject, IAsync
             if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
                 SaveTranslation();
             else
-                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty), "TranslatedTextInvalid");
+                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
+                    "TranslatedTextInvalid");
         }
         catch (Exception ex)
         {

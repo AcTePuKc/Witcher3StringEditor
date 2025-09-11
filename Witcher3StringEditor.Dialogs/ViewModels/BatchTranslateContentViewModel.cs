@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel;
+using System.Reflection;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GTranslate;
 using GTranslate.Translators;
@@ -84,17 +86,8 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
 
     private static Language GetPreferredLanguage(IAppSettings appSettings)
     {
-        return appSettings.PreferredLanguage switch
-        {
-            W3Language.Br => Language.GetLanguage("pt"),
-            W3Language.Cn => Language.GetLanguage("zh-CN"),
-            W3Language.Esmx => Language.GetLanguage("es"),
-            W3Language.Cz => Language.GetLanguage("cs"),
-            W3Language.Jp => Language.GetLanguage("ja"),
-            W3Language.Kr => Language.GetLanguage("ko"),
-            W3Language.Zh => Language.GetLanguage("zh-TW"),
-            _ => Language.GetLanguage(Enum.GetName(appSettings.PreferredLanguage) ?? "en")
-        };
+        return new Language(typeof(W3Language).GetField(appSettings.PreferredLanguage.ToString())!
+            .GetCustomAttribute<DescriptionAttribute>()!.Description);
     }
 
     partial void OnFormLanguageChanged(ILanguage value)
@@ -154,7 +147,8 @@ public sealed partial class BatchTranslateContentViewModel : ObservableObject, I
         await ProcessTranslationItems(items, ToLanguage, FormLanguage, _cancellationTokenSource.Token);
     }
 
-    private async Task ProcessTranslationItems(IEnumerable<IW3StringItem> items, ILanguage toLanguage, ILanguage fromLanguage,
+    private async Task ProcessTranslationItems(IEnumerable<IW3StringItem> items, ILanguage toLanguage,
+        ILanguage fromLanguage,
         CancellationToken cancellationToken)
     {
         foreach (var item in items)
