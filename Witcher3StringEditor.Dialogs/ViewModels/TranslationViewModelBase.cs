@@ -31,6 +31,8 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
 
     public abstract ValueTask DisposeAsync();
 
+    public abstract bool GetIsBusy();
+
     private static IEnumerable<ILanguage> GetSupportedLanguages(ITranslator translator)
     {
         return translator.Name switch

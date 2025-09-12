@@ -42,6 +42,11 @@ public sealed partial class SingleTranslationViewModel : TranslationViewModelBas
 
     private bool CanNext => IndexOfItems < W3Items.Count - 1 && !IsBusy;
 
+    public override bool GetIsBusy()
+    {
+        return IsBusy;
+    }
+
     public override async ValueTask DisposeAsync()
     {
         if (CancellationTokenSource != null)

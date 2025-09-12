@@ -51,6 +51,11 @@ public sealed partial class BatchTranslationViewModel : TranslationViewModelBase
         Log.Information("BatchTranslateContentViewModel is being disposed.");
     }
 
+    public override bool GetIsBusy()
+    {
+        return IsBusy;
+    }
+
     partial void OnStartIndexChanged(int value)
     {
         EndIndexMin = value > MaxValue ? MaxValue : value;
