@@ -3,7 +3,7 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Serializers.Internal;
 
-internal class W3StringStringItem : IW3StringItem
+internal record W3StringStringItem : IW3StringItem
 {
     public W3StringStringItem()
     {
