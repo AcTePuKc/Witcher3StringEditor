@@ -125,10 +125,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private async Task<bool> HandleClosingAsync()
     {
-        if (CurrentViewModel is not (SingleTranslationViewModel { IsBusy: true }
-                or BatchTranslationViewModel { IsBusy: true }) || await WeakReferenceMessenger.Default.Send(
-                new AsyncRequestMessage<bool>(),
-                "TranslationDialogClosing"))
+        if (!CurrentViewModel.GetIsBusy() ||
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
         {
             await CleanupCurrentViewModelAsync();
             return false;
