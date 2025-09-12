@@ -8,7 +8,7 @@ using Witcher3StringEditor.Common.Abstractions;
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-public sealed partial class BatchTranslationViewModel : TranslationViewModelBase
+public sealed partial class BatchItemsTranslationViewModel : TranslationViewModelBase
 {
     [ObservableProperty] private int _endIndex;
 
@@ -27,12 +27,12 @@ public sealed partial class BatchTranslationViewModel : TranslationViewModelBase
 
     [ObservableProperty] private int _successCount;
 
-    public BatchTranslationViewModel(IAppSettings appSettings, ITranslator translator,
+    public BatchItemsTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3Items, int startIndex) : base(appSettings, translator, w3Items)
     {
         StartIndex = startIndex;
         EndIndex = MaxValue = W3Items.Count;
-        Log.Information("Initializing BatchTranslationViewModel.");
+        Log.Information("Initializing BatchItemsTranslationViewModel.");
     }
 
     private bool CanCancel => IsBusy;
@@ -48,7 +48,7 @@ public sealed partial class BatchTranslationViewModel : TranslationViewModelBase
             CancellationTokenSource.Dispose();
         }
         
-        Log.Information("BatchTranslationViewModel is being disposed.");
+        Log.Information("BatchItemsTranslationViewModel is being disposed.");
     }
 
     public override bool GetIsBusy()

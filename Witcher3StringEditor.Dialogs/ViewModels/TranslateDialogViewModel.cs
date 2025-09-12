@@ -36,7 +36,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         _appSettings = appSettings;
         Log.Information("Total items to translate: {Count}.", _w3Items.Count);
         Log.Information("Starting index: {Index}.", index);
-        CurrentViewModel = new SingleTranslationViewModel(appSettings, translator, _w3Items, index);
+        CurrentViewModel = new SingleItemTranslationViewModel(appSettings, translator, _w3Items, index);
     }
 
     public bool? DialogResult => true;
@@ -51,15 +51,15 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             {
                 await CleanupCurrentViewModelAsync();
                 await DisposeCurrentViewModelAsync();
-                CurrentViewModel = CurrentViewModel is BatchTranslationViewModel
-                    ? new SingleTranslationViewModel(_appSettings, _translator, _w3Items, _index)
-                    : new BatchTranslationViewModel(_appSettings, _translator,
+                CurrentViewModel = CurrentViewModel is BatchItemsTranslationViewModel
+                    ? new SingleItemTranslationViewModel(_appSettings, _translator, _w3Items, _index)
+                    : new BatchItemsTranslationViewModel(_appSettings, _translator,
                         _w3Items, _index + 1);
-                Title = CurrentViewModel is BatchTranslationViewModel
+                Title = CurrentViewModel is BatchItemsTranslationViewModel
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;
                 Log.Information("Switched translation mode to {Mode}",
-                    CurrentViewModel is BatchTranslationViewModel ? "batch" : "single");
+                    CurrentViewModel is BatchItemsTranslationViewModel ? "batch" : "single");
             }
             else
             {
@@ -76,10 +76,10 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         switch (CurrentViewModel)
         {
-            case BatchTranslationViewModel { IsBusy: true } batchVm:
+            case BatchItemsTranslationViewModel { IsBusy: true } batchVm:
                 await batchVm.CancelCommand.ExecuteAsync(null);
                 break;
-            case SingleTranslationViewModel singleVm:
+            case SingleItemTranslationViewModel singleVm:
                 await SaveUnsavedChangesIfNeeded(singleVm);
                 break;
         }
@@ -110,7 +110,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         await DisposeCurrentViewModelAsync();
     }
 
-    private async Task SaveUnsavedChangesIfNeeded(SingleTranslationViewModel? translateViewModel)
+    private async Task SaveUnsavedChangesIfNeeded(SingleItemTranslationViewModel? translateViewModel)
     {
         if (translateViewModel?.CurrentTranslateItemModel is { IsSaved: false } item
             && !string.IsNullOrWhiteSpace(item.TranslatedText)

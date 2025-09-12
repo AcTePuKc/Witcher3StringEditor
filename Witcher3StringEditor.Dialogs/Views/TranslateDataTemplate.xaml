@@ -6,7 +6,7 @@
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels">
-    <DataTemplate x:Key="TranslateDataTemplate" DataType="{x:Type vm:SingleTranslationViewModel}">
+    <DataTemplate x:Key="TranslateDataTemplate" DataType="{x:Type vm:SingleItemTranslationViewModel}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

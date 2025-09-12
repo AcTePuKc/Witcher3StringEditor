@@ -13,7 +13,7 @@ using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
-public sealed partial class SingleTranslationViewModel : TranslationViewModelBase
+public sealed partial class SingleItemTranslationViewModel : TranslationViewModelBase
 {
     [ObservableProperty] private TranslateItemModel? _currentTranslateItemModel;
 
@@ -28,12 +28,12 @@ public sealed partial class SingleTranslationViewModel : TranslationViewModelBas
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private bool _isBusy;
 
-    public SingleTranslationViewModel(IAppSettings appSettings, ITranslator translator,
+    public SingleItemTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3Items,
         int index) : base(appSettings, translator, w3Items)
     {
         IndexOfItems = index;
-        Log.Information("Initializing SingleTranslateContentViewModel.");
+        Log.Information("Initializing SingleItemTranslationViewModel.");
     }
 
     private bool CanSave => !IsBusy;
@@ -56,7 +56,7 @@ public sealed partial class SingleTranslationViewModel : TranslationViewModelBas
             CancellationTokenSource.Dispose();
         }
         
-        Log.Information("SingleTranslateContentViewModel is being disposed.");
+        Log.Information("SingleItemTranslationViewModel is being disposed.");
     }
 
     partial void OnIndexOfItemsChanged(int value)
