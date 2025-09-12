@@ -21,12 +21,11 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3Items)
     {
-        Translator = translator;
         W3Items = [.. w3Items];
+        Translator = translator;
         Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = GetPreferredLanguage(appSettings);
-        Log.Information("TranslateContentViewModel initialized.");
     }
 
     public abstract ValueTask DisposeAsync();
