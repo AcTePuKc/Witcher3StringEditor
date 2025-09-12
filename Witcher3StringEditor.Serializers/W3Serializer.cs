@@ -25,13 +25,13 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         };
     }
 
-    public async Task<bool> Serialize(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context)
+    public async Task<bool> Serialize(IReadOnlyList<IW3StringItem> w3StringItems, W3SerializationContext context)
     {
         return context.TargetFileType switch
         {
-            W3FileType.Csv => await SerializeCsv(w3Items, context),
-            W3FileType.W3Strings => await SerializeW3Strings(w3Items, context),
-            W3FileType.Excel => await SerializeExcel(w3Items, context),
+            W3FileType.Csv => await SerializeCsv(w3StringItems, context),
+            W3FileType.W3Strings => await SerializeW3Strings(w3StringItems, context),
+            W3FileType.Excel => await SerializeExcel(w3StringItems, context),
             _ => throw new NotSupportedException($"The file type {context.TargetFileType} is not supported.")
         };
     }
