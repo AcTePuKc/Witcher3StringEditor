@@ -18,7 +18,7 @@ public partial class SaveDialogViewModel
 {
     private readonly IW3Serializer _serializer;
 
-    private readonly IReadOnlyList<IW3StringItem> _w3Items;
+    private readonly IReadOnlyList<IW3StringItem> _w3StringItems;
 
     [ObservableProperty] private W3FileType _fileType;
 
@@ -31,12 +31,12 @@ public partial class SaveDialogViewModel
     [ObservableProperty] private string _path;
 
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
-        IReadOnlyList<IW3StringItem> w3Items, string path)
+        IReadOnlyList<IW3StringItem> w3StringItems, string path)
     {
         Path = path;
-        _w3Items = w3Items;
+        _w3StringItems = w3StringItems;
         _serializer = serializer;
-        IdSpace = FindIdSpace(w3Items[0]);
+        IdSpace = FindIdSpace(w3StringItems[0]);
         Language = appSettings.PreferredLanguage;
         FileType = appSettings.PreferredW3FileType;
     }
@@ -50,7 +50,7 @@ public partial class SaveDialogViewModel
     {
         Log.Information("Target filetype: {FileType}.", FileType);
         Log.Information("Target language: {Language}.", Language);
-        var saveResult = await _serializer.Serialize(_w3Items, new W3SerializationContext
+        var saveResult = await _serializer.Serialize(_w3StringItems, new W3SerializationContext
         {
             OutputDirectory = Path,
             ExpectedIdSpace = IdSpace,
