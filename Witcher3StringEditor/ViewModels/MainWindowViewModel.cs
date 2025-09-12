@@ -10,12 +10,14 @@ using cmdwtf;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Serilog;
 using Serilog.Events;
@@ -34,13 +36,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
 {
     private readonly IAppSettings _appSettings;
     private readonly IBackupService _backupService;
-    private readonly ICheckUpdateService _checkUpdateService;
-    private readonly ICultureResolver _cultureResolver;
     private readonly IDialogService _dialogService;
-    private readonly IExplorerService _explorerService;
-    private readonly IPlayGameService _playGameService;
-    private readonly IEnumerable<ITranslator> _translators;
-    private readonly IW3Serializer _w3Serializer;
 
     [ObservableProperty] private string[]? _dropFileData;
 
@@ -57,20 +53,11 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
     private ObservableCollection<W3StringItemModel>? _w3StringItems;
 
-    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService,
-        ICheckUpdateService checkUpdateService, IDialogService dialogService, IExplorerService explorerService,
-        IPlayGameService playGameService, IW3Serializer w3Serializer, IEnumerable<ITranslator> translators,
-        ICultureResolver cultureResolver)
+    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IDialogService dialogService)
     {
         _appSettings = appSettings;
-        _translators = translators;
-        _w3Serializer = w3Serializer;
         _backupService = backupService;
-        _checkUpdateService = checkUpdateService;
         _dialogService = dialogService;
-        _playGameService = playGameService;
-        _explorerService = explorerService;
-        _cultureResolver = cultureResolver;
         RegisterMessengerHandlers();
         SetupAppSettingsEventHandlers();
     }
@@ -170,10 +157,10 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor"));
         Log.Information("Installed Language Packs: {Languages}",
-            string.Join(", ", _cultureResolver.SupportedCultures.Select(x => x.Name)));
+            string.Join(", ", Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
         Log.Information("Current Language: {Language}", _appSettings.Language);
         await CheckSettings(_appSettings);
-        IsUpdateAvailable = await _checkUpdateService.CheckUpdate();
+        IsUpdateAvailable = await Ioc.Default.GetRequiredService<ICheckUpdateService>().CheckUpdate();
     }
 
     private static async Task CheckSettings(IAppSettings settings)
@@ -249,7 +236,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             Log.Information("The file {FileName} is being opened...", fileName);
             W3StringItems = new ObservableCollection<W3StringItemModel>(
             [
-                .. (await _w3Serializer.Deserialize(fileName)).OrderBy(x => x.StrId)
+                .. (await Ioc.Default.GetRequiredService<IW3Serializer>().Deserialize(fileName)).OrderBy(x => x.StrId)
                 .Select(x => new W3StringItemModel(x))
             ]);
             Guard.IsGreaterThan(W3StringItems.Count, 0);
@@ -327,7 +314,7 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSaveDialog()
     {
         _ = await _dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(_appSettings, _w3Serializer, W3StringItems!, OutputFolder));
+            new SaveDialogViewModel(_appSettings, Ioc.Default.GetRequiredService<IW3Serializer>(), W3StringItems!, OutputFolder));
     }
 
     [RelayCommand]
@@ -339,14 +326,17 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
+        var translators = Ioc.Default.GetServices<ITranslator>().ToArray();
+        var names = translators.Select(x => x.Name);
+        Array.ForEach(translators, x => (x as IDisposable)?.Dispose());
         _ = await _dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(_appSettings, _dialogService, _translators, _cultureResolver));
+            new SettingDialogViewModel(_appSettings, _dialogService, names, Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures));
     }
 
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
-        await _playGameService.PlayGame();
+        await Ioc.Default.GetRequiredService<IPlayGameService>().PlayGame();
     }
 
     [RelayCommand]
@@ -365,14 +355,14 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
-        _explorerService.Open(OutputFolder);
+        Ioc.Default.GetRequiredService<IExplorerService>().Open(OutputFolder);
         Log.Information("Working folder opened.");
     }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
-        _explorerService.Open(_appSettings.NexusModUrl);
+        Ioc.Default.GetRequiredService<IExplorerService>().Open(_appSettings.NexusModUrl);
         Log.Information("NexusMods opened.");
     }
 
@@ -386,9 +376,10 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task ShowTranslateDialog(IW3StringItem? w3Item)
     {
+        var translator = Ioc.Default.GetServices<ITranslator>().First(x => x.Name == _appSettings.Translator);
         _ = await _dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(_appSettings,
-                _translators.First(x => x.Name == _appSettings.Translator),
-                W3StringItems!, w3Item != null ? W3StringItems.IndexOf(w3Item) : 0));
+            new TranslateDialogViewModel(_appSettings, translator, W3StringItems!, w3Item != null ? W3StringItems.IndexOf(w3Item) : 0));
+        if (translator is IDisposable disposable)
+            disposable.Dispose();
     }
 }

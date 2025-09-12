@@ -48,7 +48,6 @@
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
             </Style>
-            <c:TranslatorToStringConverter x:Key="TranslatorToStringConverter" />
             <c:StringToCultureInfoConverter x:Key="StringToCultureInfoConverter" />
             <c:W3LanguageToNativeNameConverter x:Key="W3LanguageToNativeNameConverter" />
             <c:W3FileTypeToLocalizedStringConverter x:Key="W3FileTypeToLocalizedStringConverter" />
@@ -126,9 +125,8 @@
                         <ui:FontIcon Glyph="&#xEE56;" />
                     </ui:SettingsCard.HeaderIcon>
                     <ComboBox
-                        DisplayMemberPath="Name"
                         ItemsSource="{Binding Translators}"
-                        SelectedItem="{Binding AppSettings.Translator, Converter={StaticResource TranslatorToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        SelectedItem="{Binding AppSettings.Translator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </ui:SettingsCard>
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                            Text="{I18N {x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />

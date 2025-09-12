@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
@@ -13,15 +12,15 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class SettingDialogViewModel(
     IAppSettings appSettings,
     IDialogService dialogService,
-    IEnumerable<ITranslator> translators,
-    ICultureResolver cultureResolver)
+    IEnumerable<string> translators,
+    IEnumerable<CultureInfo> supportedCultures)
     : ObservableObject, IModalDialogViewModel
 {
     public IAppSettings AppSettings { get; } = appSettings;
 
-    public IEnumerable<ITranslator> Translators { get; } = translators;
+    public IEnumerable<string> Translators { get; } = translators;
 
-    public IEnumerable<CultureInfo> SupportedCultures { get; } = cultureResolver.SupportedCultures;
+    public IEnumerable<CultureInfo> SupportedCultures { get; } = supportedCultures;
 
     public bool? DialogResult => true;
 
