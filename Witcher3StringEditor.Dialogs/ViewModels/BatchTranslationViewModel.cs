@@ -32,7 +32,7 @@ public sealed partial class BatchTranslationViewModel : TranslationViewModelBase
     {
         StartIndex = startIndex;
         EndIndex = MaxValue = W3Items.Count;
-        Log.Information("BatchTranslateContentViewModel is initialized.");
+        Log.Information("Initializing BatchTranslationViewModel.");
     }
 
     private bool CanCancel => IsBusy;
@@ -47,8 +47,8 @@ public sealed partial class BatchTranslationViewModel : TranslationViewModelBase
                 await CancellationTokenSource.CancelAsync();
             CancellationTokenSource.Dispose();
         }
-
-        Log.Information("BatchTranslateContentViewModel is being disposed.");
+        
+        Log.Information("BatchTranslationViewModel is being disposed.");
     }
 
     public override bool GetIsBusy()

@@ -33,7 +33,7 @@ public sealed partial class SingleTranslationViewModel : TranslationViewModelBas
         int index) : base(appSettings, translator, w3Items)
     {
         IndexOfItems = index;
-        Log.Information("TranslateContentViewModel initialized.");
+        Log.Information("Initializing SingleTranslateContentViewModel.");
     }
 
     private bool CanSave => !IsBusy;
