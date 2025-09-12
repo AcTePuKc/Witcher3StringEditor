@@ -38,7 +38,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
 
     private static string CreateTemporaryCopyOfFile(string sourceFilePath)
     {
-        var randomFileName = Path.GetRandomFileName();
+        var randomFileName = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         File.Copy(sourceFilePath, randomFileName);
         return randomFileName;
     }
