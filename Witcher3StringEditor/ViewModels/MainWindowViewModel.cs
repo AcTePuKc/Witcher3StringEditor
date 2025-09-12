@@ -374,11 +374,11 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     }
 
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
-    private async Task ShowTranslateDialog(IW3StringItem? w3Item)
+    private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
         var translator = Ioc.Default.GetServices<ITranslator>().First(x => x.Name == _appSettings.Translator);
         _ = await _dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(_appSettings, translator, W3StringItems!, w3Item != null ? W3StringItems.IndexOf(w3Item) : 0));
+            new TranslateDialogViewModel(_appSettings, translator, W3StringItems!, selectedItem != null ? W3StringItems.IndexOf(selectedItem) : 0));
         if (translator is IDisposable disposable)
             disposable.Dispose();
     }
