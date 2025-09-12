@@ -134,7 +134,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Information("Output: {Data}.", e.Data);
     }
 
-    private async Task<bool> SerializeCsv(IReadOnlyCollection<IW3StringItem> w3Items, W3SerializationContext context)
+    private async Task<bool> SerializeCsv(IReadOnlyCollection<IW3StringItem> w3StringItems, W3SerializationContext context)
     {
         try
         {
@@ -150,7 +150,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
                 _ => languageName
             };
             await WriteFileWithBackup(Path.Combine(context.OutputDirectory, $"{languageName}.csv"),
-                BuildCsvContent(w3Items, csvLanguageIdentifier));
+                BuildCsvContent(w3StringItems, csvLanguageIdentifier));
             return true;
         }
         catch (Exception ex)
@@ -167,29 +167,29 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         await File.WriteAllTextAsync(filePath, content);
     }
 
-    private static string BuildCsvContent(IReadOnlyCollection<IW3StringItem> w3Items, string lang)
+    private static string BuildCsvContent(IReadOnlyCollection<IW3StringItem> w3StringItems, string lang)
     {
         var stringBuilder = new StringBuilder();
         stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]");
         stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
-        foreach (var item in w3Items)
+        foreach (var item in w3StringItems)
             stringBuilder.AppendLine(CultureInfo.InvariantCulture,
                 $"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
         return stringBuilder.ToString();
     }
 
-    private async Task<bool> SerializeExcel(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context)
+    private async Task<bool> SerializeExcel(IReadOnlyList<IW3StringItem> w3StringItems, W3SerializationContext context)
     {
         try
         {
             return await Task.Run(() =>
             {
-                Guard.IsGreaterThan(w3Items.Count, 0);
+                Guard.IsGreaterThan(w3StringItems.Count, 0);
                 var filePath = Path.Combine(context.OutputDirectory,
                     $"{Enum.GetName(context.TargetLanguage)!.ToLowerInvariant()}.xlsx");
                 if (File.Exists(filePath))
                     Guard.IsTrue(backupService.Backup(filePath));
-                GenerateExcelFile(filePath, w3Items);
+                GenerateExcelFile(filePath, w3StringItems);
                 return true;
             });
         }
@@ -200,7 +200,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private static void GenerateExcelFile(string path, IReadOnlyList<IW3StringItem> w3Items)
+    private static void GenerateExcelFile(string path, IReadOnlyList<IW3StringItem> w3StringItems)
     {
         using var fileStream = File.Create(path);
         using var excelEngine = new ExcelEngine();
@@ -208,15 +208,15 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         application.DefaultVersion = ExcelVersion.Xlsx;
         var workbook = application.Workbooks.Create(1);
         var worksheet = workbook.Worksheets[0];
-        FormatWorksheet(worksheet, w3Items);
-        WriteDataToWorksheet(worksheet, w3Items);
+        FormatWorksheet(worksheet, w3StringItems);
+        WriteDataToWorksheet(worksheet, w3StringItems);
         workbook.SaveAs(fileStream);
     }
 
-    private static void FormatWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> w3Items)
+    private static void FormatWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> w3StringItems)
     {
         SetTableHeaders(worksheet);
-        SetTableStyles(worksheet, w3Items.Count);
+        SetTableStyles(worksheet, w3StringItems.Count);
         SetColumnWidths(worksheet);
     }
 
@@ -257,24 +257,24 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         worksheet["D:E"].ColumnWidth = 50;
     }
 
-    private static void WriteDataToWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> items)
+    private static void WriteDataToWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> w3StringItems)
     {
-        for (var i = 0; i < items.Count; i++)
+        for (var i = 0; i < w3StringItems.Count; i++)
         {
             var rowIndex = i + 2;
-            worksheet[$"A{rowIndex}"].Value = items[i].StrId;
-            worksheet[$"B{rowIndex}"].Value = items[i].KeyHex;
-            worksheet[$"C{rowIndex}"].Value = items[i].KeyName;
-            worksheet[$"D{rowIndex}"].Value = items[i].OldText;
-            worksheet[$"E{rowIndex}"].Value = items[i].Text;
+            worksheet[$"A{rowIndex}"].Value = w3StringItems[i].StrId;
+            worksheet[$"B{rowIndex}"].Value = w3StringItems[i].KeyHex;
+            worksheet[$"C{rowIndex}"].Value = w3StringItems[i].KeyName;
+            worksheet[$"D{rowIndex}"].Value = w3StringItems[i].OldText;
+            worksheet[$"E{rowIndex}"].Value = w3StringItems[i].Text;
         }
     }
 
-    private async Task<bool> SerializeW3Strings(IReadOnlyList<IW3StringItem> w3Items, W3SerializationContext context)
+    private async Task<bool> SerializeW3Strings(IReadOnlyList<IW3StringItem> w3StringItems, W3SerializationContext context)
     {
         try
         {
-            Guard.IsNotEmpty(w3Items);
+            Guard.IsNotEmpty(w3StringItems);
             var saveLang = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
             var tempDirectory = Directory.CreateTempSubdirectory().FullName;
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
@@ -284,7 +284,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             {
                 OutputDirectory = tempDirectory
             };
-            Guard.IsTrue(await SerializeCsv(w3Items, tempContext));
+            Guard.IsTrue(await SerializeCsv(w3StringItems, tempContext));
             Guard.IsTrue(await StartSerializationProcess(tempContext, tempCsvPath));
             Guard.IsTrue(ReplaceFileWithBackup(tempW3StringsPath, outputW3StringsPath));
             return true;
