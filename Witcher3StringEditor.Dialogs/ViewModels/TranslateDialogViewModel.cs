@@ -22,7 +22,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private readonly IReadOnlyList<ITrackableW3StringItem> _w3Items;
 
-    [ObservableProperty] private object _currentViewModel;
+    [ObservableProperty] private TranslationViewModelBase _currentViewModel;
 
     [ObservableProperty] private string _title = Strings.TranslateDialogTitle;
 
@@ -46,8 +46,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         try
         {
-            if (CurrentViewModel is not (SingleTranslationViewModel { IsBusy: true }
-                    or BatchTranslationViewModel { IsBusy: true }) ||
+            if (!CurrentViewModel.GetIsBusy() ||
                 await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
             {
                 await CleanupCurrentViewModelAsync();
