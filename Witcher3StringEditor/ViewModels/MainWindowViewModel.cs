@@ -279,12 +279,12 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     }
 
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
-    private async Task Edit(ITrackableW3StringItem w3StringItem)
+    private async Task Edit(ITrackableW3StringItem selectedItem)
     {
-        var dialogViewModel = new EditDataDialogViewModel(w3StringItem);
+        var dialogViewModel = new EditDataDialogViewModel(selectedItem);
         if (await _dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
         {
-            var found = W3StringItems!.First(x => x.TrackingId == w3StringItem.TrackingId);
+            var found = W3StringItems!.First(x => x.TrackingId == selectedItem.TrackingId);
             W3StringItems![W3StringItems.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3StringItemModel>();
             Log.Information("The W3Item has been updated.");
         }
