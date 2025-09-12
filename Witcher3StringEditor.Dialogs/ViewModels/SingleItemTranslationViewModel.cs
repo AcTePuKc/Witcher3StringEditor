@@ -29,8 +29,8 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     private bool _isBusy;
 
     public SingleItemTranslationViewModel(IAppSettings appSettings, ITranslator translator,
-        IReadOnlyList<ITrackableW3StringItem> w3Items,
-        int index) : base(appSettings, translator, w3Items)
+        IReadOnlyList<ITrackableW3StringItem> w3StringItems,
+        int index) : base(appSettings, translator, w3StringItems)
     {
         IndexOfItems = index;
         Log.Information("Initializing SingleItemTranslationViewModel.");

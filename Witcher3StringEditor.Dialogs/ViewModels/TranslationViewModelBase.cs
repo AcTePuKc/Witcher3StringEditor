@@ -19,9 +19,9 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     protected CancellationTokenSource? CancellationTokenSource;
 
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
-        IReadOnlyList<ITrackableW3StringItem> w3Items)
+        IReadOnlyList<ITrackableW3StringItem> w3StringItems)
     {
-        W3Items = [.. w3Items];
+        W3Items = [.. w3StringItems];
         Translator = translator;
         Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
