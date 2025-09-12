@@ -55,7 +55,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 await CancellationTokenSource.CancelAsync();
             CancellationTokenSource.Dispose();
         }
-        
+
         Log.Information("SingleItemTranslationViewModel is being disposed.");
     }
 

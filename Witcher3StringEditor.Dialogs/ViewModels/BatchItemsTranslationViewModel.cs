@@ -47,7 +47,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
                 await CancellationTokenSource.CancelAsync();
             CancellationTokenSource.Dispose();
         }
-        
+
         Log.Information("BatchItemsTranslationViewModel is being disposed.");
     }
 
