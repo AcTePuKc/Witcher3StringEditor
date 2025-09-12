@@ -46,7 +46,7 @@
                 AllowResizingColumns="True"
                 AutoGenerateColumns="False"
                 ColumnSizer="AutoWithLastColumnFill"
-                ItemsSource="{Binding W3Items}"
+                ItemsSource="{Binding W3StringItems}"
                 NavigationMode="Row"
                 RowHeight="30"
                 ShowRowHeader="True">
