@@ -31,7 +31,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator, w3StringItems)
     {
         StartIndex = startIndex;
-        EndIndex = MaxValue = W3Items.Count;
+        EndIndex = MaxValue = W3StringItems.Count;
         Log.Information("Initializing BatchItemsTranslationViewModel.");
     }
 
@@ -99,7 +99,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         ResetTranslationCounts();
         CancellationTokenSource?.Dispose();
         CancellationTokenSource = new CancellationTokenSource();
-        await ProcessTranslationItems(W3Items.Skip(StartIndex - 1).Take(PendingCount),
+        await ProcessTranslationItems(W3StringItems.Skip(StartIndex - 1).Take(PendingCount),
             ToLanguage, FormLanguage, CancellationTokenSource.Token);
     }
 

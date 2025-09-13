@@ -40,7 +40,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
 
     private bool CanPrevious => IndexOfItems > 0 && !IsBusy;
 
-    private bool CanNext => IndexOfItems < W3Items.Count - 1 && !IsBusy;
+    private bool CanNext => IndexOfItems < W3StringItems.Count - 1 && !IsBusy;
 
     public override bool GetIsBusy()
     {
@@ -61,7 +61,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
 
     partial void OnIndexOfItemsChanged(int value)
     {
-        var item = W3Items[value];
+        var item = W3StringItems[value];
         CurrentTranslateItemModel = new TranslateItemModel { Id = item.TrackingId, Text = item.Text };
     }
 
@@ -172,7 +172,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     private void SaveTranslation()
     {
         Guard.IsNotNull(CurrentTranslateItemModel);
-        var found = W3Items
+        var found = W3StringItems
             .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
         found.Text = CurrentTranslateItemModel.TranslatedText;
         CurrentTranslateItemModel.IsSaved = true;

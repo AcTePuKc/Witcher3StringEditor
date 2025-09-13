@@ -12,7 +12,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public abstract partial class TranslationViewModelBase : ObservableObject, IAsyncDisposable
 {
     protected readonly ITranslator Translator;
-    protected readonly IReadOnlyList<ITrackableW3StringItem> W3Items;
+    protected readonly IReadOnlyList<ITrackableW3StringItem> W3StringItems;
     protected CancellationTokenSource? CancellationTokenSource;
     [ObservableProperty] private ILanguage formLanguage;
     [ObservableProperty] private IEnumerable<ILanguage> languages;
@@ -21,7 +21,7 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems)
     {
-        W3Items = [.. w3StringItems];
+        W3StringItems = [.. w3StringItems];
         Translator = translator;
         Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
