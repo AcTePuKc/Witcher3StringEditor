@@ -5,18 +5,18 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class ConfigService(string path) : IConfigService
+internal class ConfigService(string filePath) : IConfigService
 {
     public void Save<T>(T settings)
     {
-        File.WriteAllText(path,
+        File.WriteAllText(filePath,
             JsonConvert.SerializeObject(settings, Formatting.Indented, new StringEnumConverter()));
     }
 
     public T Load<T>() where T : new()
     {
-        return File.Exists(path)
-            ? JsonConvert.DeserializeObject<T>(File.ReadAllText(path)) ?? new T()
+        return File.Exists(filePath)
+            ? JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath)) ?? new T()
             : new T();
     }
 }
