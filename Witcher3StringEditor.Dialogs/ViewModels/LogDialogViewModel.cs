@@ -25,7 +25,7 @@ public class LogDialogViewModel
     }
 
     public ObservableCollection<LogEventItemModel> LogEvents { get; } = [];
-
+    
     public bool? DialogResult => true;
 
     private async void OnSourceLogsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
