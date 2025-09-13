@@ -25,34 +25,22 @@ public class LogDialogViewModel
     }
 
     public ObservableCollection<LogEventItemModel> LogEvents { get; } = [];
-    
+
     public bool? DialogResult => true;
 
+    // ReSharper disable once AsyncVoidEventHandlerMethod
     private async void OnSourceLogsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        try
-        {
-            if (e is not { Action: NotifyCollectionChangedAction.Add, NewItems: not null }) return;
-            foreach (LogEvent item in e.NewItems)
-                await Application.Current.Dispatcher.BeginInvoke(() => LogEvents.Add(new LogEventItemModel(item)));
-        }
-        catch (Exception)
-        {
-            //ignored
-        }
+        if (e is not { Action: NotifyCollectionChangedAction.Add, NewItems: not null }) return;
+        foreach (LogEvent item in e.NewItems)
+            await Application.Current.Dispatcher.BeginInvoke(() => LogEvents.Add(new LogEventItemModel(item)));
     }
 
+    // ReSharper disable once AsyncVoidEventHandlerMethod
     private async void OnLogEventsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        try
-        {
-            if (e is not { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }) return;
-            foreach (LogEventItemModel item in e.OldItems)
-                await Application.Current.Dispatcher.BeginInvoke(() => _sourceLogs.Remove(item.EventEntry));
-        }
-        catch (Exception)
-        {
-            //ignored
-        }
+        if (e is not { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }) return;
+        foreach (LogEventItemModel item in e.OldItems)
+            await Application.Current.Dispatcher.BeginInvoke(() => _sourceLogs.Remove(item.EventEntry));
     }
 }
