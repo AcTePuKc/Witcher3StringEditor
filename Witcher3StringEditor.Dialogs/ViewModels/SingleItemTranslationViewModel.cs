@@ -149,7 +149,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         }
     }
 
-    private async Task Navigate(int indexChange)
+    private async Task Navigate(int direction)
     {
         try
         {
@@ -158,14 +158,14 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                     "TranslatedTextNoSaved"))
                 SaveTranslation();
-            CurrentItemIndex += indexChange;
+            CurrentItemIndex += direction;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
-                Translator.Name, indexChange > 0 ? "next" : "previous", CurrentItemIndex);
+                Translator.Name, direction > 0 ? "next" : "previous", CurrentItemIndex);
         }
         catch (Exception ex)
         {
             Log.Error(ex, "Failed to move to {Direction} item",
-                indexChange > 0 ? "next" : "previous");
+                direction > 0 ? "next" : "previous");
         }
     }
 
