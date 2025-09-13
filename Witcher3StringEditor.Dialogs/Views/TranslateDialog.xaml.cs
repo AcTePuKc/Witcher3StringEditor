@@ -16,7 +16,7 @@ public partial class TranslateDialog
         InitializeComponent();
         RegisterMessageHandlers();
     }
-    
+
     private void RegisterMessageHandlers()
     {
         RegisterNotificationMessageHandlers();

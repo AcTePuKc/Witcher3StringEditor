@@ -19,7 +19,7 @@ public partial class BackupDialog
         SetupSearchHelper();
         RegisterMessageHandlers();
     }
-    
+
     private void SetupSearchHelper()
     {
         SfDataGrid.SearchHelper.AllowFiltering = true;

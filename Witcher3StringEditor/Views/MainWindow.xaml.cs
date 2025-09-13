@@ -26,7 +26,7 @@ public partial class MainWindow
         RegisterThemeChangedHandler();
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
     }
-    
+
     private static void RegisterThemeChangedHandler()
     {
         ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
