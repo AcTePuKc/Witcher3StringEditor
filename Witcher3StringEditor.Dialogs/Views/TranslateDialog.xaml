@@ -34,8 +34,8 @@
                     Source="/Witcher3StringEditor.Dialogs;component/Views/BatchTranslateDataTemplate.xaml" />
                 <ResourceDictionary Source="/Witcher3StringEditor.Dialogs;component/Views/TranslateDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <t:TranslateDataTemplateSelector
-                x:Key="TranslateDataTemplateSelector"
+            <t:TranslationViewTemplateSelector
+                x:Key="TranslationViewTemplateSelector"
                 BatchTranslateDataTemplate="{StaticResource BatchTranslateDataTemplate}"
                 TranslateDataTemplate="{StaticResource TranslateDataTemplate}" />
         </ResourceDictionary>
@@ -63,7 +63,7 @@
             <ContentControl
                 Grid.Row="1"
                 Content="{Binding CurrentViewModel}"
-                ContentTemplateSelector="{StaticResource TranslateDataTemplateSelector}" />
+                ContentTemplateSelector="{StaticResource TranslationViewTemplateSelector}" />
         </Grid>
     </Grid>
 </Window>
