@@ -33,7 +33,7 @@ public class LogDialogViewModel
     {
         if (e is not { Action: NotifyCollectionChangedAction.Add, NewItems: not null }) return;
         foreach (LogEvent item in e.NewItems)
-            await Application.Current.Dispatcher.BeginInvoke(() => LogEvents.Add(new LogEventItemModel(item)));
+            await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(new LogEventItemModel(item)));
     }
 
     // ReSharper disable once AsyncVoidEventHandlerMethod
@@ -41,6 +41,6 @@ public class LogDialogViewModel
     {
         if (e is not { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }) return;
         foreach (LogEventItemModel item in e.OldItems)
-            await Application.Current.Dispatcher.BeginInvoke(() => _sourceLogs.Remove(item.EventEntry));
+            await Application.Current.Dispatcher.InvokeAsync(() => _sourceLogs.Remove(item.EventEntry));
     }
 }
