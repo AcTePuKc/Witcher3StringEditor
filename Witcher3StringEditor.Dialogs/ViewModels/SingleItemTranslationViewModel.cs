@@ -20,7 +20,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
-    private int indexOfItems = -1;
+    private int currentItemIndex = -1;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
@@ -32,15 +32,15 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
         int index) : base(appSettings, translator, w3StringItems)
     {
-        IndexOfItems = index;
+        CurrentItemIndex = index;
         Log.Information("Initializing SingleItemTranslationViewModel.");
     }
 
     private bool CanSave => !IsBusy;
 
-    private bool CanPrevious => IndexOfItems > 0 && !IsBusy;
+    private bool CanPrevious => CurrentItemIndex > 0 && !IsBusy;
 
-    private bool CanNext => IndexOfItems < W3StringItems.Count - 1 && !IsBusy;
+    private bool CanNext => CurrentItemIndex < W3StringItems.Count - 1 && !IsBusy;
 
     public override bool GetIsBusy()
     {
@@ -59,7 +59,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         Log.Information("SingleItemTranslationViewModel is being disposed.");
     }
 
-    partial void OnIndexOfItemsChanged(int value)
+    partial void OnCurrentItemIndexChanged(int value)
     {
         var item = W3StringItems[value];
         CurrentTranslateItemModel = new TranslateItemModel { Id = item.TrackingId, Text = item.Text };
@@ -158,9 +158,9 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                     "TranslatedTextNoSaved"))
                 SaveTranslation();
-            IndexOfItems += indexChange;
+            CurrentItemIndex += indexChange;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
-                Translator.Name, indexChange > 0 ? "next" : "previous", IndexOfItems);
+                Translator.Name, indexChange > 0 ? "next" : "previous", CurrentItemIndex);
         }
         catch (Exception ex)
         {
