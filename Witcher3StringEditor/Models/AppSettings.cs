@@ -9,17 +9,17 @@ namespace Witcher3StringEditor.Models;
 
 internal partial class AppSettings : ObservableObject, IAppSettings
 {
-    [ObservableProperty] private string _gameExePath = string.Empty;
+    [ObservableProperty] private string gameExePath = string.Empty;
 
-    [ObservableProperty] private string _language = string.Empty;
+    [ObservableProperty] private string language = string.Empty;
 
-    [ObservableProperty] private W3Language _preferredLanguage;
+    [ObservableProperty] private W3Language preferredLanguage;
 
-    [ObservableProperty] private W3FileType _preferredW3FileType;
+    [ObservableProperty] private W3FileType preferredW3FileType;
 
-    [ObservableProperty] private string _translator = "MicrosoftTranslator";
+    [ObservableProperty] private string translator = "MicrosoftTranslator";
 
-    [ObservableProperty] private string _w3StringsPath = string.Empty;
+    [ObservableProperty] private string w3StringsPath = string.Empty;
 
     public AppSettings()
     {

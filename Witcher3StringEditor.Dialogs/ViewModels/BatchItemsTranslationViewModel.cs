@@ -10,22 +10,22 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public sealed partial class BatchItemsTranslationViewModel : TranslationViewModelBase
 {
-    [ObservableProperty] private int _endIndex;
+    [ObservableProperty] private int endIndex;
 
-    [ObservableProperty] private int _endIndexMin;
+    [ObservableProperty] private int endIndexMin;
 
-    [ObservableProperty] private int _failureCount;
+    [ObservableProperty] private int failureCount;
 
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
-    private bool _isBusy;
+    private bool isBusy;
 
-    [ObservableProperty] private int _maxValue;
+    [ObservableProperty] private int maxValue;
 
-    [ObservableProperty] private int _pendingCount;
+    [ObservableProperty] private int pendingCount;
 
-    [ObservableProperty] private int _startIndex;
+    [ObservableProperty] private int startIndex;
 
-    [ObservableProperty] private int _successCount;
+    [ObservableProperty] private int successCount;
 
     public BatchItemsTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator, w3StringItems)

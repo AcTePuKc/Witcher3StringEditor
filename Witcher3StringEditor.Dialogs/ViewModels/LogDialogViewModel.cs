@@ -12,14 +12,14 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public class LogDialogViewModel
     : ObservableObject, IModalDialogViewModel
 {
-    private readonly ObservableCollection<LogEvent> _sourceLogs;
+    private readonly ObservableCollection<LogEvent> sourceLogs;
 
     public LogDialogViewModel(ObservableCollection<LogEvent> logEvents)
     {
-        _sourceLogs = logEvents;
-        _sourceLogs.ForEach(x => LogEvents.Add(new LogEventItemModel(x)));
+        sourceLogs = logEvents;
+        sourceLogs.ForEach(x => LogEvents.Add(new LogEventItemModel(x)));
         WeakEventManager<ObservableCollection<LogEvent>, NotifyCollectionChangedEventArgs>
-            .AddHandler(_sourceLogs, nameof(ObservableCollection<LogEvent>.CollectionChanged), OnSourceLogsCollectionChanged);
+            .AddHandler(sourceLogs, nameof(ObservableCollection<LogEvent>.CollectionChanged), OnSourceLogsCollectionChanged);
         WeakEventManager<ObservableCollection<LogEventItemModel>, NotifyCollectionChangedEventArgs>
             .AddHandler(LogEvents, nameof(ObservableCollection<LogEventItemModel>.CollectionChanged), OnLogEventsCollectionChanged);
     }
@@ -41,6 +41,6 @@ public class LogDialogViewModel
     {
         if (e is not { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }) return;
         foreach (LogEventItemModel item in e.OldItems)
-            await Application.Current.Dispatcher.InvokeAsync(() => _sourceLogs.Remove(item.EventEntry));
+            await Application.Current.Dispatcher.InvokeAsync(() => sourceLogs.Remove(item.EventEntry));
     }
 }

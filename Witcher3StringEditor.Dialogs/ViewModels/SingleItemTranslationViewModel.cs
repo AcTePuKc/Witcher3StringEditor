@@ -15,18 +15,18 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 public sealed partial class SingleItemTranslationViewModel : TranslationViewModelBase
 {
-    [ObservableProperty] private TranslateItemModel? _currentTranslateItemModel;
+    [ObservableProperty] private TranslateItemModel? currentTranslateItemModel;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
-    private int _indexOfItems = -1;
+    private int indexOfItems = -1;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private bool _isBusy;
+    private bool isBusy;
 
     public SingleItemTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,

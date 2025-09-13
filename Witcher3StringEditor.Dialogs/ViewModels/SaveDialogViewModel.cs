@@ -16,26 +16,26 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class SaveDialogViewModel
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    private readonly IW3Serializer _serializer;
+    private readonly IW3Serializer serializer;
 
-    private readonly IReadOnlyList<IW3StringItem> _w3StringItems;
+    private readonly IReadOnlyList<IW3StringItem> w3StringItems;
 
-    [ObservableProperty] private W3FileType _fileType;
+    [ObservableProperty] private W3FileType fileType;
 
-    [ObservableProperty] private int _idSpace;
+    [ObservableProperty] private int idSpace;
 
-    [ObservableProperty] private bool _isIgnoreIdSpaceCheck;
+    [ObservableProperty] private bool isIgnoreIdSpaceCheck;
 
-    [ObservableProperty] private W3Language _language;
+    [ObservableProperty] private W3Language language;
 
-    [ObservableProperty] private string _path;
+    [ObservableProperty] private string path;
 
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
         IReadOnlyList<IW3StringItem> w3StringItems, string path)
     {
         Path = path;
-        _w3StringItems = w3StringItems;
-        _serializer = serializer;
+        this.w3StringItems = w3StringItems;
+        this.serializer = serializer;
         IdSpace = FindIdSpace(w3StringItems[0]);
         Language = appSettings.PreferredLanguage;
         FileType = appSettings.PreferredW3FileType;
@@ -50,7 +50,7 @@ public partial class SaveDialogViewModel
     {
         Log.Information("Target filetype: {FileType}.", FileType);
         Log.Information("Target language: {Language}.", Language);
-        var saveResult = await _serializer.Serialize(_w3StringItems, new W3SerializationContext
+        var saveResult = await serializer.Serialize(w3StringItems, new W3SerializationContext
         {
             OutputDirectory = Path,
             ExpectedIdSpace = IdSpace,

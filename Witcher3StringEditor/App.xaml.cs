@@ -37,11 +37,11 @@ namespace Witcher3StringEditor;
 /// </summary>
 public sealed partial class App : IDisposable
 {
-    private IAppSettings? _appSettings;
-    private IConfigService? _configService;
-    private bool _disposedValue;
-    private ObserverBase<LogEvent>? _logObserver;
-    private Mutex? _mutex;
+    private IAppSettings? appSettings;
+    private IConfigService? configService;
+    private bool disposedValue;
+    private ObserverBase<LogEvent>? logObserver;
+    private Mutex? mutex;
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
@@ -79,15 +79,15 @@ public sealed partial class App : IDisposable
 
     private void InitializeLogging()
     {
-        _logObserver = new AnonymousObserver<LogEvent>(static x =>
+        logObserver = new AnonymousObserver<LogEvent>(static x =>
             _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
-        InitializeLogging(_logObserver);
+        InitializeLogging(logObserver);
     }
 
     private void InitializeAppSettings()
     {
-        _configService = Ioc.Default.GetRequiredService<IConfigService>();
-        _appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
+        configService = Ioc.Default.GetRequiredService<IConfigService>();
+        appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
     }
 
     private static string GetAppSettingsPath()
@@ -103,11 +103,11 @@ public sealed partial class App : IDisposable
 
     private void InitializeCulture()
     {
-        var cultureInfo = _appSettings!.Language == string.Empty
+        var cultureInfo = appSettings!.Language == string.Empty
             ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
-            : new CultureInfo(_appSettings.Language);
-        if (_appSettings.Language == string.Empty)
-            _appSettings.Language = cultureInfo.Name;
+            : new CultureInfo(appSettings.Language);
+        if (appSettings.Language == string.Empty)
+            appSettings.Language = cultureInfo.Name;
         I18NExtension.Culture = cultureInfo;
     }
 
@@ -137,7 +137,7 @@ public sealed partial class App : IDisposable
 
     private bool IsAnotherInstanceRunning()
     {
-        _mutex = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
+        mutex = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
             out var createdNew);
         return !createdNew;
     }
@@ -216,7 +216,7 @@ public sealed partial class App : IDisposable
 
     protected override void OnExit(ExitEventArgs e)
     {
-        _configService?.Save(_appSettings);
+        configService?.Save(appSettings);
         Log.Information("Application exited.");
         Log.CloseAndFlush();
         Dispose();
@@ -224,13 +224,13 @@ public sealed partial class App : IDisposable
 
     private void Dispose(bool disposing)
     {
-        if (_disposedValue) return;
+        if (disposedValue) return;
         if (disposing)
         {
-            _mutex?.Dispose();
-            _logObserver?.Dispose();
+            mutex?.Dispose();
+            logObserver?.Dispose();
         }
 
-        _disposedValue = true;
+        disposedValue = true;
     }
 }

@@ -7,7 +7,7 @@ namespace Witcher3StringEditor.Services;
 
 internal class CheckUpdateService : ICheckUpdateService
 {
-    private readonly Uri _updateUrl = new("https://witcher3stringeditorcheckupdate.azurewebsites.net/api/checkupdate");
+    private readonly Uri updateUrl = new("https://witcher3stringeditorcheckupdate.azurewebsites.net/api/checkupdate");
 
     public async Task<bool> CheckUpdate()
     {
@@ -15,7 +15,7 @@ internal class CheckUpdateService : ICheckUpdateService
         {
             Log.Information("Checking for updates...");
             using var httpClient = new HttpClient();
-            var httpResponse = await httpClient.GetAsync(_updateUrl);
+            var httpResponse = await httpClient.GetAsync(updateUrl);
             if (!httpResponse.IsSuccessStatusCode) return true;
             Guard.IsTrue(Version.TryParse(await httpResponse.Content.ReadAsStringAsync(), out var lastestVersion));
             Guard.IsTrue(Version.TryParse(ThisAssembly.AssemblyFileVersion, out var currentVersion));

@@ -4,9 +4,9 @@ namespace Witcher3StringEditor.Dialogs.Models;
 
 public partial class TranslateItemModel : ObservableObject
 {
-    [ObservableProperty] private bool _isSaved;
+    [ObservableProperty] private bool isSaved;
 
-    [ObservableProperty] private string _translatedText = string.Empty;
+    [ObservableProperty] private string translatedText = string.Empty;
 
     public required Guid Id { get; init; }
 
