@@ -16,7 +16,7 @@ namespace Witcher3StringEditor.Views;
 /// <summary>
 ///     Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
+public partial class MainWindow
 {
     public MainWindow()
     {
@@ -26,11 +26,7 @@ public partial class MainWindow : IRecipient<AsyncRequestMessage<bool>>
         RegisterThemeChangedHandler();
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
     }
-
-    public void Receive(AsyncRequestMessage<bool> message)
-    {
-    }
-
+    
     private static void RegisterThemeChangedHandler()
     {
         ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
