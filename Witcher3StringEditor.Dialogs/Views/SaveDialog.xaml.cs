@@ -9,16 +9,12 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 ///     SaveDialog.xaml 的交互逻辑
 /// </summary>
-public partial class SaveDialog : IRecipient<ValueChangedMessage<bool>>
+public partial class SaveDialog
 {
     public SaveDialog()
     {
         InitializeComponent();
         RegisterMessageHandler();
-    }
-
-    public void Receive(ValueChangedMessage<bool> message)
-    {
     }
 
     private void RegisterMessageHandler()

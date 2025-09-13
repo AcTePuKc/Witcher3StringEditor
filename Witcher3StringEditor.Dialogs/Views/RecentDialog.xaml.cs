@@ -11,17 +11,13 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 ///     RecentDialog.xaml 的交互逻辑
 /// </summary>
-public partial class RecentDialog : IRecipient<AsyncRequestMessage<bool>>
+public partial class RecentDialog
 {
     public RecentDialog()
     {
         InitializeComponent();
         SetupSearchHelper();
         RegisterMessageHandler();
-    }
-
-    public void Receive(AsyncRequestMessage<bool> message)
-    {
     }
 
     private void RegisterMessageHandler()

@@ -11,7 +11,7 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 ///     HistoryDialog.xaml 的交互逻辑
 /// </summary>
-public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
+public partial class BackupDialog
 {
     public BackupDialog()
     {
@@ -19,11 +19,7 @@ public partial class BackupDialog : IRecipient<AsyncRequestMessage<bool>>
         SetupSearchHelper();
         RegisterMessageHandlers();
     }
-
-    public void Receive(AsyncRequestMessage<bool> message)
-    {
-    }
-
+    
     private void SetupSearchHelper()
     {
         SfDataGrid.SearchHelper.AllowFiltering = true;

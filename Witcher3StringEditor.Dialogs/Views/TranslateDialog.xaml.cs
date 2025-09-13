@@ -9,22 +9,14 @@ namespace Witcher3StringEditor.Dialogs.Views;
 /// <summary>
 ///     TranslateDialogView.xaml 的交互逻辑
 /// </summary>
-public partial class TranslateDialog : IRecipient<ValueChangedMessage<string>>, IRecipient<AsyncRequestMessage<bool>>
+public partial class TranslateDialog
 {
     public TranslateDialog()
     {
         InitializeComponent();
         RegisterMessageHandlers();
     }
-
-    public void Receive(AsyncRequestMessage<bool> message)
-    {
-    }
-
-    public void Receive(ValueChangedMessage<string> message)
-    {
-    }
-
+    
     private void RegisterMessageHandlers()
     {
         RegisterNotificationMessageHandlers();
