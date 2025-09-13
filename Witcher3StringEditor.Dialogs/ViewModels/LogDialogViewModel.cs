@@ -14,7 +14,6 @@ public class LogDialogViewModel
 {
     private readonly ObservableCollection<LogEvent> _sourceLogs;
 
-
     public LogDialogViewModel(ObservableCollection<LogEvent> logEvents)
     {
         _sourceLogs = logEvents;
