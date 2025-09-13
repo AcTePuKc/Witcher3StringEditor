@@ -82,11 +82,13 @@
                                 <DataTrigger
                                     Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
                                     Value="{x:Static ui:ApplicationTheme.Light}">
+                                    <!-- ReSharper disable once Xaml.DependencyPropertyResolveError -->
                                     <Setter Property="Glyph" Value="&#xF0CE;" />
                                 </DataTrigger>
                                 <DataTrigger
                                     Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
                                     Value="{x:Static ui:ApplicationTheme.Dark}">
+                                    <!-- ReSharper disable once Xaml.DependencyPropertyResolveError -->
                                     <Setter Property="Glyph" Value="&#xE706;" />
                                 </DataTrigger>
                             </Style.Triggers>
