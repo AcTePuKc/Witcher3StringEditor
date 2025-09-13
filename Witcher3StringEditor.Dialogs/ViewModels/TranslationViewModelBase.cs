@@ -13,10 +13,10 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
 {
     protected readonly ITranslator Translator;
     protected readonly IReadOnlyList<ITrackableW3StringItem> W3Items;
+    protected CancellationTokenSource? CancellationTokenSource;
     [ObservableProperty] private ILanguage formLanguage;
     [ObservableProperty] private IEnumerable<ILanguage> languages;
     [ObservableProperty] private ILanguage toLanguage;
-    protected CancellationTokenSource? CancellationTokenSource;
 
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems)

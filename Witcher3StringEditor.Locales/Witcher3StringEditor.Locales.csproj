@@ -8,16 +8,16 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <DebugType>embedded</DebugType>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <DebugType>embedded</DebugType>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Antelcat.I18N.WPF" Version="1.1.0" />
-        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
+        <PackageReference Include="Antelcat.I18N.WPF" Version="1.1.0"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2025.2.2"/>
     </ItemGroup>
 
     <ItemGroup>
