@@ -15,12 +15,23 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     public RecentDialogViewModel(IAppSettings appSettings)
     {
         AppSettings = appSettings;
-        AppSettings.RecentItems.CollectionChanged += (_, e) =>
+        AppSettings.RecentItems.CollectionChanged += RecentItemsOnCollectionChanged();
+    }
+
+    private static NotifyCollectionChangedEventHandler RecentItemsOnCollectionChanged()
+    {
+        return (_, e) =>
         {
             if (e.Action == NotifyCollectionChangedAction.Remove)
                 Log.Information("Recent items collection changed: {Count} items removed.",
                     e.OldItems?.Count ?? 0);
         };
+    }
+
+    [RelayCommand]
+    private void Closed()
+    {
+        AppSettings.RecentItems.CollectionChanged -= RecentItemsOnCollectionChanged();
     }
 
     public IAppSettings AppSettings { get; }
