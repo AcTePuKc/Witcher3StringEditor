@@ -20,13 +20,13 @@ public partial class SaveDialogViewModel
 
     private readonly IReadOnlyList<IW3StringItem> w3StringItems;
 
-    [ObservableProperty] private W3FileType fileType;
+    [ObservableProperty] private W3FileType targetFileType;
 
     [ObservableProperty] private int idSpace;
 
     [ObservableProperty] private bool isIgnoreIdSpaceCheck;
 
-    [ObservableProperty] private W3Language language;
+    [ObservableProperty] private W3Language targetLanguage;
 
     [ObservableProperty] private string savePath;
 
@@ -37,8 +37,8 @@ public partial class SaveDialogViewModel
         this.w3StringItems = w3StringItems;
         this.serializer = serializer;
         IdSpace = FindIdSpace(w3StringItems[0]);
-        Language = appSettings.PreferredLanguage;
-        FileType = appSettings.PreferredW3FileType;
+        TargetLanguage = appSettings.PreferredLanguage;
+        TargetFileType = appSettings.PreferredW3FileType;
     }
 
     public event EventHandler? RequestClose;
@@ -48,14 +48,14 @@ public partial class SaveDialogViewModel
     [RelayCommand]
     private async Task Save()
     {
-        Log.Information("Target filetype: {FileType}.", FileType);
-        Log.Information("Target language: {Language}.", Language);
+        Log.Information("Target filetype: {FileType}.", TargetFileType);
+        Log.Information("Target language: {Language}.", TargetLanguage);
         var saveResult = await serializer.Serialize(w3StringItems, new W3SerializationContext
         {
             OutputDirectory = SavePath,
             ExpectedIdSpace = IdSpace,
-            TargetFileType = FileType,
-            TargetLanguage = Language,
+            TargetFileType = TargetFileType,
+            TargetLanguage = TargetLanguage,
             IgnoreIdSpaceCheck = IsIgnoreIdSpaceCheck
         });
         Log.Information("Sve result: {Result}.", saveResult);
