@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Witcher3StringEditor.Dialogs.ViewModels;
 
-namespace Witcher3StringEditor.Dialogs.Helpers;
+namespace Witcher3StringEditor.Dialogs.TemplateSelectors;
 
 internal class TranslateDataTemplateSelector : DataTemplateSelector
 {
