@@ -18,18 +18,18 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
-    public bool Backup(string path)
+    public bool Backup(string filePath)
     {
         try
         {
-            Guard.IsTrue(File.Exists(path));
-            var hash = ComputeSha256Hash(path);
+            Guard.IsTrue(File.Exists(filePath));
+            var hash = ComputeSha256Hash(filePath);
             Guard.IsNotNullOrWhiteSpace(hash);
             var backupItem = new BackupItem
             {
-                FileName = Path.GetFileName(path),
+                FileName = Path.GetFileName(filePath),
                 Hash = hash,
-                OrginPath = path,
+                OrginPath = filePath,
                 BackupPath = Path.Combine(_backupFolderPath, $"{Guid.NewGuid():N}.bak"),
                 BackupTime = DateTime.Now
             };
@@ -40,12 +40,12 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
                 return true;
             File.Copy(backupItem.OrginPath, backupItem.BackupPath);
             appSettings.BackupItems.Add(backupItem);
-            Log.Information("Backup file: {Path}.", path);
+            Log.Information("Backup file: {Path}.", filePath);
             return true;
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to backup file: {Path}.", path);
+            Log.Error(ex, "Failed to backup file: {Path}.", filePath);
             return false;
         }
     }
@@ -87,18 +87,18 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
     }
 
-    private static string ComputeSha256Hash(string path)
+    private static string ComputeSha256Hash(string filePath)
     {
         try
         {
-            Guard.IsTrue(File.Exists(path));
+            Guard.IsTrue(File.Exists(filePath));
             using var sha256 = SHA256.Create();
-            using var stream = File.OpenRead(path);
+            using var stream = File.OpenRead(filePath);
             return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to compute SHA256 hash: {Path}.", path);
+            Log.Error(ex, "Failed to compute SHA256 hash: {Path}.", filePath);
             return string.Empty;
         }
     }

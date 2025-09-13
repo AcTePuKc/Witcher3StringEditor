@@ -2,7 +2,7 @@
 
 public interface IBackupService
 {
-    public bool Backup(string path);
+    public bool Backup(string filePath);
 
     public bool Restore(IBackupItem backupItem);
 
