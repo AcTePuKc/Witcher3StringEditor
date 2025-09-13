@@ -28,12 +28,12 @@ public partial class SaveDialogViewModel
 
     [ObservableProperty] private W3Language language;
 
-    [ObservableProperty] private string path;
+    [ObservableProperty] private string savePath;
 
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
-        IReadOnlyList<IW3StringItem> w3StringItems, string path)
+        IReadOnlyList<IW3StringItem> w3StringItems, string savePath)
     {
-        Path = path;
+        SavePath = savePath;
         this.w3StringItems = w3StringItems;
         this.serializer = serializer;
         IdSpace = FindIdSpace(w3StringItems[0]);
@@ -52,7 +52,7 @@ public partial class SaveDialogViewModel
         Log.Information("Target language: {Language}.", Language);
         var saveResult = await serializer.Serialize(w3StringItems, new W3SerializationContext
         {
-            OutputDirectory = Path,
+            OutputDirectory = SavePath,
             ExpectedIdSpace = IdSpace,
             TargetFileType = FileType,
             TargetLanguage = Language,
