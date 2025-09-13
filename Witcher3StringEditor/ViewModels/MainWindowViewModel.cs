@@ -31,8 +31,7 @@ using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.ViewModels;
 
-internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOpenedMessage>,
-    IRecipient<ValueChangedMessage<LogEvent>>
+internal partial class MainWindowViewModel : ObservableObject
 {
     private readonly IAppSettings _appSettings;
     private readonly IBackupService _backupService;
@@ -76,22 +75,6 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
-    public async void Receive(FileOpenedMessage message)
-    {
-        try
-        {
-            await OpenFile(message.FileName);
-        }
-        catch (Exception)
-        {
-            //ignored
-        }
-    }
-
-    public void Receive(ValueChangedMessage<LogEvent> message)
-    {
-        Application.Current.Dispatcher.Invoke(() => LogEvents.Add(message.Value));
-    }
 
     private void SetupAppSettingsEventHandlers()
     {
@@ -120,9 +103,19 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private void RegisterMessengerHandlers()
     {
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
-            this, (r, m) => { r.Receive(m); });
+            this, (_, m) => { Application.Current.Dispatcher.Invoke(() => LogEvents.Add(m.Value)); });
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, FileOpenedMessage, string>(
-            this, "RecentFileOpened", (r, m) => { r.Receive(m); });
+            this, "RecentFileOpened", async void (_, m) =>
+            {
+                try
+                {
+                    await OpenFile(m.FileName);
+                }
+                catch (Exception)
+                {
+                    //ignored
+                }
+            });
     }
 
     private static void ApplyTranslatorChange(IAppSettings appSettings)
@@ -157,7 +150,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor"));
         Log.Information("Installed Language Packs: {Languages}",
-            string.Join(", ", Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
+            string.Join(", ",
+                Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
         Log.Information("Current Language: {Language}", _appSettings.Language);
         await CheckSettings(_appSettings);
         IsUpdateAvailable = await Ioc.Default.GetRequiredService<ICheckUpdateService>().CheckUpdate();
@@ -314,7 +308,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     private async Task ShowSaveDialog()
     {
         _ = await _dialogService.ShowDialogAsync(this,
-            new SaveDialogViewModel(_appSettings, Ioc.Default.GetRequiredService<IW3Serializer>(), W3StringItems!, OutputFolder));
+            new SaveDialogViewModel(_appSettings, Ioc.Default.GetRequiredService<IW3Serializer>(), W3StringItems!,
+                OutputFolder));
     }
 
     [RelayCommand]
@@ -330,7 +325,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
         var names = translators.Select(x => x.Name);
         Array.ForEach(translators, x => (x as IDisposable)?.Dispose());
         _ = await _dialogService.ShowDialogAsync(this,
-            new SettingDialogViewModel(_appSettings, _dialogService, names, Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures));
+            new SettingDialogViewModel(_appSettings, _dialogService, names,
+                Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures));
     }
 
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
@@ -378,7 +374,8 @@ internal partial class MainWindowViewModel : ObservableObject, IRecipient<FileOp
     {
         var translator = Ioc.Default.GetServices<ITranslator>().First(x => x.Name == _appSettings.Translator);
         _ = await _dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(_appSettings, translator, W3StringItems!, selectedItem != null ? W3StringItems.IndexOf(selectedItem) : 0));
+            new TranslateDialogViewModel(_appSettings, translator, W3StringItems!,
+                selectedItem != null ? W3StringItems.IndexOf(selectedItem) : 0));
         if (translator is IDisposable disposable)
             disposable.Dispose();
     }
