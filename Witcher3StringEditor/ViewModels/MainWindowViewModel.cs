@@ -103,7 +103,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private void RegisterMessengerHandlers()
     {
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
-            this, (_, m) => { Application.Current.Dispatcher.Invoke(() => LogEvents.Add(m.Value)); });
+            // ReSharper disable once AsyncVoidMethod
+            this, async void (_, m) => { await Application.Current.Dispatcher.BeginInvoke(() => LogEvents.Add(m.Value)); });
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, FileOpenedMessage, string>(
             // ReSharper disable once AsyncVoidMethod
             this, "RecentFileOpened", async void (_, m) => { await OpenFile(m.FileName); });
