@@ -35,33 +35,33 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     }
 
     [RelayCommand]
-    private async Task Open(IRecentItem item)
+    private async Task Open(IRecentItem recentItem)
     {
-        if (!File.Exists(item.FilePath))
-            await HandleMissingFile(item);
+        if (!File.Exists(recentItem.FilePath))
+            await HandleMissingFile(recentItem);
         else
-            HandleExistingFile(item);
+            HandleExistingFile(recentItem);
     }
 
-    private void HandleExistingFile(IRecentItem item)
+    private void HandleExistingFile(IRecentItem recentItem)
     {
         RequestClose?.Invoke(this, EventArgs.Empty);
-        _ = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(item.FilePath), "RecentFileOpened");
+        _ = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(recentItem.FilePath), "RecentFileOpened");
     }
 
-    private async Task HandleMissingFile(IRecentItem item)
+    private async Task HandleMissingFile(IRecentItem recentItem)
     {
-        LogMissingFile(item.FilePath);
-        if (await NotifyFileNotFound(item.FilePath))
-            TryRemoveRecentItem(item);
+        LogMissingFile(recentItem.FilePath);
+        if (await NotifyFileNotFound(recentItem.FilePath))
+            TryRemoveRecentItem(recentItem);
     }
 
-    private void TryRemoveRecentItem(IRecentItem item)
+    private void TryRemoveRecentItem(IRecentItem recentItem)
     {
-        if (AppSettings.RecentItems.Remove(item))
-            Log.Information("The recent item for file {Path} has been removed.", item.FilePath);
+        if (AppSettings.RecentItems.Remove(recentItem))
+            Log.Information("The recent item for file {Path} has been removed.", recentItem.FilePath);
         else
-            Log.Error("The recent item for file {Path} could not be removed.", item.FilePath);
+            Log.Error("The recent item for file {Path} could not be removed.", recentItem.FilePath);
     }
 
     private static async Task<bool> NotifyFileNotFound(string filePath)
