@@ -47,7 +47,7 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
     {
         try
         {
-            var items = new List<W3StringStringItem>();
+            var w3StringItems = new List<W3StringStringItem>();
             await foreach (var line in File.ReadLinesAsync(filePath))
             {
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
@@ -55,10 +55,10 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
 
                 var item = ParseCsvLine(line);
                 if (item != null)
-                    items.Add(item);
+                    w3StringItems.Add(item);
             }
 
-            return items;
+            return w3StringItems;
         }
         catch (Exception ex)
         {
@@ -172,9 +172,9 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         var stringBuilder = new StringBuilder();
         stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]");
         stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
-        foreach (var item in w3StringItems)
+        foreach (var w3StringItem in w3StringItems)
             stringBuilder.AppendLine(CultureInfo.InvariantCulture,
-                $"{item.StrId}|{item.KeyHex}|{item.KeyName}|{item.Text}");
+                $"{w3StringItem.StrId}|{w3StringItem.KeyHex}|{w3StringItem.KeyName}|{w3StringItem.Text}");
         return stringBuilder.ToString();
     }
 
