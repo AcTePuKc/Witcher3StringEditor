@@ -74,7 +74,7 @@
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding Source={StaticResource FileType}}"
-                            SelectedValue="{Binding FileType}">
+                            SelectedValue="{Binding TargetFileType}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock>
@@ -102,7 +102,7 @@
                             Grid.Row="0"
                             HorizontalAlignment="Right"
                             ItemsSource="{Binding Source={StaticResource W3Language}}"
-                            SelectedValue="{Binding Language}">
+                            SelectedValue="{Binding TargetLanguage}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock
@@ -115,7 +115,7 @@
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding FileType}"
+                                        <DataTrigger Binding="{Binding TargetFileType}"
                                                      Value="{x:Static com:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
@@ -146,7 +146,7 @@
                                 <Style TargetType="ui:NumberBox">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding FileType}"
+                                        <DataTrigger Binding="{Binding TargetFileType}"
                                                      Value="{x:Static com:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
