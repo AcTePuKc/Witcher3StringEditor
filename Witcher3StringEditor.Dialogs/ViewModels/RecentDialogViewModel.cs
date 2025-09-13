@@ -1,5 +1,7 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -15,29 +17,22 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     public RecentDialogViewModel(IAppSettings appSettings)
     {
         AppSettings = appSettings;
-        AppSettings.RecentItems.CollectionChanged += RecentItemsOnCollectionChanged();
-    }
-
-    private static NotifyCollectionChangedEventHandler RecentItemsOnCollectionChanged()
-    {
-        return (_, e) =>
-        {
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-                Log.Information("Recent items collection changed: {Count} items removed.",
-                    e.OldItems?.Count ?? 0);
-        };
-    }
-
-    [RelayCommand]
-    private void Closed()
-    {
-        AppSettings.RecentItems.CollectionChanged -= RecentItemsOnCollectionChanged();
+        WeakEventManager<ObservableCollection<IRecentItem>, NotifyCollectionChangedEventArgs>.AddHandler(AppSettings.RecentItems,
+            nameof(IAppSettings.RecentItems.CollectionChanged),
+            OnRecentItemsOnCollectionChanged);
     }
 
     public IAppSettings AppSettings { get; }
     public event EventHandler? RequestClose;
 
     public bool? DialogResult => true;
+
+    private static void OnRecentItemsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Remove)
+            Log.Information("Recent items collection changed: {Count} items removed.",
+                e.OldItems?.Count ?? 0);
+    }
 
     [RelayCommand]
     private async Task Open(IRecentItem item)
