@@ -105,17 +105,8 @@ internal partial class MainWindowViewModel : ObservableObject
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
             this, (_, m) => { Application.Current.Dispatcher.Invoke(() => LogEvents.Add(m.Value)); });
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, FileOpenedMessage, string>(
-            this, "RecentFileOpened", async void (_, m) =>
-            {
-                try
-                {
-                    await OpenFile(m.FileName);
-                }
-                catch (Exception)
-                {
-                    //ignored
-                }
-            });
+            // ReSharper disable once AsyncVoidMethod
+            this, "RecentFileOpened", async void (_, m) => { await OpenFile(m.FileName); });
     }
 
     private static void ApplyTranslatorChange(IAppSettings appSettings)
