@@ -83,12 +83,12 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 CancellationTokenSource = new CancellationTokenSource();
                 CurrentTranslateItemModel.TranslatedText = string.Empty;
                 Log.Information("Starting translation.");
-                var result = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
+                var translationResult = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
                     ToLanguage, FormLanguage, CancellationTokenSource);
-                if (result.IsSuccess)
+                if (translationResult.IsSuccess)
                 {
-                    Guard.IsNotNullOrWhiteSpace(result.Value);
-                    CurrentTranslateItemModel.TranslatedText = result.Value;
+                    Guard.IsNotNullOrWhiteSpace(translationResult.Value);
+                    CurrentTranslateItemModel.TranslatedText = translationResult.Value;
                     Log.Information("Translation completed.");
                 }
             }
