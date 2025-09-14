@@ -124,9 +124,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             translateTask,
             Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
         );
-        return completedTask is not { IsCanceled: true }
-            ? Result.Ok((await translateTask).Translation)
-            : Result.Fail(string.Empty);
+        return !completedTask.IsCanceled ? Result.Ok((await translateTask).Translation) : Result.Fail(string.Empty);
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
