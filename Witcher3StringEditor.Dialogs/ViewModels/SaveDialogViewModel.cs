@@ -20,15 +20,15 @@ public partial class SaveDialogViewModel
 
     private readonly IReadOnlyList<IW3StringItem> w3StringItems;
 
-    [ObservableProperty] private W3FileType targetFileType;
-
     [ObservableProperty] private int idSpace;
 
     [ObservableProperty] private bool isIgnoreIdSpaceCheck;
 
-    [ObservableProperty] private W3Language targetLanguage;
-
     [ObservableProperty] private string outputDirectory;
+
+    [ObservableProperty] private W3FileType targetFileType;
+
+    [ObservableProperty] private W3Language targetLanguage;
 
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
         IReadOnlyList<IW3StringItem> w3StringItems, string outputDirectory)
