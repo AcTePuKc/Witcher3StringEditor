@@ -20,7 +20,7 @@ public enum W3Language
     [Description("it")] [UsedImplicitly] It = 10,
 
     [UsedImplicitly]
-    [Description("jp")] Jp = 11,
+    [Description("ja")] Jp = 11,
     [Description("ko")] Kr = 12,
     [Description("pl")] [UsedImplicitly] Pl = 13,
     [Description("ru")] [UsedImplicitly] Ru = 14,
