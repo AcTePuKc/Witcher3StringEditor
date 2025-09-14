@@ -91,6 +91,10 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                     CurrentTranslateItemModel.TranslatedText = translationResult.Value;
                     Log.Information("Translation completed.");
                 }
+                else
+                {
+                    Log.Error("Translation operation was cancelled.");
+                }
             }
             else
             {
@@ -129,7 +133,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 //ignored
             }
         }, TaskContinuationOptions.ExecuteSynchronously);
-        return Result.Fail(string.Empty);
+        return Result.Fail(string.Empty);    
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
