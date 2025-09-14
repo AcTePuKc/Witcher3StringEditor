@@ -29,12 +29,10 @@
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <!-- ReSharper disable once Xaml.DependencyPropertyResolveError -->
-                    <Setter TargetName="iconElement" Property="Glyph" Value="&#xe735;" />
+                    <Setter TargetName="iconElement" Property="ui:FontIcon.Glyph" Value="&#xe735;" />
                 </Trigger>
                 <Trigger Property="IsChecked" Value="{x:Null}">
-                    <!-- ReSharper disable once Xaml.DependencyPropertyResolveError -->
-                    <Setter TargetName="iconElement" Property="Glyph" Value="&#xe734;" />
+                    <Setter TargetName="iconElement" Property="ui:FontIcon.Glyph" Value="&#xe734;" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
