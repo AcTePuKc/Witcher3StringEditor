@@ -134,7 +134,8 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
             Log.Information("Output: {Data}.", e.Data);
     }
 
-    private async Task<bool> SerializeCsv(IReadOnlyCollection<IW3StringItem> w3StringItems, W3SerializationContext context)
+    private async Task<bool> SerializeCsv(IReadOnlyCollection<IW3StringItem> w3StringItems,
+        W3SerializationContext context)
     {
         try
         {
@@ -270,7 +271,8 @@ public class W3Serializer(IAppSettings appSettings, IBackupService backupService
         }
     }
 
-    private async Task<bool> SerializeW3Strings(IReadOnlyList<IW3StringItem> w3StringItems, W3SerializationContext context)
+    private async Task<bool> SerializeW3Strings(IReadOnlyList<IW3StringItem> w3StringItems,
+        W3SerializationContext context)
     {
         try
         {

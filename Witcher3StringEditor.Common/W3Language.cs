@@ -9,8 +9,7 @@ public enum W3Language
     [Description("pt")] Br = 1,
     [Description("zh-Hans")] Cn = 2,
 
-    [UsedImplicitly]
-    [Description("cs")] Cz = 3,
+    [UsedImplicitly] [Description("cs")] Cz = 3,
     [Description("de")] [UsedImplicitly] De = 4,
     [Description("en")] [UsedImplicitly] En = 5,
     [Description("es")] [UsedImplicitly] Es = 6,
@@ -19,13 +18,12 @@ public enum W3Language
     [Description("hu")] [UsedImplicitly] Hu = 9,
     [Description("it")] [UsedImplicitly] It = 10,
 
-    [UsedImplicitly]
-    [Description("ja")] Jp = 11,
+    [UsedImplicitly] [Description("ja")] Jp = 11,
     [Description("ko")] Kr = 12,
     [Description("pl")] [UsedImplicitly] Pl = 13,
     [Description("ru")] [UsedImplicitly] Ru = 14,
 
-    [UsedImplicitly]
-    [Description("zh-Hant")] Zh = 15,
+    [UsedImplicitly] [Description("zh-Hant")]
+    Zh = 15,
     [Description("tr")] Tr = 16
 }
