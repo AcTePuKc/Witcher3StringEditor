@@ -19,9 +19,11 @@ public class LogDialogViewModel
         sourceLogEvents = logEvents;
         sourceLogEvents.ForEach(x => LogEvents.Add(new LogEventItemModel(x)));
         WeakEventManager<ObservableCollection<LogEvent>, NotifyCollectionChangedEventArgs>
-            .AddHandler(sourceLogEvents, nameof(ObservableCollection<LogEvent>.CollectionChanged), OnSourceLogsCollectionChanged);
+            .AddHandler(sourceLogEvents, nameof(ObservableCollection<LogEvent>.CollectionChanged),
+                OnSourceLogsCollectionChanged);
         WeakEventManager<ObservableCollection<LogEventItemModel>, NotifyCollectionChangedEventArgs>
-            .AddHandler(LogEvents, nameof(ObservableCollection<LogEventItemModel>.CollectionChanged), OnLogEventsCollectionChanged);
+            .AddHandler(LogEvents, nameof(ObservableCollection<LogEventItemModel>.CollectionChanged),
+                OnLogEventsCollectionChanged);
     }
 
     public ObservableCollection<LogEventItemModel> LogEvents { get; } = [];

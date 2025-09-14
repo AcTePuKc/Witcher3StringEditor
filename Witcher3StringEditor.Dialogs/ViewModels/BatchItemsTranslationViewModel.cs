@@ -28,7 +28,8 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     [ObservableProperty] private int successCount;
 
     public BatchItemsTranslationViewModel(IAppSettings appSettings, ITranslator translator,
-        IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator, w3StringItems)
+        IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator,
+        w3StringItems)
     {
         StartIndex = startIndex;
         EndIndex = MaxValue = W3StringItems.Count;

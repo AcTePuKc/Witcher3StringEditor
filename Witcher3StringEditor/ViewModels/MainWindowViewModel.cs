@@ -104,7 +104,8 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
             // ReSharper disable once AsyncVoidMethod
-            this, async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
+            this,
+            async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
             // ReSharper disable once AsyncVoidMethod
             this, "RecentFileOpened", async void (_, m) => { await OpenFile(m.Request); });
@@ -218,7 +219,8 @@ internal partial class MainWindowViewModel : ObservableObject
         try
         {
             if (W3StringItems?.Any() == true &&
-                !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(fileName), "ReOpenFile")) return;
+                !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(fileName),
+                    "ReOpenFile")) return;
             Log.Information("The file {FileName} is being opened...", fileName);
             W3StringItems = new ObservableCollection<W3StringItemModel>(
             [

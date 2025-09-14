@@ -22,9 +22,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
 
     private readonly IReadOnlyList<ITrackableW3StringItem> w3StringItems;
 
-    [ObservableProperty] private string title = Strings.TranslateDialogTitle;
-
     [ObservableProperty] private TranslationViewModelBase currentViewModel;
+
+    [ObservableProperty] private string title = Strings.TranslateDialogTitle;
 
     public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
