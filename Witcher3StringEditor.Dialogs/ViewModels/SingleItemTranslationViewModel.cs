@@ -61,8 +61,8 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
 
     partial void OnCurrentItemIndexChanged(int value)
     {
-        var item = W3StringItems[value];
-        CurrentTranslateItemModel = new TranslateItemModel { Id = item.TrackingId, Text = item.Text };
+        var selectedItem = W3StringItems[value];
+        CurrentTranslateItemModel = new TranslateItemModel { Id = selectedItem.TrackingId, Text = selectedItem.Text };
     }
 
     partial void OnIsBusyChanged(bool value)
