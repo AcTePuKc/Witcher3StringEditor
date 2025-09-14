@@ -149,7 +149,7 @@ public sealed partial class App : IDisposable
                     , IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
                 rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
             .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo
-            .Observers(observable => observable.Subscribe(observer)).Enrich.FromLogContext()
+            .Observers(observable => observable.Subscribe(observer))
             .CreateLogger();
     }
 
