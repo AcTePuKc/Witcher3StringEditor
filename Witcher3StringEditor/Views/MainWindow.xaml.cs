@@ -79,7 +79,7 @@ public partial class MainWindow
         };
 
         foreach (var (token, message, caption) in messageHandlers)
-            WeakReferenceMessenger.Default.Register<MainWindow, FileOpenedMessage, string>(
+            WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<string, bool>, string>(
                 this,
                 token,
                 (_, m) =>

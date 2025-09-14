@@ -46,7 +46,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     private void HandleExistingFile(IRecentItem recentItem)
     {
         RequestClose?.Invoke(this, EventArgs.Empty);
-        _ = WeakReferenceMessenger.Default.Send(new FileOpenedMessage(recentItem.FilePath), "RecentFileOpened");
+        _ = WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(recentItem.FilePath), "RecentFileOpened");
     }
 
     private async Task HandleMissingFile(IRecentItem recentItem)
@@ -66,7 +66,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
 
     private static async Task<bool> NotifyFileNotFound(string filePath)
     {
-        return await WeakReferenceMessenger.Default.Send(new FileOpenedMessage(filePath), "OpenedFileNoFound");
+        return await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(filePath), "OpenedFileNoFound");
     }
 
     private static void LogMissingFile(string filePath)
