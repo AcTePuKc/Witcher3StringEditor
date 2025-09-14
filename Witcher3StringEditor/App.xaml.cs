@@ -148,8 +148,8 @@ public sealed partial class App : IDisposable
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
                     , IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
                 rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
-            .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture).WriteTo
-            .Observers(observable => observable.Subscribe(observer))
+            .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture)
+            .WriteTo.Observers(observable => observable.Subscribe(observer))
             .CreateLogger();
     }
 
