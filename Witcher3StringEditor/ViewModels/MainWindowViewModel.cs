@@ -275,6 +275,7 @@ internal partial class MainWindowViewModel : ObservableObject
             var found = W3StringItems!.First(x => x.TrackingId == selectedItem.TrackingId);
             W3StringItems![W3StringItems.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3StringItemModel>();
             Log.Information("The W3Item has been updated.");
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "SearchShouldReSearch");
         }
         else
         {

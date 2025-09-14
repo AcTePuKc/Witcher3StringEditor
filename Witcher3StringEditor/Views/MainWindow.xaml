@@ -59,6 +59,7 @@
                 VerticalAlignment="Center"
                 Text="{I18N {x:Static l:LangKeys.AppTitle}}" />
             <ui:AutoSuggestBox
+                x:Name="SearchBox"
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 PlaceholderText="{I18N {x:Static l:LangKeys.SearchBoxPlaceholderText}}"

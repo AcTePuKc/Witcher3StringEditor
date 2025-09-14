@@ -25,6 +25,12 @@ public partial class MainWindow
         RegisterMessageHandlers();
         RegisterThemeChangedHandler();
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "HH", (_, m) =>
+        {
+            SfDataGrid.SearchHelper.ClearSearch();
+            SfDataGrid.SearchHelper.Search(SearchBox.Text);
+        });
     }
 
     private static void RegisterThemeChangedHandler()
