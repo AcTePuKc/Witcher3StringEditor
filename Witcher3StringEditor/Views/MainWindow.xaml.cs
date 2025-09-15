@@ -26,10 +26,11 @@ public partial class MainWindow
         RegisterThemeChangedHandler();
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
 
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "HH", (_, m) =>
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "SearchShouldReSearch", (_, m) =>
         {
-            SfDataGrid.SearchHelper.ClearSearch();
-            SfDataGrid.SearchHelper.Search(SearchBox.Text);
+            var pageIndex = SfDataPager.PageIndex;
+            SfDataGrid.View.RefreshFilter();
+            SfDataPager.PageIndex = pageIndex;
         });
     }
 

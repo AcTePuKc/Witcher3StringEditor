@@ -373,5 +373,6 @@ internal partial class MainWindowViewModel : ObservableObject
                 selectedItem != null ? W3StringItems.IndexOf(selectedItem) : 0));
         if (translator is IDisposable disposable)
             disposable.Dispose();
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "SearchShouldReSearch");
     }
 }
