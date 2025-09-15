@@ -25,13 +25,17 @@ public partial class MainWindow
         RegisterMessageHandlers();
         RegisterThemeChangedHandler();
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+    }
 
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "SearchShouldReSearch", (_, m) =>
-        {
-            var pageIndex = SfDataPager.PageIndex;
-            SfDataGrid.View.RefreshFilter();
-            SfDataPager.PageIndex = pageIndex;
-        });
+    private void RegisterFilterRefreshHandler()
+    {
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "FilterShouldRefresh",
+            (_, m) =>
+            {
+                var pageIndex = SfDataPager.PageIndex;
+                SfDataGrid.View.RefreshFilter();
+                SfDataPager.PageIndex = pageIndex;
+            });
     }
 
     private static void RegisterThemeChangedHandler()
@@ -50,6 +54,7 @@ public partial class MainWindow
 
     private void RegisterMessageHandlers()
     {
+        RegisterFilterRefreshHandler();
         RegisterFileOpenedMessageHandlers();
         RegisterAsyncRequestMessageHandlers();
     }
