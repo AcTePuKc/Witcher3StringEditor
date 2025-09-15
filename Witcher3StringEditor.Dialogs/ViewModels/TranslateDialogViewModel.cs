@@ -36,40 +36,13 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.translator = translator;
         this.appSettings = appSettings;
         this.w3StringItems = w3StringItems;
-        SubscribeToItemPropertyChanges(w3StringItems);
         Log.Information("Total items to translate: {Count}.", this.w3StringItems.Count);
         Log.Information("Starting index: {Index}.", index);
         CurrentViewModel = new SingleItemTranslationViewModel(appSettings, translator, this.w3StringItems, index);
     }
 
-    public bool? DialogResult { get; private set; }
-
-    private void SubscribeToItemPropertyChanges(IReadOnlyList<ITrackableW3StringItem> stringItems)
-    {
-        stringItems.ForEach(stringItem =>
-        {
-            if (stringItem is INotifyPropertyChanged notifyPropertyChanged)
-                WeakEventManager<INotifyPropertyChanged, PropertyChangedEventArgs>
-                    .AddHandler(notifyPropertyChanged, nameof(INotifyPropertyChanged.PropertyChanged),
-                        OnItemPropertyChanged);
-        });
-    }
-
-    private void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (DialogResult != false) DialogResult = true;
-        RemoveAllPropertyChangeHandlers();
-    }
-
-    private void RemoveAllPropertyChangeHandlers()
-    {
-        foreach (var item in w3StringItems)
-            if (item is INotifyPropertyChanged notifyPropertyChanged)
-                WeakEventManager<INotifyPropertyChanged, PropertyChangedEventArgs>
-                    .RemoveHandler(notifyPropertyChanged, nameof(INotifyPropertyChanged.PropertyChanged),
-                        OnItemPropertyChanged);
-    }
-
+    public bool? DialogResult => true;
+    
     [RelayCommand]
     private async Task Switch()
     {
