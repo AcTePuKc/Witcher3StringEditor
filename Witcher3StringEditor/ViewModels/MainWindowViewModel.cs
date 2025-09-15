@@ -377,11 +377,10 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
         var translator = Ioc.Default.GetServices<ITranslator>().First(x => x.Name == appSettings.Translator);
-        _ = await dialogService.ShowDialogAsync(this,
+        var isDirty = await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, W3StringItems!,
                 selectedItem != null ? W3StringItems.IndexOf(selectedItem) : 0));
-        if (translator is IDisposable disposable)
-            disposable.Dispose();
-        NotifyDataFilterToUpdate();
+        if (translator is IDisposable disposable) disposable.Dispose();
+        if (isDirty == true) NotifyDataFilterToUpdate();
     }
 }
