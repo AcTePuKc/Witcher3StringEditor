@@ -14,6 +14,7 @@
     Title="{I18N {x:Static l:LangKeys.DeleteDialogTitle}}"
     Width="1200"
     Height="800"
+    Closed="DeleteDataDialog_OnClosed"
     d:DataContext="{d:DesignInstance Type=vm:DeleteDataDialogViewModel}"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"

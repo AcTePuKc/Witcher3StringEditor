@@ -62,11 +62,6 @@ public partial class BackupDialog
         ];
     }
 
-    private void Window_Closed(object sender, EventArgs e)
-    {
-        WeakReferenceMessenger.Default.UnregisterAll(this);
-    }
-
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         SfDataGrid.SearchHelper.Search(args.QueryText);
@@ -77,5 +72,13 @@ public partial class BackupDialog
     {
         if (string.IsNullOrEmpty(sender.Text))
             SfDataGrid.SearchHelper.ClearSearch();
+    }
+
+    private void BackupDialog_OnClosed(object? sender, EventArgs e)
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        SfDataGrid.SearchHelper.Dispose();
+        SfDataGrid.Dispose();
+        SfDataPager.Dispose();
     }
 }

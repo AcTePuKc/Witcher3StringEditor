@@ -50,8 +50,11 @@ public partial class RecentDialog
             SfDataGrid.SearchHelper.ClearSearch();
     }
 
-    private void Window_Closed(object sender, EventArgs e)
+    private void RecentDialog_OnClosed(object? sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
+        SfDataGrid.SearchHelper.Dispose();
+        SfDataGrid.Dispose();
+        SfDataPager.Dispose();
     }
 }

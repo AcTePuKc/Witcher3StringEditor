@@ -9,4 +9,10 @@ public partial class DeleteDataDialog
     {
         InitializeComponent();
     }
+
+    private void DeleteDataDialog_OnClosed(object? sender, EventArgs e)
+    {
+        SfDataGrid.SearchHelper.Dispose();
+        SfDataGrid.Dispose();
+    }
 }

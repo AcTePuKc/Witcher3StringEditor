@@ -31,4 +31,11 @@ public partial class LogDialog
         if (string.IsNullOrEmpty(sender.Text))
             SfDataGrid.SearchHelper.ClearSearch();
     }
+
+    private void LogDialog_OnClosed(object? sender, EventArgs e)
+    {
+        SfDataGrid.SearchHelper.Dispose();
+        SfDataGrid.Dispose();
+        SfDataPager.Dispose();
+    }
 }
