@@ -259,7 +259,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             W3StringItems!.Add(dialogViewModel.W3Item.Cast<W3StringItemModel>());
             Log.Information("New W3Item added.");
-            NotifyFilterRefresh();
+            NotifyDataFilterToUpdate();
         }
         else
         {
@@ -276,7 +276,7 @@ internal partial class MainWindowViewModel : ObservableObject
             var found = W3StringItems!.First(x => x.TrackingId == selectedItem.TrackingId);
             W3StringItems![W3StringItems.IndexOf(found)] = dialogViewModel.W3Item.Cast<W3StringItemModel>();
             Log.Information("The W3Item has been updated.");
-            NotifyFilterRefresh();
+            NotifyDataFilterToUpdate();
         }
         else
         {
@@ -284,9 +284,9 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
-    private static void NotifyFilterRefresh()
+    private static void NotifyDataFilterToUpdate()
     {
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "FilterShouldRefresh");
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "W3StringItemsUpdated");
     }
 
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
@@ -297,7 +297,7 @@ internal partial class MainWindowViewModel : ObservableObject
             await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
         {
             w3Items.ForEach(item => W3StringItems!.Remove(item.Cast<W3StringItemModel>()));
-            NotifyFilterRefresh();
+            NotifyDataFilterToUpdate();
         }
     }
 
@@ -382,6 +382,6 @@ internal partial class MainWindowViewModel : ObservableObject
                 selectedItem != null ? W3StringItems.IndexOf(selectedItem) : 0));
         if (translator is IDisposable disposable)
             disposable.Dispose();
-        NotifyFilterRefresh();
+        NotifyDataFilterToUpdate();
     }
 }

@@ -29,7 +29,7 @@ public partial class MainWindow
 
     private void RegisterFilterRefreshHandler()
     {
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "FilterShouldRefresh",
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "W3StringItemsUpdated",
             (_, _) =>
             {
                 var desiredPageIndex = SfDataPager.PageIndex;
