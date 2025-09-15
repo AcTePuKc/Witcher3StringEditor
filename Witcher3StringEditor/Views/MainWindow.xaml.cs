@@ -119,6 +119,9 @@ public partial class MainWindow
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
+        SfDataGrid.SearchHelper.Dispose();
+        SfDataGrid.Dispose();
+        SfDataPager.Dispose();
     }
 
     private void AppTitleBar_OnLoaded(object sender, RoutedEventArgs e)
