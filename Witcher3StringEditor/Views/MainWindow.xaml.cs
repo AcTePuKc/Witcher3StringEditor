@@ -32,12 +32,13 @@ public partial class MainWindow
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "FilterShouldRefresh",
             (_, _) =>
             {
-                var pageIndex = 0;
-                if (SfDataPager.PageCount > 1 && SfDataPager.PageIndex > 0)
-                    pageIndex = SfDataPager.PageIndex;
+                var desiredPageIndex = SfDataPager.PageIndex;
                 SfDataGrid.View.RefreshFilter();
-                if (SfDataPager.PageCount > 1)
-                    SfDataPager.PageIndex = pageIndex;
+                var currentTotalPages = SfDataPager.PageCount;
+                if (currentTotalPages <= 0) return;
+                var finalPageIndex = Math.Min(desiredPageIndex, currentTotalPages - 1);
+                if (SfDataPager.PageIndex == finalPageIndex) return;
+                SfDataPager.PageIndex = finalPageIndex;
             });
     }
 
