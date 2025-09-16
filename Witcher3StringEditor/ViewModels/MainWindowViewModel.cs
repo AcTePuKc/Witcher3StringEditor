@@ -235,7 +235,8 @@ internal partial class MainWindowViewModel : ObservableObject
             Log.Information("The file {FileName} is being opened...", fileName);
             W3StringItems = new ObservableCollection<W3StringItemModel>(
             [
-                .. (await Ioc.Default.GetRequiredService<IW3Serializer>().Deserialize(fileName)).OrderBy(x => x.StrId)
+                .. (await Ioc.Default.GetRequiredService<IW3Serializer>()
+                    .Deserialize(fileName)).OrderBy(x => x.StrId)
                 .Select(x => new W3StringItemModel(x))
             ]);
             Guard.IsGreaterThan(W3StringItems.Count, 0);
