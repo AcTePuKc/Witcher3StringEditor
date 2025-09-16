@@ -368,7 +368,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void OpenNexusMods()
     {
-        Ioc.Default.GetRequiredService<IExplorerService>().Open(appSettings.NexusModUrl);
+        Ioc.Default.GetRequiredService<IExplorerService>()
+            .Open(appSettings.NexusModUrl);
         Log.Information("NexusMods opened.");
     }
 
