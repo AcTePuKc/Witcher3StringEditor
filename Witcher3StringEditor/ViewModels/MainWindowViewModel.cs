@@ -53,7 +53,9 @@ internal partial class MainWindowViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
     private ObservableCollection<W3StringItemModel>? w3StringItems;
 
-    public MainWindowViewModel(IAppSettings appSettings, IBackupService backupService, IDialogService dialogService)
+    public MainWindowViewModel(IAppSettings appSettings,
+        IBackupService backupService,
+        IDialogService dialogService)
     {
         this.appSettings = appSettings;
         this.backupService = backupService;
