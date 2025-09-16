@@ -284,7 +284,7 @@ internal partial class MainWindowViewModel : ObservableObject
             Log.Information("The W3Item has not been updated.");
         }
     }
-    
+
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Delete(IEnumerable<object> selectedItems)
     {

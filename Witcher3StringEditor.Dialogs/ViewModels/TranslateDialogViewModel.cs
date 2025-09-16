@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Windows;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,7 +7,6 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
-using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Locales;
 
@@ -42,7 +40,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     }
 
     public bool? DialogResult => true;
-    
+
     [RelayCommand]
     private async Task Switch()
     {
