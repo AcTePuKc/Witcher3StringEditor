@@ -346,13 +346,15 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowAbout()
     {
-        _ = await dialogService.ShowDialogAsync(this, new AboutDialogViewModel(new Dictionary<string, object?>
+        _ = await dialogService.ShowDialogAsync(this,
+            new AboutDialogViewModel(new Dictionary<string, object?>
         {
             { "Version", ThisAssembly.AssemblyInformationalVersion },
             { "BuildTime", BuildTimestamp.BuildTime.ToLocalTime() },
             { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
             { "Runtime", RuntimeInformation.FrameworkDescription },
-            { "Package", DependencyContext.Default?.RuntimeLibraries.Where(static x => x.Type == "package") }
+            { "Package", DependencyContext.Default?
+                .RuntimeLibraries.Where(static x => x.Type == "package") }
         }));
     }
 
