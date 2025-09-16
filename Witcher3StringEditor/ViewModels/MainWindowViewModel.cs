@@ -282,7 +282,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Edit(W3StringItemModel selectedItem)
     {
         var dialogViewModel = new EditDataDialogViewModel(selectedItem);
-        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.Item != null)
+        if (await dialogService.ShowDialogAsync(this,
+                dialogViewModel) == true && dialogViewModel.Item != null)
         {
             var found = W3StringItems!
                 .First(x => x.TrackingId == selectedItem.TrackingId);
@@ -301,7 +302,8 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         var w3Items = selectedItems.Cast<ITrackableW3StringItem>().ToArray();
         if (w3Items.Length > 0 &&
-            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
+            await dialogService.ShowDialogAsync(this,
+                new DeleteDataDialogViewModel(w3Items)) == true)
             w3Items.ForEach(item => W3StringItems!.Remove(item.Cast<W3StringItemModel>()));
     }
 
