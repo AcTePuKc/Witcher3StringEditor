@@ -382,7 +382,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
-        var translator = Ioc.Default.GetServices<ITranslator>().First(x => x.Name == appSettings.Translator);
+        var translator = Ioc.Default.GetServices<ITranslator>()
+            .First(x => x.Name == appSettings.Translator);
         _ = await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, W3StringItems!,
                 selectedItem != null ? W3StringItems.IndexOf(selectedItem) : 0));
