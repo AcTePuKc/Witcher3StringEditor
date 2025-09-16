@@ -13,7 +13,7 @@ public partial class EditDataDialogViewModel(ITrackableW3StringItem w3StringItem
         ? Strings.AddDialogTitle
         : Strings.EditDialogTitle;
 
-    public ITrackableW3StringItem? W3Item { get; } = w3StringItem.Clone() as ITrackableW3StringItem;
+    public ITrackableW3StringItem? Item { get; } = w3StringItem.Clone() as ITrackableW3StringItem;
 
     public event EventHandler? RequestClose;
 

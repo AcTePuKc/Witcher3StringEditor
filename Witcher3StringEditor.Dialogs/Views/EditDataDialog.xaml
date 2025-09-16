@@ -34,15 +34,15 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <iwk:SimpleStackPanel Spacing="16">
-                <TextBox ui:ControlHelper.Header="ID" Text="{Binding W3Item.StrId, FallbackValue=''}" />
-                <TextBox ui:ControlHelper.Header="Key(Hex)" Text="{Binding W3Item.KeyHex, FallbackValue=''}" />
-                <TextBox ui:ControlHelper.Header="Key(String)" Text="{Binding W3Item.KeyName, FallbackValue=''}" />
+                <TextBox ui:ControlHelper.Header="ID" Text="{Binding Item.StrId, FallbackValue=''}" />
+                <TextBox ui:ControlHelper.Header="Key(Hex)" Text="{Binding Item.KeyHex, FallbackValue=''}" />
+                <TextBox ui:ControlHelper.Header="Key(String)" Text="{Binding Item.KeyName, FallbackValue=''}" />
             </iwk:SimpleStackPanel>
             <TextBox
                 Grid.Row="1"
                 Margin="0,16,0,0"
                 ui:ControlHelper.Header="Text"
-                Text="{Binding W3Item.Text, FallbackValue=''}"
+                Text="{Binding Item.Text, FallbackValue=''}"
                 TextWrapping="WrapWithOverflow" />
             <iwk:SimpleStackPanel
                 Grid.Row="2"

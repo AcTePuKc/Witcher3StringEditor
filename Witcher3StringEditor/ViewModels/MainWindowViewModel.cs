@@ -256,9 +256,9 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3StringItemModel());
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
-            && dialogViewModel.W3Item != null)
+            && dialogViewModel.Item != null)
         {
-            W3StringItems!.Add(dialogViewModel.W3Item.Cast<W3StringItemModel>());
+            W3StringItems!.Add(dialogViewModel.Item.Cast<W3StringItemModel>());
             Log.Information("New W3Item added.");
         }
         else
@@ -271,12 +271,12 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Edit(W3StringItemModel selectedItem)
     {
         var dialogViewModel = new EditDataDialogViewModel(selectedItem);
-        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
+        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.Item != null)
         {
             var found = W3StringItems!
                 .First(x => x.TrackingId == selectedItem.TrackingId);
             var index = W3StringItems!.IndexOf(found);
-            W3StringItems[index] = dialogViewModel.W3Item.Cast<W3StringItemModel>();
+            W3StringItems[index] = dialogViewModel.Item.Cast<W3StringItemModel>();
             Log.Information("The W3Item has been updated.");
         }
         else
