@@ -286,11 +286,12 @@ internal partial class MainWindowViewModel : ObservableObject
     }
     
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
-    private async Task Delete(IW3StringItem[] selectedItems)
+    private async Task Delete(IEnumerable<object> selectedItems)
     {
-        if (selectedItems.Length > 0 &&
-            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(selectedItems)) == true)
-            selectedItems.ForEach(item => W3StringItems!.Remove(item.Cast<W3StringItemModel>()));
+        var w3Items = selectedItems.Cast<ITrackableW3StringItem>().ToArray();
+        if (w3Items.Length > 0 &&
+            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
+            w3Items.ForEach(item => W3StringItems!.Remove(item.Cast<W3StringItemModel>()));
     }
 
     [RelayCommand]
