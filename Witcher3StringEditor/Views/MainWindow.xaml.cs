@@ -27,21 +27,6 @@ public partial class MainWindow
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
     }
 
-    private void RegisterFilterRefreshHandler()
-    {
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "W3StringItemsUpdated",
-            (_, _) =>
-            {
-                var desiredPageIndex = SfDataPager.PageIndex;
-                SfDataGrid.View.RefreshFilter();
-                var currentTotalPages = SfDataPager.PageCount;
-                if (currentTotalPages <= 0) return;
-                var finalPageIndex = Math.Min(desiredPageIndex, currentTotalPages - 1);
-                if (SfDataPager.PageIndex == finalPageIndex) return;
-                SfDataPager.PageIndex = finalPageIndex;
-            });
-    }
-
     private static void RegisterThemeChangedHandler()
     {
         ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
@@ -58,7 +43,6 @@ public partial class MainWindow
 
     private void RegisterMessageHandlers()
     {
-        RegisterFilterRefreshHandler();
         RegisterFileOpenedMessageHandlers();
         RegisterAsyncRequestMessageHandlers();
     }

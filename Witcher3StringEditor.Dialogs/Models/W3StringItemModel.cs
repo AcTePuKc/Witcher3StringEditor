@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Witcher3StringEditor.Common.Abstractions;
 
-namespace Witcher3StringEditor.Models;
+namespace Witcher3StringEditor.Dialogs.Models;
 
 public partial class W3StringItemModel : ObservableObject, ITrackableW3StringItem
 {

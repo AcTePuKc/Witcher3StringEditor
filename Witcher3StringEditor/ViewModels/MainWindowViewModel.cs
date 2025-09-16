@@ -24,6 +24,7 @@ using Serilog.Events;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Messaging;
+using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
@@ -259,7 +260,6 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             W3StringItems!.Add(dialogViewModel.W3Item.Cast<W3StringItemModel>());
             Log.Information("New W3Item added.");
-            NotifyDataFilterToUpdate();
         }
         else
         {
@@ -268,7 +268,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
-    private async Task Edit(ITrackableW3StringItem selectedItem)
+    private async Task Edit(W3StringItemModel selectedItem)
     {
         var dialogViewModel = new EditDataDialogViewModel(selectedItem);
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true && dialogViewModel.W3Item != null)
@@ -278,29 +278,20 @@ internal partial class MainWindowViewModel : ObservableObject
             var index = W3StringItems!.IndexOf(found);
             W3StringItems[index] = dialogViewModel.W3Item.Cast<W3StringItemModel>();
             Log.Information("The W3Item has been updated.");
-            NotifyDataFilterToUpdate();
         }
         else
         {
             Log.Information("The W3Item has not been updated.");
         }
     }
-
-    private static void NotifyDataFilterToUpdate()
-    {
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "W3StringItemsUpdated");
-    }
-
+    
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Delete(IEnumerable<object> selectedItems)
     {
         var w3Items = selectedItems.Cast<ITrackableW3StringItem>().ToArray();
         if (w3Items.Length > 0 &&
             await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
-        {
             w3Items.ForEach(item => W3StringItems!.Remove(item.Cast<W3StringItemModel>()));
-            NotifyDataFilterToUpdate();
-        }
     }
 
     [RelayCommand]
@@ -379,10 +370,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
         var translator = Ioc.Default.GetServices<ITranslator>().First(x => x.Name == appSettings.Translator);
-        var isDirty = await dialogService.ShowDialogAsync(this,
+        _ = await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, W3StringItems!,
                 selectedItem != null ? W3StringItems.IndexOf(selectedItem) : 0));
         if (translator is IDisposable disposable) disposable.Dispose();
-        if (isDirty == true) NotifyDataFilterToUpdate();
     }
 }
