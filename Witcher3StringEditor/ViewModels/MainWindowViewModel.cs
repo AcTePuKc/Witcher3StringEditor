@@ -259,6 +259,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             W3StringItems!.Add(dialogViewModel.W3Item.Cast<W3StringItemModel>());
             Log.Information("New W3Item added.");
+            NotifyDataFilterToUpdate();
         }
         else
         {
@@ -277,6 +278,7 @@ internal partial class MainWindowViewModel : ObservableObject
             var index = W3StringItems!.IndexOf(found);
             W3StringItems[index] = dialogViewModel.W3Item.Cast<W3StringItemModel>();
             Log.Information("The W3Item has been updated.");
+            NotifyDataFilterToUpdate();
         }
         else
         {
