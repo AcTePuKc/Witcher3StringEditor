@@ -46,6 +46,11 @@ public partial class MainWindow
     {
         RegisterFileOpenedMessageHandlers();
         RegisterAsyncRequestMessageHandlers();
+        RegisterClearSearchHandler();
+    }
+
+    private void RegisterClearSearchHandler ()
+    {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "ClearSearch",
             (_, _) => { SearchBox.Text = string.Empty; });
     }
@@ -106,6 +111,11 @@ public partial class MainWindow
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         if (!string.IsNullOrEmpty(sender.Text)) return;
+        ClearSearchResults();
+    }
+
+    private void ClearSearchResults()
+    {
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IEnumerable<W3StringItemModel>?>(null),
             "SearchResultsUpdated");
         SfDataGrid.SearchHelper.ClearSearch();
