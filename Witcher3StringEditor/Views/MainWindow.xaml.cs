@@ -46,6 +46,8 @@ public partial class MainWindow
     {
         RegisterFileOpenedMessageHandlers();
         RegisterAsyncRequestMessageHandlers();
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "ClearSearch",
+            (_, _) => { SearchBox.Text = string.Empty; });
     }
 
     private void RegisterAsyncRequestMessageHandlers()

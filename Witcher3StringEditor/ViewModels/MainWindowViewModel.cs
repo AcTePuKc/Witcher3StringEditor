@@ -236,7 +236,6 @@ internal partial class MainWindowViewModel : ObservableObject
             await OpenFile(storageFile.LocalPath);
     }
 
-
     private async Task OpenFile(string fileName)
     {
         try
@@ -255,9 +254,11 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private async Task<bool> HandleReOpenFile(string fileName)
     {
-        return W3StringItems?.Any() != true ||
-               await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(fileName),
-                   "ReOpenFile");
+        if (W3StringItems?.Any() != true) return true;
+        if (!await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(fileName),
+                "ReOpenFile")) return false;
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "ClearSearch");
+        return true;
     }
 
     private async Task LoadW3StringItems(string fileName)
