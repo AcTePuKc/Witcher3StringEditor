@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using CommandLine;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -168,8 +169,10 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     {
         Guard.IsNotNull(CurrentTranslateItemModel);
         var found = W3StringItems
-            .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
-        found.Text = CurrentTranslateItemModel.TranslatedText;
+            .First(x => x.TrackingId == CurrentTranslateItemModel?.Id).Clone();
+        var clone = found.Cast<ITrackableW3StringItem>();
+        clone.Text = CurrentTranslateItemModel.TranslatedText;
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone), "TranslationSaved");
         CurrentTranslateItemModel.IsSaved = true;
     }
 

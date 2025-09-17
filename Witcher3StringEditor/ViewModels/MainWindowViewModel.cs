@@ -127,6 +127,16 @@ internal partial class MainWindowViewModel : ObservableObject
             {
                 searchResults = m.Value;
             });
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
+            this,
+            "TranslationSaved",
+            (_, m) =>
+            {
+                var w3StringItem = m.Value;
+                var found = W3StringItems!
+                    .First(x => x.TrackingId == w3StringItem.TrackingId);
+                found.Text = w3StringItem.Text;
+            });
     }
 
     private static void ApplyTranslatorChange(IAppSettings appSettings)
