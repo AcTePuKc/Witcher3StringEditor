@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using CommunityToolkit.Diagnostics;
+using CommandLine;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -116,9 +116,11 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             && !string.IsNullOrWhiteSpace(item.TranslatedText)
             && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
         {
-            var found = w3StringItems.First(x => x.TrackingId == item.Id);
-            Guard.IsNotNull(found);
-            found.Text = item.TranslatedText;
+            var found = w3StringItems
+                .First(x => x.TrackingId == item.Id).Clone();
+            var clone = found.Cast<ITrackableW3StringItem>();
+            clone.Text = item.TranslatedText;
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone), "TranslationSaved");
             Log.Information("Auto-saved unsaved changes.");
         }
     }

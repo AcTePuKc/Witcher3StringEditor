@@ -46,13 +46,18 @@ public partial class MainWindow
     {
         RegisterFileOpenedMessageHandlers();
         RegisterAsyncRequestMessageHandlers();
-        RegisterClearSearchHandler();
+        RegisterSearchHandler();
     }
 
-    private void RegisterClearSearchHandler()
+    private void RegisterSearchHandler()
     {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "ClearSearch",
             (_, _) => { SearchBox.Text = string.Empty; });
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "SS",
+            (_, _) =>
+            {
+                SfDataGrid.View.Refresh();
+            });
     }
 
     private void RegisterAsyncRequestMessageHandlers()
