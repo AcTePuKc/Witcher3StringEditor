@@ -99,13 +99,13 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             }
             else
             {
-                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationNotEmpty");
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationNotEmpty");
             }
         }
         catch (Exception ex)
         {
             const string errorMessage = "The translator: {0} returned an error. Exception: {1}";
-            _ = WeakReferenceMessenger.Default.Send(
+            WeakReferenceMessenger.Default.Send(
                 new ValueChangedMessage<string>(string.Format(CultureInfo.InvariantCulture, errorMessage,
                     Translator.Name, ex.Message)),
                 "TranslateError");
@@ -136,7 +136,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
                 SaveTranslation();
             else
-                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
                     "TranslatedTextInvalid");
         }
         catch (Exception ex)

@@ -80,7 +80,7 @@ public sealed partial class App : IDisposable
     private void InitializeLogging()
     {
         logObserver = new AnonymousObserver<LogEvent>(static x =>
-            _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
         InitializeLogging(logObserver);
     }
 
@@ -97,7 +97,7 @@ public sealed partial class App : IDisposable
             IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
         var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
         if (!Directory.Exists(configFolderPath))
-            _ = Directory.CreateDirectory(configFolderPath);
+            Directory.CreateDirectory(configFolderPath);
         return configPath;
     }
 
@@ -166,8 +166,8 @@ public sealed partial class App : IDisposable
         placement.length = (uint)Marshal.SizeOf(placement);
         if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value == 0) return;
         if (placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINIMIZED)
-            _ = PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
-        _ = PInvoke.SetForegroundWindow(mainWindowHandle);
+            PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
+        PInvoke.SetForegroundWindow(mainWindowHandle);
     }
 
     private static Process FindExistingProcessInstance()

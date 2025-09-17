@@ -47,7 +47,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     private void HandleExistingFile(IRecentItem recentItem)
     {
         RequestClose?.Invoke(this, EventArgs.Empty);
-        _ = WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(recentItem.FilePath),
+        WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(recentItem.FilePath),
             "RecentFileOpened");
     }
 

@@ -40,12 +40,12 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private string[]? dropFileData;
 
-    private IEnumerable<W3StringItemModel>? searchResults;
-
     [ObservableProperty] private bool isUpdateAvailable;
 
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
+
+    private IEnumerable<W3StringItemModel>? searchResults;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCommand))]
@@ -110,34 +110,27 @@ internal partial class MainWindowViewModel : ObservableObject
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
             // ReSharper disable once AsyncVoidMethod
             this,
-            async void (_, m) =>
-            {
-                await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value));
-            });
+            async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
             // ReSharper disable once AsyncVoidMethod
             this,
             "RecentFileOpened",
-            async void (_, m) =>
-            {
-                await OpenFile(m.Request);
-            });
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel,ValueChangedMessage<IEnumerable<W3StringItemModel>>,
-            string>(this, "SearchResultsUpdated", (_, m) =>
-            {
-                searchResults = m.Value;
-            });
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
-            this,
-            "TranslationSaved",
-            (_, m) =>
-            {
-                var w3StringItem = m.Value;
-                var found = W3StringItems!
-                    .First(x => x.TrackingId == w3StringItem.TrackingId);
-                var index = W3StringItems!.IndexOf(found);
-                W3StringItems![index] = w3StringItem.Cast<W3StringItemModel>();
-            });
+            async void (_, m) => { await OpenFile(m.Request); });
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<IEnumerable<W3StringItemModel>>,
+                string>(this, "SearchResultsUpdated", (_, m) => { searchResults = m.Value; });
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
+                this,
+                "TranslationSaved",
+                (_, m) =>
+                {
+                    var w3StringItem = m.Value;
+                    var found = W3StringItems!
+                        .First(x => x.TrackingId == w3StringItem.TrackingId);
+                    var index = W3StringItems!.IndexOf(found);
+                    W3StringItems![index] = w3StringItem.Cast<W3StringItemModel>();
+                });
     }
 
     private static void ApplyTranslatorChange(IAppSettings appSettings)
@@ -185,7 +178,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(settings.W3StringsPath))
         {
             Log.Error("Settings are incorrect or initial setup is incomplete.");
-            _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
         }
         else
         {
@@ -328,14 +321,14 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowBackupDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,
+        await dialogService.ShowDialogAsync(this,
             new BackupDialogViewModel(appSettings, backupService));
     }
 
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task ShowSaveDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,
+        await dialogService.ShowDialogAsync(this,
             new SaveDialogViewModel(appSettings,
                 Ioc.Default.GetRequiredService<IW3Serializer>(),
                 W3StringItems!,
@@ -345,7 +338,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowLogDialog()
     {
-        _ = await dialogService.ShowDialogAsync<LogDialogViewModel>(this,
+        await dialogService.ShowDialogAsync<LogDialogViewModel>(this,
             new LogDialogViewModel(LogEvents));
     }
 
@@ -355,7 +348,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var translators = Ioc.Default.GetServices<ITranslator>().ToArray();
         var names = translators.Select(x => x.Name);
         Array.ForEach(translators, x => (x as IDisposable)?.Dispose());
-        _ = await dialogService.ShowDialogAsync(this,
+        await dialogService.ShowDialogAsync(this,
             new SettingDialogViewModel(appSettings, dialogService, names,
                 Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures));
     }
@@ -369,16 +362,18 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowAbout()
     {
-        _ = await dialogService.ShowDialogAsync(this,
+        await dialogService.ShowDialogAsync(this,
             new AboutDialogViewModel(new Dictionary<string, object?>
-        {
-            { "Version", ThisAssembly.AssemblyInformationalVersion },
-            { "BuildTime", BuildTimestamp.BuildTime.ToLocalTime() },
-            { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
-            { "Runtime", RuntimeInformation.FrameworkDescription },
-            { "Package", DependencyContext.Default?
-                .RuntimeLibraries.Where(static x => x.Type == "package") }
-        }));
+            {
+                { "Version", ThisAssembly.AssemblyInformationalVersion },
+                { "BuildTime", BuildTimestamp.BuildTime.ToLocalTime() },
+                { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
+                { "Runtime", RuntimeInformation.FrameworkDescription },
+                {
+                    "Package", DependencyContext.Default?
+                        .RuntimeLibraries.Where(static x => x.Type == "package")
+                }
+            }));
     }
 
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
@@ -399,7 +394,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
-        _ = await dialogService.ShowDialogAsync(this,
+        await dialogService.ShowDialogAsync(this,
             new RecentDialogViewModel(appSettings));
     }
 
@@ -411,7 +406,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var items = searchResults ?? W3StringItems!;
         var itemsList = items.Cast<ITrackableW3StringItem>().ToList();
         var selectedIndex = selectedItem != null ? itemsList.IndexOf(selectedItem) : 0;
-        _ = await dialogService.ShowDialogAsync(this,
+        await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose();
     }

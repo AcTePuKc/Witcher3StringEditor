@@ -32,7 +32,7 @@ public partial class BackupDialogViewModel(
         {
             Log.Information("The restoration of file {Path} has been approved.", backupItem.OrginPath);
             if (!backupService.Restore(backupItem))
-                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
         }
     }
 
@@ -40,7 +40,7 @@ public partial class BackupDialogViewModel(
     {
         Log.Error("The backup file {Path} does no exist.", backupItem.BackupPath);
         if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "BackupFileNoFound"))
-            _ = backupService.Delete(backupItem);
+            backupService.Delete(backupItem);
     }
 
     [RelayCommand]
@@ -50,7 +50,7 @@ public partial class BackupDialogViewModel(
         {
             Log.Information("The deletion of file {Path} has been approved.", backupItem.BackupPath);
             if (!backupService.Delete(backupItem))
-                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "OperationFailed");
         }
     }
 }

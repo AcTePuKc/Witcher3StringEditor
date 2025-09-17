@@ -133,7 +133,8 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             {
                 var clone = item.Clone().Cast<ITrackableW3StringItem>();
                 clone.Text = translation;
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone), "TranslationSaved");
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
+                    "TranslationSaved");
                 SuccessCount++;
             }
             else

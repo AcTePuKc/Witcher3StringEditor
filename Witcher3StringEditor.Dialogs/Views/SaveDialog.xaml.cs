@@ -22,7 +22,7 @@ public partial class SaveDialog
         WeakReferenceMessenger.Default.Register<SaveDialog, ValueChangedMessage<bool>, string>(
             this, "Save", static (r, m) =>
             {
-                _ = MessageBox.Show(m.Value ? Strings.SaveSuccess : Strings.SaveFailure,
+                MessageBox.Show(m.Value ? Strings.SaveSuccess : Strings.SaveFailure,
                     Strings.SaveResult,
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);

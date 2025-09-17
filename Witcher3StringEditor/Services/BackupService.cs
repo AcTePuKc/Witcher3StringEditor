@@ -76,7 +76,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         {
             if (File.Exists(backupItem.BackupPath))
                 File.Delete(backupItem.BackupPath);
-            _ = appSettings.BackupItems.Remove(backupItem);
+            appSettings.BackupItems.Remove(backupItem);
             Log.Information("Delete backup file: {Path}.", backupItem.BackupPath);
             return true;
         }
