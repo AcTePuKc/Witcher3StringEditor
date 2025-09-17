@@ -236,40 +236,61 @@ internal partial class MainWindowViewModel : ObservableObject
             await OpenFile(storageFile.LocalPath);
     }
 
+
     private async Task OpenFile(string fileName)
     {
         try
         {
-            if (W3StringItems?.Any() == true &&
-                !await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(fileName),
-                    "ReOpenFile")) return;
+            if (!await HandleReOpenFile(fileName)) return;
             Log.Information("The file {FileName} is being opened...", fileName);
-            W3StringItems = new ObservableCollection<W3StringItemModel>(
-            [
-                .. (await Ioc.Default.GetRequiredService<IW3Serializer>()
-                    .Deserialize(fileName)).OrderBy(x => x.StrId)
-                .Select(x => new W3StringItemModel(x))
-            ]);
-            Guard.IsGreaterThan(W3StringItems.Count, 0);
-            var folder = Path.GetDirectoryName(fileName);
-            Guard.IsNotNull(folder);
-            OutputFolder = folder;
-            Log.Information("Working directory set to {Folder}.", folder);
-            var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
-            if (foundItem == null)
-            {
-                appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
-                Log.Information("Added {FileName} to recent items.", fileName);
-            }
-            else
-            {
-                foundItem.OpenedTime = DateTime.Now;
-                Log.Information("The last opened time for file {FileName} has been updated.", fileName);
-            }
+            await LoadW3StringItems(fileName);
+            SetOutputFolder(fileName);
+            UpdateRecentItems(fileName);
         }
         catch (Exception ex)
         {
             Log.Error(ex, "Failed to open file: {FileName}.", fileName);
+        }
+    }
+
+    private async Task<bool> HandleReOpenFile(string fileName)
+    {
+        return W3StringItems?.Any() != true ||
+               await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(fileName),
+                   "ReOpenFile");
+    }
+
+    private async Task LoadW3StringItems(string fileName)
+    {
+        W3StringItems = new ObservableCollection<W3StringItemModel>(
+        [
+            .. (await Ioc.Default.GetRequiredService<IW3Serializer>()
+                .Deserialize(fileName)).OrderBy(x => x.StrId)
+            .Select(x => new W3StringItemModel(x))
+        ]);
+        Guard.IsGreaterThan(W3StringItems.Count, 0);
+    }
+
+    private void SetOutputFolder(string fileName)
+    {
+        var folder = Path.GetDirectoryName(fileName);
+        Guard.IsNotNull(folder);
+        OutputFolder = folder;
+        Log.Information("Working directory set to {Folder}.", folder);
+    }
+
+    private void UpdateRecentItems(string fileName)
+    {
+        var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
+        if (foundItem == null)
+        {
+            appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
+            Log.Information("Added {FileName} to recent items.", fileName);
+        }
+        else
+        {
+            foundItem.OpenedTime = DateTime.Now;
+            Log.Information("The last opened time for file {FileName} has been updated.", fileName);
         }
     }
 
