@@ -49,7 +49,7 @@ public partial class MainWindow
         RegisterClearSearchHandler();
     }
 
-    private void RegisterClearSearchHandler ()
+    private void RegisterClearSearchHandler()
     {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "ClearSearch",
             (_, _) => { SearchBox.Text = string.Empty; });
