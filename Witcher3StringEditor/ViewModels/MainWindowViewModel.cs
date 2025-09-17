@@ -117,7 +117,7 @@ internal partial class MainWindowViewModel : ObservableObject
             "RecentFileOpened",
             async void (_, m) => { await OpenFile(m.Request); });
         WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<IEnumerable<W3StringItemModel>>,
+            .Register<MainWindowViewModel, ValueChangedMessage<IEnumerable<W3StringItemModel>?>,
                 string>(this, "SearchResultsUpdated", (_, m) => { searchResults = m.Value; });
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
