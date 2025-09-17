@@ -430,6 +430,7 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose();
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "RefreshDataGrid");
+        if (searchResults != null)
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "RefreshDataGrid");
     }
 }
