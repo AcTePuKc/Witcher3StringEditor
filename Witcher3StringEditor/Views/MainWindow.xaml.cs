@@ -94,6 +94,7 @@ public partial class MainWindow
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
+        if (SfDataGrid.ItemsSource == null) return;
         SfDataGrid.SearchHelper.Search(args.QueryText);
         var searchResults = SfDataGrid.View.Records
             .Select(x => x.Data).Cast<W3StringItemModel>();
