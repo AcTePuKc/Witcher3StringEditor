@@ -8,6 +8,7 @@ using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Serilog;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
+using Witcher3StringEditor.Models;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
@@ -92,6 +93,10 @@ public partial class MainWindow
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         SfDataGrid.SearchHelper.Search(args.QueryText);
+        var searchResults = SfDataGrid.View.Records
+            .Select(x => x.Data).Cast<W3StringItemModel>();
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IEnumerable<W3StringItemModel>>(searchResults),
+            "SearchResultsUpdated");
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
 
