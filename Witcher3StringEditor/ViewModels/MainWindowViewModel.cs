@@ -126,7 +126,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 (_, m) =>
                 {
                     var item = m.Value;
-                    var found = searchResults!
+                    var found = W3StringItems!
                         .First(x => x.TrackingId == item.TrackingId);
                     found.Text = item.Text;
                 });
