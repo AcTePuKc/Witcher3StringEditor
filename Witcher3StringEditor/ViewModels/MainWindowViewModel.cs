@@ -135,7 +135,8 @@ internal partial class MainWindowViewModel : ObservableObject
                 var w3StringItem = m.Value;
                 var found = W3StringItems!
                     .First(x => x.TrackingId == w3StringItem.TrackingId);
-                found.Text = w3StringItem.Text;
+                var index = W3StringItems!.IndexOf(found);
+                W3StringItems![index] = w3StringItem.Cast<W3StringItemModel>();
             });
     }
 
