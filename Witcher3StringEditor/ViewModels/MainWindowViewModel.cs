@@ -40,6 +40,8 @@ internal partial class MainWindowViewModel : ObservableObject
 
     [ObservableProperty] private string[]? dropFileData;
 
+    private IEnumerable<W3StringItemModel>? searchResults;
+
     [ObservableProperty] private bool isUpdateAvailable;
 
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
@@ -119,6 +121,11 @@ internal partial class MainWindowViewModel : ObservableObject
             async void (_, m) =>
             {
                 await OpenFile(m.Request);
+            });
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel,ValueChangedMessage<IEnumerable<W3StringItemModel>>,
+            string>(this, "SearchResultsUpdated", (_, m) =>
+            {
+                searchResults = m.Value;
             });
     }
 
