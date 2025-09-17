@@ -102,7 +102,10 @@ public partial class MainWindow
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (string.IsNullOrEmpty(sender.Text)) SfDataGrid.SearchHelper.ClearSearch();
+        if (!string.IsNullOrEmpty(sender.Text)) return;
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IEnumerable<W3StringItemModel>>([]),
+            "SearchResultsUpdated");
+        SfDataGrid.SearchHelper.ClearSearch();
     }
 
     private void Window_Closed(object sender, EventArgs e)
