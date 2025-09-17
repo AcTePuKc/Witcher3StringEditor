@@ -125,11 +125,10 @@ internal partial class MainWindowViewModel : ObservableObject
                 "TranslationSaved",
                 (_, m) =>
                 {
-                    var w3StringItem = m.Value;
-                    var found = W3StringItems!
-                        .First(x => x.TrackingId == w3StringItem.TrackingId);
-                    var index = W3StringItems!.IndexOf(found);
-                    W3StringItems![index] = w3StringItem.Cast<W3StringItemModel>();
+                    var item = m.Value;
+                    var found = searchResults!
+                        .First(x => x.TrackingId == item.TrackingId);
+                    found.Text = item.Text;
                 });
     }
 

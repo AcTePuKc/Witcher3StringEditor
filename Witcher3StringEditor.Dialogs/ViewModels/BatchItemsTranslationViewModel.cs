@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using FluentResults;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
@@ -128,11 +129,11 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     {
         try
         {
-            var (result, translation) = await TranslateItem(Translator, item.Text, toLanguage, fromLanguage);
-            if (result)
+            var translation = await TranslateItem(Translator, item.Text, toLanguage, fromLanguage);
+            if (translation.IsSuccess)
             {
                 var clone = item.Clone().Cast<ITrackableW3StringItem>();
-                clone.Text = translation;
+                clone.Text = translation.Value;
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
                     "TranslationSaved");
                 SuccessCount++;
@@ -150,14 +151,13 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         }
     }
 
-    private static async Task<(bool, string)> TranslateItem(ITranslator translator, string? text, ILanguage tLanguage,
+    private static async Task<Result<string>> TranslateItem(ITranslator translator, string text, ILanguage tLanguage,
         ILanguage fLanguage)
     {
-        if (string.IsNullOrWhiteSpace(text)) return (true, string.Empty);
         var translation = (await translator.TranslateAsync(text, tLanguage, fLanguage)).Translation;
-        if (IsTranslationValid(translation)) return (true, translation);
+        if (IsTranslationValid(translation)) return Result.Ok(translation);
         LogEmptyTranslationResult(translator.Name);
-        return (false, string.Empty);
+        return Result.Fail(string.Empty);
     }
 
     private static bool IsTranslationValid(string translation)
