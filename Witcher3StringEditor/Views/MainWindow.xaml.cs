@@ -53,7 +53,7 @@ public partial class MainWindow
     {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "ClearSearch",
             (_, _) => { SearchBox.Text = string.Empty; });
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "SS",
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "RefreshDataGrid",
             (_, _) =>
             {
                 SfDataGrid.View.Refresh();
