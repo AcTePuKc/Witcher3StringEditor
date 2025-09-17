@@ -1,5 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommandLine;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
@@ -104,7 +107,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             ToLanguage, FormLanguage, CancellationTokenSource.Token);
     }
 
-    private async Task ProcessTranslationItems(IEnumerable<IW3StringItem> items, ILanguage toLanguage,
+    private async Task ProcessTranslationItems(IEnumerable<ITrackableW3StringItem> items, ILanguage toLanguage,
         ILanguage fromLanguage,
         CancellationToken cancellationToken)
     {
@@ -121,14 +124,16 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             }
     }
 
-    private async Task ProcessSingleItem(IW3StringItem item, ILanguage toLanguage, ILanguage fromLanguage)
+    private async Task ProcessSingleItem(ITrackableW3StringItem item, ILanguage toLanguage, ILanguage fromLanguage)
     {
         try
         {
             var (result, translation) = await TranslateItem(Translator, item.Text, toLanguage, fromLanguage);
             if (result)
             {
-                item.Text = translation;
+                var clone = item.Clone().Cast<ITrackableW3StringItem>();
+                clone.Text = translation;
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone), "TranslationSaved");
                 SuccessCount++;
             }
             else
