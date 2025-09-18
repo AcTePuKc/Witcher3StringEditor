@@ -1,4 +1,4 @@
-﻿namespace Witcher3StringEditor.Common.Abstractions;
+﻿namespace Witcher3StringEditor.Services;
 
 public interface IPlayGameService
 {
