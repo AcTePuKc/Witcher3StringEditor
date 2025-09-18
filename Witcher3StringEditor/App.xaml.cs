@@ -25,6 +25,7 @@ using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers;
 using Witcher3StringEditor.Serializers.Abstractions;
+using Witcher3StringEditor.Serializers.Implementation;
 using Witcher3StringEditor.Services;
 using Witcher3StringEditor.ViewModels;
 using Witcher3StringEditor.Views;
@@ -188,7 +189,10 @@ public sealed partial class App : IDisposable
             .AddSingleton<IConfigService, ConfigService>(_ => new ConfigService(configPath))
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()
-            .AddSingleton<IW3Serializer, W3Serializer>()
+            .AddSingleton<ICsvW3Serializer,CsvW3Serializer>()
+            .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
+            .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
+            .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
             .AddScoped<IExplorerService, ExplorerService>()
             .AddScoped<IPlayGameService, PlayGameService>()
             .AddScoped<ICheckUpdateService, CheckUpdateService>()
