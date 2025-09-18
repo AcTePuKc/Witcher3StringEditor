@@ -1,6 +1,6 @@
 ﻿namespace Witcher3StringEditor.Services;
 
-public interface ICheckUpdateService
+internal interface ICheckUpdateService
 {
     public Task<bool> CheckUpdate();
 }

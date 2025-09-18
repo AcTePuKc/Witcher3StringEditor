@@ -1,6 +1,6 @@
 ﻿namespace Witcher3StringEditor.Services;
 
-public interface IExplorerService
+internal interface IExplorerService
 {
     public void Open(string path);
 }

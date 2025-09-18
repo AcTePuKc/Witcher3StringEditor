@@ -1,6 +1,6 @@
 ﻿namespace Witcher3StringEditor.Services;
 
-public interface IConfigService
+internal interface IConfigService
 {
     public void Save<T>(T settings);
 
