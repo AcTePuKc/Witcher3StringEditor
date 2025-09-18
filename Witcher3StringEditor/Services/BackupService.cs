@@ -22,9 +22,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
-            Guard.IsTrue(File.Exists(filePath));
-            var hash = ComputeSha256Hash(filePath);
-            Guard.IsNotNullOrWhiteSpace(hash);
+            var hash = ValidateAndGetHash(filePath);
             var backupItem = new BackupItem
             {
                 FileName = Path.GetFileName(filePath),
@@ -33,15 +31,8 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
                 BackupPath = Path.Combine(backupFolderPath, $"{Guid.NewGuid():N}.bak"),
                 BackupTime = DateTime.Now
             };
-            if (!Directory.Exists(backupFolderPath))
-                Directory.CreateDirectory(backupFolderPath);
-            if (appSettings.BackupItems.Any(x =>
-                    x.Hash == backupItem.Hash && x.OrginPath == backupItem.OrginPath && File.Exists(x.BackupPath)))
-                return true;
-            File.Copy(backupItem.OrginPath, backupItem.BackupPath);
-            appSettings.BackupItems.Add(backupItem);
-            Log.Information("Backup file: {Path}.", filePath);
-            return true;
+            EnsureBackupDirectoryExists(backupFolderPath);
+            return IsDuplicateBackup(backupItem) || ExecuteBackup(backupItem);
         }
         catch (Exception ex)
         {
@@ -85,6 +76,36 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             Log.Error(ex, "Failed to delete backup item: {Path}.", backupItem.BackupPath);
             return false;
         }
+    }
+
+    private static string ValidateAndGetHash(string filePath)
+    {
+        Guard.IsTrue(File.Exists(filePath));
+        var hash = ComputeSha256Hash(filePath);
+        Guard.IsNotNullOrWhiteSpace(hash);
+        return hash;
+    }
+
+    private static void EnsureBackupDirectoryExists(string path)
+    {
+        if (!Directory.Exists(path))
+            Directory.CreateDirectory(path);
+    }
+
+    private bool IsDuplicateBackup(BackupItem backupItem)
+    {
+        return appSettings.BackupItems.Any(x =>
+            x.Hash == backupItem.Hash &&
+            x.OrginPath == backupItem.OrginPath &&
+            File.Exists(x.BackupPath));
+    }
+
+    private bool ExecuteBackup(BackupItem backupItem)
+    {
+        File.Copy(backupItem.OrginPath, backupItem.BackupPath);
+        appSettings.BackupItems.Add(backupItem);
+        Log.Information("Backup file: {Path}.", backupItem.OrginPath);
+        return true;
     }
 
     private static string ComputeSha256Hash(string filePath)
