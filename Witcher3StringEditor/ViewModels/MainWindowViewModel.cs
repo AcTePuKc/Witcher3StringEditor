@@ -336,6 +336,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (w3Items.Length > 0 && await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
         {
             w3Items.ForEach(item => W3StringItems!.Remove(item.Cast<W3StringItemModel>()));
+            searchResults?.ForEach(x => searchResults.Remove(x));
         }
     }
 
