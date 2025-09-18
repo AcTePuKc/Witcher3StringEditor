@@ -57,6 +57,10 @@ public partial class MainWindow
             (_, _) =>
             {
                 SfDataGrid.View.Refresh();
+                var searchResults = SfDataGrid.View.Records
+                    .Select(x => x.Data).Cast<W3StringItemModel>();
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IEnumerable<W3StringItemModel>?>(searchResults),
+                    "SearchResultsUpdated");
             });
     }
 
