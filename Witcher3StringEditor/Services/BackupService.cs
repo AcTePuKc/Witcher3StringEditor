@@ -86,10 +86,10 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         return hash;
     }
 
-    private static void EnsureBackupDirectoryExists(string path)
+    private static void EnsureBackupDirectoryExists(string backupDirectoryPath)
     {
-        if (!Directory.Exists(path))
-            Directory.CreateDirectory(path);
+        if (!Directory.Exists(backupDirectoryPath))
+            Directory.CreateDirectory(backupDirectoryPath);
     }
 
     private bool IsDuplicateBackup(BackupItem backupItem)
