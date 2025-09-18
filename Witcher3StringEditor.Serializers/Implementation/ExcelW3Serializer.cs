@@ -78,7 +78,7 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         worksheet["D1"].Value = "OldText";
         worksheet["E1"].Value = "Text";
     }
-    
+
     private static void SetTableStyles(IWorksheet worksheet, int rowCount)
     {
         FormatHeaderRow(worksheet);
