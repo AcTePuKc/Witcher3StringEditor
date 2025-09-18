@@ -424,7 +424,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         var translators = Ioc.Default.GetServices<ITranslator>().ToArray();
         var names = translators.Select(x => x.Name);
-        Array.ForEach(translators, x => (x as IDisposable)?.Dispose());
+        translators.ForEach(x => x.Cast<IDisposable>().Dispose());
         await dialogService.ShowDialogAsync(this,
             new SettingDialogViewModel(appSettings, dialogService, names,
                 Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures));
