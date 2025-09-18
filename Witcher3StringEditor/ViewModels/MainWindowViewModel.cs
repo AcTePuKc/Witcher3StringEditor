@@ -333,11 +333,14 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Delete(IEnumerable<object> selectedItems)
     {
         var w3Items = selectedItems.Cast<ITrackableW3StringItem>().ToArray();
-        if (w3Items.Length > 0 && await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
-        {
-            w3Items.ForEach(item => W3StringItems!.Remove(item.Cast<W3StringItemModel>()));
-            searchResults?.ForEach(x => searchResults.Remove(x));
-        }
+        if (w3Items.Length > 0 &&
+            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
+            w3Items.ForEach(item =>
+            {
+                var stringItem = item.Cast<W3StringItemModel>();
+                W3StringItems!.Remove(stringItem);
+                searchResults?.Remove(stringItem);
+            });
     }
 
     [RelayCommand]
