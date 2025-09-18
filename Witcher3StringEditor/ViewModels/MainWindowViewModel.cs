@@ -107,18 +107,24 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private void RegisterMessengerHandlers()
     {
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
-            // ReSharper disable once AsyncVoidMethod
-            this,
-            async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
-            // ReSharper disable once AsyncVoidMethod
-            this,
-            "RecentFileOpened",
-            async void (_, m) => { await OpenFile(m.Request); });
+        RegisterLogHandlers();
+        RegisterFileHandlers();
+        RegisterSearchHandlers();
+        RegisterTranslationHandlers();
+    }
+
+    private void RegisterSearchHandlers()
+    {
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>,
                 string>(this, "SearchResultsUpdated", (_, m) => { searchResults = m.Value; });
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this, "ItemsAdded",
+                (_, m) => { HandleItemsAdded(m.Value); });
+    }
+
+    private void RegisterTranslationHandlers()
+    {
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
                 this,
@@ -130,10 +136,23 @@ internal partial class MainWindowViewModel : ObservableObject
                         .First(x => x.TrackingId == item.TrackingId);
                     found.Text = item.Text;
                 });
+    }
 
-        WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this, "ItemsAdded",
-                (_, m) => { HandleItemsAdded(m.Value); });
+    private void RegisterFileHandlers()
+    {
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
+            // ReSharper disable once AsyncVoidMethod
+            this,
+            "RecentFileOpened",
+            async void (_, m) => { await OpenFile(m.Request); });
+    }
+
+    private void RegisterLogHandlers()
+    {
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
+            // ReSharper disable once AsyncVoidMethod
+            this,
+            async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
     }
 
     private void HandleItemsAdded(IList<W3StringItemModel> addedItems)
