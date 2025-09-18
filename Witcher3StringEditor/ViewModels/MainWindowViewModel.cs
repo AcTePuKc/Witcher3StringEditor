@@ -315,12 +315,11 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private async Task LoadW3StringItems(string fileName)
     {
-        W3StringItems = new ObservableCollection<W3StringItemModel>(
-        [
-            .. (await Ioc.Default.GetRequiredService<IW3Serializer>()
-                .Deserialize(fileName)).OrderBy(x => x.StrId)
-            .Select(x => new W3StringItemModel(x))
-        ]);
+        var serializer = Ioc.Default.GetRequiredService<IW3Serializer>();
+        var items = await serializer.Deserialize(fileName);
+        var orderedItems = items.OrderBy(x => x.StrId);
+        var modelItems = orderedItems.Select(x => new W3StringItemModel(x)).ToList();
+        W3StringItems = new ObservableCollection<W3StringItemModel>(modelItems);
         Guard.IsGreaterThan(W3StringItems.Count, 0);
     }
 
