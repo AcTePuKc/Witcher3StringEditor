@@ -360,7 +360,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Delete(IEnumerable<object> selectedItems)
     {
-        var w3Items = selectedItems.Cast<ITrackableW3StringItem>().ToArray();
+        var w3Items = selectedItems.OfType<ITrackableW3StringItem>().ToArray();
         if (w3Items.Length > 0 &&
             await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
             w3Items.ForEach(item =>
@@ -455,7 +455,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
         var items = searchResults ?? W3StringItems!;
-        var itemsList = items.Cast<ITrackableW3StringItem>().ToList();
+        var itemsList = items.OfType<ITrackableW3StringItem>().ToList();
         var selectedIndex = selectedItem != null ? itemsList.IndexOf(selectedItem) : 0;
         var translator = Ioc.Default.GetServices<ITranslator>()
             .First(x => x.Name == appSettings.Translator);

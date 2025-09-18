@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using System.Collections.Specialized;
+using System.Windows;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern;
@@ -6,10 +8,6 @@ using iNKORE.UI.WPF.Modern.Controls;
 using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Serilog;
 using Syncfusion.Data;
-using Syncfusion.Data.Extensions;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Windows;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
@@ -40,10 +38,10 @@ public partial class MainWindow
 
     private static void OnDataGridViewCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-
         if (e.Action != NotifyCollectionChangedAction.Add) return;
         if (e.NewItems == null) return;
-        var items = e.NewItems.Cast<RecordEntry>().Select(x => x.Data).Cast<W3StringItemModel>().ToList();
+        var items = e.NewItems.OfType<RecordEntry>()
+            .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(items), "ItemsAdded");
     }
 
@@ -123,7 +121,7 @@ public partial class MainWindow
         if (SfDataGrid.ItemsSource == null) return;
         SfDataGrid.SearchHelper.Search(args.QueryText);
         var searchResults = SfDataGrid.View.Records
-            .Select(x => x.Data).Cast<W3StringItemModel>().ToList();
+            .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(searchResults),
             "SearchResultsUpdated");
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
