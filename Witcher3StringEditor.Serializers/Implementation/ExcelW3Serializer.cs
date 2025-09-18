@@ -78,8 +78,17 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         worksheet["D1"].Value = "OldText";
         worksheet["E1"].Value = "Text";
     }
-
+    
     private static void SetTableStyles(IWorksheet worksheet, int rowCount)
+    {
+        FormatHeaderRow(worksheet);
+        FormatNormalCells(worksheet, rowCount);
+        ApplyTableBorders(worksheet, rowCount);
+        FormatTextCells(worksheet, rowCount);
+        FreezeHeaderRow(worksheet);
+    }
+
+    private static void FormatHeaderRow(IWorksheet worksheet)
     {
         var headerRange = worksheet["A1:E1"];
         headerRange.CellStyle.Font.Bold = true;
@@ -87,16 +96,32 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         headerRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
         headerRange.CellStyle.ColorIndex = ExcelKnownColors.Grey_80_percent;
         headerRange.CellStyle.Font.Color = ExcelKnownColors.White;
+    }
+
+    private static void FormatNormalCells(IWorksheet worksheet, int rowCount)
+    {
         var normalRange = worksheet[$"A2:C{rowCount + 1}"];
         normalRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
         normalRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
+    }
+
+    private static void ApplyTableBorders(IWorksheet worksheet, int rowCount)
+    {
         var tableRange = worksheet[$"A1:E{rowCount + 1}"];
         tableRange.Borders.LineStyle = ExcelLineStyle.Thin;
         tableRange.Borders[ExcelBordersIndex.DiagonalUp].ShowDiagonalLine = false;
         tableRange.Borders[ExcelBordersIndex.DiagonalDown].ShowDiagonalLine = false;
         tableRange.NumberFormat = "@";
+    }
+
+    private static void FormatTextCells(IWorksheet worksheet, int rowCount)
+    {
         var textRange = worksheet[$"D2:E{rowCount + 1}"];
         textRange.WrapText = true;
+    }
+
+    private static void FreezeHeaderRow(IWorksheet worksheet)
+    {
         worksheet["A2:E2"].FreezePanes();
     }
 
