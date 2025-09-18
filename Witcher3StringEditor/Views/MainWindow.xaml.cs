@@ -27,18 +27,22 @@ public partial class MainWindow
         RegisterMessageHandlers();
         RegisterThemeChangedHandler();
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
-        SfDataGrid.ItemsSourceChanged += (_, _) =>
-        {
-            SfDataGrid.View.CollectionChanged+= (s,e) =>
-            {
-                if (e.Action != NotifyCollectionChangedAction.Add) return;
-                var items = e.NewItems?.Cast<W3StringItemModel>().ToList();
-                if (items != null && items.Count != 0)
-                {
-                    WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(items), "ItemsAdded");
-                }
-            };
-        };
+        SfDataGrid.ItemsSourceChanged += OnDataGridItemsSourceChanged;
+    }
+
+    private void OnDataGridItemsSourceChanged(object? sender, EventArgs e)
+    {
+        SfDataGrid.View.CollectionChanged += OnDataGridViewCollectionChanged;
+    }
+
+    private static void OnDataGridViewCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action != NotifyCollectionChangedAction.Add) return;
+        var items = e.NewItems?.Cast<W3StringItemModel>().ToList();
+        if (items != null && items.Count != 0)
+            WeakReferenceMessenger.Default.Send(
+                new ValueChangedMessage<IList<W3StringItemModel>>(items),
+                "ItemsAdded");
     }
 
     private static void RegisterThemeChangedHandler()
@@ -67,10 +71,7 @@ public partial class MainWindow
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "ClearSearch",
             (_, _) => { SearchBox.Text = string.Empty; });
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "RefreshDataGrid",
-            (_, _) =>
-            {
-                SfDataGrid.View.Refresh();
-            });
+            (_, _) => { SfDataGrid.View.Refresh(); });
     }
 
     private void RegisterAsyncRequestMessageHandlers()
@@ -122,7 +123,7 @@ public partial class MainWindow
         var searchResults = SfDataGrid.View.Records
             .Select(x => x.Data).Cast<W3StringItemModel>().ToList();
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(searchResults),
-            "SearchResultsUpdated");        
+            "SearchResultsUpdated");
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
 
