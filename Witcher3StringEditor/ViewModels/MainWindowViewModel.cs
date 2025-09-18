@@ -130,6 +130,15 @@ internal partial class MainWindowViewModel : ObservableObject
                         .First(x => x.TrackingId == item.TrackingId);
                     found.Text = item.Text;
                 });
+
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this, "ItemsAdded",
+                (_, m) => { HandleItemsAdded(m.Value); });
+    }
+
+    private void HandleItemsAdded(IList<W3StringItemModel> addedItems)
+    {
+        if (searchResults != null) addedItems.ForEach(x => searchResults.Add(x));
     }
 
     private static void ApplyTranslatorChange(IAppSettings appSettings)

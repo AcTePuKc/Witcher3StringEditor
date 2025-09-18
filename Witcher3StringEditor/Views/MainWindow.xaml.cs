@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Specialized;
+using System.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -26,6 +27,18 @@ public partial class MainWindow
         RegisterMessageHandlers();
         RegisterThemeChangedHandler();
         DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+        SfDataGrid.ItemsSourceChanged += (_, _) =>
+        {
+            SfDataGrid.View.CollectionChanged+= (s,e) =>
+            {
+                if (e.Action != NotifyCollectionChangedAction.Add) return;
+                var items = e.NewItems?.Cast<W3StringItemModel>().ToList();
+                if (items != null && items.Count != 0)
+                {
+                    WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(items), "ItemsAdded");
+                }
+            };
+        };
     }
 
     private static void RegisterThemeChangedHandler()
