@@ -57,10 +57,7 @@ public partial class MainWindow
             (_, _) =>
             {
                 SfDataGrid.View.Refresh();
-                var searchResults = SfDataGrid.View.Records
-                    .Select(x => x.Data).Cast<W3StringItemModel>();
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IEnumerable<W3StringItemModel>?>(searchResults),
-                    "SearchResultsUpdated");
+                UpdateSearchResults();
             });
     }
 
@@ -110,11 +107,16 @@ public partial class MainWindow
     {
         if (SfDataGrid.ItemsSource == null) return;
         SfDataGrid.SearchHelper.Search(args.QueryText);
+        UpdateSearchResults();
+        Log.Information("Search query submitted: {QueryText}", args.QueryText);
+    }
+
+    private void UpdateSearchResults()
+    {
         var searchResults = SfDataGrid.View.Records
             .Select(x => x.Data).Cast<W3StringItemModel>();
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IEnumerable<W3StringItemModel>?>(searchResults),
             "SearchResultsUpdated");
-        Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
