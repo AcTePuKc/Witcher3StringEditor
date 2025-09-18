@@ -45,7 +45,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
-    private IEnumerable<W3StringItemModel>? searchResults;
+    private IList<W3StringItemModel>? searchResults;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCommand))]
@@ -117,7 +117,7 @@ internal partial class MainWindowViewModel : ObservableObject
             "RecentFileOpened",
             async void (_, m) => { await OpenFile(m.Request); });
         WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<IEnumerable<W3StringItemModel>?>,
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>,
                 string>(this, "SearchResultsUpdated", (_, m) => { searchResults = m.Value; });
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
@@ -333,10 +333,10 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Delete(IEnumerable<object> selectedItems)
     {
         var w3Items = selectedItems.Cast<ITrackableW3StringItem>().ToArray();
-        if (w3Items.Length > 0 &&
-            await dialogService.ShowDialogAsync(this,
-                new DeleteDataDialogViewModel(w3Items)) == true)
+        if (w3Items.Length > 0 && await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
+        {
             w3Items.ForEach(item => W3StringItems!.Remove(item.Cast<W3StringItemModel>()));
+        }
     }
 
     [RelayCommand]

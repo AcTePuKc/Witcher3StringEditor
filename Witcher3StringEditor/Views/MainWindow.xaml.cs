@@ -108,7 +108,7 @@ public partial class MainWindow
         SfDataGrid.SearchHelper.Search(args.QueryText);
         var searchResults = SfDataGrid.View.Records
             .Select(x => x.Data).Cast<W3StringItemModel>().ToList();
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IEnumerable<W3StringItemModel>?>(searchResults),
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(searchResults),
             "SearchResultsUpdated");        
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
@@ -121,7 +121,7 @@ public partial class MainWindow
 
     private void ClearSearchResults()
     {
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IEnumerable<W3StringItemModel>?>(null),
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(null),
             "SearchResultsUpdated");
         SfDataGrid.SearchHelper.ClearSearch();
     }
