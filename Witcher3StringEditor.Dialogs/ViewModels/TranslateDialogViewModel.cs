@@ -120,7 +120,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 .First(x => x.TrackingId == item.Id).Clone();
             var clone = found.Cast<ITrackableW3StringItem>();
             clone.Text = item.TranslatedText;
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone), "TranslationSaved");
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
+                "TranslationSaved");
             Log.Information("Auto-saved unsaved changes.");
         }
     }
