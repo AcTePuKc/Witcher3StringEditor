@@ -122,7 +122,6 @@ internal partial class MainWindowViewModel : ObservableObject
                 {
                     var searchItems = m.Value;
                     SearchResults = searchItems != null ? m.Value.ToObservableCollection() : null;
-                    ShowTranslateDialogCommand.NotifyCanExecuteChanged();
                 });
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
