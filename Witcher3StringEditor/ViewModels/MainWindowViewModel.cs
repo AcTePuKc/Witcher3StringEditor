@@ -121,6 +121,13 @@ internal partial class MainWindowViewModel : ObservableObject
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
                 "ItemsAdded", (_, m) => { HandleItemsAdded(m.Value); });
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
+                "ItemsRemoved", (_, m) =>
+                {
+                    var removedItems = m.Value;
+                    removedItems.ForEach(x => searchResults?.Remove(x));
+                });
     }
 
     private void RegisterTranslationMessageHandlers()
@@ -203,7 +210,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
         Log.Information("Current Language: {Language}", appSettings.Language);
     }
-    
+
     private static async Task CheckSettings(IAppSettings settings)
     {
         Log.Information("Checking whether the settings are correct.");

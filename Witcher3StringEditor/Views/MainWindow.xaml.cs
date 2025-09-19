@@ -38,11 +38,25 @@ public partial class MainWindow
 
     private static void OnDataGridViewCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.Action != NotifyCollectionChangedAction.Add) return;
-        if (e.NewItems == null) return;
-        var items = e.NewItems.OfType<RecordEntry>()
-            .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(items), "ItemsAdded");
+        switch (e)
+        {
+            case { Action: NotifyCollectionChangedAction.Add, NewItems: not null }:
+            {
+                var addedItems = e.NewItems.OfType<RecordEntry>()
+                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(addedItems),
+                    "ItemsAdded");
+                break;
+            }
+            case { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }:
+            {
+                var removedItems = e.OldItems.OfType<RecordEntry>()
+                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(removedItems),
+                    "ItemsRemoved");
+                break;
+            }
+        }
     }
 
     private static void RegisterThemeChangedHandler()
