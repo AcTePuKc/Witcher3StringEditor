@@ -189,41 +189,21 @@ internal partial class MainWindowViewModel : ObservableObject
     private void LogApplicationStartupInfo()
     {
         Log.Information("Application started.");
-        LogApplicationVersionInfo();
-        LogSystemInfo();
-        LogApplicationDirectories();
-        LogLanguageInfo();
-    }
-
-    private static void LogApplicationVersionInfo()
-    {
         Log.Information("Application Version: {Version}", ThisAssembly.AssemblyFileVersion);
-    }
-
-    private static void LogSystemInfo()
-    {
         Log.Information("OS Version: {Version}",
             $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
         Log.Information(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription);
         Log.Information("Is Debug: {IsDebug}", IsDebug);
-    }
-
-    private static void LogApplicationDirectories()
-    {
         Log.Information("Current Directory: {Directory}", Environment.CurrentDirectory);
         Log.Information("AppData Folder: {Folder}",
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor"));
-    }
-
-    private void LogLanguageInfo()
-    {
         Log.Information("Installed Language Packs: {Languages}",
             string.Join(", ",
                 serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
         Log.Information("Current Language: {Language}", appSettings.Language);
     }
-
+    
     private static async Task CheckSettings(IAppSettings settings)
     {
         Log.Information("Checking whether the settings are correct.");
