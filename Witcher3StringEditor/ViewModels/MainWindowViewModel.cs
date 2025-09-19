@@ -315,7 +315,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var items = await serializer.Deserialize(fileName);
         var orderedItems = items.OrderBy(x => x.StrId);
         var modelItems = orderedItems.Select(x => new W3StringItemModel(x)).ToList();
-        W3StringItems = new ObservableCollection<W3StringItemModel>(modelItems);
+        W3StringItems = modelItems.ToObservableCollection();
         Guard.IsGreaterThan(W3StringItems.Count, 0);
     }
 
