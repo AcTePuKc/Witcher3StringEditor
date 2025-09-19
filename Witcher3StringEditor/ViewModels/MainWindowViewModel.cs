@@ -46,7 +46,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
-    private IList<W3StringItemModel>? searchResults;
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
+    private ObservableCollection<W3StringItemModel>? searchResults;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCommand))]
@@ -62,8 +63,8 @@ internal partial class MainWindowViewModel : ObservableObject
         appSettings = serviceProvider.GetRequiredService<IAppSettings>();
         backupService = serviceProvider.GetRequiredService<IBackupService>();
         dialogService = serviceProvider.GetRequiredService<IDialogService>();
-        RegisterMessengerHandlers();
         RegisterAppSettingsPropertyChangedEventHandlers();
+        RegisterMessengerHandlers();
     }
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
@@ -117,16 +118,30 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>, string>(this,
-                "SearchResultsUpdated", (_, m) => { searchResults = m.Value; });
+                "SearchResultsUpdated", (_, m) =>
+                {
+                    var searchItems = m.Value;
+                    SearchResults = searchItems != null ? m.Value.ToObservableCollection() : null;
+                    ShowTranslateDialogCommand.NotifyCanExecuteChanged();
+                });
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
-                "ItemsAdded", (_, m) => { HandleItemsAdded(m.Value); });
+                "ItemsAdded", (_, m) =>
+                {
+                    if (SearchResults == null) return;
+                    var addedItems = m.Value;
+                    if (!addedItems.Any()) return;
+                    addedItems.ForEach(SearchResults.Add);
+                    ShowTranslateDialogCommand.NotifyCanExecuteChanged();
+                });
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
                 "ItemsRemoved", (_, m) =>
                 {
                     var removedItems = m.Value;
-                    removedItems.ForEach(x => searchResults?.Remove(x));
+                    if(!removedItems.Any()) return;
+                    removedItems.ForEach(x => SearchResults?.Remove(x));
+                    ShowTranslateDialogCommand.NotifyCanExecuteChanged();
                 });
     }
 
@@ -160,11 +175,6 @@ internal partial class MainWindowViewModel : ObservableObject
             // ReSharper disable once AsyncVoidMethod
             this,
             async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
-    }
-
-    private void HandleItemsAdded(IList<W3StringItemModel> addedItems)
-    {
-        if (searchResults != null) addedItems.ForEach(x => searchResults.Add(x));
     }
 
     private static void ApplyTranslatorChange(IAppSettings appSettings)
@@ -378,7 +388,7 @@ internal partial class MainWindowViewModel : ObservableObject
             {
                 var stringItem = item.Cast<W3StringItemModel>();
                 W3StringItems!.Remove(stringItem);
-                searchResults?.Remove(stringItem);
+                SearchResults?.Remove(stringItem);
             });
     }
 
@@ -462,10 +472,20 @@ internal partial class MainWindowViewModel : ObservableObject
             new RecentDialogViewModel(appSettings));
     }
 
-    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
+    private bool CanShowTranslateDialog()
+    {
+        bool result;
+        if (SearchResults != null)
+            result = SearchResults.Any();
+        else
+            result = W3StringItems?.Any() == true;
+        return result;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
-        var items = searchResults ?? W3StringItems!;
+        var items = SearchResults ?? W3StringItems!;
         var itemsList = items.OfType<ITrackableW3StringItem>().ToList();
         var selectedIndex = selectedItem != null ? itemsList.IndexOf(selectedItem) : 0;
         var translator = serviceProvider.GetServices<ITranslator>()
@@ -473,7 +493,7 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose();
-        if (searchResults != null)
+        if (SearchResults != null)
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "RefreshDataGrid");
     }
 }
