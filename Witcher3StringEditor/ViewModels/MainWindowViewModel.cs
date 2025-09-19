@@ -10,7 +10,6 @@ using cmdwtf;
 using CommandLine;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -38,6 +37,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
     private readonly IDialogService dialogService;
+    private readonly IServiceProvider serviceProvider;
 
     [ObservableProperty] private string[]? dropFileData;
 
@@ -56,13 +56,12 @@ internal partial class MainWindowViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
     private ObservableCollection<W3StringItemModel>? w3StringItems;
 
-    public MainWindowViewModel(IAppSettings appSettings,
-        IBackupService backupService,
-        IDialogService dialogService)
+    public MainWindowViewModel(IServiceProvider serviceProvider)
     {
-        this.appSettings = appSettings;
-        this.backupService = backupService;
-        this.dialogService = dialogService;
+        this.serviceProvider = serviceProvider;
+        appSettings = serviceProvider.GetRequiredService<IAppSettings>();
+        backupService = serviceProvider.GetRequiredService<IBackupService>();
+        dialogService = serviceProvider.GetRequiredService<IDialogService>();
         RegisterMessengerHandlers();
         SetupAppSettingsEventHandlers();
     }
@@ -117,11 +116,11 @@ internal partial class MainWindowViewModel : ObservableObject
     private void RegisterSearchHandlers()
     {
         WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>,
-                string>(this, "SearchResultsUpdated", (_, m) => { searchResults = m.Value; });
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>, string>(this,
+                "SearchResultsUpdated", (_, m) => { searchResults = m.Value; });
         WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this, "ItemsAdded",
-                (_, m) => { HandleItemsAdded(m.Value); });
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
+                "ItemsAdded", (_, m) => { HandleItemsAdded(m.Value); });
     }
 
     private void RegisterTranslationHandlers()
@@ -184,7 +183,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         LogApplicationStartupInfo();
         await CheckSettings(appSettings);
-        IsUpdateAvailable = await Ioc.Default.GetRequiredService<ICheckUpdateService>().CheckUpdate();
+        IsUpdateAvailable = await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate();
     }
 
     private void LogApplicationStartupInfo()
@@ -221,7 +220,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         Log.Information("Installed Language Packs: {Languages}",
             string.Join(", ",
-                Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
+                serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
         Log.Information("Current Language: {Language}", appSettings.Language);
     }
 
@@ -316,7 +315,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private async Task LoadW3StringItems(string fileName)
     {
-        var serializer = Ioc.Default.GetRequiredService<IW3Serializer>();
+        var serializer = serviceProvider.GetRequiredService<IW3Serializer>();
         var items = await serializer.Deserialize(fileName);
         var orderedItems = items.OrderBy(x => x.StrId);
         var modelItems = orderedItems.Select(x => new W3StringItemModel(x)).ToList();
@@ -408,7 +407,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         await dialogService.ShowDialogAsync(this,
             new SaveDialogViewModel(appSettings,
-                Ioc.Default.GetRequiredService<IW3Serializer>(),
+                serviceProvider.GetRequiredService<IW3Serializer>(),
                 W3StringItems!,
                 OutputFolder));
     }
@@ -423,18 +422,18 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
-        var translators = Ioc.Default.GetServices<ITranslator>().ToArray();
+        var translators = serviceProvider.GetServices<ITranslator>().ToArray();
         var names = translators.Select(x => x.Name);
         translators.ForEach(x => x.Cast<IDisposable>().Dispose());
         await dialogService.ShowDialogAsync(this,
             new SettingDialogViewModel(appSettings, dialogService, names,
-                Ioc.Default.GetRequiredService<ICultureResolver>().SupportedCultures));
+                serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures));
     }
 
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
-        await Ioc.Default.GetRequiredService<IPlayGameService>().PlayGame();
+        await serviceProvider.GetRequiredService<IPlayGameService>().PlayGame();
     }
 
     [RelayCommand]
@@ -457,14 +456,14 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
-        Ioc.Default.GetRequiredService<IExplorerService>().Open(OutputFolder);
+        serviceProvider.GetRequiredService<IExplorerService>().Open(OutputFolder);
         Log.Information("Working folder opened.");
     }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
-        Ioc.Default.GetRequiredService<IExplorerService>()
+        serviceProvider.GetRequiredService<IExplorerService>()
             .Open(appSettings.NexusModUrl);
         Log.Information("NexusMods opened.");
     }
@@ -482,7 +481,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var items = searchResults ?? W3StringItems!;
         var itemsList = items.OfType<ITrackableW3StringItem>().ToList();
         var selectedIndex = selectedItem != null ? itemsList.IndexOf(selectedItem) : 0;
-        var translator = Ioc.Default.GetServices<ITranslator>()
+        var translator = serviceProvider.GetServices<ITranslator>()
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
