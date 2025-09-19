@@ -63,7 +63,7 @@ internal partial class MainWindowViewModel : ObservableObject
         backupService = serviceProvider.GetRequiredService<IBackupService>();
         dialogService = serviceProvider.GetRequiredService<IDialogService>();
         RegisterMessengerHandlers();
-        SetupAppSettingsEventHandlers();
+        RegisterAppSettingsPropertyChangedEventHandlers();
     }
 
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
@@ -81,7 +81,7 @@ internal partial class MainWindowViewModel : ObservableObject
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
 
-    private void SetupAppSettingsEventHandlers()
+    private void RegisterAppSettingsPropertyChangedEventHandlers()
     {
         if (appSettings is INotifyPropertyChanged notifyPropertyChanged)
             notifyPropertyChanged.PropertyChanged += (_, e) =>
@@ -107,13 +107,13 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private void RegisterMessengerHandlers()
     {
-        RegisterLogHandlers();
-        RegisterFileHandlers();
-        RegisterSearchHandlers();
-        RegisterTranslationHandlers();
+        RegisterLogMessageHandlers();
+        RegisterFileMessageHandlers();
+        RegisterSearchMessageHandlers();
+        RegisterTranslationMessageHandlers();
     }
 
-    private void RegisterSearchHandlers()
+    private void RegisterSearchMessageHandlers()
     {
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>, string>(this,
@@ -123,7 +123,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 "ItemsAdded", (_, m) => { HandleItemsAdded(m.Value); });
     }
 
-    private void RegisterTranslationHandlers()
+    private void RegisterTranslationMessageHandlers()
     {
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
@@ -138,7 +138,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 });
     }
 
-    private void RegisterFileHandlers()
+    private void RegisterFileMessageHandlers()
     {
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
             // ReSharper disable once AsyncVoidMethod
@@ -147,7 +147,7 @@ internal partial class MainWindowViewModel : ObservableObject
             async void (_, m) => { await OpenFile(m.Request); });
     }
 
-    private void RegisterLogHandlers()
+    private void RegisterLogMessageHandlers()
     {
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
             // ReSharper disable once AsyncVoidMethod
