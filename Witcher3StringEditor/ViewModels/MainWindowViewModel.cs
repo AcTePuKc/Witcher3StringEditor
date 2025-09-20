@@ -58,7 +58,7 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IServiceProvider serviceProvider)
     {
         this.serviceProvider = serviceProvider;
-        serviceProvider.GetRequiredService<ISettingsManagerService>();
+        serviceProvider.GetRequiredService<SettingsManagerService>();
         appSettings = serviceProvider.GetRequiredService<IAppSettings>();
         backupService = serviceProvider.GetRequiredService<IBackupService>();
         dialogService = serviceProvider.GetRequiredService<IDialogService>();

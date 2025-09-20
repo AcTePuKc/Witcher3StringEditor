@@ -8,7 +8,7 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class SettingsManagerService : ISettingsManagerService
+internal class SettingsManagerService
 {
     private readonly IAppSettings appSettings;
 
