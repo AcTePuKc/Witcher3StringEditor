@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Constants;
 
 namespace Witcher3StringEditor.Services;
 
@@ -26,7 +27,7 @@ internal class SettingsManagerService : ISettingsManagerService
         if (string.IsNullOrWhiteSpace(appSettings.W3StringsPath))
         {
             Log.Error("Settings are incorrect or initial setup is incomplete.");
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.FirstRun);
         }
         else
         {
@@ -47,10 +48,12 @@ internal class SettingsManagerService : ISettingsManagerService
         switch (e.PropertyName)
         {
             case nameof(IAppSettings.W3StringsPath):
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "W3StringsPathChanged");
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+                    MessageTokens.W3StringsPathChanged);
                 break;
             case nameof(IAppSettings.GameExePath):
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "GameExePathChanged");
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+                    MessageTokens.GameExePathChanged);
                 break;
             case nameof(IAppSettings.Translator):
                 ApplyTranslatorChange(appSettings);

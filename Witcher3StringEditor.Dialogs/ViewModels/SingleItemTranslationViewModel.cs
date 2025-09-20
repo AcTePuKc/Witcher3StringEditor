@@ -10,6 +10,7 @@ using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -68,7 +69,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
 
     partial void OnIsBusyChanged(bool value)
     {
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(value), "TranslatorIsBusy");
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(value), MessageTokens.TranslatorIsBusy);
     }
 
     [RelayCommand]
@@ -99,7 +100,8 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             }
             else
             {
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationNotEmpty");
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    MessageTokens.TranslationNotEmpty);
             }
         }
         catch (Exception ex)
@@ -137,7 +139,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 SaveTranslation();
             else
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
-                    "TranslatedTextInvalid");
+                    MessageTokens.TranslatedTextInvalid);
         }
         catch (Exception ex)
         {
@@ -152,7 +154,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             if (CurrentTranslateItemModel is { IsSaved: false }
                 && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
                 && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                    "TranslatedTextNoSaved"))
+                    MessageTokens.TranslatedTextNoSaved))
                 SaveTranslation();
             CurrentItemIndex += direction;
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
@@ -172,7 +174,8 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             .First(x => x.TrackingId == CurrentTranslateItemModel?.Id).Clone();
         var clone = found.Cast<ITrackableW3StringItem>();
         clone.Text = CurrentTranslateItemModel.TranslatedText;
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone), "TranslationSaved");
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
+            MessageTokens.TranslationSaved);
         CurrentTranslateItemModel.IsSaved = true;
     }
 

@@ -20,6 +20,7 @@ using Serilog;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
@@ -34,8 +35,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
     private readonly IDialogService dialogService;
-    private readonly IServiceProvider serviceProvider;
     private readonly IFileManagerService fileManagerService;
+    private readonly IServiceProvider serviceProvider;
     private readonly ISettingsManagerService settingsManagerService;
 
     [ObservableProperty] private string[]? dropFileData;
@@ -81,15 +82,15 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
-    
+
     private void RegisterSettingsMessageHandlers()
     {
         WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "W3StringsPathChanged", 
+            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "W3StringsPathChanged",
                 (_, _) => OpenFileCommand.NotifyCanExecuteChanged());
 
         WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "GameExePathChanged", 
+            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "GameExePathChanged",
                 (_, _) => PlayGameCommand.NotifyCanExecuteChanged());
     }
 
@@ -136,7 +137,7 @@ internal partial class MainWindowViewModel : ObservableObject
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
                 this,
-                "TranslationSaved",
+                MessageTokens.TranslationSaved,
                 (_, m) =>
                 {
                     var item = m.Value;
@@ -151,7 +152,7 @@ internal partial class MainWindowViewModel : ObservableObject
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
             // ReSharper disable once AsyncVoidMethod
             this,
-            "RecentFileOpened",
+            MessageTokens.RecentFileOpened,
             async void (_, m) => { await OpenFile(m.Request); });
     }
 
@@ -193,7 +194,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowClosing(CancelEventArgs e)
     {
         if (W3StringItems?.Any() == true &&
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "MainWindowClosing"))
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.MainWindowClosing))
             e.Cancel = true;
     }
 
@@ -250,8 +251,8 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         if (W3StringItems?.Any() != true) return true;
         if (!await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(fileName),
-                "ReOpenFile")) return false;
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "ClearSearch");
+                MessageTokens.ReOpenFile)) return false;
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.ClearSearch);
         return true;
     }
 
@@ -406,6 +407,6 @@ internal partial class MainWindowViewModel : ObservableObject
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose();
         if (SearchResults != null)
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "RefreshDataGrid");
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
     }
 }

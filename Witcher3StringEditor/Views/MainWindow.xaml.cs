@@ -8,6 +8,7 @@ using iNKORE.UI.WPF.Modern.Controls;
 using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Serilog;
 using Syncfusion.Data;
+using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
@@ -45,7 +46,7 @@ public partial class MainWindow
                 var addedItems = e.NewItems.OfType<RecordEntry>()
                     .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(addedItems),
-                    "ItemsAdded");
+                    MessageTokens.ItemsAdded);
                 break;
             }
             case { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }:
@@ -53,7 +54,7 @@ public partial class MainWindow
                 var removedItems = e.OldItems.OfType<RecordEntry>()
                     .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(removedItems),
-                    "ItemsRemoved");
+                    MessageTokens.ItemsRemoved);
                 break;
             }
         }
@@ -82,9 +83,9 @@ public partial class MainWindow
 
     private void RegisterSearchHandler()
     {
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "ClearSearch",
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.ClearSearch,
             (_, _) => { SearchBox.Text = string.Empty; });
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, "RefreshDataGrid",
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.RefreshDataGrid,
             (_, _) => { SfDataGrid.View.Refresh(); });
     }
 
@@ -92,9 +93,10 @@ public partial class MainWindow
     {
         var requestMessageHandlers = new (string, Func<string>, Func<string>, MessageBoxButton, MessageBoxResult)[]
         {
-            ("MainWindowClosing", () => Strings.AppExitMessage, () => Strings.AppExitCaption, MessageBoxButton.YesNo,
+            (MessageTokens.MainWindowClosing, () => Strings.AppExitMessage, () => Strings.AppExitCaption,
+                MessageBoxButton.YesNo,
                 MessageBoxResult.No),
-            ("FirstRun", () => Strings.FristRunMessage, () => Strings.FristRunCaption, MessageBoxButton.OK,
+            (MessageTokens.FirstRun, () => Strings.FristRunMessage, () => Strings.FristRunCaption, MessageBoxButton.OK,
                 MessageBoxResult.OK)
         };
 
@@ -115,8 +117,9 @@ public partial class MainWindow
     {
         var messageHandlers = new (string, Func<string>, Func<string>)[]
         {
-            ("ReOpenFile", () => Strings.ReOpenFileMessage, () => Strings.ReOpenFileCaption),
-            ("OpenedFileNoFound", () => Strings.FileOpenedNoFoundMessage, () => Strings.FileOpenedNoFoundCaption)
+            (MessageTokens.ReOpenFile, () => Strings.ReOpenFileMessage, () => Strings.ReOpenFileCaption),
+            (MessageTokens.OpenedFileNoFound, () => Strings.FileOpenedNoFoundMessage,
+                () => Strings.FileOpenedNoFoundCaption)
         };
 
         foreach (var (token, message, caption) in messageHandlers)
@@ -137,20 +140,15 @@ public partial class MainWindow
         var searchResults = SfDataGrid.View.Records
             .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(searchResults),
-            "SearchResultsUpdated");
+            MessageTokens.SearchResultsUpdated);
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
 
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         if (!string.IsNullOrEmpty(sender.Text)) return;
-        ClearSearchResults();
-    }
-
-    private void ClearSearchResults()
-    {
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(null),
-            "SearchResultsUpdated");
+            MessageTokens.SearchResultsUpdated);
         SfDataGrid.SearchHelper.ClearSearch();
     }
 

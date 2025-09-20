@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Dialogs.Messaging;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -48,7 +49,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     {
         RequestClose?.Invoke(this, EventArgs.Empty);
         WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(recentItem.FilePath),
-            "RecentFileOpened");
+            MessageTokens.RecentFileOpened);
     }
 
     private async Task HandleMissingFile(IRecentItem recentItem)
@@ -69,7 +70,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     private static async Task<bool> NotifyFileNotFound(string filePath)
     {
         return await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(filePath),
-            "OpenedFileNoFound");
+            MessageTokens.OpenedFileNoFound);
     }
 
     private static void LogMissingFile(string filePath)

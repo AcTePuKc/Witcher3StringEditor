@@ -8,6 +8,7 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -47,7 +48,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         try
         {
             if (!CurrentViewModel.GetIsBusy() ||
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationModeSwitch"))
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    MessageTokens.TranslationModeSwitch))
             {
                 await CleanupCurrentViewModelAsync();
                 await DisposeCurrentViewModelAsync();
@@ -114,14 +116,15 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         if (translateViewModel?.CurrentTranslateItemModel is { IsSaved: false } item
             && !string.IsNullOrWhiteSpace(item.TranslatedText)
-            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslatedTextNoSaved"))
+            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                MessageTokens.TranslatedTextNoSaved))
         {
             var found = w3StringItems
                 .First(x => x.TrackingId == item.Id).Clone();
             var clone = found.Cast<ITrackableW3StringItem>();
             clone.Text = item.TranslatedText;
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
-                "TranslationSaved");
+                MessageTokens.TranslationSaved);
             Log.Information("Auto-saved unsaved changes.");
         }
     }
@@ -129,7 +132,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     private async Task<bool> HandleClosingAsync()
     {
         if (!CurrentViewModel.GetIsBusy() ||
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "TranslationDialogClosing"))
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                MessageTokens.TranslationDialogClosing))
         {
             await CleanupCurrentViewModelAsync();
             return false;

@@ -8,6 +8,7 @@ using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Serializers;
 using Witcher3StringEditor.Serializers.Abstractions;
 
@@ -59,7 +60,7 @@ public partial class SaveDialogViewModel
             IgnoreIdSpaceCheck = IsIgnoreIdSpaceCheck
         });
         Log.Information("Sve result: {Result}.", saveResult);
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult), "Save");
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult), MessageTokens.Save);
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
@@ -49,13 +50,14 @@ public partial class TranslateDialog
     {
         return
         [
-            ("TranslatedTextNoSaved", () => Strings.TranslatedTextNoSavedMessage,
+            (MessageTokens.TranslatedTextNoSaved, () => Strings.TranslatedTextNoSavedMessage,
                 () => Strings.TranslatedTextNoSavedCaption),
-            ("TranslationDialogClosing", () => Strings.TranslatorTranslatingMessage,
+            (MessageTokens.TranslationDialogClosing, () => Strings.TranslatorTranslatingMessage,
                 () => Strings.TranslatorTranslatingCaption),
-            ("TranslationModeSwitch", () => Strings.TranslationModeSwitchMessage,
+            (MessageTokens.TranslationModeSwitch, () => Strings.TranslationModeSwitchMessage,
                 () => Strings.TranslationModeSwitchCaption),
-            ("TranslationNotEmpty", () => Strings.TranslationNotEmptyMessage, () => Strings.TranslationNotEmptyCaption)
+            (MessageTokens.TranslationNotEmpty, () => Strings.TranslationNotEmptyMessage,
+                () => Strings.TranslationNotEmptyCaption)
         ];
     }
 
@@ -85,9 +87,9 @@ public partial class TranslateDialog
     {
         return
         [
-            ("TranslatedTextInvalid", _ => Strings.TranslatedTextInvalidMessage,
+            (MessageTokens.TranslatedTextInvalid, _ => Strings.TranslatedTextInvalidMessage,
                 () => Strings.TranslatedTextInvalidCaption),
-            ("TranslateError", m => m.Value, () => Strings.TranslateErrorCaption)
+            (MessageTokens.TranslateError, m => m.Value, () => Strings.TranslateErrorCaption)
         ];
     }
 

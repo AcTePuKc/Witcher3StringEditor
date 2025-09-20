@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using Serilog;
+using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
@@ -23,7 +24,7 @@ public partial class RecentDialog
     private void RegisterMessageHandler()
     {
         WeakReferenceMessenger.Default.Register<RecentDialog, AsyncRequestMessage<bool>, string>(
-            this, "RecentItem", (_, m) =>
+            this, MessageTokens.RecentItem, (_, m) =>
             {
                 m.Reply(MessageBox.Show(Strings.RecordDeletingMessgae,
                     Strings.RecordDeletingCaption,

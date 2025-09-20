@@ -8,6 +8,7 @@ using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Constants;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -135,7 +136,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
                 var clone = item.Clone().Cast<ITrackableW3StringItem>();
                 clone.Text = translation.Value;
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
-                    "TranslationSaved");
+                    MessageTokens.TranslationSaved);
                 SuccessCount++;
             }
             else

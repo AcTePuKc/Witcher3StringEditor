@@ -11,7 +11,7 @@ namespace Witcher3StringEditor.Services;
 internal class FileManagerService(IAppSettings appSettings, IW3Serializer w3Serializer) : IFileManagerService
 {
     public async Task<ObservableCollection<W3StringItemModel>> DeserializeW3StringItems(string fileName)
-    { 
+    {
         Log.Information("The file {FileName} is being opened...", fileName);
         var items = await w3Serializer.Deserialize(fileName);
         var orderedItems = items.OrderBy(x => x.StrId);

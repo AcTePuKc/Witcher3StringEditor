@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using CommunityToolkit.Diagnostics;
 using Serilog;
-using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
