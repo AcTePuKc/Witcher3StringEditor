@@ -1,10 +1,8 @@
 using Serilog;
-using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
 internal class NavigationService(
-    IAppSettings appSettings,
     IExplorerService explorerService,
     IPlayGameService playGameService):INavigationService
 {
