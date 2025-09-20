@@ -290,7 +290,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             if (!await HandleReOpenFile(fileName)) return;
             Log.Information("The file {FileName} is being opened...", fileName);
-            await LoadW3StringItems(fileName);
+            await DeserializeW3StringItems(fileName);
             SetOutputFolder(fileName);
             UpdateRecentItems(fileName);
         }
@@ -309,7 +309,7 @@ internal partial class MainWindowViewModel : ObservableObject
         return true;
     }
 
-    private async Task LoadW3StringItems(string fileName)
+    private async Task DeserializeW3StringItems(string fileName)
     {
         var serializer = serviceProvider.GetRequiredService<IW3Serializer>();
         var items = await serializer.Deserialize(fileName);
