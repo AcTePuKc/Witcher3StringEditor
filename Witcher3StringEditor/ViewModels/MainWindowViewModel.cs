@@ -65,7 +65,6 @@ internal partial class MainWindowViewModel : ObservableObject
         dialogService = serviceProvider.GetRequiredService<IDialogService>();
         fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>();
         settingsManagerService = serviceProvider.GetRequiredService<ISettingsManagerService>();
-        RegisterSettingsMessageHandlers();
         RegisterMessengerHandlers();
     }
 
@@ -99,6 +98,7 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterLogMessageHandlers();
         RegisterFileMessageHandlers();
         RegisterSearchMessageHandlers();
+        RegisterSettingsMessageHandlers();
         RegisterTranslationMessageHandlers();
     }
 
