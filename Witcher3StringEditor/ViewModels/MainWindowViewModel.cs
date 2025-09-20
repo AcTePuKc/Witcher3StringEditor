@@ -37,7 +37,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IDialogService dialogService;
     private readonly IFileManagerService fileManagerService;
     private readonly IServiceProvider serviceProvider;
-    private readonly IExternalSystemManagerService externalSystemManagerService;
+    private readonly INavigationService navigationService;
 
     [ObservableProperty] private string[]? dropFileData;
 
@@ -64,7 +64,7 @@ internal partial class MainWindowViewModel : ObservableObject
         backupService = serviceProvider.GetRequiredService<IBackupService>();
         dialogService = serviceProvider.GetRequiredService<IDialogService>();
         fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>();
-        externalSystemManagerService = serviceProvider.GetRequiredService<IExternalSystemManagerService>();
+        navigationService = serviceProvider.GetRequiredService<INavigationService>();
         RegisterAppSettingsPropertyChangedEventHandlers();
         RegisterMessengerHandlers();
     }
@@ -397,7 +397,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
-        await externalSystemManagerService.PlayGame();
+        await navigationService.PlayGame();
     }
 
     [RelayCommand]
@@ -420,13 +420,13 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
-        externalSystemManagerService.OpenWorkingFolder(OutputFolder);
+        navigationService.NavigateToDirectory(OutputFolder);
     }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
-        externalSystemManagerService.OpenNexusMods();
+        navigationService.NavigateToUrl(appSettings.NexusModUrl);
     }
 
     [RelayCommand]
