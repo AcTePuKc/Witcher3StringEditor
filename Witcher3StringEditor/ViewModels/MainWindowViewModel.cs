@@ -37,7 +37,6 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IDialogService dialogService;
     private readonly IFileManagerService fileManagerService;
     private readonly IServiceProvider serviceProvider;
-    private readonly IExternalSystemManagerService externalSystemManagerService;
 
     [ObservableProperty] private string[]? dropFileData;
 
@@ -64,7 +63,6 @@ internal partial class MainWindowViewModel : ObservableObject
         backupService = serviceProvider.GetRequiredService<IBackupService>();
         dialogService = serviceProvider.GetRequiredService<IDialogService>();
         fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>();
-        externalSystemManagerService = serviceProvider.GetRequiredService<IExternalSystemManagerService>();
         RegisterAppSettingsPropertyChangedEventHandlers();
         RegisterMessengerHandlers();
     }
@@ -397,7 +395,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
-        await externalSystemManagerService.PlayGame();
+        await serviceProvider.GetRequiredService<IPlayGameService>().PlayGame();
     }
 
     [RelayCommand]
@@ -420,13 +418,16 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
-        externalSystemManagerService.OpenWorkingFolder(OutputFolder);
+        serviceProvider.GetRequiredService<IExplorerService>().Open(OutputFolder);
+        Log.Information("Working folder opened.");
     }
 
     [RelayCommand]
     private void OpenNexusMods()
     {
-        externalSystemManagerService.OpenNexusMods();
+        serviceProvider.GetRequiredService<IExplorerService>()
+            .Open(appSettings.NexusModUrl);
+        Log.Information("NexusMods opened.");
     }
 
     [RelayCommand]
