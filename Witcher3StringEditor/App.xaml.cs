@@ -180,6 +180,10 @@ public sealed partial class App : IDisposable
     private static void InitializeServices(string configPath)
     {
         Ioc.Default.ConfigureServices(new ServiceCollection()
+            .AddSingleton<CsvW3Serializer>()
+            .AddSingleton<ExcelW3Serializer>()
+            .AddSingleton<W3StringsSerializer>()
+            .AddSingleton<SettingsManagerService>()
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
             .AddSingleton<IAppSettings, AppSettings>(_ =>
@@ -189,11 +193,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<IConfigService, ConfigService>(_ => new ConfigService(configPath))
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()
-            .AddSingleton<ICsvW3Serializer, CsvW3Serializer>()
-            .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
-            .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
-            .AddSingleton<SettingsManagerService>()
             .AddSingleton<IFileManagerService, FileManagerService>()
             .AddScoped<IExplorerService, ExplorerService>()
             .AddScoped<IPlayGameService, PlayGameService>()
