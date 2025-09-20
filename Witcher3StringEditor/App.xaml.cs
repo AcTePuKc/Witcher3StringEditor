@@ -194,7 +194,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
             .AddTransient<IFileManagerService,FileManagerService>()
-            .AddTransient<INavigationService, NavigationService>()
+            .AddTransient<IExternalSystemManagerService, ExternalSystemManagerService>()
             .AddScoped<IExplorerService, ExplorerService>()
             .AddScoped<IPlayGameService, PlayGameService>()
             .AddScoped<ICheckUpdateService, CheckUpdateService>()
