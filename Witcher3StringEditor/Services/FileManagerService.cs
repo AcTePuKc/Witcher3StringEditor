@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using System.IO;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
@@ -9,13 +8,12 @@ using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-internal class FileManagerService(IAppSettings appSettings, IServiceProvider serviceProvider) : IFileManagerService
+internal class FileManagerService(IAppSettings appSettings, IW3Serializer w3Serializer) : IFileManagerService
 {
     public async Task<ObservableCollection<W3StringItemModel>> DeserializeW3StringItems(string fileName)
     { 
         Log.Information("The file {FileName} is being opened...", fileName);
-        var serializer = serviceProvider.GetRequiredService<IW3Serializer>();
-        var items = await serializer.Deserialize(fileName);
+        var items = await w3Serializer.Deserialize(fileName);
         var orderedItems = items.OrderBy(x => x.StrId);
         return orderedItems.Select(x => new W3StringItemModel(x)).ToObservableCollection();
     }
