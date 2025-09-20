@@ -193,6 +193,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
             .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
+            .AddTransient<IFileManagerService,FileManagerService>()
             .AddScoped<IExplorerService, ExplorerService>()
             .AddScoped<IPlayGameService, PlayGameService>()
             .AddScoped<ICheckUpdateService, CheckUpdateService>()

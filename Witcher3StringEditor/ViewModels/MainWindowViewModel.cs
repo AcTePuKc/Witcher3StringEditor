@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using cmdwtf;
 using CommandLine;
-using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -25,7 +24,6 @@ using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Services;
 using W3StringItemModel = Witcher3StringEditor.Models.W3StringItemModel;
@@ -37,6 +35,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
     private readonly IDialogService dialogService;
+    private readonly IFileManagerService fileManagerService;
     private readonly IServiceProvider serviceProvider;
 
     [ObservableProperty] private string[]? dropFileData;
@@ -63,6 +62,7 @@ internal partial class MainWindowViewModel : ObservableObject
         appSettings = serviceProvider.GetRequiredService<IAppSettings>();
         backupService = serviceProvider.GetRequiredService<IBackupService>();
         dialogService = serviceProvider.GetRequiredService<IDialogService>();
+        fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>();
         RegisterAppSettingsPropertyChangedEventHandlers();
         RegisterMessengerHandlers();
     }
@@ -138,7 +138,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 "ItemsRemoved", (_, m) =>
                 {
                     var removedItems = m.Value;
-                    if(!removedItems.Any()) return;
+                    if (!removedItems.Any()) return;
                     removedItems.ForEach(x => SearchResults?.Remove(x));
                     ShowTranslateDialogCommand.NotifyCanExecuteChanged();
                 });
@@ -289,10 +289,9 @@ internal partial class MainWindowViewModel : ObservableObject
         try
         {
             if (!await HandleReOpenFile(fileName)) return;
-            Log.Information("The file {FileName} is being opened...", fileName);
-            await DeserializeW3StringItems(fileName);
-            SetOutputFolder(fileName);
-            UpdateRecentItems(fileName);
+            W3StringItems = await fileManagerService.DeserializeW3StringItems(fileName);
+            fileManagerService.SetOutputFolder(fileName, folder => OutputFolder = folder);
+            fileManagerService.UpdateRecentItems(fileName);
         }
         catch (Exception ex)
         {
@@ -307,38 +306,6 @@ internal partial class MainWindowViewModel : ObservableObject
                 "ReOpenFile")) return false;
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), "ClearSearch");
         return true;
-    }
-
-    private async Task DeserializeW3StringItems(string fileName)
-    {
-        var serializer = serviceProvider.GetRequiredService<IW3Serializer>();
-        var items = await serializer.Deserialize(fileName);
-        var orderedItems = items.OrderBy(x => x.StrId);
-        W3StringItems = orderedItems.Select(x => new W3StringItemModel(x)).ToObservableCollection();
-        Guard.IsGreaterThan(W3StringItems.Count, 0);
-    }
-
-    private void SetOutputFolder(string fileName)
-    {
-        var folder = Path.GetDirectoryName(fileName);
-        Guard.IsNotNull(folder);
-        OutputFolder = folder;
-        Log.Information("Working directory set to {Folder}.", folder);
-    }
-
-    private void UpdateRecentItems(string fileName)
-    {
-        var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
-        if (foundItem == null)
-        {
-            appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
-            Log.Information("Added {FileName} to recent items.", fileName);
-        }
-        else
-        {
-            foundItem.OpenedTime = DateTime.Now;
-            Log.Information("The last opened time for file {FileName} has been updated.", fileName);
-        }
     }
 
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
