@@ -3,13 +3,11 @@ using System.Globalization;
 using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using JetBrains.Annotations;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-[UsedImplicitly]
 internal class SettingsManagerService : ISettingsManagerService
 {
     private readonly IAppSettings appSettings;
