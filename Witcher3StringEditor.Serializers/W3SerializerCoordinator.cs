@@ -1,14 +1,13 @@
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Serializers.Abstractions;
-using Witcher3StringEditor.Serializers.Implementation;
 
 namespace Witcher3StringEditor.Serializers;
 
 public class W3SerializerCoordinator(
-    CsvW3Serializer csvW3Serializer,
-    ExcelW3Serializer excelW3Serializer,
-    W3StringsSerializer w3StringsSerializer) : IW3Serializer
+    ICsvW3Serializer csvW3Serializer,
+    IExcelW3Serializer excelW3Serializer,
+    IW3StringsSerializer w3StringsSerializer) : IW3Serializer
 {
     public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {

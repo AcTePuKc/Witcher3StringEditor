@@ -11,8 +11,8 @@ namespace Witcher3StringEditor.Serializers.Implementation;
 public class W3StringsSerializer(
     IAppSettings appSettings,
     IBackupService backupService,
-    CsvW3Serializer csvSerializer)
-    : IW3Serializer
+    ICsvW3Serializer csvSerializer)
+    : IW3StringsSerializer
 {
     public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {

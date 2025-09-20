@@ -9,7 +9,7 @@ using Witcher3StringEditor.Serializers.Internal;
 
 namespace Witcher3StringEditor.Serializers.Implementation;
 
-public class CsvW3Serializer(IBackupService backupService) : IW3Serializer
+public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
 {
     public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {

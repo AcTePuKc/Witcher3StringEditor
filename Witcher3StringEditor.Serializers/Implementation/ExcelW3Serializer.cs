@@ -7,7 +7,7 @@ using Witcher3StringEditor.Serializers.Internal;
 
 namespace Witcher3StringEditor.Serializers.Implementation;
 
-public class ExcelW3Serializer(IBackupService backupService) : IW3Serializer
+public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serializer
 {
     public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {
