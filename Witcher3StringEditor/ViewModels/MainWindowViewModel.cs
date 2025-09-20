@@ -81,8 +81,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
-
-
+    
     private void RegisterSettingsMessageHandlers()
     {
         WeakReferenceMessenger.Default
