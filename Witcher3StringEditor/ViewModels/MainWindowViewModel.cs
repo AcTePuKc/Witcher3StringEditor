@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -59,11 +58,12 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IServiceProvider serviceProvider)
     {
         this.serviceProvider = serviceProvider;
+        serviceProvider.GetRequiredService<ISettingsManagerService>();
         appSettings = serviceProvider.GetRequiredService<IAppSettings>();
         backupService = serviceProvider.GetRequiredService<IBackupService>();
         dialogService = serviceProvider.GetRequiredService<IDialogService>();
         fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>();
-        RegisterAppSettingsPropertyChangedEventHandlers();
+        RegisterSettingsMessageHandlers();
         RegisterMessengerHandlers();
     }
 
@@ -82,28 +82,15 @@ internal partial class MainWindowViewModel : ObservableObject
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
 
-    private void RegisterAppSettingsPropertyChangedEventHandlers()
+    private void RegisterSettingsMessageHandlers()
     {
-        if (appSettings is INotifyPropertyChanged notifyPropertyChanged)
-            notifyPropertyChanged.PropertyChanged += (_, e) =>
-            {
-                switch (e.PropertyName)
-                {
-                    case nameof(appSettings.W3StringsPath):
-                        OpenFileCommand.NotifyCanExecuteChanged();
-                        DropFileCommand.NotifyCanExecuteChanged();
-                        break;
-                    case nameof(appSettings.GameExePath):
-                        PlayGameCommand.NotifyCanExecuteChanged();
-                        break;
-                    case nameof(appSettings.Translator):
-                        ApplyTranslatorChange(appSettings);
-                        break;
-                    case nameof(appSettings.Language):
-                        ApplyLanguageChange(appSettings.Language);
-                        break;
-                }
-            };
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "W3StringsPathChanged", 
+                (_, _) => OpenFileCommand.NotifyCanExecuteChanged());
+
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "GameExePathChanged", 
+                (_, _) => PlayGameCommand.NotifyCanExecuteChanged());
     }
 
     private void RegisterMessengerHandlers()
@@ -174,24 +161,6 @@ internal partial class MainWindowViewModel : ObservableObject
             // ReSharper disable once AsyncVoidMethod
             this,
             async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
-    }
-
-    private static void ApplyTranslatorChange(IAppSettings appSettings)
-    {
-        Log.Information("Translator changed to {Translator}", appSettings.Translator);
-    }
-
-    private static void ApplyLanguageChange(string language)
-    {
-        try
-        {
-            I18NExtension.Culture = new CultureInfo(language);
-            Log.Information("Language changed to {Language}.", language);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to change language.");
-        }
     }
 
     [RelayCommand]
