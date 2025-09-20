@@ -9,7 +9,7 @@ using Witcher3StringEditor.Serializers.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
-public class FileManagerService(IAppSettings appSettings, IServiceProvider serviceProvider) : IFileManagerService
+internal class FileManagerService(IAppSettings appSettings, IServiceProvider serviceProvider) : IFileManagerService
 {
     public async Task<ObservableCollection<W3StringItemModel>> DeserializeW3StringItems(string fileName)
     { 
