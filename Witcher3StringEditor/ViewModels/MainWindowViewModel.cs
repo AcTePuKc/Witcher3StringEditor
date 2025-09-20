@@ -387,12 +387,9 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private bool CanShowTranslateDialog()
     {
-        bool result;
         if (SearchResults != null)
-            result = SearchResults.Any();
-        else
-            result = W3StringItems?.Any() == true;
-        return result;
+            return SearchResults.Any();
+        return W3StringItems?.Any() == true;
     }
 
     [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
