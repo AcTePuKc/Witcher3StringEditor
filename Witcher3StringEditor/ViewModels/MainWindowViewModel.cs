@@ -34,8 +34,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
     private readonly IDialogService dialogService;
-    private readonly IFileManagerService fileManagerService;
     private readonly IServiceProvider serviceProvider;
+    private readonly IFileManagerService fileManagerService;
+    private readonly ISettingsManagerService settingsManagerService;
 
     [ObservableProperty] private string[]? dropFileData;
 
@@ -58,11 +59,11 @@ internal partial class MainWindowViewModel : ObservableObject
     public MainWindowViewModel(IServiceProvider serviceProvider)
     {
         this.serviceProvider = serviceProvider;
-        serviceProvider.GetRequiredService<ISettingsManagerService>();
         appSettings = serviceProvider.GetRequiredService<IAppSettings>();
         backupService = serviceProvider.GetRequiredService<IBackupService>();
         dialogService = serviceProvider.GetRequiredService<IDialogService>();
         fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>();
+        settingsManagerService = serviceProvider.GetRequiredService<ISettingsManagerService>();
         RegisterSettingsMessageHandlers();
         RegisterMessengerHandlers();
     }
@@ -167,7 +168,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task WindowLoaded()
     {
         LogApplicationStartupInfo();
-        await CheckSettings(appSettings);
+        await settingsManagerService.CheckSettings();
         IsUpdateAvailable = await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate();
     }
 
@@ -187,28 +188,6 @@ internal partial class MainWindowViewModel : ObservableObject
             string.Join(", ",
                 serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
         Log.Information("Current Language: {Language}", appSettings.Language);
-    }
-
-    private static async Task CheckSettings(IAppSettings settings)
-    {
-        Log.Information("Checking whether the settings are correct.");
-        if (string.IsNullOrWhiteSpace(settings.W3StringsPath))
-        {
-            Log.Error("Settings are incorrect or initial setup is incomplete.");
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
-        }
-        else
-        {
-            Log.Information("The W3Strings path has been set to {Path}.", settings.W3StringsPath);
-            if (string.IsNullOrWhiteSpace(settings.GameExePath))
-                Log.Warning("The game executable path is not set.");
-            else
-                Log.Information("The game executable path has been set to {Path}.", settings.GameExePath);
-            Log.Information("The preferred filetype is {Filetype}", settings.PreferredW3FileType);
-            Log.Information("The preferred language is {Language}", settings.PreferredLanguage);
-            Log.Information("Current translator is {Translator}.", settings.Translator);
-            Log.Information("Settings are correct.");
-        }
     }
 
     [RelayCommand]

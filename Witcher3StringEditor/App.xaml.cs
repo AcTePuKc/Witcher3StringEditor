@@ -193,7 +193,6 @@ public sealed partial class App : IDisposable
             .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
             .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
-            .AddSingleton<ISettingsManagerService, SettingsManagerService>()
             .AddSingleton<IFileManagerService, FileManagerService>()
             .AddScoped<IExplorerService, ExplorerService>()
             .AddScoped<IPlayGameService, PlayGameService>()
@@ -201,6 +200,7 @@ public sealed partial class App : IDisposable
             .AddTransient<ITranslator, MicrosoftTranslator>()
             .AddTransient<ITranslator, GoogleTranslator>()
             .AddTransient<ITranslator, YandexTranslator>()
+            .AddTransient<ISettingsManagerService, SettingsManagerService>()
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider());
     }

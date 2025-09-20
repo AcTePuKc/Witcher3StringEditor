@@ -20,6 +20,28 @@ internal class SettingsManagerService : ISettingsManagerService
             notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
     }
 
+    public async Task CheckSettings()
+    {
+        Log.Information("Checking whether the settings are correct.");
+        if (string.IsNullOrWhiteSpace(appSettings.W3StringsPath))
+        {
+            Log.Error("Settings are incorrect or initial setup is incomplete.");
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), "FirstRun");
+        }
+        else
+        {
+            Log.Information("The W3Strings path has been set to {Path}.", appSettings.W3StringsPath);
+            if (string.IsNullOrWhiteSpace(appSettings.GameExePath))
+                Log.Warning("The game executable path is not set.");
+            else
+                Log.Information("The game executable path has been set to {Path}.", appSettings.GameExePath);
+            Log.Information("The preferred filetype is {Filetype}", appSettings.PreferredW3FileType);
+            Log.Information("The preferred language is {Language}", appSettings.PreferredLanguage);
+            Log.Information("Current translator is {Translator}.", appSettings.Translator);
+            Log.Information("Settings are correct.");
+        }
+    }
+
     private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         switch (e.PropertyName)
