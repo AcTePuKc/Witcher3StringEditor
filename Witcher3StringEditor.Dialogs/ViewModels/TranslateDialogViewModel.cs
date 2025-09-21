@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
@@ -40,6 +41,14 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         CurrentViewModel = new SingleItemTranslationViewModel(appSettings, translator, this.w3StringItems, index);
     }
 
+    [RelayCommand]
+    private async Task DetectLanguage()
+    {
+        var text = w3StringItems[0].Text;
+        var detectedLanguage = await translator.DetectLanguageAsync(text);
+        CurrentViewModel.FormLanguage = new Language(detectedLanguage.ISO6391);
+    }
+
     public bool? DialogResult => true;
 
     [RelayCommand]
@@ -53,10 +62,12 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             {
                 await CleanupCurrentViewModelAsync();
                 await DisposeCurrentViewModelAsync();
+                var formLange = CurrentViewModel.FormLanguage;
                 CurrentViewModel = CurrentViewModel is BatchItemsTranslationViewModel
                     ? new SingleItemTranslationViewModel(appSettings, translator, w3StringItems, index)
                     : new BatchItemsTranslationViewModel(appSettings, translator,
                         w3StringItems, index + 1);
+                CurrentViewModel.FormLanguage = formLange;
                 Title = CurrentViewModel is BatchItemsTranslationViewModel
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;

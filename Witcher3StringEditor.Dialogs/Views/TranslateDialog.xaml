@@ -26,6 +26,9 @@
         <i:EventTrigger EventName="Closed">
             <i:InvokeCommandAction Command="{Binding ClosedCommand}" />
         </i:EventTrigger>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding DetectLanguageCommand}"/>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
