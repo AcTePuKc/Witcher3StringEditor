@@ -21,7 +21,7 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems)
     {
-        W3StringItems = [.. w3StringItems];
+        W3StringItems = w3StringItems;
         Translator = translator;
         Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
