@@ -22,6 +22,7 @@ public partial class LogDialog
 
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
+        if (string.IsNullOrWhiteSpace(args.QueryText)) return;
         SfDataGrid.SearchHelper.Search(args.QueryText);
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
