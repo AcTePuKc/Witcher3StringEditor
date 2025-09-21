@@ -10,7 +10,7 @@ using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
-///     HistoryDialog.xaml 的交互逻辑
+///     Interaction logic for BackupDialog.xaml
 /// </summary>
 public partial class BackupDialog
 {

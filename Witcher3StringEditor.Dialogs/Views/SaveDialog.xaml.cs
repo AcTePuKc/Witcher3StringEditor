@@ -8,7 +8,7 @@ using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
-///     SaveDialog.xaml 的交互逻辑
+///     Interaction logic for SaveDialog.xaml
 /// </summary>
 public partial class SaveDialog
 {

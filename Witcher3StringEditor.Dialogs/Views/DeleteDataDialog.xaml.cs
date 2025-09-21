@@ -1,7 +1,7 @@
 ﻿namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
-///     DeleteDataDialog.xaml 的交互逻辑
+///     Interaction logic for DeleteDataDialog.xaml
 /// </summary>
 public partial class DeleteDataDialog
 {

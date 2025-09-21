@@ -1,7 +1,7 @@
 ﻿namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
-///     AboutDialog.xaml 的交互逻辑
+///     Interaction logic for AboutDialog.xaml
 /// </summary>
 public partial class AboutDialog
 {

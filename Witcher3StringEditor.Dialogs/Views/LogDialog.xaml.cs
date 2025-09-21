@@ -4,7 +4,7 @@ using Serilog;
 namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
-///     LogDialog.xaml 的交互逻辑
+///     Interaction logic for LogDialog.xaml
 /// </summary>
 public partial class LogDialog
 {
