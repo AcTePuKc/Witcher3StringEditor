@@ -22,6 +22,7 @@
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
+    <!-- Bind window loaded, closed, and closing events to corresponding commands -->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
@@ -33,31 +34,43 @@
             <i:InvokeCommandAction Command="{Binding WindowClosingCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <!-- Main window grid layout -->
     <Grid>
+        <!-- Define grid rows -->
         <Grid.RowDefinitions>
+            <!-- Title bar row -->
             <RowDefinition Height="48" />
+            <!-- Toolbar row -->
             <RowDefinition Height="Auto" />
+            <!-- Main content area row -->
             <RowDefinition Height="*" />
+            <!-- Pagination control row -->
             <RowDefinition Height="Auto" />
+            <!-- Status bar row -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <!-- Title bar area -->
         <Grid
             Height="48"
             Loaded="AppTitleBar_OnLoaded"
             SizeChanged="AppTitleBar_OnSizeChanged">
+            <!-- Define title bar columns -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
+                <!-- Search box column -->
                 <ColumnDefinition Width="*" MinWidth="400" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition x:Name="RightPaddingColumn" Width="0" />
             </Grid.ColumnDefinitions>
+            <!-- Application title text -->
             <TextBlock
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 Text="{I18N {x:Static l:LangKeys.AppTitle}}" />
+            <!-- Search box -->
             <ui:AutoSuggestBox
                 x:Name="SearchBox"
                 Grid.Column="2"
@@ -69,6 +82,7 @@
                     <ui:FontIcon Glyph="&#xe721;" />
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
+            <!-- Theme switch button -->
             <Button
                 Grid.Column="4"
                 Background="Transparent"
@@ -80,14 +94,17 @@
                     <ui:FontIcon.Style>
                         <Style TargetType="ui:FontIcon">
                             <Style.Triggers>
+                                <!-- Display different icons based on current theme -->
                                 <DataTrigger
                                     Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
                                     Value="{x:Static ui:ApplicationTheme.Light}">
+                                    <!-- ReSharper disable once Xaml.DependencyPropertyResolveError -->
                                     <Setter Property="ui:FontIcon.Glyph" Value="&#xF0CE;" />
                                 </DataTrigger>
                                 <DataTrigger
                                     Binding="{Binding Source={x:Static ui:ThemeManager.Current}, Path=ActualApplicationTheme}"
                                     Value="{x:Static ui:ApplicationTheme.Dark}">
+                                    <!-- ReSharper disable once Xaml.DependencyPropertyResolveError -->
                                     <Setter Property="ui:FontIcon.Glyph" Value="&#xE706;" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -96,26 +113,31 @@
                 </ui:FontIcon>
             </Button>
         </Grid>
+        <!-- Toolbar -->
         <ui:CommandBar
             Grid.Row="1"
             HorizontalAlignment="Left"
             Background="Transparent">
+            <!-- Open file button -->
             <ui:AppBarButton Command="{Binding OpenFileCommand}" Label="{I18N {x:Static l:LangKeys.OpenFileBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe8e5;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Recent files button -->
             <ui:AppBarButton Command="{Binding ShowRecentDialogCommand}"
                              Label="{I18N {x:Static l:LangKeys.RecentBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe823;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Add entry button -->
             <ui:AppBarButton Command="{Binding AddCommand}" Label="{I18N {x:Static l:LangKeys.AddBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe710;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Edit entry button -->
             <ui:AppBarButton
                 Command="{Binding EditCommand}"
                 CommandParameter="{Binding SelectedItem, ElementName=SfDataGrid}"
@@ -126,6 +148,7 @@
                 <ui:AppBarButton.Style>
                     <Style TargetType="ui:AppBarButton">
                         <Style.Triggers>
+                            <!-- Disable button when no item is selected -->
                             <DataTrigger Binding="{Binding ElementName=SfDataGrid, Path=SelectedItem}" Value="{x:Null}">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
@@ -133,6 +156,7 @@
                     </Style>
                 </ui:AppBarButton.Style>
             </ui:AppBarButton>
+            <!-- Delete entry button -->
             <ui:AppBarButton
                 Command="{Binding DeleteCommand}"
                 CommandParameter="{Binding SelectedItems, ElementName=SfDataGrid}"
@@ -143,6 +167,7 @@
                 <ui:AppBarButton.Style>
                     <Style TargetType="ui:AppBarButton">
                         <Style.Triggers>
+                            <!-- Disable button when no item is selected -->
                             <DataTrigger Binding="{Binding ElementName=SfDataGrid, Path=SelectedItem}" Value="{x:Null}">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
@@ -150,6 +175,7 @@
                     </Style>
                 </ui:AppBarButton.Style>
             </ui:AppBarButton>
+            <!-- Translate button -->
             <ui:AppBarButton
                 Command="{Binding ShowTranslateDialogCommand}"
                 CommandParameter="{Binding Path=SelectedItem, ElementName=SfDataGrid}"
@@ -158,51 +184,60 @@
                     <ui:FontIcon Glyph="&#xf2b7;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Save button -->
             <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}"
                              Label="{I18N {x:Static l:LangKeys.SaveBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe74e;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Backup button -->
             <ui:AppBarButton Command="{Binding ShowBackupDialogCommand}"
                              Label="{I18N {x:Static l:LangKeys.BackupBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe81c;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Log button -->
             <ui:AppBarButton Command="{Binding ShowLogDialogCommand}" Label="{I18N {x:Static l:LangKeys.LogBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xf000;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Settings button -->
             <ui:AppBarButton Command="{Binding ShowSettingsDialogCommand}"
                              Label="{I18N {x:Static l:LangKeys.SettingsBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe713;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Open working folder button -->
             <ui:AppBarButton Command="{Binding OpenWorkingFolderCommand}"
                              Label="{I18N {x:Static l:LangKeys.OpenWorkingFolderBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xec50;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Play game button -->
             <ui:AppBarButton Command="{Binding PlayGameCommand}" Label="{I18N {x:Static l:LangKeys.PlayBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe768;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Nexus Mods button -->
             <ui:AppBarButton Command="{Binding OpenNexusModsCommand}" Label="Nexus Mods">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe71b;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- About button -->
             <ui:AppBarButton Command="{Binding ShowAboutCommand}" Label="{I18N {x:Static l:LangKeys.AboutBtnLabel}}">
                 <ui:AppBarButton.Icon>
                     <ui:FontIcon Glyph="&#xe946;" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
         </ui:CommandBar>
+        <!-- Drop files here text block (shown when no items are loaded) -->
         <TextBlock
             Grid.Row="2"
             HorizontalAlignment="Center"
@@ -221,6 +256,7 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
+        <!-- Data grid for displaying W3 string items -->
         <sf:SfDataGrid
             x:Name="SfDataGrid"
             Grid.Row="2"
@@ -240,6 +276,7 @@
             ShowRowHeader="True">
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
+                    <!-- Custom style for row header cells to display row numbers -->
                     <Style TargetType="sf:GridRowHeaderCell">
                         <Setter Property="Template">
                             <Setter.Value>
@@ -263,18 +300,26 @@
                     </Style>
                 </ResourceDictionary>
             </sf:SfDataGrid.Resources>
+            <!-- Attach behaviors to the data grid -->
             <i:Interaction.Behaviors>
+                <!-- Behavior to handle size changes -->
                 <b:SfDataGridSizeChangedBehavior />
+                <!-- Behavior to handle row height queries -->
                 <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding ElementName=SfDataGrid, Path=RowHeight}" />
+                <!-- Behavior to handle end edit events -->
                 <b:SfDataGridCurrentCellEndEditBehavior />
+                <!-- Behavior to handle file drop events -->
                 <b:FrameworkElementDropFileBehavior Data="{Binding DropFileData, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
+            <!-- Handle drop event -->
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <i:InvokeCommandAction Command="{Binding DropFileCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <!-- Define data grid columns -->
             <sf:SfDataGrid.Columns>
+                <!-- String ID column -->
                 <sf:GridTextColumn
                     Width="100"
                     AllowResizing="True"
@@ -282,21 +327,25 @@
                     MappingName="StrId"
                     MinimumWidth="50"
                     TextAlignment="Center" />
+                <!-- Key (Hex) column -->
                 <sf:GridTextColumn
                     Width="100"
                     HeaderText="Key(Hex)"
                     MappingName="KeyHex"
                     MinimumWidth="50"
                     TextAlignment="Center" />
+                <!-- Key (String) column -->
                 <sf:GridTextColumn
                     Width="300"
                     HeaderText="Key(String)"
                     MappingName="KeyName"
                     MinimumWidth="200"
                     TextAlignment="Center" />
+                <!-- Text column with text wrapping -->
                 <sf:GridTextColumn MappingName="Text" TextWrapping="WrapWithOverflow" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
+        <!-- Data pager for pagination -->
         <sf:SfDataPager
             x:Name="SfDataPager"
             Grid.Row="3"
@@ -305,6 +354,7 @@
             NumericButtonCount="10"
             PageSize="30"
             Source="{Binding W3StringItems, Mode=TwoWay}" />
+        <!-- Update available notification -->
         <ui:InfoBar
             Grid.Row="2"
             Margin="0,0,0,100"

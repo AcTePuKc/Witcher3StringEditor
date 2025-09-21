@@ -30,6 +30,10 @@ using W3StringItemModel = Witcher3StringEditor.Models.W3StringItemModel;
 
 namespace Witcher3StringEditor.ViewModels;
 
+/// <summary>
+///     Main window view model for the Witcher 3 String Editor application
+///     Handles file operations, UI commands, and coordination between services and dialogs
+/// </summary>
 internal partial class MainWindowViewModel : ObservableObject
 {
     private readonly IAppSettings appSettings;
@@ -39,16 +43,34 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IServiceProvider serviceProvider;
     private readonly ISettingsManagerService settingsManagerService;
 
+    /// <summary>
+    ///     Gets or sets the data from dropped files
+    /// </summary>
     [ObservableProperty] private string[]? dropFileData;
 
+    /// <summary>
+    ///     Gets or sets a value indicating whether an update is available
+    /// </summary>
     [ObservableProperty] private bool isUpdateAvailable;
 
+    /// <summary>
+    ///     Gets or sets the output folder path
+    ///     Notifies OpenWorkingFolderCommand when this property changes
+    /// </summary>
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
     private string outputFolder = string.Empty;
 
+    /// <summary>
+    ///     Gets or sets the search results collection
+    ///     Notifies ShowTranslateDialogCommand when this property changes
+    /// </summary>
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
     private ObservableCollection<W3StringItemModel>? searchResults;
 
+    /// <summary>
+    ///     Gets or sets the collection of W3 string items
+    ///     Notifies multiple commands when this property changes
+    /// </summary>
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddCommand))]
     [NotifyCanExecuteChangedFor(nameof(EditCommand))]
@@ -57,6 +79,10 @@ internal partial class MainWindowViewModel : ObservableObject
     [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
     private ObservableCollection<W3StringItemModel>? w3StringItems;
 
+    /// <summary>
+    ///     Initializes a new instance of the MainWindowViewModel class
+    /// </summary>
+    /// <param name="serviceProvider">The service provider used to resolve dependencies</param>
     public MainWindowViewModel(IServiceProvider serviceProvider)
     {
         this.serviceProvider = serviceProvider;
@@ -68,20 +94,41 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterMessengerHandlers();
     }
 
+    /// <summary>
+    ///     Gets the collection of log events
+    /// </summary>
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
 
+    /// <summary>
+    ///     Gets a value indicating whether there are W3 string items
+    /// </summary>
     private bool HasW3StringItems => W3StringItems?.Any() == true;
 
+    /// <summary>
+    ///     Gets a value indicating whether the working folder can be opened
+    /// </summary>
     private bool CanOpenWorkingFolder
         => Directory.Exists(OutputFolder);
 
+    /// <summary>
+    ///     Gets a value indicating whether the game can be played
+    /// </summary>
     private bool CanPlayGame => File.Exists(appSettings.GameExePath);
 
+    /// <summary>
+    ///     Gets a value indicating whether a file can be opened
+    /// </summary>
     private bool CanOpenFile => File.Exists(appSettings.W3StringsPath);
 
+    /// <summary>
+    ///     Gets a value indicating whether the application is running in debug mode
+    /// </summary>
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
+    /// <summary>
+    ///     Registers message handlers for settings-related messages
+    /// </summary>
     private void RegisterSettingsMessageHandlers()
     {
         WeakReferenceMessenger.Default
@@ -93,6 +140,9 @@ internal partial class MainWindowViewModel : ObservableObject
                 (_, _) => PlayGameCommand.NotifyCanExecuteChanged());
     }
 
+    /// <summary>
+    ///     Registers all message handlers for the view model
+    /// </summary>
     private void RegisterMessengerHandlers()
     {
         RegisterLogMessageHandlers();
@@ -102,6 +152,9 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterTranslationMessageHandlers();
     }
 
+    /// <summary>
+    ///     Registers message handlers for search-related messages
+    /// </summary>
     private void RegisterSearchMessageHandlers()
     {
         WeakReferenceMessenger.Default
@@ -132,6 +185,9 @@ internal partial class MainWindowViewModel : ObservableObject
                 });
     }
 
+    /// <summary>
+    ///     Registers message handlers for translation-related messages
+    /// </summary>
     private void RegisterTranslationMessageHandlers()
     {
         WeakReferenceMessenger.Default
@@ -147,6 +203,9 @@ internal partial class MainWindowViewModel : ObservableObject
                 });
     }
 
+    /// <summary>
+    ///     Registers message handlers for file-related messages
+    /// </summary>
     private void RegisterFileMessageHandlers()
     {
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
@@ -156,6 +215,9 @@ internal partial class MainWindowViewModel : ObservableObject
             async void (_, m) => { await OpenFile(m.Request); });
     }
 
+    /// <summary>
+    ///     Registers message handlers for log-related messages
+    /// </summary>
     private void RegisterLogMessageHandlers()
     {
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
@@ -164,6 +226,10 @@ internal partial class MainWindowViewModel : ObservableObject
             async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
     }
 
+    /// <summary>
+    ///     Handles the window loaded event
+    ///     Logs application startup information and checks for updates
+    /// </summary>
     [RelayCommand]
     private async Task WindowLoaded()
     {
@@ -172,6 +238,9 @@ internal partial class MainWindowViewModel : ObservableObject
         IsUpdateAvailable = await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate();
     }
 
+    /// <summary>
+    ///     Logs application startup information including version, OS, and other diagnostic data
+    /// </summary>
     private void LogApplicationStartupInfo()
     {
         Log.Information("Application started.");
@@ -190,6 +259,11 @@ internal partial class MainWindowViewModel : ObservableObject
         Log.Information("Current Language: {Language}", appSettings.Language);
     }
 
+    /// <summary>
+    ///     Handles the window closing event
+    ///     Cancels the close if there are unsaved changes
+    /// </summary>
+    /// <param name="e">The event arguments for the cancel event</param>
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
@@ -198,12 +272,20 @@ internal partial class MainWindowViewModel : ObservableObject
             e.Cancel = true;
     }
 
+    /// <summary>
+    ///     Handles the window closed event
+    ///     Unregisters all message handlers for this view model
+    /// </summary>
     [RelayCommand]
     private void WindowClosed()
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
+    /// <summary>
+    ///     Handles dropped files
+    ///     Opens the file if it has a supported extension
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanOpenFile))]
     private async Task DropFile()
     {
@@ -215,6 +297,9 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    ///     Opens a file using a file dialog
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanOpenFile))]
     private async Task OpenFile()
     {
@@ -232,6 +317,10 @@ internal partial class MainWindowViewModel : ObservableObject
             await OpenFile(storageFile.LocalPath);
     }
 
+    /// <summary>
+    ///     Opens the specified file and loads its contents
+    /// </summary>
+    /// <param name="fileName">The path to the file to open</param>
     private async Task OpenFile(string fileName)
     {
         try
@@ -247,6 +336,11 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    ///     Handles reopening a file when another file is already open
+    /// </summary>
+    /// <param name="fileName">The path to the file to reopen</param>
+    /// <returns>True if the file can be reopened, false otherwise</returns>
     private async Task<bool> HandleReOpenFile(string fileName)
     {
         if (W3StringItems?.Any() != true) return true;
@@ -256,6 +350,9 @@ internal partial class MainWindowViewModel : ObservableObject
         return true;
     }
 
+    /// <summary>
+    ///     Adds a new W3 string item
+    /// </summary>
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Add()
     {
@@ -272,6 +369,10 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    ///     Edits the selected W3 string item
+    /// </summary>
+    /// <param name="selectedItem">The item to edit</param>
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Edit(W3StringItemModel selectedItem)
     {
@@ -291,6 +392,10 @@ internal partial class MainWindowViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    ///     Deletes the selected W3 string items
+    /// </summary>
+    /// <param name="selectedItems">The items to delete</param>
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Delete(IEnumerable<object> selectedItems)
     {
@@ -305,6 +410,9 @@ internal partial class MainWindowViewModel : ObservableObject
             });
     }
 
+    /// <summary>
+    ///     Shows the backup dialog
+    /// </summary>
     [RelayCommand]
     private async Task ShowBackupDialog()
     {
@@ -312,6 +420,9 @@ internal partial class MainWindowViewModel : ObservableObject
             new BackupDialogViewModel(appSettings, backupService));
     }
 
+    /// <summary>
+    ///     Shows the save dialog
+    /// </summary>
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task ShowSaveDialog()
     {
@@ -322,6 +433,9 @@ internal partial class MainWindowViewModel : ObservableObject
                 OutputFolder));
     }
 
+    /// <summary>
+    ///     Shows the log dialog
+    /// </summary>
     [RelayCommand]
     private async Task ShowLogDialog()
     {
@@ -329,6 +443,9 @@ internal partial class MainWindowViewModel : ObservableObject
             new LogDialogViewModel(LogEvents));
     }
 
+    /// <summary>
+    ///     Shows the settings dialog
+    /// </summary>
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
@@ -340,12 +457,18 @@ internal partial class MainWindowViewModel : ObservableObject
                 serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures));
     }
 
+    /// <summary>
+    ///     Starts the game process
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
         await serviceProvider.GetRequiredService<IPlayGameService>().PlayGame();
     }
 
+    /// <summary>
+    ///     Shows the about dialog
+    /// </summary>
     [RelayCommand]
     private async Task ShowAbout()
     {
@@ -363,6 +486,9 @@ internal partial class MainWindowViewModel : ObservableObject
             }));
     }
 
+    /// <summary>
+    ///     Opens the working folder in Windows Explorer
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
@@ -370,6 +496,9 @@ internal partial class MainWindowViewModel : ObservableObject
         Log.Information("Working folder opened.");
     }
 
+    /// <summary>
+    ///     Opens the NexusMods page in the default browser
+    /// </summary>
     [RelayCommand]
     private void OpenNexusMods()
     {
@@ -378,6 +507,9 @@ internal partial class MainWindowViewModel : ObservableObject
         Log.Information("NexusMods opened.");
     }
 
+    /// <summary>
+    ///     Shows the recent files dialog
+    /// </summary>
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
@@ -385,6 +517,10 @@ internal partial class MainWindowViewModel : ObservableObject
             new RecentDialogViewModel(appSettings));
     }
 
+    /// <summary>
+    ///     Determines whether the translate dialog can be shown
+    /// </summary>
+    /// <returns>True if the translate dialog can be shown, false otherwise</returns>
     private bool CanShowTranslateDialog()
     {
         if (SearchResults != null)
@@ -392,6 +528,10 @@ internal partial class MainWindowViewModel : ObservableObject
         return W3StringItems?.Any() == true;
     }
 
+    /// <summary>
+    ///     Shows the translate dialog
+    /// </summary>
+    /// <param name="selectedItem">The initially selected item in the dialog</param>
     [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {

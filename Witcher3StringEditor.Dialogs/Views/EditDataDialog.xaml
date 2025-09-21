@@ -18,42 +18,69 @@
     WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
+    <!-- 
+        Main grid layout for the edit data dialog
+        Contains two rows: title bar and content area
+    -->
     <Grid>
         <Grid.RowDefinitions>
+            <!-- Title bar row -->
             <RowDefinition Height="48" />
+            <!-- Content area row -->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <!-- Title text displayed in the title bar area -->
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
             Text="{Binding Title}" />
+
+        <!-- Content grid containing the edit form and action buttons -->
         <Grid Grid.Row="1" Margin="24,16,24,24">
             <Grid.RowDefinitions>
+                <!-- Input fields row -->
                 <RowDefinition Height="Auto" />
+                <!-- Text content row -->
                 <RowDefinition Height="*" />
+                <!-- Action buttons row -->
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
+            <!-- Input fields for ID and key information -->
             <iwk:SimpleStackPanel Spacing="16">
+                <!-- String ID input field -->
                 <TextBox ui:ControlHelper.Header="ID" Text="{Binding Item.StrId, FallbackValue=''}" />
+
+                <!-- Key in hexadecimal format input field -->
                 <TextBox ui:ControlHelper.Header="Key(Hex)" Text="{Binding Item.KeyHex, FallbackValue=''}" />
+
+                <!-- Key name input field -->
                 <TextBox ui:ControlHelper.Header="Key(String)" Text="{Binding Item.KeyName, FallbackValue=''}" />
             </iwk:SimpleStackPanel>
+
+            <!-- Text content input field -->
             <TextBox
                 Grid.Row="1"
                 Margin="0,16,0,0"
                 ui:ControlHelper.Header="Text"
                 Text="{Binding Item.Text, FallbackValue=''}"
                 TextWrapping="WrapWithOverflow" />
+
+            <!-- Action buttons for submitting or canceling the edit operation -->
             <iwk:SimpleStackPanel
                 Grid.Row="2"
                 Margin="0,24,0,0"
                 HorizontalAlignment="Center"
                 Orientation="Horizontal"
                 Spacing="16">
+                <!-- Submit button to save changes -->
                 <Button
                     MinWidth="100"
                     Command="{Binding SubmitCommand}"
                     Content="{I18N {x:Static l:LangKeys.SubmitBtnContent}}" />
+
+                <!-- Cancel button to discard changes -->
                 <Button
                     MinWidth="100"
                     Command="{Binding CancelCommand}"

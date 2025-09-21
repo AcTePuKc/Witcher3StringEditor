@@ -5,26 +5,41 @@
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels">
+    <!-- 
+        Data template for batch translation view
+        This template is used to display the UI for batch translation operations
+        Binds to BatchItemsTranslationViewModel for data and command binding
+    -->
     <DataTemplate x:Key="BatchTranslateDataTemplate" DataType="{x:Type vm:BatchItemsTranslationViewModel}">
         <Grid>
             <Grid.RowDefinitions>
+                <!-- Language selection and index input controls row -->
                 <RowDefinition Height="Auto" />
+                <!-- Translation statistics row -->
                 <RowDefinition Height="Auto" />
+                <!-- Action buttons row -->
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
+            <!-- Language selection and index input controls -->
             <iwk:SimpleStackPanel Spacing="16">
+                <!-- Source language selection combobox -->
                 <ComboBox
                     HorizontalAlignment="Stretch"
                     ui:ControlHelper.Header="{I18N {x:Static l:LangKeys.TextLanguage}}"
                     DisplayMemberPath="NativeName"
                     ItemsSource="{Binding Languages}"
                     SelectedValue="{Binding FormLanguage}" />
+
+                <!-- Target language selection combobox -->
                 <ComboBox
                     HorizontalAlignment="Stretch"
                     ui:ControlHelper.Header="{I18N {x:Static l:LangKeys.TargetLanguage}}"
                     DisplayMemberPath="NativeName"
                     ItemsSource="{Binding Languages}"
                     SelectedValue="{Binding ToLanguage}" />
+
+                <!-- Start index input control -->
                 <ui:NumberBox
                     x:Name="StartIndexInput"
                     ui:ControlHelper.Header="{I18N {x:Static l:LangKeys.StartIndex}}"
@@ -33,6 +48,8 @@
                     SmallChange="1"
                     SpinButtonPlacementMode="Inline"
                     Value="{Binding StartIndex}" />
+
+                <!-- End index input control -->
                 <ui:NumberBox
                     x:Name="EndIndexInput"
                     ui:ControlHelper.Header="{I18N {x:Static l:LangKeys.EndIndex}}"
@@ -42,12 +59,15 @@
                     SpinButtonPlacementMode="Inline"
                     Value="{Binding EndIndex}" />
             </iwk:SimpleStackPanel>
+
+            <!-- Translation statistics display area -->
             <StackPanel
                 Grid.Row="1"
                 Margin="0,16"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
+                <!-- Success count indicator -->
                 <Ellipse
                     Width="35"
                     Height="35"
@@ -61,6 +81,8 @@
                     FontSize="25"
                     Text="{Binding SuccessCount}"
                     TextAlignment="Center" />
+
+                <!-- Failure count indicator -->
                 <Ellipse
                     Width="35"
                     Height="35"
@@ -74,6 +96,8 @@
                     FontSize="25"
                     Text="{Binding FailureCount}"
                     TextAlignment="Center" />
+
+                <!-- Pending count indicator -->
                 <Ellipse
                     Width="35"
                     Height="35"
@@ -88,11 +112,14 @@
                     Text="{Binding PendingCount}"
                     TextAlignment="Center" />
             </StackPanel>
+
+            <!-- Action buttons for starting and canceling translation -->
             <iwk:SimpleStackPanel
                 Grid.Row="2"
                 HorizontalAlignment="Center"
                 Orientation="Horizontal"
                 Spacing="16">
+                <!-- Start translation button -->
                 <Button
                     MinWidth="100"
                     Command="{Binding StartCommand}"
@@ -100,8 +127,10 @@
                     <Button.Style>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
+                            <!-- Button is disabled by default -->
                             <Setter Property="IsEnabled" Value="False" />
                             <Style.Triggers>
+                                <!-- Enable button only when both index inputs are valid -->
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition
@@ -117,6 +146,8 @@
                         </Style>
                     </Button.Style>
                 </Button>
+
+                <!-- Cancel translation button -->
                 <Button
                     MinWidth="100"
                     Command="{Binding CancelCommand}"

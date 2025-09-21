@@ -22,38 +22,61 @@
     WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
+    <!-- 
+        Window resources containing custom control templates
+    -->
     <Window.Resources>
+        <!-- 
+            Custom checkbox template for pin/unpin functionality
+            Uses FontIcon to display pin/unpin states
+        -->
         <ControlTemplate x:Key="PinCheckBoxTemplate" TargetType="CheckBox">
             <Grid>
                 <ui:FontIcon x:Name="iconElement" Glyph="&#xe734;" />
             </Grid>
             <ControlTemplate.Triggers>
+                <!-- When checkbox is checked, show pinned icon -->
                 <Trigger Property="IsChecked" Value="True">
                     <Setter TargetName="iconElement" Property="ui:FontIcon.Glyph" Value="&#xe735;" />
                 </Trigger>
+                <!-- When checkbox is indeterminate, show unpinned icon -->
                 <Trigger Property="IsChecked" Value="{x:Null}">
                     <Setter TargetName="iconElement" Property="ui:FontIcon.Glyph" Value="&#xe734;" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
+
+    <!-- 
+        Main grid layout for the recent files dialog
+        Contains three rows: title bar, data grid, and pager controls
+    -->
     <Grid>
         <Grid.RowDefinitions>
+            <!-- Title bar row -->
             <RowDefinition Height="48" />
+            <!-- Data grid row -->
             <RowDefinition Height="*" />
+            <!-- Pager controls row -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
+        <!-- Title bar area containing the dialog title and search box -->
         <Grid Height="48">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
+            <!-- Dialog title text -->
             <TextBlock
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 Text="{I18N {x:Static l:LangKeys.RecentDialogTitle}}" />
+
+            <!-- Search box for filtering recent items -->
             <ui:AutoSuggestBox
                 Grid.Column="1"
                 VerticalAlignment="Center"
@@ -65,6 +88,8 @@
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
         </Grid>
+
+        <!-- Data grid displaying recent files -->
         <sf:SfDataGrid
             x:Name="SfDataGrid"
             Grid.Row="1"
@@ -77,8 +102,11 @@
             RowHeight="30"
             SelectionMode="Extended"
             ShowRowHeader="True">
+
+            <!-- Data grid resources for customizing row header appearance -->
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
+                    <!-- Style for row header cells to display row numbers -->
                     <Style TargetType="sf:GridRowHeaderCell">
                         <Setter Property="Template">
                             <Setter.Value>
@@ -102,18 +130,28 @@
                     </Style>
                 </ResourceDictionary>
             </sf:SfDataGrid.Resources>
+
+            <!-- Interaction behaviors for handling grid operations -->
             <i:Interaction.Behaviors>
+                <!-- Behavior to handle grid size changes -->
                 <b:SfDataGridSizeChangedBehavior />
+                <!-- Behavior to handle row height queries -->
                 <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding ElementName=SfDataGrid, Path=RowHeight}" />
+                <!-- Behavior to handle record deletion -->
                 <b:SfDataGridRecordDeletingBehavior />
             </i:Interaction.Behaviors>
+
+            <!-- Data grid columns definition -->
             <sf:SfDataGrid.Columns>
+                <!-- File path column -->
                 <sf:GridTextColumn
                     ColumnSizer="AutoWithLastColumnFill"
                     HeaderText="{I18N {x:Static l:LangKeys.Path}}"
                     MappingName="FilePath"
                     MinimumWidth="700"
                     TextWrapping="WrapWithOverflow" />
+
+                <!-- Opened time column -->
                 <sf:GridDateTimeColumn
                     ColumnSizer="SizeToHeader"
                     HeaderText="{I18N {x:Static l:LangKeys.OpenedTime}}"
@@ -121,6 +159,8 @@
                     MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
+
+                <!-- Mark/pin column with custom checkbox template -->
                 <sf:GridTemplateColumn
                     HorizontalAlignment="Center"
                     ColumnSizer="SizeToHeader"
@@ -136,6 +176,8 @@
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
+
+                <!-- Open file button column -->
                 <sf:GridTemplateColumn
                     HorizontalAlignment="Center"
                     AllowSorting="False"
@@ -158,6 +200,8 @@
                 </sf:GridTemplateColumn>
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
+
+        <!-- Data pager for pagination of recent items -->
         <sf:SfDataPager
             x:Name="SfDataPager"
             Grid.Row="2"

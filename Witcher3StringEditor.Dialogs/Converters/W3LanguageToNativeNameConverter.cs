@@ -7,8 +7,21 @@ using Witcher3StringEditor.Common;
 
 namespace Witcher3StringEditor.Dialogs.Converters;
 
+/// <summary>
+///     A value converter that converts W3Language enum values to their corresponding native language names
+///     Uses reflection to retrieve the DescriptionAttribute from the enum value and creates a CultureInfo
+///     to get the native name of the language
+/// </summary>
 public class W3LanguageToNativeNameConverter : IValueConverter
 {
+    /// <summary>
+    ///     Converts a W3Language enum value to its corresponding native language name
+    /// </summary>
+    /// <param name="value">The W3Language enum value to convert</param>
+    /// <param name="targetType">The type of the binding target property (not used in this implementation)</param>
+    /// <param name="parameter">An optional parameter to be used in the converter logic (not used in this implementation)</param>
+    /// <param name="culture">The culture to use in the converter (not used in this implementation)</param>
+    /// <returns>The native name of the language, or DependencyProperty.UnsetValue if conversion fails</returns>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not W3Language language) return DependencyProperty.UnsetValue;
@@ -16,6 +29,15 @@ public class W3LanguageToNativeNameConverter : IValueConverter
             .GetCustomAttribute<DescriptionAttribute>()!.Description).NativeName;
     }
 
+    /// <summary>
+    ///     Converts a native language name back to a W3Language enum value (not implemented)
+    /// </summary>
+    /// <param name="value">The value to convert back</param>
+    /// <param name="targetType">The type to convert to (not used in this implementation)</param>
+    /// <param name="parameter">An optional parameter to be used in the converter logic (not used in this implementation)</param>
+    /// <param name="culture">The culture to use in the converter (not used in this implementation)</param>
+    /// <returns>Throws NotImplementedException as this operation is not supported</returns>
+    /// <exception cref="NotImplementedException">This method is not implemented</exception>
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();

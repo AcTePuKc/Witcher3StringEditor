@@ -9,15 +9,24 @@ namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
 ///     Interaction logic for SaveDialog.xaml
+///     This dialog allows users to configure save settings and save W3 string items to a file
 /// </summary>
 public partial class SaveDialog
 {
+    /// <summary>
+    ///     Initializes a new instance of the SaveDialog class
+    ///     Sets up the UI components and registers message handlers
+    /// </summary>
     public SaveDialog()
     {
         InitializeComponent();
         RegisterMessageHandler();
     }
 
+    /// <summary>
+    ///     Registers a message handler for save operation results
+    ///     Shows a message box with the result of the save operation (success or failure)
+    /// </summary>
     private void RegisterMessageHandler()
     {
         WeakReferenceMessenger.Default.Register<SaveDialog, ValueChangedMessage<bool>, string>(
@@ -30,6 +39,12 @@ public partial class SaveDialog
             });
     }
 
+    /// <summary>
+    ///     Handles the closed event of the save dialog
+    ///     Unregisters message handlers to prevent memory leaks when the dialog is closed
+    /// </summary>
+    /// <param name="sender">The object that triggered the event</param>
+    /// <param name="e">The event arguments</param>
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);

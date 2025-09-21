@@ -7,8 +7,20 @@ using Witcher3StringEditor.Serializers.Internal;
 
 namespace Witcher3StringEditor.Serializers.Implementation;
 
+/// <summary>
+///     Provides Excel serialization functionality for W3 string items
+///     Implements the IExcelW3Serializer interface to handle reading from and writing to Excel files
+/// </summary>
 public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serializer
 {
+    /// <summary>
+    ///     Deserializes W3 string items from an Excel file
+    /// </summary>
+    /// <param name="filePath">The path to the Excel file to deserialize</param>
+    /// <returns>
+    ///     A task that represents the asynchronous deserialize operation.
+    ///     The task result contains the deserialized W3 string items, or an empty list if an error occurred
+    /// </returns>
     public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {
         try
@@ -28,6 +40,15 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         }
     }
 
+    /// <summary>
+    ///     Serializes W3 string items to an Excel file
+    /// </summary>
+    /// <param name="w3StringItems">The W3 string items to serialize</param>
+    /// <param name="context">The serialization context containing output directory and target language information</param>
+    /// <returns>
+    ///     A task that represents the asynchronous serialize operation.
+    ///     The task result indicates whether the serialization was successful
+    /// </returns>
     public async Task<bool> Serialize(IReadOnlyList<IW3StringItem> w3StringItems, W3SerializationContext context)
     {
         try
@@ -50,6 +71,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         }
     }
 
+    /// <summary>
+    ///     Generates an Excel file with the provided W3 string items
+    /// </summary>
+    /// <param name="path">The path where the Excel file will be created</param>
+    /// <param name="w3StringItems">The W3 string items to include in the Excel file</param>
     private static void GenerateExcelFile(string path, IReadOnlyList<IW3StringItem> w3StringItems)
     {
         using var fileStream = File.Create(path);
@@ -63,6 +89,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         workbook.SaveAs(fileStream);
     }
 
+    /// <summary>
+    ///     Formats the worksheet with headers, styles, and column widths
+    /// </summary>
+    /// <param name="worksheet">The worksheet to format</param>
+    /// <param name="w3StringItems">The W3 string items used to determine row count</param>
     private static void FormatWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> w3StringItems)
     {
         SetTableHeaders(worksheet);
@@ -70,6 +101,10 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         SetColumnWidths(worksheet);
     }
 
+    /// <summary>
+    ///     Sets the table headers in the first row of the worksheet
+    /// </summary>
+    /// <param name="worksheet">The worksheet to set headers on</param>
     private static void SetTableHeaders(IWorksheet worksheet)
     {
         worksheet["A1"].Value = "StrId";
@@ -79,6 +114,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         worksheet["E1"].Value = "Text";
     }
 
+    /// <summary>
+    ///     Applies formatting styles to the worksheet
+    /// </summary>
+    /// <param name="worksheet">The worksheet to apply styles to</param>
+    /// <param name="rowCount">The number of data rows in the worksheet</param>
     private static void SetTableStyles(IWorksheet worksheet, int rowCount)
     {
         FormatHeaderRow(worksheet);
@@ -88,6 +128,10 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         FreezeHeaderRow(worksheet);
     }
 
+    /// <summary>
+    ///     Formats the header row with bold text, center alignment, and color
+    /// </summary>
+    /// <param name="worksheet">The worksheet containing the header row</param>
     private static void FormatHeaderRow(IWorksheet worksheet)
     {
         var headerRange = worksheet["A1:E1"];
@@ -98,6 +142,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         headerRange.CellStyle.Font.Color = ExcelKnownColors.White;
     }
 
+    /// <summary>
+    ///     Formats normal cells with center alignment
+    /// </summary>
+    /// <param name="worksheet">The worksheet containing the cells to format</param>
+    /// <param name="rowCount">The number of data rows in the worksheet</param>
     private static void FormatNormalCells(IWorksheet worksheet, int rowCount)
     {
         var normalRange = worksheet[$"A2:C{rowCount + 1}"];
@@ -105,6 +154,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         normalRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
     }
 
+    /// <summary>
+    ///     Applies borders to the entire table
+    /// </summary>
+    /// <param name="worksheet">The worksheet containing the table</param>
+    /// <param name="rowCount">The number of data rows in the worksheet</param>
     private static void ApplyTableBorders(IWorksheet worksheet, int rowCount)
     {
         var tableRange = worksheet[$"A1:E{rowCount + 1}"];
@@ -114,17 +168,30 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         tableRange.NumberFormat = "@";
     }
 
+    /// <summary>
+    ///     Formats text cells to enable text wrapping
+    /// </summary>
+    /// <param name="worksheet">The worksheet containing the text cells</param>
+    /// <param name="rowCount">The number of data rows in the worksheet</param>
     private static void FormatTextCells(IWorksheet worksheet, int rowCount)
     {
         var textRange = worksheet[$"D2:E{rowCount + 1}"];
         textRange.WrapText = true;
     }
 
+    /// <summary>
+    ///     Freezes the header row so it remains visible when scrolling
+    /// </summary>
+    /// <param name="worksheet">The worksheet to freeze the header row on</param>
     private static void FreezeHeaderRow(IWorksheet worksheet)
     {
         worksheet["A2:E2"].FreezePanes();
     }
 
+    /// <summary>
+    ///     Sets appropriate column widths for optimal viewing
+    /// </summary>
+    /// <param name="worksheet">The worksheet to set column widths on</param>
     private static void SetColumnWidths(IWorksheet worksheet)
     {
         worksheet["A:B"].ColumnWidth = 15;
@@ -132,6 +199,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         worksheet["D:E"].ColumnWidth = 50;
     }
 
+    /// <summary>
+    ///     Writes the W3 string items data to the worksheet
+    /// </summary>
+    /// <param name="worksheet">The worksheet to write data to</param>
+    /// <param name="w3StringItems">The W3 string items to write</param>
     private static void WriteDataToWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> w3StringItems)
     {
         for (var i = 0; i < w3StringItems.Count; i++)

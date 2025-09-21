@@ -35,6 +35,7 @@ namespace Witcher3StringEditor;
 
 /// <summary>
 ///     Interaction logic for App.xaml
+///     Main application class that handles startup, initialization, and shutdown processes
 /// </summary>
 public sealed partial class App : IDisposable
 {
@@ -44,14 +45,25 @@ public sealed partial class App : IDisposable
     private ObserverBase<LogEvent>? logObserver;
     private Mutex? mutex;
 
+    /// <summary>
+    ///     Gets a value indicating whether the application is running in debug mode
+    /// </summary>
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
+    /// <summary>
+    ///     Disposes of the resources used by the application
+    /// </summary>
     public void Dispose()
     {
         Dispose(true);
     }
 
+    /// <summary>
+    ///     Handles the startup of the application
+    ///     Checks for existing instances and initializes the application if none is running
+    /// </summary>
+    /// <param name="e">Startup event arguments</param>
     protected override void OnStartup(StartupEventArgs e)
     {
         if (IsAnotherInstanceRunning())
@@ -67,6 +79,10 @@ public sealed partial class App : IDisposable
         }
     }
 
+    /// <summary>
+    ///     Initializes the application components
+    ///     Sets up exception handling, services, settings, logging, and culture
+    /// </summary>
     private void InitializeApplication()
     {
         SetupExceptionHandling();
@@ -78,6 +94,10 @@ public sealed partial class App : IDisposable
         new MainWindow().Show();
     }
 
+    /// <summary>
+    ///     Initializes the logging system
+    ///     Sets up observers to capture log events
+    /// </summary>
     private void InitializeLogging()
     {
         logObserver = new AnonymousObserver<LogEvent>(static x =>
@@ -85,12 +105,21 @@ public sealed partial class App : IDisposable
         InitializeLogging(logObserver);
     }
 
+    /// <summary>
+    ///     Initializes the application settings
+    ///     Loads configuration service and application settings from the IoC container
+    /// </summary>
     private void InitializeAppSettings()
     {
         configService = Ioc.Default.GetRequiredService<IConfigService>();
         appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
     }
 
+    /// <summary>
+    ///     Gets the path to the application settings file
+    ///     Creates the configuration folder if it doesn't exist
+    /// </summary>
+    /// <returns>The full path to the application settings file</returns>
     private static string GetAppSettingsPath()
     {
         var configFolderPath = Path.Combine(
@@ -102,6 +131,10 @@ public sealed partial class App : IDisposable
         return configPath;
     }
 
+    /// <summary>
+    ///     Initializes the application culture (language)
+    ///     Sets the culture based on saved settings or resolves the supported culture
+    /// </summary>
     private void InitializeCulture()
     {
         var cultureInfo = appSettings!.Language == string.Empty
@@ -112,6 +145,10 @@ public sealed partial class App : IDisposable
         I18NExtension.Culture = cultureInfo;
     }
 
+    /// <summary>
+    ///     Registers the Syncfusion license
+    ///     Reads the license from embedded resources and registers it with Syncfusion
+    /// </summary>
     private static void RegisterSyncfusionLicense()
     {
         using var stream = Assembly.GetExecutingAssembly()
@@ -120,6 +157,10 @@ public sealed partial class App : IDisposable
         SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
     }
 
+    /// <summary>
+    ///     Sets up global exception handling
+    ///     Registers handlers for unhandled exceptions and unobserved task exceptions
+    /// </summary>
     private void SetupExceptionHandling()
     {
         DispatcherUnhandledException += static (_, e) =>
@@ -136,6 +177,11 @@ public sealed partial class App : IDisposable
         };
     }
 
+    /// <summary>
+    ///     Checks if another instance of the application is already running
+    ///     Uses a mutex to determine if this is the only instance
+    /// </summary>
+    /// <returns>True if another instance is running, false otherwise</returns>
     private bool IsAnotherInstanceRunning()
     {
         mutex = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
@@ -143,6 +189,11 @@ public sealed partial class App : IDisposable
         return !createdNew;
     }
 
+    /// <summary>
+    ///     Initializes the logging system with the specified observer
+    ///     Configures Serilog to write to file, debug output, and the specified observer
+    /// </summary>
+    /// <param name="observer">The observer to subscribe to log events</param>
     private static void InitializeLogging(IObserver<LogEvent> observer)
     {
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
@@ -154,6 +205,10 @@ public sealed partial class App : IDisposable
             .CreateLogger();
     }
 
+    /// <summary>
+    ///     Activates an existing instance of the application
+    ///     Finds the existing process and brings its window to the foreground
+    /// </summary>
     private static void ActivateExistingInstance()
     {
         using var existingProcess = FindExistingProcessInstance();
@@ -161,6 +216,11 @@ public sealed partial class App : IDisposable
         ActivateExistingInstanceWindow(mainWindowHandle);
     }
 
+    /// <summary>
+    ///     Activates the window of an existing application instance
+    ///     Restores the window if minimized and brings it to the foreground
+    /// </summary>
+    /// <param name="mainWindowHandle">The handle to the main window of the existing instance</param>
     private static void ActivateExistingInstanceWindow(HWND mainWindowHandle)
     {
         var placement = new WINDOWPLACEMENT();
@@ -171,12 +231,21 @@ public sealed partial class App : IDisposable
         PInvoke.SetForegroundWindow(mainWindowHandle);
     }
 
+    /// <summary>
+    ///     Finds an existing process instance of the application
+    /// </summary>
+    /// <returns>The existing process instance</returns>
     private static Process FindExistingProcessInstance()
     {
         using var currentProcess = Process.GetCurrentProcess();
         return Process.GetProcessesByName(currentProcess.ProcessName).First(p => p.Id != currentProcess.Id);
     }
 
+    /// <summary>
+    ///     Initializes the dependency injection services
+    ///     Registers all services, view models, and other dependencies with the IoC container
+    /// </summary>
+    /// <param name="configPath">The path to the configuration file</param>
     private static void InitializeServices(string configPath)
     {
         Ioc.Default.ConfigureServices(new ServiceCollection()
@@ -205,6 +274,11 @@ public sealed partial class App : IDisposable
             .BuildServiceProvider());
     }
 
+    /// <summary>
+    ///     Creates and configures the strong view locator
+    ///     Registers view models with their corresponding views
+    /// </summary>
+    /// <returns>The configured StrongViewLocator</returns>
     private static StrongViewLocator CreatStrongViewLocator()
     {
         var viewLocator = new StrongViewLocator();
@@ -220,6 +294,11 @@ public sealed partial class App : IDisposable
         return viewLocator;
     }
 
+    /// <summary>
+    ///     Handles the application exit event
+    ///     Saves settings, flushes logs, and disposes resources
+    /// </summary>
+    /// <param name="e">Exit event arguments</param>
     protected override void OnExit(ExitEventArgs e)
     {
         configService?.Save(appSettings);
@@ -228,6 +307,10 @@ public sealed partial class App : IDisposable
         Dispose();
     }
 
+    /// <summary>
+    ///     Disposes of the resources used by the application
+    /// </summary>
+    /// <param name="disposing">True if called from Dispose(), false if called from finalizer</param>
     private void Dispose(bool disposing)
     {
         if (disposedValue) return;

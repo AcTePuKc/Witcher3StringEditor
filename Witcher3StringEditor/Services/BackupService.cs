@@ -9,15 +9,30 @@ using Witcher3StringEditor.Models;
 
 namespace Witcher3StringEditor.Services;
 
+/// <summary>
+///     Provides backup functionality for files
+///     Implements the IBackupService interface to handle creating, restoring, and deleting file backups
+/// </summary>
 internal class BackupService(IAppSettings appSettings) : IBackupService
 {
+    /// <summary>
+    ///     The path to the backup folder where backup files are stored
+    /// </summary>
     private readonly string backupFolderPath
         = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Backup");
 
+    /// <summary>
+    ///     Gets a value indicating whether the application is running in debug mode
+    /// </summary>
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
+    /// <summary>
+    ///     Creates a backup of the specified file
+    /// </summary>
+    /// <param name="filePath">The path to the file to back up</param>
+    /// <returns>True if the backup was created successfully, false otherwise</returns>
     public bool Backup(string filePath)
     {
         try
@@ -41,6 +56,11 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
     }
 
+    /// <summary>
+    ///     Restores a file from the specified backup item
+    /// </summary>
+    /// <param name="backupItem">The backup item containing information about the backup to restore</param>
+    /// <returns>True if the restore operation was successful, false otherwise</returns>
     public bool Restore(IBackupItem backupItem)
     {
         try
@@ -61,6 +81,11 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
     }
 
+    /// <summary>
+    ///     Deletes the specified backup item
+    /// </summary>
+    /// <param name="backupItem">The backup item to delete</param>
+    /// <returns>True if the deletion was successful, false otherwise</returns>
     public bool Delete(IBackupItem backupItem)
     {
         try
@@ -78,6 +103,11 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         }
     }
 
+    /// <summary>
+    ///     Validates that the file exists and computes its SHA256 hash
+    /// </summary>
+    /// <param name="filePath">The path to the file to validate and hash</param>
+    /// <returns>The SHA256 hash of the file</returns>
     private static string ValidateAndGetHash(string filePath)
     {
         Guard.IsTrue(File.Exists(filePath));
@@ -86,12 +116,21 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         return hash;
     }
 
+    /// <summary>
+    ///     Ensures that the backup directory exists, creating it if necessary
+    /// </summary>
+    /// <param name="backupDirectoryPath">The path to the backup directory</param>
     private static void EnsureBackupDirectoryExists(string backupDirectoryPath)
     {
         if (!Directory.Exists(backupDirectoryPath))
             Directory.CreateDirectory(backupDirectoryPath);
     }
 
+    /// <summary>
+    ///     Checks if a backup with the same hash and original path already exists
+    /// </summary>
+    /// <param name="backupItem">The backup item to check for duplicates</param>
+    /// <returns>True if a duplicate backup exists, false otherwise</returns>
     private bool IsDuplicateBackup(BackupItem backupItem)
     {
         return appSettings.BackupItems.Any(x =>
@@ -100,6 +139,12 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             File.Exists(x.BackupPath));
     }
 
+    /// <summary>
+    ///     Executes the backup operation by copying the file to the backup location and adding it to the backup items
+    ///     collection
+    /// </summary>
+    /// <param name="backupItem">The backup item to execute the backup for</param>
+    /// <returns>True if the backup was executed successfully</returns>
     private bool ExecuteBackup(BackupItem backupItem)
     {
         File.Copy(backupItem.OrginPath, backupItem.BackupPath);
@@ -108,6 +153,11 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         return true;
     }
 
+    /// <summary>
+    ///     Computes the SHA256 hash of the specified file
+    /// </summary>
+    /// <param name="filePath">The path to the file to hash</param>
+    /// <returns>The SHA256 hash of the file as a hexadecimal string</returns>
     private static string ComputeSha256Hash(string filePath)
     {
         try

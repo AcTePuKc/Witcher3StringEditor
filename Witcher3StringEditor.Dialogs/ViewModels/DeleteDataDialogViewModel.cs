@@ -6,15 +6,35 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
+/// <summary>
+///     ViewModel for the delete data confirmation dialog
+///     Handles user confirmation for deleting selected W3 string items
+///     Implements IModalDialogViewModel for dialog result handling and ICloseable for close notifications
+/// </summary>
+/// <param name="w3StringItems">The collection of W3 string items to be deleted</param>
 public partial class DeleteDataDialogViewModel(IEnumerable<IW3StringItem> w3StringItems)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
+    /// <summary>
+    ///     Gets the collection of W3 string items to be deleted
+    /// </summary>
     public IEnumerable<IW3StringItem> W3StringItems { get; } = w3StringItems;
 
+    /// <summary>
+    ///     Event that is raised when the dialog requests to be closed
+    /// </summary>
     public event EventHandler? RequestClose;
 
+    /// <summary>
+    ///     Gets the dialog result value
+    ///     True if the user confirmed deletion, false if cancelled
+    /// </summary>
     public bool? DialogResult { get; private set; }
 
+    /// <summary>
+    ///     Handles the delete confirmation action
+    ///     Sets the dialog result to true and requests the dialog to close
+    /// </summary>
     [RelayCommand]
     private void Delete()
     {
@@ -23,6 +43,10 @@ public partial class DeleteDataDialogViewModel(IEnumerable<IW3StringItem> w3Stri
         Log.Information("The selected W3Items have been deleted.");
     }
 
+    /// <summary>
+    ///     Handles the cancel action
+    ///     Sets the dialog result to false and requests the dialog to close
+    /// </summary>
     [RelayCommand]
     private void Cancel()
     {

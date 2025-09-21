@@ -13,8 +13,17 @@ using Witcher3StringEditor.Dialogs.Messaging;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
+/// <summary>
+///     ViewModel for the recent files dialog window
+///     Manages the display and interaction with recently opened files
+///     Implements IModalDialogViewModel for dialog result handling and ICloseable for close notifications
+/// </summary>
 public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
+    /// <summary>
+    ///     Initializes a new instance of the RecentDialogViewModel class
+    /// </summary>
+    /// <param name="appSettings">Application settings containing the recent items collection</param>
     public RecentDialogViewModel(IAppSettings appSettings)
     {
         AppSettings = appSettings;
@@ -24,11 +33,28 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
             OnRecentItemsOnCollectionChanged);
     }
 
+    /// <summary>
+    ///     Gets the application settings service
+    /// </summary>
     public IAppSettings AppSettings { get; }
+
+    /// <summary>
+    ///     Event that is raised when the dialog requests to be closed
+    /// </summary>
     public event EventHandler? RequestClose;
 
+    /// <summary>
+    ///     Gets the dialog result value
+    ///     Returns true to indicate that the dialog was closed successfully
+    /// </summary>
     public bool? DialogResult => true;
 
+    /// <summary>
+    ///     Handles changes to the recent items collection
+    ///     Logs information when items are removed from the collection
+    /// </summary>
+    /// <param name="sender">The recent items collection</param>
+    /// <param name="e">The collection change event arguments</param>
     private static void OnRecentItemsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.Action == NotifyCollectionChangedAction.Remove)
@@ -36,6 +62,11 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
                 e.OldItems?.Count ?? 0);
     }
 
+    /// <summary>
+    ///     Opens a recent file
+    ///     Checks if the file exists and handles accordingly
+    /// </summary>
+    /// <param name="recentItem">The recent item to open</param>
     [RelayCommand]
     private async Task Open(IRecentItem recentItem)
     {
@@ -45,6 +76,11 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
             HandleExistingFile(recentItem);
     }
 
+    /// <summary>
+    ///     Handles opening an existing file
+    ///     Closes the dialog and sends a message to open the file
+    /// </summary>
+    /// <param name="recentItem">The recent item to open</param>
     private void HandleExistingFile(IRecentItem recentItem)
     {
         RequestClose?.Invoke(this, EventArgs.Empty);
@@ -52,6 +88,11 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
             MessageTokens.RecentFileOpened);
     }
 
+    /// <summary>
+    ///     Handles the case when a recent file is missing
+    ///     Notifies the user and removes the recent item if confirmed
+    /// </summary>
+    /// <param name="recentItem">The recent item that is missing</param>
     private async Task HandleMissingFile(IRecentItem recentItem)
     {
         LogMissingFile(recentItem.FilePath);
@@ -59,6 +100,11 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
             TryRemoveRecentItem(recentItem);
     }
 
+    /// <summary>
+    ///     Attempts to remove a recent item from the collection
+    ///     Logs the result of the operation
+    /// </summary>
+    /// <param name="recentItem">The recent item to remove</param>
     private void TryRemoveRecentItem(IRecentItem recentItem)
     {
         if (AppSettings.RecentItems.Remove(recentItem))
@@ -67,12 +113,21 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
             Log.Error("The recent item for file {Path} could not be removed.", recentItem.FilePath);
     }
 
+    /// <summary>
+    ///     Notifies the user that a file was not found
+    /// </summary>
+    /// <param name="filePath">The path of the file that was not found</param>
+    /// <returns>True if the user confirmed the notification, false otherwise</returns>
     private static async Task<bool> NotifyFileNotFound(string filePath)
     {
         return await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(filePath),
             MessageTokens.OpenedFileNoFound);
     }
 
+    /// <summary>
+    ///     Logs an error when a recent file is missing
+    /// </summary>
+    /// <param name="filePath">The path of the missing file</param>
     private static void LogMissingFile(string filePath)
     {
         Log.Error("The file {Path} for the recent item being opened does not exist.", filePath);

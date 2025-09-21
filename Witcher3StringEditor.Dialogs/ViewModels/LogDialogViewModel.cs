@@ -9,11 +9,23 @@ using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
+/// <summary>
+///     ViewModel for the log dialog window
+///     Manages the display of log events in the UI and synchronizes with the source log collection
+///     Implements IModalDialogViewModel to support dialog result handling
+/// </summary>
 public class LogDialogViewModel
     : ObservableObject, IModalDialogViewModel
 {
+    /// <summary>
+    ///     The source collection of log events to display
+    /// </summary>
     private readonly ObservableCollection<LogEvent> sourceLogEvents;
 
+    /// <summary>
+    ///     Initializes a new instance of the LogDialogViewModel class
+    /// </summary>
+    /// <param name="logEvents">The source collection of log events to display</param>
     public LogDialogViewModel(ObservableCollection<LogEvent> logEvents)
     {
         sourceLogEvents = logEvents;
@@ -26,10 +38,23 @@ public class LogDialogViewModel
                 OnLogEventsCollectionChanged);
     }
 
+    /// <summary>
+    ///     Gets the collection of log events for display in the UI
+    /// </summary>
     public ObservableCollection<LogEventItemModel> LogEvents { get; } = [];
 
+    /// <summary>
+    ///     Gets the dialog result value
+    ///     Returns true to indicate that the dialog was closed successfully
+    /// </summary>
     public bool? DialogResult => true;
 
+    /// <summary>
+    ///     Handles changes to the source log events collection
+    ///     Adds new log events to the UI collection when items are added to the source collection
+    /// </summary>
+    /// <param name="sender">The source collection</param>
+    /// <param name="e">The collection change event arguments</param>
     // ReSharper disable once AsyncVoidEventHandlerMethod
     private async void OnSourceLogsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
@@ -38,6 +63,12 @@ public class LogDialogViewModel
             await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(new LogEventItemModel(item)));
     }
 
+    /// <summary>
+    ///     Handles changes to the UI log events collection
+    ///     Removes log events from the source collection when items are removed from the UI collection
+    /// </summary>
+    /// <param name="sender">The UI collection</param>
+    /// <param name="e">The collection change event arguments</param>
     // ReSharper disable once AsyncVoidEventHandlerMethod
     private async void OnLogEventsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {

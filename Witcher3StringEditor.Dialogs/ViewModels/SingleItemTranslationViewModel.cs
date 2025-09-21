@@ -15,21 +15,44 @@ using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
+/// <summary>
+///     ViewModel for single item translation operations
+///     Handles translation of individual items with navigation between items
+///     Inherits from TranslationViewModelBase to share common translation functionality
+/// </summary>
 public sealed partial class SingleItemTranslationViewModel : TranslationViewModelBase
 {
+    /// <summary>
+    ///     Gets or sets the index of the currently selected item for translation
+    ///     Notifies CanExecute changes for Previous and Next commands when this value changes
+    /// </summary>
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     private int currentItemIndex = -1;
 
+    /// <summary>
+    ///     Gets or sets the current translate item model containing the text to translate
+    /// </summary>
     [ObservableProperty] private TranslateItemModel? currentTranslateItemModel;
 
+    /// <summary>
+    ///     Gets or sets a value indicating whether a translation operation is in progress
+    ///     Notifies CanExecute changes for Previous, Next, and Save commands when this value changes
+    /// </summary>
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(PreviousCommand))]
     [NotifyCanExecuteChangedFor(nameof(NextCommand))]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private bool isBusy;
 
+    /// <summary>
+    ///     Initializes a new instance of the SingleItemTranslationViewModel class
+    /// </summary>
+    /// <param name="appSettings">Application settings service</param>
+    /// <param name="translator">Translation service</param>
+    /// <param name="w3StringItems">Collection of items to translate</param>
+    /// <param name="index">Initial index of the item to translate</param>
     public SingleItemTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
         int index) : base(appSettings, translator, w3StringItems)
@@ -38,17 +61,37 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         Log.Information("Initializing SingleItemTranslationViewModel.");
     }
 
+    /// <summary>
+    ///     Gets a value indicating whether the Save command can be executed
+    ///     Save is available when no translation operation is in progress
+    /// </summary>
     private bool CanSave => !IsBusy;
 
+    /// <summary>
+    ///     Gets a value indicating whether the Previous command can be executed
+    ///     Previous is available when not at the first item and no translation operation is in progress
+    /// </summary>
     private bool CanPrevious => CurrentItemIndex > 0 && !IsBusy;
 
+    /// <summary>
+    ///     Gets a value indicating whether the Next command can be executed
+    ///     Next is available when not at the last item and no translation operation is in progress
+    /// </summary>
     private bool CanNext => CurrentItemIndex < W3StringItems.Count - 1 && !IsBusy;
 
+    /// <summary>
+    ///     Gets a value indicating whether a translation operation is currently in progress
+    /// </summary>
+    /// <returns>True if busy, false otherwise</returns>
     public override bool GetIsBusy()
     {
         return IsBusy;
     }
 
+    /// <summary>
+    ///     Disposes of the view model resources
+    ///     Cancels any ongoing translation operations and disposes the cancellation token source
+    /// </summary>
     public override async ValueTask DisposeAsync()
     {
         if (CancellationTokenSource != null)
@@ -61,17 +104,31 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         Log.Information("SingleItemTranslationViewModel is being disposed.");
     }
 
+    /// <summary>
+    ///     Called when the CurrentItemIndex property changes
+    ///     Updates the current translate item model with the selected item's data
+    /// </summary>
+    /// <param name="value">The new current item index value</param>
     partial void OnCurrentItemIndexChanged(int value)
     {
         var selectedItem = W3StringItems[value];
         CurrentTranslateItemModel = new TranslateItemModel { Id = selectedItem.TrackingId, Text = selectedItem.Text };
     }
 
+    /// <summary>
+    ///     Called when the IsBusy property changes
+    ///     Sends a message to notify other components of the busy state change
+    /// </summary>
+    /// <param name="value">The new busy state value</param>
     partial void OnIsBusyChanged(bool value)
     {
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(value), MessageTokens.TranslatorIsBusy);
     }
 
+    /// <summary>
+    ///     Translates the current item's text
+    ///     Uses the configured translator to perform the translation operation
+    /// </summary>
     [RelayCommand]
     private async Task Translate()
     {
@@ -119,6 +176,14 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         }
     }
 
+    /// <summary>
+    ///     Executes the translation task with cancellation support
+    /// </summary>
+    /// <param name="text">The text to translate</param>
+    /// <param name="toLanguage">The target language</param>
+    /// <param name="formLanguage">The source language</param>
+    /// <param name="cancellationTokenSource">The cancellation token source</param>
+    /// <returns>A Result containing the translated text if successful</returns>
     private async Task<Result<string>> ExecuteTranslationTask(string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
     {
@@ -130,6 +195,9 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         return !completedTask.IsCanceled ? Result.Ok((await translateTask).Translation) : Result.Fail(string.Empty);
     }
 
+    /// <summary>
+    ///     Saves the translated text to the underlying data model
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
     {
@@ -147,6 +215,11 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         }
     }
 
+    /// <summary>
+    ///     Navigates to another item (previous or next) in the collection
+    ///     Automatically saves the current translation if it hasn't been saved yet
+    /// </summary>
+    /// <param name="direction">The direction to navigate (-1 for previous, 1 for next)</param>
     private async Task Navigate(int direction)
     {
         try
@@ -167,6 +240,10 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         }
     }
 
+    /// <summary>
+    ///     Saves the current translation to the underlying data model
+    ///     Finds the original item by ID, clones it, updates the text, and sends a message with the updated item
+    /// </summary>
     private void SaveTranslation()
     {
         Guard.IsNotNull(CurrentTranslateItemModel);
@@ -179,12 +256,18 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         CurrentTranslateItemModel.IsSaved = true;
     }
 
+    /// <summary>
+    ///     Navigates to the previous item in the collection
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanPrevious))]
     private async Task Previous()
     {
         await Navigate(-1);
     }
 
+    /// <summary>
+    ///     Navigates to the next item in the collection
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanNext))]
     private async Task Next()
     {

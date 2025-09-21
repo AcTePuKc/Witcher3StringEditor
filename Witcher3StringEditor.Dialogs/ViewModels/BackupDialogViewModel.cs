@@ -10,14 +10,33 @@ using Witcher3StringEditor.Common.Constants;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
+/// <summary>
+///     ViewModel for the backup dialog window
+///     Handles backup restoration and deletion operations
+///     Implements IModalDialogViewModel to support dialog result handling
+/// </summary>
+/// <param name="appSettings">Application settings service</param>
+/// <param name="backupService">Backup service for managing backup operations</param>
 public partial class BackupDialogViewModel(
     IAppSettings appSettings,
     IBackupService backupService)
     : ObservableObject, IModalDialogViewModel
 {
+    /// <summary>
+    ///     Gets the application settings service
+    /// </summary>
     public IAppSettings AppSettings => appSettings;
+
+    /// <summary>
+    ///     Gets the dialog result value
+    ///     Returns true to indicate that the dialog was closed successfully
+    /// </summary>
     public bool? DialogResult => true;
 
+    /// <summary>
+    ///     Restores a backup file to its original location
+    /// </summary>
+    /// <param name="backupItem">The backup item to restore</param>
     [RelayCommand]
     private async Task Restore(IBackupItem backupItem)
     {
@@ -27,6 +46,11 @@ public partial class BackupDialogViewModel(
             await HandleExistingBackupFile(backupItem);
     }
 
+    /// <summary>
+    ///     Handles the restoration process for an existing backup file
+    ///     Sends a confirmation request and performs the restoration if approved
+    /// </summary>
+    /// <param name="backupItem">The backup item to restore</param>
     private async Task HandleExistingBackupFile(IBackupItem backupItem)
     {
         if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.BackupRestore))
@@ -38,6 +62,11 @@ public partial class BackupDialogViewModel(
         }
     }
 
+    /// <summary>
+    ///     Handles the case when a backup file is missing
+    ///     Sends an error notification and deletes the backup item if confirmed
+    /// </summary>
+    /// <param name="backupItem">The backup item with the missing file</param>
     private async Task HandleMissingBackupFile(IBackupItem backupItem)
     {
         Log.Error("The backup file {Path} does no exist.", backupItem.BackupPath);
@@ -45,6 +74,10 @@ public partial class BackupDialogViewModel(
             backupService.Delete(backupItem);
     }
 
+    /// <summary>
+    ///     Deletes a backup file
+    /// </summary>
+    /// <param name="backupItem">The backup item to delete</param>
     [RelayCommand]
     private async Task Delete(IBackupItem backupItem)
     {

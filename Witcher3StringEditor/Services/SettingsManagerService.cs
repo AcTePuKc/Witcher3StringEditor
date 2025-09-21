@@ -9,10 +9,21 @@ using Witcher3StringEditor.Common.Constants;
 
 namespace Witcher3StringEditor.Services;
 
+/// <summary>
+///     Provides settings management functionality
+///     Implements the ISettingsManagerService interface to handle checking and applying application settings
+/// </summary>
 internal class SettingsManagerService : ISettingsManagerService
 {
+    /// <summary>
+    ///     The application settings instance
+    /// </summary>
     private readonly IAppSettings appSettings;
 
+    /// <summary>
+    ///     Initializes a new instance of the SettingsManagerService class
+    /// </summary>
+    /// <param name="appSettings">The application settings instance</param>
     public SettingsManagerService(IAppSettings appSettings)
     {
         this.appSettings = appSettings;
@@ -21,6 +32,11 @@ internal class SettingsManagerService : ISettingsManagerService
             notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
     }
 
+    /// <summary>
+    ///     Checks the current application settings and logs information about them
+    ///     If required settings are missing, sends a message to trigger the first run setup
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation</returns>
     public async Task CheckSettings()
     {
         Log.Information("Checking whether the settings are correct.");
@@ -43,6 +59,12 @@ internal class SettingsManagerService : ISettingsManagerService
         }
     }
 
+    /// <summary>
+    ///     Handles the PropertyChanged event of the AppSettings object
+    ///     Sends messages based on which property changed
+    /// </summary>
+    /// <param name="sender">The source of the event</param>
+    /// <param name="e">A PropertyChangedEventArgs that contains the event data</param>
     private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         switch (e.PropertyName)
@@ -64,11 +86,19 @@ internal class SettingsManagerService : ISettingsManagerService
         }
     }
 
+    /// <summary>
+    ///     Applies the translator change and logs the new translator
+    /// </summary>
+    /// <param name="appSettings">The application settings instance</param>
     private static void ApplyTranslatorChange(IAppSettings appSettings)
     {
         Log.Information("Translator changed to {Translator}", appSettings.Translator);
     }
 
+    /// <summary>
+    ///     Applies the language change and updates the culture
+    /// </summary>
+    /// <param name="language">The new language code</param>
     private static void ApplyLanguageChange(string language)
     {
         try

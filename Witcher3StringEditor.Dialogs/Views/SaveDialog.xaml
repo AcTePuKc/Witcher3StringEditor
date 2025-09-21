@@ -22,12 +22,18 @@
     WindowChrome.IsHitTestVisibleInChrome="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
+    <!-- 
+        Window resources containing data providers and converters
+    -->
     <Window.Resources>
         <ResourceDictionary>
+            <!-- Style for expander controls -->
             <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
             <Style BasedOn="{StaticResource ExpanderCardStyle}" TargetType="Expander">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
             </Style>
+
+            <!-- Data provider for W3 file types enumeration -->
             <ObjectDataProvider
                 x:Key="FileType"
                 MethodName="GetValues"
@@ -36,6 +42,8 @@
                     <x:Type TypeName="com:W3FileType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+
+            <!-- Data provider for W3 languages enumeration -->
             <ObjectDataProvider
                 x:Key="W3Language"
                 MethodName="GetValues"
@@ -44,32 +52,56 @@
                     <x:Type TypeName="com:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+
+            <!-- Converter for displaying W3 language native names -->
             <con:W3LanguageToNativeNameConverter x:Key="W3LanguageToNativeNameConverter" />
+
+            <!-- Converter for displaying W3 file type localized strings -->
             <con:W3FileTypeToLocalizedStringConverter x:Key="W3FileTypeToLocalizedStringConverter" />
         </ResourceDictionary>
     </Window.Resources>
+
+    <!-- 
+        Main grid layout for the save dialog
+        Contains two rows: title bar and content area
+    -->
     <Grid>
         <Grid.RowDefinitions>
+            <!-- Title bar row -->
             <RowDefinition Height="48" />
+            <!-- Content area row -->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <!-- Title text displayed in the title bar area -->
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
             Text="{I18N {x:Static l:LangKeys.SaveDialogTitle}}" />
+
+        <!-- Content grid containing save settings and action buttons -->
         <Grid Grid.Row="1" Margin="24,24,16,24">
             <Grid.RowDefinitions>
+                <!-- Save settings area -->
                 <RowDefinition Height="Auto" />
+                <!-- Action buttons area -->
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
+            <!-- Expander control for save settings -->
             <Expander VerticalAlignment="Top" IsExpanded="True">
+                <!-- Expander header containing file type selection -->
                 <Expander.Header>
                     <Grid Height="Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
+
+                        <!-- File type label -->
                         <TextBlock VerticalAlignment="Center" Text="{I18N {x:Static l:LangKeys.TargetFiletype}}" />
+
+                        <!-- File type selection combobox -->
                         <ComboBox
                             Grid.Column="1"
                             HorizontalAlignment="Stretch"
@@ -90,14 +122,23 @@
                         </ComboBox>
                     </Grid>
                 </Expander.Header>
+
+                <!-- Expander content containing language and ID space settings -->
                 <Expander.Content>
                     <Grid>
                         <Grid.RowDefinitions>
+                            <!-- Language selection row -->
                             <RowDefinition Height="Auto" />
+                            <!-- ID space check row -->
                             <RowDefinition Height="Auto" />
+                            <!-- ID space input row -->
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
+
+                        <!-- Target language label -->
                         <TextBlock VerticalAlignment="Center" Text="{I18N {x:Static l:LangKeys.TargetLanguage}}" />
+
+                        <!-- Target language selection combobox -->
                         <ComboBox
                             Grid.Row="0"
                             HorizontalAlignment="Right"
@@ -110,11 +151,14 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+
+                        <!-- ID space check settings (only visible for W3Strings file type) -->
                         <Grid Grid.Row="1">
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
+                                        <!-- Show when file type is W3Strings -->
                                         <DataTrigger Binding="{Binding TargetFileType}"
                                                      Value="{x:Static com:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
@@ -122,10 +166,14 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
+
+                            <!-- Ignore ID space check label -->
                             <TextBlock
                                 Margin="0,16,0,0"
                                 VerticalAlignment="Center"
                                 Text="{I18N {x:Static l:LangKeys.IgnoreIDSpaceCheck}}" />
+
+                            <!-- Toggle switch for ignoring ID space check -->
                             <ui:ToggleSwitch
                                 Margin="0,16,0,0"
                                 HorizontalAlignment="Right"
@@ -133,6 +181,8 @@
                                 OffContent="{I18N {x:Static l:LangKeys.IsOff}}"
                                 OnContent="{I18N {x:Static l:LangKeys.IsOn}}" />
                         </Grid>
+
+                        <!-- ID space input control (only visible for W3Strings file type and when not ignoring ID space check) -->
                         <ui:NumberBox
                             Grid.Row="2"
                             Margin="0,16,0,0"
@@ -146,16 +196,20 @@
                                 <Style TargetType="ui:NumberBox">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
+                                        <!-- Show when file type is W3Strings -->
                                         <DataTrigger Binding="{Binding TargetFileType}"
                                                      Value="{x:Static com:W3FileType.W3Strings}">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
+                                        <!-- Hide when ignoring ID space check -->
                                         <DataTrigger Binding="{Binding IsIgnoreIdSpaceCheck}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </ui:NumberBox.Style>
+
+                            <!-- Tooltip for ID space input -->
                             <ui:NumberBox.ToolTip>
                                 <ToolTip Content="{I18N {x:Static l:LangKeys.IdSpaceToolTip}}" />
                             </ui:NumberBox.ToolTip>
@@ -163,6 +217,8 @@
                     </Grid>
                 </Expander.Content>
             </Expander>
+
+            <!-- Action buttons for saving or canceling -->
             <iwk:SimpleStackPanel
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
@@ -170,10 +226,13 @@
                 HorizontalAlignment="Center"
                 Orientation="Horizontal"
                 Spacing="16">
+                <!-- Save button -->
                 <Button
                     MinWidth="100"
                     Command="{Binding SaveCommand}"
                     Content="{I18N {x:Static l:LangKeys.SaveBtnContent}}" />
+
+                <!-- Cancel button -->
                 <Button
                     MinWidth="100"
                     Command="{Binding CancelCommand}"

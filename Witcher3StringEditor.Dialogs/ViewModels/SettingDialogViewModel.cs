@@ -9,6 +9,15 @@ using Witcher3StringEditor.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
+/// <summary>
+///     ViewModel for the settings dialog window
+///     Manages application settings including paths, translators, and supported cultures
+///     Implements IModalDialogViewModel to support dialog result handling
+/// </summary>
+/// <param name="appSettings">Application settings service</param>
+/// <param name="dialogService">Dialog service for showing file dialogs</param>
+/// <param name="translators">Collection of available translators</param>
+/// <param name="supportedCultures">Collection of supported cultures for localization</param>
 public partial class SettingDialogViewModel(
     IAppSettings appSettings,
     IDialogService dialogService,
@@ -16,14 +25,31 @@ public partial class SettingDialogViewModel(
     IEnumerable<CultureInfo> supportedCultures)
     : ObservableObject, IModalDialogViewModel
 {
+    /// <summary>
+    ///     Gets the application settings service
+    /// </summary>
     public IAppSettings AppSettings { get; } = appSettings;
 
+    /// <summary>
+    ///     Gets the collection of available translators
+    /// </summary>
     public IEnumerable<string> Translators { get; } = translators;
 
+    /// <summary>
+    ///     Gets the collection of supported cultures for localization
+    /// </summary>
     public IEnumerable<CultureInfo> SupportedCultures { get; } = supportedCultures;
 
+    /// <summary>
+    ///     Gets the dialog result value
+    ///     Returns true to indicate that the dialog was closed successfully
+    /// </summary>
     public bool? DialogResult => true;
 
+    /// <summary>
+    ///     Sets the path to the w3strings.exe file
+    ///     Opens a file dialog to allow the user to select the w3strings.exe file
+    /// </summary>
     [RelayCommand]
     private async Task SetW3StringsPath()
     {
@@ -41,6 +67,10 @@ public partial class SettingDialogViewModel(
         }
     }
 
+    /// <summary>
+    ///     Sets the path to the witcher3.exe file
+    ///     Opens a file dialog to allow the user to select the witcher3.exe file
+    /// </summary>
     [RelayCommand]
     private async Task SetGameExePath()
     {

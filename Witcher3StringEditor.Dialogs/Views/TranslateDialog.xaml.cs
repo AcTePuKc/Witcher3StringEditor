@@ -9,21 +9,35 @@ namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
 ///     Interaction logic for TranslateDialog.xaml
+///     This dialog provides translation functionality for W3 string items
+///     Supports both single item and batch translation modes
 /// </summary>
 public partial class TranslateDialog
 {
+    /// <summary>
+    ///     Initializes a new instance of the TranslateDialog class
+    ///     Sets up the UI components and registers message handlers for various operations
+    /// </summary>
     public TranslateDialog()
     {
         InitializeComponent();
         RegisterMessageHandlers();
     }
 
+    /// <summary>
+    ///     Registers all message handlers for the translate dialog
+    ///     Includes both notification message handlers and async request message handlers
+    /// </summary>
     private void RegisterMessageHandlers()
     {
         RegisterNotificationMessageHandlers();
         RegisterAsyncRequestMessageHandlers();
     }
 
+    /// <summary>
+    ///     Registers async request message handlers
+    ///     These handlers show message boxes and wait for user responses
+    /// </summary>
     private void RegisterAsyncRequestMessageHandlers()
     {
         var messageHandlers = CreateAsyncRequestHandlers();
@@ -31,6 +45,13 @@ public partial class TranslateDialog
             RegisterAsyncRequestHandler(token, message, caption);
     }
 
+    /// <summary>
+    ///     Registers a single async request message handler
+    ///     Shows a message box with Yes/No buttons and replies with the user's choice
+    /// </summary>
+    /// <param name="token">The message token to listen for</param>
+    /// <param name="message">Function that returns the message text</param>
+    /// <param name="caption">Function that returns the caption text</param>
     private void RegisterAsyncRequestHandler(string token, Func<string> message, Func<string> caption)
     {
         WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
@@ -46,6 +67,11 @@ public partial class TranslateDialog
             });
     }
 
+    /// <summary>
+    ///     Creates an array of async request message handler configurations
+    ///     Each configuration defines a message box that can be shown for a specific operation
+    /// </summary>
+    /// <returns>An array of async request handler configurations</returns>
     private static (string, Func<string>, Func<string>)[] CreateAsyncRequestHandlers()
     {
         return
@@ -61,6 +87,10 @@ public partial class TranslateDialog
         ];
     }
 
+    /// <summary>
+    ///     Registers notification message handlers
+    ///     These handlers show message boxes to inform the user of events or errors
+    /// </summary>
     private void RegisterNotificationMessageHandlers()
     {
         var notificationHandlers = CreateNotificationHandlers();
@@ -68,6 +98,13 @@ public partial class TranslateDialog
             RegisterNotificationHandler(token, message, caption);
     }
 
+    /// <summary>
+    ///     Registers a single notification message handler
+    ///     Shows a message box with an OK button to inform the user
+    /// </summary>
+    /// <param name="token">The message token to listen for</param>
+    /// <param name="message">Function that returns the message text based on the message value</param>
+    /// <param name="caption">Function that returns the caption text</param>
     private void RegisterNotificationHandler(string token, Func<ValueChangedMessage<string>, string> message,
         Func<string> caption)
     {
@@ -83,6 +120,11 @@ public partial class TranslateDialog
             });
     }
 
+    /// <summary>
+    ///     Creates an array of notification message handler configurations
+    ///     Each configuration defines a message box that can be shown for a specific notification
+    /// </summary>
+    /// <returns>An array of notification handler configurations</returns>
     private static (string, Func<ValueChangedMessage<string>, string>, Func<string>)[] CreateNotificationHandlers()
     {
         return
@@ -93,6 +135,12 @@ public partial class TranslateDialog
         ];
     }
 
+    /// <summary>
+    ///     Handles the closed event of the translate dialog
+    ///     Unregisters all message handlers to prevent memory leaks when the dialog is closed
+    /// </summary>
+    /// <param name="sender">The object that triggered the event</param>
+    /// <param name="e">The event arguments</param>
     private void Window_Closed(object sender, EventArgs e)
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);

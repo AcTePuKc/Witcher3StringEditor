@@ -6,8 +6,16 @@ using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Services;
 
+/// <summary>
+///     Provides functionality to play the game
+///     Implements the IPlayGameService interface to handle starting the game process
+/// </summary>
 internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
 {
+    /// <summary>
+    ///     Starts the game process using the configured game executable path
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation</returns>
     public async Task PlayGame()
     {
         try
@@ -37,12 +45,22 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
         }
     }
 
+    /// <summary>
+    ///     Handles the error data received event from the game process
+    /// </summary>
+    /// <param name="sender">The source of the event</param>
+    /// <param name="e">A DataReceivedEventArgs that contains the event data</param>
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))
             Log.Error("Error: {Data}.", e.Data);
     }
 
+    /// <summary>
+    ///     Handles the output data received event from the game process
+    /// </summary>
+    /// <param name="sender">The source of the event</param>
+    /// <param name="e">A DataReceivedEventArgs that contains the event data</param>
     private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (!string.IsNullOrWhiteSpace(e.Data))

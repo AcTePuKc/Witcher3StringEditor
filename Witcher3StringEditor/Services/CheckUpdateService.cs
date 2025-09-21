@@ -4,10 +4,21 @@ using Serilog;
 
 namespace Witcher3StringEditor.Services;
 
+/// <summary>
+///     Provides update checking functionality
+///     Implements the ICheckUpdateService interface to handle checking for application updates
+/// </summary>
 internal class CheckUpdateService : ICheckUpdateService
 {
+    /// <summary>
+    ///     The URL to check for updates
+    /// </summary>
     private readonly Uri updateUrl = new("https://witcher3stringeditorcheckupdate.azurewebsites.net/api/checkupdate");
 
+    /// <summary>
+    ///     Checks if an update is available for the application
+    /// </summary>
+    /// <returns>True if an update is available, false otherwise or if an error occurred</returns>
     public async Task<bool> CheckUpdate()
     {
         try

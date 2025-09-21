@@ -1,12 +1,16 @@
 ﻿<Application
-    x:Class="Witcher3StringEditor.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern">
+     x:Class="Witcher3StringEditor.App"
+     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern">
+    <!-- Application resources -->
     <Application.Resources>
         <ResourceDictionary>
+            <!-- Merged dictionaries for UI themes and controls -->
             <ResourceDictionary.MergedDictionaries>
+                <!-- Theme resources for the application -->
                 <ui:ThemeResources />
+                <!-- XAML controls resources -->
                 <ui:XamlControlsResources />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
