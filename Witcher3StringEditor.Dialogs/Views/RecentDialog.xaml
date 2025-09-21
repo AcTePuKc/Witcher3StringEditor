@@ -46,7 +46,6 @@
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Window.Resources>
-
     <!-- 
         Main grid layout for the recent files dialog
         Contains three rows: title bar, data grid, and pager controls
@@ -60,7 +59,6 @@
             <!-- Pager controls row -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <!-- Title bar area containing the dialog title and search box -->
         <Grid Height="48">
             <Grid.ColumnDefinitions>
@@ -68,14 +66,12 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <!-- Dialog title text -->
             <TextBlock
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 Text="{I18N {x:Static l:LangKeys.RecentDialogTitle}}" />
-
             <!-- Search box for filtering recent items -->
             <ui:AutoSuggestBox
                 Grid.Column="1"
@@ -88,7 +84,6 @@
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
         </Grid>
-
         <!-- Data grid displaying recent files -->
         <sf:SfDataGrid
             x:Name="SfDataGrid"
@@ -102,7 +97,6 @@
             RowHeight="30"
             SelectionMode="Extended"
             ShowRowHeader="True">
-
             <!-- Data grid resources for customizing row header appearance -->
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
@@ -130,7 +124,6 @@
                     </Style>
                 </ResourceDictionary>
             </sf:SfDataGrid.Resources>
-
             <!-- Interaction behaviors for handling grid operations -->
             <i:Interaction.Behaviors>
                 <!-- Behavior to handle grid size changes -->
@@ -140,7 +133,6 @@
                 <!-- Behavior to handle record deletion -->
                 <b:SfDataGridRecordDeletingBehavior />
             </i:Interaction.Behaviors>
-
             <!-- Data grid columns definition -->
             <sf:SfDataGrid.Columns>
                 <!-- File path column -->
@@ -150,7 +142,6 @@
                     MappingName="FilePath"
                     MinimumWidth="700"
                     TextWrapping="WrapWithOverflow" />
-
                 <!-- Opened time column -->
                 <sf:GridDateTimeColumn
                     ColumnSizer="SizeToHeader"
@@ -159,7 +150,6 @@
                     MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
-
                 <!-- Mark/pin column with custom checkbox template -->
                 <sf:GridTemplateColumn
                     HorizontalAlignment="Center"
@@ -177,7 +167,6 @@
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
 
-                <!-- Open file button column -->
                 <sf:GridTemplateColumn
                     HorizontalAlignment="Center"
                     AllowSorting="False"
@@ -200,7 +189,6 @@
                 </sf:GridTemplateColumn>
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
-
         <!-- Data pager for pagination of recent items -->
         <sf:SfDataPager
             x:Name="SfDataPager"

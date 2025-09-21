@@ -37,19 +37,16 @@
                 <!-- Translated text column -->
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <!-- Source text label -->
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
                 Text="{I18N {x:Static l:LangKeys.SrcTxt}}" />
-
             <!-- Translated text label -->
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="2"
                 Text="{I18N {x:Static l:LangKeys.TranslatedTxt}}" />
-
             <!-- Source language selection combobox -->
             <ComboBox
                 Grid.Row="2"
@@ -58,7 +55,6 @@
                 DisplayMemberPath="NativeName"
                 ItemsSource="{Binding Languages}"
                 SelectedValue="{Binding FormLanguage, Mode=TwoWay}" />
-
             <!-- Source text content display -->
             <TextBox
                 Grid.Row="4"
@@ -66,7 +62,6 @@
                 IsReadOnly="True"
                 Text="{Binding CurrentTranslateItemModel.Text, FallbackValue=''}"
                 TextWrapping="WrapWithOverflow" />
-
             <!-- Target language selection combobox -->
             <ComboBox
                 Grid.Row="2"
@@ -75,7 +70,6 @@
                 DisplayMemberPath="NativeName"
                 ItemsSource="{Binding Languages}"
                 SelectedValue="{Binding ToLanguage, Mode=TwoWay}" />
-
             <!-- Translated text input field -->
             <TextBox
                 Grid.Row="4"
@@ -101,7 +95,6 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-
             <!-- Action buttons for navigation, translation, and saving -->
             <iwk:SimpleStackPanel
                 Grid.Row="6"
@@ -116,21 +109,18 @@
                     HorizontalAlignment="Right"
                     Command="{Binding PreviousCommand}"
                     Content="{I18N {x:Static l:LangKeys.PreviousBtnContent}}" />
-
                 <!-- Translate button -->
                 <Button
                     MinWidth="100"
                     HorizontalAlignment="Right"
                     Command="{Binding TranslateCommand}"
                     Content="{I18N {x:Static l:LangKeys.TranslateBtnContent}}" />
-
                 <!-- Save translation button -->
                 <Button
                     MinWidth="100"
                     HorizontalAlignment="Left"
                     Command="{Binding SaveCommand}"
                     Content="{I18N {x:Static l:LangKeys.SaveBtnContent}}" />
-
                 <!-- Next item button -->
                 <Button
                     MinWidth="100"

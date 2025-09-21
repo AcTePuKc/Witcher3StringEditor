@@ -34,7 +34,6 @@
             <!-- Pager controls row -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <!-- Title bar area containing the dialog title and search box -->
         <Grid Height="48">
             <Grid.ColumnDefinitions>
@@ -42,14 +41,12 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <!-- Dialog title text -->
             <TextBlock
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 Text="{I18N {x:Static l:LangKeys.BackupDialogTitle}}" />
-
             <!-- Search box for filtering backup items -->
             <ui:AutoSuggestBox
                 Grid.Column="1"
@@ -62,7 +59,6 @@
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
         </Grid>
-
         <!-- Data grid displaying backup items -->
         <sf:SfDataGrid
             x:Name="SfDataGrid"
@@ -76,7 +72,6 @@
             NavigationMode="Row"
             RowHeight="30"
             ShowRowHeader="True">
-
             <!-- Data grid resources for customizing row header appearance -->
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
@@ -104,7 +99,6 @@
                     </Style>
                 </ResourceDictionary>
             </sf:SfDataGrid.Resources>
-
             <!-- Interaction behaviors for handling grid sizing and row height -->
             <i:Interaction.Behaviors>
                 <!-- Behavior to handle grid size changes -->
@@ -112,7 +106,6 @@
                 <!-- Behavior to handle row height queries -->
                 <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding ElementName=SfDataGrid, Path=RowHeight}" />
             </i:Interaction.Behaviors>
-
             <!-- Data grid columns definition -->
             <sf:SfDataGrid.Columns>
                 <!-- File name column -->
@@ -122,7 +115,6 @@
                     MappingName="FileName"
                     MinimumWidth="150"
                     TextAlignment="Center" />
-
                 <!-- Hash column -->
                 <sf:GridTextColumn
                     Width="200"
@@ -131,21 +123,18 @@
                     MinimumWidth="200"
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
-
                 <!-- Original path column -->
                 <sf:GridTextColumn
                     HeaderText="{I18N {x:Static l:LangKeys.OriginPath}}"
                     MappingName="OrginPath"
                     MinimumWidth="150"
                     TextWrapping="Wrap" />
-
                 <!-- Backup path column -->
                 <sf:GridTextColumn
                     HeaderText="{I18N {x:Static l:LangKeys.BackupPath}}"
                     MappingName="BackupPath"
                     MinimumWidth="150"
                     TextWrapping="Wrap" />
-
                 <!-- Backup time column -->
                 <sf:GridDateTimeColumn
                     Width="200"
@@ -154,7 +143,6 @@
                     MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
-
                 <!-- Restore button column -->
                 <sf:GridTemplateColumn
                     Width="100"
@@ -176,7 +164,6 @@
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
-
                 <!-- Delete button column -->
                 <sf:GridTemplateColumn
                     Width="100"
@@ -200,7 +187,6 @@
                 </sf:GridTemplateColumn>
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
-
         <!-- Data pager for pagination of backup items -->
         <sf:SfDataPager
             x:Name="SfDataPager"

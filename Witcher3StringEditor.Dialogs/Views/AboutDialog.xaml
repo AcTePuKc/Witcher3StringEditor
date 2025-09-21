@@ -30,13 +30,11 @@
             <!-- Content area row -->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
         <!-- Title text displayed in the title bar area -->
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
             Text="{I18N {x:Static l:LangKeys.AboutDialogTitle}}" />
-
         <!-- Content grid containing application information -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -51,14 +49,12 @@
                 <!-- Application info column -->
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <!-- Application icon displayed in the top left -->
             <ui:FontIcon
                 Width="100"
                 Margin="16,16,16,0"
                 FontSize="50"
                 Glyph="&#xE946;" />
-
             <!-- Grid containing application information details -->
             <Grid
                 Grid.Row="0"
@@ -79,14 +75,12 @@
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-
                 <!-- Version label and value -->
                 <TextBlock HorizontalAlignment="Right" Text="{I18N {x:Static l:LangKeys.Version}}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="2"
                     Text="{Binding AboutInfo[Version],Mode=OneTime}" />
-
                 <!-- Build time label and value -->
                 <TextBlock
                     Grid.Row="2"
@@ -97,7 +91,6 @@
                     Grid.Row="2"
                     Grid.Column="2"
                     Text="{Binding AboutInfo[BuildTime], ConverterCulture={x:Static g:CultureInfo.CurrentCulture},Mode=OneTime}" />
-
                 <!-- OS label and value -->
                 <TextBlock
                     Grid.Row="4"
@@ -108,7 +101,6 @@
                     Grid.Row="4"
                     Grid.Column="2"
                     Text="{Binding AboutInfo[OS],Mode=OneTime}" />
-
                 <!-- Runtime label and value -->
                 <TextBlock
                     Grid.Row="6"
@@ -120,7 +112,6 @@
                     Grid.Column="2"
                     Text="{Binding AboutInfo[Runtime],Mode=OneTime}" />
             </Grid>
-
             <!-- Scrollable area containing the list of dependencies -->
             <ScrollViewer
                 Grid.Row="1"

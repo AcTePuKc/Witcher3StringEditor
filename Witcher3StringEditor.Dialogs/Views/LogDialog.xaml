@@ -34,7 +34,6 @@
             <!-- Pager controls row -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <!-- Title bar area containing the dialog title and search box -->
         <Grid Height="48">
             <Grid.ColumnDefinitions>
@@ -42,14 +41,12 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <!-- Dialog title text -->
             <TextBlock
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
                 Text="{I18N {x:Static l:LangKeys.LogDialogTitle}}" />
-
             <!-- Search box for filtering log entries -->
             <ui:AutoSuggestBox
                 Grid.Column="1"
@@ -62,7 +59,6 @@
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
         </Grid>
-
         <!-- Data grid displaying log events -->
         <sf:SfDataGrid
             x:Name="SfDataGrid"
@@ -77,7 +73,6 @@
             RowHeight="30"
             SelectionMode="Extended"
             ShowRowHeader="True">
-
             <!-- Data grid resources for customizing row header appearance -->
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
@@ -105,7 +100,6 @@
                     </Style>
                 </ResourceDictionary>
             </sf:SfDataGrid.Resources>
-
             <!-- Interaction behaviors for handling grid sizing and row height -->
             <i:Interaction.Behaviors>
                 <!-- Behavior to handle grid size changes -->
@@ -113,7 +107,6 @@
                 <!-- Behavior to handle row height queries -->
                 <b:SfDataGridQueryRowHeightBehavior MinHeight="{Binding ElementName=SfDataGrid, Path=RowHeight}" />
             </i:Interaction.Behaviors>
-
             <!-- Data grid columns definition -->
             <sf:SfDataGrid.Columns>
                 <!-- Timestamp column -->
@@ -124,7 +117,6 @@
                     MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
-
                 <!-- Log level column -->
                 <sf:GridTextColumn
                     ColumnSizer="SizeToHeader"
@@ -132,7 +124,6 @@
                     MappingName="Level"
                     MinimumWidth="150"
                     TextAlignment="Center" />
-
                 <!-- Log message column -->
                 <sf:GridTextColumn
                     ColumnSizer="AutoWithLastColumnFill"
@@ -142,7 +133,6 @@
                     TextWrapping="WrapWithOverflow" />
             </sf:SfDataGrid.Columns>
         </sf:SfDataGrid>
-
         <!-- Data pager for pagination of log events -->
         <sf:SfDataPager
             x:Name="SfDataPager"

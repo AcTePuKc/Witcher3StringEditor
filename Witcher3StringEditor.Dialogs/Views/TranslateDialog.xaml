@@ -28,18 +28,15 @@
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
-
         <!-- Trigger for the Closed event -->
         <i:EventTrigger EventName="Closed">
             <i:InvokeCommandAction Command="{Binding ClosedCommand}" />
         </i:EventTrigger>
-
         <!-- Trigger for the Loaded event -->
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding DetectLanguageCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
     <!-- 
         Window resources containing data templates and template selector
     -->
@@ -52,7 +49,6 @@
                 <!-- Include single item translate data template -->
                 <ResourceDictionary Source="/Witcher3StringEditor.Dialogs;component/Views/TranslateDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
             <!-- Template selector to choose between single and batch translation views -->
             <t:TranslationViewTemplateSelector
                 x:Key="TranslationViewTemplateSelector"
@@ -60,7 +56,6 @@
                 TranslateDataTemplate="{StaticResource TranslateDataTemplate}" />
         </ResourceDictionary>
     </Window.Resources>
-
     <!-- 
         Main grid layout for the translate dialog
         Contains two rows: title bar and content area
@@ -72,13 +67,11 @@
             <!-- Content area row -->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
         <!-- Title text displayed in the title bar area -->
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
             Text="{Binding Title}" />
-
         <!-- Content grid containing the switch button and translation view -->
         <Grid Grid.Row="1" Margin="24,16,24,16">
             <Grid.RowDefinitions>
@@ -87,7 +80,6 @@
                 <!-- Translation view content row -->
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
             <!-- Button to switch between single and batch translation modes -->
             <Button
                 Margin="0,0,0,16"
@@ -95,7 +87,6 @@
                 Command="{Binding SwitchCommand}">
                 <ui:FontIcon Glyph="&#xE8AB;" />
             </Button>
-
             <!-- Content control that displays the appropriate translation view based on the current view model -->
             <ContentControl
                 Grid.Row="1"
