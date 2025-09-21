@@ -66,8 +66,10 @@ public sealed partial class App : IDisposable
     /// <param name="e">Startup event arguments</param>
     protected override void OnStartup(StartupEventArgs e)
     {
+        // Check if another instance is already running
         if (IsAnotherInstanceRunning())
         {
+            // If another instance is running, ask user if they want to activate it
             if (MessageBox.Show(Strings.MultipleInstanceMessage, Strings.MultipleInstanceCaption,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information) == MessageBoxResult.Yes) ActivateExistingInstance();
@@ -75,6 +77,7 @@ public sealed partial class App : IDisposable
         }
         else
         {
+            // If no other instance is running, initialize the application
             InitializeApplication();
         }
     }
@@ -85,13 +88,13 @@ public sealed partial class App : IDisposable
     /// </summary>
     private void InitializeApplication()
     {
-        SetupExceptionHandling();
-        InitializeServices(GetAppSettingsPath());
-        InitializeAppSettings();
-        InitializeLogging();
-        RegisterSyncfusionLicense();
-        InitializeCulture();
-        new MainWindow().Show();
+        SetupExceptionHandling(); // Setup global exception handling
+        InitializeServices(GetAppSettingsPath()); // Initialize dependency injection services
+        InitializeAppSettings(); // Load application settings
+        InitializeLogging(); // Setup logging system
+        RegisterSyncfusionLicense(); // Register Syncfusion license for UI components
+        InitializeCulture(); // Set application culture (language)
+        new MainWindow().Show(); // Show the main window
     }
 
     /// <summary>
@@ -100,6 +103,7 @@ public sealed partial class App : IDisposable
     /// </summary>
     private void InitializeLogging()
     {
+        // Create observer to forward log events through the messaging system
         logObserver = new AnonymousObserver<LogEvent>(static x =>
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
         InitializeLogging(logObserver);
@@ -111,6 +115,7 @@ public sealed partial class App : IDisposable
     /// </summary>
     private void InitializeAppSettings()
     {
+        // Get configuration service and application settings from the IoC container
         configService = Ioc.Default.GetRequiredService<IConfigService>();
         appSettings = Ioc.Default.GetRequiredService<IAppSettings>();
     }
@@ -122,10 +127,13 @@ public sealed partial class App : IDisposable
     /// <returns>The full path to the application settings file</returns>
     private static string GetAppSettingsPath()
     {
+        // Determine the configuration folder path based on debug/release mode
         var configFolderPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
         var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
+        
+        // Create the configuration folder if it doesn't exist
         if (!Directory.Exists(configFolderPath))
             Directory.CreateDirectory(configFolderPath);
         return configPath;
@@ -137,11 +145,16 @@ public sealed partial class App : IDisposable
     /// </summary>
     private void InitializeCulture()
     {
+        // Determine culture based on saved settings or resolve supported culture
         var cultureInfo = appSettings!.Language == string.Empty
             ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
             : new CultureInfo(appSettings.Language);
+        
+        // Save the resolved culture if it wasn't previously set
         if (appSettings.Language == string.Empty)
             appSettings.Language = cultureInfo.Name;
+        
+        // Apply the culture to the application
         I18NExtension.Culture = cultureInfo;
     }
 
@@ -151,9 +164,12 @@ public sealed partial class App : IDisposable
     /// </summary>
     private static void RegisterSyncfusionLicense()
     {
+        // Read the license from embedded resources
         using var stream = Assembly.GetExecutingAssembly()
             .GetManifestResourceStream("Witcher3StringEditor.License.txt")!;
         using var reader = new StreamReader(stream);
+        
+        // Register the license with Syncfusion
         SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
     }
 
@@ -163,12 +179,15 @@ public sealed partial class App : IDisposable
     /// </summary>
     private void SetupExceptionHandling()
     {
+        // Handle unhandled exceptions on the UI thread
         DispatcherUnhandledException += static (_, e) =>
         {
             e.Handled = true;
             var exception = e.Exception;
             Log.Error(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
         };
+        
+        // Handle unobserved task exceptions (background tasks)
         TaskScheduler.UnobservedTaskException += static (_, e) =>
         {
             e.SetObserved();
@@ -184,6 +203,7 @@ public sealed partial class App : IDisposable
     /// <returns>True if another instance is running, false otherwise</returns>
     private bool IsAnotherInstanceRunning()
     {
+        // Create a mutex with a unique name based on debug/release mode
         mutex = new Mutex(true, IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor",
             out var createdNew);
         return !createdNew;
@@ -196,6 +216,7 @@ public sealed partial class App : IDisposable
     /// <param name="observer">The observer to subscribe to log events</param>
     private static void InitializeLogging(IObserver<LogEvent> observer)
     {
+        // Configure Serilog with multiple outputs: file, debug, and observer
         Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
                     , IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
@@ -211,7 +232,10 @@ public sealed partial class App : IDisposable
     /// </summary>
     private static void ActivateExistingInstance()
     {
+        // Find the existing process instance
         using var existingProcess = FindExistingProcessInstance();
+        
+        // Activate the window of the existing instance
         var mainWindowHandle = new HWND(existingProcess.MainWindowHandle);
         ActivateExistingInstanceWindow(mainWindowHandle);
     }
@@ -223,11 +247,16 @@ public sealed partial class App : IDisposable
     /// <param name="mainWindowHandle">The handle to the main window of the existing instance</param>
     private static void ActivateExistingInstanceWindow(HWND mainWindowHandle)
     {
+        // Get the current window placement
         var placement = new WINDOWPLACEMENT();
         placement.length = (uint)Marshal.SizeOf(placement);
         if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value == 0) return;
+        
+        // Restore the window if it's minimized
         if (placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINIMIZED)
             PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
+        
+        // Bring the window to the foreground
         PInvoke.SetForegroundWindow(mainWindowHandle);
     }
 
@@ -237,6 +266,7 @@ public sealed partial class App : IDisposable
     /// <returns>The existing process instance</returns>
     private static Process FindExistingProcessInstance()
     {
+        // Get the current process to find processes with the same name
         using var currentProcess = Process.GetCurrentProcess();
         return Process.GetProcessesByName(currentProcess.ProcessName).First(p => p.Id != currentProcess.Id);
     }
@@ -248,28 +278,37 @@ public sealed partial class App : IDisposable
     /// <param name="configPath">The path to the configuration file</param>
     private static void InitializeServices(string configPath)
     {
+        // Configure the IoC container with all required services
         Ioc.Default.ConfigureServices(new ServiceCollection()
             .AddLogging(builder => builder.AddSerilog())
+            // View location services
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
+            // Application settings services
             .AddSingleton<IAppSettings, AppSettings>(_ =>
                 Ioc.Default.GetRequiredService<IConfigService>().Load<AppSettings>())
             .AddSingleton<IBackupService, BackupService>()
             .AddSingleton<ICultureResolver, CultureResolver>()
             .AddSingleton<IConfigService, ConfigService>(_ => new ConfigService(configPath))
+            // Dialog services
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()
+            // Serialization services
             .AddSingleton<ICsvW3Serializer, CsvW3Serializer>()
             .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
             .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
+            // File management services
             .AddSingleton<IFileManagerService, FileManagerService>()
+            // Scoped services
             .AddScoped<IExplorerService, ExplorerService>()
             .AddScoped<IPlayGameService, PlayGameService>()
             .AddScoped<ICheckUpdateService, CheckUpdateService>()
             .AddTransient<ITranslator, MicrosoftTranslator>()
             .AddTransient<ITranslator, GoogleTranslator>()
             .AddTransient<ITranslator, YandexTranslator>()
+            // Settings management service
             .AddTransient<ISettingsManagerService, SettingsManagerService>()
+            // View models
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider());
     }
@@ -281,7 +320,10 @@ public sealed partial class App : IDisposable
     /// <returns>The configured StrongViewLocator</returns>
     private static StrongViewLocator CreatStrongViewLocator()
     {
+        // Create and configure the view locator
         var viewLocator = new StrongViewLocator();
+        
+        // Register all view model to view mappings
         viewLocator.Register<EditDataDialogViewModel, EditDataDialog>();
         viewLocator.Register<DeleteDataDialogViewModel, DeleteDataDialog>();
         viewLocator.Register<BackupDialogViewModel, BackupDialog>();
@@ -301,9 +343,14 @@ public sealed partial class App : IDisposable
     /// <param name="e">Exit event arguments</param>
     protected override void OnExit(ExitEventArgs e)
     {
+        // Save application settings before exiting
         configService?.Save(appSettings);
+        
+        // Log application exit and flush logs
         Log.Information("Application exited.");
         Log.CloseAndFlush();
+        
+        // Dispose resources
         Dispose();
     }
 
@@ -313,13 +360,15 @@ public sealed partial class App : IDisposable
     /// <param name="disposing">True if called from Dispose(), false if called from finalizer</param>
     private void Dispose(bool disposing)
     {
+        // Dispose managed resources
         if (disposedValue) return;
         if (disposing)
         {
             mutex?.Dispose();
             logObserver?.Dispose();
         }
-
+        
+        // Mark as disposed
         disposedValue = true;
     }
 }
