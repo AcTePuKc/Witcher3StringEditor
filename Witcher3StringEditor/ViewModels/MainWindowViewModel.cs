@@ -131,10 +131,12 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterSettingsMessageHandlers()
     {
+        // Register handler for W3Strings path change notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "W3StringsPathChanged",
                 (_, _) => OpenFileCommand.NotifyCanExecuteChanged());
-
+        
+        // Register handler for GameExe path change notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "GameExePathChanged",
                 (_, _) => PlayGameCommand.NotifyCanExecuteChanged());
@@ -157,6 +159,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterSearchMessageHandlers()
     {
+        // Register handler for search results updates
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>, string>(this,
                 "SearchResultsUpdated", (_, m) =>
@@ -164,6 +167,8 @@ internal partial class MainWindowViewModel : ObservableObject
                     var searchItems = m.Value;
                     SearchResults = searchItems != null ? m.Value.ToObservableCollection() : null;
                 });
+        
+        // Register handler for items added notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
                 "ItemsAdded", (_, m) =>
@@ -174,6 +179,8 @@ internal partial class MainWindowViewModel : ObservableObject
                     addedItems.ForEach(SearchResults.Add);
                     ShowTranslateDialogCommand.NotifyCanExecuteChanged();
                 });
+        
+        // Register handler for items removed notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
                 "ItemsRemoved", (_, m) =>
@@ -190,6 +197,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterTranslationMessageHandlers()
     {
+        // Register handler for translation saved notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
                 this,
@@ -208,6 +216,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterFileMessageHandlers()
     {
+        // Register handler for recent file opened notifications
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
             // ReSharper disable once AsyncVoidMethod
             this,
@@ -220,6 +229,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterLogMessageHandlers()
     {
+        // Register handler for log event notifications
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
             // ReSharper disable once AsyncVoidMethod
             this,
@@ -279,6 +289,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void WindowClosed()
     {
+        // Check if there are any W3StringItems loaded and send a message to check for unsaved changes.
         WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
@@ -534,15 +545,19 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <param name="selectedItem">The initially selected item in the dialog</param>
     [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
-    {
+    {        
+        // Determine which items to use (search results or all items)
         var items = SearchResults ?? W3StringItems!;
         var itemsList = items.OfType<ITrackableW3StringItem>().ToList();
         var selectedIndex = selectedItem != null ? itemsList.IndexOf(selectedItem) : 0;
+        
         var translator = serviceProvider.GetServices<ITranslator>()
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose();
+        
+        // If we're showing search results, refresh the data grid
         if (SearchResults != null)
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
     }
