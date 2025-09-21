@@ -9,17 +9,17 @@ using Witcher3StringEditor.Serializers.Abstractions;
 namespace Witcher3StringEditor.Services;
 
 /// <summary>
-///     Provides file management functionality for W3 string items
+///     Provides file management functionality for The Witcher 3 string items
 ///     Implements the IFileManagerService interface to handle deserializing files, setting output folders, and updating
 ///     recent items
 /// </summary>
 internal class FileManagerService(IAppSettings appSettings, IW3Serializer w3Serializer) : IFileManagerService
 {
     /// <summary>
-    ///     Deserializes W3 string items from the specified file
+    ///     Deserializes The Witcher 3 string items from the specified file
     /// </summary>
     /// <param name="fileName">The path to the file to deserialize</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized W3 string items</returns>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized The Witcher 3 string items</returns>
     public async Task<ObservableCollection<W3StringItemModel>> DeserializeW3StringItems(string fileName)
     {
         Log.Information("The file {FileName} is being opened...", fileName);

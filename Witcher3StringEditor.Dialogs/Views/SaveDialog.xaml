@@ -32,7 +32,7 @@
             <Style BasedOn="{StaticResource ExpanderCardStyle}" TargetType="Expander">
                 <Setter Property="HorizontalAlignment" Value="Stretch" />
             </Style>
-            <!-- Data provider for W3 file types enumeration -->
+            <!-- Data provider for The Witcher 3 file types enumeration -->
             <ObjectDataProvider
                 x:Key="FileType"
                 MethodName="GetValues"
@@ -41,7 +41,7 @@
                     <x:Type TypeName="com:W3FileType" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <!-- Data provider for W3 languages enumeration -->
+            <!-- Data provider for The Witcher 3 languages enumeration -->
             <ObjectDataProvider
                 x:Key="W3Language"
                 MethodName="GetValues"
@@ -50,9 +50,9 @@
                     <x:Type TypeName="com:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <!-- Converter for displaying W3 language native names -->
+            <!-- Converter for displaying The Witcher 3 language native names -->
             <con:W3LanguageToNativeNameConverter x:Key="W3LanguageToNativeNameConverter" />
-            <!-- Converter for displaying W3 file type localized strings -->
+            <!-- Converter for displaying The Witcher 3 file type localized strings -->
             <con:W3FileTypeToLocalizedStringConverter x:Key="W3FileTypeToLocalizedStringConverter" />
         </ResourceDictionary>
     </Window.Resources>

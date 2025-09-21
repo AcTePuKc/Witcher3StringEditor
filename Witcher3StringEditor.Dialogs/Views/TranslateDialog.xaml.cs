@@ -9,7 +9,7 @@ namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
 ///     Interaction logic for TranslateDialog.xaml
-///     This dialog provides translation functionality for W3 string items
+///     This dialog provides translation functionality for The Witcher 3 string items
 ///     Supports both single item and batch translation modes
 /// </summary>
 public partial class TranslateDialog

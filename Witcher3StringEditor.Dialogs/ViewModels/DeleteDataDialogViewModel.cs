@@ -8,15 +8,15 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 /// <summary>
 ///     ViewModel for the delete data confirmation dialog
-///     Handles user confirmation for deleting selected W3 string items
+///     Handles user confirmation for deleting selected The Witcher 3 string items
 ///     Implements IModalDialogViewModel for dialog result handling and ICloseable for close notifications
 /// </summary>
-/// <param name="w3StringItems">The collection of W3 string items to be deleted</param>
+/// <param name="w3StringItems">The collection of The Witcher 3 string items to be deleted</param>
 public partial class DeleteDataDialogViewModel(IEnumerable<IW3StringItem> w3StringItems)
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     /// <summary>
-    ///     Gets the collection of W3 string items to be deleted
+    ///     Gets the collection of The Witcher 3 string items to be deleted
     /// </summary>
     public IEnumerable<IW3StringItem> W3StringItems { get; } = w3StringItems;
 

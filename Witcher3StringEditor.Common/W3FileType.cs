@@ -1,8 +1,8 @@
 ﻿namespace Witcher3StringEditor.Common;
 
 /// <summary>
-///     Represents the supported file types for W3 string operations
-///     This enumeration defines the different file formats that can be used to serialize or deserialize W3 string items
+///     Represents the supported file types for The Witcher 3 string operations
+///     This enumeration defines the different file formats that can be used to serialize or deserialize The Witcher 3 string items
 /// </summary>
 public enum W3FileType
 {

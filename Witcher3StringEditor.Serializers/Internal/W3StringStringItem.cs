@@ -4,8 +4,8 @@ using Witcher3StringEditor.Common.Abstractions;
 namespace Witcher3StringEditor.Serializers.Internal;
 
 /// <summary>
-///     Represents a W3 string item with string-based properties
-///     Implements the IW3StringItem interface to provide a concrete implementation for W3 string data
+///     Represents a The Witcher 3 string item with string-based properties
+///     Implements the IW3StringItem interface to provide a concrete implementation for The Witcher 3 string data
 ///     This record is used internally for serialization and deserialization operations
 /// </summary>
 internal record W3StringStringItem : IW3StringItem
@@ -34,31 +34,31 @@ internal record W3StringStringItem : IW3StringItem
     }
 
     /// <summary>
-    ///     Gets or sets the string ID of the W3 string item
-    ///     This represents the unique identifier for the string in the W3 system
+    ///     Gets or sets the string ID of the The Witcher 3 string item
+    ///     This represents the unique identifier for the string in the The Witcher 3 system
     /// </summary>
     public string StrId { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the hexadecimal key of the W3 string item
+    ///     Gets or sets the hexadecimal key of the The Witcher 3 string item
     ///     This represents the hexadecimal representation of the string's key
     /// </summary>
     public string KeyHex { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the key name of the W3 string item
+    ///     Gets or sets the key name of the The Witcher 3 string item
     ///     This represents the string key in a readable format
     /// </summary>
     public string KeyName { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the old text of the W3 string item
+    ///     Gets or sets the old text of the The Witcher 3 string item
     ///     This represents the original text before any modifications or translations
     /// </summary>
     public string OldText { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the current text of the W3 string item
+    ///     Gets or sets the current text of the The Witcher 3 string item
     ///     This represents the current text, which may be the original text or a translated/modified version
     /// </summary>
     public string Text { get; set; } = string.Empty;

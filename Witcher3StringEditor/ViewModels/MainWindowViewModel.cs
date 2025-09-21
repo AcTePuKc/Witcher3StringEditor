@@ -68,7 +68,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private ObservableCollection<W3StringItemModel>? searchResults;
 
     /// <summary>
-    ///     Gets or sets the collection of W3 string items
+    ///     Gets or sets the collection of The Witcher 3 string items
     ///     Notifies multiple commands when this property changes
     /// </summary>
     [ObservableProperty]
@@ -100,7 +100,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private ObservableCollection<LogEvent> LogEvents { get; } = [];
 
     /// <summary>
-    ///     Gets a value indicating whether there are W3 string items
+    ///     Gets a value indicating whether there are The Witcher 3 string items
     /// </summary>
     private bool HasW3StringItems => W3StringItems?.Any() == true;
 
@@ -351,7 +351,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Adds a new W3 string item
+    ///     Adds a new The Witcher 3 string item
     /// </summary>
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Add()
@@ -370,7 +370,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Edits the selected W3 string item
+    ///     Edits the selected The Witcher 3 string item
     /// </summary>
     /// <param name="selectedItem">The item to edit</param>
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
@@ -393,7 +393,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Deletes the selected W3 string items
+    ///     Deletes the selected The Witcher 3 string items
     /// </summary>
     /// <param name="selectedItems">The items to delete</param>
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]

@@ -2,8 +2,8 @@
 
 /// <summary>
 ///     Interaction logic for EditDataDialog.xaml
-///     This dialog allows users to add new or edit existing W3 string items
-///     Provides input fields for all relevant properties of a W3 string item
+///     This dialog allows users to add new or edit existing The Witcher 3 string items
+///     Provides input fields for all relevant properties of a The Witcher 3 string item
 /// </summary>
 public partial class EditDataDialog
 {

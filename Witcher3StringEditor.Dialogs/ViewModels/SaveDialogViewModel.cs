@@ -16,19 +16,19 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 /// <summary>
 ///     ViewModel for the save dialog window
-///     Handles saving W3 string items to a file with specified settings
+///     Handles saving The Witcher 3 string items to a file with specified settings
 ///     Implements IModalDialogViewModel for dialog result handling and ICloseable for close notifications
 /// </summary>
 public partial class SaveDialogViewModel
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     /// <summary>
-    ///     The serializer used to save the W3 string items
+    ///     The serializer used to save the The Witcher 3 string items
     /// </summary>
     private readonly IW3Serializer serializer;
 
     /// <summary>
-    ///     The collection of W3 string items to save
+    ///     The collection of The Witcher 3 string items to save
     /// </summary>
     private readonly IReadOnlyList<IW3StringItem> w3StringItems;
 
@@ -62,7 +62,7 @@ public partial class SaveDialogViewModel
     /// </summary>
     /// <param name="appSettings">Application settings to get preferred language and file type</param>
     /// <param name="serializer">The serializer to use for saving the items</param>
-    /// <param name="w3StringItems">The collection of W3 string items to save</param>
+    /// <param name="w3StringItems">The collection of The Witcher 3 string items to save</param>
     /// <param name="outputDirectory">The initial output directory for saving</param>
     public SaveDialogViewModel(IAppSettings appSettings, IW3Serializer serializer,
         IReadOnlyList<IW3StringItem> w3StringItems, string outputDirectory)
@@ -88,7 +88,7 @@ public partial class SaveDialogViewModel
 
     /// <summary>
     ///     Handles the save action
-    ///     Serializes the W3 string items to a file with the specified settings
+    ///     Serializes the The Witcher 3 string items to a file with the specified settings
     /// </summary>
     [RelayCommand]
     private async Task Save()
@@ -121,9 +121,9 @@ public partial class SaveDialogViewModel
     }
 
     /// <summary>
-    ///     Finds the ID space from a W3 string item's StrId
+    ///     Finds the ID space from a The Witcher 3 string item's StrId
     /// </summary>
-    /// <param name="iw3StringItem">The W3 string item to extract the ID space from</param>
+    /// <param name="iw3StringItem">The The Witcher 3 string item to extract the ID space from</param>
     /// <returns>The ID space value, or -1 if not found</returns>
     private static int FindIdSpace(IW3StringItem iw3StringItem)
     {

@@ -4,16 +4,16 @@ using Witcher3StringEditor.Models;
 namespace Witcher3StringEditor.Services;
 
 /// <summary>
-///     Defines a contract for file management operations related to W3 string items
-///     Provides methods to deserialize W3 string items, set output folders, and update recent items
+///     Defines a contract for file management operations related to The Witcher 3 string items
+///     Provides methods to deserialize The Witcher 3 string items, set output folders, and update recent items
 /// </summary>
 internal interface IFileManagerService
 {
     /// <summary>
-    ///     Deserializes W3 string items from the specified file
+    ///     Deserializes The Witcher 3 string items from the specified file
     /// </summary>
     /// <param name="fileName">The path to the file to deserialize</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized W3 string items</returns>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized The Witcher 3 string items</returns>
     Task<ObservableCollection<W3StringItemModel>> DeserializeW3StringItems(string fileName);
 
     /// <summary>

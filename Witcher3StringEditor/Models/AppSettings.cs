@@ -27,13 +27,13 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private string language = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the preferred language for W3 string operations
+    ///     Gets or sets the preferred language for The Witcher 3 string operations
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
     [ObservableProperty] private W3Language preferredLanguage;
 
     /// <summary>
-    ///     Gets or sets the preferred W3 file type for operations
+    ///     Gets or sets the preferred The Witcher 3 file type for operations
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
     [ObservableProperty] private W3FileType preferredW3FileType;
@@ -63,7 +63,7 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     ///     This constructor is used during JSON deserialization
     /// </summary>
     /// <param name="w3StringsPath">The path to the W3Strings tool executable</param>
-    /// <param name="preferredW3FileType">The preferred W3 file type</param>
+    /// <param name="preferredW3FileType">The preferred The Witcher 3 file type</param>
     /// <param name="preferredLanguage">The preferred language</param>
     /// <param name="gameExePath">The path to the game executable</param>
     /// <param name="backupItems">The collection of backup items</param>

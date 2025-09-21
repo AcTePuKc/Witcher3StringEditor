@@ -9,7 +9,7 @@ using Witcher3StringEditor.Serializers.Internal;
 namespace Witcher3StringEditor.Serializers.Implementation;
 
 /// <summary>
-///     Provides W3Strings serialization functionality for W3 string items
+///     Provides W3Strings serialization functionality for The Witcher 3 string items
 ///     Implements the IW3StringsSerializer interface to handle reading from and writing to W3Strings files
 ///     This serializer uses an external tool (W3Strings encoder/decoder) to perform the actual serialization
 /// </summary>
@@ -20,14 +20,14 @@ public class W3StringsSerializer(
     : IW3StringsSerializer
 {
     /// <summary>
-    ///     Deserializes W3 string items from a W3Strings file
+    ///     Deserializes The Witcher 3 string items from a W3Strings file
     ///     This method uses an external tool to decode the W3Strings file into a CSV format,
     ///     then uses the CSV serializer to read the data
     /// </summary>
     /// <param name="filePath">The path to the W3Strings file to deserialize</param>
     /// <returns>
     ///     A task that represents the asynchronous deserialize operation.
-    ///     The task result contains the deserialized W3 string items, or an empty list if an error occurred
+    ///     The task result contains the deserialized The Witcher 3 string items, or an empty list if an error occurred
     /// </returns>
     public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {
@@ -50,10 +50,10 @@ public class W3StringsSerializer(
     }
 
     /// <summary>
-    ///     Serializes W3 string items to a W3Strings file
+    ///     Serializes The Witcher 3 string items to a W3Strings file
     ///     This method first creates a temporary CSV file, then uses an external tool to encode it into a W3Strings file
     /// </summary>
-    /// <param name="w3StringItems">The W3 string items to serialize</param>
+    /// <param name="w3StringItems">The The Witcher 3 string items to serialize</param>
     /// <param name="context">
     ///     The serialization context containing output directory, target language,
     ///     and other serialization parameters

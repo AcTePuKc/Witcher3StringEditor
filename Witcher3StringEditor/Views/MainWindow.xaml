@@ -256,7 +256,7 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-        <!-- Data grid for displaying W3 string items -->
+        <!-- Data grid for displaying The Witcher 3 string items -->
         <sf:SfDataGrid
             x:Name="SfDataGrid"
             Grid.Row="2"

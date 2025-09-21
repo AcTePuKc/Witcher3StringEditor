@@ -9,7 +9,7 @@ namespace Witcher3StringEditor.Common.Abstractions;
 public interface IAppSettings
 {
     /// <summary>
-    ///     Gets or sets the preferred W3 file type for operations
+    ///     Gets or sets the preferred The Witcher 3 file type for operations
     /// </summary>
     public W3FileType PreferredW3FileType { get; set; }
 

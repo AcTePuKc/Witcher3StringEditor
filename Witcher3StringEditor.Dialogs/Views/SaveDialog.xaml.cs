@@ -9,7 +9,7 @@ namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
 ///     Interaction logic for SaveDialog.xaml
-///     This dialog allows users to configure save settings and save W3 string items to a file
+///     This dialog allows users to configure save settings and save The Witcher 3 string items to a file
 /// </summary>
 public partial class SaveDialog
 {

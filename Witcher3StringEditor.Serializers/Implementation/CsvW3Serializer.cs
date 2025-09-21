@@ -10,18 +10,18 @@ using Witcher3StringEditor.Serializers.Internal;
 namespace Witcher3StringEditor.Serializers.Implementation;
 
 /// <summary>
-///     Provides CSV serialization functionality for W3 string items
+///     Provides CSV serialization functionality for The Witcher 3 string items
 ///     Implements the ICsvW3Serializer interface to handle reading from and writing to CSV files
 /// </summary>
 public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
 {
     /// <summary>
-    ///     Deserializes W3 string items from a CSV file
+    ///     Deserializes The Witcher 3 string items from a CSV file
     /// </summary>
     /// <param name="filePath">The path to the CSV file to deserialize</param>
     /// <returns>
     ///     A task that represents the asynchronous deserialize operation.
-    ///     The task result contains the deserialized W3 string items, or an empty list if an error occurred
+    ///     The task result contains the deserialized The Witcher 3 string items, or an empty list if an error occurred
     /// </returns>
     public async Task<IReadOnlyList<IW3StringItem>> Deserialize(string filePath)
     {
@@ -48,9 +48,9 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     }
 
     /// <summary>
-    ///     Serializes W3 string items to a CSV file
+    ///     Serializes The Witcher 3 string items to a CSV file
     /// </summary>
-    /// <param name="w3StringItems">The W3 string items to serialize</param>
+    /// <param name="w3StringItems">The The Witcher 3 string items to serialize</param>
     /// <param name="context">The serialization context containing output directory and target language information</param>
     /// <returns>
     ///     A task that represents the asynchronous serialize operation.
@@ -117,9 +117,9 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     }
 
     /// <summary>
-    ///     Builds the CSV content from a collection of W3 string items
+    ///     Builds the CSV content from a collection of The Witcher 3 string items
     /// </summary>
-    /// <param name="w3StringItems">The W3 string items to include in the CSV content</param>
+    /// <param name="w3StringItems">The The Witcher 3 string items to include in the CSV content</param>
     /// <param name="lang">The language identifier for the CSV metadata</param>
     /// <returns>The complete CSV content as a string</returns>
     private static string BuildCsvContent(IReadOnlyCollection<IW3StringItem> w3StringItems, string lang)

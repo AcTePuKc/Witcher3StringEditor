@@ -2,7 +2,7 @@
 
 /// <summary>
 ///     Interaction logic for DeleteDataDialog.xaml
-///     This dialog allows users to confirm deletion of selected W3 string items
+///     This dialog allows users to confirm deletion of selected The Witcher 3 string items
 ///     Displays the items to be deleted in a data grid for review before deletion
 /// </summary>
 public partial class DeleteDataDialog
