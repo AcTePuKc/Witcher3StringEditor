@@ -41,6 +41,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         CurrentViewModel = new SingleItemTranslationViewModel(appSettings, translator, this.w3StringItems, index);
     }
 
+    public bool? DialogResult => true;
+
     [RelayCommand]
     private async Task DetectLanguage()
     {
@@ -48,8 +50,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         var detectedLanguage = await translator.DetectLanguageAsync(text);
         CurrentViewModel.FormLanguage = new Language(detectedLanguage.ISO6391);
     }
-
-    public bool? DialogResult => true;
 
     [RelayCommand]
     private async Task Switch()
