@@ -44,6 +44,7 @@ public partial class MainWindow
     /// <param name="e">The event arguments</param>
     private void OnDataGridItemsSourceChanged(object? sender, EventArgs e)
     {
+        // Subscribe to collection changes in the data grid view.
         SfDataGrid.View.CollectionChanged += OnDataGridViewCollectionChanged;
     }
 
@@ -55,10 +56,12 @@ public partial class MainWindow
     /// <param name="e">The event arguments containing information about the change</param>
     private static void OnDataGridViewCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        // Process add or remove actions in the data grid collection.
         switch (e)
         {
             case { Action: NotifyCollectionChangedAction.Add, NewItems: not null }:
             {
+                // Extract added items and send message about them
                 var addedItems = e.NewItems.OfType<RecordEntry>()
                     .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(addedItems),
@@ -67,6 +70,7 @@ public partial class MainWindow
             }
             case { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }:
             {
+                // Extract removed items and send message about them
                 var removedItems = e.OldItems.OfType<RecordEntry>()
                     .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(removedItems),
@@ -82,6 +86,7 @@ public partial class MainWindow
     /// </summary>
     private static void RegisterThemeChangedHandler()
     {
+        // Subscribe to theme change events and log the new theme
         ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
         {
             Log.Information("Theme changed to {Theme}", ThemeManager.Current.ActualApplicationTheme);
@@ -94,6 +99,7 @@ public partial class MainWindow
     /// </summary>
     private void SetupSearchHelper()
     {
+        // Enable filtering and disable case sensitive search for the data grid search helper
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
     }
@@ -114,8 +120,11 @@ public partial class MainWindow
     /// </summary>
     private void RegisterSearchHandler()
     {
+        // Register handler to clear search text when requested
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.ClearSearch,
             (_, _) => { SearchBox.Text = string.Empty; });
+        
+        // Register handler to refresh the data grid view when requested
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.RefreshDataGrid,
             (_, _) => { SfDataGrid.View.Refresh(); });
     }
@@ -126,6 +135,7 @@ public partial class MainWindow
     /// </summary>
     private void RegisterAsyncRequestMessageHandlers()
     {
+        // Define message handlers for different scenarios
         var requestMessageHandlers = new (string, Func<string>, Func<string>, MessageBoxButton, MessageBoxResult)[]
         {
             (MessageTokens.MainWindowClosing, () => Strings.AppExitMessage, () => Strings.AppExitCaption,
@@ -135,6 +145,7 @@ public partial class MainWindow
                 MessageBoxResult.OK)
         };
 
+        // Register handlers for each scenario
         foreach (var (token, message, caption, button, excepted) in requestMessageHandlers)
             WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
                 this,
@@ -154,6 +165,7 @@ public partial class MainWindow
     /// </summary>
     private void RegisterFileOpenedMessageHandlers()
     {
+        // Define message handlers for file operations
         var messageHandlers = new (string, Func<string>, Func<string>)[]
         {
             (MessageTokens.ReOpenFile, () => Strings.ReOpenFileMessage, () => Strings.ReOpenFileCaption),
@@ -161,6 +173,7 @@ public partial class MainWindow
                 () => Strings.FileOpenedNoFoundCaption)
         };
 
+        // Register handlers for each file operation scenario
         foreach (var (token, message, caption) in messageHandlers)
             WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<string, bool>, string>(
                 this,
@@ -180,10 +193,15 @@ public partial class MainWindow
     /// <param name="args">The event arguments containing the query text</param>
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
+        // Ensure there's data to search before proceeding
         if (SfDataGrid.ItemsSource == null) return;
+        
+        // Perform the search and collect results
         SfDataGrid.SearchHelper.Search(args.QueryText);
         var searchResults = SfDataGrid.View.Records
             .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
+        
+        // Send search results to other components
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(searchResults),
             MessageTokens.SearchResultsUpdated);
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
@@ -197,6 +215,7 @@ public partial class MainWindow
     /// <param name="args">The event arguments</param>
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
+        // If search text is cleared, reset the search results
         if (!string.IsNullOrEmpty(sender.Text)) return;
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(null),
             MessageTokens.SearchResultsUpdated);
@@ -211,6 +230,7 @@ public partial class MainWindow
     /// <param name="e">The event arguments</param>
     private void Window_Closed(object sender, EventArgs e)
     {
+        // Clean up resources and unregister message handlers
         WeakReferenceMessenger.Default.UnregisterAll(this);
         SfDataGrid.SearchHelper.Dispose();
         SfDataGrid.Dispose();
@@ -225,6 +245,7 @@ public partial class MainWindow
     /// <param name="e">The event arguments</param>
     private void AppTitleBar_OnLoaded(object sender, RoutedEventArgs e)
     {
+        // Configure regions for custom title bar if needed
         if (TitleBar.GetExtendViewIntoTitleBar(this)) SetRegionsForCustomTitleBar();
     }
 
@@ -245,6 +266,7 @@ public partial class MainWindow
     /// </summary>
     private void SetRegionsForCustomTitleBar()
     {
+        // Adjust the right padding column width to accommodate system overlay
         RightPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayRightInset(this));
     }
 
@@ -256,6 +278,7 @@ public partial class MainWindow
     /// <param name="e">The event arguments</param>
     private void ThemeSwitchBtn_OnClick(object sender, RoutedEventArgs e)
     {
+        // Toggle between light and dark themes
         ThemeManager.Current.ApplicationTheme =
             ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Light
                 ? ApplicationTheme.Dark

@@ -289,7 +289,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void WindowClosed()
     {
-        // Check if there are any W3StringItems loaded and send a message to check for unsaved changes.
+        // Check if there are any W3StringItems loaded and send a message to check for unsaved changes
         WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
