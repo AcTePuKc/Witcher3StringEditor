@@ -67,6 +67,7 @@ internal class SettingsManagerService : ISettingsManagerService
     /// <param name="e">A PropertyChangedEventArgs that contains the event data</param>
     private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
+        // Handle different property changes with appropriate actions
         switch (e.PropertyName)
         {
             case nameof(IAppSettings.W3StringsPath):
