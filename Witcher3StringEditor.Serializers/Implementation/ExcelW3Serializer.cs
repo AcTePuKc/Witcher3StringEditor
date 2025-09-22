@@ -179,10 +179,8 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="rowCount">The number of data rows in the worksheet</param>
     private static void ApplyTextCellWrapping(IWorksheet worksheet, int rowCount)
     {
-        // Format text cells in columns D and E (excluding header row) from row 2 to rowCount + 1.
-        // Enable text wrapping to ensure long text is fully visible.
-        var textRange = worksheet[$"D2:E{rowCount + 1}"];
-        textRange.WrapText = true;
+        var textRange = worksheet[$"D2:E{rowCount + 1}"]; // Text range (D2-E{n+1})
+        textRange.WrapText = true; // Enable text wrapping
     }
 
     /// <summary>
@@ -191,9 +189,7 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="worksheet">The worksheet to freeze the header row on</param>
     private static void FreezeHeaderRow(IWorksheet worksheet)
     {
-        // Freeze the header row (row 1) so that it remains visible when scrolling through the data
-        // The range A2:E2 specifies the area below the header row where the freeze will be applied
-        worksheet["A2:E2"].FreezePanes();
+        worksheet["A2:E2"].FreezePanes(); // Freeze header
     }
 
     /// <summary>
