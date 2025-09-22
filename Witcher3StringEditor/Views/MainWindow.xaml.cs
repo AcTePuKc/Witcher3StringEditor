@@ -28,12 +28,13 @@ public partial class MainWindow
     /// </summary>
     public MainWindow()
     {
-        InitializeComponent();
-        SetupSearchHelper();
-        RegisterMessageHandlers();
-        RegisterThemeChangedHandler();
-        DataContext = Ioc.Default.GetService<MainWindowViewModel>();
-        SfDataGrid.ItemsSourceChanged += OnDataGridItemsSourceChanged;
+        InitializeComponent(); // Initialize the UI components
+        SetupSearchHelper(); // Set up the search helper functionality
+        RegisterMessageHandlers(); // Register message handlers for inter-component communication
+        RegisterThemeChangedHandler(); // Register handler for theme change notifications
+        DataContext = Ioc.Default.GetService<MainWindowViewModel>(); // Set the data context to the main view model
+        SfDataGrid.ItemsSourceChanged +=
+            OnDataGridItemsSourceChanged; // Register event handler for data grid items source changes
     }
 
     /// <summary>
@@ -59,21 +60,21 @@ public partial class MainWindow
         // Process add or remove actions in the data grid collection.
         switch (e)
         {
-            case { Action: NotifyCollectionChangedAction.Add, NewItems: not null }:
+            case { Action: NotifyCollectionChangedAction.Add, NewItems: not null }: // Handle item addition
             {
-                // Extract added items and send message about them
-                var addedItems = e.NewItems.OfType<RecordEntry>()
-                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(addedItems),
+                var addedItems = e.NewItems.OfType<RecordEntry>() // Convert to RecordEntry objects
+                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList(); // Extract W3StringItemModel data
+                WeakReferenceMessenger.Default.Send(
+                    new ValueChangedMessage<IList<W3StringItemModel>>(addedItems), // Send added items message
                     MessageTokens.ItemsAdded);
                 break;
             }
-            case { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }:
+            case { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }: // Handle item removal
             {
-                // Extract removed items and send message about them
-                var removedItems = e.OldItems.OfType<RecordEntry>()
-                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>>(removedItems),
+                var removedItems = e.OldItems.OfType<RecordEntry>() // Convert to RecordEntry objects
+                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList(); // Extract W3StringItemModel data
+                WeakReferenceMessenger.Default.Send(
+                    new ValueChangedMessage<IList<W3StringItemModel>>(removedItems), // Send removed items message
                     MessageTokens.ItemsRemoved);
                 break;
             }
@@ -99,7 +100,7 @@ public partial class MainWindow
     /// </summary>
     private void SetupSearchHelper()
     {
-        // Enable filtering and disable case sensitive search for the data grid search helper
+        // Enable filtering and disable case-sensitive search for the data grid search helper
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
     }
@@ -109,9 +110,9 @@ public partial class MainWindow
     /// </summary>
     private void RegisterMessageHandlers()
     {
-        RegisterFileOpenedMessageHandlers();
-        RegisterAsyncRequestMessageHandlers();
-        RegisterSearchHandler();
+        RegisterFileOpenedMessageHandlers(); // Register file opened message handlers
+        RegisterAsyncRequestMessageHandlers(); // Register async request message handlers
+        RegisterSearchHandler(); // Register search-related message handlers
     }
 
     /// <summary>
@@ -123,7 +124,7 @@ public partial class MainWindow
         // Register handler to clear search text when requested
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.ClearSearch,
             (_, _) => { SearchBox.Text = string.Empty; });
-        
+
         // Register handler to refresh the data grid view when requested
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.RefreshDataGrid,
             (_, _) => { SfDataGrid.View.Refresh(); });
@@ -195,12 +196,12 @@ public partial class MainWindow
     {
         // Ensure there's data to search before proceeding
         if (SfDataGrid.ItemsSource == null) return;
-        
+
         // Perform the search and collect results
         SfDataGrid.SearchHelper.Search(args.QueryText);
         var searchResults = SfDataGrid.View.Records
             .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
-        
+
         // Send search results to other components
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(searchResults),
             MessageTokens.SearchResultsUpdated);
@@ -215,11 +216,11 @@ public partial class MainWindow
     /// <param name="args">The event arguments</param>
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        // If search text is cleared, reset the search results
-        if (!string.IsNullOrEmpty(sender.Text)) return;
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(null),
+        if (!string.IsNullOrEmpty(sender.Text)) return; // Return if search text is not empty
+        WeakReferenceMessenger.Default.Send(
+            new ValueChangedMessage<IList<W3StringItemModel>?>(null), // Send null search results
             MessageTokens.SearchResultsUpdated);
-        SfDataGrid.SearchHelper.ClearSearch();
+        SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
     }
 
     /// <summary>
@@ -266,7 +267,6 @@ public partial class MainWindow
     /// </summary>
     private void SetRegionsForCustomTitleBar()
     {
-        // Adjust the right padding column width to accommodate system overlay
         RightPaddingColumn.Width = new GridLength(TitleBar.GetSystemOverlayRightInset(this));
     }
 
