@@ -85,13 +85,14 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <param name="serviceProvider">The service provider used to resolve dependencies</param>
     public MainWindowViewModel(IServiceProvider serviceProvider)
     {
-        this.serviceProvider = serviceProvider;
-        appSettings = serviceProvider.GetRequiredService<IAppSettings>();
-        backupService = serviceProvider.GetRequiredService<IBackupService>();
-        dialogService = serviceProvider.GetRequiredService<IDialogService>();
-        fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>();
-        settingsManagerService = serviceProvider.GetRequiredService<ISettingsManagerService>();
-        RegisterMessengerHandlers();
+        this.serviceProvider = serviceProvider; // Store the service provider
+        appSettings = serviceProvider.GetRequiredService<IAppSettings>(); // Get application settings service
+        backupService = serviceProvider.GetRequiredService<IBackupService>(); // Get backup service
+        dialogService = serviceProvider.GetRequiredService<IDialogService>(); // Get dialog service
+        fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>(); // Get file manager service
+        settingsManagerService =
+            serviceProvider.GetRequiredService<ISettingsManagerService>(); // Get settings manager service
+        RegisterMessengerHandlers(); // Register all message handlers
     }
 
     /// <summary>
@@ -134,12 +135,14 @@ internal partial class MainWindowViewModel : ObservableObject
         // Register handler for W3Strings path change notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "W3StringsPathChanged",
-                (_, _) => OpenFileCommand.NotifyCanExecuteChanged());
-        
+                (_, _) => OpenFileCommand
+                    .NotifyCanExecuteChanged()); // Update OpenFile command state when W3Strings path changes
+
         // Register handler for GameExe path change notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "GameExePathChanged",
-                (_, _) => PlayGameCommand.NotifyCanExecuteChanged());
+                (_, _) => PlayGameCommand
+                    .NotifyCanExecuteChanged()); // Update PlayGame command state when GameExe path changes
     }
 
     /// <summary>
@@ -147,11 +150,11 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterMessengerHandlers()
     {
-        RegisterLogMessageHandlers();
-        RegisterFileMessageHandlers();
-        RegisterSearchMessageHandlers();
-        RegisterSettingsMessageHandlers();
-        RegisterTranslationMessageHandlers();
+        RegisterLogMessageHandlers(); // Register log message handlers
+        RegisterFileMessageHandlers(); // Register file message handlers
+        RegisterSearchMessageHandlers(); // Register search message handlers
+        RegisterSettingsMessageHandlers(); // Register settings message handlers
+        RegisterTranslationMessageHandlers(); // Register translation message handlers
     }
 
     /// <summary>
@@ -164,31 +167,34 @@ internal partial class MainWindowViewModel : ObservableObject
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>, string>(this,
                 "SearchResultsUpdated", (_, m) =>
                 {
-                    var searchItems = m.Value;
-                    SearchResults = searchItems != null ? m.Value.ToObservableCollection() : null;
+                    var searchItems = m.Value; // Get the search results
+                    SearchResults =
+                        searchItems != null
+                            ? m.Value.ToObservableCollection()
+                            : null; // Update search results collection
                 });
-        
+
         // Register handler for items added notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
                 "ItemsAdded", (_, m) =>
                 {
-                    if (SearchResults == null) return;
-                    var addedItems = m.Value;
-                    if (!addedItems.Any()) return;
-                    addedItems.ForEach(SearchResults.Add);
-                    ShowTranslateDialogCommand.NotifyCanExecuteChanged();
+                    if (SearchResults == null) return; // Return if no search results
+                    var addedItems = m.Value; // Get the added items
+                    if (!addedItems.Any()) return; // Return if no items added
+                    addedItems.ForEach(SearchResults.Add); // Add items to search results
+                    ShowTranslateDialogCommand.NotifyCanExecuteChanged(); // Update translate dialog command state
                 });
-        
+
         // Register handler for items removed notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
                 "ItemsRemoved", (_, m) =>
                 {
-                    var removedItems = m.Value;
-                    if (!removedItems.Any()) return;
-                    removedItems.ForEach(x => SearchResults?.Remove(x));
-                    ShowTranslateDialogCommand.NotifyCanExecuteChanged();
+                    var removedItems = m.Value; // Get the removed items
+                    if (!removedItems.Any()) return; // Return if no items removed
+                    removedItems.ForEach(x => SearchResults?.Remove(x)); // Remove items from search results
+                    ShowTranslateDialogCommand.NotifyCanExecuteChanged(); // Update translate dialog command state
                 });
     }
 
@@ -204,10 +210,10 @@ internal partial class MainWindowViewModel : ObservableObject
                 MessageTokens.TranslationSaved,
                 (_, m) =>
                 {
-                    var item = m.Value;
-                    var found = W3StringItems!
+                    var item = m.Value; // Get the translated item
+                    var found = W3StringItems! // Find the item in the collection
                         .First(x => x.TrackingId == item.TrackingId);
-                    found.Text = item.Text;
+                    found.Text = item.Text; // Update the item text
                 });
     }
 
@@ -221,7 +227,7 @@ internal partial class MainWindowViewModel : ObservableObject
             // ReSharper disable once AsyncVoidMethod
             this,
             MessageTokens.RecentFileOpened,
-            async void (_, m) => { await OpenFile(m.Request); });
+            async void (_, m) => { await OpenFile(m.Request); }); // Open the requested file
     }
 
     /// <summary>
@@ -233,7 +239,10 @@ internal partial class MainWindowViewModel : ObservableObject
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
             // ReSharper disable once AsyncVoidMethod
             this,
-            async void (_, m) => { await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value)); });
+            async void (_, m) =>
+            {
+                await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value));
+            }); // Add log event to collection on UI thread
     }
 
     /// <summary>
@@ -243,9 +252,10 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowLoaded()
     {
-        LogApplicationStartupInfo();
-        await settingsManagerService.CheckSettings();
-        IsUpdateAvailable = await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate();
+        LogApplicationStartupInfo(); // Log application startup information
+        await settingsManagerService.CheckSettings(); // Check application settings
+        IsUpdateAvailable =
+            await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate(); // Check for updates
     }
 
     /// <summary>
@@ -253,20 +263,20 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void LogApplicationStartupInfo()
     {
-        Log.Information("Application started.");
-        Log.Information("Application Version: {Version}", ThisAssembly.AssemblyFileVersion);
-        Log.Information("OS Version: {Version}",
+        Log.Information("Application started."); // Log application start
+        Log.Information("Application Version: {Version}", ThisAssembly.AssemblyFileVersion); // Log application version
+        Log.Information("OS Version: {Version}", // Log OS version
             $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})");
-        Log.Information(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription);
-        Log.Information("Is Debug: {IsDebug}", IsDebug);
-        Log.Information("Current Directory: {Directory}", Environment.CurrentDirectory);
-        Log.Information("AppData Folder: {Folder}",
+        Log.Information(".Net Runtime: {Runtime}", RuntimeInformation.FrameworkDescription); // Log .NET runtime version
+        Log.Information("Is Debug: {IsDebug}", IsDebug); // Log debug mode status
+        Log.Information("Current Directory: {Directory}", Environment.CurrentDirectory); // Log current directory
+        Log.Information("AppData Folder: {Folder}", // Log AppData folder path
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor"));
-        Log.Information("Installed Language Packs: {Languages}",
+        Log.Information("Installed Language Packs: {Languages}", // Log installed language packs
             string.Join(", ",
                 serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures.Select(x => x.Name)));
-        Log.Information("Current Language: {Language}", appSettings.Language);
+        Log.Information("Current Language: {Language}", appSettings.Language); // Log current language
     }
 
     /// <summary>
@@ -277,9 +287,10 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task WindowClosing(CancelEventArgs e)
     {
-        if (W3StringItems?.Any() == true &&
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.MainWindowClosing))
-            e.Cancel = true;
+        if (W3StringItems?.Any() == true && // Check if there are any W3String items
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                MessageTokens.MainWindowClosing)) // Send close request
+            e.Cancel = true; // Cancel window closing if requested
     }
 
     /// <summary>
@@ -289,8 +300,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void WindowClosed()
     {
-        // Check if there are any W3StringItems loaded and send a message to check for unsaved changes
-        WeakReferenceMessenger.Default.UnregisterAll(this);
+        WeakReferenceMessenger.Default.UnregisterAll(this); // Unregister all message handlers
     }
 
     /// <summary>
@@ -300,11 +310,11 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenFile))]
     private async Task DropFile()
     {
-        if (DropFileData?.Length > 0)
+        if (DropFileData?.Length > 0) // Check if any files were dropped
         {
-            var file = DropFileData[0];
-            var ext = Path.GetExtension(file);
-            if (ext is ".csv" or ".w3strings" or ".xlsx") await OpenFile(file);
+            var file = DropFileData[0]; // Get the first dropped file
+            var ext = Path.GetExtension(file); // Get the file extension
+            if (ext is ".csv" or ".w3strings" or ".xlsx") await OpenFile(file); // Open file if extension is supported
         }
     }
 
@@ -336,14 +346,15 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         try
         {
-            if (!await HandleReOpenFile(fileName)) return;
-            W3StringItems = await fileManagerService.DeserializeW3StringItems(fileName);
-            fileManagerService.SetOutputFolder(fileName, folder => OutputFolder = folder);
-            fileManagerService.UpdateRecentItems(fileName);
+            if (!await HandleReOpenFile(fileName)) return; // Handle reopening file logic
+            W3StringItems = await fileManagerService.DeserializeW3StringItems(fileName); // Deserialize file contents
+            fileManagerService.SetOutputFolder(fileName,
+                folder => OutputFolder = folder); // Set output folder based on file location
+            fileManagerService.UpdateRecentItems(fileName); // Update recent items list
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to open file: {FileName}.", fileName);
+            Log.Error(ex, "Failed to open file: {FileName}.", fileName); // Log any errors during file opening
         }
     }
 
@@ -354,11 +365,13 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <returns>True if the file can be reopened, false otherwise</returns>
     private async Task<bool> HandleReOpenFile(string fileName)
     {
-        if (W3StringItems?.Any() != true) return true;
-        if (!await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(fileName),
-                MessageTokens.ReOpenFile)) return false;
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.ClearSearch);
-        return true;
+        if (W3StringItems?.Any() != true) return true; // Return true if no items currently loaded
+        if (!await WeakReferenceMessenger.Default.Send(
+                new AsyncRequestMessage<string, bool>(fileName), // Send reopen file request
+                MessageTokens.ReOpenFile)) return false; // Return false if user cancels
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+            MessageTokens.ClearSearch); // Clear search results
+        return true; // Return true to proceed with file opening
     }
 
     /// <summary>
@@ -367,16 +380,16 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Add()
     {
-        var dialogViewModel = new EditDataDialogViewModel(new W3StringItemModel());
-        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true
-            && dialogViewModel.Item != null)
+        var dialogViewModel = new EditDataDialogViewModel(new W3StringItemModel()); // Create new item view model
+        if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true // Show add dialog
+            && dialogViewModel.Item != null) // Check if user confirmed
         {
-            W3StringItems!.Add(dialogViewModel.Item.Cast<W3StringItemModel>());
-            Log.Information("New W3Item added.");
+            W3StringItems!.Add(dialogViewModel.Item.Cast<W3StringItemModel>()); // Add new item to collection
+            Log.Information("New W3Item added."); // Log successful addition
         }
         else
         {
-            Log.Information("The W3Item has not been added.");
+            Log.Information("The W3Item has not been added."); // Log cancelled addition
         }
     }
 
@@ -387,19 +400,19 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Edit(W3StringItemModel selectedItem)
     {
-        var dialogViewModel = new EditDataDialogViewModel(selectedItem);
-        if (await dialogService.ShowDialogAsync(this,
-                dialogViewModel) == true && dialogViewModel.Item != null)
+        var dialogViewModel = new EditDataDialogViewModel(selectedItem); // Create edit dialog view model
+        if (await dialogService.ShowDialogAsync(this, // Show edit dialog
+                dialogViewModel) == true && dialogViewModel.Item != null) // Check if user confirmed changes
         {
-            var found = W3StringItems!
+            var found = W3StringItems! // Find the item in the collection
                 .First(x => x.TrackingId == selectedItem.TrackingId);
-            var index = W3StringItems!.IndexOf(found);
-            W3StringItems[index] = dialogViewModel.Item.Cast<W3StringItemModel>();
-            Log.Information("The W3Item has been updated.");
+            var index = W3StringItems!.IndexOf(found); // Get the item index
+            W3StringItems[index] = dialogViewModel.Item.Cast<W3StringItemModel>(); // Update the item
+            Log.Information("The W3Item has been updated."); // Log successful update
         }
         else
         {
-            Log.Information("The W3Item has not been updated.");
+            Log.Information("The W3Item has not been updated."); // Log cancelled update
         }
     }
 
@@ -410,14 +423,15 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task Delete(IEnumerable<object> selectedItems)
     {
-        var w3Items = selectedItems.OfType<ITrackableW3StringItem>().ToArray();
-        if (w3Items.Length > 0 &&
-            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) == true)
+        var w3Items = selectedItems.OfType<ITrackableW3StringItem>().ToArray(); // Filter and convert to trackable items
+        if (w3Items.Length > 0 && // Check if any items to delete
+            await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) ==
+            true) // Show confirmation dialog
             w3Items.ForEach(item =>
             {
-                var stringItem = item.Cast<W3StringItemModel>();
-                W3StringItems!.Remove(stringItem);
-                SearchResults?.Remove(stringItem);
+                var stringItem = item.Cast<W3StringItemModel>(); // Cast to string item model
+                W3StringItems!.Remove(stringItem); // Remove from main collection
+                SearchResults?.Remove(stringItem); // Remove from search results if applicable
             });
     }
 
@@ -460,10 +474,10 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
-        var translators = serviceProvider.GetServices<ITranslator>().ToArray();
-        var names = translators.Select(x => x.Name);
-        translators.ForEach(x => x.Cast<IDisposable>().Dispose());
-        await dialogService.ShowDialogAsync(this,
+        var translators = serviceProvider.GetServices<ITranslator>().ToArray(); // Get all available translators
+        var names = translators.Select(x => x.Name); // Extract translator names
+        translators.ForEach(x => x.Cast<IDisposable>().Dispose()); // Dispose of translator instances
+        await dialogService.ShowDialogAsync(this, // Show the settings dialog
             new SettingDialogViewModel(appSettings, dialogService, names,
                 serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures));
     }
@@ -483,15 +497,15 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowAbout()
     {
-        await dialogService.ShowDialogAsync(this,
-            new AboutDialogViewModel(new Dictionary<string, object?>
+        await dialogService.ShowDialogAsync(this, // Show the about dialog
+            new AboutDialogViewModel(new Dictionary<string, object?> // Create view model with application information
             {
-                { "Version", ThisAssembly.AssemblyInformationalVersion },
-                { "BuildTime", BuildTimestamp.BuildTime.ToLocalTime() },
-                { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" },
-                { "Runtime", RuntimeInformation.FrameworkDescription },
+                { "Version", ThisAssembly.AssemblyInformationalVersion }, // Application version
+                { "BuildTime", BuildTimestamp.BuildTime.ToLocalTime() }, // Build time
+                { "OS", $"{RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})" }, // OS information
+                { "Runtime", RuntimeInformation.FrameworkDescription }, // Runtime information
                 {
-                    "Package", DependencyContext.Default?
+                    "Package", DependencyContext.Default? // Package information
                         .RuntimeLibraries.Where(static x => x.Type == "package")
                 }
             }));
@@ -534,9 +548,9 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <returns>True if the translate dialog can be shown, false otherwise</returns>
     private bool CanShowTranslateDialog()
     {
-        if (SearchResults != null)
-            return SearchResults.Any();
-        return W3StringItems?.Any() == true;
+        if (SearchResults != null) // Check if we have search results
+            return SearchResults.Any(); // Return true if search results exist
+        return W3StringItems?.Any() == true; // Otherwise check if we have any W3String items
     }
 
     /// <summary>
@@ -545,20 +559,18 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <param name="selectedItem">The initially selected item in the dialog</param>
     [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
-    {        
-        // Determine which items to use (search results or all items)
-        var items = SearchResults ?? W3StringItems!;
-        var itemsList = items.OfType<ITrackableW3StringItem>().ToList();
-        var selectedIndex = selectedItem != null ? itemsList.IndexOf(selectedItem) : 0;
-        
-        var translator = serviceProvider.GetServices<ITranslator>()
+    {
+        var items = SearchResults ?? W3StringItems!; // Use search results if available, otherwise all items
+        var itemsList = items.OfType<ITrackableW3StringItem>().ToList(); // Convert to list of trackable items
+        var selectedIndex =
+            selectedItem != null ? itemsList.IndexOf(selectedItem) : 0; // Set selected index based on provided item
+        var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
-        await dialogService.ShowDialogAsync(this,
+        await dialogService.ShowDialogAsync(this, // Show the translate dialog
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
-        if (translator is IDisposable disposable) disposable.Dispose();
-        
-        // If we're showing search results, refresh the data grid
-        if (SearchResults != null)
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
+        if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
+        if (SearchResults != null) // Check if we're working with search results
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+                MessageTokens.RefreshDataGrid); // Send refresh message
     }
 }
