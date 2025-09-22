@@ -21,7 +21,7 @@ public interface IW3Serializer
     /// <summary>
     ///     Serializes The Witcher 3 string items to a file
     /// </summary>
-    /// <param name="w3StringItems">The The Witcher 3 string items to serialize</param>
+    /// <param name="w3StringItems">The Witcher 3 string items to serialize</param>
     /// <param name="context">The serialization context containing file path and other serialization parameters</param>
     /// <returns>
     ///     A task that represents the asynchronous serialize operation. The task result indicates whether the
