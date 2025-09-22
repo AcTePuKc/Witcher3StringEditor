@@ -40,9 +40,7 @@ public class W3StringsSerializer(
                     InputFileToDecode = filePath
                 }));
             Guard.IsEqualTo(process.ExitCode, 0); // Ensure the process completed successfully (exit code 0)
-            return
-                await csvSerializer.Deserialize(
-                    $"{filePath}.csv"); // Use the CSV serializer to read the decoded data from the generated CSV file
+            return await csvSerializer.Deserialize($"{filePath}.csv"); // CSV serializer for decoded data
         }
         catch (Exception ex)
         {
@@ -79,8 +77,7 @@ public class W3StringsSerializer(
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
             var outputW3StringsPath =
-                Path.Combine(context.OutputDirectory,
-                    $"{saveLang}.w3strings"); // Define the final output path for the W3Strings file
+                Path.Combine(context.OutputDirectory, $"{saveLang}.w3strings"); // W3Strings output path
             // Create a temporary context with the temp directory as output
             var tempContext = context with
             {
@@ -111,11 +108,9 @@ public class W3StringsSerializer(
     private bool ReplaceFileWithBackup(string sourceFilePath, string destinationFilePath)
     {
         if (File.Exists(destinationFilePath) &&
-            !backupService.Backup(
-                destinationFilePath)) // Check if the destination file exists and create a backup if needed
+            !backupService.Backup(destinationFilePath)) // Backup existing file before overwrite
             return false; // Return false if backup creation failed
-        File.Copy(sourceFilePath, destinationFilePath,
-            true); // Copy the source file to the destination, overwriting if necessary
+        File.Copy(sourceFilePath, destinationFilePath, true); // Copy with overwrite
         return true; // Return true to indicate successful replacement
     }
 
