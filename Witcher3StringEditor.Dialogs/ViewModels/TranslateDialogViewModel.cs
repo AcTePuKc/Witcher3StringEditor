@@ -142,11 +142,11 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         switch (CurrentViewModel)
         {
-            case BatchItemsTranslationViewModel { IsBusy: true } batchVm:
-                await batchVm.CancelCommand.ExecuteAsync(null);
+            case BatchItemsTranslationViewModel { IsBusy: true } batchVm: // If batch translation is in progress
+                await batchVm.CancelCommand.ExecuteAsync(null); // Cancel the operation
                 break;
-            case SingleItemTranslationViewModel singleVm:
-                await SaveUnsavedChangesIfNeeded(singleVm);
+            case SingleItemTranslationViewModel singleVm: // If single item translation is active
+                await SaveUnsavedChangesIfNeeded(singleVm); // Save any unsaved changes
                 break;
         }
     }
@@ -216,15 +216,15 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     /// <returns>True to cancel closing, false to allow closing</returns>
     private async Task<bool> HandleClosingAsync()
     {
-        if (!CurrentViewModel.GetIsBusy() ||
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+        if (!CurrentViewModel.GetIsBusy() || // Allow closing if not busy
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), // Or if user confirms
                 MessageTokens.TranslationDialogClosing))
         {
-            await CleanupCurrentViewModelAsync();
-            return false;
+            await CleanupCurrentViewModelAsync(); // Clean up before closing
+            return false; // Allow the dialog to close
         }
 
-        Log.Information("Translation dialog closing cancelled.");
-        return true;
+        Log.Information("Translation dialog closing cancelled."); // Log if closing is prevented
+        return true; // Prevent the dialog from closing
     }
 }

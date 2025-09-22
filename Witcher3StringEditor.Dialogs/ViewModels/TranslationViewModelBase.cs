@@ -83,15 +83,15 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     /// <returns>A collection of supported languages</returns>
     private static IEnumerable<ILanguage> GetSupportedLanguages(ITranslator translator)
     {
-        return translator.Name switch
+        return translator.Name switch // Return languages based on translator type
         {
-            "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x =>
+            "MicrosoftTranslator" => Language.LanguageDictionary.Values.Where(x => // Microsoft supported languages
                 x.SupportedServices.HasFlag(TranslationServices.Microsoft)),
-            "GoogleTranslator" => Language.LanguageDictionary.Values.Where(x =>
+            "GoogleTranslator" => Language.LanguageDictionary.Values.Where(x => // Google supported languages
                 x.SupportedServices.HasFlag(TranslationServices.Google)),
-            "YandexTranslator" => Language.LanguageDictionary.Values.Where(x =>
+            "YandexTranslator" => Language.LanguageDictionary.Values.Where(x => // Yandex supported languages
                 x.SupportedServices.HasFlag(TranslationServices.Google)),
-            _ => Language.LanguageDictionary.Values
+            _ => Language.LanguageDictionary.Values // Default to all languages
         };
     }
 

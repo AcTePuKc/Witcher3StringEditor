@@ -176,9 +176,6 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         }
     }
 
-    /// <summary>
-    ///     Executes the translation task with cancellation support
-    /// </summary>
     /// <param name="text">The text to translate</param>
     /// <param name="toLanguage">The target language</param>
     /// <param name="formLanguage">The source language</param>
@@ -187,12 +184,14 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     private async Task<Result<string>> ExecuteTranslationTask(string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
     {
-        var translateTask = Translator.TranslateAsync(text, toLanguage, formLanguage);
-        var completedTask = await Task.WhenAny(
-            translateTask,
-            Task.Delay(Timeout.Infinite, cancellationTokenSource.Token)
+        var translateTask = Translator.TranslateAsync(text, toLanguage, formLanguage); // Start translation
+        var completedTask = await Task.WhenAny( // Wait for first task to complete
+            translateTask, // Translation task
+            Task.Delay(Timeout.Infinite, cancellationTokenSource.Token) // Cancellation task
         );
-        return !completedTask.IsCanceled ? Result.Ok((await translateTask).Translation) : Result.Fail(string.Empty);
+        return !completedTask.IsCanceled
+            ? Result.Ok((await translateTask).Translation)
+            : Result.Fail(string.Empty); // Return result or failure
     }
 
     /// <summary>
@@ -224,12 +223,13 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     {
         try
         {
-            if (CurrentTranslateItemModel is { IsSaved: false }
-                && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText)
-                && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+            if (CurrentTranslateItemModel is { IsSaved: false } // Check if current translation is unsaved
+                && !string.IsNullOrWhiteSpace(CurrentTranslateItemModel.TranslatedText) // And has text content
+                && await WeakReferenceMessenger.Default.Send(
+                    new AsyncRequestMessage<bool>(), // Ask user to confirm save
                     MessageTokens.TranslatedTextNoSaved))
-                SaveTranslation();
-            CurrentItemIndex += direction;
+                SaveTranslation(); // Save the translation if confirmed
+            CurrentItemIndex += direction; // Move to the next/previous item
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
                 Translator.Name, direction > 0 ? "next" : "previous", CurrentItemIndex);
         }

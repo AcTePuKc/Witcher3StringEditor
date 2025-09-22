@@ -179,11 +179,11 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// </summary>
     private async Task ExecuteBatchTranslation()
     {
-        IsBusy = true;
-        ResetTranslationCounts();
-        CancellationTokenSource?.Dispose();
-        CancellationTokenSource = new CancellationTokenSource();
-        await ProcessTranslationItems(W3StringItems.Skip(StartIndex - 1).Take(PendingCount),
+        IsBusy = true; // Set the busy flag to prevent concurrent operations
+        ResetTranslationCounts(); // Reset counters for success, failure, and pending items
+        CancellationTokenSource?.Dispose(); // Dispose of any existing cancellation token source
+        CancellationTokenSource = new CancellationTokenSource(); // Create a new cancellation token source
+        await ProcessTranslationItems(W3StringItems.Skip(StartIndex - 1).Take(PendingCount), // Process selected items
             ToLanguage, FormLanguage, CancellationTokenSource.Token);
     }
 
@@ -198,16 +198,16 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         ILanguage fromLanguage,
         CancellationToken cancellationToken)
     {
-        foreach (var item in items)
-            if (!cancellationToken.IsCancellationRequested)
+        foreach (var item in items) // Process each item in the collection
+            if (!cancellationToken.IsCancellationRequested) // Check if operation has been cancelled
             {
-                await ProcessSingleItem(item, toLanguage, fromLanguage);
-                PendingCount--;
+                await ProcessSingleItem(item, toLanguage, fromLanguage); // Translate the current item
+                PendingCount--; // Decrement the pending items counter
             }
             else
             {
-                Log.Information("The batch translation has been cancelled.");
-                break;
+                Log.Information("The batch translation has been cancelled."); // Log cancellation
+                break; // Exit the loop if cancelled
             }
     }
 
@@ -222,25 +222,27 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     {
         try
         {
-            var translation = await TranslateItem(Translator, item.Text, toLanguage, fromLanguage);
-            if (translation.IsSuccess)
+            var translation =
+                await TranslateItem(Translator, item.Text, toLanguage, fromLanguage); // Perform translation
+            if (translation.IsSuccess) // Check if translation succeeded
             {
-                var clone = item.Clone().Cast<ITrackableW3StringItem>();
-                clone.Text = translation.Value;
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
+                var clone = item.Clone().Cast<ITrackableW3StringItem>(); // Clone the item
+                clone.Text = translation.Value; // Update with translated text
+                WeakReferenceMessenger.Default.Send(
+                    new ValueChangedMessage<ITrackableW3StringItem>(clone), // Send via messaging
                     MessageTokens.TranslationSaved);
-                SuccessCount++;
+                SuccessCount++; // Increment success counter
             }
             else
             {
-                FailureCount++;
+                FailureCount++; // Increment failure counter
             }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}",
+            Log.Error(ex, "The translator: {Name} returned an error. Exception: {ExceptionMessage}", // Log any errors
                 Translator.Name, ex.Message);
-            FailureCount++;
+            FailureCount++; // Increment failure counter
         }
     }
 

@@ -127,10 +127,10 @@ public partial class SaveDialogViewModel
     /// <returns>The ID space value, or -1 if not found</returns>
     private static int FindIdSpace(IW3StringItem iw3StringItem)
     {
-        var match = IdSpaceRegex().Match(iw3StringItem.StrId);
-        if (!match.Success) return -1;
-        var foundIdSpace = match.Groups[1].Value;
-        return int.Parse(foundIdSpace, CultureInfo.InvariantCulture);
+        var match = IdSpaceRegex().Match(iw3StringItem.StrId); // Apply regex to extract ID space
+        if (!match.Success) return -1; // Return -1 if no match found
+        var foundIdSpace = match.Groups[1].Value; // Get the captured group
+        return int.Parse(foundIdSpace, CultureInfo.InvariantCulture); // Parse and return as integer
     }
 
     /// <summary>
