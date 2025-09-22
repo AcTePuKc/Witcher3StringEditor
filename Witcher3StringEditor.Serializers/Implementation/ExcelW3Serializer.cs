@@ -155,12 +155,9 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="rowCount">The number of data rows in the worksheet</param>
     private static void ApplyDataCellAlignment(IWorksheet worksheet, int rowCount)
     {
-        //Define the range for normal data columns (A, B, C) excluding the header row
-        //Start from row 2 (first data row) to rowCount + 1 (last data row)
-        //Center-align content horizontally and vertically within the cells
-        var normalRange = worksheet[$"A2:C{rowCount + 1}"];
-        normalRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
-        normalRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
+        var normalRange = worksheet[$"A2:C{rowCount + 1}"]; // Data range (A2:C{n}, excludes header)
+        normalRange.HorizontalAlignment = ExcelHAlign.HAlignCenter; // Horizontal center alignment
+        normalRange.VerticalAlignment = ExcelVAlign.VAlignCenter; // Vertical center alignment
     }
 
     /// <summary>
@@ -170,16 +167,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="rowCount">The number of data rows in the worksheet</param>
     private static void ApplyTableBorders(IWorksheet worksheet, int rowCount)
     {
-        // Table formatting configuration:
-        // 1. Defines complete table range (A1:E{rowCount+1}) including headers and all data rows
-        // 2. Applies thin border style to all edges
-        // 3. Disables diagonal border lines (common for data tables)
-        // 4. Sets text format ("@") to preserve exact content (leading zeros, no scientific notation)
-        var tableRange = worksheet[$"A1:E{rowCount + 1}"];
-        tableRange.Borders.LineStyle = ExcelLineStyle.Thin;
-        tableRange.Borders[ExcelBordersIndex.DiagonalUp].ShowDiagonalLine = false;
-        tableRange.Borders[ExcelBordersIndex.DiagonalDown].ShowDiagonalLine = false;
-        tableRange.NumberFormat = "@";
+        var tableRange = worksheet[$"A1:E{rowCount + 1}"]; // Full table range (headers + data)
+        tableRange.Borders.LineStyle = ExcelLineStyle.Thin; // Thin border on all edges
+        tableRange.Borders[ExcelBordersIndex.DiagonalUp].ShowDiagonalLine = false; // Disable diagonal up
+        tableRange.Borders[ExcelBordersIndex.DiagonalDown].ShowDiagonalLine = false; // Disable diagonal down
+        tableRange.NumberFormat = "@"; // Text format (preserve leading zeros)
     }
 
     /// <summary>
@@ -225,25 +217,14 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     private static void WriteDataToWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> w3StringItems)
     {
         // Iterate through each string item to write data to the worksheet
-        // Start from row 2 since row 1 contains headers
-
         for (var i = 0; i < w3StringItems.Count; i++)
         {
-            // Loop processing notes:
-            // 1. Calculate actual row index (1-based) for current item
-            //    - Row 1 is header, data starts from row 2
-            // 2. Write each string item property to corresponding row cell:
-            //    - Column A: StrId
-            //    - Column B: KeyHex
-            //    - Column C: KeyName
-            //    - Column D: OldText
-            //    - Column E: Text
-            var rowIndex = i + 2;
-            worksheet[$"A{rowIndex}"].Value = w3StringItems[i].StrId;
-            worksheet[$"B{rowIndex}"].Value = w3StringItems[i].KeyHex;
-            worksheet[$"C{rowIndex}"].Value = w3StringItems[i].KeyName;
-            worksheet[$"D{rowIndex}"].Value = w3StringItems[i].OldText;
-            worksheet[$"E{rowIndex}"].Value = w3StringItems[i].Text;
+            var rowIndex = i + 2; //Row 1 is header, data starts from row 2
+            worksheet[$"A{rowIndex}"].Value = w3StringItems[i].StrId; //Column A: StrId
+            worksheet[$"B{rowIndex}"].Value = w3StringItems[i].KeyHex; //Column B: KeyHex
+            worksheet[$"C{rowIndex}"].Value = w3StringItems[i].KeyName; //Column C: KeyName
+            worksheet[$"D{rowIndex}"].Value = w3StringItems[i].OldText; //Column D: OldText
+            worksheet[$"E{rowIndex}"].Value = w3StringItems[i].Text; //Column E: Text
         }
     }
 }
