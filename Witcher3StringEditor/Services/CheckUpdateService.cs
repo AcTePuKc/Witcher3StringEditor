@@ -23,24 +23,26 @@ internal class CheckUpdateService : ICheckUpdateService
     {
         try
         {
-            Log.Information("Checking for updates...");
-            using var httpClient = new HttpClient();
-            var httpResponse = await httpClient.GetAsync(updateUrl);
-            if (!httpResponse.IsSuccessStatusCode) return true;
-            Guard.IsTrue(Version.TryParse(await httpResponse.Content.ReadAsStringAsync(), out var lastestVersion));
-            Guard.IsTrue(Version.TryParse(ThisAssembly.AssemblyFileVersion, out var currentVersion));
-            Guard.IsNotNull(lastestVersion);
-            Guard.IsNotNull(currentVersion);
-            var isUpdateAvailable = lastestVersion > currentVersion;
-            Log.Information(
+            Log.Information("Checking for updates..."); // Log start of update check
+            using var httpClient = new HttpClient(); // Create HTTP client
+            var httpResponse = await httpClient.GetAsync(updateUrl); // Send GET request to update URL
+            if (!httpResponse.IsSuccessStatusCode) return true; // Return true if request failed
+            Guard.IsTrue(Version.TryParse(await httpResponse.Content.ReadAsStringAsync(),
+                out var lastestVersion)); // Parse latest version
+            Guard.IsTrue(Version.TryParse(ThisAssembly.AssemblyFileVersion,
+                out var currentVersion)); // Parse current version
+            Guard.IsNotNull(lastestVersion); // Ensure latest version is not null
+            Guard.IsNotNull(currentVersion); // Ensure current version is not null
+            var isUpdateAvailable = lastestVersion > currentVersion; // Compare versions
+            Log.Information( // Log update check results
                 "Update check completed. Current version: {CurrentVersion}, Latest version: {LatestVersion}, Update available: {IsUpdateAvailable}",
                 currentVersion, lastestVersion, isUpdateAvailable);
-            return isUpdateAvailable;
+            return isUpdateAvailable; // Return update availability
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to check for updates.");
-            return false;
+            Log.Error(ex, "Failed to check for updates."); // Log any errors
+            return false; // Return false on failure
         }
     }
 }

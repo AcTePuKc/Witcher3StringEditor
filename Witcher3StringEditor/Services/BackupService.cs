@@ -37,22 +37,22 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
-            var hash = ValidateAndGetHash(filePath);
-            var backupItem = new BackupItem
+            var hash = ValidateAndGetHash(filePath); // Validate file and compute hash
+            var backupItem = new BackupItem // Create new backup item
             {
-                FileName = Path.GetFileName(filePath),
-                Hash = hash,
-                OrginPath = filePath,
-                BackupPath = Path.Combine(backupFolderPath, $"{Guid.NewGuid():N}.bak"),
-                BackupTime = DateTime.Now
+                FileName = Path.GetFileName(filePath), // Set file name
+                Hash = hash, // Set file hash
+                OrginPath = filePath, // Set original file path
+                BackupPath = Path.Combine(backupFolderPath, $"{Guid.NewGuid():N}.bak"), // Set backup file path
+                BackupTime = DateTime.Now // Set backup time
             };
-            EnsureBackupDirectoryExists(backupFolderPath);
-            return IsDuplicateBackup(backupItem) || ExecuteBackup(backupItem);
+            EnsureBackupDirectoryExists(backupFolderPath); // Ensure backup directory exists
+            return IsDuplicateBackup(backupItem) || ExecuteBackup(backupItem); // Check for duplicates or execute backup
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to backup file: {Path}.", filePath);
-            return false;
+            Log.Error(ex, "Failed to backup file: {Path}.", filePath); // Log any errors
+            return false; // Return false on failure
         }
     }
 
@@ -65,19 +65,19 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
-            Guard.IsTrue(File.Exists(backupItem.BackupPath));
-            var folder = Path.GetDirectoryName(backupItem.OrginPath);
-            Guard.IsNotNullOrWhiteSpace(folder);
-            if (!Directory.Exists(folder))
+            Guard.IsTrue(File.Exists(backupItem.BackupPath)); // Ensure backup file exists
+            var folder = Path.GetDirectoryName(backupItem.OrginPath); // Get directory of original file
+            Guard.IsNotNullOrWhiteSpace(folder); // Ensure folder path is valid
+            if (!Directory.Exists(folder)) // Create directory if it doesn't exist
                 Directory.CreateDirectory(folder);
-            File.Copy(backupItem.BackupPath, backupItem.OrginPath, true);
-            Log.Information("Restore backup file: {FileName}.", backupItem.OrginPath);
-            return true;
+            File.Copy(backupItem.BackupPath, backupItem.OrginPath, true); // Copy backup to original location
+            Log.Information("Restore backup file: {FileName}.", backupItem.OrginPath); // Log successful restore
+            return true; // Return true on success
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to restore backup item: {Path}.", backupItem.OrginPath);
-            return false;
+            Log.Error(ex, "Failed to restore backup item: {Path}.", backupItem.OrginPath); // Log any errors
+            return false; // Return false on failure
         }
     }
 
@@ -90,16 +90,16 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
-            if (File.Exists(backupItem.BackupPath))
-                File.Delete(backupItem.BackupPath);
-            appSettings.BackupItems.Remove(backupItem);
-            Log.Information("Delete backup file: {Path}.", backupItem.BackupPath);
-            return true;
+            if (File.Exists(backupItem.BackupPath)) // Check if backup file exists
+                File.Delete(backupItem.BackupPath); // Delete the backup file
+            appSettings.BackupItems.Remove(backupItem); // Remove from backup items collection
+            Log.Information("Delete backup file: {Path}.", backupItem.BackupPath); // Log successful deletion
+            return true; // Return true on success
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to delete backup item: {Path}.", backupItem.BackupPath);
-            return false;
+            Log.Error(ex, "Failed to delete backup item: {Path}.", backupItem.BackupPath); // Log any errors
+            return false; // Return false on failure
         }
     }
 
@@ -147,10 +147,10 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     /// <returns>True if the backup was executed successfully</returns>
     private bool ExecuteBackup(BackupItem backupItem)
     {
-        File.Copy(backupItem.OrginPath, backupItem.BackupPath);
-        appSettings.BackupItems.Add(backupItem);
-        Log.Information("Backup file: {Path}.", backupItem.OrginPath);
-        return true;
+        File.Copy(backupItem.OrginPath, backupItem.BackupPath); // Copy file to backup location
+        appSettings.BackupItems.Add(backupItem); // Add backup item to collection
+        Log.Information("Backup file: {Path}.", backupItem.OrginPath); // Log successful backup
+        return true; // Return true on success
     }
 
     /// <summary>
@@ -162,15 +162,16 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         try
         {
-            Guard.IsTrue(File.Exists(filePath));
-            using var sha256 = SHA256.Create();
-            using var stream = File.OpenRead(filePath);
-            return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+            Guard.IsTrue(File.Exists(filePath)); // Ensure file exists
+            using var sha256 = SHA256.Create(); // Create SHA256 hasher
+            using var stream = File.OpenRead(filePath); // Open file for reading
+            return BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "")
+                .ToLowerInvariant(); // Compute and format hash
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to compute SHA256 hash: {Path}.", filePath);
-            return string.Empty;
+            Log.Error(ex, "Failed to compute SHA256 hash: {Path}.", filePath); // Log any errors
+            return string.Empty; // Return empty string on failure
         }
     }
 }

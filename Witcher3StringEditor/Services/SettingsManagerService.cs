@@ -39,23 +39,28 @@ internal class SettingsManagerService : ISettingsManagerService
     /// <returns>A task that represents the asynchronous operation</returns>
     public async Task CheckSettings()
     {
-        Log.Information("Checking whether the settings are correct.");
-        if (string.IsNullOrWhiteSpace(appSettings.W3StringsPath))
+        Log.Information("Checking whether the settings are correct."); // Log start of settings check
+        if (string.IsNullOrWhiteSpace(appSettings.W3StringsPath)) // Check if W3Strings path is set
         {
-            Log.Error("Settings are incorrect or initial setup is incomplete.");
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.FirstRun);
+            Log.Error("Settings are incorrect or initial setup is incomplete."); // Log error if not set
+            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                MessageTokens.FirstRun); // Trigger first run
         }
-        else
+        else // If W3Strings path is set
         {
-            Log.Information("The W3Strings path has been set to {Path}.", appSettings.W3StringsPath);
-            if (string.IsNullOrWhiteSpace(appSettings.GameExePath))
-                Log.Warning("The game executable path is not set.");
-            else
-                Log.Information("The game executable path has been set to {Path}.", appSettings.GameExePath);
-            Log.Information("The preferred filetype is {Filetype}", appSettings.PreferredW3FileType);
-            Log.Information("The preferred language is {Language}", appSettings.PreferredLanguage);
-            Log.Information("Current translator is {Translator}.", appSettings.Translator);
-            Log.Information("Settings are correct.");
+            Log.Information("The W3Strings path has been set to {Path}.",
+                appSettings.W3StringsPath); // Log W3Strings path
+            if (string.IsNullOrWhiteSpace(appSettings.GameExePath)) // Check if game exe path is set
+                Log.Warning("The game executable path is not set."); // Log warning if not set
+            else // If game exe path is set
+                Log.Information("The game executable path has been set to {Path}.",
+                    appSettings.GameExePath); // Log game exe path
+            Log.Information("The preferred filetype is {Filetype}",
+                appSettings.PreferredW3FileType); // Log preferred file type
+            Log.Information("The preferred language is {Language}",
+                appSettings.PreferredLanguage); // Log preferred language
+            Log.Information("Current translator is {Translator}.", appSettings.Translator); // Log current translator
+            Log.Information("Settings are correct."); // Log that settings are correct
         }
     }
 
@@ -68,21 +73,21 @@ internal class SettingsManagerService : ISettingsManagerService
     private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         // Handle different property changes with appropriate actions
-        switch (e.PropertyName)
+        switch (e.PropertyName) // Switch on property name
         {
-            case nameof(IAppSettings.W3StringsPath):
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+            case nameof(IAppSettings.W3StringsPath): // If W3StringsPath changed
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), // Send message
                     MessageTokens.W3StringsPathChanged);
                 break;
-            case nameof(IAppSettings.GameExePath):
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+            case nameof(IAppSettings.GameExePath): // If GameExePath changed
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), // Send message
                     MessageTokens.GameExePathChanged);
                 break;
-            case nameof(IAppSettings.Translator):
-                ApplyTranslatorChange(appSettings);
+            case nameof(IAppSettings.Translator): // If Translator changed
+                ApplyTranslatorChange(appSettings); // Apply translator change
                 break;
-            case nameof(IAppSettings.Language):
-                ApplyLanguageChange(appSettings.Language);
+            case nameof(IAppSettings.Language): // If Language changed
+                ApplyLanguageChange(appSettings.Language); // Apply language change
                 break;
         }
     }

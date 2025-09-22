@@ -13,7 +13,10 @@ internal interface IFileManagerService
     ///     Deserializes The Witcher 3 string items from the specified file
     /// </summary>
     /// <param name="fileName">The path to the file to deserialize</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized The Witcher 3 string items</returns>
+    /// <returns>
+    ///     A task that represents the asynchronous operation. The task result contains the deserialized The Witcher 3
+    ///     string items
+    /// </returns>
     Task<ObservableCollection<W3StringItemModel>> DeserializeW3StringItems(string fileName);
 
     /// <summary>

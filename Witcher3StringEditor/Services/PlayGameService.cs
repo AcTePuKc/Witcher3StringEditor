@@ -20,28 +20,28 @@ internal class PlayGameService(IAppSettings appSettings) : IPlayGameService
     {
         try
         {
-            Log.Information("Starting the game process.");
-            using var process = new Process();
-            process.EnableRaisingEvents = true;
-            process.StartInfo = new ProcessStartInfo
+            Log.Information("Starting the game process."); // Log start of game process
+            using var process = new Process(); // Create new process
+            process.EnableRaisingEvents = true; // Enable event raising
+            process.StartInfo = new ProcessStartInfo // Configure process start info
             {
-                FileName = appSettings.GameExePath,
-                WorkingDirectory = Path.GetDirectoryName(appSettings.GameExePath),
-                RedirectStandardError = true,
-                RedirectStandardOutput = true
+                FileName = appSettings.GameExePath, // Set game executable path
+                WorkingDirectory = Path.GetDirectoryName(appSettings.GameExePath), // Set working directory
+                RedirectStandardError = true, // Redirect standard error
+                RedirectStandardOutput = true // Redirect standard output
             };
-            process.ErrorDataReceived += Process_ErrorDataReceived;
-            process.OutputDataReceived += Process_OutputDataReceived;
-            process.Start();
-            process.BeginErrorReadLine();
-            process.BeginOutputReadLine();
-            await process.WaitForExitAsync();
-            Guard.IsEqualTo(process.ExitCode, 0);
-            Log.Information("Game process exited with code {ExitCode}.", process.ExitCode);
+            process.ErrorDataReceived += Process_ErrorDataReceived; // Register error handler
+            process.OutputDataReceived += Process_OutputDataReceived; // Register output handler
+            process.Start(); // Start the process
+            process.BeginErrorReadLine(); // Begin reading error output
+            process.BeginOutputReadLine(); // Begin reading standard output
+            await process.WaitForExitAsync(); // Wait for process to exit
+            Guard.IsEqualTo(process.ExitCode, 0); // Ensure exit code is 0
+            Log.Information("Game process exited with code {ExitCode}.", process.ExitCode); // Log exit code
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to start the game process.");
+            Log.Error(ex, "Failed to start the game process."); // Log any errors
         }
     }
 

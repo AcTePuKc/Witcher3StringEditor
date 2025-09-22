@@ -19,13 +19,17 @@ internal class FileManagerService(IAppSettings appSettings, IW3Serializer w3Seri
     ///     Deserializes The Witcher 3 string items from the specified file
     /// </summary>
     /// <param name="fileName">The path to the file to deserialize</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the deserialized The Witcher 3 string items</returns>
+    /// <returns>
+    ///     A task that represents the asynchronous operation. The task result contains the deserialized The Witcher 3
+    ///     string items
+    /// </returns>
     public async Task<ObservableCollection<W3StringItemModel>> DeserializeW3StringItems(string fileName)
     {
-        Log.Information("The file {FileName} is being opened...", fileName);
-        var items = await w3Serializer.Deserialize(fileName);
-        var orderedItems = items.OrderBy(x => x.StrId);
-        return orderedItems.Select(x => new W3StringItemModel(x)).ToObservableCollection();
+        Log.Information("The file {FileName} is being opened...", fileName); // Log file opening
+        var items = await w3Serializer.Deserialize(fileName); // Deserialize file contents
+        var orderedItems = items.OrderBy(x => x.StrId); // Order items by ID
+        return orderedItems.Select(x => new W3StringItemModel(x))
+            .ToObservableCollection(); // Convert to observable collection
     }
 
     /// <summary>
@@ -35,10 +39,10 @@ internal class FileManagerService(IAppSettings appSettings, IW3Serializer w3Seri
     /// <param name="onOutputFolderChanged">The action to call when the output folder changes</param>
     public void SetOutputFolder(string fileName, Action<string> onOutputFolderChanged)
     {
-        var folder = Path.GetDirectoryName(fileName);
-        if (folder == null) return;
-        onOutputFolderChanged(folder);
-        Log.Information("Working directory set to {Folder}.", folder);
+        var folder = Path.GetDirectoryName(fileName); // Extract directory from file name
+        if (folder == null) return; // Return if directory is null
+        onOutputFolderChanged(folder); // Notify of folder change
+        Log.Information("Working directory set to {Folder}.", folder); // Log folder change
     }
 
     /// <summary>
@@ -48,16 +52,16 @@ internal class FileManagerService(IAppSettings appSettings, IW3Serializer w3Seri
     /// <param name="fileName">The file name to add or update in the recent items list</param>
     public void UpdateRecentItems(string fileName)
     {
-        var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName);
-        if (foundItem == null)
+        var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName); // Find existing item
+        if (foundItem == null) // If item not found
         {
-            appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now));
-            Log.Information("Added {FileName} to recent items.", fileName);
+            appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now)); // Add new recent item
+            Log.Information("Added {FileName} to recent items.", fileName); // Log addition
         }
-        else
+        else // If item found
         {
-            foundItem.OpenedTime = DateTime.Now;
-            Log.Information("The last opened time for file {FileName} has been updated.", fileName);
+            foundItem.OpenedTime = DateTime.Now; // Update opened time
+            Log.Information("The last opened time for file {FileName} has been updated.", fileName); // Log update
         }
     }
 }
