@@ -138,14 +138,12 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="worksheet">The worksheet containing the header row</param>
     private static void ApplyHeaderRowStyle(IWorksheet worksheet)
     {
-        // Format the header row (A1:E1) with bold text, center alignment,
-        // dark grey background and white font for better visibility
-        var headerRange = worksheet["A1:E1"];
-        headerRange.CellStyle.Font.Bold = true;
-        headerRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
-        headerRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
-        headerRange.CellStyle.ColorIndex = ExcelKnownColors.Grey_80_percent;
-        headerRange.CellStyle.Font.Color = ExcelKnownColors.White;
+        var headerRange = worksheet["A1:E1"]; // Header range (A1-E1)
+        headerRange.CellStyle.Font.Bold = true; // Bold text
+        headerRange.HorizontalAlignment = ExcelHAlign.HAlignCenter; // Horizontal center
+        headerRange.VerticalAlignment = ExcelVAlign.VAlignCenter; // Vertical center
+        headerRange.CellStyle.ColorIndex = ExcelKnownColors.Grey_80_percent; // Dark grey background
+        headerRange.CellStyle.Font.Color = ExcelKnownColors.White; // White font
     }
 
     /// <summary>
