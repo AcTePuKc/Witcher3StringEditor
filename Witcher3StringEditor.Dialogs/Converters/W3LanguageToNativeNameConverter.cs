@@ -24,7 +24,12 @@ public class W3LanguageToNativeNameConverter : IValueConverter
     /// <returns>The native name of the language, or DependencyProperty.UnsetValue if conversion fails</returns>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
+        // Check if the value is a valid W3Language enum, if not return UnsetValue
         if (value is not W3Language language) return DependencyProperty.UnsetValue;
+        
+        // Get the field info for the language enum value
+        // Retrieve the DescriptionAttribute from the field
+        // Create a CultureInfo from the description and return its native name
         return new CultureInfo(typeof(W3Language).GetField(language.ToString())!
             .GetCustomAttribute<DescriptionAttribute>()!.Description).NativeName;
     }
