@@ -57,8 +57,12 @@ public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
     /// <param name="e">QueryRowHeight event arguments containing row index and height information</param>
     private void AssociatedObject_QueryRowHeight(object? sender, QueryRowHeightEventArgs e)
     {
+        // Attempt to get the auto row height for the specified row index
+        // If unable to get auto height or if auto height is less than or equal to minimum height, return without handling
         if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions,
                 out var autoHeight) || autoHeight <= MinHeight) return;
+        
+        // Set the calculated height and mark the event as handled
         e.Height = autoHeight;
         e.Handled = true;
     }
