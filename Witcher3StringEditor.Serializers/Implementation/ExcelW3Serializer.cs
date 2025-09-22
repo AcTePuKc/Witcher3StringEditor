@@ -25,30 +25,20 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     {
         try
         {
-            // Run the deserialization process on a background thread to prevent UI blocking
-            return await Task.Run(() =>
+            return await Task.Run(() => // Async deserialize
             {
-                // Create an Excel engine instance with a 'using' statement to ensure proper cleanup
-                using var excelEngine = new ExcelEngine();
-
-                // Open the Excel workbook from the specified file path and get the first worksheet
-                var worksheet = excelEngine.Excel.Workbooks.Open(filePath).Worksheets[0];
-
-                // Get the range of cells that contain data in the worksheet
-                var usedRange = worksheet.UsedRange;
-
-                // Export the data from the worksheet to a list of W3StringStringItem objects
-                // Starting from row 1, column 1 to the last row and column in the used range
-                return worksheet.ExportData<W3StringStringItem>(1, 1, usedRange.LastRow, usedRange.LastColumn);
+                using var excelEngine = new ExcelEngine(); // Auto-cleanup engine
+                var worksheet = excelEngine.Excel.Workbooks.Open(filePath).Worksheets[0]; // Get 1st sheet
+                var usedRange = worksheet.UsedRange; // Get data range
+                return worksheet.ExportData<W3StringStringItem>(1, 1, usedRange.LastRow,
+                    usedRange.LastColumn); // Export data
             });
         }
         catch (Exception ex)
         {
-            // Log any errors that occur during the deserialization process
-            Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {Path}.", filePath);
-
-            // Return an empty list in case of errors
-            return [];
+            Log.Error(ex, "An error occurred while deserializing Excel worksheets file: {Path}.",
+                filePath); // Log error
+            return []; // Empty on fail
         }
     }
 
@@ -68,32 +58,19 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
             // Run the serialization process on a background thread to prevent UI blocking
             return await Task.Run(() =>
             {
-                // Ensure there are items to serialize, throw exception if count is zero
-                Guard.IsGreaterThan(w3StringItems.Count, 0);
-
-                // Generate the file path for the Excel file based on the target language
+                Guard.IsGreaterThan(w3StringItems.Count, 0); // Require items to serialize
                 var filePath = Path.Combine(context.OutputDirectory,
-                    $"{Enum.GetName(context.TargetLanguage)!.ToLowerInvariant()}.xlsx");
-
-                // If the file already exists, create a backup before overwriting
+                    $"{Enum.GetName(context.TargetLanguage)!.ToLowerInvariant()}.xlsx"); // Build language-specific Excel path
                 if (File.Exists(filePath))
-                    // Use guard to ensure the backup operation succeeds, throw exception on failure
-                    Guard.IsTrue(backupService.Backup(filePath));
-
-                // Generate the Excel file with the provided string items
-                GenerateExcelFile(filePath, w3StringItems);
-
-                // Return true to indicate successful serialization
-                return true;
+                    Guard.IsTrue(backupService.Backup(filePath)); // Backup existing file if exists
+                GenerateExcelFile(filePath, w3StringItems); // Generate Excel file
+                return true; // Return success
             });
         }
         catch (Exception ex)
         {
-            // Log any errors that occur during the serialization process
-            Log.Error(ex, "An error occurred while serializing the Excel worksheets file.");
-
-            // Return false to indicate serialization failure
-            return false;
+            Log.Error(ex, "An error occurred while serializing the Excel worksheets file."); // Log serialization error
+            return false; // Return failure
         }
     }
 
@@ -104,32 +81,15 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="w3StringItems">The Witcher 3 string items to include in the Excel file</param>
     private static void GenerateExcelFile(string path, IReadOnlyList<IW3StringItem> w3StringItems)
     {
-        // Create a file stream for the output file using a 'using' statement to ensure proper disposal
-        using var fileStream = File.Create(path);
-
-        // Create an Excel engine instance with a 'using' statement to ensure proper cleanup
-        using var excelEngine = new ExcelEngine();
-
-        // Get the Excel application object from the engine
-        var application = excelEngine.Excel;
-
-        // Set the default Excel version to XLSX format
-        application.DefaultVersion = ExcelVersion.Xlsx;
-
-        // Create a new workbook with one worksheet
-        var workbook = application.Workbooks.Create(1);
-
-        // Get the first (and only) worksheet from the workbook
-        var worksheet = workbook.Worksheets[0];
-
-        // Format the worksheet with headers, styles, and column widths
-        FormatWorksheet(worksheet, w3StringItems);
-
-        // Write the string item data to the worksheet
-        WriteDataToWorksheet(worksheet, w3StringItems);
-
-        // Save the workbook to the file stream
-        workbook.SaveAs(fileStream);
+        using var fileStream = File.Create(path); // Create output file stream (auto-disposed)
+        using var excelEngine = new ExcelEngine(); // Initialize Excel engine (auto-cleanup)
+        var application = excelEngine.Excel; // Get Excel application instance
+        application.DefaultVersion = ExcelVersion.Xlsx; // Set default format to XLSX
+        var workbook = application.Workbooks.Create(1); // Create workbook with 1 sheet
+        var worksheet = workbook.Worksheets[0]; // Get first worksheet
+        FormatWorksheet(worksheet, w3StringItems); // Format worksheet (headers/styles/widths)
+        WriteDataToWorksheet(worksheet, w3StringItems); // Write data to worksheet
+        workbook.SaveAs(fileStream); // Save workbook to stream
     }
 
     /// <summary>
@@ -139,14 +99,9 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="w3StringItems">The Witcher 3 string items used to determine row count</param>
     private static void FormatWorksheet(IWorksheet worksheet, IReadOnlyList<IW3StringItem> w3StringItems)
     {
-        // Set the table headers in the first row of the worksheet
-        SetTableHeaders(worksheet);
-
-        // Apply formatting styles to the table including header formatting, cell alignment, borders, and freezing the header row
-        SetTableStyles(worksheet, w3StringItems.Count);
-
-        // Set appropriate column widths for better readability of the content
-        SetColumnWidths(worksheet);
+        SetTableHeaders(worksheet); // Set table headers
+        SetTableStyles(worksheet, w3StringItems.Count); // Apply table styles (align/borders/freeze)
+        SetColumnWidths(worksheet); // Adjust column widths
     }
 
     /// <summary>
@@ -156,17 +111,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     private static void SetTableHeaders(IWorksheet worksheet)
     {
         // Set the header values for the worksheet columns:
-        // Column A: String ID (StrId)
-        // Column B: Key in hexadecimal format (KeyHex)
-        // Column C: Key name (KeyName)
-        // Column D: Original text (OldText)
-        // Column E: Translated/new text (Text)
-
-        worksheet["A1"].Value = "StrId";
-        worksheet["B1"].Value = "KeyHex";
-        worksheet["C1"].Value = "KeyName";
-        worksheet["D1"].Value = "OldText";
-        worksheet["E1"].Value = "Text";
+        worksheet["A1"].Value = "StrId"; // Column A: String ID (StrId)
+        worksheet["B1"].Value = "KeyHex"; // Column B: Key in hexadecimal format (KeyHex)
+        worksheet["C1"].Value = "KeyName"; // Column C: Key name (KeyName)
+        worksheet["D1"].Value = "OldText"; // Column D: Original text (OldText)
+        worksheet["E1"].Value = "Text"; // Column E: Translated/new text (Text)
     }
 
     /// <summary>
@@ -182,7 +131,6 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         // 3. Apply borders to the entire table and set number format to text
         // 4. Format text cells (OldText and Text columns) with text wrapping enabled
         // 5. Freeze the header row so it remains visible when scrolling through data
-
         FormatHeaderRow(worksheet);
         FormatNormalCells(worksheet, rowCount);
         ApplyTableBorders(worksheet, rowCount);
@@ -198,7 +146,6 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     {
         // Format the header row (A1:E1) with bold text, center alignment,
         // dark grey background and white font for better visibility
-
         var headerRange = worksheet["A1:E1"];
         headerRange.CellStyle.Font.Bold = true;
         headerRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
@@ -217,7 +164,6 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         //Define the range for normal data columns (A, B, C) excluding the header row
         //Start from row 2 (first data row) to rowCount + 1 (last data row)
         //Center-align content horizontally and vertically within the cells
-        
         var normalRange = worksheet[$"A2:C{rowCount + 1}"];
         normalRange.HorizontalAlignment = ExcelHAlign.HAlignCenter;
         normalRange.VerticalAlignment = ExcelVAlign.VAlignCenter;
@@ -290,6 +236,7 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     {
         // Iterate through each string item to write data to the worksheet
         // Start from row 2 since row 1 contains headers
+
         for (var i = 0; i < w3StringItems.Count; i++)
         {
             // Loop processing notes:
