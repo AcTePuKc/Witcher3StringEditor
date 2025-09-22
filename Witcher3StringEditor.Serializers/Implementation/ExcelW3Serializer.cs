@@ -125,24 +125,18 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="rowCount">The number of data rows in the worksheet</param>
     private static void SetTableStyles(IWorksheet worksheet, int rowCount)
     {
-        // Apply various formatting styles to the worksheet:
-        // 1. Format the header row with bold text, center alignment, and distinct colors
-        // 2. Format normal data cells (ID, KeyHex, KeyName columns) with center alignment
-        // 3. Apply borders to the entire table and set number format to text
-        // 4. Format text cells (OldText and Text columns) with text wrapping enabled
-        // 5. Freeze the header row so it remains visible when scrolling through data
-        FormatHeaderRow(worksheet);
-        FormatNormalCells(worksheet, rowCount);
-        ApplyTableBorders(worksheet, rowCount);
-        FormatTextCells(worksheet, rowCount);
-        FreezeHeaderRow(worksheet);
+        ApplyHeaderRowStyle(worksheet); // Style header row
+        ApplyDataCellAlignment(worksheet, rowCount); // Style data cells
+        ApplyTableBorders(worksheet, rowCount); // Add table borders
+        ApplyTextCellWrapping(worksheet, rowCount); // Style text cells
+        FreezeHeaderRow(worksheet); // Freeze header row
     }
 
     /// <summary>
     ///     Formats the header row with bold text, center alignment, and color
     /// </summary>
     /// <param name="worksheet">The worksheet containing the header row</param>
-    private static void FormatHeaderRow(IWorksheet worksheet)
+    private static void ApplyHeaderRowStyle(IWorksheet worksheet)
     {
         // Format the header row (A1:E1) with bold text, center alignment,
         // dark grey background and white font for better visibility
@@ -155,11 +149,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     }
 
     /// <summary>
-    ///     Formats normal cells with center alignment
+    ///     Applies center alignment to all data cells in the worksheet
     /// </summary>
     /// <param name="worksheet">The worksheet containing the cells to format</param>
     /// <param name="rowCount">The number of data rows in the worksheet</param>
-    private static void FormatNormalCells(IWorksheet worksheet, int rowCount)
+    private static void ApplyDataCellAlignment(IWorksheet worksheet, int rowCount)
     {
         //Define the range for normal data columns (A, B, C) excluding the header row
         //Start from row 2 (first data row) to rowCount + 1 (last data row)
@@ -189,11 +183,11 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     }
 
     /// <summary>
-    ///     Formats text cells to enable text wrapping
+    ///     Applies text wrapping to text cells
     /// </summary>
     /// <param name="worksheet">The worksheet containing the text cells</param>
     /// <param name="rowCount">The number of data rows in the worksheet</param>
-    private static void FormatTextCells(IWorksheet worksheet, int rowCount)
+    private static void ApplyTextCellWrapping(IWorksheet worksheet, int rowCount)
     {
         // Format text cells in columns D and E (excluding header row) from row 2 to rowCount + 1.
         // Enable text wrapping to ensure long text is fully visible.
@@ -218,13 +212,9 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
     /// <param name="worksheet">The worksheet to set column widths on</param>
     private static void SetColumnWidths(IWorksheet worksheet)
     {
-        // Column width configuration for Excel data export:
-        // - Columns A-B (15 units): Short ID/hex values
-        // - Column C (30 units): Longer key names
-        // - Columns D-E (50 units): Multi-line text content
-        worksheet["A:B"].ColumnWidth = 15;
-        worksheet["C:C"].ColumnWidth = 30;
-        worksheet["D:E"].ColumnWidth = 50;
+        worksheet["A:B"].ColumnWidth = 15; //Columns A-B (15 units): Short ID/hex values
+        worksheet["C:C"].ColumnWidth = 30; //Column C (30 units): Longer key names
+        worksheet["D:E"].ColumnWidth = 50; //Columns D-E (50 units): Multi-line text content
     }
 
     /// <summary>
