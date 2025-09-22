@@ -132,7 +132,7 @@ public sealed partial class App : IDisposable
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
         var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
-        
+
         // Create the configuration folder if it doesn't exist
         if (!Directory.Exists(configFolderPath))
             Directory.CreateDirectory(configFolderPath);
@@ -149,11 +149,11 @@ public sealed partial class App : IDisposable
         var cultureInfo = appSettings!.Language == string.Empty
             ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
             : new CultureInfo(appSettings.Language);
-        
+
         // Save the resolved culture if it wasn't previously set
         if (appSettings.Language == string.Empty)
             appSettings.Language = cultureInfo.Name;
-        
+
         // Apply the culture to the application
         I18NExtension.Culture = cultureInfo;
     }
@@ -168,7 +168,7 @@ public sealed partial class App : IDisposable
         using var stream = Assembly.GetExecutingAssembly()
             .GetManifestResourceStream("Witcher3StringEditor.License.txt")!;
         using var reader = new StreamReader(stream);
-        
+
         // Register the license with Syncfusion
         SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
     }
@@ -186,7 +186,7 @@ public sealed partial class App : IDisposable
             var exception = e.Exception;
             Log.Error(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
         };
-        
+
         // Handle unobserved task exceptions (background tasks)
         TaskScheduler.UnobservedTaskException += static (_, e) =>
         {
@@ -234,7 +234,7 @@ public sealed partial class App : IDisposable
     {
         // Find the existing process instance
         using var existingProcess = FindExistingProcessInstance();
-        
+
         // Activate the window of the existing instance
         var mainWindowHandle = new HWND(existingProcess.MainWindowHandle);
         ActivateExistingInstanceWindow(mainWindowHandle);
@@ -251,11 +251,11 @@ public sealed partial class App : IDisposable
         var placement = new WINDOWPLACEMENT();
         placement.length = (uint)Marshal.SizeOf(placement);
         if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value == 0) return;
-        
+
         // Restore the window if it's minimized
         if (placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINIMIZED)
             PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
-        
+
         // Bring the window to the foreground
         PInvoke.SetForegroundWindow(mainWindowHandle);
     }
@@ -280,36 +280,46 @@ public sealed partial class App : IDisposable
     {
         // Configure the IoC container with all required services
         Ioc.Default.ConfigureServices(new ServiceCollection()
-            .AddLogging(builder => builder.AddSerilog())
-            // View location services
-            .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
-            // Application settings services
-            .AddSingleton<IAppSettings, AppSettings>(_ =>
-                Ioc.Default.GetRequiredService<IConfigService>().Load<AppSettings>())
-            .AddSingleton<IBackupService, BackupService>()
-            .AddSingleton<ICultureResolver, CultureResolver>()
-            .AddSingleton<IConfigService, ConfigService>(_ => new ConfigService(configPath))
-            // Dialog services
-            .AddSingleton<IDialogManager, DialogManager>()
-            .AddSingleton<IDialogService, DialogService>()
-            // Serialization services
-            .AddSingleton<ICsvW3Serializer, CsvW3Serializer>()
-            .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
-            .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
-            .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
-            // File management services
-            .AddSingleton<IFileManagerService, FileManagerService>()
-            // Scoped services
-            .AddScoped<IExplorerService, ExplorerService>()
-            .AddScoped<IPlayGameService, PlayGameService>()
-            .AddScoped<ICheckUpdateService, CheckUpdateService>()
-            .AddTransient<ITranslator, MicrosoftTranslator>()
-            .AddTransient<ITranslator, GoogleTranslator>()
-            .AddTransient<ITranslator, YandexTranslator>()
-            // Settings management service
-            .AddTransient<ISettingsManagerService, SettingsManagerService>()
-            // View models
-            .AddTransient<MainWindowViewModel>()
+            .AddLogging(builder => builder.AddSerilog()) // Logging service - Add Serilog logging functionality
+            .AddSingleton<IViewLocator,
+                StrongViewLocator>(_ =>
+                CreatStrongViewLocator()) // View locator - Used in MVVM pattern to associate ViewModels with Views
+            .AddSingleton<IConfigService,
+                ConfigService>(_ =>
+                new ConfigService(
+                    configPath)) // Configuration service - Handle reading and saving of application configuration files
+            .AddSingleton<IAppSettings,
+                AppSettings>(_ =>
+                Ioc.Default.GetRequiredService<IConfigService>()
+                    .Load<AppSettings>()) // Application settings - Load and manage application configuration data
+            .AddSingleton<ICultureResolver,
+                CultureResolver>() // Culture resolver - Handle application localization and multi-language support
+            .AddSingleton<IBackupService,
+                BackupService>() // Backup service - Manage file backup and restore functionality
+            .AddSingleton<IFileManagerService,
+                FileManagerService>() // File manager service - Handle serialization and deserialization of Witcher 3 string files
+            .AddSingleton<ICsvW3Serializer,
+                CsvW3Serializer>() // CSV serializer - Handle CSV format Witcher 3 string files
+            .AddSingleton<IExcelW3Serializer,
+                ExcelW3Serializer>() // Excel serializer - Handle Excel format Witcher 3 string files
+            .AddSingleton<IW3StringsSerializer,
+                W3StringsSerializer>() // W3Strings serializer - Handle native Witcher 3 string files
+            .AddSingleton<IW3Serializer,
+                W3SerializerCoordinator>() // Serialization coordinator - Unified handling of serialization operations for different formats
+            .AddSingleton<IDialogManager, DialogManager>() // Dialog manager - Manage various dialogs in the application
+            .AddSingleton<IDialogService, DialogService>() // Dialog service - Provide dialog display functionality
+            .AddScoped<IExplorerService, ExplorerService>() // Explorer service - Open file explorer
+            .AddScoped<IPlayGameService, PlayGameService>() // Play game service - Launch Witcher 3 game
+            .AddScoped<ICheckUpdateService,
+                CheckUpdateService>() // Update check service - Check for application updates
+            .AddTransient<ISettingsManagerService,
+                SettingsManagerService>() // Settings manager service - Manage application settings validation and initialization
+            .AddTransient<ITranslator,
+                MicrosoftTranslator>() // Microsoft translator - Provide Microsoft translation service
+            .AddTransient<ITranslator, GoogleTranslator>() // Google translator - Provide Google translation service
+            .AddTransient<ITranslator, YandexTranslator>() // Yandex translator - Provide Yandex translation service
+            .AddTransient<
+                MainWindowViewModel>() // Main window ViewModel - Data context for the application's main window
             .BuildServiceProvider());
     }
 
@@ -322,7 +332,7 @@ public sealed partial class App : IDisposable
     {
         // Create and configure the view locator
         var viewLocator = new StrongViewLocator();
-        
+
         // Register all view model to view mappings
         viewLocator.Register<EditDataDialogViewModel, EditDataDialog>();
         viewLocator.Register<DeleteDataDialogViewModel, DeleteDataDialog>();
@@ -345,11 +355,11 @@ public sealed partial class App : IDisposable
     {
         // Save application settings before exiting
         configService?.Save(appSettings);
-        
+
         // Log application exit and flush logs
         Log.Information("Application exited.");
         Log.CloseAndFlush();
-        
+
         // Dispose resources
         Dispose();
     }
@@ -367,7 +377,7 @@ public sealed partial class App : IDisposable
             mutex?.Dispose();
             logObserver?.Dispose();
         }
-        
+
         // Mark as disposed
         disposedValue = true;
     }
