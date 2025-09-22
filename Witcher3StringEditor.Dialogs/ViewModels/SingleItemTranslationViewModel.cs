@@ -246,14 +246,15 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// </summary>
     private void SaveTranslation()
     {
-        Guard.IsNotNull(CurrentTranslateItemModel);
-        var found = W3StringItems
+        Guard.IsNotNull(CurrentTranslateItemModel); // Ensure we have a current item
+        var found = W3StringItems // Find the original item by ID
             .First(x => x.TrackingId == CurrentTranslateItemModel?.Id).Clone();
-        var clone = found.Cast<ITrackableW3StringItem>();
-        clone.Text = CurrentTranslateItemModel.TranslatedText;
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
+        var clone = found.Cast<ITrackableW3StringItem>(); // Cast to the correct type
+        clone.Text = CurrentTranslateItemModel.TranslatedText; // Update with translated text
+        WeakReferenceMessenger.Default.Send(
+            new ValueChangedMessage<ITrackableW3StringItem>(clone), // Send via messaging
             MessageTokens.TranslationSaved);
-        CurrentTranslateItemModel.IsSaved = true;
+        CurrentTranslateItemModel.IsSaved = true; // Mark as saved
     }
 
     /// <summary>

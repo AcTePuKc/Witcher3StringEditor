@@ -194,18 +194,20 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     /// <param name="translateViewModel">The single item translation view model</param>
     private async Task SaveUnsavedChangesIfNeeded(SingleItemTranslationViewModel? translateViewModel)
     {
-        if (translateViewModel?.CurrentTranslateItemModel is { IsSaved: false } item
-            && !string.IsNullOrWhiteSpace(item.TranslatedText)
-            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+        if (translateViewModel?.CurrentTranslateItemModel is
+                { IsSaved: false } item // Check if there are unsaved changes
+            && !string.IsNullOrWhiteSpace(item.TranslatedText) // And translated text exists
+            && await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), // Confirm with user
                 MessageTokens.TranslatedTextNoSaved))
         {
-            var found = w3StringItems
+            var found = w3StringItems // Find the original item
                 .First(x => x.TrackingId == item.Id).Clone();
-            var clone = found.Cast<ITrackableW3StringItem>();
-            clone.Text = item.TranslatedText;
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<ITrackableW3StringItem>(clone),
+            var clone = found.Cast<ITrackableW3StringItem>(); // Cast to correct type
+            clone.Text = item.TranslatedText; // Update with translated text
+            WeakReferenceMessenger.Default.Send(
+                new ValueChangedMessage<ITrackableW3StringItem>(clone), // Send via messaging
                 MessageTokens.TranslationSaved);
-            Log.Information("Auto-saved unsaved changes.");
+            Log.Information("Auto-saved unsaved changes."); // Log the auto-save
         }
     }
 
