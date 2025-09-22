@@ -280,30 +280,31 @@ public sealed partial class App : IDisposable
     {
         // Configure the IoC container with all required services
         Ioc.Default.ConfigureServices(new ServiceCollection()
-            .AddLogging(builder => builder.AddSerilog()) // Logging service - Add Serilog logging functionality
-            .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator()) // View locator - Used in MVVM pattern to associate ViewModels with Views
-            .AddSingleton<IConfigService, ConfigService>(_ => new ConfigService(configPath)) // Configuration service - Handle reading and saving of application configuration files
-            .AddSingleton<IAppSettings, AppSettings>(_ => Ioc.Default.GetRequiredService<IConfigService>().Load<AppSettings>()) // Application settings - Load and manage application configuration data
-            .AddSingleton<ICultureResolver, CultureResolver>() // Culture resolver - Handle application localization and multi-language support
-            .AddSingleton<IBackupService, BackupService>() // Backup service - Manage file backup and restore functionality
-            .AddSingleton<IFileManagerService, FileManagerService>() // File manager service - Handle serialization and deserialization of Witcher 3 string files
-            .AddSingleton<ICsvW3Serializer, CsvW3Serializer>() // CSV serializer - Handle CSV format Witcher 3 string files
-            .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>() // Excel serializer - Handle Excel format Witcher 3 string files
-            .AddSingleton<IW3StringsSerializer, W3StringsSerializer>() // W3Strings serializer - Handle native Witcher 3 string files
-            .AddSingleton<IW3Serializer, W3SerializerCoordinator>() // Serialization coordinator - Unified handling of serialization operations for different formats
-            .AddSingleton<IDialogManager, DialogManager>() // Dialog manager - Manage various dialogs in the application
-            .AddSingleton<IDialogService, DialogService>() // Dialog service - Provide dialog display functionality
-            .AddScoped<IExplorerService, ExplorerService>() // Explorer service - Open file explorer
-            .AddScoped<IPlayGameService, PlayGameService>() // Play game service - Launch Witcher 3 game
-            .AddScoped<ICheckUpdateService, CheckUpdateService>() // Update check service - Check for application updates
-            .AddTransient<ISettingsManagerService, SettingsManagerService>() // Settings manager service - Manage application settings validation and initialization
-            .AddTransient<ITranslator, MicrosoftTranslator>() // Microsoft translator - Provide Microsoft translation service
-            .AddTransient<ITranslator, GoogleTranslator>() // Google translator - Provide Google translation service
-            .AddTransient<ITranslator, YandexTranslator>() // Yandex translator - Provide Yandex translation service
-            .AddTransient<
-                MainWindowViewModel>() // Main window ViewModel - Data context for the application's main window
+            .AddLogging(builder => builder.AddSerilog())
+            .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
+            .AddSingleton<IConfigService, ConfigService>(_ => new ConfigService(configPath))
+            .AddSingleton<IAppSettings, AppSettings>(_ => Ioc.Default.GetRequiredService<IConfigService>().Load<AppSettings>())
+            .AddSingleton<ICultureResolver, CultureResolver>()
+            .AddSingleton<IBackupService, BackupService>()
+            .AddSingleton<IFileManagerService, FileManagerService>()
+            .AddSingleton<ICsvW3Serializer, CsvW3Serializer>()
+            .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
+            .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
+            .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
+            .AddSingleton<IDialogManager, DialogManager>()
+            .AddSingleton<IDialogService, DialogService>()
+            .AddScoped<IExplorerService, ExplorerService>()
+            .AddScoped<IPlayGameService, PlayGameService>()
+            .AddScoped<ICheckUpdateService, CheckUpdateService>()
+            .AddTransient<ISettingsManagerService, SettingsManagerService>()
+            .AddTransient<ITranslator, MicrosoftTranslator>()
+            .AddTransient<ITranslator, GoogleTranslator>()
+            .AddTransient<ITranslator, YandexTranslator>()
+            .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider());
     }
+
+
 
     /// <summary>
     ///     Creates and configures the strong view locator
