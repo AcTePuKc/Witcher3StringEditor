@@ -110,10 +110,10 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     /// <returns>The SHA256 hash of the file</returns>
     private static string ValidateAndGetHash(string filePath)
     {
-        Guard.IsTrue(File.Exists(filePath));
-        var hash = ComputeSha256Hash(filePath);
-        Guard.IsNotNullOrWhiteSpace(hash);
-        return hash;
+        Guard.IsTrue(File.Exists(filePath)); // Ensure file exists
+        var hash = ComputeSha256Hash(filePath); // Compute SHA256 hash of the file
+        Guard.IsNotNullOrWhiteSpace(hash); // Ensure hash is not null or whitespace
+        return hash; // Return the computed hash
     }
 
     /// <summary>
@@ -122,8 +122,8 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     /// <param name="backupDirectoryPath">The path to the backup directory</param>
     private static void EnsureBackupDirectoryExists(string backupDirectoryPath)
     {
-        if (!Directory.Exists(backupDirectoryPath))
-            Directory.CreateDirectory(backupDirectoryPath);
+        if (!Directory.Exists(backupDirectoryPath)) // Check if backup directory exists
+            Directory.CreateDirectory(backupDirectoryPath); // Create directory if it doesn't exist
     }
 
     /// <summary>
@@ -133,10 +133,10 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     /// <returns>True if a duplicate backup exists, false otherwise</returns>
     private bool IsDuplicateBackup(BackupItem backupItem)
     {
-        return appSettings.BackupItems.Any(x =>
-            x.Hash == backupItem.Hash &&
-            x.OrginPath == backupItem.OrginPath &&
-            File.Exists(x.BackupPath));
+        return appSettings.BackupItems.Any(x => // Check if any existing backup item matches
+            x.Hash == backupItem.Hash && // Same hash
+            x.OrginPath == backupItem.OrginPath && // Same original path
+            File.Exists(x.BackupPath)); // Backup file still exists
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     /// <returns>True if the backup was executed successfully</returns>
     private bool ExecuteBackup(BackupItem backupItem)
     {
-        File.Copy(backupItem.OrginPath, backupItem.BackupPath); // Copy file to backup location
+        File.Copy(backupItem.OrginPath, backupItem.BackupPath); // Copy file to back up location
         appSettings.BackupItems.Add(backupItem); // Add backup item to collection
         Log.Information("Backup file: {Path}.", backupItem.OrginPath); // Log successful backup
         return true; // Return true on success

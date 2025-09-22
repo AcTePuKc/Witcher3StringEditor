@@ -26,10 +26,11 @@ internal class SettingsManagerService : ISettingsManagerService
     /// <param name="appSettings">The application settings instance</param>
     public SettingsManagerService(IAppSettings appSettings)
     {
-        this.appSettings = appSettings;
+        this.appSettings = appSettings; // Store the app settings instance
 
-        if (this.appSettings is INotifyPropertyChanged notifyPropertyChanged)
-            notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
+        if (this.appSettings is INotifyPropertyChanged
+            notifyPropertyChanged) // Check if app settings supports property change notifications
+            notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged; // Register property change handler
     }
 
     /// <summary>
@@ -109,12 +110,12 @@ internal class SettingsManagerService : ISettingsManagerService
     {
         try
         {
-            I18NExtension.Culture = new CultureInfo(language);
-            Log.Information("Language changed to {Language}.", language);
+            I18NExtension.Culture = new CultureInfo(language); // Set the new culture
+            Log.Information("Language changed to {Language}.", language); // Log successful language change
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to change language.");
+            Log.Error(ex, "Failed to change language."); // Log any errors during language change
         }
     }
 }
