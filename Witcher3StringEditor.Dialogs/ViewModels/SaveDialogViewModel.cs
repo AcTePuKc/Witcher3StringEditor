@@ -93,20 +93,21 @@ public partial class SaveDialogViewModel
     [RelayCommand]
     private async Task Save()
     {
-        Log.Information("Target filetype: {FileType}.", TargetFileType);
-        Log.Information("Target language: {Language}.", TargetLanguage);
-        var saveResult = await serializer.Serialize(w3StringItems, new W3SerializationContext
+        Log.Information("Target filetype: {FileType}.", TargetFileType); // Log target file type
+        Log.Information("Target language: {Language}.", TargetLanguage); // Log target language
+        var saveResult = await serializer.Serialize(w3StringItems, new W3SerializationContext // Serialize items
         {
-            OutputDirectory = OutputDirectory,
-            ExpectedIdSpace = IdSpace,
-            TargetFileType = TargetFileType,
-            TargetLanguage = TargetLanguage,
-            IgnoreIdSpaceCheck = IsIgnoreIdSpaceCheck
+            OutputDirectory = OutputDirectory, // Set output directory
+            ExpectedIdSpace = IdSpace, // Set ID space
+            TargetFileType = TargetFileType, // Set file type
+            TargetLanguage = TargetLanguage, // Set language
+            IgnoreIdSpaceCheck = IsIgnoreIdSpaceCheck // Set ID space check flag
         });
-        Log.Information("Sve result: {Result}.", saveResult);
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult), MessageTokens.Save);
-        DialogResult = true;
-        RequestClose?.Invoke(this, EventArgs.Empty);
+        Log.Information("Sve result: {Result}.", saveResult); // Log save result
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult),
+            MessageTokens.Save); // Send result via messaging
+        DialogResult = true; // Set dialog result
+        RequestClose?.Invoke(this, EventArgs.Empty); // Close the dialog
     }
 
     /// <summary>

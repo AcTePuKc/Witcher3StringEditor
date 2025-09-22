@@ -40,10 +40,10 @@ public partial class BackupDialogViewModel(
     [RelayCommand]
     private async Task Restore(IBackupItem backupItem)
     {
-        if (!File.Exists(backupItem.BackupPath))
-            await HandleMissingBackupFile(backupItem);
+        if (!File.Exists(backupItem.BackupPath)) // Check if backup file exists
+            await HandleMissingBackupFile(backupItem); // Handle missing backup file
         else
-            await HandleExistingBackupFile(backupItem);
+            await HandleExistingBackupFile(backupItem); // Handle existing backup file
     }
 
     /// <summary>
@@ -81,11 +81,12 @@ public partial class BackupDialogViewModel(
     [RelayCommand]
     private async Task Delete(IBackupItem backupItem)
     {
-        if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.BackupDelete))
+        if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                MessageTokens.BackupDelete)) // Confirm deletion
         {
-            Log.Information("The deletion of file {Path} has been approved.", backupItem.BackupPath);
-            if (!backupService.Delete(backupItem))
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+            Log.Information("The deletion of file {Path} has been approved.", backupItem.BackupPath); // Log approval
+            if (!backupService.Delete(backupItem)) // Attempt deletion
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), // Notify if failed
                     MessageTokens.OperationFailed);
         }
     }

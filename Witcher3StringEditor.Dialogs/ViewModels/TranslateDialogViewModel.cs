@@ -105,32 +105,32 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         try
         {
-            if (!CurrentViewModel.GetIsBusy() ||
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+            if (!CurrentViewModel.GetIsBusy() || // Check if not busy
+                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), // Or user confirms switch
                     MessageTokens.TranslationModeSwitch))
             {
-                await CleanupCurrentViewModelAsync();
-                await DisposeCurrentViewModelAsync();
-                var formLange = CurrentViewModel.FormLanguage;
-                CurrentViewModel = CurrentViewModel is BatchItemsTranslationViewModel
+                await CleanupCurrentViewModelAsync(); // Clean up current view model
+                await DisposeCurrentViewModelAsync(); // Dispose current view model
+                var formLange = CurrentViewModel.FormLanguage; // Save current source language
+                CurrentViewModel = CurrentViewModel is BatchItemsTranslationViewModel // Switch view model type
                     ? new SingleItemTranslationViewModel(appSettings, translator, w3StringItems, index)
                     : new BatchItemsTranslationViewModel(appSettings, translator,
                         w3StringItems, index + 1);
-                CurrentViewModel.FormLanguage = formLange;
-                Title = CurrentViewModel is BatchItemsTranslationViewModel
+                CurrentViewModel.FormLanguage = formLange; // Restore source language
+                Title = CurrentViewModel is BatchItemsTranslationViewModel // Update dialog title
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;
-                Log.Information("Switched translation mode to {Mode}",
+                Log.Information("Switched translation mode to {Mode}", // Log the mode switch
                     CurrentViewModel is BatchItemsTranslationViewModel ? "batch" : "single");
             }
             else
             {
-                Log.Information("Translation mode switch cancelled.");
+                Log.Information("Translation mode switch cancelled."); // Log if switch is cancelled
             }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to switch translation mode");
+            Log.Error(ex, "Failed to switch translation mode"); // Log any errors
         }
     }
 
@@ -169,12 +169,12 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         try
         {
-            e.Cancel = await HandleClosingAsync();
+            e.Cancel = await HandleClosingAsync(); // Determine if closing should be cancelled
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Error during dialog closing");
-            e.Cancel = false;
+            Log.Error(ex, "Error during dialog closing"); // Log any errors
+            e.Cancel = false; // Allow closing if an error occurs
         }
     }
 

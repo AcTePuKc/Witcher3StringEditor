@@ -70,10 +70,10 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     [RelayCommand]
     private async Task Open(IRecentItem recentItem)
     {
-        if (!File.Exists(recentItem.FilePath))
-            await HandleMissingFile(recentItem);
+        if (!File.Exists(recentItem.FilePath)) // Check if file exists
+            await HandleMissingFile(recentItem); // Handle missing file
         else
-            HandleExistingFile(recentItem);
+            HandleExistingFile(recentItem); // Handle existing file
     }
 
     /// <summary>
