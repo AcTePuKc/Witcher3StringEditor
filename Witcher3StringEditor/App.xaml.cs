@@ -283,7 +283,8 @@ public sealed partial class App : IDisposable
             .AddLogging(builder => builder.AddSerilog())
             .AddSingleton<IViewLocator, StrongViewLocator>(_ => CreatStrongViewLocator())
             .AddSingleton<IConfigService, ConfigService>(_ => new ConfigService(configPath))
-            .AddSingleton<IAppSettings, AppSettings>(_ => Ioc.Default.GetRequiredService<IConfigService>().Load<AppSettings>())
+            .AddSingleton<IAppSettings, AppSettings>(_ =>
+                Ioc.Default.GetRequiredService<IConfigService>().Load<AppSettings>())
             .AddSingleton<ICultureResolver, CultureResolver>()
             .AddSingleton<IBackupService, BackupService>()
             .AddSingleton<IFileManagerService, FileManagerService>()
@@ -303,7 +304,6 @@ public sealed partial class App : IDisposable
             .AddTransient<MainWindowViewModel>()
             .BuildServiceProvider());
     }
-
 
 
     /// <summary>
