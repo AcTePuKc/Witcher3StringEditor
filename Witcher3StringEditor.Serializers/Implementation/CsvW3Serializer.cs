@@ -27,34 +27,22 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     {
         try
         {
-            // Initialize a list to store the parsed string items
-            var w3StringItems = new List<W3StringStringItem>();
-            
-            // Asynchronously read the file line by line to handle large files efficiently
-            await foreach (var line in File.ReadLinesAsync(filePath))
+            var w3StringItems = new List<W3StringStringItem>(); // Store parsed string items
+            await foreach (var line in File.ReadLinesAsync(filePath)) // Async read line by line
             {
-                // Skip empty lines or comment lines (starting with ';')
-                if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
+                if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';')) // Skip empty/comment lines
                     continue;
-
-                // Parse the current line into a string item
-                var item = ParseCsvLine(line);
-                
-                // Add the parsed item to the list if it's valid
-                if (item != null)
+                var item = ParseCsvLine(line); // Parse CSV line to object
+                if (item != null) // Validate parsed item
                     w3StringItems.Add(item);
             }
 
-            // Return the list of parsed string items
-            return w3StringItems;
+            return w3StringItems; // Return parsed items list
         }
         catch (Exception ex)
         {
-            // Log any errors that occur during deserialization
-            Log.Error(ex, "An error occurred while deserializing the CSV file: {Path}.", filePath);
-            
-            // Return an empty list in case of errors
-            return [];
+            Log.Error(ex, "An error occurred while deserializing the CSV file: {Path}.", filePath); // Log errors
+            return []; // Return empty list on error
         }
     }
 
@@ -71,33 +59,21 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     {
         try
         {
-            // Get the lowercase name of the target language for file naming
-            var languageName = Enum.GetName(context.TargetLanguage)!.ToLowerInvariant();
-            
-            // Determine the language identifier to use in the CSV metadata
-            // Some languages require "cleartext" identifier instead of their actual name
-            var csvLanguageIdentifier = context.TargetLanguage switch
+            var languageName =
+                Enum.GetName(context.TargetLanguage)!.ToLowerInvariant(); // Lowercase language name for filename
+            var csvLanguageIdentifier = context.TargetLanguage switch // Get language ID for CSV metadata
             {
-                W3Language.Ar
-                    or W3Language.Br
-                    or W3Language.Cn
-                    or W3Language.Esmx
-                    or W3Language.Kr
-                    or W3Language.Tr => "cleartext",
-                _ => languageName
+                W3Language.Ar or W3Language.Br or W3Language.Cn or W3Language.Esmx or W3Language.Kr or W3Language.Tr
+                    => "cleartext", // Special case: use "cleartext" for these languages
+                _ => languageName // Default: use language name
             };
-            
-            // Write the CSV file with backup functionality
-            // The file name is based on the language name and contains the CSV content
             await WriteFileWithBackup(Path.Combine(context.OutputDirectory, $"{languageName}.csv"),
-                BuildCsvContent(w3StringItems, csvLanguageIdentifier));
-                
+                BuildCsvContent(w3StringItems, csvLanguageIdentifier)); // Write CSV with backup
             return true;
         }
         catch (Exception ex)
         {
-            // Log any errors that occur during the serialization process
-            Log.Error(ex, "An error occurred while serializing the CSV file.");
+            Log.Error(ex, "An error occurred while serializing the CSV file."); // Log serialization errors
             return false;
         }
     }
@@ -122,26 +98,17 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     /// <returns>A W3StringStringItem if parsing was successful, otherwise null</returns>
     private static W3StringStringItem? ParseCsvLine(string line)
     {
-        // Check if the line is empty, whitespace, or a comment (starts with ';')
-        // Return null for invalid or comment lines
-        if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';'))
-            return null;
-            
-        // Split the line by the pipe character separator
-        var parts = line.Split('|');
-        
-        // Validate that we have exactly 4 parts (StrId|KeyHex|KeyName|Text)
-        // Return null if the format is incorrect
-        if (parts.Length != 4) return null;
+        if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';')) return null; // Skip empty/comment lines
+        var parts = line.Split('|'); // Split by pipe separator
+        if (parts.Length != 4) return null; // Validate 4-part format (StrId|KeyHex|KeyName|Text)
 
-        // Create and return a new W3StringStringItem with the parsed data
-        // Trim whitespace from each part to ensure clean data
+        // Create item with trimmed data
         return new W3StringStringItem
         {
-            StrId = parts[0].Trim(),
-            KeyHex = parts[1].Trim(),
-            KeyName = parts[2].Trim(),
-            Text = parts[3].Trim()
+            StrId = parts[0].Trim(), // String ID
+            KeyHex = parts[1].Trim(), // Hex key
+            KeyName = parts[2].Trim(), // String key name
+            Text = parts[3].Trim() // Localized text
         };
     }
 
@@ -153,21 +120,12 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     /// <returns>The complete CSV content as a string</returns>
     private static string BuildCsvContent(IReadOnlyCollection<IW3StringItem> w3StringItems, string lang)
     {
-        // Initialize a StringBuilder to efficiently build the CSV content
-        var stringBuilder = new StringBuilder();
-        
-        // Add the metadata line indicating the language of the content
-        stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]");
-        
-        // Add the header line describing the columns in the CSV
-        stringBuilder.AppendLine("; id      |key(hex)|key(str)| text");
-        
-        // Iterate through each string item and add it as a line in the CSV format: StrId|KeyHex|KeyName|Text
-        foreach (var w3StringItem in w3StringItems)
+        var stringBuilder = new StringBuilder(); // Efficient CSV content builder
+        stringBuilder.AppendLine(CultureInfo.InvariantCulture, $";meta[language={lang}]"); // Language metadata header
+        stringBuilder.AppendLine("; id      |key(hex)|key(str)| text"); // CSV column headers
+        foreach (var w3StringItem in w3StringItems) // Process each string item
             stringBuilder.AppendLine(CultureInfo.InvariantCulture,
-                $"{w3StringItem.StrId}|{w3StringItem.KeyHex}|{w3StringItem.KeyName}|{w3StringItem.Text}");
-                
-        // Return the complete CSV content as a string
-        return stringBuilder.ToString();
+                $"{w3StringItem.StrId}|{w3StringItem.KeyHex}|{w3StringItem.KeyName}|{w3StringItem.Text}"); // CSV row format: StrId|KeyHex|KeyName|Text
+        return stringBuilder.ToString(); // Return complete CSV content
     }
 }
