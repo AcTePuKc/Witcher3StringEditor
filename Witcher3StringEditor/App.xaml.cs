@@ -305,7 +305,6 @@ public sealed partial class App : IDisposable
             .BuildServiceProvider());
     }
 
-
     /// <summary>
     ///     Creates and configures the strong view locator
     ///     Registers view models with their corresponding views
