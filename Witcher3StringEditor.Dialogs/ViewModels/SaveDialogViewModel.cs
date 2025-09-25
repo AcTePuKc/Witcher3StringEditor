@@ -23,7 +23,7 @@ public partial class SaveDialogViewModel
     : ObservableObject, IModalDialogViewModel, ICloseable
 {
     /// <summary>
-    ///     The serializer used to save the The Witcher 3 string items
+    ///     The serializer used to save The Witcher 3 string items
     /// </summary>
     private readonly IW3Serializer serializer;
 
@@ -88,7 +88,7 @@ public partial class SaveDialogViewModel
 
     /// <summary>
     ///     Handles the save action
-    ///     Serializes the The Witcher 3 string items to a file with the specified settings
+    ///     Serializes The Witcher 3 string items to a file with the specified settings
     /// </summary>
     [RelayCommand]
     private async Task Save()
@@ -122,9 +122,9 @@ public partial class SaveDialogViewModel
     }
 
     /// <summary>
-    ///     Finds the ID space from a The Witcher 3 string item's StrId
+    ///     Finds the ID space from The Witcher 3 string item's StrId
     /// </summary>
-    /// <param name="iw3StringItem">The The Witcher 3 string item to extract the ID space from</param>
+    /// <param name="iw3StringItem">The Witcher 3 string item to extract the ID space from</param>
     /// <returns>The ID space value, or -1 if not found</returns>
     private static int FindIdSpace(IW3StringItem iw3StringItem)
     {
