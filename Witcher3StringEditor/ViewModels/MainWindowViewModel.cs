@@ -169,7 +169,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 {
                     var searchItems = m.Value; // Get the search results
                     SearchResults =
-                        searchItems != null
+                        searchItems is not null
                             ? m.Value.ToObservableCollection()
                             : null; // Update search results collection
                 });
@@ -179,7 +179,7 @@ internal partial class MainWindowViewModel : ObservableObject
             .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
                 "ItemsAdded", (_, m) =>
                 {
-                    if (SearchResults == null) return; // Return if no search results
+                    if (SearchResults is null) return; // Return if no search results
                     var addedItems = m.Value; // Get the added items
                     if (!addedItems.Any()) return; // Return if no items added
                     addedItems.ForEach(SearchResults.Add); // Add items to search results
@@ -334,7 +334,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
-        if (storageFile != null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings" or ".xlsx")
+        if (storageFile is not null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings" or ".xlsx")
             await OpenFile(storageFile.LocalPath);
     }
 
@@ -382,7 +382,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3StringItemModel()); // Create new item view model
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true // Show add dialog
-            && dialogViewModel.Item != null) // Check if user confirmed
+            && dialogViewModel.Item is null) // Check if user confirmed
         {
             W3StringItems!.Add(dialogViewModel.Item.Cast<W3StringItemModel>()); // Add new item to collection
             Log.Information("New W3Item added."); // Log successful addition
@@ -402,7 +402,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         var dialogViewModel = new EditDataDialogViewModel(selectedItem); // Create edit dialog view model
         if (await dialogService.ShowDialogAsync(this, // Show edit dialog
-                dialogViewModel) == true && dialogViewModel.Item != null) // Check if user confirmed changes
+                dialogViewModel) == true && dialogViewModel.Item is not null) // Check if user confirmed changes
         {
             var found = W3StringItems! // Find the item in the collection
                 .First(x => x.TrackingId == selectedItem.TrackingId);
@@ -548,7 +548,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <returns>True if the translate dialog can be shown, false otherwise</returns>
     private bool CanShowTranslateDialog()
     {
-        if (SearchResults != null) // Check if we have search results
+        if (SearchResults is not null) // Check if we have search results
             return SearchResults.Any(); // Return true if search results exist
         return W3StringItems?.Any() == true; // Otherwise check if we have any W3String items
     }
@@ -563,13 +563,13 @@ internal partial class MainWindowViewModel : ObservableObject
         var items = SearchResults ?? W3StringItems!; // Use search results if available, otherwise all items
         var itemsList = items.OfType<ITrackableW3StringItem>().ToList(); // Convert to list of trackable items
         var selectedIndex =
-            selectedItem != null ? itemsList.IndexOf(selectedItem) : 0; // Set selected index based on provided item
+            selectedItem is not null ? itemsList.IndexOf(selectedItem) : 0; // Set selected index based on provided item
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
-        if (SearchResults != null) // Check if we're working with search results
+        if (SearchResults is not null) // Check if we're working with search results
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
                 MessageTokens.RefreshDataGrid); // Send refresh message
     }

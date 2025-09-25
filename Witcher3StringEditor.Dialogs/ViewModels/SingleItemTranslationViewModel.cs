@@ -94,7 +94,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// </summary>
     public override async ValueTask DisposeAsync()
     {
-        if (CancellationTokenSource != null)
+        if (CancellationTokenSource is not null)
         {
             if (!CancellationTokenSource.IsCancellationRequested)
                 await CancellationTokenSource.CancelAsync();

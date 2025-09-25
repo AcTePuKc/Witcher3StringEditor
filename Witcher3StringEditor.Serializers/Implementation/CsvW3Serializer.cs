@@ -33,7 +33,7 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';')) // Skip empty/comment lines
                     continue;
                 var item = ParseCsvLine(line); // Parse CSV line to object
-                if (item != null) // Validate parsed item
+                if (item is not null) // Validate parsed item
                     w3StringItems.Add(item);
             }
 

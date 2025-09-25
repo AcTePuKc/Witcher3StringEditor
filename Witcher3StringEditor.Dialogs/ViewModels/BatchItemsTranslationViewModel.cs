@@ -96,7 +96,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// </summary>
     public override async ValueTask DisposeAsync()
     {
-        if (CancellationTokenSource != null)
+        if (CancellationTokenSource is not null)
         {
             if (!CancellationTokenSource.IsCancellationRequested)
                 await CancellationTokenSource.CancelAsync();
@@ -289,7 +289,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     [RelayCommand(CanExecute = nameof(CanCancel))]
     private async Task Cancel()
     {
-        if (CancellationTokenSource != null)
+        if (CancellationTokenSource is not null)
             await CancellationTokenSource.CancelAsync();
     }
 }

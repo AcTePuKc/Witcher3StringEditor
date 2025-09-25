@@ -195,7 +195,7 @@ public partial class MainWindow
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         // Ensure there's data to search before proceeding
-        if (SfDataGrid.ItemsSource == null) return;
+        if (SfDataGrid.ItemsSource is null) return;
 
         // Perform the search and collect results
         SfDataGrid.SearchHelper.Search(args.QueryText);

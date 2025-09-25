@@ -40,7 +40,7 @@ internal class FileManagerService(IAppSettings appSettings, IW3Serializer w3Seri
     public void SetOutputFolder(string fileName, Action<string> onOutputFolderChanged)
     {
         var folder = Path.GetDirectoryName(fileName); // Extract directory from file name
-        if (folder == null) return; // Return if directory is null
+        if (folder is null) return; // Return if directory is null
         onOutputFolderChanged(folder); // Notify of folder change
         Log.Information("Working directory set to {Folder}.", folder); // Log folder change
     }
@@ -53,7 +53,7 @@ internal class FileManagerService(IAppSettings appSettings, IW3Serializer w3Seri
     public void UpdateRecentItems(string fileName)
     {
         var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName); // Find existing item
-        if (foundItem == null) // If item not found
+        if (foundItem is null) // If item not found
         {
             appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now)); // Add new recent item
             Log.Information("Added {FileName} to recent items.", fileName); // Log addition
