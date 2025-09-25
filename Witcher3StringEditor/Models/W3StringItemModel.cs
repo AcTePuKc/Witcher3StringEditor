@@ -4,38 +4,38 @@ using Witcher3StringEditor.Common.Abstractions;
 namespace Witcher3StringEditor.Models;
 
 /// <summary>
-///     Represents a The Witcher 3 string item model
+///     Represents The Witcher 3 string item model
 ///     Implements the ITrackableW3StringItem interface and provides observable properties for data binding
 ///     This class extends the basic The Witcher 3 string item with tracking capabilities and cloning functionality
 /// </summary>
 public partial class W3StringItemModel : ObservableObject, ITrackableW3StringItem
 {
     /// <summary>
-    ///     Gets or sets the hexadecimal key of the The Witcher 3 string item
+    ///     Gets or sets the hexadecimal key of The Witcher 3 string item
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
     [ObservableProperty] private string keyHex = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the key name of the The Witcher 3 string item
+    ///     Gets or sets the key name of The Witcher 3 string item
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
     [ObservableProperty] private string keyName = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the original text of the The Witcher 3 string item
+    ///     Gets or sets the original text of The Witcher 3 string item
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
     [ObservableProperty] private string oldText = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the string ID of the The Witcher 3 string item
+    ///     Gets or sets the string ID of The Witcher 3 string item
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
     [ObservableProperty] private string strId = string.Empty;
 
     /// <summary>
-    ///     Gets or sets the current text of the The Witcher 3 string item
+    ///     Gets or sets the current text of The Witcher 3 string item
     ///     This property supports data binding through the ObservableObject base class
     ///     When this property changes, if OldText is empty, it will be set to the previous Text value
     /// </summary>
