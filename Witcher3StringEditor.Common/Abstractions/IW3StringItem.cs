@@ -10,7 +10,7 @@ public interface IW3StringItem
 {
     /// <summary>
     ///     Gets or sets the string identifier
-    ///     A unique identifier for the string within the The Witcher 3 system
+    ///     A unique identifier for the string within The Witcher 3 system
     /// </summary>
     public string StrId { get; set; }
 
