@@ -33,8 +33,8 @@ public class W3StringsSerializer(
     {
         try
         {
-            var tempFilePath = CreateTemporaryCopy(filePath);
-
+            var tempFilePath = CreateTemporaryCopy(filePath); // Create temporary copy of W3Strings file
+            
             // Execute the external W3Strings decoder tool with the file to decode
             using var process = await ExecuteExternalProcess(appSettings.W3StringsPath,
                 Parser.Default.FormatCommandLine(new W3StringsOptions
