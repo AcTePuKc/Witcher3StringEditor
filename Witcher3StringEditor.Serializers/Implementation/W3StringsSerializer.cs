@@ -78,7 +78,7 @@ public class W3StringsSerializer(
             {
                 OutputDirectory = tempDirectory
             }; // Create a temporary context with the temp directory as output
-            
+
             // Define paths for temporary CSV and W3Strings files
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
