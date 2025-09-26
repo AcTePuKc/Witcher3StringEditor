@@ -52,6 +52,11 @@ public class W3StringsSerializer(
         }
     }
 
+    /// <summary>
+    ///     Creates a temporary copy of the specified file in a temporary directory
+    /// </summary>
+    /// <param name="filePath">The path to the file to be copied</param>
+    /// <returns>The path to the temporary copy of the file</returns>
     private static string CreateTemporaryCopy(string filePath)
     {
         var tempDirectory = Directory.CreateTempSubdirectory().FullName;
