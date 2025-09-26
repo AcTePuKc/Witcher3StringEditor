@@ -33,14 +33,18 @@ public class W3StringsSerializer(
     {
         try
         {
+            var tempDirectory = Directory.CreateTempSubdirectory().FullName;
+            var tempFilePath = Path.Combine(tempDirectory, Path.GetFileName(filePath));
+            File.Copy(filePath, tempFilePath, true);
+            
             // Execute the external W3Strings decoder tool with the file to decode
             using var process = await ExecuteExternalProcess(appSettings.W3StringsPath,
                 Parser.Default.FormatCommandLine(new W3StringsOptions
                 {
-                    InputFileToDecode = filePath
+                    InputFileToDecode = tempFilePath
                 }));
             Guard.IsEqualTo(process.ExitCode, 0); // Ensure the process completed successfully (exit code 0)
-            return await csvSerializer.Deserialize($"{filePath}.csv"); // CSV serializer for decoded data
+            return await csvSerializer.Deserialize($"{tempFilePath}.csv"); // CSV serializer for decoded data
         }
         catch (Exception ex)
         {
