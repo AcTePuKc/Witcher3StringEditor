@@ -53,19 +53,6 @@ public class W3StringsSerializer(
     }
 
     /// <summary>
-    ///     Creates a temporary copy of the specified file in a temporary directory
-    /// </summary>
-    /// <param name="filePath">The path to the file to be copied</param>
-    /// <returns>The path to the temporary copy of the file</returns>
-    private static string CreateTemporaryCopy(string filePath)
-    {
-        var tempDirectory = Directory.CreateTempSubdirectory().FullName;
-        var tempFilePath = Path.Combine(tempDirectory, Path.GetFileName(filePath));
-        File.Copy(filePath, tempFilePath, true);
-        return tempFilePath;
-    }
-
-    /// <summary>
     ///     Serializes The Witcher 3 string items to a W3Strings file
     ///     This method first creates a temporary CSV file, then uses an external tool to encode it into a W3Strings file
     /// </summary>
@@ -112,6 +99,19 @@ public class W3StringsSerializer(
                 "An error occurred while serializing W3Strings."); // Log any errors that occur during serialization
             return false; // Return false to indicate serialization failure
         }
+    }
+
+    /// <summary>
+    ///     Creates a temporary copy of the specified file in a temporary directory
+    /// </summary>
+    /// <param name="filePath">The path to the file to be copied</param>
+    /// <returns>The path to the temporary copy of the file</returns>
+    private static string CreateTemporaryCopy(string filePath)
+    {
+        var tempDirectory = Directory.CreateTempSubdirectory().FullName;
+        var tempFilePath = Path.Combine(tempDirectory, Path.GetFileName(filePath));
+        File.Copy(filePath, tempFilePath, true);
+        return tempFilePath;
     }
 
     /// <summary>
