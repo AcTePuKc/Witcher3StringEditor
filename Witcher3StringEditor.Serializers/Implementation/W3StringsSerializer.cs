@@ -108,10 +108,10 @@ public class W3StringsSerializer(
     /// <returns>The path to the temporary copy of the file</returns>
     private static string CreateTemporaryCopy(string filePath)
     {
-        var tempDirectory = Directory.CreateTempSubdirectory().FullName;
-        var tempFilePath = Path.Combine(tempDirectory, Path.GetFileName(filePath));
-        File.Copy(filePath, tempFilePath, true);
-        return tempFilePath;
+        var tempDirectory = Directory.CreateTempSubdirectory().FullName; // Create temporary directory
+        var tempFilePath = Path.Combine(tempDirectory, Path.GetFileName(filePath)); // Build temporary file path
+        File.Copy(filePath, tempFilePath, true); // Copy file to temporary location
+        return tempFilePath; // Return temporary file path
     }
 
     /// <summary>
