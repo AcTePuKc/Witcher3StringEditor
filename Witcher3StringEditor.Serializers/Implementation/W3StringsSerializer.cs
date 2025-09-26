@@ -74,17 +74,17 @@ public class W3StringsSerializer(
                     .ToLowerInvariant(); // Get the lowercase name of the target language for file naming
             var tempDirectory =
                 Directory.CreateTempSubdirectory().FullName; // Create a temporary directory for intermediate files
-
+            var tempContext = context with
+            {
+                OutputDirectory = tempDirectory
+            }; // Create a temporary context with the temp directory as output
+            
             // Define paths for temporary CSV and W3Strings files
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
             var outputW3StringsPath =
                 Path.Combine(context.OutputDirectory, $"{saveLang}.w3strings");
 
-            var tempContext = context with
-            {
-                OutputDirectory = tempDirectory
-            }; // Create a temporary context with the temp directory as output
             Guard.IsTrue(await csvSerializer.Serialize(w3StringItems,
                 tempContext)); // Serialize the items to a temporary CSV file
             Guard.IsTrue(await StartSerializationProcess(tempContext,
