@@ -33,10 +33,8 @@ public class W3StringsSerializer(
     {
         try
         {
-            var tempDirectory = Directory.CreateTempSubdirectory().FullName;
-            var tempFilePath = Path.Combine(tempDirectory, Path.GetFileName(filePath));
-            File.Copy(filePath, tempFilePath, true);
-            
+            var tempFilePath = CreateTemporaryCopy(filePath);
+
             // Execute the external W3Strings decoder tool with the file to decode
             using var process = await ExecuteExternalProcess(appSettings.W3StringsPath,
                 Parser.Default.FormatCommandLine(new W3StringsOptions
@@ -52,6 +50,14 @@ public class W3StringsSerializer(
                 filePath); // Log any errors that occur during deserialization
             return []; // Return an empty list in case of errors
         }
+    }
+
+    private static string CreateTemporaryCopy(string filePath)
+    {
+        var tempDirectory = Directory.CreateTempSubdirectory().FullName;
+        var tempFilePath = Path.Combine(tempDirectory, Path.GetFileName(filePath));
+        File.Copy(filePath, tempFilePath, true);
+        return tempFilePath;
     }
 
     /// <summary>
