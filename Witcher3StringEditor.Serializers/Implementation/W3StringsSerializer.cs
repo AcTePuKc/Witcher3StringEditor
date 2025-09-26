@@ -79,13 +79,12 @@ public class W3StringsSerializer(
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
             var outputW3StringsPath =
-                Path.Combine(context.OutputDirectory, $"{saveLang}.w3strings"); // W3Strings output path
-
-            // Create a temporary context with the temp directory as output
+                Path.Combine(context.OutputDirectory, $"{saveLang}.w3strings");
+            
             var tempContext = context with
             {
                 OutputDirectory = tempDirectory
-            };
+            }; // Create a temporary context with the temp directory as output
             Guard.IsTrue(await csvSerializer.Serialize(w3StringItems,
                 tempContext)); // Serialize the items to a temporary CSV file
             Guard.IsTrue(await StartSerializationProcess(tempContext,
