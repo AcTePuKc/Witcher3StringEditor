@@ -69,8 +69,6 @@ public class W3StringsSerializer(
     {
         try
         {
-            Guard.IsNotEmpty(w3StringItems); // Ensure there are items to serialize
-            
             var saveLang =
                 Enum.GetName(context.TargetLanguage)!
                     .ToLowerInvariant(); // Get the lowercase name of the target language for file naming
