@@ -34,7 +34,7 @@ public class W3StringsSerializer(
         try
         {
             var tempFilePath = CreateTemporaryCopy(filePath); // Create temporary copy of W3Strings file
-            
+
             // Execute the external W3Strings decoder tool with the file to decode
             using var process = await ExecuteExternalProcess(appSettings.W3StringsPath,
                 Parser.Default.FormatCommandLine(new W3StringsOptions
@@ -70,16 +70,19 @@ public class W3StringsSerializer(
         try
         {
             Guard.IsNotEmpty(w3StringItems); // Ensure there are items to serialize
+            
             var saveLang =
                 Enum.GetName(context.TargetLanguage)!
                     .ToLowerInvariant(); // Get the lowercase name of the target language for file naming
             var tempDirectory =
                 Directory.CreateTempSubdirectory().FullName; // Create a temporary directory for intermediate files
+
             // Define paths for temporary CSV and W3Strings files
             var tempCsvPath = Path.Combine(tempDirectory, $"{saveLang}.csv");
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
             var outputW3StringsPath =
                 Path.Combine(context.OutputDirectory, $"{saveLang}.w3strings"); // W3Strings output path
+
             // Create a temporary context with the temp directory as output
             var tempContext = context with
             {
