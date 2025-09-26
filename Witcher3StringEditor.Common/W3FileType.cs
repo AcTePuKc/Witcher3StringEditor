@@ -2,7 +2,8 @@
 
 /// <summary>
 ///     Represents the supported file types for The Witcher 3 string operations
-///     This enumeration defines the different file formats that can be used to serialize or deserialize The Witcher 3 string items
+///     This enumeration defines the different file formats that can be used to serialize or deserialize The Witcher 3
+///     string items
 /// </summary>
 public enum W3FileType
 {

@@ -26,7 +26,7 @@ public class W3LanguageToNativeNameConverter : IValueConverter
     {
         // Check if the value is a valid W3Language enum, if not return UnsetValue
         if (value is not W3Language language) return DependencyProperty.UnsetValue;
-        
+
         // Get the field info for the language enum value
         // Retrieve the DescriptionAttribute from the field
         // Create a CultureInfo from the description and return its native name

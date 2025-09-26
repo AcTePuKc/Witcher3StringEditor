@@ -61,7 +61,7 @@ public class SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>
         // If unable to get auto height or if auto height is less than or equal to minimum height, return without handling
         if (!AssociatedObject.GridColumnSizer.GetAutoRowHeight(e.RowIndex, gridRowResizingOptions,
                 out var autoHeight) || autoHeight <= MinHeight) return;
-        
+
         // Set the calculated height and mark the event as handled
         e.Height = autoHeight;
         e.Handled = true;

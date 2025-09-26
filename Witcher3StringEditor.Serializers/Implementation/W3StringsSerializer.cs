@@ -80,7 +80,7 @@ public class W3StringsSerializer(
             var tempW3StringsPath = Path.ChangeExtension(tempCsvPath, ".csv.w3strings");
             var outputW3StringsPath =
                 Path.Combine(context.OutputDirectory, $"{saveLang}.w3strings");
-            
+
             var tempContext = context with
             {
                 OutputDirectory = tempDirectory

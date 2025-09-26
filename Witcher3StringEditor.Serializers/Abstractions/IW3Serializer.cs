@@ -4,7 +4,8 @@ namespace Witcher3StringEditor.Serializers.Abstractions;
 
 /// <summary>
 ///     Defines a contract for serialization and deserialization of The Witcher 3 string items
-///     This interface provides the basic functionality for converting between The Witcher 3 string items and various file formats
+///     This interface provides the basic functionality for converting between The Witcher 3 string items and various file
+///     formats
 /// </summary>
 public interface IW3Serializer
 {

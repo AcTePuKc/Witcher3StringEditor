@@ -32,13 +32,13 @@ public class W3SerializerCoordinator(
         {
             // For CSV files, use the CSV serializer
             ".csv" => await csvW3Serializer.Deserialize(filePath),
-            
+
             // For Excel files, use the Excel serializer
             ".xlsx" => await excelW3Serializer.Deserialize(filePath),
-            
+
             // For W3Strings files, use the W3Strings serializer
             ".w3strings" => await w3StringsSerializer.Deserialize(filePath),
-            
+
             // Throw an exception for unsupported file formats
             _ => throw new NotSupportedException($"File format not supported: {filePath}")
         };
@@ -62,13 +62,13 @@ public class W3SerializerCoordinator(
         {
             // For CSV file type, use the CSV serializer
             W3FileType.Csv => await csvW3Serializer.Serialize(w3StringItems, context),
-            
+
             // For Excel file type, use the Excel serializer
             W3FileType.Excel => await excelW3Serializer.Serialize(w3StringItems, context),
-            
+
             // For W3Strings file type, use the W3Strings serializer
             W3FileType.W3Strings => await w3StringsSerializer.Serialize(w3StringItems, context),
-            
+
             // Throw an exception for unsupported file types
             _ => throw new NotSupportedException($"File type not supported: {context.TargetFileType}")
         };

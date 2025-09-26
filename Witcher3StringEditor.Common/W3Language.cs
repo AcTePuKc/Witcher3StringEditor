@@ -5,7 +5,8 @@ namespace Witcher3StringEditor.Common;
 
 /// <summary>
 ///     Represents the supported languages for The Witcher 3 string operations
-///     This enumeration defines the different languages that can be used for translating or processing The Witcher 3 string items
+///     This enumeration defines the different languages that can be used for translating or processing The Witcher 3
+///     string items
 ///     Each language is associated with a specific culture code via the Description attribute
 /// </summary>
 public enum W3Language
