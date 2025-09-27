@@ -159,6 +159,7 @@
                                 Text="{I18N {x:Static l:LangKeys.IgnoreIDSpaceCheck}}" />
                             <!-- Toggle switch for ignoring ID space check -->
                             <ui:ToggleSwitch
+                                MinWidth="0"
                                 Margin="0,16,0,0"
                                 HorizontalAlignment="Right"
                                 IsOn="{Binding IsIgnoreIdSpaceCheck}"
