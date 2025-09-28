@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using CommandLine;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;

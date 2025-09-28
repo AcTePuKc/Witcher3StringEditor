@@ -1,14 +1,10 @@
-﻿using CommandLine;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using FluentResults;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
-using Witcher3StringEditor.Common.Constants;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
