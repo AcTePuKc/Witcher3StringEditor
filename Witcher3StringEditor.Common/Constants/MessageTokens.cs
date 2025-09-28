@@ -7,11 +7,6 @@ namespace Witcher3StringEditor.Common.Constants;
 public static class MessageTokens
 {
     /// <summary>
-    ///     Token for messages indicating that a translation has been saved
-    /// </summary>
-    public const string TranslationSaved = "TranslationSaved";
-
-    /// <summary>
     ///     Token for messages indicating that the translator is currently busy
     /// </summary>
     public const string TranslatorIsBusy = "TranslatorIsBusy";

@@ -226,11 +226,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
                 await TranslateItem(Translator, item.Text, toLanguage, fromLanguage); // Perform translation
             if (translation.IsSuccess) // Check if translation succeeded
             {
-                var clone = item.Clone().Cast<ITrackableW3StringItem>(); // Clone the item
-                clone.Text = translation.Value; // Update with translated text
-                WeakReferenceMessenger.Default.Send(
-                    new ValueChangedMessage<ITrackableW3StringItem>(clone), // Send via messaging
-                    MessageTokens.TranslationSaved);
+                item.Text = translation.Value; // Update with translated text
                 SuccessCount++; // Increment success counter
             }
             else

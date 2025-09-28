@@ -248,12 +248,8 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     {
         Guard.IsNotNull(CurrentTranslateItemModel); // Ensure we have a current item
         var found = W3StringItems // Find the original item by ID
-            .First(x => x.TrackingId == CurrentTranslateItemModel?.Id).Clone();
-        var clone = found.Cast<ITrackableW3StringItem>(); // Cast to the correct type
-        clone.Text = CurrentTranslateItemModel.TranslatedText; // Update with translated text
-        WeakReferenceMessenger.Default.Send(
-            new ValueChangedMessage<ITrackableW3StringItem>(clone), // Send via messaging
-            MessageTokens.TranslationSaved);
+            .First(x => x.TrackingId == CurrentTranslateItemModel?.Id);
+        found.Text = CurrentTranslateItemModel.TranslatedText; // Update with translated text
         CurrentTranslateItemModel.IsSaved = true; // Mark as saved
     }
 

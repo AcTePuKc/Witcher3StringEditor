@@ -201,12 +201,8 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
                 MessageTokens.TranslatedTextNoSaved))
         {
             var found = w3StringItems // Find the original item
-                .First(x => x.TrackingId == item.Id).Clone();
-            var clone = found.Cast<ITrackableW3StringItem>(); // Cast to correct type
-            clone.Text = item.TranslatedText; // Update with translated text
-            WeakReferenceMessenger.Default.Send(
-                new ValueChangedMessage<ITrackableW3StringItem>(clone), // Send via messaging
-                MessageTokens.TranslationSaved);
+                .First(x => x.TrackingId == item.Id);
+            found.Text = item.TranslatedText; // Update with translated text
             Log.Information("Auto-saved unsaved changes."); // Log the auto-save
         }
     }

@@ -154,7 +154,6 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterFileMessageHandlers(); // Register file message handlers
         RegisterSearchMessageHandlers(); // Register search message handlers
         RegisterSettingsMessageHandlers(); // Register settings message handlers
-        RegisterTranslationMessageHandlers(); // Register translation message handlers
     }
 
     /// <summary>
@@ -195,25 +194,6 @@ internal partial class MainWindowViewModel : ObservableObject
                     if (!removedItems.Any()) return; // Return if no items removed
                     removedItems.ForEach(x => SearchResults?.Remove(x)); // Remove items from search results
                     ShowTranslateDialogCommand.NotifyCanExecuteChanged(); // Update translate dialog command state
-                });
-    }
-
-    /// <summary>
-    ///     Registers message handlers for translation-related messages
-    /// </summary>
-    private void RegisterTranslationMessageHandlers()
-    {
-        // Register handler for translation saved notifications
-        WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<ITrackableW3StringItem>, string>(
-                this,
-                MessageTokens.TranslationSaved,
-                (_, m) =>
-                {
-                    var item = m.Value; // Get the translated item
-                    var found = W3StringItems! // Find the item in the collection
-                        .First(x => x.TrackingId == item.TrackingId);
-                    found.Text = item.Text; // Update the item text
                 });
     }
 
