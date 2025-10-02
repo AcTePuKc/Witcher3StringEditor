@@ -316,7 +316,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         var dialogViewModel = new EditDataDialogViewModel(new W3StringItemModel()); // Create new item view model
         if (await dialogService.ShowDialogAsync(this, dialogViewModel) == true // Show add dialog
-            && dialogViewModel.Item is null) // Check if user confirmed
+            && dialogViewModel.Item is not null) // Check if user confirmed
         {
             W3StringItems!.Add(dialogViewModel.Item.Cast<W3StringItemModel>()); // Add new item to collection
             Log.Information("New W3Item added."); // Log successful addition
