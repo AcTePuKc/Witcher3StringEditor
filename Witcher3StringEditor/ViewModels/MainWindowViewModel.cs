@@ -471,8 +471,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowRecentDialog()
     {
-        await dialogService.ShowDialogAsync(this,
-            new RecentDialogViewModel(appSettings));
+        using var recentDialogViewModel = new RecentDialogViewModel(appSettings);
+        await dialogService.ShowDialogAsync(this, recentDialogViewModel);
     }
 
     /// <summary>
