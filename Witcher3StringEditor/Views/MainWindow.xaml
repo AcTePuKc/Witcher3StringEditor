@@ -260,7 +260,6 @@
         <sf:SfDataGrid
             x:Name="SfDataGrid"
             Grid.Row="2"
-            EnableDataVirtualization="True"
             Margin="16,16,16,0"
             HorizontalContentAlignment="Center"
             AllowDeleting="False"
