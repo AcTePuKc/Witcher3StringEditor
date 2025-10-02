@@ -18,6 +18,10 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 /// </summary>
 public sealed partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable, IDisposable
 {
+    /// <summary>
+    ///     Tracks whether the object has been disposed to prevent multiple disposals
+    ///     Set to true when Dispose method is called
+    /// </summary>
     private bool disposedValue;
 
     /// <summary>
