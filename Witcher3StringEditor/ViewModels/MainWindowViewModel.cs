@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows;
+using System.Windows.Threading;
 using cmdwtf;
 using CommandLine;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -178,7 +178,7 @@ internal partial class MainWindowViewModel : ObservableObject
             this,
             async void (_, m) =>
             {
-                await Application.Current.Dispatcher.InvokeAsync(() => LogEvents.Add(m.Value));
+                await Dispatcher.CurrentDispatcher.InvokeAsync(() => LogEvents.Add(m.Value));
             }); // Add log event to collection on UI thread
     }
 
