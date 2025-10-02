@@ -341,7 +341,10 @@ internal partial class MainWindowViewModel : ObservableObject
             var found = W3StringItems! // Find the item in the collection
                 .First(x => x.TrackingId == selectedItem.TrackingId);
             var index = W3StringItems!.IndexOf(found); // Get the item index
-            W3StringItems[index] = dialogViewModel.Item.Cast<W3StringItemModel>(); // Update the item
+            W3StringItems[index].StrId = dialogViewModel.Item.StrId;
+            W3StringItems[index].KeyHex = dialogViewModel.Item.KeyHex;
+            W3StringItems[index].KeyName = dialogViewModel.Item.KeyName;
+            W3StringItems[index].Text = dialogViewModel.Item.Text;
             Log.Information("The W3Item has been updated."); // Log successful update
         }
         else
