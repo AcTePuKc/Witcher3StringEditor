@@ -64,6 +64,15 @@ public partial class MainWindow
         RegisterAsyncRequestMessageHandlers(); // Register async request message handlers
         RegisterFileOpenedMessageHandlers(); // Register file opened message handlers
         RegisterPageSizeChangedHandler(); // Register page size change message handler
+        RegisterDataGridRefreshHandler(); // Register data grid refresh message handler
+    }
+
+    /// <summary>
+    ///     Registers message handler for DataGrid refresh requests
+    ///     Handles messages that request a refresh of the data grid view
+    /// </summary>
+    private void RegisterDataGridRefreshHandler()
+    {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this,
             MessageTokens.RefreshDataGrid,
             (_, _) => { SfDataGrid.View.Refresh(); });
