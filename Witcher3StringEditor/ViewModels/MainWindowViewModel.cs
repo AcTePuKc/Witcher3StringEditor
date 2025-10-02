@@ -47,7 +47,7 @@ internal partial class MainWindowViewModel : ObservableObject
     ///     Gets or sets the data from dropped files
     /// </summary>
     [ObservableProperty] private string[]? dropFileData;
-    
+
     /// <summary>
     ///     Gets or sets a value indicating whether a search operation is currently active
     ///     This property is used to track search state and control UI behavior during search operations
