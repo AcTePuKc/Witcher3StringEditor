@@ -1,7 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.IO;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -18,8 +16,10 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 ///     Manages the display and interaction with recently opened files
 ///     Implements IModalDialogViewModel for dialog result handling and ICloseable for close notifications
 /// </summary>
-public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
+public sealed partial class RecentDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable, IDisposable
 {
+    private bool disposedValue;
+
     /// <summary>
     ///     Initializes a new instance of the RecentDialogViewModel class
     /// </summary>
@@ -27,10 +27,7 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     public RecentDialogViewModel(IAppSettings appSettings)
     {
         AppSettings = appSettings;
-        WeakEventManager<ObservableCollection<IRecentItem>, NotifyCollectionChangedEventArgs>.AddHandler(
-            AppSettings.RecentItems,
-            nameof(IAppSettings.RecentItems.CollectionChanged),
-            OnRecentItemsOnCollectionChanged);
+        AppSettings.RecentItems.CollectionChanged += OnRecentItemsOnCollectionChanged;
     }
 
     /// <summary>
@@ -44,10 +41,34 @@ public partial class RecentDialogViewModel : ObservableObject, IModalDialogViewM
     public event EventHandler? RequestClose;
 
     /// <summary>
+    ///     Releases all resources used by the LogDialogViewModel
+    ///     Calls the protected Dispose method with disposing parameter set to true
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+    }
+
+    /// <summary>
     ///     Gets the dialog result value
     ///     Returns true to indicate that the dialog was closed successfully
     /// </summary>
     public bool? DialogResult => true;
+
+    /// <summary>
+    ///     Releases the resources used by the LogDialogViewModel
+    ///     Unsubscribes from collection change events to prevent memory leaks
+    /// </summary>
+    /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources</param>
+    private void Dispose(bool disposing)
+    {
+        if (disposedValue) return; // Return if resources have already been disposed
+
+        if (disposing) // Only unsubscribe from events when disposing managed resources
+            AppSettings.RecentItems.CollectionChanged -= OnRecentItemsOnCollectionChanged;
+
+        disposedValue = true; // Mark resources as disposed
+    }
 
     /// <summary>
     ///     Handles changes to the recent items collection
