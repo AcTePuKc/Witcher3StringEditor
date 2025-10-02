@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Windows;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using HanumanInstitute.MvvmDialogs;
@@ -15,13 +14,15 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 ///     Manages the display of log events in the UI and synchronizes with the source log collection
 ///     Implements IModalDialogViewModel to support dialog result handling
 /// </summary>
-public class LogDialogViewModel
-    : ObservableObject, IModalDialogViewModel
+public sealed class LogDialogViewModel
+    : ObservableObject, IModalDialogViewModel, IDisposable
 {
     /// <summary>
     ///     The source collection of log events to display
     /// </summary>
     private readonly ObservableCollection<LogEvent> sourceLogEvents;
+
+    private bool disposedValue;
 
     /// <summary>
     ///     Initializes a new instance of the LogDialogViewModel class
@@ -30,19 +31,20 @@ public class LogDialogViewModel
     public LogDialogViewModel(ObservableCollection<LogEvent> logEvents)
     {
         sourceLogEvents = logEvents;
+        LogEvents.CollectionChanged += OnLogEventsCollectionChanged;
+        sourceLogEvents.CollectionChanged += OnSourceLogsCollectionChanged;
         sourceLogEvents.ForEach(x => LogEvents.Add(new LogEventItemModel(x)));
-        WeakEventManager<ObservableCollection<LogEvent>, NotifyCollectionChangedEventArgs>
-            .AddHandler(sourceLogEvents, nameof(ObservableCollection<LogEvent>.CollectionChanged),
-                OnSourceLogsCollectionChanged);
-        WeakEventManager<ObservableCollection<LogEventItemModel>, NotifyCollectionChangedEventArgs>
-            .AddHandler(LogEvents, nameof(ObservableCollection<LogEventItemModel>.CollectionChanged),
-                OnLogEventsCollectionChanged);
     }
 
     /// <summary>
     ///     Gets the collection of log events for display in the UI
     /// </summary>
     public ObservableCollection<LogEventItemModel> LogEvents { get; } = [];
+
+    public void Dispose()
+    {
+        Dispose(true);
+    }
 
     /// <summary>
     ///     Gets the dialog result value
@@ -76,5 +78,18 @@ public class LogDialogViewModel
         if (e is not { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }) return;
         foreach (LogEventItemModel item in e.OldItems)
             await Dispatcher.CurrentDispatcher.InvokeAsync(() => sourceLogEvents.Remove(item.EventEntry));
+    }
+
+    
+    private void Dispose(bool disposing)
+    {
+        if (disposedValue) return;
+        if (disposing)
+        {
+            LogEvents.CollectionChanged -= OnLogEventsCollectionChanged;
+            sourceLogEvents.CollectionChanged -= OnSourceLogsCollectionChanged;
+        }
+
+        disposedValue = true;
     }
 }
