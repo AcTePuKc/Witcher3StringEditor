@@ -90,8 +90,8 @@ internal partial class MainWindowViewModel : ObservableObject
         fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>(); // Get file manager service
         settingsManagerService =
             serviceProvider.GetRequiredService<ISettingsManagerService>(); // Get settings manager service
+        PageSize = appSettings.PageSize; // Set page size
         RegisterMessengerHandlers(); // Register all message handlers
-        PageSize = appSettings.PageSize;
     }
 
     /// <summary>
@@ -152,6 +152,12 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterLogMessageHandlers(); // Register log message handlers
         RegisterFileMessageHandlers(); // Register file message handlers
         RegisterSettingsMessageHandlers(); // Register settings message handlers
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this,
+            MessageTokens.SearchStateChanged,
+            (_, m) =>
+            {
+                IsSearched = m.Value;
+            });
     }
 
     /// <summary>
@@ -345,6 +351,8 @@ internal partial class MainWindowViewModel : ObservableObject
             W3StringItems[index].KeyHex = dialogViewModel.Item.KeyHex;
             W3StringItems[index].KeyName = dialogViewModel.Item.KeyName;
             W3StringItems[index].Text = dialogViewModel.Item.Text;
+            if (IsSearched) 
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
             Log.Information("The W3Item has been updated."); // Log successful update
         }
         else
@@ -494,5 +502,9 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
             new TranslateDialogViewModel(appSettings, translator, W3StringItems!, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
+        if (IsSearched)
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
     }
+
+    [ObservableProperty] private bool isSearched;
 }

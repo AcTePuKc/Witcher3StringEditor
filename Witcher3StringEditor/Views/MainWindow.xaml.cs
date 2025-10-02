@@ -64,6 +64,9 @@ public partial class MainWindow
         RegisterAsyncRequestMessageHandlers(); // Register async request message handlers
         RegisterFileOpenedMessageHandlers(); // Register file opened message handlers
         RegisterPageSizeChangedHandler(); // Register page size change message handler
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this,
+            MessageTokens.RefreshDataGrid,
+            (_, _) => { SfDataGrid.View.Refresh(); });
     }
 
     private void RegisterPageSizeChangedHandler()
@@ -138,6 +141,7 @@ public partial class MainWindow
     {
         if (SfDataGrid.ItemsSource is null) return; // Ensure there's data to search before proceeding
         SfDataGrid.SearchHelper.Search(args.QueryText); // Perform the search and collect results
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.SearchStateChanged);
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
 
@@ -151,6 +155,7 @@ public partial class MainWindow
     {
         if (!string.IsNullOrEmpty(sender.Text)) return; // Return if search text is not empty
         SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false), MessageTokens.SearchStateChanged);
     }
 
     /// <summary>

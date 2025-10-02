@@ -110,4 +110,8 @@ public static class MessageTokens
     ///     Token for messages indicating that the page size has changed
     /// </summary>
     public const string PageSizeChanged = "PageSizeChanged";
+
+    public const string SearchStateChanged = "SearchStateChanged";
+        
+    public const string RefreshDataGrid = "RefreshDataGrid";
 }
