@@ -353,7 +353,7 @@
             Margin="0,4"
             HorizontalAlignment="Center"
             NumericButtonCount="10"
-            PageSize="30"
+            PageSize="{Binding PageSize, Mode=OneWay}"
             Source="{Binding W3StringItems, Mode=TwoWay}" />
         <!-- Update available notification -->
         <ui:InfoBar

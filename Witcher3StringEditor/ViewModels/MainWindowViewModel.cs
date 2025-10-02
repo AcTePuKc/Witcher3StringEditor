@@ -61,6 +61,11 @@ internal partial class MainWindowViewModel : ObservableObject
     private string outputFolder = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the page size
+    /// </summary>
+    [ObservableProperty] private int pageSize;
+
+    /// <summary>
     ///     Gets or sets the search results collection
     ///     Notifies ShowTranslateDialogCommand when this property changes
     /// </summary>
@@ -93,6 +98,7 @@ internal partial class MainWindowViewModel : ObservableObject
         settingsManagerService =
             serviceProvider.GetRequiredService<ISettingsManagerService>(); // Get settings manager service
         RegisterMessengerHandlers(); // Register all message handlers
+        PageSize = appSettings.PageSize;
     }
 
     /// <summary>

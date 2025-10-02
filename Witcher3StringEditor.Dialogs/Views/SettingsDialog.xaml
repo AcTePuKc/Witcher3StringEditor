@@ -60,6 +60,7 @@
             <c:W3LanguageToNativeNameConverter x:Key="W3LanguageToNativeNameConverter" />
             <!-- Converter for displaying The Witcher 3 file type localized strings -->
             <c:W3FileTypeToLocalizedStringConverter x:Key="W3FileTypeToLocalizedStringConverter" />
+            <c:IntToStringConverter x:Key="IntToStringConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <!-- 
@@ -163,6 +164,21 @@
                         DisplayMemberPath="NativeName"
                         ItemsSource="{Binding SupportedCultures}"
                         SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}" />
+                </ui:SettingsCard>
+                <ui:SettingsCard Header="PageSize">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Glyph="&#xE7C3;" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <ComboBox
+                        SelectedValuePath="Content"
+                        SelectedValue="{Binding AppSettings.PageSize,Mode=TwoWay,Converter={StaticResource IntToStringConverter},FallbackValue=30}">
+                        <ComboBox.Items>
+                            <ComboBoxItem Content="20" />
+                            <ComboBoxItem Content="30" />
+                            <ComboBoxItem Content="50" />
+                            <ComboBoxItem Content="100" />
+                        </ComboBox.Items>
+                    </ComboBox>
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>

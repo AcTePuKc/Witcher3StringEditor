@@ -27,6 +27,11 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private string language = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the page size for pagination
+    /// </summary>
+    [ObservableProperty] private int pageSize = 30;
+
+    /// <summary>
     ///     Gets or sets the preferred language for The Witcher 3 string operations
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>

@@ -130,4 +130,9 @@ public static class MessageTokens
     ///     Token for messages related to recent items
     /// </summary>
     public const string RecentItem = "RecentItem";
+
+    /// <summary>
+    ///     Token for messages indicating that the page size has changed
+    /// </summary>
+    public const string PageSizeChanged = "PageSizeChanged";
 }

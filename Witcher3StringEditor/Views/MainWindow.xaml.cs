@@ -110,9 +110,19 @@ public partial class MainWindow
     /// </summary>
     private void RegisterMessageHandlers()
     {
-        RegisterFileOpenedMessageHandlers(); // Register file opened message handlers
         RegisterAsyncRequestMessageHandlers(); // Register async request message handlers
+        RegisterFileOpenedMessageHandlers(); // Register file opened message handlers
+        RegisterPageSizeChangedHandler(); // Register page size change message handler
         RegisterSearchHandler(); // Register search-related message handlers
+    }
+
+    private void RegisterPageSizeChangedHandler()
+    {
+        WeakReferenceMessenger.Default.Register<ValueChangedMessage<int>, string>(this, MessageTokens.PageSizeChanged,
+            (_, m) =>
+            {
+                SfDataPager.PageSize = m.Value;
+            });
     }
 
     /// <summary>

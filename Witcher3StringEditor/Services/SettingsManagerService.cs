@@ -90,6 +90,10 @@ internal class SettingsManagerService : ISettingsManagerService
             case nameof(IAppSettings.Language): // If Language changed
                 ApplyLanguageChange(appSettings.Language); // Apply language change
                 break;
+            case nameof(IAppSettings.PageSize): // If PageSize changed
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<int>(((IAppSettings)sender!).PageSize), // Send message
+                    MessageTokens.PageSizeChanged);
+                break;
         }
     }
 
