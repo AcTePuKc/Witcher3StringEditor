@@ -41,6 +41,10 @@ public sealed class LogDialogViewModel
     /// </summary>
     public ObservableCollection<LogEventItemModel> LogEvents { get; } = [];
 
+    /// <summary>
+    ///     Releases all resources used by the LogDialogViewModel
+    ///     Calls the protected Dispose method with disposing parameter set to true
+    /// </summary>
     public void Dispose()
     {
         Dispose(true);
@@ -80,16 +84,22 @@ public sealed class LogDialogViewModel
             await Dispatcher.CurrentDispatcher.InvokeAsync(() => sourceLogEvents.Remove(item.EventEntry));
     }
 
-    
+
+    /// <summary>
+    ///     Releases the resources used by the LogDialogViewModel
+    ///     Unsubscribes from collection change events to prevent memory leaks
+    /// </summary>
+    /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources</param>
     private void Dispose(bool disposing)
     {
-        if (disposedValue) return;
-        if (disposing)
+        if (disposedValue) return; // Return if resources have already been disposed
+
+        if (disposing) // Only unsubscribe from events when disposing managed resources
         {
             LogEvents.CollectionChanged -= OnLogEventsCollectionChanged;
             sourceLogEvents.CollectionChanged -= OnSourceLogsCollectionChanged;
         }
 
-        disposedValue = true;
+        disposedValue = true; // Mark resources as disposed
     }
 }
