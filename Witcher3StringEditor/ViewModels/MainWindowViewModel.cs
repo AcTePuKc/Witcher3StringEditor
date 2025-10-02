@@ -158,10 +158,20 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterLogMessageHandlers(); // Register log message handlers
         RegisterFileMessageHandlers(); // Register file message handlers
         RegisterSettingsMessageHandlers(); // Register settings message handlers
+        RegisterSearchStateMessageHandler(); // Register search state message handler
+    }
+
+    /// <summary>
+    ///     Registers message handler for search state change notifications
+    ///     Handles messages that indicate when the search state has changed
+    /// </summary>
+    private void RegisterSearchStateMessageHandler()
+    {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this,
             MessageTokens.SearchStateChanged,
             (_, m) => { IsSearched = m.Value; });
     }
+
 
     /// <summary>
     ///     Registers message handlers for file-related messages
