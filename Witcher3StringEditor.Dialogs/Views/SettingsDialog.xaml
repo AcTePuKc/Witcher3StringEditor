@@ -165,13 +165,18 @@
                         ItemsSource="{Binding SupportedCultures}"
                         SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}" />
                 </ui:SettingsCard>
+                <!-- Page size settings card -->
+                <!-- Allows users to select the number of items displayed per page in data grids -->
                 <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.PageSize}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7C3;" />
                     </ui:SettingsCard.HeaderIcon>
+                    <!-- Binds to AppSettings.PageSize property with two-way binding -->
+                    <!-- Uses IntToStringConverter to handle conversion between integer and string values -->
                     <ComboBox
                         SelectedValuePath="Content"
                         SelectedValue="{Binding AppSettings.PageSize,Mode=TwoWay,Converter={StaticResource IntToStringConverter},FallbackValue=30}">
+                        <!-- Provides options for 20, 30, 50, and 100 items per page -->
                         <ComboBox.Items>
                             <ComboBoxItem Content="20" />
                             <ComboBoxItem Content="30" />
