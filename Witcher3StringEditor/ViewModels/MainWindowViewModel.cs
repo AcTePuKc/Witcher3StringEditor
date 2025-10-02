@@ -47,6 +47,12 @@ internal partial class MainWindowViewModel : ObservableObject
     ///     Gets or sets the data from dropped files
     /// </summary>
     [ObservableProperty] private string[]? dropFileData;
+    
+    /// <summary>
+    ///     Gets or sets a value indicating whether a search operation is currently active
+    ///     This property is used to track search state and control UI behavior during search operations
+    /// </summary>
+    [ObservableProperty] private bool isSearched;
 
     /// <summary>
     ///     Gets or sets a value indicating whether an update is available
@@ -154,10 +160,7 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterSettingsMessageHandlers(); // Register settings message handlers
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this,
             MessageTokens.SearchStateChanged,
-            (_, m) =>
-            {
-                IsSearched = m.Value;
-            });
+            (_, m) => { IsSearched = m.Value; });
     }
 
     /// <summary>
@@ -351,7 +354,7 @@ internal partial class MainWindowViewModel : ObservableObject
             W3StringItems[index].KeyHex = dialogViewModel.Item.KeyHex;
             W3StringItems[index].KeyName = dialogViewModel.Item.KeyName;
             W3StringItems[index].Text = dialogViewModel.Item.Text;
-            if (IsSearched) 
+            if (IsSearched)
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
             Log.Information("The W3Item has been updated."); // Log successful update
         }
@@ -505,6 +508,4 @@ internal partial class MainWindowViewModel : ObservableObject
         if (IsSearched)
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
     }
-
-    [ObservableProperty] private bool isSearched;
 }
