@@ -486,4 +486,7 @@
     <data name="LanguageHelpText" xml:space="preserve">
     <value>Language</value>
   </data>
+    <data name="PageSize" xml:space="preserve">
+      <value>​​Page Size​​</value>
+    </data>
 </root>

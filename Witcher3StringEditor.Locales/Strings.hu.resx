@@ -487,4 +487,7 @@
     <data name="LanguageHelpText" xml:space="preserve">
     <value>Nyelv</value>
   </data>
+    <data name="PageSize" xml:space="preserve">
+      <value>Oldalméret</value>
+    </data>
 </root>

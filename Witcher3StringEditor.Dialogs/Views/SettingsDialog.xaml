@@ -165,7 +165,7 @@
                         ItemsSource="{Binding SupportedCultures}"
                         SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard Header="PageSize">
+                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.PageSize}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7C3;" />
                     </ui:SettingsCard.HeaderIcon>

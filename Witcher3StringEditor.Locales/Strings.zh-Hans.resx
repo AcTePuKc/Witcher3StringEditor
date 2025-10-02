@@ -487,4 +487,7 @@
     <data name="LanguageHelpText" xml:space="preserve">
     <value>语言</value>
   </data>
+    <data name="PageSize" xml:space="preserve">
+      <value>​​每页记录数</value>
+    </data>
 </root>

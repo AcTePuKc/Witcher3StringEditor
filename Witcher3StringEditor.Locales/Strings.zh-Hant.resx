@@ -379,4 +379,7 @@
     <data name="W3StringsPath" xml:space="preserve">
         <value>請選擇w3strings.exe</value>
     </data>
+    <data name="PageSize" xml:space="preserve">
+        <value>每頁記錄數​</value>
+    </data>
 </root>
