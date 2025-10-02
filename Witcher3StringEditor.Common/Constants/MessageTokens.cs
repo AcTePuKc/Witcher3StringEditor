@@ -32,31 +32,6 @@ public static class MessageTokens
     public const string TranslatedTextNoSaved = "TranslatedTextNoSaved";
 
     /// <summary>
-    ///     Token for messages indicating that search results have been updated
-    /// </summary>
-    public const string SearchResultsUpdated = "SearchResultsUpdated";
-
-    /// <summary>
-    ///     Token for messages indicating that items have been added
-    /// </summary>
-    public const string ItemsAdded = "ItemsAdded";
-
-    /// <summary>
-    ///     Token for messages indicating that items have been removed
-    /// </summary>
-    public const string ItemsRemoved = "ItemsRemoved";
-
-    /// <summary>
-    ///     Token for messages indicating that search should be cleared
-    /// </summary>
-    public const string ClearSearch = "ClearSearch";
-
-    /// <summary>
-    ///     Token for messages indicating that the data grid should be refreshed
-    /// </summary>
-    public const string RefreshDataGrid = "RefreshDataGrid";
-
-    /// <summary>
     ///     Token for messages indicating that a recent file has been opened
     /// </summary>
     public const string RecentFileOpened = "RecentFileOpened";

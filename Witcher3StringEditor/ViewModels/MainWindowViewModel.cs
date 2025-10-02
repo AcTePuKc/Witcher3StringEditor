@@ -66,13 +66,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private int pageSize;
 
     /// <summary>
-    ///     Gets or sets the search results collection
-    ///     Notifies ShowTranslateDialogCommand when this property changes
-    /// </summary>
-    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
-    private ObservableCollection<W3StringItemModel>? searchResults;
-
-    /// <summary>
     ///     Gets or sets the collection of The Witcher 3 string items
     ///     Notifies multiple commands when this property changes
     /// </summary>
@@ -158,49 +151,7 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         RegisterLogMessageHandlers(); // Register log message handlers
         RegisterFileMessageHandlers(); // Register file message handlers
-        RegisterSearchMessageHandlers(); // Register search message handlers
         RegisterSettingsMessageHandlers(); // Register settings message handlers
-    }
-
-    /// <summary>
-    ///     Registers message handlers for search-related messages
-    /// </summary>
-    private void RegisterSearchMessageHandlers()
-    {
-        // Register handler for search results updates
-        WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>, string>(this,
-                "SearchResultsUpdated", (_, m) =>
-                {
-                    var searchItems = m.Value; // Get the search results
-                    SearchResults =
-                        searchItems is not null
-                            ? m.Value.ToObservableCollection()
-                            : null; // Update search results collection
-                });
-
-        // Register handler for items added notifications
-        WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
-                "ItemsAdded", (_, m) =>
-                {
-                    if (SearchResults is null) return; // Return if no search results
-                    var addedItems = m.Value; // Get the added items
-                    if (!addedItems.Any()) return; // Return if no items added
-                    addedItems.ForEach(SearchResults.Add); // Add items to search results
-                    ShowTranslateDialogCommand.NotifyCanExecuteChanged(); // Update translate dialog command state
-                });
-
-        // Register handler for items removed notifications
-        WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
-                "ItemsRemoved", (_, m) =>
-                {
-                    var removedItems = m.Value; // Get the removed items
-                    if (!removedItems.Any()) return; // Return if no items removed
-                    removedItems.ForEach(x => SearchResults?.Remove(x)); // Remove items from search results
-                    ShowTranslateDialogCommand.NotifyCanExecuteChanged(); // Update translate dialog command state
-                });
     }
 
     /// <summary>
@@ -352,12 +303,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task<bool> HandleReOpenFile(string fileName)
     {
         if (W3StringItems?.Any() != true) return true; // Return true if no items currently loaded
-        if (!await WeakReferenceMessenger.Default.Send(
-                new AsyncRequestMessage<string, bool>(fileName), // Send reopen file request
-                MessageTokens.ReOpenFile)) return false; // Return false if user cancels
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
-            MessageTokens.ClearSearch); // Clear search results
-        return true; // Return true to proceed with file opening
+        return await WeakReferenceMessenger.Default.Send(
+            new AsyncRequestMessage<string, bool>(fileName), // Send reopen file request
+            MessageTokens.ReOpenFile); // Wait for response
     }
 
     /// <summary>
@@ -417,7 +365,6 @@ internal partial class MainWindowViewModel : ObservableObject
             {
                 var stringItem = item.Cast<W3StringItemModel>(); // Cast to string item model
                 W3StringItems!.Remove(stringItem); // Remove from main collection
-                SearchResults?.Remove(stringItem); // Remove from search results if applicable
             });
     }
 
@@ -529,34 +476,20 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Determines whether the translate dialog can be shown
-    /// </summary>
-    /// <returns>True if the translate dialog can be shown, false otherwise</returns>
-    private bool CanShowTranslateDialog()
-    {
-        if (SearchResults is not null) // Check if we have search results
-            return SearchResults.Any(); // Return true if search results exist
-        return W3StringItems?.Any() == true; // Otherwise check if we have any W3String items
-    }
-
-    /// <summary>
     ///     Shows the translate dialog
     /// </summary>
     /// <param name="selectedItem">The initially selected item in the dialog</param>
-    [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
+    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
-        var items = SearchResults ?? W3StringItems!; // Use search results if available, otherwise all items
-        var itemsList = items.OfType<ITrackableW3StringItem>().ToList(); // Convert to list of trackable items
         var selectedIndex =
-            selectedItem is not null ? itemsList.IndexOf(selectedItem) : 0; // Set selected index based on provided item
+            selectedItem is not null
+                ? W3StringItems.IndexOf(selectedItem)
+                : 0; // Set selected index based on provided item
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
-            new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
+            new TranslateDialogViewModel(appSettings, translator, W3StringItems!, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
-        if (SearchResults is not null) // Check if we're working with search results
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
-                MessageTokens.RefreshDataGrid); // Send refresh message
     }
 }

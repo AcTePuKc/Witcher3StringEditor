@@ -1,5 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Windows;
+﻿using System.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -7,11 +6,9 @@ using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Controls;
 using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Serilog;
-using Syncfusion.Data;
 using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Models;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
@@ -33,52 +30,6 @@ public partial class MainWindow
         RegisterMessageHandlers(); // Register message handlers for inter-component communication
         RegisterThemeChangedHandler(); // Register handler for theme change notifications
         DataContext = Ioc.Default.GetService<MainWindowViewModel>(); // Set the data context to the main view model
-        SfDataGrid.ItemsSourceChanged +=
-            OnDataGridItemsSourceChanged; // Register event handler for data grid items source changes
-    }
-
-    /// <summary>
-    ///     Handles the ItemsSourceChanged event of the data grid
-    ///     Registers a handler for collection changes in the data grid view
-    /// </summary>
-    /// <param name="sender">The source of the event</param>
-    /// <param name="e">The event arguments</param>
-    private void OnDataGridItemsSourceChanged(object? sender, EventArgs e)
-    {
-        // Subscribe to collection changes in the data grid view.
-        SfDataGrid.View.CollectionChanged += OnDataGridViewCollectionChanged;
-    }
-
-    /// <summary>
-    ///     Handles the CollectionChanged event of the data grid view
-    ///     Sends messages when items are added or removed from the data grid
-    /// </summary>
-    /// <param name="sender">The source of the event</param>
-    /// <param name="e">The event arguments containing information about the change</param>
-    private static void OnDataGridViewCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        // Process add or remove actions in the data grid collection.
-        switch (e)
-        {
-            case { Action: NotifyCollectionChangedAction.Add, NewItems: not null }: // Handle item addition
-            {
-                var addedItems = e.NewItems.OfType<RecordEntry>() // Convert to RecordEntry objects
-                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList(); // Extract W3StringItemModel data
-                WeakReferenceMessenger.Default.Send(
-                    new ValueChangedMessage<IList<W3StringItemModel>>(addedItems), // Send added items message
-                    MessageTokens.ItemsAdded);
-                break;
-            }
-            case { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }: // Handle item removal
-            {
-                var removedItems = e.OldItems.OfType<RecordEntry>() // Convert to RecordEntry objects
-                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList(); // Extract W3StringItemModel data
-                WeakReferenceMessenger.Default.Send(
-                    new ValueChangedMessage<IList<W3StringItemModel>>(removedItems), // Send removed items message
-                    MessageTokens.ItemsRemoved);
-                break;
-            }
-        }
     }
 
     /// <summary>
@@ -113,31 +64,12 @@ public partial class MainWindow
         RegisterAsyncRequestMessageHandlers(); // Register async request message handlers
         RegisterFileOpenedMessageHandlers(); // Register file opened message handlers
         RegisterPageSizeChangedHandler(); // Register page size change message handler
-        RegisterSearchHandler(); // Register search-related message handlers
     }
 
     private void RegisterPageSizeChangedHandler()
     {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<int>, string>(this, MessageTokens.PageSizeChanged,
-            (_, m) =>
-            {
-                SfDataPager.PageSize = m.Value;
-            });
-    }
-
-    /// <summary>
-    ///     Registers message handlers for search-related operations
-    ///     Handles clearing search and refreshing the data grid
-    /// </summary>
-    private void RegisterSearchHandler()
-    {
-        // Register handler to clear search text when requested
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.ClearSearch,
-            (_, _) => { SearchBox.Text = string.Empty; });
-
-        // Register handler to refresh the data grid view when requested
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.RefreshDataGrid,
-            (_, _) => { SfDataGrid.View.Refresh(); });
+            (_, m) => { SfDataPager.PageSize = m.Value; });
     }
 
     /// <summary>
@@ -204,17 +136,8 @@ public partial class MainWindow
     /// <param name="args">The event arguments containing the query text</param>
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        // Ensure there's data to search before proceeding
-        if (SfDataGrid.ItemsSource is null) return;
-
-        // Perform the search and collect results
-        SfDataGrid.SearchHelper.Search(args.QueryText);
-        var searchResults = SfDataGrid.View.Records
-            .Select(x => x.Data).OfType<W3StringItemModel>().ToList();
-
-        // Send search results to other components
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(searchResults),
-            MessageTokens.SearchResultsUpdated);
+        if (SfDataGrid.ItemsSource is null) return; // Ensure there's data to search before proceeding
+        SfDataGrid.SearchHelper.Search(args.QueryText); // Perform the search and collect results
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
 
@@ -227,9 +150,6 @@ public partial class MainWindow
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         if (!string.IsNullOrEmpty(sender.Text)) return; // Return if search text is not empty
-        WeakReferenceMessenger.Default.Send(
-            new ValueChangedMessage<IList<W3StringItemModel>?>(null), // Send null search results
-            MessageTokens.SearchResultsUpdated);
         SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
     }
 
