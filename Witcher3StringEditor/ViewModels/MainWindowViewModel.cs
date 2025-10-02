@@ -172,7 +172,6 @@ internal partial class MainWindowViewModel : ObservableObject
             (_, m) => { IsSearched = m.Value; });
     }
 
-
     /// <summary>
     ///     Registers message handlers for file-related messages
     /// </summary>
@@ -364,8 +363,9 @@ internal partial class MainWindowViewModel : ObservableObject
             W3StringItems[index].KeyHex = dialogViewModel.Item.KeyHex;
             W3StringItems[index].KeyName = dialogViewModel.Item.KeyName;
             W3StringItems[index].Text = dialogViewModel.Item.Text;
-            if (IsSearched)
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
+            if (IsSearched) // If search is active
+                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+                    MessageTokens.RefreshDataGrid); // Refresh data grid
             Log.Information("The W3Item has been updated."); // Log successful update
         }
         else
@@ -515,7 +515,8 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
             new TranslateDialogViewModel(appSettings, translator, W3StringItems!, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
-        if (IsSearched)
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.RefreshDataGrid);
+        if (IsSearched) // If the search is active
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+                MessageTokens.RefreshDataGrid); // Refresh the data grid
     }
 }
