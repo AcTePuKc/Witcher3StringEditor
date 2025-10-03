@@ -337,6 +337,7 @@ internal partial class MainWindowViewModel : ObservableObject
             fileManagerService.SetOutputFolder(fileName,
                 folder => OutputFolder = folder); // Set output folder based on file location
             fileManagerService.UpdateRecentItems(fileName); // Update recent items list
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.ClearSearch);
         }
         catch (Exception ex)
         {
