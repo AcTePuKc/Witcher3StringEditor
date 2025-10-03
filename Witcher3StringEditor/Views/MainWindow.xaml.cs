@@ -116,7 +116,7 @@ public partial class MainWindow
         RegisterDataGridRefreshHandler(); // Register data grid refresh message handler
         RegisterClearSearchHandler(); // Register clear search message handler
     }
-    
+
     /// <summary>
     ///     Registers message handlers for asynchronous request messages
     ///     Handles messages for main window closing and first run scenarios
@@ -172,7 +172,7 @@ public partial class MainWindow
                             MessageBoxResult.Yes);
                 });
     }
-    
+
     /// <summary>
     ///     Registers message handler for page size change requests
     ///     Handles messages that request a change in the page size of the data grid
@@ -182,7 +182,7 @@ public partial class MainWindow
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<int>, string>(this, MessageTokens.PageSizeChanged,
             (_, m) => { SfDataPager.PageSize = m.Value; });
     }
-    
+
     /// <summary>
     ///     Registers message handler for DataGrid refresh requests
     ///     Handles messages that request a refresh of the data grid view
@@ -193,7 +193,7 @@ public partial class MainWindow
             MessageTokens.RefreshDataGrid,
             (_, _) => { SfDataGrid.View.Refresh(); });
     }
-    
+
     /// <summary>
     ///     Registers message handler for clear search requests
     ///     Handles messages that request to clear the search box text
@@ -201,10 +201,7 @@ public partial class MainWindow
     private void RegisterClearSearchHandler()
     {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this, MessageTokens.ClearSearch,
-            (_, _) =>
-            {
-                SearchBox.Text = string.Empty;
-            });
+            (_, _) => { SearchBox.Text = string.Empty; });
     }
 
     /// <summary>

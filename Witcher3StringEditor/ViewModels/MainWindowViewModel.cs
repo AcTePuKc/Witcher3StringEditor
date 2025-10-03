@@ -132,7 +132,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
-    
+
     /// <summary>
     ///     Registers all message handlers for the view model
     /// </summary>
@@ -143,7 +143,7 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterSearchMessageHandlers(); // Register search message handlers
         RegisterSettingsMessageHandlers(); // Register settings message handlers
     }
-    
+
     /// <summary>
     ///     Registers message handlers for log-related messages
     /// </summary>
@@ -530,7 +530,7 @@ internal partial class MainWindowViewModel : ObservableObject
         using var recentDialogViewModel = new RecentDialogViewModel(appSettings);
         await dialogService.ShowDialogAsync(this, recentDialogViewModel);
     }
-    
+
     /// <summary>
     ///     Determines whether the translate dialog can be shown
     /// </summary>
@@ -541,7 +541,7 @@ internal partial class MainWindowViewModel : ObservableObject
             return SearchResults.Any(); // Return true if search results exist
         return W3StringItems?.Any() == true; // Otherwise check if we have any W3String items
     }
-    
+
     /// <summary>
     ///     Shows the translate dialog
     /// </summary>
