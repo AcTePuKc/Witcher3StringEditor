@@ -49,12 +49,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private string[]? dropFileData;
 
     /// <summary>
-    ///     Gets or sets a value indicating whether a search operation is currently active
-    ///     This property is used to track search state and control UI behavior during search operations
-    /// </summary>
-    [ObservableProperty] private bool isSearching;
-
-    /// <summary>
     ///     Gets or sets a value indicating whether an update is available
     /// </summary>
     [ObservableProperty] private bool isUpdateAvailable;
@@ -70,6 +64,13 @@ internal partial class MainWindowViewModel : ObservableObject
     ///     Gets or sets the page size
     /// </summary>
     [ObservableProperty] private int pageSize;
+
+    /// <summary>
+    ///     Gets or sets the search results collection
+    ///     Notifies ShowTranslateDialogCommand when this property changes
+    /// </summary>
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
+    private ObservableCollection<W3StringItemModel>? searchResults;
 
     /// <summary>
     ///     Gets or sets the collection of The Witcher 3 string items
@@ -131,6 +132,86 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private static bool IsDebug =>
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
+    
+    /// <summary>
+    ///     Registers all message handlers for the view model
+    /// </summary>
+    private void RegisterMessengerHandlers()
+    {
+        RegisterLogMessageHandlers(); // Register log message handlers
+        RegisterFileMessageHandlers(); // Register file message handlers
+        RegisterSearchMessageHandlers(); // Register search message handlers
+        RegisterSettingsMessageHandlers(); // Register settings message handlers
+    }
+    
+    /// <summary>
+    ///     Registers message handlers for log-related messages
+    /// </summary>
+    private void RegisterLogMessageHandlers()
+    {
+        // Register handler for log event notifications
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
+            // ReSharper disable once AsyncVoidMethod
+            this,
+            async void (_, m) =>
+            {
+                await Dispatcher.CurrentDispatcher.InvokeAsync(() => LogEvents.Add(m.Value));
+            }); // Add log event to collection on UI thread
+    }
+
+    /// <summary>
+    ///     Registers message handlers for file-related messages
+    /// </summary>
+    private void RegisterFileMessageHandlers()
+    {
+        // Register handler for recent file opened notifications
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
+            // ReSharper disable once AsyncVoidMethod
+            this,
+            MessageTokens.RecentFileOpened,
+            async void (_, m) => { await OpenFile(m.Request); }); // Open the requested file
+    }
+
+    /// <summary>
+    ///     Registers message handlers for search-related messages
+    /// </summary>
+    private void RegisterSearchMessageHandlers()
+    {
+        // Register handler for search results updates
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>?>, string>(this,
+                MessageTokens.SearchResultChanged, (_, m) =>
+                {
+                    var searchItems = m.Value; // Get the search results
+                    SearchResults =
+                        searchItems is not null
+                            ? m.Value.ToObservableCollection()
+                            : null; // Update search results collection
+                });
+
+        // Register handler for items added notifications
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
+                MessageTokens.ItemsAdded, (_, m) =>
+                {
+                    if (SearchResults is null) return; // Return if no search results
+                    var addedItems = m.Value; // Get the added items
+                    if (!addedItems.Any()) return; // Return if no items added
+                    addedItems.ForEach(SearchResults.Add); // Add items to search results
+                    ShowTranslateDialogCommand.NotifyCanExecuteChanged(); // Update translate dialog command state
+                });
+
+        // Register handler for items removed notifications
+        WeakReferenceMessenger.Default
+            .Register<MainWindowViewModel, ValueChangedMessage<IList<W3StringItemModel>>, string>(this,
+                MessageTokens.ItemsRemoved, (_, m) =>
+                {
+                    var removedItems = m.Value; // Get the removed items
+                    if (!removedItems.Any()) return; // Return if no items removed
+                    removedItems.ForEach(x => SearchResults?.Remove(x)); // Remove items from search results
+                    ShowTranslateDialogCommand.NotifyCanExecuteChanged(); // Update translate dialog command state
+                });
+    }
 
     /// <summary>
     ///     Registers message handlers for settings-related messages
@@ -148,56 +229,6 @@ internal partial class MainWindowViewModel : ObservableObject
             .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "GameExePathChanged",
                 (_, _) => PlayGameCommand
                     .NotifyCanExecuteChanged()); // Update PlayGame command state when GameExe path changes
-    }
-
-    /// <summary>
-    ///     Registers all message handlers for the view model
-    /// </summary>
-    private void RegisterMessengerHandlers()
-    {
-        RegisterLogMessageHandlers(); // Register log message handlers
-        RegisterFileMessageHandlers(); // Register file message handlers
-        RegisterSettingsMessageHandlers(); // Register settings message handlers
-        RegisterSearchStateMessageHandler(); // Register search state message handler
-    }
-
-    /// <summary>
-    ///     Registers message handler for search state change notifications
-    ///     Handles messages that indicate when the search state has changed
-    /// </summary>
-    private void RegisterSearchStateMessageHandler()
-    {
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this,
-            MessageTokens.SearchStateChanged,
-            (_, m) => { IsSearching = m.Value; });
-    }
-
-    /// <summary>
-    ///     Registers message handlers for file-related messages
-    /// </summary>
-    private void RegisterFileMessageHandlers()
-    {
-        // Register handler for recent file opened notifications
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
-            // ReSharper disable once AsyncVoidMethod
-            this,
-            MessageTokens.RecentFileOpened,
-            async void (_, m) => { await OpenFile(m.Request); }); // Open the requested file
-    }
-
-    /// <summary>
-    ///     Registers message handlers for log-related messages
-    /// </summary>
-    private void RegisterLogMessageHandlers()
-    {
-        // Register handler for log event notifications
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
-            // ReSharper disable once AsyncVoidMethod
-            this,
-            async void (_, m) =>
-            {
-                await Dispatcher.CurrentDispatcher.InvokeAsync(() => LogEvents.Add(m.Value));
-            }); // Add log event to collection on UI thread
     }
 
     /// <summary>
@@ -363,7 +394,7 @@ internal partial class MainWindowViewModel : ObservableObject
             W3StringItems[index].KeyHex = dialogViewModel.Item.KeyHex;
             W3StringItems[index].KeyName = dialogViewModel.Item.KeyName;
             W3StringItems[index].Text = dialogViewModel.Item.Text;
-            if (IsSearching) // If searching
+            if (SearchResults?.Any() == true) // If searching
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
                     MessageTokens.RefreshDataGrid); // Refresh data grid
             Log.Information("The W3Item has been updated."); // Log successful update
@@ -498,25 +529,36 @@ internal partial class MainWindowViewModel : ObservableObject
         using var recentDialogViewModel = new RecentDialogViewModel(appSettings);
         await dialogService.ShowDialogAsync(this, recentDialogViewModel);
     }
-
+    
+    /// <summary>
+    ///     Determines whether the translate dialog can be shown
+    /// </summary>
+    /// <returns>True if the translate dialog can be shown, false otherwise</returns>
+    private bool CanShowTranslateDialog()
+    {
+        if (SearchResults != null) // Check if we have search results
+            return SearchResults.Any(); // Return true if search results exist
+        return W3StringItems?.Any() == true; // Otherwise check if we have any W3String items
+    }
+    
     /// <summary>
     ///     Shows the translate dialog
     /// </summary>
     /// <param name="selectedItem">The initially selected item in the dialog</param>
-    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
+    [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
+        var items = SearchResults ?? W3StringItems!; // Use search results if available, otherwise all items
+        var itemsList = items.OfType<ITrackableW3StringItem>().ToList(); // Convert to list of trackable items
         var selectedIndex =
-            selectedItem is not null
-                ? W3StringItems.IndexOf(selectedItem)
-                : 0; // Set selected index based on provided item
+            selectedItem != null ? itemsList.IndexOf(selectedItem) : 0; // Set selected index based on provided item
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
-            new TranslateDialogViewModel(appSettings, translator, W3StringItems!, selectedIndex));
+            new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
-        if (IsSearching) // If searching
+        if (SearchResults != null) // Check if we're working with search results
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
-                MessageTokens.RefreshDataGrid); // Refresh the data grid
+                MessageTokens.RefreshDataGrid); // Send refresh message
     }
 }
