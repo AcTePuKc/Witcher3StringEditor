@@ -115,21 +115,11 @@ public static class MessageTokens
     ///     Token for messages indicating that the search state has changed
     ///     Used to notify when search operations start or stop
     /// </summary>
-    public const string SearchResultChanged = "SearchResultChanged";
+    public const string SearchStateChanged = "SearchStateChanged";
 
     /// <summary>
     ///     Token for messages requesting a DataGrid refresh
     ///     Used to trigger UI updates when data has been modified
     /// </summary>
     public const string RefreshDataGrid = "RefreshDataGrid";
-
-    /// <summary>
-    ///     Token for messages indicating that new items have been added to the data source
-    /// </summary>
-    public const string ItemsAdded = "ItemsAdded";
-
-    /// <summary>
-    ///     Token for messages indicating that items have been removed from the data source
-    /// </summary>
-    public const string ItemsRemoved = "ItemsRemoved";
 }

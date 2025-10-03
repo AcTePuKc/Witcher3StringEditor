@@ -1,5 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Windows;
+﻿using System.Windows;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -7,11 +6,9 @@ using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Controls;
 using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Serilog;
-using Syncfusion.Data;
 using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
-using Witcher3StringEditor.Models;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
@@ -33,52 +30,6 @@ public partial class MainWindow
         RegisterMessageHandlers(); // Register message handlers for inter-component communication
         RegisterThemeChangedHandler(); // Register handler for theme change notifications
         DataContext = Ioc.Default.GetService<MainWindowViewModel>(); // Set the data context to the main view model
-        SfDataGrid.ItemsSourceChanged +=
-            OnDataGridItemsSourceChanged; // Register event handler for data grid items source changes
-    }
-
-    /// <summary>
-    ///     Handles the ItemsSourceChanged event of the data grid
-    ///     Registers a handler for collection changes in the data grid view
-    /// </summary>
-    /// <param name="sender">The source of the event</param>
-    /// <param name="e">The event arguments</param>
-    private void OnDataGridItemsSourceChanged(object? sender, EventArgs e)
-    {
-        // Subscribe to collection changes in the data grid view.
-        SfDataGrid.View.CollectionChanged += OnDataGridViewCollectionChanged;
-    }
-
-    /// <summary>
-    ///     Handles the CollectionChanged event of the data grid view
-    ///     Sends messages when items are added or removed from the data grid
-    /// </summary>
-    /// <param name="sender">The source of the event</param>
-    /// <param name="e">The event arguments containing information about the change</param>
-    private static void OnDataGridViewCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        // Process add or remove actions in the data grid collection.
-        switch (e)
-        {
-            case { Action: NotifyCollectionChangedAction.Add, NewItems: not null }: // Handle item addition
-            {
-                var addedItems = e.NewItems.OfType<RecordEntry>() // Convert to RecordEntry objects
-                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList(); // Extract W3StringItemModel data
-                WeakReferenceMessenger.Default.Send(
-                    new ValueChangedMessage<IList<W3StringItemModel>>(addedItems), // Send added items message
-                    MessageTokens.ItemsAdded);
-                break;
-            }
-            case { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }: // Handle item removal
-            {
-                var removedItems = e.OldItems.OfType<RecordEntry>() // Convert to RecordEntry objects
-                    .Select(x => x.Data).OfType<W3StringItemModel>().ToList(); // Extract W3StringItemModel data
-                WeakReferenceMessenger.Default.Send(
-                    new ValueChangedMessage<IList<W3StringItemModel>>(removedItems), // Send removed items message
-                    MessageTokens.ItemsRemoved);
-                break;
-            }
-        }
     }
 
     /// <summary>
@@ -199,12 +150,7 @@ public partial class MainWindow
     {
         if (SfDataGrid.ItemsSource is null) return; // Ensure there's data to search before proceeding
         SfDataGrid.SearchHelper.Search(args.QueryText); // Perform the search and collect results
-        var pageSize = SfDataPager.PageSize;
-        SfDataPager.PageSize = int.MaxValue;
-        var searchResult = SfDataGrid.View.Records.Select(x => x.Data).OfType<W3StringItemModel>().ToList();
-        SfDataPager.PageSize = pageSize;
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(searchResult),
-            MessageTokens.SearchResultChanged);
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.SearchStateChanged);
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
     }
 
@@ -218,8 +164,7 @@ public partial class MainWindow
     {
         if (!string.IsNullOrEmpty(sender.Text)) return; // Return if search text is not empty
         SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<IList<W3StringItemModel>?>(null),
-            MessageTokens.SearchResultChanged);
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false), MessageTokens.SearchStateChanged);
     }
 
     /// <summary>
