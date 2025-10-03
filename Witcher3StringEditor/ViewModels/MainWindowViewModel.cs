@@ -38,12 +38,12 @@ namespace Witcher3StringEditor.ViewModels;
 internal partial class MainWindowViewModel : ObservableObject
 {
     // Dependency services
-    private readonly IAppSettings appSettings;
-    private readonly IW3Serializer w3Serializer;
-    private readonly IBackupService backupService;
-    private readonly IDialogService dialogService;
-    private readonly IServiceProvider serviceProvider;
-    private readonly ISettingsManagerService settingsManagerService;
+    private readonly IAppSettings appSettings; // Get application settings service
+    private readonly IW3Serializer w3Serializer; // Get serializer service
+    private readonly IBackupService backupService; // Get backup service
+    private readonly IDialogService dialogService; // Get dialog service
+    private readonly IServiceProvider serviceProvider; // Get service provider
+    private readonly ISettingsManagerService settingsManagerService; // Get settings manager service
 
     /// <summary>
     ///     Gets or sets the data from dropped files
