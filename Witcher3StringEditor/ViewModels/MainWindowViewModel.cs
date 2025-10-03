@@ -24,6 +24,7 @@ using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
+using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Services;
 using W3StringItemModel = Witcher3StringEditor.Models.W3StringItemModel;
@@ -39,9 +40,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private readonly IAppSettings appSettings;
     private readonly IBackupService backupService;
     private readonly IDialogService dialogService;
-    private readonly IFileManagerService fileManagerService;
     private readonly IServiceProvider serviceProvider;
     private readonly ISettingsManagerService settingsManagerService;
+    private readonly IW3Serializer w3Serializer;
 
     /// <summary>
     ///     Gets or sets the data from dropped files
@@ -87,7 +88,7 @@ internal partial class MainWindowViewModel : ObservableObject
         appSettings = serviceProvider.GetRequiredService<IAppSettings>(); // Get application settings service
         backupService = serviceProvider.GetRequiredService<IBackupService>(); // Get backup service
         dialogService = serviceProvider.GetRequiredService<IDialogService>(); // Get dialog service
-        fileManagerService = serviceProvider.GetRequiredService<IFileManagerService>(); // Get file manager service
+        w3Serializer = serviceProvider.GetRequiredService<IW3Serializer>(); // Get serializer
         settingsManagerService =
             serviceProvider.GetRequiredService<ISettingsManagerService>(); // Get settings manager service
         PageSize = appSettings.PageSize; // Set page size
@@ -284,15 +285,31 @@ internal partial class MainWindowViewModel : ObservableObject
         try
         {
             if (!await HandleReOpenFile(fileName)) return; // Handle reopening file logic
-            W3StringItems = await fileManagerService.DeserializeW3StringItems(fileName); // Deserialize file contents
-            fileManagerService.SetOutputFolder(fileName,
-                folder => OutputFolder = folder); // Set output folder based on file location
-            fileManagerService.UpdateRecentItems(fileName); // Update recent items list
+            W3StringItems = await DeserializeW3StringItems(fileName); // Deserialize file contents
+            SetOutputFolder(fileName, folder => OutputFolder = folder); // Set output folder based on file location
+            UpdateRecentItems(fileName); // Update recent items list
         }
         catch (Exception ex)
         {
             Log.Error(ex, "Failed to open file: {FileName}.", fileName); // Log any errors during file opening
         }
+    }
+
+    /// <summary>
+    ///     Deserializes The Witcher 3 string items from the specified file
+    /// </summary>
+    /// <param name="fileName">The path to the file to deserialize</param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation. The task result contains the deserialized The Witcher 3
+    ///     string items
+    /// </returns>
+    private async Task<ObservableCollection<W3StringItemModel>> DeserializeW3StringItems(string fileName)
+    {
+        Log.Information("The file {FileName} is being opened...", fileName); // Log file opening
+        var items = await w3Serializer.Deserialize(fileName); // Deserialize file contents
+        var orderedItems = items.OrderBy(x => x.StrId); // Order items by ID
+        return orderedItems.Select(x => new W3StringItemModel(x))
+            .ToObservableCollection(); // Convert to observable collection
     }
 
     /// <summary>
@@ -306,6 +323,39 @@ internal partial class MainWindowViewModel : ObservableObject
         return await WeakReferenceMessenger.Default.Send(
             new AsyncRequestMessage<string, bool>(fileName), // Send reopen file request
             MessageTokens.ReOpenFile); // Wait for response
+    }
+
+    /// <summary>
+    ///     Sets the output folder based on the specified file name
+    /// </summary>
+    /// <param name="fileName">The file name to extract the directory from</param>
+    /// <param name="onOutputFolderChanged">The action to call when the output folder changes</param>
+    private static void SetOutputFolder(string fileName, Action<string> onOutputFolderChanged)
+    {
+        var folder = Path.GetDirectoryName(fileName); // Extract directory from file name
+        if (folder is null) return; // Return if directory is null
+        onOutputFolderChanged(folder); // Notify of folder change
+        Log.Information("Working directory set to {Folder}.", folder); // Log folder change
+    }
+
+    /// <summary>
+    ///     Updates the recent items list with the specified file name
+    ///     If the file is already in the list, updates its opened time; otherwise, adds it to the list
+    /// </summary>
+    /// <param name="fileName">The file name to add or update in the recent items list</param>
+    private void UpdateRecentItems(string fileName)
+    {
+        var foundItem = appSettings.RecentItems.FirstOrDefault(x => x.FilePath == fileName); // Find existing item
+        if (foundItem is null) // If item not found
+        {
+            appSettings.RecentItems.Add(new RecentItem(fileName, DateTime.Now)); // Add new recent item
+            Log.Information("Added {FileName} to recent items.", fileName); // Log addition
+        }
+        else // If item found
+        {
+            foundItem.OpenedTime = DateTime.Now; // Update opened time
+            Log.Information("The last opened time for file {FileName} has been updated.", fileName); // Log update
+        }
     }
 
     /// <summary>

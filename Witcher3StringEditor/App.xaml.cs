@@ -287,7 +287,6 @@ public sealed partial class App : IDisposable
                 Ioc.Default.GetRequiredService<IConfigService>().Load<AppSettings>())
             .AddSingleton<ICultureResolver, CultureResolver>()
             .AddSingleton<IBackupService, BackupService>()
-            .AddSingleton<IFileManagerService, FileManagerService>()
             .AddSingleton<ICsvW3Serializer, CsvW3Serializer>()
             .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
             .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
