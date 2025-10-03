@@ -36,6 +36,7 @@ public partial class BackupDialog
     {
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
+        SfDataGrid.SearchHelper.CanHighlightSearchText = false;
     }
 
     /// <summary>

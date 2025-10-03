@@ -50,6 +50,7 @@ public partial class RecentDialog
     {
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
+        SfDataGrid.SearchHelper.CanHighlightSearchText = false;
     }
 
     /// <summary>

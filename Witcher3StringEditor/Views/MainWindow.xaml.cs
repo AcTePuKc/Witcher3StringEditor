@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -54,6 +55,7 @@ public partial class MainWindow
         // Enable filtering and disable case-sensitive search for the data grid search helper
         SfDataGrid.SearchHelper.AllowFiltering = true;
         SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
+        SfDataGrid.SearchHelper.CanHighlightSearchText = false;
     }
 
     /// <summary>
