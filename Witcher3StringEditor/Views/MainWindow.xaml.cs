@@ -163,7 +163,7 @@ public partial class MainWindow
     /// <param name="args">The event arguments</param>
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (!string.IsNullOrEmpty(sender.Text)) return; // Return if search text is not empty
+        if (!string.IsNullOrWhiteSpace(sender.Text)) return; // Return if search text is not empty
         SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false), MessageTokens.SearchStateChanged);
     }
