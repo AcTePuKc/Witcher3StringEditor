@@ -394,7 +394,7 @@ internal partial class MainWindowViewModel : ObservableObject
             W3StringItems[index].KeyHex = dialogViewModel.Item.KeyHex;
             W3StringItems[index].KeyName = dialogViewModel.Item.KeyName;
             W3StringItems[index].Text = dialogViewModel.Item.Text;
-            if (SearchResults is not null) // If searching
+            if (SearchResults?.Any() == true) // If searching
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
                     MessageTokens.RefreshDataGrid); // Refresh data grid
             Log.Information("The W3Item has been updated."); // Log successful update
@@ -536,7 +536,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <returns>True if the translate dialog can be shown, false otherwise</returns>
     private bool CanShowTranslateDialog()
     {
-        if (SearchResults is not null) // Check if we have search results
+        if (SearchResults != null) // Check if we have search results
             return SearchResults.Any(); // Return true if search results exist
         return W3StringItems?.Any() == true; // Otherwise check if we have any W3String items
     }
@@ -551,13 +551,13 @@ internal partial class MainWindowViewModel : ObservableObject
         var items = SearchResults ?? W3StringItems!; // Use search results if available, otherwise all items
         var itemsList = items.OfType<ITrackableW3StringItem>().ToList(); // Convert to list of trackable items
         var selectedIndex =
-            selectedItem is not null ? itemsList.IndexOf(selectedItem) : 0; // Set selected index based on provided item
+            selectedItem != null ? itemsList.IndexOf(selectedItem) : 0; // Set selected index based on provided item
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
             new TranslateDialogViewModel(appSettings, translator, itemsList, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
-        if (SearchResults is not null) // Check if we're working with search results
+        if (SearchResults != null) // Check if we're working with search results
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
                 MessageTokens.RefreshDataGrid); // Send refresh message
     }
