@@ -39,11 +39,11 @@ namespace Witcher3StringEditor;
 /// </summary>
 public sealed partial class App : IDisposable
 {
+    private Mutex? mutex;
+    private bool disposedValue;
     private IAppSettings? appSettings;
     private IConfigService? configService;
-    private bool disposedValue;
     private ObserverBase<LogEvent>? logObserver;
-    private Mutex? mutex;
 
     /// <summary>
     ///     Gets a value indicating whether the application is running in debug mode
