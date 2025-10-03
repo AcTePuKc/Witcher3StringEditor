@@ -148,7 +148,8 @@ public partial class MainWindow
     /// <param name="args">The event arguments containing the query text</param>
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        if (SfDataGrid.ItemsSource is null) return; // Ensure there's data to search before proceeding
+        if (SfDataGrid.ItemsSource is null || string.IsNullOrWhiteSpace(args.QueryText))
+            return; // Ensure there's data to search before proceeding
         SfDataGrid.SearchHelper.Search(args.QueryText); // Perform the search and collect results
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.SearchStateChanged);
         Log.Information("Search query submitted: {QueryText}", args.QueryText);
