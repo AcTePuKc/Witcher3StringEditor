@@ -112,21 +112,6 @@ public static class MessageTokens
     public const string PageSizeChanged = "PageSizeChanged";
 
     /// <summary>
-    ///     Token for messages indicating that the search should be cleared
-    /// </summary>
-    public const string ClearSearch = "ClearSearch";
-
-    /// <summary>
-    ///     Token for messages indicating that new items have been added to the data source
-    /// </summary>
-    public const string ItemsAdded = "ItemsAdded";
-
-    /// <summary>
-    ///     Token for messages indicating that items have been removed from the data source
-    /// </summary>
-    public const string ItemsRemoved = "ItemsRemoved";
-
-    /// <summary>
     ///     Token for messages indicating that the search state has changed
     ///     Used to notify when search operations start or stop
     /// </summary>
@@ -137,4 +122,14 @@ public static class MessageTokens
     ///     Used to trigger UI updates when data has been modified
     /// </summary>
     public const string RefreshDataGrid = "RefreshDataGrid";
+
+    /// <summary>
+    ///     Token for messages indicating that new items have been added to the data source
+    /// </summary>
+    public const string ItemsAdded = "ItemsAdded";
+
+    /// <summary>
+    ///     Token for messages indicating that items have been removed from the data source
+    /// </summary>
+    public const string ItemsRemoved = "ItemsRemoved";
 }
