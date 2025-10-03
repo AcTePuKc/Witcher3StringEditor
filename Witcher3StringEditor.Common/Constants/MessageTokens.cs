@@ -110,16 +110,4 @@ public static class MessageTokens
     ///     Token for messages indicating that the page size has changed
     /// </summary>
     public const string PageSizeChanged = "PageSizeChanged";
-
-    /// <summary>
-    ///     Token for messages indicating that the search state has changed
-    ///     Used to notify when search operations start or stop
-    /// </summary>
-    public const string SearchStateChanged = "SearchStateChanged";
-
-    /// <summary>
-    ///     Token for messages requesting a DataGrid refresh
-    ///     Used to trigger UI updates when data has been modified
-    /// </summary>
-    public const string RefreshDataGrid = "RefreshDataGrid";
 }

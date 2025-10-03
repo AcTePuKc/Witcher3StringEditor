@@ -49,12 +49,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [ObservableProperty] private string[]? dropFileData;
 
     /// <summary>
-    ///     Gets or sets a value indicating whether a search operation is currently active
-    ///     This property is used to track search state and control UI behavior during search operations
-    /// </summary>
-    [ObservableProperty] private bool isSearching;
-
-    /// <summary>
     ///     Gets or sets a value indicating whether an update is available
     /// </summary>
     [ObservableProperty] private bool isUpdateAvailable;
@@ -158,18 +152,6 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterLogMessageHandlers(); // Register log message handlers
         RegisterFileMessageHandlers(); // Register file message handlers
         RegisterSettingsMessageHandlers(); // Register settings message handlers
-        RegisterSearchStateMessageHandler(); // Register search state message handler
-    }
-
-    /// <summary>
-    ///     Registers message handler for search state change notifications
-    ///     Handles messages that indicate when the search state has changed
-    /// </summary>
-    private void RegisterSearchStateMessageHandler()
-    {
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(this,
-            MessageTokens.SearchStateChanged,
-            (_, m) => { IsSearching = m.Value; });
     }
 
     /// <summary>
@@ -363,9 +345,6 @@ internal partial class MainWindowViewModel : ObservableObject
             W3StringItems[index].KeyHex = dialogViewModel.Item.KeyHex;
             W3StringItems[index].KeyName = dialogViewModel.Item.KeyName;
             W3StringItems[index].Text = dialogViewModel.Item.Text;
-            if (IsSearching) // If searching
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
-                    MessageTokens.RefreshDataGrid); // Refresh data grid
             Log.Information("The W3Item has been updated."); // Log successful update
         }
         else
@@ -515,8 +494,5 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
             new TranslateDialogViewModel(appSettings, translator, W3StringItems!, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
-        if (IsSearching) // If searching
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
-                MessageTokens.RefreshDataGrid); // Refresh the data grid
     }
 }
