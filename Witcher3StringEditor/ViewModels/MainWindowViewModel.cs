@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -39,16 +40,21 @@ internal partial class MainWindowViewModel : ObservableObject
 {
     // Dependency services
     private readonly IAppSettings appSettings; // Get application settings service
-    private readonly IW3Serializer w3Serializer; // Get serializer service
     private readonly IBackupService backupService; // Get backup service
     private readonly IDialogService dialogService; // Get dialog service
     private readonly IServiceProvider serviceProvider; // Get service provider
     private readonly ISettingsManagerService settingsManagerService; // Get settings manager service
+    private readonly IW3Serializer w3Serializer; // Get serializer service
 
     /// <summary>
     ///     Gets or sets the data from dropped files
     /// </summary>
     [ObservableProperty] private string[]? dropFileData;
+
+    /// <summary>
+    ///     Gets the filtered collection of W3String items
+    /// </summary>
+    private List<W3StringItemModel>? filteredW3StringItems;
 
     /// <summary>
     ///     Gets or sets a value indicating whether an update is available
@@ -60,12 +66,17 @@ internal partial class MainWindowViewModel : ObservableObject
     ///     Notifies OpenWorkingFolderCommand when this property changes
     /// </summary>
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
-    private string outputFolder = string.Empty;
+    private string? outputFolder;
 
     /// <summary>
     ///     Gets or sets the page size
     /// </summary>
     [ObservableProperty] private int pageSize;
+
+    /// <summary>
+    ///     Gets or sets the current search text used for filtering W3String items
+    /// </summary>
+    private string? searchText;
 
     /// <summary>
     ///     Gets or sets the collection of The Witcher 3 string items
@@ -129,6 +140,38 @@ internal partial class MainWindowViewModel : ObservableObject
         Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
 
     /// <summary>
+    ///     Handles changes to the W3StringItems collection
+    /// </summary>
+    partial void OnW3StringItemsChanged(ObservableCollection<W3StringItemModel>? oldValue,
+        ObservableCollection<W3StringItemModel>? newValue)
+    {
+        if (oldValue is not null) oldValue.CollectionChanged -= W3StringItems_CollectionChanged;
+        if (newValue is not null) newValue.CollectionChanged += W3StringItems_CollectionChanged;
+    }
+
+    /// <summary>
+    ///     Handles collection change events for the W3StringItems collection
+    /// </summary>
+    /// <param name="sender">The ObservableCollection that raised the event</param>
+    /// <param name="e">The collection change event arguments</param>
+    private void W3StringItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        // Return early if filteredW3StringItems is not initialized
+        if (filteredW3StringItems is null || searchText is null) return;
+
+        // Handle item additions to the collection
+        if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
+            // Add new items to the filtered results
+            filteredW3StringItems.AddRange(FilterW3StringItems(e.NewItems.OfType<W3StringItemModel>(), searchText));
+
+        // Handle item removals from the collection
+        if (e is { Action: NotifyCollectionChangedAction.Remove, OldItems: not null })
+            // Remove deleted items from the filtered results by matching TrackingId
+            filteredW3StringItems.RemoveAll(item => e.OldItems.OfType<W3StringItemModel>().Any(oldItem =>
+                oldItem.TrackingId == item.TrackingId));
+    }
+
+    /// <summary>
     ///     Registers message handlers for settings-related messages
     /// </summary>
     private void RegisterSettingsMessageHandlers()
@@ -146,6 +189,7 @@ internal partial class MainWindowViewModel : ObservableObject
                     .NotifyCanExecuteChanged()); // Update PlayGame command state when GameExe path changes
     }
 
+
     /// <summary>
     ///     Registers all message handlers for the view model
     /// </summary>
@@ -154,6 +198,43 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterLogMessageHandlers(); // Register log message handlers
         RegisterFileMessageHandlers(); // Register file message handlers
         RegisterSettingsMessageHandlers(); // Register settings message handlers
+        RegisterSearchMessageHandlers(); // Register search message handlers
+    }
+
+    private void RegisterSearchMessageHandlers()
+    {
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<string>, string>(
+            this,
+            MessageTokens.SearchRequested,
+            (_, m) => { HandleSearchRequested(m.Value); });
+    }
+
+    /// <summary>
+    ///     Handles search request
+    /// </summary>
+    private void HandleSearchRequested(string searchRequestText)
+    {
+        searchText = searchRequestText;
+        filteredW3StringItems = FilterW3StringItems(W3StringItems, searchText).ToList();
+    }
+
+    /// <summary>
+    ///     Applies filter to W3String items based on search text
+    /// </summary>
+    /// <param name="items">The items to filter</param>
+    /// <param name="searchText">The search text to filter by</param>
+    /// <returns>Filtered collection of W3String items</returns>
+    private static IEnumerable<W3StringItemModel> FilterW3StringItems(IEnumerable<W3StringItemModel>? items,
+        string searchText)
+    {
+        if (string.IsNullOrWhiteSpace(searchText) || items is null)
+            return items ?? [];
+
+        return items.Where(item =>
+            item.StrId.ToString().Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+            item.KeyHex.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+            item.KeyName.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+            item.Text.Contains(searchText, StringComparison.OrdinalIgnoreCase));
     }
 
     /// <summary>
@@ -442,7 +523,7 @@ internal partial class MainWindowViewModel : ObservableObject
             new SaveDialogViewModel(appSettings,
                 serviceProvider.GetRequiredService<IW3Serializer>(),
                 W3StringItems!,
-                OutputFolder));
+                OutputFolder!));
     }
 
     /// <summary>
@@ -504,7 +585,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
-        serviceProvider.GetRequiredService<IExplorerService>().Open(OutputFolder);
+        serviceProvider.GetRequiredService<IExplorerService>().Open(OutputFolder!);
         Log.Information("Working folder opened.");
     }
 

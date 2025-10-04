@@ -110,4 +110,9 @@ public static class MessageTokens
     ///     Token for messages indicating that the page size has changed
     /// </summary>
     public const string PageSizeChanged = "PageSizeChanged";
+
+    /// <summary>
+    ///     Token for messages indicating that a search has been requested
+    /// </summary>
+    public const string SearchRequested = "SearchRequested";
 }
