@@ -147,7 +147,6 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         // Unsubscribe from the old collection's CollectionChanged event to prevent memory leaks
         if (oldValue is not null) oldValue.CollectionChanged -= W3StringItems_CollectionChanged;
-        
         // Subscribe to the new collection's CollectionChanged event to handle item additions/removals
         if (newValue is not null) newValue.CollectionChanged += W3StringItems_CollectionChanged;
     }
@@ -161,13 +160,11 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         // Return early if filteredW3StringItems is not initialized
         if (FilteredW3StringItems is null) return;
-
         // Handle item additions to the collection
         if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
             // Add new items to the filtered results
             FilterW3StringItems(e.NewItems.OfType<W3StringItemModel>(), SearchText)
                 .ForEach(x => FilteredW3StringItems.Add(x));
-
         // Handle item removals from the collection
         if (e is { Action: NotifyCollectionChangedAction.Remove, OldItems: not null })
             // Remove deleted items from the filtered results by matching TrackingId
@@ -184,7 +181,6 @@ internal partial class MainWindowViewModel : ObservableObject
             .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "W3StringsPathChanged",
                 (_, _) => OpenFileCommand
                     .NotifyCanExecuteChanged()); // Update OpenFile command state when W3Strings path changes
-
         // Register handler for GameExe path change notifications
         WeakReferenceMessenger.Default
             .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "GameExePathChanged",
@@ -235,7 +231,6 @@ internal partial class MainWindowViewModel : ObservableObject
         // Return early if search text is empty or items are null
         if (string.IsNullOrWhiteSpace(searchText) || items is null)
             return items ?? [];
-        
         // Filter items based on search text
         return items.Where(item =>
             item.StrId.ToString().Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
