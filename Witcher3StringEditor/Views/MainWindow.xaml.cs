@@ -170,7 +170,6 @@ public partial class MainWindow
     /// <param name="e">The event arguments</param>
     private void Window_Closed(object sender, EventArgs e)
     {
-        // Clean up resources and unregister message handlers
         WeakReferenceMessenger.Default.UnregisterAll(this);
         SfDataGrid.SearchHelper.Dispose();
         SfDataGrid.Dispose();
@@ -185,7 +184,6 @@ public partial class MainWindow
     /// <param name="e">The event arguments</param>
     private void AppTitleBar_OnLoaded(object sender, RoutedEventArgs e)
     {
-        // Configure regions for custom title bar if needed
         if (TitleBar.GetExtendViewIntoTitleBar(this)) SetRegionsForCustomTitleBar();
     }
 
@@ -217,7 +215,6 @@ public partial class MainWindow
     /// <param name="e">The event arguments</param>
     private void ThemeSwitchBtn_OnClick(object sender, RoutedEventArgs e)
     {
-        // Toggle between light and dark themes
         ThemeManager.Current.ApplicationTheme =
             ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Light
                 ? ApplicationTheme.Dark
