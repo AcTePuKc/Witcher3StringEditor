@@ -66,7 +66,7 @@ internal partial class MainWindowViewModel : ObservableObject
     ///     Notifies OpenWorkingFolderCommand when this property changes
     /// </summary>
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(OpenWorkingFolderCommand))]
-    private string? outputFolder;
+    private string outputFolder = string.Empty;
 
     /// <summary>
     ///     Gets or sets the page size
@@ -523,7 +523,7 @@ internal partial class MainWindowViewModel : ObservableObject
             new SaveDialogViewModel(appSettings,
                 serviceProvider.GetRequiredService<IW3Serializer>(),
                 W3StringItems!,
-                OutputFolder!));
+                OutputFolder));
     }
 
     /// <summary>
@@ -585,7 +585,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
-        serviceProvider.GetRequiredService<IExplorerService>().Open(OutputFolder!);
+        serviceProvider.GetRequiredService<IExplorerService>().Open(OutputFolder);
         Log.Information("Working folder opened.");
     }
 
