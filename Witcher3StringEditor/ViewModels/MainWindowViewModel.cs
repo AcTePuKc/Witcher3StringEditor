@@ -200,7 +200,10 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterSettingsMessageHandlers(); // Register settings message handlers
         RegisterSearchMessageHandlers(); // Register search message handlers
     }
-
+    
+    /// <summary>
+    ///     Registers message handlers for search-related messages
+    /// </summary>
     private void RegisterSearchMessageHandlers()
     {
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(
