@@ -65,18 +65,6 @@ public partial class MainWindow
         RegisterAsyncRequestMessageHandlers(); // Register async request message handlers
         RegisterFileOpenedMessageHandlers(); // Register file opened message handlers
         RegisterPageSizeChangedHandler(); // Register page size change message handler
-        RegisterClearSearchMessageHandler(); // Register clear search message handler
-    }
-
-    /// <summary>
-    ///     Registers message handler for clearing search functionality
-    /// </summary>
-    private void RegisterClearSearchMessageHandler()
-    {
-        WeakReferenceMessenger.Default.Register<ValueChangedMessage<bool>, string>(
-            this,
-            MessageTokens.ClearSearch,
-            (_, _) => { SearchBox.Text = string.Empty; });
     }
 
     private void RegisterPageSizeChangedHandler()

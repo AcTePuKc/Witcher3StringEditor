@@ -371,8 +371,7 @@ internal partial class MainWindowViewModel : ObservableObject
             W3StringItems = await DeserializeW3StringItems(fileName); // Deserialize file contents
             SetOutputFolder(fileName, folder => OutputFolder = folder); // Set output folder based on file location
             UpdateRecentItems(fileName); // Update recent items list
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
-                MessageTokens.ClearSearch); // Clear search
+            SearchText = string.Empty; // Clear search text
         }
         catch (Exception ex)
         {

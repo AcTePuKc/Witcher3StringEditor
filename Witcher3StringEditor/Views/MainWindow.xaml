@@ -76,7 +76,7 @@
                 Grid.Column="2"
                 VerticalAlignment="Center"
                 PlaceholderText="{I18N {x:Static l:LangKeys.SearchBoxPlaceholderText}}"
-                Text="{Binding SearchText,Mode=OneWayToSource}"
+                Text="{Binding SearchText,Mode=TwoWay}"
                 QuerySubmitted="SearchBox_QuerySubmitted"
                 TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>

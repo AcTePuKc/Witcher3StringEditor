@@ -115,9 +115,4 @@ public static class MessageTokens
     ///     Token for messages indicating that a search has been requested
     /// </summary>
     public const string SearchRequested = "SearchRequested";
-    
-    /// <summary>
-    ///     Token for messages indicating that a search should be cleared
-    /// </summary>
-    public const string ClearSearch = "ClearSearch";
 }
