@@ -103,8 +103,8 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     private static Language GetPreferredLanguage(IAppSettings appSettings)
     {
         var description = typeof(W3Language).GetField(appSettings.PreferredLanguage.ToString())!
-            .GetCustomAttribute<DescriptionAttribute>()!.Description;
-        return description == "es-MX" ? new Language("es") : new Language(description);
+            .GetCustomAttribute<DescriptionAttribute>()!.Description; // Get language description
+        return description == "es-MX" ? new Language("es") : new Language(description); // Return preferred language
     }
 
     /// <summary>

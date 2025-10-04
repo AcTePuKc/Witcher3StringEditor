@@ -24,7 +24,7 @@ public partial class DeleteDataDialog
     /// <param name="e">The event arguments</param>
     private void DeleteDataDialog_OnClosed(object? sender, EventArgs e)
     {
-        SfDataGrid.SearchHelper.Dispose();
-        SfDataGrid.Dispose();
+        SfDataGrid.SearchHelper.Dispose(); // Dispose the search helper
+        SfDataGrid.Dispose(); // Dispose the data grid
     }
 }

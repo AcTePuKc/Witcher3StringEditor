@@ -69,9 +69,9 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator,
         w3StringItems)
     {
-        StartIndex = startIndex;
-        EndIndex = MaxValue = W3StringItems.Count;
-        Log.Information("Initializing BatchItemsTranslationViewModel.");
+        StartIndex = startIndex; // Set start index
+        EndIndex = MaxValue = W3StringItems.Count; // Set end index and maximum value
+        Log.Information("Initializing BatchItemsTranslationViewModel."); // Log initialization
     }
 
     /// <summary>
@@ -92,11 +92,13 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// </summary>
     public override async ValueTask DisposeAsync()
     {
+        // Cancel any ongoing translation operations
         if (CancellationTokenSource is not null)
         {
+            // Check if cancellation is not already requested
             if (!CancellationTokenSource.IsCancellationRequested)
-                await CancellationTokenSource.CancelAsync();
-            CancellationTokenSource.Dispose();
+                await CancellationTokenSource.CancelAsync(); // Cancel the cancellation token
+            CancellationTokenSource.Dispose(); // Dispose the cancellation token source
         }
 
         Log.Information("BatchItemsTranslationViewModel is being disposed.");
@@ -118,8 +120,8 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="value">The new start index value</param>
     partial void OnStartIndexChanged(int value)
     {
-        EndIndexMin = value > MaxValue ? MaxValue : value;
-        if (!IsBusy) ResetTranslationCounts();
+        EndIndexMin = value > MaxValue ? MaxValue : value; // Update the minimum end index
+        if (!IsBusy) ResetTranslationCounts(); // Reset translation counts if not busy
     }
 
     /// <summary>
@@ -130,7 +132,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     // ReSharper disable once UnusedParameterInPartialMethod
     partial void OnEndIndexChanged(int value)
     {
-        if (!IsBusy) ResetTranslationCounts();
+        if (!IsBusy) ResetTranslationCounts(); // Reset translation counts if not busy
     }
 
     /// <summary>
@@ -138,9 +140,9 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// </summary>
     private void ResetTranslationCounts()
     {
-        SuccessCount = 0;
-        FailureCount = 0;
-        PendingCount = EndIndex - StartIndex + 1;
+        SuccessCount = 0; // Reset success count
+        FailureCount = 0; // Reset failure count
+        PendingCount = EndIndex - StartIndex + 1; // Reset pending count
     }
 
     /// <summary>
@@ -161,11 +163,11 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     {
         try
         {
-            await ExecuteBatchTranslation();
+            await ExecuteBatchTranslation(); // Execute the batch translation process
         }
         finally
         {
-            IsBusy = false;
+            IsBusy = false; // Clear the busy flag
         }
     }
 
@@ -281,7 +283,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     [RelayCommand(CanExecute = nameof(CanCancel))]
     private async Task Cancel()
     {
-        if (CancellationTokenSource is not null)
-            await CancellationTokenSource.CancelAsync();
+        if (CancellationTokenSource is not null) // Check if cancellation token source exists
+            await CancellationTokenSource.CancelAsync(); // Cancel the operation
     }
 }

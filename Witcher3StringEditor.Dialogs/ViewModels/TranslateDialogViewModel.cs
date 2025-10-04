@@ -65,9 +65,11 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
         this.translator = translator;
         this.appSettings = appSettings;
         this.w3StringItems = w3StringItems;
-        Log.Information("Total items to translate: {Count}.", this.w3StringItems.Count);
-        Log.Information("Starting index: {Index}.", index);
-        CurrentViewModel = new SingleItemTranslationViewModel(appSettings, translator, this.w3StringItems, index);
+        Log.Information("Total items to translate: {Count}.", this.w3StringItems.Count); // Log the number of items
+        Log.Information("Starting index: {Index}.", index); // Log the starting index
+        CurrentViewModel =
+            new SingleItemTranslationViewModel(appSettings, translator, this.w3StringItems,
+                index); // Initialize the current view model
     }
 
     /// <summary>

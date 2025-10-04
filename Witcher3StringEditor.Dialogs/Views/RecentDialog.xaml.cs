@@ -21,9 +21,9 @@ public partial class RecentDialog
     /// </summary>
     public RecentDialog()
     {
-        InitializeComponent();
-        SetupSearchHelper();
-        RegisterMessageHandler();
+        InitializeComponent(); // Initialize the UI components
+        SetupSearchHelper(); // Setup search helper
+        RegisterMessageHandler(); // Register message handler
     }
 
     /// <summary>
@@ -48,9 +48,9 @@ public partial class RecentDialog
     /// </summary>
     private void SetupSearchHelper()
     {
-        SfDataGrid.SearchHelper.AllowFiltering = true;
-        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
-        SfDataGrid.SearchHelper.CanHighlightSearchText = false;
+        SfDataGrid.SearchHelper.AllowFiltering = true; // Enable filtering
+        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false; // Disable case-sensitive search
+        SfDataGrid.SearchHelper.CanHighlightSearchText = false; // Disable text highlighting
     }
 
     /// <summary>
@@ -61,9 +61,10 @@ public partial class RecentDialog
     /// <param name="args">The event arguments containing the query text</param>
     private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
+        // Check if the query text is empty or null
         if (string.IsNullOrWhiteSpace(args.QueryText)) return;
-        SfDataGrid.SearchHelper.Search(args.QueryText);
-        Log.Information("Search query submitted: {QueryText}", args.QueryText);
+        SfDataGrid.SearchHelper.Search(args.QueryText); // Perform a search in the data grid
+        Log.Information("Search query submitted: {QueryText}", args.QueryText); // Log the search query
     }
 
     /// <summary>
@@ -74,8 +75,9 @@ public partial class RecentDialog
     /// <param name="args">The event arguments containing information about the text change</param>
     private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
+        // Check if the text is empty or null
         if (string.IsNullOrEmpty(sender.Text))
-            SfDataGrid.SearchHelper.ClearSearch();
+            SfDataGrid.SearchHelper.ClearSearch(); // Clear the search
     }
 
     /// <summary>
@@ -86,9 +88,9 @@ public partial class RecentDialog
     /// <param name="e">The event arguments</param>
     private void RecentDialog_OnClosed(object? sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(this);
-        SfDataGrid.SearchHelper.Dispose();
-        SfDataGrid.Dispose();
-        SfDataPager.Dispose();
+        WeakReferenceMessenger.Default.UnregisterAll(this); // Unregister message handlers
+        SfDataGrid.SearchHelper.Dispose(); // Dispose the search helper
+        SfDataGrid.Dispose(); // Dispose the data grid
+        SfDataPager.Dispose(); // Dispose the data pager
     }
 }

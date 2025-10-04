@@ -57,7 +57,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         int index) : base(appSettings, translator, w3StringItems)
     {
         CurrentItemIndex = index;
-        Log.Information("Initializing SingleItemTranslationViewModel.");
+        Log.Information("Initializing SingleItemTranslationViewModel."); // Log initialization
     }
 
     /// <summary>
@@ -93,14 +93,15 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// </summary>
     public override async ValueTask DisposeAsync()
     {
+        // Cancel any ongoing translation operations
         if (CancellationTokenSource is not null)
         {
-            if (!CancellationTokenSource.IsCancellationRequested)
-                await CancellationTokenSource.CancelAsync();
-            CancellationTokenSource.Dispose();
+            if (!CancellationTokenSource.IsCancellationRequested) // Check if cancellation is not already requested
+                await CancellationTokenSource.CancelAsync(); // Cancel the cancellation token
+            CancellationTokenSource.Dispose(); // Dispose the cancellation token source
         }
 
-        Log.Information("SingleItemTranslationViewModel is being disposed.");
+        Log.Information("SingleItemTranslationViewModel is being disposed."); // Log disposal
     }
 
     /// <summary>
@@ -133,29 +134,31 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
+            if (string.IsNullOrWhiteSpace(CurrentTranslateItemModel
+                    ?.TranslatedText)) // Check if translation text is empty
             {
-                IsBusy = true;
+                IsBusy = true; // Set busy state
                 Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel?.Text);
-                CancellationTokenSource?.Dispose();
-                CancellationTokenSource = new CancellationTokenSource();
-                CurrentTranslateItemModel.TranslatedText = string.Empty;
-                Log.Information("Starting translation.");
+                CancellationTokenSource?.Dispose(); // Dispose of the cancellation token source
+                CancellationTokenSource = new CancellationTokenSource(); // Create a new cancellation token source
+                CurrentTranslateItemModel.TranslatedText = string.Empty; // Clear the translation text
+                Log.Information("Starting translation."); // Log start of translation
                 var translationResult = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
-                    ToLanguage, FormLanguage, CancellationTokenSource);
-                if (translationResult.IsSuccess)
+                    ToLanguage, FormLanguage, CancellationTokenSource); // Execute the translation task
+                if (translationResult.IsSuccess) // Check if translation was successful
                 {
-                    Guard.IsNotNullOrWhiteSpace(translationResult.Value);
-                    CurrentTranslateItemModel.TranslatedText = translationResult.Value;
-                    Log.Information("Translation completed.");
+                    Guard.IsNotNullOrWhiteSpace(translationResult.Value); // Check if translation result is not empty
+                    CurrentTranslateItemModel.TranslatedText = translationResult.Value; // Set the translation text
+                    Log.Information("Translation completed."); // Log completion of translation
                 }
                 else
                 {
-                    Log.Error("Translation operation was cancelled.");
+                    Log.Error("Translation operation was cancelled."); // Log cancellation of translation
                 }
             }
             else
             {
+                // Send a message to notify other components that the translation text is not empty
                 await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                     MessageTokens.TranslationNotEmpty);
             }
@@ -165,9 +168,9 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             const string errorMessage = "The translator: {0} returned an error. Exception: {1}";
             WeakReferenceMessenger.Default.Send(
                 new ValueChangedMessage<string>(string.Format(CultureInfo.InvariantCulture, errorMessage,
-                    Translator.Name, ex.Message)),
+                    Translator.Name, ex.Message)), // Send error message
                 "TranslateError");
-            Log.Error(ex, errorMessage, Translator.Name, ex.Message);
+            Log.Error(ex, errorMessage, Translator.Name, ex.Message); // Log error
         }
         finally
         {
@@ -201,15 +204,17 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     {
         try
         {
-            if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel?.TranslatedText))
-                SaveTranslation();
+            if (!string.IsNullOrWhiteSpace(CurrentTranslateItemModel
+                    ?.TranslatedText)) // Check if translation text is not empty
+                SaveTranslation(); // Save translation
             else
                 WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
-                    MessageTokens.TranslatedTextInvalid);
+                    MessageTokens
+                        .TranslatedTextInvalid); // Send message to notify other components that the translation text is invalid
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to save translation.");
+            Log.Error(ex, "Failed to save translation."); // Log error
         }
     }
 
@@ -230,12 +235,12 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 SaveTranslation(); // Save the translation if confirmed
             CurrentItemIndex += direction; // Move to the next/previous item
             Log.Information("Translator {TranslatorName} moved to {Direction} item (new index: {NewIndex})",
-                Translator.Name, direction > 0 ? "next" : "previous", CurrentItemIndex);
+                Translator.Name, direction > 0 ? "next" : "previous", CurrentItemIndex); // Log navigation
         }
         catch (Exception ex)
         {
             Log.Error(ex, "Failed to move to {Direction} item",
-                direction > 0 ? "next" : "previous");
+                direction > 0 ? "next" : "previous"); // Log error
         }
     }
 

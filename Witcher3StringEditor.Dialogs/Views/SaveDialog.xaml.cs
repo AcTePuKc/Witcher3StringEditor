@@ -19,8 +19,8 @@ public partial class SaveDialog
     /// </summary>
     public SaveDialog()
     {
-        InitializeComponent();
-        RegisterMessageHandler();
+        InitializeComponent(); // Initialize the UI components
+        RegisterMessageHandler(); // Register message handler for save operation results
     }
 
     /// <summary>

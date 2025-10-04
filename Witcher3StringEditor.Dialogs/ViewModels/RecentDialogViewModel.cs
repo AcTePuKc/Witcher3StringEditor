@@ -30,7 +30,8 @@ public sealed partial class RecentDialogViewModel : ObservableObject, IModalDial
     public RecentDialogViewModel(IAppSettings appSettings)
     {
         AppSettings = appSettings;
-        AppSettings.RecentItems.CollectionChanged += OnRecentItemsOnCollectionChanged;
+        AppSettings.RecentItems.CollectionChanged +=
+            OnRecentItemsOnCollectionChanged; // Subscribe to collection change events
     }
 
     /// <summary>
@@ -49,7 +50,7 @@ public sealed partial class RecentDialogViewModel : ObservableObject, IModalDial
     /// </summary>
     public void Dispose()
     {
-        Dispose(true);
+        Dispose(true); // Dispose of managed resources
     }
 
     /// <summary>
@@ -66,10 +67,8 @@ public sealed partial class RecentDialogViewModel : ObservableObject, IModalDial
     private void Dispose(bool disposing)
     {
         if (disposedValue) return; // Return if resources have already been disposed
-
         if (disposing) // Only unsubscribe from events when disposing managed resources
             AppSettings.RecentItems.CollectionChanged -= OnRecentItemsOnCollectionChanged;
-
         disposedValue = true; // Mark resources as disposed
     }
 
@@ -119,9 +118,9 @@ public sealed partial class RecentDialogViewModel : ObservableObject, IModalDial
     /// <param name="recentItem">The recent item that is missing</param>
     private async Task HandleMissingFile(IRecentItem recentItem)
     {
-        LogMissingFile(recentItem.FilePath);
-        if (await NotifyFileNotFound(recentItem.FilePath))
-            TryRemoveRecentItem(recentItem);
+        LogMissingFile(recentItem.FilePath); // Log missing file
+        if (await NotifyFileNotFound(recentItem.FilePath)) // If user confirms
+            TryRemoveRecentItem(recentItem); // Try to remove the recent item
     }
 
     /// <summary>

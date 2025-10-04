@@ -53,12 +53,13 @@ public partial class BackupDialogViewModel(
     /// <param name="backupItem">The backup item to restore</param>
     private async Task HandleExistingBackupFile(IBackupItem backupItem)
     {
+        // Send a confirmation request
         if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.BackupRestore))
         {
-            Log.Information("The restoration of file {Path} has been approved.", backupItem.OrginPath);
-            if (!backupService.Restore(backupItem))
+            Log.Information("The restoration of file {Path} has been approved.", backupItem.OrginPath); // Log approval
+            if (!backupService.Restore(backupItem)) // Attempt restoration
                 await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                    MessageTokens.OperationFailed);
+                    MessageTokens.OperationFailed); // Notify if failed
         }
     }
 
@@ -69,9 +70,9 @@ public partial class BackupDialogViewModel(
     /// <param name="backupItem">The backup item with the missing file</param>
     private async Task HandleMissingBackupFile(IBackupItem backupItem)
     {
-        Log.Error("The backup file {Path} does no exist.", backupItem.BackupPath);
+        Log.Error("The backup file {Path} does no exist.", backupItem.BackupPath); // Log error
         if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.BackupFileNoFound))
-            backupService.Delete(backupItem);
+            backupService.Delete(backupItem); // Delete the backup item if confirmed
     }
 
     /// <summary>

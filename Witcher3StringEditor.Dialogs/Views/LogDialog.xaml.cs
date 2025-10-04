@@ -25,9 +25,9 @@ public partial class LogDialog
     /// </summary>
     private void SetupSearchHelper()
     {
-        SfDataGrid.SearchHelper.AllowFiltering = true;
-        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
-        SfDataGrid.SearchHelper.CanHighlightSearchText = false;
+        SfDataGrid.SearchHelper.AllowFiltering = true; // Enable filtering
+        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false; // Disable case-sensitive search
+        SfDataGrid.SearchHelper.CanHighlightSearchText = false; // Disable highlighting of search text
     }
 
     /// <summary>

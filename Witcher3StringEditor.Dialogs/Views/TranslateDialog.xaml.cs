@@ -20,8 +20,8 @@ public partial class TranslateDialog
     /// </summary>
     public TranslateDialog()
     {
-        InitializeComponent();
-        RegisterMessageHandlers();
+        InitializeComponent(); // Initialize UI components
+        RegisterMessageHandlers(); // Register message handlers
     }
 
     /// <summary>
@@ -30,8 +30,8 @@ public partial class TranslateDialog
     /// </summary>
     private void RegisterMessageHandlers()
     {
-        RegisterNotificationMessageHandlers();
-        RegisterAsyncRequestMessageHandlers();
+        RegisterNotificationMessageHandlers(); // Register notification message handlers
+        RegisterAsyncRequestMessageHandlers(); // Register async request message handlers
     }
 
     /// <summary>
@@ -40,9 +40,9 @@ public partial class TranslateDialog
     /// </summary>
     private void RegisterAsyncRequestMessageHandlers()
     {
-        var messageHandlers = CreateAsyncRequestHandlers();
+        var messageHandlers = CreateAsyncRequestHandlers(); // Create async request handlers
         foreach (var (token, message, caption) in messageHandlers)
-            RegisterAsyncRequestHandler(token, message, caption);
+            RegisterAsyncRequestHandler(token, message, caption); // Register the handler
     }
 
     /// <summary>
@@ -93,9 +93,9 @@ public partial class TranslateDialog
     /// </summary>
     private void RegisterNotificationMessageHandlers()
     {
-        var notificationHandlers = CreateNotificationHandlers();
+        var notificationHandlers = CreateNotificationHandlers(); // Create notification handlers
         foreach (var (token, message, caption) in notificationHandlers)
-            RegisterNotificationHandler(token, message, caption);
+            RegisterNotificationHandler(token, message, caption); // Register the handler
     }
 
     /// <summary>

@@ -38,9 +38,9 @@ public partial class DeleteDataDialogViewModel(IEnumerable<IW3StringItem> w3Stri
     [RelayCommand]
     private void Delete()
     {
-        DialogResult = true;
-        RequestClose?.Invoke(this, EventArgs.Empty);
-        Log.Information("The selected W3Items have been deleted.");
+        DialogResult = true; // Set dialog result to true
+        RequestClose?.Invoke(this, EventArgs.Empty); // Request close
+        Log.Information("The selected W3Items have been deleted."); // Log deletion
     }
 
     /// <summary>
@@ -50,8 +50,8 @@ public partial class DeleteDataDialogViewModel(IEnumerable<IW3StringItem> w3Stri
     [RelayCommand]
     private void Cancel()
     {
-        DialogResult = false;
-        RequestClose?.Invoke(this, EventArgs.Empty);
-        Log.Information("The selected W3Items have not been deleted.");
+        DialogResult = false; // Set dialog result to false
+        RequestClose?.Invoke(this, EventArgs.Empty); // Request close
+        Log.Information("The selected W3Items have not been deleted."); // Log cancellation
     }
 }
