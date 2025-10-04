@@ -212,10 +212,10 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <summary>
     ///     Handles search request
     /// </summary>
-    private void HandleSearchRequested(bool isSearch)
+    private void HandleSearchRequested(bool isSearched)
     {
         FilteredW3StringItems =
-            isSearch ? FilterW3StringItems(W3StringItems, SearchText).ToObservableCollection() : null;
+            isSearched ? FilterW3StringItems(W3StringItems, SearchText).ToObservableCollection() : null;
     }
 
     /// <summary>
