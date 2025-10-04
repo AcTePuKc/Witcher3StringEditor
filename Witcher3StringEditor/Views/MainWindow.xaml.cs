@@ -155,6 +155,8 @@ public partial class MainWindow
     {
         if (!string.IsNullOrWhiteSpace(sender.Text)) return; // Return if search text is not empty
         SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
+        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
+            MessageTokens.SearchRequested); // Send an empty search result to the search request message
     }
 
     /// <summary>

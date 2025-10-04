@@ -76,7 +76,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <summary>
     ///     Gets or sets the current search text used for filtering W3String items
     /// </summary>
-    private string? searchText;
+    private string searchText = string.Empty;
 
     /// <summary>
     ///     Gets or sets the collection of The Witcher 3 string items
@@ -157,7 +157,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private void W3StringItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         // Return early if filteredW3StringItems is not initialized
-        if (filteredW3StringItems is null || searchText is null) return;
+        if (filteredW3StringItems is null) return;
 
         // Handle item additions to the collection
         if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
@@ -215,7 +215,7 @@ internal partial class MainWindowViewModel : ObservableObject
     private void HandleSearchRequested(string searchRequestText)
     {
         searchText = searchRequestText;
-        filteredW3StringItems = FilterW3StringItems(W3StringItems, searchText).ToList();
+        filteredW3StringItems = searchText != string.Empty ? FilterW3StringItems(W3StringItems, searchText).ToList() : null;
     }
 
     /// <summary>
