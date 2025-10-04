@@ -225,7 +225,7 @@ internal partial class MainWindowViewModel : ObservableObject
         if (isSearched)
         {
             FilteredW3StringItems = FilterW3StringItems(W3StringItems, SearchText).ToObservableCollection();
-            Log.Information("Search completed. Found {Count} items matching '{SearchText}'",
+            Log.Information("Search completed. Found {Count} items matching {SearchText}",
                 FilteredW3StringItems.Count, SearchText);
         }
         else
