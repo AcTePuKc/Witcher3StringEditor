@@ -66,6 +66,10 @@ public partial class MainWindow
         RegisterPageSizeChangedHandler(); // Register page size change message handler
     }
 
+    /// <summary>
+    ///     Registers message handler for page size change notifications
+    ///     Updates the data pager's page size when PageSizeChanged message is received
+    /// </summary>
     private void RegisterPageSizeChangedHandler()
     {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<int>, string>(this, MessageTokens.PageSizeChanged,
