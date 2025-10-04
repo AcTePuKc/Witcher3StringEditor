@@ -50,10 +50,9 @@ public partial class MainWindow
     /// </summary>
     private void SetupSearchHelper()
     {
-        // Enable filtering and disable case-sensitive search for the data grid search helper
-        SfDataGrid.SearchHelper.AllowFiltering = true;
-        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false;
-        SfDataGrid.SearchHelper.CanHighlightSearchText = false;
+        SfDataGrid.SearchHelper.AllowFiltering = true; // Enable filtering
+        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false; // Disable case-sensitive search
+        SfDataGrid.SearchHelper.CanHighlightSearchText = false; // Disable highlighting search text
     }
 
     /// <summary>
@@ -99,6 +98,7 @@ public partial class MainWindow
                 token,
                 (_, m) =>
                 {
+                    // Show a message box and reply with the user's choice
                     m.Reply(MessageBox.Show(message(),
                         caption(),
                         button,
@@ -127,6 +127,7 @@ public partial class MainWindow
                 token,
                 (_, m) =>
                 {
+                    // Show a message box and reply with the user's choice
                     m.Reply(MessageBox.Show(message(), caption(), MessageBoxButton.YesNo, MessageBoxImage.Question) ==
                             MessageBoxResult.Yes);
                 });
@@ -170,10 +171,10 @@ public partial class MainWindow
     /// <param name="e">The event arguments</param>
     private void Window_Closed(object sender, EventArgs e)
     {
-        WeakReferenceMessenger.Default.UnregisterAll(this);
-        SfDataGrid.SearchHelper.Dispose();
-        SfDataGrid.Dispose();
-        SfDataPager.Dispose();
+        WeakReferenceMessenger.Default.UnregisterAll(this); // Unregister all message handlers
+        SfDataGrid.SearchHelper.Dispose(); // Dispose the search helper
+        SfDataGrid.Dispose(); // Dispose the data grid
+        SfDataPager.Dispose(); // Dispose the data pager
     }
 
     /// <summary>

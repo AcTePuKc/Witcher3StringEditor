@@ -145,7 +145,10 @@ internal partial class MainWindowViewModel : ObservableObject
     partial void OnW3StringItemsChanged(ObservableCollection<W3StringItemModel>? oldValue,
         ObservableCollection<W3StringItemModel>? newValue)
     {
+        // Unsubscribe from the old collection's CollectionChanged event to prevent memory leaks
         if (oldValue is not null) oldValue.CollectionChanged -= W3StringItems_CollectionChanged;
+        
+        // Subscribe to the new collection's CollectionChanged event to handle item additions/removals
         if (newValue is not null) newValue.CollectionChanged += W3StringItems_CollectionChanged;
     }
 
@@ -188,7 +191,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 (_, _) => PlayGameCommand
                     .NotifyCanExecuteChanged()); // Update PlayGame command state when GameExe path changes
     }
-    
+
     /// <summary>
     ///     Registers all message handlers for the view model
     /// </summary>
@@ -199,7 +202,7 @@ internal partial class MainWindowViewModel : ObservableObject
         RegisterSettingsMessageHandlers(); // Register settings message handlers
         RegisterSearchMessageHandlers(); // Register search message handlers
     }
-    
+
     /// <summary>
     ///     Registers message handlers for search-related messages
     /// </summary>
@@ -229,9 +232,11 @@ internal partial class MainWindowViewModel : ObservableObject
     private static IEnumerable<W3StringItemModel> FilterW3StringItems(IEnumerable<W3StringItemModel>? items,
         string searchText)
     {
+        // Return early if search text is empty or items are null
         if (string.IsNullOrWhiteSpace(searchText) || items is null)
             return items ?? [];
-
+        
+        // Filter items based on search text
         return items.Where(item =>
             item.StrId.ToString().Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
             item.KeyHex.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
@@ -244,7 +249,6 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterFileMessageHandlers()
     {
-        // Register handler for recent file opened notifications
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, AsyncRequestMessage<string, bool>, string>(
             // ReSharper disable once AsyncVoidMethod
             this,
@@ -257,7 +261,6 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterLogMessageHandlers()
     {
-        // Register handler for log event notifications
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
             // ReSharper disable once AsyncVoidMethod
             this,
@@ -322,7 +325,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void WindowClosed()
     {
-        WeakReferenceMessenger.Default.UnregisterAll(this); // Unregister all message handlers
+        WeakReferenceMessenger.Default.UnregisterAll(this);
     }
 
     /// <summary>
@@ -346,6 +349,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenFile))]
     private async Task OpenFile()
     {
+        // Show open file dialog
         using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, new OpenFileDialogSettings
         {
             Filters =
@@ -356,8 +360,10 @@ internal partial class MainWindowViewModel : ObservableObject
                 new FileFilter(Strings.FileFormatWitcher3StringsFile, ".w3strings")
             ]
         });
-        if (storageFile is not null && Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings" or ".xlsx")
-            await OpenFile(storageFile.LocalPath);
+        if (storageFile is not null &&
+            Path.GetExtension(storageFile.LocalPath) is ".csv" or ".w3strings"
+                or ".xlsx") // Check if file has a supported extension
+            await OpenFile(storageFile.LocalPath); // Open file
     }
 
     /// <summary>
@@ -476,6 +482,7 @@ internal partial class MainWindowViewModel : ObservableObject
             var found = W3StringItems! // Find the item in the collection
                 .First(x => x.TrackingId == selectedItem.TrackingId);
             var index = W3StringItems!.IndexOf(found); // Get the item index
+            // Update the item properties
             W3StringItems[index].StrId = dialogViewModel.Item.StrId;
             W3StringItems[index].KeyHex = dialogViewModel.Item.KeyHex;
             W3StringItems[index].KeyName = dialogViewModel.Item.KeyName;
@@ -588,8 +595,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanOpenWorkingFolder))]
     private void OpenWorkingFolder()
     {
-        serviceProvider.GetRequiredService<IExplorerService>().Open(OutputFolder);
-        Log.Information("Working folder opened.");
+        serviceProvider.GetRequiredService<IExplorerService>().Open(OutputFolder); // Open the working folder
+        Log.Information("Working folder opened."); // Log successful opening
     }
 
     /// <summary>
@@ -599,8 +606,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private void OpenNexusMods()
     {
         serviceProvider.GetRequiredService<IExplorerService>()
-            .Open(appSettings.NexusModUrl);
-        Log.Information("NexusMods opened.");
+            .Open(appSettings.NexusModUrl); // Open the NexusMods page
+        Log.Information("NexusMods opened."); // Log successful opening
     }
 
     /// <summary>
