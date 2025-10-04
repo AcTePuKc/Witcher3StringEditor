@@ -215,7 +215,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private void HandleSearchRequested(string searchRequestText)
     {
         searchText = searchRequestText;
-        filteredW3StringItems = searchText != string.Empty ? FilterW3StringItems(W3StringItems, searchText).ToList() : null;
+        filteredW3StringItems =
+            searchText != string.Empty ? FilterW3StringItems(W3StringItems, searchText).ToList() : null;
     }
 
     /// <summary>
@@ -617,14 +618,17 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(HasW3StringItems))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
+        var itemsToUse = filteredW3StringItems is not null
+            ? filteredW3StringItems.ToObservableCollection()
+            : W3StringItems!; // Use filtered items if available
         var selectedIndex =
             selectedItem is not null
-                ? W3StringItems.IndexOf(selectedItem)
-                : 0; // Set selected index based on provided item
+                ? itemsToUse.IndexOf(selectedItem)
+                : 0; // Get the index of the selected item
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
-            new TranslateDialogViewModel(appSettings, translator, W3StringItems!, selectedIndex));
+            new TranslateDialogViewModel(appSettings, translator, itemsToUse, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
     }
 }
