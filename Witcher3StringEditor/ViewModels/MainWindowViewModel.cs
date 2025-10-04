@@ -188,8 +188,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 (_, _) => PlayGameCommand
                     .NotifyCanExecuteChanged()); // Update PlayGame command state when GameExe path changes
     }
-
-
+    
     /// <summary>
     ///     Registers all message handlers for the view model
     /// </summary>
