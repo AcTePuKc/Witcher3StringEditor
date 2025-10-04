@@ -369,6 +369,7 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             if (!await HandleReOpenFile(fileName)) return; // Handle reopening file logic
             W3StringItems = await DeserializeW3StringItems(fileName); // Deserialize file contents
+            filteredW3StringItems = null; // Clear filtered items
             SetOutputFolder(fileName, folder => OutputFolder = folder); // Set output folder based on file location
             UpdateRecentItems(fileName); // Update recent items list
         }
