@@ -54,7 +54,8 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <summary>
     ///     Gets the filtered collection of W3String items
     /// </summary>
-    private List<W3StringItemModel>? filteredW3StringItems;
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(ShowTranslateDialogCommand))]
+    private ObservableCollection<W3StringItemModel>? filteredW3StringItems;
 
     /// <summary>
     ///     Gets or sets a value indicating whether an update is available
@@ -157,18 +158,18 @@ internal partial class MainWindowViewModel : ObservableObject
     private void W3StringItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         // Return early if filteredW3StringItems is not initialized
-        if (filteredW3StringItems is null) return;
+        if (FilteredW3StringItems is null) return;
 
         // Handle item additions to the collection
         if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
             // Add new items to the filtered results
-            filteredW3StringItems.AddRange(FilterW3StringItems(e.NewItems.OfType<W3StringItemModel>(), searchText));
+            FilterW3StringItems(e.NewItems.OfType<W3StringItemModel>(), searchText)
+                .ForEach(x => FilteredW3StringItems.Add(x));
 
         // Handle item removals from the collection
         if (e is { Action: NotifyCollectionChangedAction.Remove, OldItems: not null })
             // Remove deleted items from the filtered results by matching TrackingId
-            filteredW3StringItems.RemoveAll(item => e.OldItems.OfType<W3StringItemModel>().Any(oldItem =>
-                oldItem.TrackingId == item.TrackingId));
+            e.OldItems.OfType<W3StringItemModel>().ForEach(x => FilteredW3StringItems.Remove(x));
     }
 
     /// <summary>
@@ -215,8 +216,8 @@ internal partial class MainWindowViewModel : ObservableObject
     private void HandleSearchRequested(string searchRequestText)
     {
         searchText = searchRequestText;
-        filteredW3StringItems =
-            searchText != string.Empty ? FilterW3StringItems(W3StringItems, searchText).ToList() : null;
+        FilteredW3StringItems =
+            searchText != string.Empty ? FilterW3StringItems(W3StringItems, searchText).ToObservableCollection() : null;
     }
 
     /// <summary>
@@ -371,7 +372,8 @@ internal partial class MainWindowViewModel : ObservableObject
             W3StringItems = await DeserializeW3StringItems(fileName); // Deserialize file contents
             SetOutputFolder(fileName, folder => OutputFolder = folder); // Set output folder based on file location
             UpdateRecentItems(fileName); // Update recent items list
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), MessageTokens.ClearSearch); // Clear search
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+                MessageTokens.ClearSearch); // Clear search
         }
         catch (Exception ex)
         {
@@ -613,19 +615,26 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
+    ///     Determines whether the translate dialog can be shown
+    /// </summary>
+    /// <returns>True if the translate dialog can be shown, false otherwise</returns>
+    private bool CanShowTranslateDialog()
+    {
+        if (FilteredW3StringItems is not null) // Check if we have search results
+            return FilteredW3StringItems.Any(); // Return true if search results exist
+        return W3StringItems?.Any() == true; // Otherwise check if we have any W3String items
+    }
+
+    /// <summary>
     ///     Shows the translate dialog
     /// </summary>
     /// <param name="selectedItem">The initially selected item in the dialog</param>
-    [RelayCommand(CanExecute = nameof(HasW3StringItems))]
+    [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
-        var itemsToUse = filteredW3StringItems is not null
-            ? filteredW3StringItems.ToObservableCollection()
-            : W3StringItems!; // Use filtered items if available
+        var itemsToUse = FilteredW3StringItems ?? W3StringItems!; // Use filtered items if available
         var selectedIndex =
-            selectedItem is not null
-                ? itemsToUse.IndexOf(selectedItem)
-                : 0; // Get the index of the selected item
+            selectedItem is not null ? itemsToUse.IndexOf(selectedItem) : 0; // Get the index of the selected item
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this, // Show the translate dialog
