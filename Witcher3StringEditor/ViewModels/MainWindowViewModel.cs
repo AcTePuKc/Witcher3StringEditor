@@ -162,13 +162,20 @@ internal partial class MainWindowViewModel : ObservableObject
         if (FilteredW3StringItems is null) return;
         // Handle item additions to the collection
         if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
+        {
             // Add new items to the filtered results
             FilterW3StringItems(e.NewItems.OfType<W3StringItemModel>(), SearchText)
                 .ForEach(x => FilteredW3StringItems.Add(x));
+            // Log the number of items added
+            Log.Information("Added {Count} items to filtered results", e.NewItems.Count);
+        }
+
         // Handle item removals from the collection
-        if (e is { Action: NotifyCollectionChangedAction.Remove, OldItems: not null })
-            // Remove deleted items from the filtered results by matching TrackingId
-            e.OldItems.OfType<W3StringItemModel>().ForEach(x => FilteredW3StringItems.Remove(x));
+        if (e is not { Action: NotifyCollectionChangedAction.Remove, OldItems: not null }) return;
+        // Remove deleted items from the filtered results by matching TrackingId
+        e.OldItems.OfType<W3StringItemModel>().ForEach(x => FilteredW3StringItems.Remove(x));
+        // Log the number of items removed
+        Log.Information("Removed {Count} items from filtered results", e.OldItems.Count);
     }
 
     /// <summary>

@@ -165,6 +165,7 @@ public partial class MainWindow
         SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false),
             MessageTokens.SearchRequested); // Send an empty search result to the search request message
+        Log.Information("Search query cleared"); // Log the search query
     }
 
     /// <summary>
