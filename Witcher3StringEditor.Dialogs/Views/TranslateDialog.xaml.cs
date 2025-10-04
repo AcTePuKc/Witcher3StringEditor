@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Witcher3StringEditor.Common.Constants;
+using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 

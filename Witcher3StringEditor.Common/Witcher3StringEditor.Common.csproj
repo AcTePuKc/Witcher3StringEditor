@@ -22,4 +22,16 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Constants\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Constants\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Constants\**" />
+    </ItemGroup>
+
 </Project>

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using Serilog;
-using Witcher3StringEditor.Common.Constants;
+using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 

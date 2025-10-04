@@ -9,7 +9,7 @@ using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
-using Witcher3StringEditor.Common.Constants;
+using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;

@@ -1,4 +1,4 @@
-namespace Witcher3StringEditor.Common.Constants;
+namespace Witcher3StringEditor.Dialogs.Messaging;
 
 /// <summary>
 ///     Provides a centralized collection of message tokens used for communication between components

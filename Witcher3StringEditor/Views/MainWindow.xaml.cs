@@ -6,7 +6,6 @@ using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Controls;
 using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Serilog;
-using Witcher3StringEditor.Common.Constants;
 using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.ViewModels;
