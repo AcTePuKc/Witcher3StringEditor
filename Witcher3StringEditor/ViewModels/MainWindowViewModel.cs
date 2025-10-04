@@ -77,7 +77,7 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <summary>
     ///     Gets or sets the current search text used for filtering W3String items
     /// </summary>
-    private string searchText = string.Empty;
+    [ObservableProperty] private string searchText = string.Empty;
 
     /// <summary>
     ///     Gets or sets the collection of The Witcher 3 string items
@@ -163,7 +163,7 @@ internal partial class MainWindowViewModel : ObservableObject
         // Handle item additions to the collection
         if (e is { Action: NotifyCollectionChangedAction.Add, NewItems: not null })
             // Add new items to the filtered results
-            FilterW3StringItems(e.NewItems.OfType<W3StringItemModel>(), searchText)
+            FilterW3StringItems(e.NewItems.OfType<W3StringItemModel>(), SearchText)
                 .ForEach(x => FilteredW3StringItems.Add(x));
 
         // Handle item removals from the collection
@@ -204,7 +204,7 @@ internal partial class MainWindowViewModel : ObservableObject
 
     private void RegisterSearchMessageHandlers()
     {
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<string>, string>(
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(
             this,
             MessageTokens.SearchRequested,
             (_, m) => { HandleSearchRequested(m.Value); });
@@ -213,11 +213,10 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <summary>
     ///     Handles search request
     /// </summary>
-    private void HandleSearchRequested(string searchRequestText)
+    private void HandleSearchRequested(bool isSearch)
     {
-        searchText = searchRequestText;
         FilteredW3StringItems =
-            searchText != string.Empty ? FilterW3StringItems(W3StringItems, searchText).ToObservableCollection() : null;
+            isSearch ? FilterW3StringItems(W3StringItems, SearchText).ToObservableCollection() : null;
     }
 
     /// <summary>
