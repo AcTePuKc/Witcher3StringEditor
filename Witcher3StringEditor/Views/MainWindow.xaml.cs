@@ -72,7 +72,11 @@ public partial class MainWindow
     private void RegisterPageSizeChangedHandler()
     {
         WeakReferenceMessenger.Default.Register<ValueChangedMessage<int>, string>(this, MessageTokens.PageSizeChanged,
-            (_, m) => { SfDataPager.PageSize = m.Value; });
+            (_, m) =>
+            {
+                SfDataPager.PageSize = m.Value; // Update the data pager's page size
+                Log.Information("Page size changed to {PageSize}", m.Value); // Log the new page size
+            });
     }
 
     /// <summary>
@@ -146,7 +150,7 @@ public partial class MainWindow
         SfDataGrid.SearchHelper.Search(args.QueryText); // Perform the search and collect results
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
             MessageTokens.SearchRequested); // Send the search results to the search request message
-        Log.Information("Search query submitted: {QueryText}", args.QueryText);
+        Log.Information("Search query submitted: {QueryText}", args.QueryText); // Log the search query
     }
 
     /// <summary>
