@@ -39,12 +39,14 @@ namespace Witcher3StringEditor;
 /// </summary>
 public sealed partial class App : IDisposable
 {
-    // Private fields
-    private Mutex? mutex; // Mutex to prevent multiple instances
-    private bool disposedValue; // Flag to indicate whether the object has been disposed
     private IAppSettings? appSettings; // Application settings
     private IConfigService? configService; // Configuration service
+    private bool disposedValue; // Flag to indicate whether the object has been disposed
+
     private ObserverBase<LogEvent>? logObserver; // Observer for log events
+
+    // Private fields
+    private Mutex? mutex; // Mutex to prevent multiple instances
 
     /// <summary>
     ///     Gets a value indicating whether the application is running in debug mode
@@ -133,7 +135,6 @@ public sealed partial class App : IDisposable
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor");
         var configPath = Path.Combine(configFolderPath, "AppSettings.Json");
-
         // Create the configuration folder if it doesn't exist
         if (!Directory.Exists(configFolderPath))
             Directory.CreateDirectory(configFolderPath);
@@ -150,11 +151,9 @@ public sealed partial class App : IDisposable
         var cultureInfo = appSettings!.Language == string.Empty
             ? Ioc.Default.GetRequiredService<ICultureResolver>().ResolveSupportedCulture()
             : new CultureInfo(appSettings.Language);
-
         // Save the resolved culture if it wasn't previously set
         if (appSettings.Language == string.Empty)
             appSettings.Language = cultureInfo.Name;
-
         // Apply the culture to the application
         I18NExtension.Culture = cultureInfo;
     }
@@ -169,7 +168,6 @@ public sealed partial class App : IDisposable
         using var stream = Assembly.GetExecutingAssembly()
             .GetManifestResourceStream("Witcher3StringEditor.License.txt")!;
         using var reader = new StreamReader(stream);
-
         // Register the license with Syncfusion
         SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
     }
@@ -187,7 +185,6 @@ public sealed partial class App : IDisposable
             var exception = e.Exception;
             Log.Error(exception, "Unhandled exception: {ExceptionMessage}", exception.Message);
         };
-
         // Handle unobserved task exceptions (background tasks)
         TaskScheduler.UnobservedTaskException += static (_, e) =>
         {
@@ -235,7 +232,6 @@ public sealed partial class App : IDisposable
     {
         // Find the existing process instance
         using var existingProcess = FindExistingProcessInstance();
-
         // Activate the window of the existing instance
         var mainWindowHandle = new HWND(existingProcess.MainWindowHandle);
         ActivateExistingInstanceWindow(mainWindowHandle);
@@ -252,11 +248,9 @@ public sealed partial class App : IDisposable
         var placement = new WINDOWPLACEMENT();
         placement.length = (uint)Marshal.SizeOf(placement);
         if (PInvoke.GetWindowPlacement(mainWindowHandle, ref placement).Value == 0) return;
-
         // Restore the window if it's minimized
         if (placement.showCmd == SHOW_WINDOW_CMD.SW_SHOWMINIMIZED)
             PInvoke.ShowWindow(mainWindowHandle, SHOW_WINDOW_CMD.SW_RESTORE);
-
         // Bring the window to the foreground
         PInvoke.SetForegroundWindow(mainWindowHandle);
     }
@@ -314,7 +308,6 @@ public sealed partial class App : IDisposable
     {
         // Create and configure the view locator
         var viewLocator = new StrongViewLocator();
-
         // Register all view model to view mappings
         viewLocator.Register<EditDataDialogViewModel, EditDataDialog>();
         viewLocator.Register<DeleteDataDialogViewModel, DeleteDataDialog>();
@@ -337,11 +330,9 @@ public sealed partial class App : IDisposable
     {
         // Save application settings before exiting
         configService?.Save(appSettings);
-
         // Log application exit and flush logs
         Log.Information("Application exited.");
         Log.CloseAndFlush();
-
         // Dispose resources
         Dispose();
     }
