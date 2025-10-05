@@ -94,7 +94,6 @@ public partial class MainWindow
             (MessageTokens.FirstRun, () => Strings.FristRunMessage, () => Strings.FristRunCaption, MessageBoxButton.OK,
                 MessageBoxResult.OK)
         };
-
         // Register handlers for each scenario
         foreach (var (token, message, caption, button, excepted) in requestMessageHandlers)
             WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<bool>, string>(
@@ -123,7 +122,6 @@ public partial class MainWindow
             (MessageTokens.OpenedFileNoFound, () => Strings.FileOpenedNoFoundMessage,
                 () => Strings.FileOpenedNoFoundCaption)
         };
-
         // Register handlers for each file operation scenario
         foreach (var (token, message, caption) in messageHandlers)
             WeakReferenceMessenger.Default.Register<MainWindow, AsyncRequestMessage<string, bool>, string>(
