@@ -18,11 +18,7 @@ public class CultureResolver : ICultureResolver
     public CultureResolver()
     {
         // Initialize the list of supported cultures with English as the default culture
-        List<CultureInfo> supportedCultures =
-        [
-            new("en")
-        ];
-
+        var supportedCultures = new List<CultureInfo> { new("en") };
         // Scan directories in the application's location to find additional supported cultures
         // Each directory name is treated as a culture name (e.g., "zh-CN", "ru-RU", etc.)
         foreach (var directory in Directory.GetDirectories(
@@ -62,10 +58,8 @@ public class CultureResolver : ICultureResolver
     {
         // Get the installed UI culture of the system as the starting point
         var cultureInfo = CultureInfo.InstalledUICulture;
-
         // Check if the exact culture is supported, if so return it immediately
         if (SupportedCultures.Contains(cultureInfo)) return cultureInfo;
-
         // Traverse up the culture hierarchy to find a supported parent culture
         // For example, if zh-CN is not supported but zh is supported, we'll use zh
         while (!Equals(cultureInfo.Parent, CultureInfo.InvariantCulture))
