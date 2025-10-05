@@ -95,6 +95,7 @@ public partial class SaveDialogViewModel
     {
         Log.Information("Target filetype: {FileType}.", TargetFileType); // Log target file type
         Log.Information("Target language: {Language}.", TargetLanguage); // Log target language
+        Log.Information("Output directory: {Directory}.", OutputDirectory); // Log output directory
         var saveResult = await serializer.Serialize(w3StringItems, new W3SerializationContext // Serialize items
         {
             OutputDirectory = OutputDirectory, // Set output directory
