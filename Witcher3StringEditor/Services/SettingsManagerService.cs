@@ -27,7 +27,6 @@ internal class SettingsManagerService : ISettingsManagerService
     public SettingsManagerService(IAppSettings appSettings)
     {
         this.appSettings = appSettings; // Store the app settings instance
-
         if (this.appSettings is INotifyPropertyChanged
             notifyPropertyChanged) // Check if app settings supports property change notifications
             notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged; // Register property change handler
