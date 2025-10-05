@@ -96,6 +96,14 @@ public partial class SaveDialogViewModel
         Log.Information("Target filetype: {FileType}.", TargetFileType); // Log target file type
         Log.Information("Target language: {Language}.", TargetLanguage); // Log target language
         Log.Information("Output directory: {Directory}.", OutputDirectory); // Log output directory
+        if (TargetFileType == W3FileType.W3Strings)
+        {
+            if (IsIgnoreIdSpaceCheck)
+                Log.Information("Ignore ID space check."); // Log ignore ID space check
+            else
+                Log.Information("ID space: {IdSpace}", IdSpace);
+        }
+
         var saveResult = await serializer.Serialize(w3StringItems, new W3SerializationContext // Serialize items
         {
             OutputDirectory = OutputDirectory, // Set output directory
