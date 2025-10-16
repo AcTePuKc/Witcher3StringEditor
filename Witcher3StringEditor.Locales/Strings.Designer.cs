@@ -366,7 +366,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Witcher3 Strings File.
+        ///   Looks up a localized string similar to The Witcher3 String File.
         /// </summary>
         public static string FileFormatWitcher3StringsFile {
             get {

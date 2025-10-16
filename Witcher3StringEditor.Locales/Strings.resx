@@ -180,7 +180,7 @@
     <value>Text File</value>
   </data>
     <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
-      <value>The Witcher3 Strings File</value>
+      <value>The Witcher3 String File</value>
     </data>
     <data name="AppExitMessage" xml:space="preserve">
     <value>Are you sure you want to exit? Any unsaved data will be lost.</value>

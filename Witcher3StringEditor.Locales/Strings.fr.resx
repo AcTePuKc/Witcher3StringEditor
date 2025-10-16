@@ -181,7 +181,7 @@
     <value>Fichier texte</value>
   </data>
     <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
-      <value>The Witcher3 Strings File</value>
+      <value>The Witcher3 String File</value>
     </data>
     <data name="AppExitMessage" xml:space="preserve">
     <value>Êtes-vous sûr de vouloir quitter ?  Toutes les données non sauvegardées seront perdues.</value>
