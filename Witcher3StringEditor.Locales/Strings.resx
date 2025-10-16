@@ -129,8 +129,8 @@
     <value>Open File</value>
   </data>
     <data name="AppTitle" xml:space="preserve">
-    <value>Witcher 3 String Editor</value>
-  </data>
+      <value>The Witcher 3 String Editor</value>
+    </data>
     <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>Search</value>
   </data>
@@ -180,8 +180,8 @@
     <value>Text File</value>
   </data>
     <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
-    <value>Witcher3 Strings File</value>
-  </data>
+      <value>The Witcher3 Strings File</value>
+    </data>
     <data name="AppExitMessage" xml:space="preserve">
     <value>Are you sure you want to exit? Any unsaved data will be lost.</value>
   </data>

@@ -384,10 +384,10 @@
         <value>ページサイズ</value>
     </data>
     <data name="PreferredFileTypeDescription" xml:space="preserve">
-        <value>巫師3の文字列ファイルを保存する際のデフォルトファイル形式を選択してください</value>
+        <value>ウィッチャー3の文字列ファイルを保存する際のデフォルトファイル形式を選択してください</value>
     </data>
     <data name="PreferredLanguageDescription" xml:space="preserve">
-        <value>翻訳時の目標言語と巫師3文字アーカイブ保存時に使用するデフォルト言語を選択してください</value>
+        <value>翻訳時の目標言語とウィッチャー3文字アーカイブ保存時に使用するデフォルト言語を選択してください</value>
     </data>
     <data name="LanguageDescription" xml:space="preserve">
         <value>アプリケーションインターフェースの表示言語を選択してください</value>

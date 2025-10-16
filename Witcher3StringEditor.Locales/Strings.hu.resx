@@ -130,8 +130,8 @@
     <value>Fájl megnyitása</value>
   </data>
     <data name="AppTitle" xml:space="preserve">
-    <value>Witcher 3 szövegszerkesztő</value>
-  </data>
+      <value>The Witcher 3 szövegszerkesztő</value>
+    </data>
     <data name="SearchBoxPlaceholderText" xml:space="preserve">
     <value>Keresés</value>
   </data>
@@ -181,8 +181,8 @@
     <value>Szövegfájl</value>
   </data>
     <data name="FileFormatWitcher3StringsFile" xml:space="preserve">
-    <value>Witcher3 szövegfájl</value>
-  </data>
+      <value>The Witcher3 szövegfájl</value>
+    </data>
     <data name="AppExitMessage" xml:space="preserve">
     <value>Biztos, hogy ki akarsz lépni? Minden el nem mentett adat elveszik.</value>
   </data>
