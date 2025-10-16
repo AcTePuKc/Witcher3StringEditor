@@ -502,4 +502,7 @@
     <data name="PageSizeDescription" xml:space="preserve">
       <value>Ajuster le nombre d'éléments affichés par page dans la grille de données de l'interface principale</value>
     </data>
+    <data name="TranslatorSelectionDescription" xml:space="preserve">
+      <value>Sélectionnez le service de traduction à utiliser pour traduire le texte</value>
+    </data>
 </root>

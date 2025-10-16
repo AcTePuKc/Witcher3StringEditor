@@ -502,4 +502,7 @@
     <data name="PageSizeDescription" xml:space="preserve">
       <value>Állítsa be a főfelület adatrácsonként megjelenített elemek számát</value>
     </data>
+    <data name="TranslatorSelectionDescription" xml:space="preserve">
+      <value>Válassza ki a szöveg fordításához használandó fordítási szolgáltatást</value>
+    </data>
 </root>

@@ -501,4 +501,7 @@
     <data name="PageSizeDescription" xml:space="preserve">
       <value>Adjust the number of items displayed per page in the main interface data grid</value>
     </data>
+    <data name="TranslatorSelectionDescription" xml:space="preserve">
+      <value>Select the translation service to use for translating text</value>
+    </data>
 </root>

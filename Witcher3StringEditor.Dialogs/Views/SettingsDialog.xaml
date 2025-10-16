@@ -146,7 +146,8 @@
                     </ComboBox>
                 </ui:SettingsCard>
                 <!-- Translator selection settings card -->
-                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.TranslatorSelection}}">
+                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.TranslatorSelectionDescription}}"
+                                 Header="{I18N {x:Static l:LangKeys.TranslatorSelection}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xEE56;" />
                     </ui:SettingsCard.HeaderIcon>

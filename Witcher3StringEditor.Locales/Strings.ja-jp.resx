@@ -395,4 +395,7 @@
     <data name="PageSizeDescription" xml:space="preserve">
         <value>メイン画面のデータグリッドでページごとに表示する項目数を調整します</value>
     </data>
+    <data name="TranslatorSelectionDescription" xml:space="preserve">
+        <value>テキスト翻訳に使用する翻訳サービスを選択してください</value>
+    </data>
 </root>

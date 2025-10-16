@@ -1132,6 +1132,15 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the translation service to use for translating text.
+        /// </summary>
+        public static string TranslatorSelectionDescription {
+            get {
+                return ResourceManager.GetString("TranslatorSelectionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Translation is Underway.
         /// </summary>
         public static string TranslatorTranslatingCaption {

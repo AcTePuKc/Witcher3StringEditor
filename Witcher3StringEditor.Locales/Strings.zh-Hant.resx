@@ -386,12 +386,15 @@
         <value>選擇保存巫師3文字檔案時的預設檔案格式</value>
     </data>
     <data name="PreferredLanguageDescription" xml:space="preserve">
-        <value>选择翻译时的目标语言和保存巫师3文字档案时使用的默认语言</value>
+        <value>選擇翻譯時的目標語言和保存巫師3文字檔案時使用的預設語言</value>
     </data>
     <data name="LanguageDescription" xml:space="preserve">
-        <value>选择应用程序界面显示的语言</value>
+        <value>選擇應用程式介面顯示的語言</value>
     </data>
     <data name="PageSizeDescription" xml:space="preserve">
         <value>調整主介面資料表格單頁顯示的項目數量</value>
+    </data>
+    <data name="TranslatorSelectionDescription" xml:space="preserve">
+        <value>選擇用於翻譯文字的翻譯服務</value>
     </data>
 </root>
