@@ -502,6 +502,15 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the language for the application interface display.
+        /// </summary>
+        public static string LanguageDescription {
+            get {
+                return ResourceManager.GetString("LanguageDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         public static string LanguageHelpText {
@@ -664,11 +673,20 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ​​Page Size​​.
+        ///   Looks up a localized string similar to Page Size.
         /// </summary>
         public static string PageSize {
             get {
                 return ResourceManager.GetString("PageSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjust the number of items displayed per page in the main interface data grid.
+        /// </summary>
+        public static string PageSizeDescription {
+            get {
+                return ResourceManager.GetString("PageSizeDescription", resourceCulture);
             }
         }
         
@@ -709,11 +727,29 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the default file format for saving The Witcher 3 string files.
+        /// </summary>
+        public static string PreferredFileTypeDescription {
+            get {
+                return ResourceManager.GetString("PreferredFileTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preferred Language.
         /// </summary>
         public static string PreferredLanguage {
             get {
                 return ResourceManager.GetString("PreferredLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the target language for translation and the default language used when saving The Witcher 3 string files.
+        /// </summary>
+        public static string PreferredLanguageDescription {
+            get {
+                return ResourceManager.GetString("PreferredLanguageDescription", resourceCulture);
             }
         }
         

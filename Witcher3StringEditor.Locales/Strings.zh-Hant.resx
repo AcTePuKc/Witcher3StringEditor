@@ -380,6 +380,18 @@
         <value>請選擇w3strings.exe</value>
     </data>
     <data name="PageSize" xml:space="preserve">
-        <value>每頁記錄數​</value>
+        <value>每頁記錄數</value>
+    </data>
+    <data name="PreferredFileTypeDescription" xml:space="preserve">
+        <value>選擇保存巫師3文字檔案時的預設檔案格式</value>
+    </data>
+    <data name="PreferredLanguageDescription" xml:space="preserve">
+        <value>选择翻译时的目标语言和保存巫师3文字档案时使用的默认语言</value>
+    </data>
+    <data name="LanguageDescription" xml:space="preserve">
+        <value>选择应用程序界面显示的语言</value>
+    </data>
+    <data name="PageSizeDescription" xml:space="preserve">
+        <value>調整主介面資料表格單頁顯示的項目數量</value>
     </data>
 </root>

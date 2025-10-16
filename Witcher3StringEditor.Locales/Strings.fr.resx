@@ -488,6 +488,18 @@
     <value>Langue</value>
   </data>
     <data name="PageSize" xml:space="preserve">
-      <value>​​Taille de page​​</value>
+      <value>Taille de page</value>
+    </data>
+    <data name="PreferredFileTypeDescription" xml:space="preserve">
+      <value>Sélectionnez le format de fichier par défaut pour enregistrer les fichiers de texte de The Witcher 3</value>
+    </data>
+    <data name="PreferredLanguageDescription" xml:space="preserve">
+      <value>Sélectionnez la langue cible pour la traduction et la langue par défaut utilisée lors de l'enregistrement des fichiers de texte de The Witcher 3</value>
+    </data>
+    <data name="LanguageDescription" xml:space="preserve">
+      <value>Sélectionnez la langue d'affichage de l'interface de l'application</value>
+    </data>
+    <data name="PageSizeDescription" xml:space="preserve">
+      <value>Ajuster le nombre d'éléments affichés par page dans la grille de données de l'interface principale</value>
     </data>
 </root>

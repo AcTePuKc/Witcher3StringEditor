@@ -490,4 +490,16 @@
     <data name="PageSize" xml:space="preserve">
       <value>Oldalméret</value>
     </data>
+    <data name="PreferredFileTypeDescription" xml:space="preserve">
+      <value>Válassza ki az alapértelmezett fájlformátumot a The Witcher 3 karakterlánc fájlok mentéséhez</value>
+    </data>
+    <data name="PreferredLanguageDescription" xml:space="preserve">
+      <value>Válassza ki a fordítás cél nyelvét és a The Witcher 3 karakterlánc fájlok mentésekor használt alapértelmezett nyelvet</value>
+    </data>
+    <data name="LanguageDescription" xml:space="preserve">
+      <value>Válassza ki az alkalmazás felhasználói felületének nyelvét</value>
+    </data>
+    <data name="PageSizeDescription" xml:space="preserve">
+      <value>Állítsa be a főfelület adatrácsonként megjelenített elemek számát</value>
+    </data>
 </root>

@@ -488,6 +488,18 @@
     <value>语言</value>
   </data>
     <data name="PageSize" xml:space="preserve">
-      <value>​​每页记录数</value>
+      <value>每页记录数</value>
+    </data>
+    <data name="PreferredFileTypeDescription" xml:space="preserve">
+      <value>选择保存巫师3文字档案时的默认文件格式</value>
+    </data>
+    <data name="PreferredLanguageDescription" xml:space="preserve">
+      <value>選擇翻譯時的目標語言和保存巫師3文字檔案時使用的預設語言</value>
+    </data>
+    <data name="LanguageDescription" xml:space="preserve">
+      <value>選擇應用程式介面顯示的語言</value>
+    </data>
+    <data name="PageSizeDescription" xml:space="preserve">
+      <value>调整主界面数据表格单页显示的项目数量</value>
     </data>
 </root>

@@ -108,7 +108,8 @@
                     </Button>
                 </ui:SettingsCard>
                 <!-- Preferred file type settings card -->
-                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.PreferredFileType}}">
+                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.PreferredFileTypeDescription}}"
+                                 Header="{I18N {x:Static l:LangKeys.PreferredFileType}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE97C;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -130,7 +131,8 @@
                     </ComboBox>
                 </ui:SettingsCard>
                 <!-- Preferred language settings card -->
-                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.PreferredLanguage}}">
+                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.PreferredLanguageDescription}}"
+                                 Header="{I18N {x:Static l:LangKeys.PreferredLanguage}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xF2B7;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -156,7 +158,8 @@
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                            Text="{I18N {x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />
                 <!-- Application language settings card -->
-                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.LanguageHelpText}}">
+                <ui:SettingsCard Description="{I18N  {x:Static l:LangKeys.LanguageDescription}}"
+                                 Header="{I18N {x:Static l:LangKeys.LanguageHelpText}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE774;" />
                     </ui:SettingsCard.HeaderIcon>
@@ -167,7 +170,8 @@
                 </ui:SettingsCard>
                 <!-- Page size settings card -->
                 <!-- Allows users to select the number of items displayed per page in data grids -->
-                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.PageSize}}">
+                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.PageSizeDescription}}"
+                                 Header="{I18N {x:Static l:LangKeys.PageSize}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7C3;" />
                     </ui:SettingsCard.HeaderIcon>

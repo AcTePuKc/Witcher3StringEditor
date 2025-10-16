@@ -487,6 +487,18 @@
     <value>Language</value>
   </data>
     <data name="PageSize" xml:space="preserve">
-      <value>​​Page Size​​</value>
+      <value>Page Size</value>
+    </data>
+    <data name="PreferredFileTypeDescription" xml:space="preserve">
+      <value>Select the default file format for saving The Witcher 3 string files</value>
+    </data>
+    <data name="PreferredLanguageDescription" xml:space="preserve">
+      <value>Select the target language for translation and the default language used when saving The Witcher 3 string files</value>
+    </data>
+    <data name="LanguageDescription" xml:space="preserve">
+      <value>Select the language for the application interface display</value>
+    </data>
+    <data name="PageSizeDescription" xml:space="preserve">
+      <value>Adjust the number of items displayed per page in the main interface data grid</value>
     </data>
 </root>
