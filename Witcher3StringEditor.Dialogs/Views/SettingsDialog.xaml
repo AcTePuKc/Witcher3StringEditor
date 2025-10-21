@@ -94,14 +94,14 @@
                     </ui:SettingsCard.HeaderIcon>
                     <ui:SettingsCard.Description>
                         <Grid>
-                            <TextBlock Text="{Binding AppSettings.W3StringsPath}"/>
+                            <TextBlock Text="{Binding AppSettings.W3StringsPath}" />
                             <TextBlock Text="{I18N {x:Static l:LangKeys.W3StringsPath}}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                        <Setter Property="Visibility" Value="Hidden" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding AppSettings.W3StringsPath}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -121,14 +121,14 @@
                     </ui:SettingsCard.HeaderIcon>
                     <ui:SettingsCard.Description>
                         <Grid>
-                            <TextBlock Text="{Binding AppSettings.GameExePath}"/>
+                            <TextBlock Text="{Binding AppSettings.GameExePath}" />
                             <TextBlock Text="{I18N {x:Static l:LangKeys.GameExePath}}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                        <Setter Property="Visibility" Value="Hidden" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding AppSettings.GameExePath}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
