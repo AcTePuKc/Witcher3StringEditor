@@ -54,13 +54,14 @@
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
             </Style>
+            <!-- Converter for converting integers to strings -->
+            <c:IntToStringConverter x:Key="IntToStringConverter" />
             <!-- Converter for converting strings to CultureInfo objects -->
             <c:StringToCultureInfoConverter x:Key="StringToCultureInfoConverter" />
             <!-- Converter for displaying The Witcher 3 language native names -->
             <c:W3LanguageToNativeNameConverter x:Key="W3LanguageToNativeNameConverter" />
             <!-- Converter for displaying The Witcher 3 file type localized strings -->
             <c:W3FileTypeToLocalizedStringConverter x:Key="W3FileTypeToLocalizedStringConverter" />
-            <c:IntToStringConverter x:Key="IntToStringConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <!-- 
