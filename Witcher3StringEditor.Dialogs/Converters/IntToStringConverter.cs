@@ -19,8 +19,7 @@ public class IntToStringConverter : IValueConverter
     /// <returns>The string representation of the integer value, or "30" as default</returns>
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is int intValue) return intValue.ToString(CultureInfo.InvariantCulture);
-        return "30";
+        return value is int intValue ? intValue.ToString(CultureInfo.InvariantCulture) : "30";
     }
 
     /// <summary>
@@ -33,7 +32,6 @@ public class IntToStringConverter : IValueConverter
     /// <returns>The parsed integer value, or 30 as default if parsing fails</returns>
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is string stringValue && int.TryParse(stringValue, out var result)) return result;
-        return 30;
+        return value is string stringValue && int.TryParse(stringValue, out var result) ? result : 30;
     }
 }
