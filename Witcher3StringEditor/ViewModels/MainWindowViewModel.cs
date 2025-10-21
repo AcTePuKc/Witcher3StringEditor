@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows.Threading;
 using cmdwtf;
 using CommandLine;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -18,7 +17,6 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Serilog;
-using Serilog.Events;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Messaging;
@@ -108,11 +106,6 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Gets the collection of log events
-    /// </summary>
-    private ObservableCollection<LogEvent> LogEvents { get; } = [];
-
-    /// <summary>
     ///     Gets a value indicating whether there are The Witcher 3 string items
     /// </summary>
     private bool HasW3StringItems => W3StringItems?.Any() == true;
@@ -200,7 +193,6 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     private void RegisterMessengerHandlers()
     {
-        RegisterLogMessageHandlers(); // Register log message handlers
         RegisterFileMessageHandlers(); // Register file message handlers
         RegisterSettingsMessageHandlers(); // Register settings message handlers
         RegisterSearchMessageHandlers(); // Register search message handlers
@@ -233,7 +225,6 @@ internal partial class MainWindowViewModel : ObservableObject
             FilteredW3StringItems = null;
             Log.Information("Search cleared.");
         }
-        
     }
 
     /// <summary>
@@ -266,20 +257,6 @@ internal partial class MainWindowViewModel : ObservableObject
             this,
             MessageTokens.RecentFileOpened,
             async void (_, m) => { await OpenFile(m.Request); }); // Open the requested file
-    }
-
-    /// <summary>
-    ///     Registers message handlers for log-related messages
-    /// </summary>
-    private void RegisterLogMessageHandlers()
-    {
-        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ValueChangedMessage<LogEvent>>(
-            // ReSharper disable once AsyncVoidMethod
-            this,
-            async void (_, m) =>
-            {
-                await Dispatcher.CurrentDispatcher.InvokeAsync(() => LogEvents.Add(m.Value));
-            }); // Add log event to collection on UI thread
     }
 
     /// <summary>
@@ -554,7 +531,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowLogDialog()
     {
-        using var logDialogViewModel = new LogDialogViewModel(LogEvents);
+        using var logDialogViewModel = new LogDialogViewModel(serviceProvider.GetRequiredService<ILogAccessService>());
         await dialogService.ShowDialogAsync<LogDialogViewModel>(this, logDialogViewModel);
     }
 

@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using HanumanInstitute.MvvmDialogs;
 using Serilog.Events;
 using Syncfusion.Data.Extensions;
+using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Dialogs.Models;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -31,10 +32,10 @@ public sealed class LogDialogViewModel
     /// <summary>
     ///     Initializes a new instance of the LogDialogViewModel class
     /// </summary>
-    /// <param name="logEvents">The source collection of log events to display</param>
-    public LogDialogViewModel(ObservableCollection<LogEvent> logEvents)
+    /// <param name="logAccessService">The log access service</param>
+    public LogDialogViewModel(ILogAccessService logAccessService)
     {
-        sourceLogEvents = logEvents; // Initialize the source collection
+        sourceLogEvents = logAccessService.Logs; // Initialize the source collection
         // Subscribe to UI collection changes to sync deletions back to source collection
         LogEvents.CollectionChanged += OnLogEventsCollectionChanged;
         // Subscribe to source collection changes to sync new items to UI collection

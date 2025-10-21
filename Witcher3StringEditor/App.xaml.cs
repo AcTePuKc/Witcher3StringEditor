@@ -9,8 +9,6 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.UI.WindowsAndMessaging;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using CommunityToolkit.Mvvm.Messaging;
-using CommunityToolkit.Mvvm.Messaging.Messages;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
@@ -106,10 +104,20 @@ public sealed partial class App : IDisposable
     /// </summary>
     private void InitializeLogging()
     {
+        // Get log access service from the IoC container
+        var logAccessService = Ioc.Default.GetRequiredService<ILogAccessService>();
+
         // Create observer to forward log events through the messaging system
-        logObserver = new AnonymousObserver<LogEvent>(static x =>
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LogEvent>(x)));
-        InitializeLogging(logObserver);
+        logObserver = new AnonymousObserver<LogEvent>(logAccessService.Logs.Add);
+
+        // Configure Serilog with multiple outputs: file, debug, and observer
+        Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                    , IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
+                rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
+            .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture)
+            .WriteTo.Observers(observable => observable.Subscribe(logObserver))
+            .CreateLogger();
     }
 
     /// <summary>
@@ -208,23 +216,6 @@ public sealed partial class App : IDisposable
     }
 
     /// <summary>
-    ///     Initializes the logging system with the specified observer
-    ///     Configures Serilog to write to file, debug output, and the specified observer
-    /// </summary>
-    /// <param name="observer">The observer to subscribe to log events</param>
-    private static void InitializeLogging(IObserver<LogEvent> observer)
-    {
-        // Configure Serilog with multiple outputs: file, debug, and observer
-        Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    , IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
-                rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
-            .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture)
-            .WriteTo.Observers(observable => observable.Subscribe(observer))
-            .CreateLogger();
-    }
-
-    /// <summary>
     ///     Activates an existing instance of the application
     ///     Finds the existing process and brings its window to the foreground
     /// </summary>
@@ -288,6 +279,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()
+            .AddSingleton<ILogAccessService, LogAccessService>()
             .AddScoped<IExplorerService, ExplorerService>()
             .AddScoped<IPlayGameService, PlayGameService>()
             .AddScoped<ICheckUpdateService, CheckUpdateService>()
