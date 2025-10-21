@@ -68,25 +68,22 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     ///     This constructor is used during JSON deserialization
     /// </summary>
     /// <param name="w3StringsPath">The path to the W3Strings tool executable</param>
+    /// <param name="gameExePath">The path to the game executable</param>
     /// <param name="preferredW3FileType">The preferred The Witcher 3 file type</param>
     /// <param name="preferredLanguage">The preferred language</param>
-    /// <param name="gameExePath">The path to the game executable</param>
     /// <param name="backupItems">The collection of backup items</param>
     /// <param name="recentItems">The collection of recent items</param>
     [JsonConstructor]
-    public AppSettings(string w3StringsPath,
-        W3FileType preferredW3FileType,
-        W3Language preferredLanguage,
-        string gameExePath,
-        ObservableCollection<BackupItem> backupItems,
+    public AppSettings(string w3StringsPath, string gameExePath, W3FileType preferredW3FileType,
+        W3Language preferredLanguage, ObservableCollection<BackupItem> backupItems,
         ObservableCollection<RecentItem> recentItems)
     {
-        W3StringsPath = w3StringsPath;
-        PreferredW3FileType = preferredW3FileType;
-        PreferredLanguage = preferredLanguage;
         GameExePath = gameExePath;
+        W3StringsPath = w3StringsPath;
         BackupItems = [.. backupItems];
         RecentItems = [.. recentItems];
+        PreferredW3FileType = preferredW3FileType;
+        PreferredLanguage = preferredLanguage;
     }
 
     /// <summary>
