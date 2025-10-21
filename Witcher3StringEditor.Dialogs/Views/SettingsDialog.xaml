@@ -87,7 +87,7 @@
                            Text="{I18N {x:Static l:LangKeys.GeneralSettingsHeader}}" />
                 <!-- W3Strings encoder path settings card -->
                 <ui:SettingsCard
-                    Description="{Binding AppSettings.W3StringsPath, FallbackValue={I18N {x:Static l:LangKeys.W3StringsPath}}}"
+                    Description="{Binding AppSettings.W3StringsPath}"
                     Header="{I18N {x:Static l:LangKeys.EncoderSettingCardHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE90F;" />
@@ -98,7 +98,7 @@
                 </ui:SettingsCard>
                 <!-- Game executable path settings card -->
                 <ui:SettingsCard
-                    Description="{Binding AppSettings.GameExePath, FallbackValue={I18N {x:Static l:LangKeys.GameExePath}}}"
+                    Description="{Binding AppSettings.GameExePath}"
                     Header="{I18N {x:Static l:LangKeys.GameSettingCardHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7FC;" />
