@@ -213,7 +213,7 @@
                     <!-- Uses IntToStringConverter to handle conversion between integer and string values -->
                     <ComboBox
                         SelectedValuePath="Content"
-                        SelectedValue="{Binding AppSettings.PageSize,Mode=TwoWay,Converter={StaticResource IntToStringConverter},FallbackValue=30}">
+                        SelectedValue="{Binding AppSettings.PageSize,Mode=TwoWay,Converter={StaticResource IntToStringConverter}}">
                         <!-- Provides options for 20, 30, 50, and 100 items per page -->
                         <ComboBox.Items>
                             <ComboBoxItem Content="20" />
