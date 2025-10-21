@@ -87,22 +87,54 @@
                            Text="{I18N {x:Static l:LangKeys.GeneralSettingsHeader}}" />
                 <!-- W3Strings encoder path settings card -->
                 <ui:SettingsCard
-                    Description="{Binding AppSettings.W3StringsPath}"
                     Header="{I18N {x:Static l:LangKeys.EncoderSettingCardHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE90F;" />
                     </ui:SettingsCard.HeaderIcon>
+                    <ui:SettingsCard.Description>
+                        <Grid>
+                            <TextBlock Text="{Binding AppSettings.W3StringsPath}"/>
+                            <TextBlock Text="{I18N {x:Static l:LangKeys.W3StringsPath}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AppSettings.W3StringsPath}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </ui:SettingsCard.Description>
                     <Button Command="{Binding SetW3StringsPathCommand}">
                         <ui:FontIcon Glyph="&#xe71e;" />
                     </Button>
                 </ui:SettingsCard>
                 <!-- Game executable path settings card -->
                 <ui:SettingsCard
-                    Description="{Binding AppSettings.GameExePath}"
                     Header="{I18N {x:Static l:LangKeys.GameSettingCardHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Glyph="&#xE7FC;" />
                     </ui:SettingsCard.HeaderIcon>
+                    <ui:SettingsCard.Description>
+                        <Grid>
+                            <TextBlock Text="{Binding AppSettings.GameExePath}"/>
+                            <TextBlock Text="{I18N {x:Static l:LangKeys.GameExePath}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AppSettings.GameExePath}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </ui:SettingsCard.Description>
                     <Button Command="{Binding SetGameExePathCommand}">
                         <ui:FontIcon Glyph="&#xe71e;" />
                     </Button>
