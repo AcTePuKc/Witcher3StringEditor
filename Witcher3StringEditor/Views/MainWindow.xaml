@@ -273,7 +273,8 @@
             NavigationMode="Cell"
             RowHeight="30"
             SelectionMode="Extended"
-            ShowRowHeader="True">
+            ShowRowHeader="True" 
+            GridPasteOption="None">
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
                     <!-- Custom style for row header cells to display row numbers -->
