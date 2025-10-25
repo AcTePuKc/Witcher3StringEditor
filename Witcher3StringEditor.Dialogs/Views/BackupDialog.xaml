@@ -71,7 +71,8 @@
             ItemsSource="{Binding PagedSource, ElementName=SfDataPager, Mode=TwoWay}"
             NavigationMode="Row"
             RowHeight="30"
-            ShowRowHeader="True">
+            ShowRowHeader="True"
+            GridPasteOption="None">
             <!-- Data grid resources for customizing row header appearance -->
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
