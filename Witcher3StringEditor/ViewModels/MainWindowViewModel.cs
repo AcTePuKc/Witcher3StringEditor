@@ -556,7 +556,7 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanPlayGame))]
     private async Task PlayGame()
     {
-        await serviceProvider.GetRequiredService<IPlayGameService>().PlayGame();
+        await serviceProvider.GetRequiredService<IPlayGameService>().PlayGame(); // Start the game
     }
 
     /// <summary>
