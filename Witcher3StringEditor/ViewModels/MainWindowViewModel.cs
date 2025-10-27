@@ -630,8 +630,8 @@ internal partial class MainWindowViewModel : ObservableObject
             selectedItem is not null
                 ? FilteredW3StringItems.IndexOf(selectedItem)
                 : 0; // Get the index of the selected item
-        var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
-            .First(x => x.Name == appSettings.Translator);
+        var translator = serviceProvider.GetServices<ITranslator>()
+            .First(x => x.Name == appSettings.Translator); // Get the configured translator
         await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, FilteredW3StringItems!,
                 selectedIndex)); // Show the translate dialog
