@@ -493,9 +493,9 @@ internal partial class MainWindowViewModel : ObservableObject
     private async Task Delete(IEnumerable<object> selectedItems)
     {
         var w3Items = selectedItems.OfType<ITrackableW3StringItem>().ToArray(); // Filter and convert to trackable items
-        if (w3Items.Length > 0 && // Check if any items to delete
+        if (w3Items.Length > 0 &&
             await dialogService.ShowDialogAsync(this, new DeleteDataDialogViewModel(w3Items)) ==
-            true) // Show confirmation dialog
+            true) // Show delete confirmation dialog
             w3Items.ForEach(item =>
             {
                 var stringItem = item.Cast<W3StringItemModel>(); // Cast to string item model
@@ -532,7 +532,9 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowLogDialog()
     {
-        using var logDialogViewModel = new LogDialogViewModel(serviceProvider.GetRequiredService<ILogAccessService>()); // Create log dialog view model
+        using var logDialogViewModel =
+            new LogDialogViewModel(serviceProvider
+                .GetRequiredService<ILogAccessService>()); // Create log dialog view model
         await dialogService.ShowDialogAsync<LogDialogViewModel>(this, logDialogViewModel); // Show the log dialog
     }
 
