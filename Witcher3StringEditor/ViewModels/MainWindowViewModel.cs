@@ -626,7 +626,6 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
-        if (FilteredW3StringItems is null) return; // Return if there are no filtered items
         var selectedIndex =
             selectedItem is not null
                 ? FilteredW3StringItems.IndexOf(selectedItem)
@@ -634,7 +633,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(appSettings, translator, FilteredW3StringItems,
+            new TranslateDialogViewModel(appSettings, translator, FilteredW3StringItems!,
                 selectedIndex)); // Show the translate dialog
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
     }
