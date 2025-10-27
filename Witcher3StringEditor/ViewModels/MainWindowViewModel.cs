@@ -532,8 +532,8 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowLogDialog()
     {
-        using var logDialogViewModel = new LogDialogViewModel(serviceProvider.GetRequiredService<ILogAccessService>());
-        await dialogService.ShowDialogAsync<LogDialogViewModel>(this, logDialogViewModel);
+        using var logDialogViewModel = new LogDialogViewModel(serviceProvider.GetRequiredService<ILogAccessService>()); // Create log dialog view model
+        await dialogService.ShowDialogAsync<LogDialogViewModel>(this, logDialogViewModel); // Show the log dialog
     }
 
     /// <summary>
