@@ -545,9 +545,9 @@ internal partial class MainWindowViewModel : ObservableObject
         var translators = serviceProvider.GetServices<ITranslator>().ToArray(); // Get all available translators
         var names = translators.Select(x => x.Name); // Extract translator names
         translators.ForEach(x => x.Cast<IDisposable>().Dispose()); // Dispose of translator instances
-        await dialogService.ShowDialogAsync(this, // Show the settings dialog
+        await dialogService.ShowDialogAsync(this,
             new SettingDialogViewModel(appSettings, dialogService, names,
-                serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures));
+                serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures)); // Show the settings dialog
     }
 
     /// <summary>
