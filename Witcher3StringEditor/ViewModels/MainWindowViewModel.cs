@@ -634,8 +634,9 @@ internal partial class MainWindowViewModel : ObservableObject
             selectedItem is not null ? itemsToUse.IndexOf(selectedItem) : 0; // Get the index of the selected item
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
-        await dialogService.ShowDialogAsync(this, // Show the translate dialog
-            new TranslateDialogViewModel(appSettings, translator, itemsToUse, selectedIndex));
+        await dialogService.ShowDialogAsync(this,
+            new TranslateDialogViewModel(appSettings, translator, itemsToUse,
+                selectedIndex)); // Show the translate dialog
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
     }
 }
