@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
@@ -78,17 +77,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     /// </summary>
     public bool? DialogResult => true;
 
-    /// <summary>
-    ///     Detects the language of the first item's text
-    ///     Sets the source language based on the detection result
-    /// </summary>
-    [RelayCommand]
-    private async Task DetectLanguage()
-    {
-        var text = w3StringItems[0].Text;
-        var detectedLanguage = await translator.DetectLanguageAsync(text);
-        CurrentViewModel.FormLanguage = new Language(detectedLanguage.ISO6391);
-    }
 
     /// <summary>
     ///     Switches between single item and batch translation modes

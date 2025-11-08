@@ -32,10 +32,6 @@
         <i:EventTrigger EventName="Closed">
             <i:InvokeCommandAction Command="{Binding ClosedCommand}" />
         </i:EventTrigger>
-        <!-- Trigger for the Loaded event -->
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding DetectLanguageCommand}"/>
-        </i:EventTrigger>
     </i:Interaction.Triggers>
     <!-- 
         Window resources containing data templates and template selector
