@@ -85,16 +85,9 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [RelayCommand]
     private async Task DetectLanguage()
     {
-        try
-        {
-            var text = w3StringItems[0].Text;
-            var detectedLanguage = await translator.DetectLanguageAsync(text);
-            CurrentViewModel.FormLanguage = new Language(detectedLanguage.ISO6391);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failed to detect language");
-        }
+        var text = w3StringItems[0].Text;
+        var detectedLanguage = await translator.DetectLanguageAsync(text);
+        CurrentViewModel.FormLanguage = new Language(detectedLanguage.ISO6391);
     }
 
     /// <summary>
