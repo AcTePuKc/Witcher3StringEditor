@@ -77,7 +77,6 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     /// </summary>
     public bool? DialogResult => true;
 
-
     /// <summary>
     ///     Switches between single item and batch translation modes
     ///     Cleans up the current view model and creates a new one of the opposite type
