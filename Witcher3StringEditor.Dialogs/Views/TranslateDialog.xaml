@@ -34,7 +34,7 @@
         </i:EventTrigger>
         <!-- Trigger for the Loaded event -->
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding DetectLanguageCommand}" />
+            <i:InvokeCommandAction Command="{Binding DetectLanguageCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <!-- 
