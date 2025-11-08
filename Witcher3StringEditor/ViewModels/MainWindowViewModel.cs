@@ -222,7 +222,7 @@ internal partial class MainWindowViewModel : ObservableObject
         }
         else
         {
-            FilteredW3StringItems = W3StringItems;
+            FilteredW3StringItems = null;
             Log.Information("Search cleared.");
         }
     }
@@ -365,7 +365,6 @@ internal partial class MainWindowViewModel : ObservableObject
         {
             if (!await HandleReOpenFile(fileName)) return; // Handle reopening file logic
             W3StringItems = await DeserializeW3StringItems(fileName); // Deserialize file contents
-            FilteredW3StringItems = W3StringItems; // Set filtered items to all items
             SetOutputFolder(fileName, folder => OutputFolder = folder); // Set output folder based on file location
             UpdateRecentItems(fileName); // Update recent items list
             SearchText = string.Empty; // Clear search text
@@ -618,7 +617,9 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <returns>True if the translate dialog can be shown, false otherwise</returns>
     private bool CanShowTranslateDialog()
     {
-        return FilteredW3StringItems is not null && FilteredW3StringItems.Any(); // Check if there are filtered items
+        if (FilteredW3StringItems is not null) // Check if we have search results
+            return FilteredW3StringItems.Any(); // Return true if search results exist
+        return W3StringItems?.Any() == true; // Otherwise check if we have any W3String items
     }
 
     /// <summary>
@@ -628,16 +629,13 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
     private async Task ShowTranslateDialog(IW3StringItem? selectedItem)
     {
-        if (FilteredW3StringItems is null) return; // Return if there are no filtered items
+        var itemsToUse = FilteredW3StringItems ?? W3StringItems!; // Use filtered items if available
         var selectedIndex =
-            selectedItem is not null
-                ? FilteredW3StringItems.IndexOf(selectedItem)
-                : 0; // Get the index of the selected item
-        var translator = serviceProvider.GetServices<ITranslator>()
-            .First(x => x.Name == appSettings.Translator); // Get the configured translator
-        await dialogService.ShowDialogAsync(this,
-            new TranslateDialogViewModel(appSettings, translator, FilteredW3StringItems,
-                selectedIndex)); // Show the translate dialog
+            selectedItem is not null ? itemsToUse.IndexOf(selectedItem) : 0; // Get the index of the selected item
+        var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
+            .First(x => x.Name == appSettings.Translator);
+        await dialogService.ShowDialogAsync(this, // Show the translate dialog
+            new TranslateDialogViewModel(appSettings, translator, itemsToUse, selectedIndex));
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
     }
 }

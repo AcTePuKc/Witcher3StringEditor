@@ -25,6 +25,7 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent(); // Initialize the UI components
+        SetupSearchHelper(); // Set up the search helper functionality
         RegisterMessageHandlers(); // Register message handlers for inter-component communication
         RegisterThemeChangedHandler(); // Register handler for theme change notifications
         DataContext = Ioc.Default.GetService<MainWindowViewModel>(); // Set the data context to the main view model
@@ -41,6 +42,17 @@ public partial class MainWindow
         {
             Log.Information("Theme changed to {Theme}", ThemeManager.Current.ActualApplicationTheme);
         };
+    }
+
+    /// <summary>
+    ///     Sets up the search helper for the data grid
+    ///     Configures filtering and case sensitivity options
+    /// </summary>
+    private void SetupSearchHelper()
+    {
+        SfDataGrid.SearchHelper.AllowFiltering = true; // Enable filtering
+        SfDataGrid.SearchHelper.AllowCaseSensitiveSearch = false; // Disable case-sensitive search
+        SfDataGrid.SearchHelper.CanHighlightSearchText = false; // Disable highlighting search text
     }
 
     /// <summary>
@@ -133,9 +145,10 @@ public partial class MainWindow
     {
         if (SfDataGrid.ItemsSource is null || string.IsNullOrWhiteSpace(args.QueryText))
             return; // Ensure there's data to search before proceeding
+        SfDataGrid.SearchHelper.Search(args.QueryText); // Perform the search and collect results
+        Log.Information("Search query submitted: {QueryText}", args.QueryText); // Log the search query
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
             MessageTokens.SearchRequested); // Send the search results to the search request message
-        Log.Information("Search query submitted: {QueryText}", args.QueryText); // Log the search query
     }
 
     /// <summary>
@@ -144,9 +157,10 @@ public partial class MainWindow
     /// </summary>
     /// <param name="sender">The source of the event</param>
     /// <param name="args">The event arguments</param>
-    private void SearchBox_TextChanged(object sender, AutoSuggestBoxTextChangedEventArgs args)
+    private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        if (!string.IsNullOrWhiteSpace(((AutoSuggestBox)sender).Text)) return; // Return if search text is not empty
+        if (!string.IsNullOrWhiteSpace(sender.Text)) return; // Return if search text is not empty
+        SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
         WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false),
             MessageTokens.SearchRequested); // Send an empty search result to the search request message
     }

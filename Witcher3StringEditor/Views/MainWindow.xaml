@@ -273,7 +273,7 @@
             NavigationMode="Cell"
             RowHeight="30"
             SelectionMode="Extended"
-            ShowRowHeader="True"
+            ShowRowHeader="True" 
             GridPasteOption="None">
             <sf:SfDataGrid.Resources>
                 <ResourceDictionary>
@@ -354,7 +354,7 @@
             HorizontalAlignment="Center"
             NumericButtonCount="10"
             PageSize="{Binding PageSize, Mode=OneWay}"
-            Source="{Binding FilteredW3StringItems, Mode=TwoWay}" />
+            Source="{Binding W3StringItems, Mode=TwoWay}" />
         <!-- Update available notification -->
         <ui:InfoBar
             Grid.Row="2"
