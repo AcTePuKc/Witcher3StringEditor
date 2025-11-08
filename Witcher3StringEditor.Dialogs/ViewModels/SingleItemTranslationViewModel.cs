@@ -122,7 +122,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// <param name="value">The new busy state value</param>
     partial void OnIsBusyChanged(bool value)
     {
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(value), MessageTokens.TranslatorIsBusy);
+        _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(value), MessageTokens.TranslatorIsBusy);
     }
 
     /// <summary>
@@ -159,14 +159,14 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             else
             {
                 // Send a message to notify other components that the translation text is not empty
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                     MessageTokens.TranslationNotEmpty);
             }
         }
         catch (Exception ex)
         {
             const string errorMessage = "The translator: {0} returned an error. Exception: {1}";
-            WeakReferenceMessenger.Default.Send(
+            _ = WeakReferenceMessenger.Default.Send(
                 new ValueChangedMessage<string>(string.Format(CultureInfo.InvariantCulture, errorMessage,
                     Translator.Name, ex.Message)), // Send error message
                 "TranslateError");
@@ -208,7 +208,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                     ?.TranslatedText)) // Check if translation text is not empty
                 SaveTranslation(); // Save translation
             else
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
+                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<string>(string.Empty),
                     MessageTokens
                         .TranslatedTextInvalid); // Send message to notify other components that the translation text is invalid
         }

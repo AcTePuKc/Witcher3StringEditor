@@ -58,7 +58,7 @@ public partial class BackupDialogViewModel(
         {
             Log.Information("The restoration of file {Path} has been approved.", backupItem.OrginPath); // Log approval
             if (!backupService.Restore(backupItem)) // Attempt restoration
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                     MessageTokens.OperationFailed); // Notify if failed
         }
     }
@@ -87,7 +87,7 @@ public partial class BackupDialogViewModel(
         {
             Log.Information("The deletion of file {Path} has been approved.", backupItem.BackupPath); // Log approval
             if (!backupService.Delete(backupItem)) // Attempt deletion
-                await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), // Notify if failed
+                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), // Notify if failed
                     MessageTokens.OperationFailed);
         }
     }

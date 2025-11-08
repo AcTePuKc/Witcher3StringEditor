@@ -107,7 +107,7 @@ public sealed partial class RecentDialogViewModel : ObservableObject, IModalDial
     private void HandleExistingFile(IRecentItem recentItem)
     {
         RequestClose?.Invoke(this, EventArgs.Empty);
-        WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(recentItem.FilePath),
+        _ = WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<string, bool>(recentItem.FilePath),
             MessageTokens.RecentFileOpened);
     }
 

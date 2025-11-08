@@ -146,7 +146,7 @@ public partial class MainWindow
         if (SfDataGrid.ItemsSource is null || string.IsNullOrWhiteSpace(args.QueryText))
             return; // Ensure there's data to search before proceeding
         SfDataGrid.SearchHelper.Search(args.QueryText); // Perform the search and collect results
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
+        _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true),
             MessageTokens.SearchRequested); // Send the search results to the search request message
         Log.Information("Search query submitted: {QueryText}", args.QueryText); // Log the search query
     }
@@ -161,7 +161,7 @@ public partial class MainWindow
     {
         if (!string.IsNullOrWhiteSpace(sender.Text)) return; // Return if search text is not empty
         SfDataGrid.SearchHelper.ClearSearch(); // Clear the search helper results
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false),
+        _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(false),
             MessageTokens.SearchRequested); // Send an empty search result to the search request message
     }
 

@@ -43,7 +43,7 @@ internal class SettingsManagerService : ISettingsManagerService
         if (string.IsNullOrWhiteSpace(appSettings.W3StringsPath)) // Check if W3Strings path is set
         {
             Log.Error("Settings are incorrect or initial setup is incomplete."); // Log error if not set
-            await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+            _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                 MessageTokens.FirstRun); // Trigger first run
         }
         else // If W3Strings path is set
@@ -76,11 +76,11 @@ internal class SettingsManagerService : ISettingsManagerService
         switch (e.PropertyName) // Switch on property name
         {
             case nameof(IAppSettings.W3StringsPath): // If W3StringsPath changed
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), // Send message
+                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), // Send message
                     MessageTokens.W3StringsPathChanged);
                 break;
             case nameof(IAppSettings.GameExePath): // If GameExePath changed
-                WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), // Send message
+                _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(true), // Send message
                     MessageTokens.GameExePathChanged);
                 break;
             case nameof(IAppSettings.Translator): // If Translator changed
@@ -90,7 +90,7 @@ internal class SettingsManagerService : ISettingsManagerService
                 ApplyLanguageChange(appSettings.Language); // Apply language change
                 break;
             case nameof(IAppSettings.PageSize): // If PageSize changed
-                WeakReferenceMessenger.Default.Send(
+                _ = WeakReferenceMessenger.Default.Send(
                     new ValueChangedMessage<int>(((IAppSettings)sender!).PageSize), // Send message
                     MessageTokens.PageSizeChanged);
                 break;

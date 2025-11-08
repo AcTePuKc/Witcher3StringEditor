@@ -113,7 +113,7 @@ public partial class SaveDialogViewModel
             IgnoreIdSpaceCheck = IsIgnoreIdSpaceCheck // Set ID space check flag
         });
         Log.Information("Sve result: {Result}.", saveResult); // Log save result
-        WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult),
+        _ = WeakReferenceMessenger.Default.Send(new ValueChangedMessage<bool>(saveResult),
             MessageTokens.Save); // Send result via messaging
         DialogResult = true; // Set dialog result
         RequestClose?.Invoke(this, EventArgs.Empty); // Close the dialog
