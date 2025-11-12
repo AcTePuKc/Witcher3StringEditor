@@ -197,7 +197,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         CancellationToken cancellationToken)
     {
         foreach (var item in items) // Process each item in the collection
-            if (!cancellationToken.IsCancellationRequested) // Check if operation has been cancelled
+            if (!cancellationToken.IsCancellationRequested) // Check if operation has been canceled
             {
                 await ProcessSingleItem(item, toLanguage, fromLanguage); // Translate the current item
                 PendingCount--; // Decrement the pending items counter
@@ -205,7 +205,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             else
             {
                 Log.Information("The batch translation has been cancelled."); // Log cancellation
-                break; // Exit the loop if cancelled
+                break; // Exit the loop if canceled
             }
     }
 

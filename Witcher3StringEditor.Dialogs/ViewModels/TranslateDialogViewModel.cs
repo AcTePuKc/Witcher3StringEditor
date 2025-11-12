@@ -106,7 +106,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
             }
             else
             {
-                Log.Information("Translation mode switch cancelled."); // Log if switch is cancelled
+                Log.Information("Translation mode switch cancelled."); // Log if switch is canceled
             }
         }
         catch (Exception ex)
@@ -150,7 +150,7 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     {
         try
         {
-            e.Cancel = await HandleClosingAsync(); // Determine if closing should be cancelled
+            e.Cancel = await HandleClosingAsync(); // Determine if closing should be canceled
         }
         catch (Exception ex)
         {

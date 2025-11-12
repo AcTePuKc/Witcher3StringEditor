@@ -82,7 +82,7 @@ public partial class SaveDialogViewModel
 
     /// <summary>
     ///     Gets the dialog result value
-    ///     True if the save operation was successful, false if cancelled
+    ///     True if the save operation was successful, false if canceled
     /// </summary>
     public bool? DialogResult { get; private set; }
 

@@ -142,7 +142,7 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         headerRange.CellStyle.Font.Bold = true; // Bold text
         headerRange.HorizontalAlignment = ExcelHAlign.HAlignCenter; // Horizontal center
         headerRange.VerticalAlignment = ExcelVAlign.VAlignCenter; // Vertical center
-        headerRange.CellStyle.ColorIndex = ExcelKnownColors.Grey_80_percent; // Dark grey background
+        headerRange.CellStyle.ColorIndex = ExcelKnownColors.Grey_80_percent; // Dark gray background
         headerRange.CellStyle.Font.Color = ExcelKnownColors.White; // White font
     }
 

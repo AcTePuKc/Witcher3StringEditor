@@ -36,7 +36,7 @@ public partial class EditDataDialogViewModel(ITrackableW3StringItem w3StringItem
 
     /// <summary>
     ///     Gets the dialog result value
-    ///     True if the user submitted changes, false if cancelled
+    ///     True if the user submitted changes, false if canceled
     /// </summary>
     public bool? DialogResult { get; private set; }
 

@@ -27,7 +27,7 @@ public partial class DeleteDataDialogViewModel(IEnumerable<IW3StringItem> w3Stri
 
     /// <summary>
     ///     Gets the dialog result value
-    ///     True if the user confirmed deletion, false if cancelled
+    ///     True if the user confirmed deletion, false if canceled
     /// </summary>
     public bool? DialogResult { get; private set; }
 
