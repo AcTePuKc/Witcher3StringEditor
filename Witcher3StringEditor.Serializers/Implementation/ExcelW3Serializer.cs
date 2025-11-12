@@ -89,6 +89,9 @@ public class ExcelW3Serializer(IBackupService backupService) : IExcelW3Serialize
         var worksheet = workbook.Worksheets[0]; // Get first worksheet
         FormatWorksheet(worksheet, w3StringItems); // Format worksheet (headers/styles/widths)
         WriteDataToWorksheet(worksheet, w3StringItems); // Write data to worksheet
+        var usedRange = worksheet.UsedRange; // Get used range
+        worksheet[2,1, usedRange.LastRow, usedRange.LastColumn].CellStyle.Locked = false; // Unlock all data cells
+        worksheet.Protect(string.Empty, ExcelSheetProtection.UnLockedCells); // Protect sheet, allow editing unlocked cells
         workbook.SaveAs(fileStream); // Save workbook to stream
     }
 
