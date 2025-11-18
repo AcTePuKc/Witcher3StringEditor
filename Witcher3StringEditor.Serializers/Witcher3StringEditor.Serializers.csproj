@@ -27,7 +27,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="31.2.10" />
+        <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="31.2.12" />
     </ItemGroup>
 
 </Project>
