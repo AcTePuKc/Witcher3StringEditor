@@ -42,6 +42,11 @@ internal class CheckUpdateService : ICheckUpdateService
         }
     }
 
+    /// <summary>
+    ///     Gets the current application version from assembly file version
+    /// </summary>
+    /// <returns>The current application version</returns>
+    /// <exception cref="InvalidOperationException">Thrown when version parsing fails</exception>
     private static Version GetCurrentVersion()
     {
         Guard.IsTrue(Version.TryParse(ThisAssembly.AssemblyFileVersion,
@@ -50,12 +55,22 @@ internal class CheckUpdateService : ICheckUpdateService
         return currentVersion; // Return current version
     }
 
+    /// <summary>
+    ///     Fetches the latest version information from NexusMods API
+    /// </summary>
+    /// <returns>The latest available version</returns>
     private async Task<Version> FetchLatestVersion()
     {
         var response = await SendGraphQlRequest(); // Send GraphQL request
         return ExtractVersionFromResponse(response); // Extract version from response
     }
 
+    /// <summary>
+    ///     Extracts version information from GraphQL API response
+    /// </summary>
+    /// <param name="response">The JSON response string from API</param>
+    /// <returns>Parsed version from the response</returns>
+    /// <exception cref="InvalidOperationException">Thrown when response parsing fails</exception>
     private static Version ExtractVersionFromResponse(string response)
     {
         var jObject = JObject.Parse(response); // Parse response
@@ -71,6 +86,11 @@ internal class CheckUpdateService : ICheckUpdateService
         return version; // Return version
     }
 
+    /// <summary>
+    ///     Sends GraphQL request to NexusMods API to fetch mod information
+    /// </summary>
+    /// <returns>Raw JSON response string from the API</returns>
+    /// <exception cref="HttpRequestException">Thrown when HTTP request fails</exception>
     private async Task<string> SendGraphQlRequest()
     {
         using var httpClient = new HttpClient(); // Create HTTP client
