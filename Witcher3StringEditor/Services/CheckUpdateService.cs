@@ -49,40 +49,54 @@ internal class CheckUpdateService : ICheckUpdateService
         Guard.IsNotNull(currentVersion); // Ensure current version is not null
         return currentVersion; // Return current version
     }
-    
+
     private async Task<Version> FetchLatestVersion()
     {
+        var jsonResponse = await SendGraphQlRequest();
+        return ExtractVersionFromResponse(jsonResponse);
+    }
+
+    private static Version ExtractVersionFromResponse(string jsonResponse)
+    {
+        var jObject = JObject.Parse(jsonResponse);
+        var nodes = jObject["data"]?["mods"]?["nodes"]?.ToArray();
+
+        Guard.IsNotNull(nodes);
+        Guard.IsNotEmpty(nodes);
+
+        var versionToken = nodes[0]["version"];
+        Guard.IsNotNull(versionToken);
+
+        var versionString = versionToken.Value<string>();
+        Guard.IsNotNullOrWhiteSpace(versionString);
+
+        Guard.IsTrue(Version.TryParse(versionString, out var latestVersion));
+        Guard.IsNotNull(latestVersion);
+
+        return latestVersion;
+    }
+
+    private async Task<string> SendGraphQlRequest()
+    {
         using var httpClient = new HttpClient(); // Create HTTP client
-        const string graphqlQuery =
-            @"query mods($filter: ModsFilter){mods(filter: $filter){nodes {version}nodesCount}}"; // Create GraphQL query
-        var variables = new
+        var body = JsonConvert.SerializeObject(new
         {
-            filter = new
+            query = @"query mods($filter: ModsFilter){mods(filter: $filter){nodes {version}nodesCount}}",
+            variables = new
             {
-                name = new
+                filter = new
                 {
-                    value = "The Witcher3 String Editor NextGen",
-                    op = "EQUALS"
+                    name = new
+                    {
+                        value = "The Witcher3 String Editor NextGen",
+                        op = "EQUALS"
+                    }
                 }
             }
-        }; // Create variables
-        var requestBody =
-            JsonConvert.SerializeObject(new { query = graphqlQuery, variables }); // Create request body
-        var stringContent =
-            new StringContent(requestBody, Encoding.UTF8, "application/json"); // Create string content
-        var httpResponse = await httpClient.PostAsync(updateUrl, stringContent); // Send request
-        Guard.IsTrue(httpResponse.IsSuccessStatusCode); // Ensure request was successful
-        var jsonString = await httpResponse.Content.ReadAsStringAsync(); // Read response content as string
-        var jObject = JObject.Parse(jsonString); // Parse JSON
-        var nodes = jObject["data"]?["mods"]?["nodes"]?.ToArray(); // Get nodes
-        Guard.IsNotNull(nodes); // Ensure nodes are not null
-        Guard.IsNotEmpty(nodes); // Ensure nodes are not empty
-        var versionToken = nodes[0]["version"]; // Get version
-        Guard.IsNotNull(versionToken); // Ensure version is not null
-        var versionString = versionToken.Value<string>(); // Convert version to string
-        Guard.IsNotNullOrWhiteSpace(versionString); // Ensure version is not empty
-        Guard.IsTrue(Version.TryParse(versionString, out var lastestVersion)); // Parse latest version
-        Guard.IsNotNull(lastestVersion); // Ensure latest version is not null
-        return lastestVersion; // Return latest version
+        }); // Create request body
+        var content = new StringContent(body, Encoding.UTF8, "application/json"); // Create string content
+        var response = await httpClient.PostAsync(updateUrl, content); // Send request
+        Guard.IsTrue(response.IsSuccessStatusCode); // Ensure request was successful
+        return await response.Content.ReadAsStringAsync(); // Read response
     }
 }
