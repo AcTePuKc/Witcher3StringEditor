@@ -96,7 +96,7 @@ internal class CheckUpdateService : ICheckUpdateService
         using var httpClient = new HttpClient(); // Create HTTP client
         var body = JsonConvert.SerializeObject(new
         {
-            query = @"query mods($filter: ModsFilter){mods(filter: $filter){nodes {version}nodesCount}}",
+            query = @"query mods($filter:ModsFilter){mods(filter:$filter){nodes{version}}}",
             variables = new
             {
                 filter = new
