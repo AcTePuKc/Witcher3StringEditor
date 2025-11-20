@@ -53,7 +53,7 @@ internal class CheckUpdateService : ICheckUpdateService
     private async Task<Version> FetchLatestVersion()
     {
         var response = await SendGraphQlRequest(); // Send GraphQL request
-        return ExtractVersionFromResponse(response);
+        return ExtractVersionFromResponse(response); // Extract version from response
     }
 
     private static Version ExtractVersionFromResponse(string response)
