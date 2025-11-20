@@ -94,8 +94,8 @@ internal class CheckUpdateService : ICheckUpdateService
                 }
             }
         }); // Create request body
-        var content = new StringContent(body, Encoding.UTF8, "application/json"); // Create string content
-        var response = await httpClient.PostAsync(updateUrl, content); // Send request
+        using var content = new StringContent(body, Encoding.UTF8, "application/json"); // Create string content
+        using var response = await httpClient.PostAsync(updateUrl, content); // Send request
         Guard.IsTrue(response.IsSuccessStatusCode); // Ensure request was successful
         return await response.Content.ReadAsStringAsync(); // Read response
     }
