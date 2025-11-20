@@ -52,28 +52,23 @@ internal class CheckUpdateService : ICheckUpdateService
 
     private async Task<Version> FetchLatestVersion()
     {
-        var jsonResponse = await SendGraphQlRequest();
-        return ExtractVersionFromResponse(jsonResponse);
+        var response = await SendGraphQlRequest(); // Send GraphQL request
+        return ExtractVersionFromResponse(response);
     }
 
-    private static Version ExtractVersionFromResponse(string jsonResponse)
+    private static Version ExtractVersionFromResponse(string response)
     {
-        var jObject = JObject.Parse(jsonResponse);
-        var nodes = jObject["data"]?["mods"]?["nodes"]?.ToArray();
-
-        Guard.IsNotNull(nodes);
-        Guard.IsNotEmpty(nodes);
-
-        var versionToken = nodes[0]["version"];
-        Guard.IsNotNull(versionToken);
-
-        var versionString = versionToken.Value<string>();
-        Guard.IsNotNullOrWhiteSpace(versionString);
-
-        Guard.IsTrue(Version.TryParse(versionString, out var latestVersion));
-        Guard.IsNotNull(latestVersion);
-
-        return latestVersion;
+        var jObject = JObject.Parse(response); // Parse response
+        var nodes = jObject["data"]?["mods"]?["nodes"]?.ToArray(); // Get nodes array
+        Guard.IsNotNull(nodes); // Ensure nodes array is not null
+        Guard.IsNotEmpty(nodes); // Ensure nodes array is not empty
+        var versionToken = nodes[0]["version"]; // Get version token
+        Guard.IsNotNull(versionToken); // Ensure version token is not null
+        var versionString = versionToken.Value<string>(); // Extract version string
+        Guard.IsNotNullOrWhiteSpace(versionString); // Ensure version string is not empty
+        Guard.IsTrue(Version.TryParse(versionString, out var version)); // Parse version string
+        Guard.IsNotNull(version); // Ensure version is not null
+        return version; // Return version
     }
 
     private async Task<string> SendGraphQlRequest()
