@@ -1,9 +1,7 @@
 ﻿using System.Net.Http;
-using System.Text;
 using CommunityToolkit.Diagnostics;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Serilog;
+using ZeroQL.Client;
 
 namespace Witcher3StringEditor.Services;
 
@@ -61,57 +59,22 @@ internal class CheckUpdateService : ICheckUpdateService
     /// <returns>The latest available version</returns>
     private async Task<Version> FetchLatestVersion()
     {
-        var response = await SendGraphQlRequest(); // Send GraphQL request
-        return ExtractVersionFromResponse(response); // Extract version from response
-    }
-
-    /// <summary>
-    ///     Extracts version information from GraphQL API response
-    /// </summary>
-    /// <param name="response">The JSON response string from API</param>
-    /// <returns>Parsed version from the response</returns>
-    /// <exception cref="InvalidOperationException">Thrown when response parsing fails</exception>
-    private static Version ExtractVersionFromResponse(string response)
-    {
-        var jObject = JObject.Parse(response); // Parse response
-        var nodes = jObject["data"]?["mods"]?["nodes"]?.ToArray(); // Get nodes array
-        Guard.IsNotNull(nodes); // Ensure nodes array is not null
-        Guard.IsNotEmpty(nodes); // Ensure nodes array is not empty
-        var versionToken = nodes[0]["version"]; // Get version token
-        Guard.IsNotNull(versionToken); // Ensure version token is not null
-        var versionString = versionToken.Value<string>(); // Extract version string
-        Guard.IsNotNullOrWhiteSpace(versionString); // Ensure version string is not empty
-        Guard.IsTrue(Version.TryParse(versionString, out var version)); // Parse version string
-        Guard.IsNotNull(version); // Ensure version is not null
-        return version; // Return version
-    }
-
-    /// <summary>
-    ///     Sends GraphQL request to NexusMods API to fetch mod information
-    /// </summary>
-    /// <returns>Raw JSON response string from the API</returns>
-    /// <exception cref="HttpRequestException">Thrown when HTTP request fails</exception>
-    private async Task<string> SendGraphQlRequest()
-    {
-        using var httpClient = new HttpClient(); // Create HTTP client
-        var body = JsonConvert.SerializeObject(new
+        using var httpClient = new HttpClient();
+        httpClient.BaseAddress = updateUrl;
+        using var zeroQlClient = new ZeroQLClient(httpClient);
+        var filter = new ModsFilter
         {
-            query = @"query mods($filter:ModsFilter){mods(filter:$filter){nodes{version}}}",
-            variables = new
+            Name = [new BaseFilterValueEqualsWildcard
             {
-                filter = new
-                {
-                    name = new
-                    {
-                        value = "The Witcher3 String Editor NextGen",
-                        op = "EQUALS"
-                    }
-                }
-            }
-        }); // Create request body
-        using var content = new StringContent(body, Encoding.UTF8, "application/json"); // Create string content
-        using var response = await httpClient.PostAsync(updateUrl, content); // Send request
-        Guard.IsTrue(response.IsSuccessStatusCode); // Ensure request was successful
-        return await response.Content.ReadAsStringAsync(); // Read response
+                Op = new FilterComparisonOperatorEqualsWildcard(),
+                Value = "The Witcher3 String Editor NextGen"
+            }]
+        };
+        var result = (await zeroQlClient.Query(q=> q.Mods<string[]>(filter:filter,selector:p=> p.Nodes(selector:m=> m.Version)))).Data;
+        Guard.IsNotNull(result); // Ensure result is not null
+        Guard.IsTrue(result.Length != 0); // Ensure result contains at least one node
+        Guard.IsNotNull(Version.TryParse(result[0], out var latestVersion)); // Parse latest version
+        Guard.IsNotNull(latestVersion); // Ensure latest version is not null
+        return latestVersion; // Return latest version
     }
 }
