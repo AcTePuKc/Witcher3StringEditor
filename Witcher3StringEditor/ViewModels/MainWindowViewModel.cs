@@ -561,12 +561,12 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Shows the about dialog
+    ///     Shows about dialog
     /// </summary>
     [RelayCommand]
     private async Task ShowAbout()
     {
-        await dialogService.ShowDialogAsync(this, // Show the about dialog
+        await dialogService.ShowDialogAsync(this, // Show about dialog
             new AboutDialogViewModel(new Dictionary<string, object?> // Create view model with application information
             {
                 { "Version", ThisAssembly.AssemblyInformationalVersion }, // Application version
@@ -612,9 +612,9 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Determines whether the translate dialog can be shown
+    ///     Determines whether translate dialog can be shown
     /// </summary>
-    /// <returns>True if the translate dialog can be shown, false otherwise</returns>
+    /// <returns>True if translate dialog can be shown, false otherwise</returns>
     private bool CanShowTranslateDialog()
     {
         if (FilteredW3StringItems is not null) // Check if we have search results
@@ -623,7 +623,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Shows the translate dialog
+    ///     Shows translate dialog
     /// </summary>
     /// <param name="selectedItem">The initially selected item in the dialog</param>
     [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
@@ -636,7 +636,7 @@ internal partial class MainWindowViewModel : ObservableObject
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this,
             new TranslateDialogViewModel(appSettings, translator, itemsToUse,
-                selectedIndex)); // Show the translate dialog
+                selectedIndex)); // Show translate dialog
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
     }
 }
