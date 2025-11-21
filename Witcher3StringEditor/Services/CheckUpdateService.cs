@@ -64,13 +64,18 @@ internal class CheckUpdateService : ICheckUpdateService
         using var zeroQlClient = new ZeroQLClient(httpClient);
         var filter = new ModsFilter
         {
-            Name = [new BaseFilterValueEqualsWildcard
-            {
-                Op = new FilterComparisonOperatorEqualsWildcard(),
-                Value = "The Witcher3 String Editor NextGen"
-            }]
+            Name =
+            [
+                new BaseFilterValueEqualsWildcard
+                {
+                    Op = new FilterComparisonOperatorEqualsWildcard(),
+                    Value = "The Witcher3 String Editor NextGen"
+                }
+            ]
         };
-        var result = (await zeroQlClient.Query(q=> q.Mods<string[]>(filter:filter,selector:p=> p.Nodes(selector:m=> m.Version)))).Data;
+        var result =
+            (await zeroQlClient.Query(q => q.Mods<string[]>(filter: filter, selector: p => p.Nodes(m => m.Version))))
+            .Data;
         Guard.IsNotNull(result); // Ensure result is not null
         Guard.IsTrue(result.Length != 0); // Ensure result contains at least one node
         Guard.IsNotNull(Version.TryParse(result[0], out var latestVersion)); // Parse latest version
