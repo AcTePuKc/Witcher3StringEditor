@@ -59,9 +59,9 @@ internal class CheckUpdateService : ICheckUpdateService
     /// <returns>The latest available version</returns>
     private async Task<Version> FetchLatestVersion()
     {
-        using var httpClient = new HttpClient();
-        httpClient.BaseAddress = updateUrl;
-        using var zeroQlClient = new ZeroQLClient(httpClient);
+        using var httpClient = new HttpClient(); // Create HTTP client
+        httpClient.BaseAddress = updateUrl; // Set base address
+        using var zeroQlClient = new ZeroQLClient(httpClient); // Create ZeroQL client
         var filter = new ModsFilter
         {
             Name =
@@ -72,10 +72,10 @@ internal class CheckUpdateService : ICheckUpdateService
                     Value = "The Witcher3 String Editor NextGen"
                 }
             ]
-        };
+        }; // Create mods filter
         var result =
             (await zeroQlClient.Query(q => q.Mods<string[]>(filter: filter, selector: p => p.Nodes(m => m.Version))))
-            .Data;
+            .Data; // Query mods
         Guard.IsNotNull(result); // Ensure result is not null
         Guard.IsTrue(result.Length != 0); // Ensure result contains at least one node
         Guard.IsNotNull(Version.TryParse(result[0], out var latestVersion)); // Parse latest version
