@@ -623,7 +623,7 @@ internal partial class MainWindowViewModel : ObservableObject
     }
 
     /// <summary>
-    ///     Shows translate dialog
+    ///     Shows translation dialog
     /// </summary>
     /// <param name="selectedItem">The initially selected item in the dialog</param>
     [RelayCommand(CanExecute = nameof(CanShowTranslateDialog))]
