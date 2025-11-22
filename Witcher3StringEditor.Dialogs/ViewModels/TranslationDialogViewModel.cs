@@ -13,7 +13,7 @@ using Witcher3StringEditor.Locales;
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
 /// <summary>
-///     ViewModel for the translate dialog window
+///     ViewModel for the translation dialog window
 ///     Manages the translation process and switching between single and batch translation modes
 ///     Implements IModalDialogViewModel to support dialog result handling
 /// </summary>
