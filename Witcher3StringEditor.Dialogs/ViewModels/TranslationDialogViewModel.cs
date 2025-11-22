@@ -17,7 +17,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 ///     Manages the translation process and switching between single and batch translation modes
 ///     Implements IModalDialogViewModel to support dialog result handling
 /// </summary>
-public partial class TranslateDialogViewModel : ObservableObject, IModalDialogViewModel
+public partial class TranslationDialogViewModel : ObservableObject, IModalDialogViewModel
 {
     /// <summary>
     ///     The application settings service
@@ -50,13 +50,13 @@ public partial class TranslateDialogViewModel : ObservableObject, IModalDialogVi
     [ObservableProperty] private string title = Strings.TranslateDialogTitle;
 
     /// <summary>
-    ///     Initializes a new instance of the TranslateDialogViewModel class
+    ///     Initializes a new instance of the TranslationDialogViewModel class
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="index">Starting index for translation</param>
-    public TranslateDialogViewModel(IAppSettings appSettings, ITranslator translator,
+    public TranslationDialogViewModel(IAppSettings appSettings, ITranslator translator,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
         int index)
     {

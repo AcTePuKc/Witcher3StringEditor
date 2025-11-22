@@ -41,7 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Views\TranslateDialog.xaml.cs">
+        <Compile Update="Views\TranslationDialog.xaml.cs">
             <SubType>Code</SubType>
         </Compile>
         <Compile Remove="Models\W3JobModel.cs" />

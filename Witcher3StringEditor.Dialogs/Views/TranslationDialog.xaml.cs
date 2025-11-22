@@ -8,17 +8,17 @@ using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
-///     Interaction logic for TranslateDialog.xaml
+///     Interaction logic for TranslationDialog.xaml
 ///     This dialog provides translation functionality for The Witcher 3 string items
 ///     Supports both single item and batch translation modes
 /// </summary>
-public partial class TranslateDialog
+public partial class TranslationDialog
 {
     /// <summary>
-    ///     Initializes a new instance of the TranslateDialog class
+    ///     Initializes a new instance of the TranslationDialog class
     ///     Sets up the UI components and registers message handlers for various operations
     /// </summary>
-    public TranslateDialog()
+    public TranslationDialog()
     {
         InitializeComponent(); // Initialize UI components
         RegisterMessageHandlers(); // Register message handlers
@@ -54,7 +54,7 @@ public partial class TranslateDialog
     /// <param name="caption">Function that returns the caption text</param>
     private void RegisterAsyncRequestHandler(string token, Func<string> message, Func<string> caption)
     {
-        WeakReferenceMessenger.Default.Register<TranslateDialog, AsyncRequestMessage<bool>, string>(
+        WeakReferenceMessenger.Default.Register<TranslationDialog, AsyncRequestMessage<bool>, string>(
             this,
             token,
             (_, m) =>
@@ -108,7 +108,7 @@ public partial class TranslateDialog
     private void RegisterNotificationHandler(string token, Func<ValueChangedMessage<string>, string> message,
         Func<string> caption)
     {
-        WeakReferenceMessenger.Default.Register<TranslateDialog, ValueChangedMessage<string>, string>(
+        WeakReferenceMessenger.Default.Register<TranslationDialog, ValueChangedMessage<string>, string>(
             this,
             token,
             (r, m) =>
