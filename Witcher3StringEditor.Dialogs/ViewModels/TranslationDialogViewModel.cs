@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
+using GTranslate;
 using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
@@ -205,5 +206,28 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
 
         Log.Information("Translation dialog closing cancelled."); // Log if closing is prevented
         return true; // Prevent the dialog from closing
+    }
+
+    /// <summary>
+    ///     Detects the language of the first item's text
+    ///     Sets the source language based on the detection result
+    /// </summary>
+    [RelayCommand]
+    private async Task DetectLanguage()
+    {
+        try
+        {
+            var firstItem = w3StringItems[0]; // Get the first item
+            var textToDetect =
+                !string.IsNullOrWhiteSpace(firstItem.OldText)
+                    ? firstItem.OldText
+                    : firstItem.Text; // Get the text to detect
+            var detectedLanguage = await translator.DetectLanguageAsync(textToDetect); // Detect the language
+            CurrentViewModel.FormLanguage = new Language(detectedLanguage.ISO6391); // Set the source language
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to detect language"); // Log any errors
+        }
     }
 }
