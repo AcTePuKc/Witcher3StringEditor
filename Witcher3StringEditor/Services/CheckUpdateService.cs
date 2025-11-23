@@ -77,7 +77,7 @@ internal class CheckUpdateService : ICheckUpdateService
             (await zeroQlClient.Query(q => q.Mods<string[]>(filter: filter, selector: p => p.Nodes(m => m.Version))))
             .Data; // Query mods
         Guard.IsNotNull(result); // Ensure result is not null
-        Guard.IsTrue(result.Length != 0); // Ensure result contains at least one node
+        Guard.IsNotEmpty(result); // Ensure result is not empty
         Guard.IsNotNull(Version.TryParse(result[0], out var latestVersion)); // Parse latest version
         Guard.IsNotNull(latestVersion); // Ensure latest version is not null
         return latestVersion; // Return latest version
