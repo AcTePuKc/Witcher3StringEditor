@@ -34,7 +34,7 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
                     continue;
                 var item = ParseCsvLine(line); // Parse CSV line to object
                 if (item is not null) // Validate parsed item
-                    w3StringItems.Add(item);
+                    w3StringItems.Add(item); // Add parsed item to list
             }
 
             return w3StringItems; // Return parsed items list
@@ -69,12 +69,12 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
             };
             await WriteFileWithBackup(Path.Combine(context.OutputDirectory, $"{languageName}.csv"),
                 BuildCsvContent(w3StringItems, csvLanguageIdentifier)); // Write CSV with backup
-            return true;
+            return true; // Return success
         }
         catch (Exception ex)
         {
             Log.Error(ex, "An error occurred while serializing the CSV file."); // Log serialization errors
-            return false;
+            return false; // Return failure
         }
     }
 
@@ -86,9 +86,9 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     /// <returns>A task that represents the asynchronous write operation</returns>
     private async Task WriteFileWithBackup(string filePath, string content)
     {
-        if (File.Exists(filePath))
-            Guard.IsTrue(backupService.Backup(filePath));
-        await File.WriteAllTextAsync(filePath, content);
+        if (File.Exists(filePath)) // If file exists
+            Guard.IsTrue(backupService.Backup(filePath)); // Create backup
+        await File.WriteAllTextAsync(filePath, content); // Write file
     }
 
     /// <summary>
