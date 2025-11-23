@@ -55,7 +55,7 @@
                 QuerySubmitted="SearchBox_QuerySubmitted"
                 TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>
-                    <ui:FontIcon Glyph="&#xe721;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Search}" />
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
         </Grid>

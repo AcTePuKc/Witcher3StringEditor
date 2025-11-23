@@ -37,13 +37,13 @@
             <ControlTemplate.Triggers>
                 <!-- When checkbox is checked, show pinned icon -->
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter TargetName="iconElement" Property="ui:FontIcon.Icon"
-                            Value="{x:Static ui:SegoeFluentIcons.FavoriteStar}" />
+                    <Setter TargetName="iconElement" Property="ui:FontIcon.Glyph"
+                            Value="&#xE734;" />
                 </Trigger>
                 <!-- When checkbox is indeterminate, show unpinned icon -->
                 <Trigger Property="IsChecked" Value="{x:Null}">
-                    <Setter TargetName="iconElement" Property="ui:FontIcon.Icon"
-                            Value="{x:Static ui:SegoeFluentIcons.FavoriteStarFill}" />
+                    <Setter TargetName="iconElement" Property="ui:FontIcon.Glyph"
+                            Value="&#xE735;" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -82,7 +82,7 @@
                 QuerySubmitted="SearchBox_QuerySubmitted"
                 TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>
-                    <ui:FontIcon Glyph="&#xe721;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Search}" />
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
         </Grid>
