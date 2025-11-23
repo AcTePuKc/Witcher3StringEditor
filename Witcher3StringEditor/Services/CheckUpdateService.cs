@@ -78,7 +78,7 @@ internal class CheckUpdateService : ICheckUpdateService
             .Data; // Query mods
         Guard.IsNotNull(result); // Ensure result is not null
         Guard.IsNotEmpty(result); // Ensure result is not empty
-        Guard.IsNotNull(Version.TryParse(result[0], out var latestVersion)); // Parse latest version
+        Guard.IsTrue(Version.TryParse(result[0], out var latestVersion)); // Parse latest version
         Guard.IsNotNull(latestVersion); // Ensure latest version is not null
         return latestVersion; // Return latest version
     }
