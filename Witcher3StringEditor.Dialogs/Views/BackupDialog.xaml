@@ -160,7 +160,7 @@
                                 BorderThickness="0"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.RestoreCommand}"
                                 CommandParameter="{Binding}">
-                                <ui:FontIcon Glyph="&#xe777;" />
+                                <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.UpdateRestore}" />
                             </Button>
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
@@ -181,7 +181,7 @@
                                 BorderThickness="0"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.DeleteCommand}"
                                 CommandParameter="{Binding}">
-                                <ui:FontIcon Glyph="&#xe74d;" />
+                                <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Delete}" />
                             </Button>
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>

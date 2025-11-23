@@ -79,7 +79,7 @@
                 QuerySubmitted="SearchBox_QuerySubmitted"
                 TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>
-                    <ui:FontIcon Glyph="&#xe721;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Search}" />
                 </ui:AutoSuggestBox.QueryIcon>
             </ui:AutoSuggestBox>
             <!-- Theme switch button -->
@@ -121,20 +121,20 @@
             <!-- Open file button -->
             <ui:AppBarButton Command="{Binding OpenFileCommand}" Label="{I18N {x:Static l:LangKeys.OpenFileBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe8e5;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.OpenFile}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Recent files button -->
             <ui:AppBarButton Command="{Binding ShowRecentDialogCommand}"
                              Label="{I18N {x:Static l:LangKeys.RecentBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe823;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Recent}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Add entry button -->
             <ui:AppBarButton Command="{Binding AddCommand}" Label="{I18N {x:Static l:LangKeys.AddBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe710;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Add}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Edit entry button -->
@@ -143,7 +143,7 @@
                 CommandParameter="{Binding SelectedItem, ElementName=SfDataGrid}"
                 Label="{I18N {x:Static l:LangKeys.EditBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe70f;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Edit}" />
                 </ui:AppBarButton.Icon>
                 <ui:AppBarButton.Style>
                     <Style TargetType="ui:AppBarButton">
@@ -162,7 +162,7 @@
                 CommandParameter="{Binding SelectedItems, ElementName=SfDataGrid}"
                 Label="{I18N {x:Static l:LangKeys.DeleteBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe74d;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Delete}" />
                 </ui:AppBarButton.Icon>
                 <ui:AppBarButton.Style>
                     <Style TargetType="ui:AppBarButton">
@@ -181,59 +181,59 @@
                 CommandParameter="{Binding Path=SelectedItem, ElementName=SfDataGrid}"
                 Label="{I18N {x:Static l:LangKeys.TranslateBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xf2b7;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.LocaleLanguage}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Save button -->
             <ui:AppBarButton Command="{Binding ShowSaveDialogCommand}"
                              Label="{I18N {x:Static l:LangKeys.SaveBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe74e;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Save}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Backup button -->
             <ui:AppBarButton Command="{Binding ShowBackupDialogCommand}"
                              Label="{I18N {x:Static l:LangKeys.BackupBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe81c;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.History}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Log button -->
             <ui:AppBarButton Command="{Binding ShowLogDialogCommand}" Label="{I18N {x:Static l:LangKeys.LogBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xf000;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.KnowledgeArticle}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Settings button -->
             <ui:AppBarButton Command="{Binding ShowSettingsDialogCommand}"
                              Label="{I18N {x:Static l:LangKeys.SettingsBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe713;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Settings}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Open working folder button -->
             <ui:AppBarButton Command="{Binding OpenWorkingFolderCommand}"
                              Label="{I18N {x:Static l:LangKeys.OpenWorkingFolderBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xec50;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.FileExplorer}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Play game button -->
             <ui:AppBarButton Command="{Binding PlayGameCommand}" Label="{I18N {x:Static l:LangKeys.PlayBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe768;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Play}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- Nexus Mods button -->
             <ui:AppBarButton Command="{Binding OpenNexusModsCommand}" Label="Nexus Mods">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe71b;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Link}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
             <!-- About button -->
             <ui:AppBarButton Command="{Binding ShowAboutCommand}" Label="{I18N {x:Static l:LangKeys.AboutBtnLabel}}">
                 <ui:AppBarButton.Icon>
-                    <ui:FontIcon Glyph="&#xe946;" />
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Info}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
         </ui:CommandBar>

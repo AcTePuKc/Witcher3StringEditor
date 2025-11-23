@@ -54,7 +54,7 @@
                 Width="100"
                 Margin="16,16,16,0"
                 FontSize="50"
-                Glyph="&#xE946;" />
+                Icon="{x:Static ui:SegoeFluentIcons.Info}" />
             <!-- Grid containing application information details -->
             <Grid
                 Grid.Row="0"

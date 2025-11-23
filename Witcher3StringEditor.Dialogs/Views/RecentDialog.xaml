@@ -37,11 +37,13 @@
             <ControlTemplate.Triggers>
                 <!-- When checkbox is checked, show pinned icon -->
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter TargetName="iconElement" Property="ui:FontIcon.Glyph" Value="&#xe735;" />
+                    <Setter TargetName="iconElement" Property="ui:FontIcon.Icon"
+                            Value="{x:Static ui:SegoeFluentIcons.FavoriteStar}" />
                 </Trigger>
                 <!-- When checkbox is indeterminate, show unpinned icon -->
                 <Trigger Property="IsChecked" Value="{x:Null}">
-                    <Setter TargetName="iconElement" Property="ui:FontIcon.Glyph" Value="&#xe734;" />
+                    <Setter TargetName="iconElement" Property="ui:FontIcon.Icon"
+                            Value="{x:Static ui:SegoeFluentIcons.FavoriteStarFill}" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -183,7 +185,7 @@
                                 BorderThickness="0"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=DataContext.OpenCommand}"
                                 CommandParameter="{Binding}">
-                                <ui:FontIcon Glyph="&#xe8ad;" />
+                                <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Go}" />
                             </Button>
                         </DataTemplate>
                     </sf:GridTemplateColumn.CellTemplate>
