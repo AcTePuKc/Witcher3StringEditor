@@ -22,7 +22,7 @@
         <value>關於</value>
     </data>
     <data name="AddBtnLabel" xml:space="preserve">
-        <value>新增資料</value>
+        <value>新增記錄</value>
     </data>
     <data name="AddDialogTitle" xml:space="preserve">
         <value>新增</value>
@@ -82,7 +82,7 @@
         <value>刪除</value>
     </data>
     <data name="DeleteBtnLabel" xml:space="preserve">
-        <value>刪除資料</value>
+        <value>刪除記錄</value>
     </data>
     <data name="DeleteDialogMessage" xml:space="preserve">
         <value>您正在刪除以下資料：</value>
@@ -94,7 +94,7 @@
         <value>拖放單個檔案至此處開啟</value>
     </data>
     <data name="EditBtnLabel" xml:space="preserve">
-        <value>編輯資料</value>
+        <value>編輯記錄</value>
     </data>
     <data name="EditDialogTitle" xml:space="preserve">
         <value>編輯</value>
