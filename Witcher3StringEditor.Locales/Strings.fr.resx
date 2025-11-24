@@ -136,14 +136,14 @@
     <value>Rechercher</value>
   </data>
     <data name="AddBtnLabel" xml:space="preserve">
-    <value>Ajouter des données</value>
-  </data>
+      <value>Ajouter un enregistrement</value>
+    </data>
     <data name="EditBtnLabel" xml:space="preserve">
-    <value>Modifier des données</value>
-  </data>
+      <value>Modifier un enregistrement</value>
+    </data>
     <data name="DeleteBtnLabel" xml:space="preserve">
-    <value>Supprimer des données</value>
-  </data>
+      <value>Supprimer des enregistrements	</value>
+    </data>
     <data name="SaveBtnLabel" xml:space="preserve">
     <value>Sauvegarder</value>
   </data>
