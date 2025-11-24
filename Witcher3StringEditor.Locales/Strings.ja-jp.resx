@@ -23,7 +23,7 @@
         <value>このソフトについて</value>
     </data>
     <data name="AddBtnLabel" xml:space="preserve">
-        <value>データ追加</value>
+        <value>レコード追加</value>
     </data>
     <data name="AddDialogTitle" xml:space="preserve">
         <value>追加</value>
@@ -83,7 +83,7 @@
         <value>削除</value>
     </data>
     <data name="DeleteBtnLabel" xml:space="preserve">
-        <value>データ削除</value>
+        <value>レコード削除</value>
     </data>
     <data name="DeleteDialogMessage" xml:space="preserve">
         <value>以下の記録を削除します：</value>
@@ -95,7 +95,7 @@
         <value>ファイルをここにドラッグ＆ドロップして開く</value>
     </data>
     <data name="EditBtnLabel" xml:space="preserve">
-        <value>データ編集</value>
+        <value>レコード編集</value>
     </data>
     <data name="EditDialogTitle" xml:space="preserve">
         <value>編集</value>
