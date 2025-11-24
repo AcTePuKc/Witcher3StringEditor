@@ -136,14 +136,14 @@
     <value>搜索</value>
   </data>
     <data name="AddBtnLabel" xml:space="preserve">
-    <value>添加数据</value>
-  </data>
+      <value>新增记录</value>
+    </data>
     <data name="EditBtnLabel" xml:space="preserve">
-    <value>编辑数据</value>
-  </data>
+      <value>编辑记录</value>
+    </data>
     <data name="DeleteBtnLabel" xml:space="preserve">
-    <value>删除数据</value>
-  </data>
+      <value>删除记录</value>
+    </data>
     <data name="SaveBtnLabel" xml:space="preserve">
     <value>保存</value>
   </data>
