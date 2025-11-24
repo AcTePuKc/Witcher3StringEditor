@@ -85,7 +85,7 @@
         <value>刪除記錄</value>
     </data>
     <data name="DeleteDialogMessage" xml:space="preserve">
-        <value>您正在刪除以下資料：</value>
+        <value>您正在刪除以下記錄：</value>
     </data>
     <data name="DeleteDialogTitle" xml:space="preserve">
         <value>刪除</value>

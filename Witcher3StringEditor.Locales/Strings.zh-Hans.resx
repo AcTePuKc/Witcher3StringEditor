@@ -260,8 +260,8 @@
     <value>删除</value>
   </data>
     <data name="DeleteDialogMessage" xml:space="preserve">
-    <value>您正在删除以下数据：</value>
-  </data>
+      <value>您正在删除以下记录：</value>
+    </data>
     <data name="DeleteBtnContent" xml:space="preserve">
     <value>删除</value>
   </data>
