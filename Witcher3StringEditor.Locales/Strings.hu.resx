@@ -136,14 +136,14 @@
     <value>Keresés</value>
   </data>
     <data name="AddBtnLabel" xml:space="preserve">
-    <value>Adatok hozzáadása</value>
-  </data>
+      <value>Rekord hozzáadása</value>
+    </data>
     <data name="EditBtnLabel" xml:space="preserve">
-    <value>Adat szerkesztése</value>
-  </data>
+      <value>Rekord szerkesztése</value>
+    </data>
     <data name="DeleteBtnLabel" xml:space="preserve">
-    <value>Adat törlése</value>
-  </data>
+      <value>Rekordok törlése	</value>
+    </data>
     <data name="SaveBtnLabel" xml:space="preserve">
     <value>Mentés</value>
   </data>
