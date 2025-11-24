@@ -135,14 +135,14 @@
     <value>Search</value>
   </data>
     <data name="AddBtnLabel" xml:space="preserve">
-    <value>Add Data</value>
-  </data>
+      <value>Add Record</value>
+    </data>
     <data name="EditBtnLabel" xml:space="preserve">
-    <value>Edit Data</value>
-  </data>
+      <value>Edit Record</value>
+    </data>
     <data name="DeleteBtnLabel" xml:space="preserve">
-    <value>Delete Data</value>
-  </data>
+      <value>Delete Records</value>
+    </data>
     <data name="SaveBtnLabel" xml:space="preserve">
     <value>Save</value>
   </data>

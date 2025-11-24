@@ -78,7 +78,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Data.
+        ///   Looks up a localized string similar to Add Record.
         /// </summary>
         public static string AddBtnLabel {
             get {
@@ -258,7 +258,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete Data.
+        ///   Looks up a localized string similar to Delete Records.
         /// </summary>
         public static string DeleteBtnLabel {
             get {
@@ -294,7 +294,7 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Data.
+        ///   Looks up a localized string similar to Edit Record.
         /// </summary>
         public static string EditBtnLabel {
             get {
