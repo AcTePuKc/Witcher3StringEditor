@@ -27,17 +27,8 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     {
         try
         {
-            var w3StringItems = new List<W3StringStringItem>(); // Store parsed string items
-            await foreach (var line in File.ReadLinesAsync(filePath)) // Async read line by line
-            {
-                if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';')) // Skip empty/comment lines
-                    continue;
-                var item = ParseCsvLine(line); // Parse CSV line to object
-                if (item is not null) // Validate parsed item
-                    w3StringItems.Add(item); // Add parsed item to list
-            }
-
-            return w3StringItems; // Return parsed items list
+            return await File.ReadLinesAsync(filePath).SkipWhile(x => string.IsNullOrWhiteSpace(x) || x.StartsWith(';'))
+                .Select(ParseCsvLine).SkipWhile(x => x is null).Cast<IW3StringItem>().ToListAsync(); // Parallelize
         }
         catch (Exception ex)
         {
