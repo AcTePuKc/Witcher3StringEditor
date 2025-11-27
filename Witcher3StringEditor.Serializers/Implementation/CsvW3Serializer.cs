@@ -27,8 +27,18 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
     {
         try
         {
-            return await File.ReadLinesAsync(filePath).SkipWhile(x => string.IsNullOrWhiteSpace(x) || x.StartsWith(';'))
-                .Select(ParseCsvLine).SkipWhile(x => x is null).Cast<IW3StringItem>().ToListAsync(); // Parallelize
+            return await File.ReadLinesAsync(filePath) // Read lines from file
+                .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith(';')) // Filter out empty lines and comments
+                .Select(line => new { line, parts = line.Split('|') }) // Split each line into parts
+                .Where(x => x.parts.Length == 4) // Filter out lines with incorrect number of parts
+                .Select(IW3StringItem (x) => new W3StringStringItem
+                {
+                    StrId = x.parts[0].Trim(), // Extract string ID
+                    KeyHex = x.parts[1].Trim(), // Extract key hex
+                    KeyName = x.parts[2].Trim(), // Extract key name
+                    Text = x.parts[3].Trim() // Extract text
+                })  // Convert each line to a W3StringStringItem
+                .ToListAsync();
         }
         catch (Exception ex)
         {
@@ -81,28 +91,7 @@ public class CsvW3Serializer(IBackupService backupService) : ICsvW3Serializer
             Guard.IsTrue(backupService.Backup(filePath)); // Create backup
         await File.WriteAllTextAsync(filePath, content); // Write file
     }
-
-    /// <summary>
-    ///     Parses a single line from a CSV file into a W3StringStringItem
-    /// </summary>
-    /// <param name="line">The line to parse</param>
-    /// <returns>A W3StringStringItem if parsing was successful, otherwise null</returns>
-    private static W3StringStringItem? ParseCsvLine(string line)
-    {
-        if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';')) return null; // Skip empty/comment lines
-        var parts = line.Split('|'); // Split by pipe separator
-        if (parts.Length != 4) return null; // Validate 4-part format (StrId|KeyHex|KeyName|Text)
-
-        // Create item with trimmed data
-        return new W3StringStringItem
-        {
-            StrId = parts[0].Trim(), // String ID
-            KeyHex = parts[1].Trim(), // Hex key
-            KeyName = parts[2].Trim(), // String key name
-            Text = parts[3].Trim() // Localized text
-        };
-    }
-
+    
     /// <summary>
     ///     Builds the CSV content from a collection of The Witcher 3 string items
     /// </summary>
