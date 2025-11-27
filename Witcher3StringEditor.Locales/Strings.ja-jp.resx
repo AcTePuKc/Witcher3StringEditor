@@ -398,4 +398,13 @@
     <data name="TranslatorSelectionDescription" xml:space="preserve">
         <value>テキスト翻訳に使用する翻訳サービスを選択してください</value>
     </data>
+    <data name="InvalidEncoderPathMessage" xml:space="preserve">
+        <value>エンコーダーパスが無効です。設定を確認してください。</value>
+    </data>
+    <data name="InvalidGamePathMessage" xml:space="preserve">
+        <value>ゲームパスが無効です。設定を確認してください。</value>
+    </data>
+    <data name="InvalidPathCaption" xml:space="preserve">
+        <value>パスが無効</value>
+    </data>
 </root>

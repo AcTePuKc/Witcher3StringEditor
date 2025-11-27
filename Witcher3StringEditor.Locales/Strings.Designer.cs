@@ -484,6 +484,33 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid encoder path. Please check settings..
+        /// </summary>
+        public static string InvalidEncoderPathMessage {
+            get {
+                return ResourceManager.GetString("InvalidEncoderPathMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid game path. Please check settings..
+        /// </summary>
+        public static string InvalidGamePathMessage {
+            get {
+                return ResourceManager.GetString("InvalidGamePathMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Path.
+        /// </summary>
+        public static string InvalidPathCaption {
+            get {
+                return ResourceManager.GetString("InvalidPathCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
         public static string IsOff {

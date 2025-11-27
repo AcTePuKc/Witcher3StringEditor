@@ -505,4 +505,13 @@
     <data name="TranslatorSelectionDescription" xml:space="preserve">
       <value>Sélectionnez le service de traduction à utiliser pour traduire le texte</value>
     </data>
+    <data name="InvalidEncoderPathMessage" xml:space="preserve">
+      <value>Chemin de l'encodeur invalide. Vérifiez les paramètres.</value>
+    </data>
+    <data name="InvalidGamePathMessage" xml:space="preserve">
+      <value>Chemin du jeu invalide. Vérifiez les paramètres.</value>
+    </data>
+    <data name="InvalidPathCaption" xml:space="preserve">
+      <value>Chemin Invalide</value>
+    </data>
 </root>

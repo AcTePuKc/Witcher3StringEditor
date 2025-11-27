@@ -505,4 +505,13 @@
     <data name="LanguageDescription" xml:space="preserve">
       <value>选择应用程序界面显示的语言</value>
     </data>
+    <data name="InvalidEncoderPathMessage" xml:space="preserve">
+      <value>编码器路径无效，请检查设置。</value>
+    </data>
+    <data name="InvalidGamePathMessage" xml:space="preserve">
+      <value>游戏路径无效，请检查设置。</value>
+    </data>
+    <data name="InvalidPathCaption" xml:space="preserve">
+      <value>路径异常</value>
+    </data>
 </root>

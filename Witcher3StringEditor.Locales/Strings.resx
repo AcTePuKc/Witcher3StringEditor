@@ -504,4 +504,13 @@
     <data name="TranslatorSelectionDescription" xml:space="preserve">
       <value>Select the translation service to use for translating text</value>
     </data>
+    <data name="InvalidEncoderPathMessage" xml:space="preserve">
+      <value>Invalid encoder path. Please check settings.</value>
+    </data>
+    <data name="InvalidGamePathMessage" xml:space="preserve">
+      <value>Invalid game path. Please check settings.</value>
+    </data>
+    <data name="InvalidPathCaption" xml:space="preserve">
+      <value>Invalid Path</value>
+    </data>
 </root>

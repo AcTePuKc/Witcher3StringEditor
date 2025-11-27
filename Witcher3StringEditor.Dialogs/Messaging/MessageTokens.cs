@@ -115,4 +115,14 @@ public static class MessageTokens
     ///     Token for messages indicating that a search has been requested
     /// </summary>
     public const string SearchRequested = "SearchRequested";
+    
+    /// <summary>
+    ///     Token for messages indicating that an invalid encoder path has been provided
+    /// </summary>
+    public const string InvalidEncoderPath = "InvalidEncoderPath";
+    
+    /// <summary>
+    ///     Token for messages indicating that an invalid game executable path has been provided
+    /// </summary>
+    public const string InvalidGamePath = "InvalidGamePath";
 }

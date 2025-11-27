@@ -505,4 +505,13 @@
     <data name="TranslatorSelectionDescription" xml:space="preserve">
       <value>Válassza ki a szöveg fordításához használandó fordítási szolgáltatást</value>
     </data>
+    <data name="InvalidEncoderPathMessage" xml:space="preserve">
+      <value>Rövidebb: Érvénytelen kodoló útvonal. Ellenőrizze a beállításokat.</value>
+    </data>
+    <data name="InvalidGamePathMessage" xml:space="preserve">
+      <value>Érvénytelen játék útvonal. Ellenőrizze a beállításokat.</value>
+    </data>
+    <data name="InvalidPathCaption" xml:space="preserve">
+      <value>Érvénytelen Útvonal</value>
+    </data>
 </root>

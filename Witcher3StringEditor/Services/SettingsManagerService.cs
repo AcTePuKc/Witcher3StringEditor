@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
@@ -48,13 +49,26 @@ internal class SettingsManagerService : ISettingsManagerService
         }
         else // If W3Strings path is set
         {
-            Log.Information("The W3Strings path has been set to {Path}.",
-                appSettings.W3StringsPath); // Log W3Strings path
-            if (string.IsNullOrWhiteSpace(appSettings.GameExePath)) // Check if game exe path is set
+            if (!File.Exists(appSettings.W3StringsPath))
+                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                    MessageTokens.InvalidEncoderPath); // Trigger invalid encoder path
+            else
+                Log.Information("The W3Strings path has been set to {Path}.",
+                    appSettings.W3StringsPath); // Log W3Strings path
+            if (!string.IsNullOrWhiteSpace(appSettings.GameExePath)) // Check if game exe path is set
+            {
+                if (!File.Exists(appSettings.GameExePath))
+                    _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
+                        MessageTokens.InvalidGamePath); // Trigger invalid game path
+                else
+                    Log.Information("The game executable path has been set to {Path}.",
+                        appSettings.GameExePath); // Log game exe path
+            }
+            else
+            {
                 Log.Warning("The game executable path is not set."); // Log warning if not set
-            else // If game exe path is set
-                Log.Information("The game executable path has been set to {Path}.",
-                    appSettings.GameExePath); // Log game exe path
+            }
+
             Log.Information("The preferred filetype is {Filetype}",
                 appSettings.PreferredW3FileType); // Log preferred file type
             Log.Information("The preferred language is {Language}",

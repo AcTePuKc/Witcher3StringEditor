@@ -397,4 +397,13 @@
     <data name="TranslatorSelectionDescription" xml:space="preserve">
         <value>選擇用於翻譯文字的翻譯服務</value>
     </data>
+    <data name="InvalidEncoderPathMessage" xml:space="preserve">
+        <value>編碼器路徑無效，請檢查設定。</value>
+    </data>
+    <data name="InvalidGamePathMessage" xml:space="preserve">
+        <value>遊戲路徑無效，請檢查設定。</value>
+    </data>
+    <data name="InvalidPathCaption" xml:space="preserve">
+        <value>路徑異常</value>
+    </data>
 </root>
