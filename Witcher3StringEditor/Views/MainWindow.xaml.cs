@@ -93,10 +93,8 @@ public partial class MainWindow
                 MessageBoxResult.No),
             (MessageTokens.FirstRun, () => Strings.FristRunMessage, () => Strings.FristRunCaption, MessageBoxButton.OK,
                 MessageBoxResult.OK),
-            (MessageTokens.InvalidEncoderPath, () => Strings.InvalidEncoderPathMessage,
-                () => Strings.InvalidPathCaption, MessageBoxButton.OK, MessageBoxResult.OK),
-            (MessageTokens.InvalidGamePath, () => Strings.InvalidGamePathMessage, () => Strings.InvalidPathCaption,
-                MessageBoxButton.OK, MessageBoxResult.OK)
+            (MessageTokens.PathInvalid, () => Strings.PathInvalidMessage,
+                () => Strings.PathInvalidCaption, MessageBoxButton.OK, MessageBoxResult.OK)
         };
         // Register handlers for each scenario
         foreach (var (token, message, caption, button, excepted) in requestMessageHandlers)

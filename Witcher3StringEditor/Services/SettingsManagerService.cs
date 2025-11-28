@@ -41,40 +41,55 @@ internal class SettingsManagerService : ISettingsManagerService
     public async Task CheckSettings()
     {
         Log.Information("Checking whether the settings are correct."); // Log start of settings check
-        if (string.IsNullOrWhiteSpace(appSettings.W3StringsPath)) // Check if W3Strings path is set
-        {
-            Log.Error("Settings are incorrect or initial setup is incomplete."); // Log error if not set
-            _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                MessageTokens.FirstRun); // Trigger first run
-        }
-        else // If W3Strings path is set
-        {
-            if (!File.Exists(appSettings.W3StringsPath))
-                _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                    MessageTokens.InvalidEncoderPath); // Trigger invalid encoder path
-            else
-                Log.Information("The W3Strings path has been set to {Path}.",
-                    appSettings.W3StringsPath); // Log W3Strings path
-            if (!string.IsNullOrWhiteSpace(appSettings.GameExePath)) // Check if game exe path is set
-            {
-                if (!File.Exists(appSettings.GameExePath))
-                    _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
-                        MessageTokens.InvalidGamePath); // Trigger invalid game path
-                else
-                    Log.Information("The game executable path has been set to {Path}.",
-                        appSettings.GameExePath); // Log game exe path
-            }
-            else
-            {
-                Log.Warning("The game executable path is not set."); // Log warning if not set
-            }
+    
+        var hasErrors = false; // Flag to indicate whether there are any errors
 
-            Log.Information("The preferred filetype is {Filetype}",
-                appSettings.PreferredW3FileType); // Log preferred file type
-            Log.Information("The preferred language is {Language}",
-                appSettings.PreferredLanguage); // Log preferred language
-            Log.Information("Current translator is {Translator}.", appSettings.Translator); // Log current translator
-            Log.Information("Settings are correct."); // Log that settings are correct
+        if (string.IsNullOrWhiteSpace(appSettings.W3StringsPath)) // If W3StringsPath is unset
+        {
+            Log.Error("Settings are incorrect or initial setup is incomplete."); // Log error with W3Strings path is unset
+            _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.FirstRun); // Send message to trigger first run setup
+            return; // Return
+        }
+
+        if (!File.Exists(appSettings.W3StringsPath)) // If W3StringsPath does not exist
+        {
+            Log.Error("The W3Strings path is invalid: {Path}", appSettings.W3StringsPath); // Log error with invalid W3Strings path
+            hasErrors = true; // Set flag to indicate error
+        }
+        else // If W3StringsPath exists
+        {
+            Log.Information("The W3Strings path has been set to {Path}.", appSettings.W3StringsPath); // Log W3Strings path
+        }
+        
+        if (!string.IsNullOrWhiteSpace(appSettings.GameExePath)) // Log game executable path
+        {
+            if (!File.Exists(appSettings.GameExePath))  // If game executable path does not exist
+            {
+                Log.Error("The game executable path is invalid: {Path}", appSettings.GameExePath); // Log error if game executable path is invalid
+                hasErrors = true; // Set flag to indicate error
+            }
+            else // If game executable path exists
+            {
+                Log.Information("The game executable path has been set to {Path}.", appSettings.GameExePath); // Log game executable path
+            }
+        }
+        else // If game executable path is unset
+        {
+            Log.Warning("The game executable path is unset."); // Log warning if game executable path is unset
+        }
+        
+        // Log preferred filetype, preferred language, and translator
+        Log.Information("The preferred filetype is {Filetype}", appSettings.PreferredW3FileType); // Log preferred filetype
+        Log.Information("The preferred language is {Language}", appSettings.PreferredLanguage); // Log preferred language
+        Log.Information("Current translator is {Translator}.", appSettings.Translator); // Log translator
+        
+        if (hasErrors) // If there are errors
+        {
+            _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.PathInvalid); // Send message to trigger path invalid
+        }
+        else // If no errors
+        {
+            Log.Information("Settings are correct."); // Log correct settings
         }
     }
 
