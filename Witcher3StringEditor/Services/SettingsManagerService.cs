@@ -66,7 +66,8 @@ internal class SettingsManagerService : ISettingsManagerService
     /// <summary>
     ///     Validates the W3Strings path setting
     /// </summary>
-    /// <returns>True if valid, otherwise false</returns>
+    /// <param name="appSettings">The application settings instance</param>
+    /// /// <returns></returns>
     private static bool ValidateW3StringsPath(IAppSettings appSettings)
     {
         if (!File.Exists(appSettings.W3StringsPath)) // Check if file exists
@@ -84,7 +85,8 @@ internal class SettingsManagerService : ISettingsManagerService
     /// <summary>
     ///     Validates the game executable path setting
     /// </summary>
-    /// <returns>True if valid, otherwise false</returns>
+    /// <param name="appSettings">The application settings instance</param>
+    /// /// <returns></returns>
     private static bool ValidateGameExePath(IAppSettings appSettings)
     {
         if (!string.IsNullOrWhiteSpace(appSettings.GameExePath)) // Check if game executable path is set
@@ -106,8 +108,9 @@ internal class SettingsManagerService : ISettingsManagerService
     }
 
     /// <summary>
-    ///     Logs additional settings information
+    ///     Logs additional settings
     /// </summary>
+    /// <param name="appSettings">The application settings instance</param>
     private static void LogAdditionalSettings(IAppSettings appSettings)
     {
         Log.Information("The preferred filetype is {Filetype}",
