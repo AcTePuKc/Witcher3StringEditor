@@ -62,6 +62,8 @@
             <c:W3LanguageToNativeNameConverter x:Key="W3LanguageToNativeNameConverter" />
             <!-- Converter for displaying The Witcher 3 file type localized strings -->
             <c:W3FileTypeToLocalizedStringConverter x:Key="W3FileTypeToLocalizedStringConverter" />
+            <!-- Converter for checking if a file exists -->
+            <c:FileExistsToCollapsedConverter x:Key="FileExistsToCollapsedConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <!-- 
@@ -87,8 +89,14 @@
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                            Text="{I18N {x:Static l:LangKeys.GeneralSettingsHeader}}" />
                 <!-- W3Strings encoder path settings card -->
-                <ui:SettingsCard
-                    Header="{I18N {x:Static l:LangKeys.EncoderSettingCardHeader}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{I18N {x:Static l:LangKeys.EncoderSettingCardHeader}}" />
+                            <TextBlock Text="{I18N {x:Static l:LangKeys.PathInvalidIndicatorText}}" Margin="5,0,0,0"
+                                       Visibility="{Binding AppSettings.W3StringsPath,Converter={StaticResource FileExistsToCollapsedConverter}}" />
+                        </StackPanel>
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Repair}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -114,8 +122,14 @@
                     </Button>
                 </ui:SettingsCard>
                 <!-- Game executable path settings card -->
-                <ui:SettingsCard
-                    Header="{I18N {x:Static l:LangKeys.GameSettingCardHeader}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{I18N {x:Static l:LangKeys.GameSettingCardHeader}}" />
+                            <TextBlock Text="{I18N {x:Static l:LangKeys.PathInvalidIndicatorText}}" Margin="5,0,0,0"
+                                       Visibility="{Binding AppSettings.GameExePath,Converter={StaticResource FileExistsToCollapsedConverter}}" />
+                        </StackPanel>
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Game}" />
                     </ui:SettingsCard.HeaderIcon>

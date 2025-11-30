@@ -505,4 +505,7 @@
   <data name="PathInvalidMessage" xml:space="preserve">
     <value>當前設定的編碼器路徑或遊戲路徑已失效，請檢查設定。</value>
   </data>
+  <data name="PathInvalidIndicatorText" xml:space="preserve">
+    <value>（無効）</value>
+  </data>
 </root>

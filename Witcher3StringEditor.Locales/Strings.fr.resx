@@ -505,4 +505,7 @@
   <data name="PathInvalidMessage" xml:space="preserve">
     <value>Le chemin de l'encodeur ou du jeu actuellement défini est invalide. Veuillez vérifier vos paramètres.</value>
   </data>
+  <data name="PathInvalidIndicatorText" xml:space="preserve">
+    <value>(Invalide)</value>
+  </data>
 </root>

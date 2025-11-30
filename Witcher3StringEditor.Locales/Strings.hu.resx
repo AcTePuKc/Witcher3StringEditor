@@ -505,4 +505,7 @@
   <data name="PathInvalidMessage" xml:space="preserve">
     <value>Az aktuálisan beállított kodoló útvonal vagy játékútvonal érvénytelen. Kérjük, ellenőrizze a beállításokat.</value>
   </data>
+  <data name="PathInvalidIndicatorText" xml:space="preserve">
+    <value>(Érvénytelen)</value>
+  </data>
 </root>
