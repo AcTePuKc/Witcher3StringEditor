@@ -44,6 +44,14 @@
                     <x:Type TypeName="common:W3Language" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
+            <!-- Static array data provider for page size options -->
+            <!-- Provides predefined page size values (20, 30, 50, 100) for data grid pagination -->
+            <x:Array x:Key="PageSizes" Type="sys:Int32">
+                <sys:Int32>20</sys:Int32>
+                <sys:Int32>30</sys:Int32>
+                <sys:Int32>50</sys:Int32>
+                <sys:Int32>100</sys:Int32>
+            </x:Array>
             <!-- Style for settings section header text blocks -->
             <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
             <Style
@@ -54,8 +62,6 @@
                     <Setter Property="Margin" Value="1,30,0,6" />
                 </Style.Setters>
             </Style>
-            <!-- Converter for converting integers to strings -->
-            <c:IntToStringConverter x:Key="IntToStringConverter" />
             <!-- Converter for converting strings to CultureInfo objects -->
             <c:StringToCultureInfoConverter x:Key="StringToCultureInfoConverter" />
             <!-- Converter for displaying The Witcher 3 language native names -->
@@ -224,18 +230,9 @@
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
                     <!-- Binds to AppSettings.PageSize property with two-way binding -->
-                    <!-- Uses IntToStringConverter to handle conversion between integer and string values -->
                     <ComboBox
-                        SelectedValuePath="Content"
-                        SelectedValue="{Binding AppSettings.PageSize,Mode=TwoWay,Converter={StaticResource IntToStringConverter}}">
-                        <!-- Provides options for 20, 30, 50, and 100 items per page -->
-                        <ComboBox.Items>
-                            <ComboBoxItem Content="20" />
-                            <ComboBoxItem Content="30" />
-                            <ComboBoxItem Content="50" />
-                            <ComboBoxItem Content="100" />
-                        </ComboBox.Items>
-                    </ComboBox>
+                        ItemsSource="{Binding Source={StaticResource PageSizes}}"
+                        SelectedItem="{Binding AppSettings.PageSize,Mode=TwoWay}" />
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>
