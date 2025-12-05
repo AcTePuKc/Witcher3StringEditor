@@ -178,12 +178,12 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         // Register handler for W3Strings path change notifications
         WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "W3StringsPathChanged",
+            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, MessageTokens.W3StringsPathChanged,
                 (_, _) => OpenFileCommand
                     .NotifyCanExecuteChanged()); // Update OpenFile command state when W3Strings path changes
         // Register handler for GameExe path change notifications
         WeakReferenceMessenger.Default
-            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, "GameExePathChanged",
+            .Register<MainWindowViewModel, ValueChangedMessage<bool>, string>(this, MessageTokens.GameExePathChanged,
                 (_, _) => PlayGameCommand
                     .NotifyCanExecuteChanged()); // Update PlayGame command state when GameExe path changes
     }
