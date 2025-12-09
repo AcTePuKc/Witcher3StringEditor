@@ -25,7 +25,6 @@ using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Models;
 using Witcher3StringEditor.Serializers.Abstractions;
 using Witcher3StringEditor.Services;
-using W3StringItemModel = Witcher3StringEditor.Models.W3StringItemModel;
 
 namespace Witcher3StringEditor.ViewModels;
 
