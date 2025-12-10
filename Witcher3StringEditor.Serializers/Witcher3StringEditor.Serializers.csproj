@@ -28,7 +28,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="31.2.18" />
-        <PackageReference Include="System.Linq.AsyncEnumerable" Version="10.0.0" />
+        <PackageReference Include="System.Linq.AsyncEnumerable" Version="10.0.1" />
     </ItemGroup>
 
 </Project>
