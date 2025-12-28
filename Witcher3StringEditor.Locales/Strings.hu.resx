@@ -508,4 +508,10 @@
   <data name="PathInvalidIndicatorText" xml:space="preserve">
     <value>(Érvénytelen)</value>
   </data>
+  <data name="PackageName" xml:space="preserve">
+    <value>Függőségek</value>
+  </data>
+  <data name="PackageVersion" xml:space="preserve">
+    <value>Verzió</value>
+  </data>
 </root>
