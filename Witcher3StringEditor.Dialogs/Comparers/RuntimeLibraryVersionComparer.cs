@@ -2,7 +2,7 @@ using System.ComponentModel;
 using Microsoft.Extensions.DependencyModel;
 using Syncfusion.Data;
 
-namespace Witcher3StringEditor.Dialogs.SortComparers;
+namespace Witcher3StringEditor.Dialogs.Comparers;
 
 /// <summary>
 ///     A custom comparer for sorting RuntimeLibrary objects based on their version strings
