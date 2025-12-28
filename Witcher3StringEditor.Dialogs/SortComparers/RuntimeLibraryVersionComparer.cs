@@ -7,7 +7,7 @@ namespace Witcher3StringEditor.Dialogs.SortComparers;
 /// <summary>
 ///     A custom comparer for sorting RuntimeLibrary objects based on their version strings
 /// </summary>
-public class VersionStringSortCompare : IComparer<object>, ISortDirection
+public class RuntimeLibraryVersionComparer : IComparer<object>, ISortDirection
 {
     /// <summary>
     ///     Compares two RuntimeLibrary objects based on their version strings

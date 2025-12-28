@@ -23,7 +23,7 @@
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
-            <sc:VersionStringSortCompare x:Key="VersionStringSortCompare" />
+            <sc:RuntimeLibraryVersionComparer x:Key="RuntimeLibraryVersionComparer" />
         </ResourceDictionary>
     </Window.Resources>
     <!-- 
@@ -132,7 +132,7 @@
                 ItemsSource="{Binding AboutInfo[Package],Mode=OneTime}">
                 <!-- Sort comparer for version strings -->
                 <sf:SfDataGrid.SortComparers>
-                    <sd:SortComparer Comparer="{StaticResource VersionStringSortCompare}" PropertyName="Version"/>
+                    <sd:SortComparer Comparer="{StaticResource RuntimeLibraryVersionComparer}" PropertyName="Version"/>
                 </sf:SfDataGrid.SortComparers>
                 <!-- Package name and version columns -->
                 <sf:SfDataGrid.Columns>
