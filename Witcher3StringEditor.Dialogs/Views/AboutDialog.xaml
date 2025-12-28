@@ -9,8 +9,8 @@
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
-    xmlns:data="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.WPF"
-    xmlns:sortComparers="clr-namespace:Witcher3StringEditor.Dialogs.SortComparers"
+    xmlns:sd="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.WPF"
+    xmlns:sc="clr-namespace:Witcher3StringEditor.Dialogs.SortComparers"
     Title="{I18N {x:Static l:LangKeys.AboutDialogTitle}}"
     Width="800"
     Height="800"
@@ -23,7 +23,7 @@
     mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
-            <sortComparers:VersionStringSortCompare x:Key="VersionStringSortCompare" />
+            <sc:VersionStringSortCompare x:Key="VersionStringSortCompare" />
         </ResourceDictionary>
     </Window.Resources>
     <!-- 
@@ -132,7 +132,7 @@
                 ItemsSource="{Binding AboutInfo[Package],Mode=OneTime}">
                 <!-- Sort comparer for version strings -->
                 <sf:SfDataGrid.SortComparers>
-                    <data:SortComparer Comparer="{StaticResource VersionStringSortCompare}" />
+                    <sd:SortComparer Comparer="{StaticResource VersionStringSortCompare}" />
                 </sf:SfDataGrid.SortComparers>
                 <!-- Package name and version columns -->
                 <sf:SfDataGrid.Columns>
