@@ -31,13 +31,14 @@ public class FileExistsToCollapsedConverter : IValueConverter
     }
 
     /// <summary>
-    ///     Reverse conversion (not supported)
+    ///     Reverse conversion (not implemented)
     /// </summary>
     /// <param name="value">Visibility value</param>
     /// <param name="targetType">Target type</param>
     /// <param name="parameter">Converter parameter</param>
     /// <param name="culture">Culture information</param>
-    /// <returns>Throws NotImplementedException</returns>
+    /// <returns>Throws NotImplementedException as this operation is not supported</returns>
+    /// <exception cref="NotImplementedException">This method is not implemented</exception>
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
