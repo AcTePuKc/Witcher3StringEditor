@@ -508,10 +508,4 @@
   <data name="PathInvalidIndicatorText" xml:space="preserve">
     <value>（无效）</value>
   </data>
-  <data name="PackageVersion" xml:space="preserve">
-    <value>版本</value>
-  </data>
-  <data name="PackageName" xml:space="preserve">
-    <value>依赖项</value>
-  </data>
 </root>

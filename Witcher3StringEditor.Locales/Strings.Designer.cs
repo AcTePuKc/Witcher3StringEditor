@@ -673,24 +673,6 @@ namespace Witcher3StringEditor.Locales {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dependencies.
-        /// </summary>
-        public static string PackageName {
-            get {
-                return ResourceManager.GetString("PackageName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Version.
-        /// </summary>
-        public static string PackageVersion {
-            get {
-                return ResourceManager.GetString("PackageVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Page Size.
         /// </summary>
         public static string PageSize {

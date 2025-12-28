@@ -508,10 +508,4 @@
   <data name="PathInvalidIndicatorText" xml:space="preserve">
     <value>(Invalid)</value>
   </data>
-  <data name="PackageName" xml:space="preserve">
-    <value>Dependencies</value>
-  </data>
-  <data name="PackageVersion" xml:space="preserve">
-    <value>Version</value>
-  </data>
 </root>
