@@ -508,4 +508,10 @@
   <data name="PathInvalidIndicatorText" xml:space="preserve">
     <value>（無効）</value>
   </data>
+  <data name="PackageName" xml:space="preserve">
+    <value>依賴項</value>
+  </data>
+  <data name="PackageVersion" xml:space="preserve">
+    <value>版本</value>
+  </data>
 </root>
