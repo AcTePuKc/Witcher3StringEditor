@@ -130,6 +130,7 @@
                 AutoGenerateColumns="False"
                 AllowResizingColumns="True"
                 ItemsSource="{Binding AboutInfo[Package],Mode=OneTime}">
+                <!-- Sort comparer for version strings -->
                 <sf:SfDataGrid.SortComparers>
                     <data:SortComparer Comparer="{StaticResource VersionStringSortCompare}" />
                 </sf:SfDataGrid.SortComparers>
