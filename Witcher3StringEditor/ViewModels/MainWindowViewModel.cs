@@ -574,7 +574,8 @@ internal partial class MainWindowViewModel : ObservableObject
                 { "Runtime", RuntimeInformation.FrameworkDescription }, // Runtime information
                 {
                     "Package", DependencyContext.Default?
-                        .RuntimeLibraries.Where(static x => x.Type == "package") // Package information
+                        .RuntimeLibraries.Where(static x => x.Type == "package")
+                        .OrderBy(x => x.Name) // Package information
                 }
             }));
     }
