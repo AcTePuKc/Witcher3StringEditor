@@ -1,9 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using cmdwtf;
 using CommandLine;
@@ -128,8 +126,11 @@ internal partial class MainWindowViewModel : ObservableObject
     /// <summary>
     ///     Gets a value indicating whether the application is running in debug mode
     /// </summary>
-    private static bool IsDebug =>
-        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
+#if DEBUG
+    private static bool IsDebug => true;
+#else
+    private static bool IsDebug => false;
+#endif
 
     /// <summary>
     ///     Handles changes to the W3StringItems collection

@@ -49,8 +49,11 @@ public sealed partial class App : IDisposable
     /// <summary>
     ///     Gets a value indicating whether the application is running in debug mode
     /// </summary>
-    private static bool IsDebug =>
-        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
+#if DEBUG
+    private static bool IsDebug => true;
+#else
+    private static bool IsDebug => false;
+#endif
 
     /// <summary>
     ///     Disposes of the resources used by the application

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 using System.Security.Cryptography;
 using CommunityToolkit.Diagnostics;
 using Serilog;
@@ -25,8 +23,11 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     /// <summary>
     ///     Gets a value indicating whether the application is running in debug mode
     /// </summary>
-    private static bool IsDebug =>
-        Assembly.GetExecutingAssembly().GetCustomAttribute<DebuggableAttribute>()?.IsJITTrackingEnabled == true;
+#if DEBUG
+    private static bool IsDebug => true;
+#else
+    private static bool IsDebug => false;
+#endif
 
     /// <summary>
     ///     Creates a backup of the specified file
