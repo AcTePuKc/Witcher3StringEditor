@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace Witcher3StringEditor.Dialogs.Messaging;
+namespace Witcher3StringEditor.Messaging;
 
 /// <summary>
 ///     A generic asynchronous request message that carries a request value and expects a response of a specific type

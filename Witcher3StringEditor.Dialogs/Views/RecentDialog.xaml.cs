@@ -3,8 +3,8 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 using iNKORE.UI.WPF.Modern.Controls;
 using Serilog;
-using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
+using Witcher3StringEditor.Messaging;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor.Dialogs.Views;

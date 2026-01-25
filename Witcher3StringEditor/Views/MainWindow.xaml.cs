@@ -6,8 +6,8 @@ using iNKORE.UI.WPF.Modern;
 using iNKORE.UI.WPF.Modern.Controls;
 using iNKORE.UI.WPF.Modern.Controls.Primitives;
 using Serilog;
-using Witcher3StringEditor.Dialogs.Messaging;
 using Witcher3StringEditor.Locales;
+using Witcher3StringEditor.Messaging;
 using Witcher3StringEditor.ViewModels;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 

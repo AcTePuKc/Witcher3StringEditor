@@ -8,7 +8,7 @@ using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
-using Witcher3StringEditor.Dialogs.Messaging;
+using Witcher3StringEditor.Messaging;
 using Witcher3StringEditor.Serializers;
 using Witcher3StringEditor.Serializers.Abstractions;
 
