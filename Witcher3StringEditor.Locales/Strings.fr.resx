@@ -136,7 +136,7 @@
     <value>Modifier un enregistrement</value>
   </data>
   <data name="DeleteBtnLabel" xml:space="preserve">
-    <value>Supprimer des enregistrements	</value>
+    <value>Supprimer des enregistrements</value>
   </data>
   <data name="SaveBtnLabel" xml:space="preserve">
     <value>Sauvegarder</value>

@@ -503,7 +503,7 @@
     <value>パスが無効</value>
   </data>
   <data name="PathInvalidMessage" xml:space="preserve">
-    <value> 現在設定されているエンコーダーのパスまたはゲームのパスが無効になっています。設定を確認してください。</value>
+    <value>現在設定されているエンコーダーのパスまたはゲームのパスが無効になっています。設定を確認してください。</value>
   </data>
   <data name="PathInvalidIndicatorText" xml:space="preserve">
     <value>（無効）</value>
