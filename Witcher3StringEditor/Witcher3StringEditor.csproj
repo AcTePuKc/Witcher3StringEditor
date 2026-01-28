@@ -25,10 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Asserts\wolfmedallion.ico" />
-    </ItemGroup>
-
-    <ItemGroup>
         <EmbeddedResource Include="License.txt" />
     </ItemGroup>
 
@@ -70,6 +66,10 @@
         <ProjectReference Include="..\Witcher3StringEditor.Messaging\Witcher3StringEditor.Messaging.csproj" />
         <ProjectReference Include="..\Witcher3StringEditor.NexusIntegration\Witcher3StringEditor.NexusIntegration.csproj" />
         <ProjectReference Include="..\Witcher3StringEditor.Serializers\Witcher3StringEditor.Serializers.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Asserts\wolfmedallion.ico" />
     </ItemGroup>
 
 </Project>

@@ -57,11 +57,10 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <!-- Application icon displayed in the top left -->
-            <ui:FontIcon
+            <Image
                 Width="100"
                 Margin="16,16,16,0"
-                FontSize="50"
-                Icon="{x:Static ui:SegoeFluentIcons.Info}" />
+                Source="/Witcher3StringEditor;component/Asserts/wolfmedallion.ico" />
             <!-- Grid containing application information details -->
             <Grid
                 Grid.Row="0"
