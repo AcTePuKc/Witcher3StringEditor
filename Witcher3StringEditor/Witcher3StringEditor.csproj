@@ -9,7 +9,7 @@
         <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <NeutralLanguage>en</NeutralLanguage>
-        <ApplicationIcon>Asserts\wolfmedallion.ico</ApplicationIcon>
+        <ApplicationIcon>..\Witcher3StringEditor.Dialogs\Asserts\wolfmedallion.ico</ApplicationIcon>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -66,10 +66,6 @@
         <ProjectReference Include="..\Witcher3StringEditor.Messaging\Witcher3StringEditor.Messaging.csproj" />
         <ProjectReference Include="..\Witcher3StringEditor.NexusIntegration\Witcher3StringEditor.NexusIntegration.csproj" />
         <ProjectReference Include="..\Witcher3StringEditor.Serializers\Witcher3StringEditor.Serializers.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Resource Include="Asserts\wolfmedallion.ico" />
     </ItemGroup>
 
 </Project>

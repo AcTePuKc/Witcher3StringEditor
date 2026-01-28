@@ -48,4 +48,8 @@
         <Compile Remove="Models\W3JobModel.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Resource Include="Asserts\wolfmedallion.ico" />
+    </ItemGroup>
+
 </Project>
