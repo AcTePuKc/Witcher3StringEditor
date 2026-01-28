@@ -9,6 +9,7 @@
         <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <NeutralLanguage>en</NeutralLanguage>
+        <ApplicationIcon>Asserts\wolfmedallion.ico</ApplicationIcon>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -21,6 +22,10 @@
 
     <ItemGroup>
         <None Remove="License.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Asserts\wolfmedallion.ico" />
     </ItemGroup>
 
     <ItemGroup>
