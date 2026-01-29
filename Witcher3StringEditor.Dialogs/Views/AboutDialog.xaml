@@ -60,7 +60,7 @@
             <Image
                 Width="100"
                 Margin="16,16,16,0"
-                Source="/Witcher3StringEditor.Dialogs;component/Asserts/wolfmedallion.ico" />
+                Source="/Witcher3StringEditor;component/Asserts/wolfmedallion.ico" />
             <!-- Grid containing application information details -->
             <Grid
                 Grid.Row="0"
