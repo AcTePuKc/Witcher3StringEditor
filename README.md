@@ -28,6 +28,17 @@ dotnet tool restore
 dotnet build
 ```
 
+## Syncfusion License (Development)
+
+This application uses Syncfusion WPF controls. Register for a free community license at:
+https://www.syncfusion.com/products/communitylicense
+
+To run locally, set the license key using one of the following:
+1. Environment variable: `W3SE_SYNCFUSION_LICENSE_KEY`
+2. App settings file: `%AppData%\Witcher3StringEditor(_Debug)\AppSettings.Json` with a `SyncfusionLicenseKey` field
+
+The environment variable takes precedence over the config file if both are set.
+
 ## Required External Dependencies (For End Users)
 
 - **.NET 8 Desktop Runtime**  

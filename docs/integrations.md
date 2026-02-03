@@ -4,6 +4,14 @@
 - Provide safe, local-only integration points for translation memory, provider/model selection, terminology/style packs, and translation profiles.
 - Keep all storage local (JSON or SQLite) and leave integrations inert until enabled.
 
+## Current Scaffolding (Already in Repo)
+- Provider abstraction and registry: `Witcher3StringEditor.Common/Translation/`.
+- Ollama provider stub and settings model: `Witcher3StringEditor.Integrations.Ollama/`.
+- Translation memory + QA store interfaces: `Witcher3StringEditor.Common/TranslationMemory/` and `Witcher3StringEditor.Common/QualityAssurance/`.
+- SQLite-backed store stubs: `Witcher3StringEditor.Data/TranslationMemory/` and `Witcher3StringEditor.Data/QualityAssurance/`.
+- Terminology models + loader interface: `Witcher3StringEditor.Common/Terminology/`.
+- Translation profile model + store interface: `Witcher3StringEditor.Common/Profiles/`.
+
 ## Proposed Architecture
 
 ### Settings Surface
