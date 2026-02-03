@@ -1,142 +1,39 @@
-# Integrations Roadmap
+# Integrations Architecture (Stub Plan)
 
-This document describes the planned architecture and incremental tasks for adding translation memory, Ollama integration, terminology/style support, and translation profiles. All changes are intended to be **local-only**, incremental, and safe by default.
+## Goals
+- Provide safe, local-only integration points for translation memory, provider/model selection, terminology/style packs, and translation profiles.
+- Keep all storage local (JSON or SQLite) and leave integrations inert until enabled.
 
-## Architecture (Planned)
+## Proposed Architecture
 
-- **Translation provider abstraction**: `ITranslationProvider` defines the provider contract, with a small DTO surface (`TranslationRequest`, `TranslationResult`, `ModelInfo`). Providers will be registered in a `TranslationProviderRegistry` keyed by provider name.
-- **Routing**: The existing `ITranslator` flow remains the default. Future routing will map user-selected providers to the registry and project settings, while keeping the current GTranslate flow intact.
-- **Ollama integration**: Provider-specific code lives in `Witcher3StringEditor.Integrations.Ollama` and uses a thin `HttpClient` wrapper for model discovery and translation calls once defined.
-- **Translation memory (TM)**: A local storage layer (SQLite or JSON) will store source/target text pairs and metadata. A separate interface will mediate retrieval and persistence.
-- **Terminology & style**: Terminology packs and style guides will be loaded from local files. A lightweight loader will parse `.csv`, `.tsv`, and `.md` into a common model.
-- **Translation profiles**: A profile aggregates provider selection, model, terminology packs, and TM usage flags. Profiles are stored locally and referenced by name in settings.
+### Settings Surface
+- Extend `IAppSettings` and `AppSettings` with provider/model/base URL/profile id settings.
+- Keep existing translator selection intact to avoid behavior changes.
+- UI exposes provider/model/base URL as placeholders in the settings dialog.
 
-## Planned Tasks (GitHub Issues)
+### Provider Abstraction
+- Continue using the existing `ITranslationProvider` and provider registry in `Witcher3StringEditor.Common.Translation`.
+- Translation provider selection should resolve via a future registry (mapping provider name to `ITranslationProvider`).
 
-### Issue 1: Inventory existing translation and settings entry points
-**Description**
-Perform an inventory pass to locate translation entry points, settings persistence, and dialog/view models for translation configuration. Document findings and risks for later agents.
+### Translation Memory (Local Only)
+- Introduce a local translation memory store interface in `Witcher3StringEditor.Common.TranslationMemory`.
+- Planned storage: SQLite with a minimal schema for source/target/language/time.
 
-**Acceptance Criteria**
-- A structured markdown report (e.g., a table) listing file paths, classes, and methods that participate in translation.
-- Settings persistence mechanism identified.
-- Risks or architectural constraints documented.
+### Terminology & Style Packs
+- Introduce a terminology loader interface in `Witcher3StringEditor.Common.Terminology`.
+- Planned loaders: TSV/CSV/Markdown, with a shared `TerminologyPack` model.
 
-**Files to touch**
-- `docs/integrations.md` (append inventory report section)
-- Optional: `docs/inventory/translation-entrypoints.md`
+### Translation Profiles
+- Add a profile model and store interface in `Witcher3StringEditor.Common.Profiles`.
+- Profiles bind provider/model/base URL/notes into a reusable configuration.
 
-**QA Checklist**
-- ✅ Build succeeds (`dotnet build`).
-- ✅ App starts and translation dialog still opens.
-- ✅ No functional changes beyond documentation.
+## Planned Tasks (High Level)
+1. Inventory pass to locate settings persistence, translation entrypoints, and UI integration points.
+2. Implement SQLite-backed translation memory store + schema (local only).
+3. Wire provider registry to settings and model discovery (Ollama first).
+4. Implement terminology/style pack loading + validation hooks.
+5. Implement translation profile storage (JSON first, SQLite later).
 
----
-
-### Issue 2: Ollama provider settings + stub provider
-**Description**
-Add a minimal Ollama provider skeleton with settings model (BaseUrl, Model, optional parameters). Implement a stub `ListModelsAsync` that calls `/api/tags` and a `TranslateAsync` placeholder with TODOs.
-
-**Acceptance Criteria**
-- `Witcher3StringEditor.Integrations.Ollama` project exists and is added to the solution.
-- `OllamaSettings` model exists in the Ollama integration project.
-- `OllamaTranslationProvider` implements `ITranslationProvider` with TODOs.
-- `ListModelsAsync` calls `/api/tags` (or returns empty results with TODOs when the response shape is unknown).
-- No external dependencies beyond `HttpClient`.
-
-**Files to touch**
-- `Witcher3StringEditor.Integrations.Ollama/` (provider + settings models)
-- `docs/integrations.md` (link to the stub)
-
-**QA Checklist**
-- ✅ Build succeeds (`dotnet build`).
-- ✅ Provider registry can register the stub.
-- ✅ No UI changes beyond placeholders.
-
----
-
-### Issue 3: Translation memory interfaces + local store stub
-**Description**
-Define interfaces and a stub local store for translation memory and QA metadata. Propose a minimal SQLite schema (or JSON structure) and add bootstrap placeholders.
-
-**Acceptance Criteria**
-- `ITranslationMemoryStore` interface added.
-- Stub implementation added with TODOs for storage.
-- Schema proposal documented (SQLite tables or JSON structure).
-
-**Files to touch**
-- `Witcher3StringEditor.Common/TranslationMemory/` (new folder)
-- `docs/integrations.md` (schema notes)
-
-**QA Checklist**
-- ✅ Build succeeds (`dotnet build`).
-- ✅ No runtime usage unless explicitly enabled.
-- ✅ No external services required.
-
----
-
-### Issue 4: Terminology & style pack loaders
-**Description**
-Add models for terminology/style packs and implement minimal local loaders for `.csv`, `.tsv`, and `.md` files. Provide sample files for validation and QA.
-
-**Acceptance Criteria**
-- `TerminologyPack` model exists.
-- Minimal parsers for `.csv`, `.tsv`, `.md` added.
-- Sample files added under `docs/samples/`.
-
-**Files to touch**
-- `Witcher3StringEditor.Common/Terminology/` (new folder)
-- `docs/samples/`
-- `docs/integrations.md`
-
-**QA Checklist**
-- ✅ Build succeeds (`dotnet build`).
-- ✅ Loaders parse samples without exceptions.
-- ✅ No translation behavior changes.
-
----
-
-### Issue 5: Translation profiles (local settings)
-**Description**
-Define a profile model that groups provider selection, model, TM settings, and terminology/style choices. Add persistence stubs using existing settings mechanisms.
-
-**Acceptance Criteria**
-- `TranslationProfile` model exists.
-- Settings persistence stub added (local-only).
-- Profiles are inert unless explicitly used.
-
-**Files to touch**
-- `Witcher3StringEditor.Common/TranslationProfiles/` (new folder)
-- Settings persistence file(s) once identified
-- `docs/integrations.md`
-
-**QA Checklist**
-- ✅ Build succeeds (`dotnet build`).
-- ✅ Existing settings load/save unchanged.
-- ✅ No UI changes beyond placeholders.
-
----
-
-### Issue 6: UI placeholders for provider/model selection
-**Description**
-Add minimal UI placeholders for selecting provider, model, and terminology packs. Wire to settings but keep translation flow unchanged.
-
-**Acceptance Criteria**
-- UI placeholders added with TODO labels.
-- Settings binding exists but no behavior change.
-- Existing translation flow still uses `ITranslator`.
-
-**Files to touch**
-- Dialog/view models for translation settings
-- `docs/integrations.md`
-
-**QA Checklist**
-- ✅ Build succeeds (`dotnet build`).
-- ✅ Translation dialog still works.
-- ✅ No regressions in existing UI.
-
-## Integration Notes
-
-- Keep each PR small, focused, and compilation-safe.
-- Default behavior remains `ITranslator` until provider routing is implemented.
-- All storage must remain local and optional.
+## Notes
+- All integrations should be inert by default.
+- New services should be registered behind feature flags or no-op implementations until ready.
