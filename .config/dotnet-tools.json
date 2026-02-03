@@ -2,7 +2,7 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "zeroql": {
+    "zeroql.cli": {
       "version": "8.0.0",
       "commands": [
         "zeroql"
