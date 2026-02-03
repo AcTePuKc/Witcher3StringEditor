@@ -2,108 +2,110 @@
 
 ## Issue 1: Inventory pass for integration entrypoints
 **Description**
-Perform a repository inventory to confirm where settings are loaded/saved, where translation requests flow, and which dialogs or view models should host future integration options.
+Confirm where settings are persisted, where translation requests flow, and which dialogs/view models will host provider/model/terminology/profile configuration.
 
 **Acceptance Criteria**
-- Identify settings persistence flow and config file location.
-- Identify translation entrypoints and extension points for provider calls.
-- Identify UI dialogs/tabs relevant to translation settings.
-- Summarize risks and constraints.
+- Document settings persistence flow and config path.
+- Identify translation entrypoints and extension points for provider/model selection.
+- Identify UI surfaces for settings placeholders.
+- Summarize risks or constraints.
 
 **Files to Touch**
 - `docs/inventory-report.md`
 
 **QA Checklist**
 - Build: `dotnet build`
-- Manual: open settings dialog to confirm no UI regressions
-- No regressions: verify existing translation dialog still opens
+- Manual: open Settings dialog and confirm no UI regressions
+- No regressions: translation dialog still opens
 
 ---
 
 ## Issue 2: Translation memory + QA stores (SQLite scaffolding)
 **Description**
-Introduce local translation memory and QA stores with a minimal SQLite schema and bootstrap logic. Use AppData-based storage paths and keep operations to upsert + exact-match lookup.
+Ensure local translation memory and QA stores use a minimal SQLite schema and AppData-based storage paths. Keep operations to upsert + exact-match lookup only.
 
 **Acceptance Criteria**
-- `ITranslationMemoryStore` and `IQAStore` implemented with SQLite-backed stubs.
-- Schema includes source text, target text, language/issue type, timestamps.
-- Storage uses AppData-based file location strategy.
-- No UI changes and no runtime behavior change by default.
+- SQLite bootstrap and schemas exist for translation memory + QA.
+- Store interfaces remain local-only and inert by default.
+- Storage uses AppData paths only.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/TranslationMemory/*`
 - `Witcher3StringEditor.Common/QualityAssurance/*`
-- `Witcher3StringEditor.Data/*`
+- `Witcher3StringEditor.Data/Storage/*`
+- `Witcher3StringEditor.Data/TranslationMemory/*`
+- `Witcher3StringEditor.Data/QualityAssurance/*`
 - `docs/integrations.md`
 
 **QA Checklist**
 - Build: `dotnet build`
-- Manual: app startup and open translation dialog
-- No regressions: confirm existing translation flow behaves the same
+- Manual: app startup without database file side effects
+- No regressions: translation dialog behaves as before
 
 ---
 
 ## Issue 3: Provider registry + model discovery wiring (Ollama first)
 **Description**
-Wire provider selection and model discovery to a registry that can call provider-specific model list methods (Ollama first). Keep existing translator selection intact.
+Add a provider registry abstraction that maps provider names to implementations and supports model discovery (Ollama first). Keep existing translator selection intact.
 
 **Acceptance Criteria**
-- Provider registry maps provider name to `ITranslationProvider`.
-- Settings dialog refresh button calls into registry (stubbed allowed).
-- No changes to existing translator selection flow.
+- Provider registry returns known provider descriptors and resolves providers by name.
+- Settings dialog has placeholders for provider/model/base URL without changing translator behavior.
+- Model discovery uses provider `ListModelsAsync` (stub behavior allowed).
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/*`
+- `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
+- `Witcher3StringEditor.Integrations.Ollama/*`
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingDialogViewModel.cs`
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
 - `docs/integrations.md`
 
 **QA Checklist**
 - Build: `dotnet build`
-- Manual: open settings dialog and click refresh button
-- No regressions: confirm translation dialog still loads existing translator list
+- Manual: open Settings dialog and confirm provider/model placeholders render
+- No regressions: translation dialog still loads existing translator list
 
 ---
 
-## Issue 4: Terminology + style pack loading
+## Issue 4: Terminology + style pack loading hooks
 **Description**
-Implement loaders for TSV/CSV/Markdown terminology packs and add hooks for future prompt injection and post-translation validation. Validate parsing against the sample TSV and Markdown style guide.
+Keep terminology/style loaders local-only, add TODO hooks for prompt injection and post-translation validation, and validate parsing against sample files.
 
 **Acceptance Criteria**
-- `TerminologyPack` includes term, translation, notes, and mode metadata.
-- `TerminologyLoader` supports CSV/TSV and Markdown parsing with simple rules.
-- TODO markers exist for prompt injection and post-translation validation.
-- Loader can parse `docs/samples/terminology.sample.tsv` and `docs/samples/style-guide.sample.md` without errors.
+- Loader supports TSV/CSV terminology packs and Markdown style guides.
+- TODO markers exist for future prompt injection/validation.
+- Samples under `docs/samples/` parse without errors.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Terminology/*`
 - `Witcher3StringEditor/Services/TerminologyLoader.cs`
-- `Witcher3StringEditor.Dialogs/ViewModels/*TranslationViewModel*.cs`
 - `docs/samples/*`
 - `docs/integrations.md`
 
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: load a sample pack and confirm no crash
-- No regressions: confirm translation still works without a terminology pack
+- No regressions: translation still works without a terminology pack
 
 ---
 
-## Issue 5: Translation profile storage
+## Issue 5: Translation profile storage + resolver
 **Description**
-Create a local profile store (JSON first) that persists provider/model/base URL/notes to enable profile selection later.
+Persist profiles locally (JSON) and add a resolver stub that can merge a selected profile into current settings later.
 
 **Acceptance Criteria**
-- `ITranslationProfileStore` implemented with JSON-backed persistence.
-- Profiles can be listed and resolved by id.
-- Settings can reference a profile id without changing existing translator selection.
+- JSON-backed profile store returns empty list when file is missing.
+- Resolver stub returns null when no profile is selected.
+- No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Profiles/*`
-- `Witcher3StringEditor/Services/*`
+- `Witcher3StringEditor.Data/Profiles/*`
+- `Witcher3StringEditor/Services/*TranslationProfileResolver*.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
 - Build: `dotnet build`
-- Manual: create a profile file and ensure it loads
-- No regressions: confirm existing translator selection still functions
+- Manual: app startup and Settings dialog open
+- No regressions: existing translation flow unchanged
