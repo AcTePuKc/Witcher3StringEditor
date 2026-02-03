@@ -188,14 +188,14 @@ public partial class SettingDialogViewModel(
 
     private static IEnumerable<string> InitializeModelOptions(IAppSettings appSettings)
     {
-        var options = new List<string>(DefaultModelOptions);
         var selectedModel = appSettings.TranslationModelName;
-        if (!string.IsNullOrWhiteSpace(selectedModel) &&
-            !options.Contains(selectedModel, StringComparer.OrdinalIgnoreCase))
+
+        if (string.IsNullOrWhiteSpace(selectedModel) ||
+            DefaultModelOptions.Contains(selectedModel, StringComparer.OrdinalIgnoreCase))
         {
-            options.Add(selectedModel);
+            return DefaultModelOptions;
         }
 
-        return options;
+        return DefaultModelOptions.Append(selectedModel);
     }
 }
