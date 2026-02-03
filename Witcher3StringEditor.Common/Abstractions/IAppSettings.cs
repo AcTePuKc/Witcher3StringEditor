@@ -39,6 +39,26 @@ public interface IAppSettings
     public string Translator { get; set; }
 
     /// <summary>
+    ///     Gets or sets the translation provider name (future integration)
+    /// </summary>
+    public string TranslationProviderName { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the translation model name (future integration)
+    /// </summary>
+    public string TranslationModelName { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the translation provider base URL (future integration)
+    /// </summary>
+    public string TranslationBaseUrl { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the optional translation profile id (future integration)
+    /// </summary>
+    public string? TranslationProfileId { get; set; }
+
+    /// <summary>
     ///     Gets the collection of recently opened items
     /// </summary>
     public ObservableCollection<IRecentItem> RecentItems { get; }

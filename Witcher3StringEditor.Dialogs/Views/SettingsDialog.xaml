@@ -208,6 +208,30 @@
                         ItemsSource="{Binding Translators}"
                         SelectedItem="{Binding AppSettings.Translator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </ui:SettingsCard>
+                <ui:SettingsCard Description="Future translation provider configuration."
+                                 Header="Translation Provider (Preview)">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.CloudDownload}" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <StackPanel>
+                        <TextBlock Margin="0,0,0,4" Text="Provider" />
+                        <ComboBox
+                            ItemsSource="{Binding ProviderOptions}"
+                            SelectedItem="{Binding AppSettings.TranslationProviderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="0,8,0,4" Text="Model" />
+                        <DockPanel LastChildFill="True">
+                            <Button Command="{Binding RefreshModelsCommand}" DockPanel.Dock="Right" Margin="6,0,0,0">
+                                <TextBlock Text="Refresh" />
+                            </Button>
+                            <ComboBox
+                                ItemsSource="{Binding ModelOptions}"
+                                SelectedItem="{Binding AppSettings.TranslationModelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DockPanel>
+                        <TextBlock Margin="0,8,0,4" Text="Base URL" />
+                        <TextBox
+                            Text="{Binding AppSettings.TranslationBaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </ui:SettingsCard>
                 <!-- User interface settings section header -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                            Text="{I18N {x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />

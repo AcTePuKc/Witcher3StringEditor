@@ -50,6 +50,30 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private string translator = "MicrosoftTranslator";
 
     /// <summary>
+    ///     Gets or sets the translation provider name
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private string translationProviderName = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets the translation model name
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private string translationModelName = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets the translation provider base URL
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private string translationBaseUrl = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets the optional translation profile id
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private string? translationProfileId;
+
+    /// <summary>
     ///     Gets or sets the path to the W3Strings tool executable
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>

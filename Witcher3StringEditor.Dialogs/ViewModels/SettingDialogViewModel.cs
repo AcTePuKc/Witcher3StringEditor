@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.ObjectModel;
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
@@ -25,6 +26,17 @@ public partial class SettingDialogViewModel(
     IEnumerable<CultureInfo> supportedCultures)
     : ObservableObject, IModalDialogViewModel
 {
+    private static readonly IReadOnlyList<string> DefaultModelOptions =
+    [
+        "(stub) model list not loaded"
+    ];
+
+    private static readonly IReadOnlyList<string> DefaultProviderOptions =
+    [
+        "Ollama",
+        "Custom (stub)"
+    ];
+
     /// <summary>
     ///     Gets the application settings service
     /// </summary>
@@ -39,6 +51,16 @@ public partial class SettingDialogViewModel(
     ///     Gets the collection of supported cultures for localization
     /// </summary>
     public IEnumerable<CultureInfo> SupportedCultures { get; } = supportedCultures;
+
+    /// <summary>
+    ///     Gets the list of available translation providers (stubbed)
+    /// </summary>
+    public IReadOnlyList<string> ProviderOptions { get; } = DefaultProviderOptions;
+
+    /// <summary>
+    ///     Gets the list of available translation models (stubbed)
+    /// </summary>
+    [ObservableProperty] private ObservableCollection<string> modelOptions = new(DefaultModelOptions);
 
     /// <summary>
     ///     Gets the dialog result value
@@ -90,6 +112,20 @@ public partial class SettingDialogViewModel(
         {
             AppSettings.GameExePath = storageFile.LocalPath; // Set the path to the file.
             Log.Information("Game path set to {Path}.", storageFile.LocalPath); // Log the path.
+        }
+    }
+
+    /// <summary>
+    ///     Refreshes the available model list (stubbed)
+    /// </summary>
+    [RelayCommand]
+    private void RefreshModels()
+    {
+        // TODO: Replace with provider registry + API call when integrations are ready.
+        ModelOptions.Clear();
+        foreach (var model in new[] { "(stub) llama3", "(stub) mistral" })
+        {
+            ModelOptions.Add(model);
         }
     }
 }
