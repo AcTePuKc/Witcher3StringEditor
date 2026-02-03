@@ -80,6 +80,11 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     public bool? DialogResult => true;
 
     /// <summary>
+    ///     Gets a human-readable description of the active translation engine.
+    /// </summary>
+    public string ActiveEngineDescription => BuildActiveEngineDescription();
+
+    /// <summary>
     ///     Switches between single item and batch translation modes
     ///     Cleans up the current view model and creates a new one of the opposite type
     /// </summary>
@@ -207,6 +212,23 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
 
         Log.Information("Translation dialog closing cancelled."); // Log if closing is prevented
         return true; // Prevent the dialog from closing
+    }
+
+    private string BuildActiveEngineDescription()
+    {
+        var providerName = appSettings.TranslationProviderName;
+        if (!string.IsNullOrWhiteSpace(providerName))
+        {
+            var modelName = appSettings.TranslationModelName;
+            return string.IsNullOrWhiteSpace(modelName)
+                ? $"Provider: {providerName}"
+                : $"Provider: {providerName} (model: {modelName})";
+        }
+
+        var translatorName = appSettings.Translator;
+        return string.IsNullOrWhiteSpace(translatorName)
+            ? "Translator: Unknown"
+            : $"Translator: {translatorName}";
     }
 
     /// <summary>

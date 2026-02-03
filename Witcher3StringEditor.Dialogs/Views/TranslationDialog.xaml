@@ -68,10 +68,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Title text displayed in the title bar area -->
-        <TextBlock
-            Margin="20,0,0,0"
-            VerticalAlignment="Center"
-            Text="{Binding Title}" />
+        <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Title}" />
+            <TextBlock
+                FontSize="12"
+                Opacity="0.7"
+                Text="{Binding ActiveEngineDescription}" />
+        </StackPanel>
         <!-- Content grid containing the switch button and translation view -->
         <Grid Grid.Row="1" Margin="24,16,24,16">
             <Grid.RowDefinitions>
