@@ -20,18 +20,20 @@ Perform a repository inventory to confirm where settings are loaded/saved, where
 
 ---
 
-## Issue 2: Translation memory store (SQLite scaffolding)
+## Issue 2: Translation memory + QA stores (SQLite scaffolding)
 **Description**
-Introduce a local translation memory store with a minimal SQLite schema and bootstrap logic. Add no-op wiring behind a feature flag or safe default.
+Introduce local translation memory and QA stores with a minimal SQLite schema and bootstrap logic. Use AppData-based storage paths and keep operations to upsert + exact-match lookup.
 
 **Acceptance Criteria**
-- `ITranslationMemoryStore` implemented with SQLite-backed stub.
-- Schema includes source text, target text, language pair, timestamps.
+- `ITranslationMemoryStore` and `IQAStore` implemented with SQLite-backed stubs.
+- Schema includes source text, target text, language/issue type, timestamps.
+- Storage uses AppData-based file location strategy.
 - No UI changes and no runtime behavior change by default.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/TranslationMemory/*`
-- `Witcher3StringEditor/Services/*`
+- `Witcher3StringEditor.Common/QualityAssurance/*`
+- `Witcher3StringEditor.Data/*`
 - `docs/integrations.md`
 
 **QA Checklist**
