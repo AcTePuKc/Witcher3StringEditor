@@ -17,22 +17,8 @@ internal sealed class NoopTranslationProviderRegistry : ITranslationProviderRegi
 
     public ITranslationProvider? Resolve(string providerName)
     {
-        if (string.IsNullOrWhiteSpace(providerName))
-        {
-            return null;
-        }
-
-        return EmptyProviders
-            .FirstOrDefault(provider => string.Equals(provider.Name, providerName, StringComparison.OrdinalIgnoreCase))
-            is { } descriptor
-            ? ResolveDescriptor(descriptor)
-            : null;
-    }
-
-    private static ITranslationProvider? ResolveDescriptor(TranslationProviderDescriptor descriptor)
-    {
-        // TODO: Resolve from DI once providers are wired.
-        _ = descriptor;
+        // TODO: Replace with a real registry that maps provider names to implementations.
+        _ = providerName;
         return null;
     }
 }
