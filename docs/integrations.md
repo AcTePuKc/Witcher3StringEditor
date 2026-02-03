@@ -17,7 +17,7 @@ This document describes the planned architecture and incremental tasks for addin
 Perform an inventory pass to locate translation entry points, settings persistence, and dialog/view models for translation configuration. Document findings and risks for later agents.
 
 **Acceptance Criteria**
-- A markdown report listing file paths, classes, and methods that participate in translation.
+- A structured markdown report (e.g., a table) listing file paths, classes, and methods that participate in translation.
 - Settings persistence mechanism identified.
 - Risks or architectural constraints documented.
 
