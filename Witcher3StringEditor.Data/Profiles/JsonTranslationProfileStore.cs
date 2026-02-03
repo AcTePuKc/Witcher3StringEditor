@@ -29,7 +29,7 @@ public sealed class JsonTranslationProfileStore : ITranslationProfileStore
             SerializerOptions,
             cancellationToken);
 
-        return data?.Profiles ?? Array.Empty<TranslationProfile>();
+        return data?.Profiles ?? new List<TranslationProfile>();
     }
 
     public async Task<TranslationProfile?> GetAsync(string profileId, CancellationToken cancellationToken = default)
