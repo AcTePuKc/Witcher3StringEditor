@@ -50,7 +50,7 @@
 - No xUnit/NUnit/MSTest package references are present.
 
 ### Decision
-Use **manual QA checklists** for the initial integration scaffolding. The goal of this phase is to keep changes inert and compile-safe without introducing a test project until the integration boundaries stabilize.
+Use **manual QA checklists** (e.g., as part of pull request templates or a dedicated wiki page) for the initial integration scaffolding. The goal of this phase is to keep changes inert and compile-safe without introducing a test project until the integration boundaries stabilize.
 
 ### First Automated Test Targets (Follow-Up)
 When we introduce xUnit stubs later, start with small, deterministic targets:
