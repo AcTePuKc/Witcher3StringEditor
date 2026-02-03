@@ -49,13 +49,19 @@ LIMIT 1;
             return null;
         }
 
+        var sourceTextIndex = reader.GetOrdinal("SourceText");
+        var targetTextIndex = reader.GetOrdinal("TargetText");
+        var sourceLanguageIndex = reader.GetOrdinal("SourceLanguage");
+        var targetLanguageIndex = reader.GetOrdinal("TargetLanguage");
+        var createdAtIndex = reader.GetOrdinal("CreatedAt");
+
         return new TranslationMemoryEntry
         {
-            SourceText = reader.GetString(0),
-            TargetText = reader.GetString(1),
-            SourceLanguage = DenormalizeLanguage(reader.GetString(2)),
-            TargetLanguage = DenormalizeLanguage(reader.GetString(3)),
-            CreatedAt = DateTimeOffset.Parse(reader.GetString(4))
+            SourceText = reader.GetString(sourceTextIndex),
+            TargetText = reader.GetString(targetTextIndex),
+            SourceLanguage = DenormalizeLanguage(reader.GetString(sourceLanguageIndex)),
+            TargetLanguage = DenormalizeLanguage(reader.GetString(targetLanguageIndex)),
+            CreatedAt = reader.GetDateTimeOffset(createdAtIndex)
         };
     }
 

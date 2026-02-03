@@ -49,13 +49,19 @@ LIMIT 1;
             return null;
         }
 
+        var sourceTextIndex = reader.GetOrdinal("SourceText");
+        var targetTextIndex = reader.GetOrdinal("TargetText");
+        var issueTypeIndex = reader.GetOrdinal("IssueType");
+        var detailsIndex = reader.GetOrdinal("Details");
+        var createdAtIndex = reader.GetOrdinal("CreatedAt");
+
         return new QualityAssuranceEntry
         {
-            SourceText = reader.GetString(0),
-            TargetText = reader.GetString(1),
-            IssueType = reader.GetString(2),
-            Details = reader.IsDBNull(3) ? null : reader.GetString(3),
-            CreatedAt = DateTimeOffset.Parse(reader.GetString(4))
+            SourceText = reader.GetString(sourceTextIndex),
+            TargetText = reader.GetString(targetTextIndex),
+            IssueType = reader.GetString(issueTypeIndex),
+            Details = reader.IsDBNull(detailsIndex) ? null : reader.GetString(detailsIndex),
+            CreatedAt = reader.GetDateTimeOffset(createdAtIndex)
         };
     }
 
