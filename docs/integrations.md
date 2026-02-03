@@ -6,6 +6,7 @@ This document describes the planned architecture and incremental tasks for addin
 
 - **Translation provider abstraction**: `ITranslationProvider` defines the provider contract, with a small DTO surface (`TranslationRequest`, `TranslationResult`, `ModelInfo`). Providers will be registered in a `TranslationProviderRegistry` keyed by provider name.
 - **Routing**: The existing `ITranslator` flow remains the default. Future routing will map user-selected providers to the registry and project settings, while keeping the current GTranslate flow intact.
+- **Ollama integration**: Provider-specific code lives in `Witcher3StringEditor.Integrations.Ollama` and uses a thin `HttpClient` wrapper for model discovery and translation calls once defined.
 - **Translation memory (TM)**: A local storage layer (SQLite or JSON) will store source/target text pairs and metadata. A separate interface will mediate retrieval and persistence.
 - **Terminology & style**: Terminology packs and style guides will be loaded from local files. A lightweight loader will parse `.csv`, `.tsv`, and `.md` into a common model.
 - **Translation profiles**: A profile aggregates provider selection, model, terminology packs, and TM usage flags. Profiles are stored locally and referenced by name in settings.
@@ -34,15 +35,17 @@ Perform an inventory pass to locate translation entry points, settings persisten
 
 ### Issue 2: Ollama provider settings + stub provider
 **Description**
-Add a minimal Ollama provider skeleton with settings model (BaseUrl, Model, optional parameters). Implement a stub `ListModelsAsync` and `TranslateAsync` that returns placeholder results with TODOs.
+Add a minimal Ollama provider skeleton with settings model (BaseUrl, Model, optional parameters). Implement a stub `ListModelsAsync` that calls `/api/tags` and a `TranslateAsync` placeholder with TODOs.
 
 **Acceptance Criteria**
-- `OllamaSettings` model exists in a common/shared project.
+- `Witcher3StringEditor.Integrations.Ollama` project exists and is added to the solution.
+- `OllamaSettings` model exists in the Ollama integration project.
 - `OllamaTranslationProvider` implements `ITranslationProvider` with TODOs.
-- No network calls or external dependencies.
+- `ListModelsAsync` calls `/api/tags` (or returns empty results with TODOs when the response shape is unknown).
+- No external dependencies beyond `HttpClient`.
 
 **Files to touch**
-- `Witcher3StringEditor.Common/Translation/` (provider + settings models)
+- `Witcher3StringEditor.Integrations.Ollama/` (provider + settings models)
 - `docs/integrations.md` (link to the stub)
 
 **QA Checklist**
