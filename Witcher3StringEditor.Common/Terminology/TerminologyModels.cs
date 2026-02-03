@@ -4,16 +4,33 @@ namespace Witcher3StringEditor.Common.Terminology;
 
 public sealed class TerminologyEntry
 {
-    public string SourceTerm { get; init; } = string.Empty;
+    public string Term { get; init; } = string.Empty;
 
-    public string TargetTerm { get; init; } = string.Empty;
+    public string Translation { get; init; } = string.Empty;
 
     public string? Notes { get; init; }
+
+    public string? Mode { get; init; }
 }
 
 public sealed class TerminologyPack
 {
     public string Name { get; init; } = string.Empty;
 
+    public string SourcePath { get; init; } = string.Empty;
+
     public IReadOnlyList<TerminologyEntry> Entries { get; init; } = new List<TerminologyEntry>();
+}
+
+public sealed class StyleGuide
+{
+    public string Name { get; init; } = string.Empty;
+
+    public string SourcePath { get; init; } = string.Empty;
+
+    public IReadOnlyList<string> RequiredTerms { get; init; } = new List<string>();
+
+    public IReadOnlyList<string> ForbiddenTerms { get; init; } = new List<string>();
+
+    public IReadOnlyList<string> ToneNotes { get; init; } = new List<string>();
 }
