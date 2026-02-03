@@ -51,6 +51,11 @@ public interface IAppSettings
     /// <summary>
     ///     Gets or sets the translation provider base URL (future integration)
     /// </summary>
+    public string BaseUrl { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the translation provider base URL (future integration)
+    /// </summary>
     public string TranslationBaseUrl { get; set; }
 
     /// <summary>

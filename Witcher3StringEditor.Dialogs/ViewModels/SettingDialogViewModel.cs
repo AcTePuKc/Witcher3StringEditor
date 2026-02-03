@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Net.Http;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
@@ -26,10 +28,7 @@ public partial class SettingDialogViewModel(
     IEnumerable<CultureInfo> supportedCultures)
     : ObservableObject, IModalDialogViewModel
 {
-    private static readonly IReadOnlyList<string> DefaultModelOptions =
-    [
-        "(stub) model list not loaded"
-    ];
+    private static readonly IReadOnlyList<string> DefaultModelOptions = [];
 
     private static readonly IReadOnlyList<string> DefaultProviderOptions =
     [
@@ -61,6 +60,11 @@ public partial class SettingDialogViewModel(
     ///     Gets the list of available translation models (stubbed)
     /// </summary>
     [ObservableProperty] private ObservableCollection<string> modelOptions = new(DefaultModelOptions);
+
+    /// <summary>
+    ///     Gets the model refresh status text
+    /// </summary>
+    [ObservableProperty] private string modelStatusText = string.Empty;
 
     /// <summary>
     ///     Gets the dialog result value
@@ -119,13 +123,50 @@ public partial class SettingDialogViewModel(
     ///     Refreshes the available model list (stubbed)
     /// </summary>
     [RelayCommand]
-    private void RefreshModels()
+    private async Task RefreshModels()
     {
-        // TODO: Replace with provider registry + API call when integrations are ready.
+        var baseUrl = string.IsNullOrWhiteSpace(AppSettings.BaseUrl)
+            ? "http://localhost:11434"
+            : AppSettings.BaseUrl;
+
+        ModelStatusText = string.Empty;
         ModelOptions.Clear();
-        foreach (var model in new[] { "(stub) llama3", "(stub) mistral" })
+
+        try
         {
-            ModelOptions.Add(model);
+            using var httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
+            using var response = await httpClient.GetAsync("api/tags");
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelStatusText = $"Could not connect to Ollama at {baseUrl}";
+                return;
+            }
+
+            await using var responseStream = await response.Content.ReadAsStreamAsync();
+            using var jsonDocument = await JsonDocument.ParseAsync(responseStream);
+
+            if (!jsonDocument.RootElement.TryGetProperty("models", out var modelsElement) ||
+                modelsElement.ValueKind != JsonValueKind.Array)
+            {
+                return;
+            }
+
+            foreach (var modelElement in modelsElement.EnumerateArray())
+            {
+                if (modelElement.TryGetProperty("name", out var nameElement) &&
+                    nameElement.ValueKind == JsonValueKind.String)
+                {
+                    var modelName = nameElement.GetString();
+                    if (!string.IsNullOrWhiteSpace(modelName))
+                    {
+                        ModelOptions.Add(modelName);
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            ModelStatusText = $"Could not connect to Ollama at {baseUrl}";
         }
     }
 }
