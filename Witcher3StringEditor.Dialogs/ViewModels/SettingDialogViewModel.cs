@@ -28,6 +28,8 @@ public partial class SettingDialogViewModel(
     IEnumerable<CultureInfo> supportedCultures)
     : ObservableObject, IModalDialogViewModel
 {
+    private static readonly HttpClient HttpClient = new();
+
     private static readonly IReadOnlyList<string> DefaultModelOptions = [];
 
     private static readonly IReadOnlyList<string> DefaultProviderOptions =
@@ -120,7 +122,7 @@ public partial class SettingDialogViewModel(
     }
 
     /// <summary>
-    ///     Refreshes the available model list (stubbed)
+    ///     Refreshes the available model list from the Ollama API.
     /// </summary>
     [RelayCommand]
     private async Task RefreshModels()
@@ -134,8 +136,9 @@ public partial class SettingDialogViewModel(
 
         try
         {
-            using var httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
-            using var response = await httpClient.GetAsync("api/tags");
+            var baseUri = new Uri(baseUrl, UriKind.Absolute);
+            var requestUri = new Uri(baseUri, "api/tags");
+            using var response = await HttpClient.GetAsync(requestUri);
             if (!response.IsSuccessStatusCode)
             {
                 ModelStatusText = $"Could not connect to Ollama at {baseUrl}";
@@ -164,9 +167,21 @@ public partial class SettingDialogViewModel(
                 }
             }
         }
-        catch (Exception)
+        catch (UriFormatException)
+        {
+            ModelStatusText = $"Invalid Ollama base URL: {baseUrl}";
+        }
+        catch (HttpRequestException)
         {
             ModelStatusText = $"Could not connect to Ollama at {baseUrl}";
+        }
+        catch (TaskCanceledException)
+        {
+            ModelStatusText = $"Could not connect to Ollama at {baseUrl}";
+        }
+        catch (JsonException)
+        {
+            ModelStatusText = $"Received an unexpected response from Ollama at {baseUrl}";
         }
     }
 }
