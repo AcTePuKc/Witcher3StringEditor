@@ -5,7 +5,7 @@ namespace Witcher3StringEditor.Common.Translation;
 
 public sealed class TranslationProviderRegistry
 {
-    private readonly Dictionary<string, ITranslationProvider> providers =
+    private readonly System.Collections.Concurrent.ConcurrentDictionary<string, ITranslationProvider> providers =
         new(StringComparer.OrdinalIgnoreCase);
 
     public void Add(ITranslationProvider provider)
