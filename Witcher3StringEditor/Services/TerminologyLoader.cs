@@ -312,11 +312,16 @@ internal sealed class TerminologyLoader : ITerminologyLoader
     private static IReadOnlyList<string> ExtractPrimaryTerms(string bulletText)
     {
         var matches = Regex.Matches(bulletText, "\"([^\"]+)\"");
-        if (matches.Count == 0)
-            return new[] { bulletText };
+        if (matches.Count > 0)
+        {
+            return matches
+                .Cast<Match>()
+                .Select(match => match.Groups[1].Value)
+                .Where(value => !string.IsNullOrWhiteSpace(value))
+                .ToArray();
+        }
 
-        var value = matches[0].Groups[1].Value;
-        return string.IsNullOrWhiteSpace(value) ? Array.Empty<string>() : new[] { value };
+        return new[] { bulletText };
     }
 
     private enum StyleGuideSection
