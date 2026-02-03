@@ -20,6 +20,14 @@ A powerful tool for editing string resources in *The Witcher 3: Wild Hunt*, enab
 2. Extract the zip file to your desired location.
 3. Run `Witcher3StringEditor.exe` to launch.
 
+## Development Build
+
+```bash
+dotnet restore
+dotnet tool restore
+dotnet build
+```
+
 ## Required External Dependencies (For End Users)
 
 - **.NET 8 Desktop Runtime**  
