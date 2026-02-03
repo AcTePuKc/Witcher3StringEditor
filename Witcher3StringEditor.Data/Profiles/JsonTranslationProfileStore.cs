@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,15 +40,8 @@ public sealed class JsonTranslationProfileStore : ITranslationProfileStore
         }
 
         var profiles = await ListAsync(cancellationToken);
-        foreach (var profile in profiles)
-        {
-            if (string.Equals(profile.Id, profileId, StringComparison.OrdinalIgnoreCase))
-            {
-                return profile;
-            }
-        }
-
-        return null;
+        return profiles.FirstOrDefault(profile =>
+            string.Equals(profile.Id, profileId, StringComparison.OrdinalIgnoreCase));
     }
 
     private static string GetProfilesPath()
