@@ -19,6 +19,12 @@
 ### Translation Memory (Local Only)
 - Introduce a local translation memory store interface in `Witcher3StringEditor.Common.TranslationMemory`.
 - Planned storage: SQLite with a minimal schema for source/target/language/time.
+- Storage lives in `Witcher3StringEditor.Data` with AppData-based file paths.
+
+### QA Metadata (Local Only)
+- Define an `IQAStore` interface in `Witcher3StringEditor.Common.QualityAssurance`.
+- Store QA issue entries in SQLite with minimal fields (source/target/issue type/created).
+- Keep lookups exact-match only and upserts minimal.
 
 ### Terminology & Style Packs
 - Define `TerminologyPack` entries with term, translation, notes, and mode.
@@ -33,7 +39,7 @@
 
 ## Planned Tasks (High Level)
 1. Inventory pass to locate settings persistence, translation entrypoints, and UI integration points.
-2. Implement SQLite-backed translation memory store + schema (local only).
+2. Implement SQLite-backed translation memory + QA stores with AppData storage.
 3. Wire provider registry to settings and model discovery (Ollama first).
 4. Implement terminology/style pack loading + validation hooks.
 5. Implement translation profile storage (JSON first, SQLite later).
