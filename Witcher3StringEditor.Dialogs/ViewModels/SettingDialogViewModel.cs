@@ -61,7 +61,8 @@ public partial class SettingDialogViewModel(
     /// <summary>
     ///     Gets the list of available translation models (stubbed)
     /// </summary>
-    [ObservableProperty] private ObservableCollection<string> modelOptions = new(DefaultModelOptions);
+    [ObservableProperty]
+    private ObservableCollection<string> modelOptions = new(InitializeModelOptions(appSettings));
 
     /// <summary>
     ///     Gets the model refresh status text
@@ -183,5 +184,18 @@ public partial class SettingDialogViewModel(
         {
             ModelStatusText = $"Received an unexpected response from Ollama at {baseUrl}";
         }
+    }
+
+    private static IEnumerable<string> InitializeModelOptions(IAppSettings appSettings)
+    {
+        var selectedModel = appSettings.TranslationModelName;
+
+        if (string.IsNullOrWhiteSpace(selectedModel) ||
+            DefaultModelOptions.Contains(selectedModel, StringComparer.OrdinalIgnoreCase))
+        {
+            return DefaultModelOptions;
+        }
+
+        return DefaultModelOptions.Append(selectedModel);
     }
 }
