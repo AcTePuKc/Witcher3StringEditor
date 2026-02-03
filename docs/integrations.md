@@ -47,3 +47,17 @@
 ## Notes
 - All integrations should be inert by default.
 - New services should be registered behind feature flags or no-op implementations until ready.
+
+## Decision Log / Inventory
+### Translation Entry Points (ITranslator / TranslateAsync / TranslationDialogViewModel)
+- Service registration for translators lives in `App.xaml.cs`, where `ITranslator` implementations (Microsoft/Google/Yandex) are registered with DI. This is the root entry point for resolving translators used across the UI.【F:Witcher3StringEditor/App.xaml.cs†L288-L313】
+- Translator selection is exposed in the settings dialog: `SettingDialogViewModel` surfaces the available translator names and binds them to `AppSettings.Translator` in the settings UI. This is the configuration entry point for picking the active translator.【F:Witcher3StringEditor.Dialogs/ViewModels/SettingDialogViewModel.cs†L16-L73】【F:Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml†L201-L209】
+- The translation dialog flow is launched from `MainWindowViewModel.ShowTranslateDialog`, which resolves the configured `ITranslator` from DI and instantiates `TranslationDialogViewModel`. This is the main UI entry point for translation work.【F:Witcher3StringEditor/ViewModels/MainWindowViewModel.cs†L624-L645】
+- `TranslationDialogViewModel` owns the dialog-level flow and toggles between single-item and batch translation view models. It is the orchestrator for translation operations inside the modal dialog.【F:Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs†L21-L121】
+- Actual translation calls (`TranslateAsync`) are invoked in:
+  - `SingleItemTranslationViewModel.ExecuteTranslationTask`, which calls `Translator.TranslateAsync` for the currently selected item and handles cancellation via a token source.【F:Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs†L159-L208】
+  - `BatchItemsTranslationViewModel.TranslateItem`, which calls `translator.TranslateAsync` while iterating a selected item range in the batch workflow.【F:Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs†L251-L264】
+- Shared translation plumbing is in `TranslationViewModelBase`, which stores the `ITranslator`, initializes language lists, and sets language defaults used by both single and batch flows.【F:Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs†L15-L74】
+
+### Background/Batch Translators Beyond Dialog Flow
+- There are no background or batch translation services outside the translation dialog flow. The only batch translation logic lives in `BatchItemsTranslationViewModel`, which is created and controlled by `TranslationDialogViewModel` within the modal dialog.【F:Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs†L18-L180】【F:Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs†L82-L121】
