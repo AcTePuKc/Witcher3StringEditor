@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
@@ -52,33 +53,23 @@ public sealed class OllamaTranslationProvider : ITranslationProvider
             return Array.Empty<ModelInfo>();
         }
 
-        var models = new List<ModelInfo>();
-
-        foreach (var modelElement in modelsElement.EnumerateArray())
-        {
-            if (!modelElement.TryGetProperty("name", out var nameElement))
+        return modelsElement.EnumerateArray()
+            .Select(modelElement =>
+                modelElement.TryGetProperty("name", out var nameElement) &&
+                nameElement.ValueKind == JsonValueKind.String
+                    ? nameElement.GetString()
+                    : null)
+            .Where(id => !string.IsNullOrWhiteSpace(id))
+            .Select(id => new ModelInfo
             {
-                continue;
-            }
-
-            var id = nameElement.GetString();
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                continue;
-            }
-
-            models.Add(new ModelInfo
-            {
-                Id = id,
+                Id = id!,
                 DisplayName = id,
                 Metadata = new Dictionary<string, string>
                 {
                     ["source"] = "ollama:/api/tags"
                 }
-            });
-        }
-
-        return models;
+            })
+            .ToList();
     }
 
     public Task<TranslationResult> TranslateAsync(TranslationRequest request, CancellationToken cancellationToken = default)
