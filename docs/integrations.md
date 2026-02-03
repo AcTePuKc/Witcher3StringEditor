@@ -44,6 +44,21 @@
 4. Implement terminology/style pack loading + validation hooks.
 5. Implement translation profile storage (JSON first, SQLite later).
 
+## Testing Strategy (Initial Integrations)
+### Current Test Infrastructure
+- No test projects are present in the solution or repo tree.
+- No xUnit/NUnit/MSTest package references are present.
+
+### Decision
+Use **manual QA checklists** (e.g., as part of pull request templates or a dedicated wiki page) for the initial integration scaffolding. The goal of this phase is to keep changes inert and compile-safe without introducing a test project until the integration boundaries stabilize.
+
+### First Automated Test Targets (Follow-Up)
+When we introduce xUnit stubs later, start with small, deterministic targets:
+1. `TerminologyLoader` parsing for CSV/TSV/Markdown samples (fixture-driven, no UI).
+2. `JsonTranslationProfileStore` behavior when the profiles file is missing/empty.
+3. `SqliteTranslationMemoryStore` and `SqliteQAStore` init + basic upsert/lookup using a temp file.
+4. Ollama provider settings validation (pure model tests, no HTTP).
+
 ## Notes
 - All integrations should be inert by default.
 - New services should be registered behind feature flags or no-op implementations until ready.
