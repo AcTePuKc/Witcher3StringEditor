@@ -221,14 +221,14 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         {
             var modelName = appSettings.TranslationModelName;
             return string.IsNullOrWhiteSpace(modelName)
-                ? $"Provider: {providerName}"
-                : $"Provider: {providerName} (model: {modelName})";
+                ? $"{Strings.Provider}: {providerName}"
+                : $"{Strings.Provider}: {providerName} ({Strings.Model}: {modelName})";
         }
 
         var translatorName = appSettings.Translator;
         return string.IsNullOrWhiteSpace(translatorName)
-            ? "Translator: Unknown"
-            : $"Translator: {translatorName}";
+            ? $"{Strings.Translator}: {Strings.Unknown}"
+            : $"{Strings.Translator}: {translatorName}";
     }
 
     /// <summary>

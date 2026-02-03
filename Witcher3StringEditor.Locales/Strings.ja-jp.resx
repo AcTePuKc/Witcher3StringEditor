@@ -514,4 +514,16 @@
   <data name="PackageVersion" xml:space="preserve">
     <value>バージョン</value>
   </data>
+  <data name="Provider" xml:space="preserve">
+    <value>Provider</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Translator" xml:space="preserve">
+    <value>Translator</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
 </root>
