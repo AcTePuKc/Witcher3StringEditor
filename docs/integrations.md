@@ -48,7 +48,138 @@
 - All integrations should be inert by default.
 - New services should be registered behind feature flags or no-op implementations until ready.
 
+## Configuration Storage Review
+### Current State
+- `ConfigService` serializes settings as JSON via Newtonsoft and reads/writes a single config file path provided at startup.【F:Witcher3StringEditor/Services/ConfigService.cs†L1-L38】
+- `AppSettings` is the primary persisted settings model, with observable properties for settings like translator choice, provider/model/base URL fields, and the optional translation profile id.【F:Witcher3StringEditor/Models/AppSettings.cs†L1-L122】
+- The settings file lives under `%AppData%/Witcher3StringEditor(_Debug)/AppSettings.Json`, built in `App.xaml.cs` and injected into `ConfigService` at startup.【F:Witcher3StringEditor/App.xaml.cs†L120-L177】【F:Witcher3StringEditor/App.xaml.cs†L267-L279】
+
+### Option A: Extend the Existing JSON Config (`AppSettings.Json`)
+**Pros**
+- Single file to back up and migrate.
+- No new storage path logic or file lifecycle concerns.
+- Fits the current `ConfigService` serialization flow.
+
+**Cons**
+- Profiles become bloated inside `AppSettings` as arrays grow (harder to manage/merge).
+- Sharing profiles across machines becomes coupled to user-specific settings.
+- Harder to version or validate profile-specific data separately.
+
+### Option B: Add a Dedicated Profiles File (e.g., `translation-profiles.json`)
+**Pros**
+- Profiles can be versioned/validated independently from base app settings.
+- Easier to share/export/import a single profiles file.
+- Keeps `AppSettings` focused on per-user defaults and last-used state.
+
+**Cons**
+- Additional file to manage and migrate.
+- Requires a separate loader/store and path conventions.
+
+### Decision
+Use a **dedicated profiles file** for translation profiles and keep `AppSettings` limited to the active profile id plus current provider/model/base URL defaults. This preserves the existing settings flow while enabling profile management without inflating the base config file.
+
+### Next Steps
+1. Add a local `ITranslationProfileStore` implementation that reads `translation-profiles.json` from AppData.
+2. Keep `AppSettings.TranslationProfileId` as the selected profile pointer.
+3. Add UI placeholders to select a profile (no behavior changes).
+4. Add import/export tasks for profiles as a future enhancement.
+
+## Issue Breakdown (GitHub-Style)
+### Issue 1: Inventory pass for settings + translation entry points
+**Description**
+Document config storage, translation provider resolution, and UI entry points for new integrations.
+
+**Acceptance Criteria**
+- `docs/integrations.md` lists config storage details and translation entry points.
+- Risks/constraints are captured with file references.
+
+**Files to Touch**
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build succeeds.
+- Settings dialog opens and translator selection is unchanged.
+
+### Issue 2: Local JSON-backed translation profiles store (stub)
+**Description**
+Add a JSON-backed implementation of `ITranslationProfileStore` that reads profiles from AppData.
+
+**Acceptance Criteria**
+- New store compiles and returns empty list if the file is missing.
+- File path follows AppData conventions.
+- No UI wiring or behavior changes yet.
+
+**Files to Touch**
+- `Witcher3StringEditor.Data/Profiles/JsonTranslationProfileStore.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build succeeds.
+- App starts and settings persist as before.
+
+### Issue 3: Ollama integration scaffolding + model list stub
+**Description**
+Create settings and provider stubs for Ollama with model selection placeholders.
+
+**Acceptance Criteria**
+- Ollama settings model (BaseUrl, Model) exists.
+- Provider stub compiles and exposes a `ListModelsAsync` placeholder.
+- No external calls by default.
+
+**Files to Touch**
+- `Witcher3StringEditor.Integrations.Ollama/...`
+- `Witcher3StringEditor.Common/Translation/...` (if registry updates are needed)
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build succeeds.
+- Translation dialog remains functional with existing providers.
+
+### Issue 4: Terminology & style pack loading (local-only stubs)
+**Description**
+Add loaders for CSV/TSV/Markdown terminology and style guides, plus sample fixtures.
+
+**Acceptance Criteria**
+- Loader interfaces/stubs compile.
+- Sample files are added under `docs/samples/`.
+- No enforcement logic beyond basic parsing.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Terminology/...`
+- `Witcher3StringEditor/...` (loader implementation)
+- `docs/samples/...`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build succeeds.
+- Loading samples does not alter translation workflows.
+
+### Issue 5: Translation memory + QA stores (SQLite bootstrap)
+**Description**
+Ensure SQLite stores are wired for translation memory and QA metadata (inert by default).
+
+**Acceptance Criteria**
+- Store interfaces + bootstrap exist.
+- AppData-based database path is used.
+- No automatic background writes yet.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/TranslationMemory/...`
+- `Witcher3StringEditor.Common/QualityAssurance/...`
+- `Witcher3StringEditor.Data/TranslationMemory/...`
+- `Witcher3StringEditor.Data/QualityAssurance/...`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build succeeds.
+- Database file is created only when stores are called.
+
 ## Decision Log / Inventory
+### Configuration Persistence (ConfigService / AppSettings)
+- `ConfigService` serializes settings to JSON and returns a new settings instance when the file is missing.【F:Witcher3StringEditor/Services/ConfigService.cs†L1-L38】
+- `AppSettings` houses persisted user settings such as translator choice and translation provider defaults (including profile id).【F:Witcher3StringEditor/Models/AppSettings.cs†L1-L122】
+- `App.xaml.cs` constructs the settings file path under AppData and registers `ConfigService` and `AppSettings` with DI using that path.【F:Witcher3StringEditor/App.xaml.cs†L120-L177】【F:Witcher3StringEditor/App.xaml.cs†L267-L279】
+
 ### Translation Entry Points (ITranslator / TranslateAsync / TranslationDialogViewModel)
 - Service registration for translators lives in `App.xaml.cs`, where `ITranslator` implementations (Microsoft/Google/Yandex) are registered with DI. This is the root entry point for resolving translators used across the UI.【F:Witcher3StringEditor/App.xaml.cs†L288-L313】
 - Translator selection is exposed in the settings dialog: `SettingDialogViewModel` surfaces the available translator names and binds them to `AppSettings.Translator` in the settings UI. This is the configuration entry point for picking the active translator.【F:Witcher3StringEditor.Dialogs/ViewModels/SettingDialogViewModel.cs†L16-L73】【F:Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml†L201-L209】
