@@ -65,6 +65,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         this.translator = translator;
         this.appSettings = appSettings;
         this.w3StringItems = w3StringItems;
+        // TODO: Accept ITranslationProvider and provider-specific options alongside ITranslator when routing is added.
         Log.Information("Total items to translate: {Count}.", this.w3StringItems.Count); // Log the number of items
         Log.Information("Starting index: {Index}.", index); // Log the starting index
         CurrentViewModel =
