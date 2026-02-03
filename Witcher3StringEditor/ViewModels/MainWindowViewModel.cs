@@ -633,6 +633,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var itemsToUse = FilteredW3StringItems ?? W3StringItems!; // Use filtered items if available
         var selectedIndex =
             selectedItem is not null ? itemsToUse.IndexOf(selectedItem) : 0; // Get the index of the selected item
+        // TODO: Route translation through ITranslationProvider registry once providers are selectable/configured.
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this,
