@@ -143,11 +143,13 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 CancellationTokenSource = new CancellationTokenSource(); // Create a new cancellation token source
                 CurrentTranslateItemModel.TranslatedText = string.Empty; // Clear the translation text
                 Log.Information("Starting translation."); // Log start of translation
+                // TODO: Inject terminology/style prompts before translation once provider routing supports it.
                 var translationResult = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
                     ToLanguage, FormLanguage, CancellationTokenSource); // Execute the translation task
                 if (translationResult.IsSuccess) // Check if translation was successful
                 {
                     Guard.IsNotNullOrWhiteSpace(translationResult.Value); // Check if translation result is not empty
+                    // TODO: Validate translated text against terminology/style rules post-translation.
                     CurrentTranslateItemModel.TranslatedText = translationResult.Value; // Set the translation text
                     Log.Information("Translation completed."); // Log completion of translation
                 }

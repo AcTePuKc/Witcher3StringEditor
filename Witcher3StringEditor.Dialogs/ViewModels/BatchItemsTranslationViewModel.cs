@@ -251,8 +251,10 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     private static async Task<Result<string>> TranslateItem(ITranslator translator, string text, ILanguage tLanguage,
         ILanguage fLanguage)
     {
+        // TODO: Inject terminology/style prompts before batch translation once provider routing supports it.
         var translation =
             (await translator.TranslateAsync(text, tLanguage, fLanguage)).Translation; // Perform translation
+        // TODO: Validate translated text against terminology/style rules post-translation.
         if (IsTranslationValid(translation)) return Result.Ok(translation); // Return success if valid
         LogEmptyTranslationResult(translator.Name); // Log error if invalid
         return Result.Fail(string.Empty); // Return failure

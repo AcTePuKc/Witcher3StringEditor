@@ -14,8 +14,9 @@ Perform a repository inventory to confirm where settings are loaded/saved, where
 - `docs/inventory-report.md`
 
 **QA Checklist**
-- Build: `dotnet build` (ensure no changes break compilation)
+- Build: `dotnet build`
 - Manual: open settings dialog to confirm no UI regressions
+- No regressions: verify existing translation dialog still opens
 
 ---
 
@@ -36,10 +37,11 @@ Introduce a local translation memory store with a minimal SQLite schema and boot
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: app startup and open translation dialog
+- No regressions: confirm existing translation flow behaves the same
 
 ---
 
-## Issue 3: Provider registry + model discovery wiring
+## Issue 3: Provider registry + model discovery wiring (Ollama first)
 **Description**
 Wire provider selection and model discovery to a registry that can call provider-specific model list methods (Ollama first). Keep existing translator selection intact.
 
@@ -52,30 +54,36 @@ Wire provider selection and model discovery to a registry that can call provider
 - `Witcher3StringEditor.Common/Translation/*`
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingDialogViewModel.cs`
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `docs/integrations.md`
 
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open settings dialog and click refresh button
+- No regressions: confirm translation dialog still loads existing translator list
 
 ---
 
 ## Issue 4: Terminology + style pack loading
 **Description**
-Implement loaders for TSV/CSV/Markdown terminology packs and add hooks for future prompt injection and validation.
+Implement loaders for TSV/CSV/Markdown terminology packs and add hooks for future prompt injection and post-translation validation. Validate parsing against the sample TSV and Markdown style guide.
 
 **Acceptance Criteria**
-- `ITerminologyLoader` implemented for TSV/CSV/Markdown.
-- Sample files added under `docs/samples/`.
-- No automatic enforcement; only reporting/stubs.
+- `TerminologyPack` includes term, translation, notes, and mode metadata.
+- `TerminologyLoader` supports CSV/TSV and Markdown parsing with simple rules.
+- TODO markers exist for prompt injection and post-translation validation.
+- Loader can parse `docs/samples/terminology.sample.tsv` and `docs/samples/style-guide.sample.md` without errors.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Terminology/*`
-- `Witcher3StringEditor/Services/*`
+- `Witcher3StringEditor/Services/TerminologyLoader.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/*TranslationViewModel*.cs`
 - `docs/samples/*`
+- `docs/integrations.md`
 
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: load a sample pack and confirm no crash
+- No regressions: confirm translation still works without a terminology pack
 
 ---
 
@@ -96,3 +104,4 @@ Create a local profile store (JSON first) that persists provider/model/base URL/
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: create a profile file and ensure it loads
+- No regressions: confirm existing translator selection still functions

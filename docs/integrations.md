@@ -14,14 +14,18 @@
 ### Provider Abstraction
 - Continue using the existing `ITranslationProvider` and provider registry in `Witcher3StringEditor.Common.Translation`.
 - Translation provider selection should resolve via a future registry (mapping provider name to `ITranslationProvider`).
+- Add TODO hooks in the translation flow for prompt injection and post-translation validation.
 
 ### Translation Memory (Local Only)
 - Introduce a local translation memory store interface in `Witcher3StringEditor.Common.TranslationMemory`.
 - Planned storage: SQLite with a minimal schema for source/target/language/time.
 
 ### Terminology & Style Packs
-- Introduce a terminology loader interface in `Witcher3StringEditor.Common.Terminology`.
-- Planned loaders: TSV/CSV/Markdown, with a shared `TerminologyPack` model.
+- Define `TerminologyPack` entries with term, translation, notes, and mode.
+- `TerminologyLoader` parses CSV/TSV terminology files and Markdown style guides with simple rules.
+- Markdown parsing produces a `StyleGuide` model and maps required/forbidden terms into a terminology pack.
+- Sample files in `docs/samples/` serve as validation fixtures for loaders.
+- `TerminologyLoader.ValidateSamplesAsync` loads the sample TSV/Markdown files for quick validation.
 
 ### Translation Profiles
 - Add a profile model and store interface in `Witcher3StringEditor.Common.Profiles`.
