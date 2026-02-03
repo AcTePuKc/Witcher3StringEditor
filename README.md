@@ -35,7 +35,9 @@ https://www.syncfusion.com/products/communitylicense
 
 To run locally, set the license key using one of the following:
 1. Environment variable: `W3SE_SYNCFUSION_LICENSE_KEY`
-2. App settings file: `%AppData%\Witcher3StringEditor(_Debug)\AppSettings.Json` with a `SyncfusionLicenseKey` field
+2. App settings file: `AppSettings.Json` with a `SyncfusionLicenseKey` field, located in:
+   - `%AppData%\Witcher3StringEditor` (release builds)
+   - `%AppData%\Witcher3StringEditor_Debug` (debug builds)
 
 The environment variable takes precedence over the config file if both are set.
 

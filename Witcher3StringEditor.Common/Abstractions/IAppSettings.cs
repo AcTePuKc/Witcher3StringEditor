@@ -61,7 +61,7 @@ public interface IAppSettings
     /// <summary>
     ///     Gets or sets the Syncfusion license key (optional)
     /// </summary>
-    public string SyncfusionLicenseKey { get; set; }
+    public string? SyncfusionLicenseKey { get; set; }
 
     /// <summary>
     ///     Gets the collection of recently opened items

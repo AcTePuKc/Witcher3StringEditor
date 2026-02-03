@@ -36,6 +36,7 @@ namespace Witcher3StringEditor;
 /// </summary>
 public sealed partial class App : IDisposable
 {
+    private const string SyncfusionLicenseKeyEnvVar = "W3SE_SYNCFUSION_LICENSE_KEY";
     private IAppSettings? appSettings; // Application settings
     private IConfigService? configService; // Configuration service
     private bool disposedValue; // Flag to indicate whether the object has been disposed
@@ -174,7 +175,7 @@ public sealed partial class App : IDisposable
     /// </summary>
     private static void RegisterSyncfusionLicense(IAppSettings? settings)
     {
-        var envKey = Environment.GetEnvironmentVariable("W3SE_SYNCFUSION_LICENSE_KEY");
+        var envKey = Environment.GetEnvironmentVariable(SyncfusionLicenseKeyEnvVar);
         var configKey = settings?.SyncfusionLicenseKey;
         var licenseKey = string.IsNullOrWhiteSpace(envKey) ? configKey : envKey;
 
