@@ -16,6 +16,7 @@
 
 ### Settings Surface
 - Extend `IAppSettings` and `AppSettings` with provider/model/base URL/profile id settings.
+- Treat `BaseUrl` as an alias for the persisted translation base URL so Ollama endpoints can use it directly.
 - Keep existing translator selection intact to avoid behavior changes.
 - UI exposes provider/model/base URL as placeholders in the settings dialog.
 
@@ -147,7 +148,8 @@ Create settings and provider stubs for Ollama with model selection placeholders.
 **Acceptance Criteria**
 - Ollama settings model (BaseUrl, Model) exists.
 - Provider stub compiles and exposes a `ListModelsAsync` placeholder.
-- No external calls by default.
+- Settings model refresh resolves `BaseUrl` (defaulting to `http://localhost:11434`) and populates model names from `/api/tags`.
+- Error states show a friendly status message and keep the model list empty.
 
 **Files to Touch**
 - `Witcher3StringEditor.Integrations.Ollama/...`

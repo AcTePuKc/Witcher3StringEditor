@@ -68,6 +68,15 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private string translationBaseUrl = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the translation provider base URL (alias for TranslationBaseUrl)
+    /// </summary>
+    public string BaseUrl
+    {
+        get => TranslationBaseUrl;
+        set => TranslationBaseUrl = value;
+    }
+
+    /// <summary>
     ///     Gets or sets the optional translation profile id
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
