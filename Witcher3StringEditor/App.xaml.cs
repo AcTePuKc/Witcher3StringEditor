@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reactive;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Windows.Win32;
@@ -37,6 +36,7 @@ namespace Witcher3StringEditor;
 /// </summary>
 public sealed partial class App : IDisposable
 {
+    private const string SyncfusionLicenseKeyEnvVar = "W3SE_SYNCFUSION_LICENSE_KEY";
     private IAppSettings? appSettings; // Application settings
     private IConfigService? configService; // Configuration service
     private bool disposedValue; // Flag to indicate whether the object has been disposed
@@ -96,7 +96,7 @@ public sealed partial class App : IDisposable
         InitializeServices(GetAppSettingsPath()); // Initialize dependency injection services
         InitializeAppSettings(); // Load application settings
         InitializeLogging(); // Setup logging system
-        RegisterSyncfusionLicense(); // Register Syncfusion license for UI components
+        RegisterSyncfusionLicense(appSettings); // Register Syncfusion license for UI components
         InitializeCulture(); // Set application culture (language)
         new MainWindow().Show(); // Show the main window
     }
@@ -173,14 +173,16 @@ public sealed partial class App : IDisposable
     ///     Registers the Syncfusion license
     ///     Reads the license from embedded resources and registers it with Syncfusion
     /// </summary>
-    private static void RegisterSyncfusionLicense()
+    private static void RegisterSyncfusionLicense(IAppSettings? settings)
     {
-        // Read the license from embedded resources
-        using var stream = Assembly.GetExecutingAssembly()
-            .GetManifestResourceStream("Witcher3StringEditor.License.txt")!;
-        using var reader = new StreamReader(stream);
-        // Register the license with Syncfusion
-        SyncfusionLicenseProvider.RegisterLicense(reader.ReadToEnd());
+        var envKey = Environment.GetEnvironmentVariable(SyncfusionLicenseKeyEnvVar);
+        var configKey = settings?.SyncfusionLicenseKey;
+        var licenseKey = string.IsNullOrWhiteSpace(envKey) ? configKey : envKey;
+
+        if (!string.IsNullOrWhiteSpace(licenseKey))
+        {
+            SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+        }
     }
 
     /// <summary>

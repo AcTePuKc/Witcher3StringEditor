@@ -74,6 +74,12 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private string? translationProfileId;
 
     /// <summary>
+    ///     Gets or sets the Syncfusion license key (optional)
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private string? syncfusionLicenseKey;
+
+    /// <summary>
     ///     Gets or sets the path to the W3Strings tool executable
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>

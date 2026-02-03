@@ -59,6 +59,11 @@ public interface IAppSettings
     public string? TranslationProfileId { get; set; }
 
     /// <summary>
+    ///     Gets or sets the Syncfusion license key (optional)
+    /// </summary>
+    public string? SyncfusionLicenseKey { get; set; }
+
+    /// <summary>
     ///     Gets the collection of recently opened items
     /// </summary>
     public ObservableCollection<IRecentItem> RecentItems { get; }
