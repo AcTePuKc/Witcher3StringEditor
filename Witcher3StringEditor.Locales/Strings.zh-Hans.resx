@@ -499,6 +499,22 @@
   <data name="TranslatorSelectionDescription" xml:space="preserve">
     <value>选择用于翻译文本的翻译服务</value>
   </data>
+
+  <data name="TranslationProviderSettingsHeader" xml:space="preserve">
+    <value>Translation Provider (Preview)</value>
+  </data>
+  <data name="TranslationProviderSettingsDescription" xml:space="preserve">
+    <value>Future translation provider configuration.</value>
+  </data>
+  <data name="TranslationProviderRoutingHint" xml:space="preserve">
+    <value>When provider routing is available, the selected provider will override the legacy translator.</value>
+  </data>
+  <data name="TranslationProviderBaseUrlLabel" xml:space="preserve">
+    <value>Base URL</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
   <data name="PathInvalidCaption" xml:space="preserve">
     <value>路径异常</value>
   </data>

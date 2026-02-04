@@ -499,6 +499,22 @@
   <data name="TranslatorSelectionDescription" xml:space="preserve">
     <value>Sélectionnez le service de traduction à utiliser pour traduire le texte</value>
   </data>
+
+  <data name="TranslationProviderSettingsHeader" xml:space="preserve">
+    <value>Translation Provider (Preview)</value>
+  </data>
+  <data name="TranslationProviderSettingsDescription" xml:space="preserve">
+    <value>Future translation provider configuration.</value>
+  </data>
+  <data name="TranslationProviderRoutingHint" xml:space="preserve">
+    <value>When provider routing is available, the selected provider will override the legacy translator.</value>
+  </data>
+  <data name="TranslationProviderBaseUrlLabel" xml:space="preserve">
+    <value>Base URL</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
   <data name="PathInvalidCaption" xml:space="preserve">
     <value>Chemin Invalide</value>
   </data>
