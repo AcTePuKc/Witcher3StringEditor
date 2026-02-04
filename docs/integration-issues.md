@@ -52,6 +52,7 @@ Add a provider registry abstraction that maps provider names to implementations 
 - Provider registry returns known provider descriptors and resolves providers by name.
 - Settings dialog has placeholders for provider/model/base URL without changing translator behavior.
 - Model discovery uses provider `ListModelsAsync` (stub behavior allowed).
+- Cached model list persists in settings for offline UX.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/*`

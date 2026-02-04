@@ -10,7 +10,7 @@
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
 - **Registry** (future) resolves provider names to `ITranslationProvider` instances.
 - **Ollama stub** lives in `Witcher3StringEditor.Integrations.Ollama/` with settings + model listing placeholder.
-- **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`).
+- **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`, `CachedTranslationModels`).
 
 ### Provider Selection Behavior
 - If a provider is selected **and** provider routing is implemented, the provider wins.
