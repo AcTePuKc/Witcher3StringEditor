@@ -114,7 +114,7 @@ Persist profiles locally (JSON) and add a resolver stub that can merge a selecte
 
 ## Issue 6: Integration architecture spec + wiring map
 **Description**
-Create `docs/integrations.md` with a high-level architecture sketch, planned tasks, and explicit extension points for providers, terminology, and profiles. Include a minimal wiring map so future agents know where to hook in without guessing.
+Update and expand `docs/integrations.md` with a high-level architecture sketch, planned tasks, and explicit extension points for providers, terminology, and profiles. Include a minimal wiring map so future agents know where to hook in without guessing.
 
 **Acceptance Criteria**
 - `docs/integrations.md` documents provider registry, translation memory, terminology, and profile layers.
