@@ -162,6 +162,9 @@
   <data name="UpdateAvailable" xml:space="preserve">
     <value>Mise à jour disponible</value>
   </data>
+  <data name="CheckUpdatesBtnLabel" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>Récentes</value>
   </data>

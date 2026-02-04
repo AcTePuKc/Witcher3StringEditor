@@ -268,6 +268,17 @@ internal partial class MainWindowViewModel : ObservableObject
     {
         LogApplicationStartupInfo(); // Log application startup information
         await settingsManagerService.CheckSettings(); // Check application settings
+        if (appSettings.AutoCheckUpdates) // Check updates if enabled
+            IsUpdateAvailable =
+                await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate(); // Check for updates
+    }
+
+    /// <summary>
+    ///     Checks for updates on demand
+    /// </summary>
+    [RelayCommand]
+    private async Task CheckForUpdates()
+    {
         IsUpdateAvailable =
             await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate(); // Check for updates
     }

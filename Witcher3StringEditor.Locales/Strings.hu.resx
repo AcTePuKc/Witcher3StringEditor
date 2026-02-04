@@ -162,6 +162,9 @@
   <data name="UpdateAvailable" xml:space="preserve">
     <value>Frissítés elérhető</value>
   </data>
+  <data name="CheckUpdatesBtnLabel" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>Legutóbbiak</value>
   </data>

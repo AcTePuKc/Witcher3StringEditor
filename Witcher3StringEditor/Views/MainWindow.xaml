@@ -211,6 +211,13 @@
                     <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Settings}" />
                 </ui:AppBarButton.Icon>
             </ui:AppBarButton>
+            <!-- Check updates button -->
+            <ui:AppBarButton Command="{Binding CheckForUpdatesCommand}"
+                             Label="{I18N {x:Static l:LangKeys.CheckUpdatesBtnLabel}}">
+                <ui:AppBarButton.Icon>
+                    <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Info}" />
+                </ui:AppBarButton.Icon>
+            </ui:AppBarButton>
             <!-- Open working folder button -->
             <ui:AppBarButton Command="{Binding OpenWorkingFolderCommand}"
                              Label="{I18N {x:Static l:LangKeys.OpenWorkingFolderBtnLabel}}">

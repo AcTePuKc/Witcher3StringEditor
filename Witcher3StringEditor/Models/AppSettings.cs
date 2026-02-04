@@ -32,6 +32,11 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private int pageSize = 30;
 
     /// <summary>
+    ///     Gets or sets a value indicating whether the app should auto-check for updates on startup
+    /// </summary>
+    [ObservableProperty] private bool autoCheckUpdates = true;
+
+    /// <summary>
     ///     Gets or sets the preferred language for The Witcher 3 string operations
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
