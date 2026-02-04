@@ -129,7 +129,7 @@ Update and expand `docs/integrations.md` with a high-level architecture sketch, 
 - Manual: ensure no missing references in the doc
 
 **Current Status / Partial Completion**
-- Not started yet; no integrations spec exists in `docs/` today.
+- An initial draft of the integrations spec exists at `docs/integrations.md`, but it needs to be expanded with more detail.
 
 ---
 
