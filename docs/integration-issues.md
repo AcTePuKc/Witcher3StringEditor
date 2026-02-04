@@ -57,7 +57,7 @@ Add a provider registry abstraction that maps provider names to implementations 
 - `Witcher3StringEditor.Common/Translation/*`
 - `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
 - `Witcher3StringEditor.Integrations.Ollama/*`
-- `Witcher3StringEditor.Dialogs/ViewModels/SettingDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
 - `docs/integrations.md`
 
@@ -125,8 +125,9 @@ Update and expand `docs/integrations.md` with a high-level architecture sketch, 
 - `docs/integrations.md`
 
 **QA Checklist**
-- Docs: verify links/paths are accurate
-- Manual: ensure no missing references in the doc
+- Build: `dotnet build`
+- Manual: open `docs/integrations.md` and verify links/paths are accurate
+- No regressions: confirm no runtime-facing changes were introduced
 
 **Current Status / Partial Completion**
 - An initial draft of the integrations spec exists at `docs/integrations.md`, but it needs to be expanded with more detail.
@@ -144,7 +145,7 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 
 **Files to Touch**
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
-- `Witcher3StringEditor.Dialogs/ViewModels/SettingDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `Witcher3StringEditor.Common/Settings/*` (if required)
 - `docs/integrations.md`
 
@@ -178,7 +179,8 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
 - No regressions: translation flow unchanged
 
 **Current Status / Partial Completion**
-- Integration project exists, but no settings model or client stub added yet.
+- Integration project already includes an Ollama settings model and provider stub; wiring into the
+  provider registry and settings UI remains.
 
 ---
 
@@ -203,7 +205,7 @@ Define translation memory interfaces, provide a minimal SQLite schema, and imple
 - No regressions: translation dialog behaves as before
 
 **Current Status / Partial Completion**
-- No schema or interfaces exist in repo yet.
+- SQLite bootstrap and TM interfaces exist; enablement and orchestration wiring remain.
 
 ---
 
@@ -228,4 +230,4 @@ Add terminology/style models, minimal loaders for TSV/CSV/Markdown, and sample f
 - No regressions: translation still works without a terminology pack
 
 **Current Status / Partial Completion**
-- No loaders or sample files exist yet.
+- Terminology/style loaders and sample files exist; prompt injection and validation hooks remain.

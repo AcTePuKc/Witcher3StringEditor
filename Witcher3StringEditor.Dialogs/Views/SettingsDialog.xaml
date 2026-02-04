@@ -14,7 +14,7 @@
     Title="{I18N {x:Static l:LangKeys.SettingsDialogTitle}}"
     Width="800"
     Height="800"
-    d:DataContext="{d:DesignInstance Type=vm:SettingDialogViewModel}"
+    d:DataContext="{d:DesignInstance Type=vm:SettingsDialogViewModel}"
     ui:TitleBar.ExtendViewIntoTitleBar="True"
     ui:WindowHelper.SystemBackdropType="Mica"
     ui:WindowHelper.UseModernWindowStyle="True"

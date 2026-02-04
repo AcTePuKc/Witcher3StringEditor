@@ -311,7 +311,7 @@ public sealed partial class App : IDisposable
         viewLocator.Register<BackupDialogViewModel, BackupDialog>();
         viewLocator.Register<SaveDialogViewModel, SaveDialog>();
         viewLocator.Register<LogDialogViewModel, LogDialog>();
-        viewLocator.Register<SettingDialogViewModel, SettingsDialog>();
+        viewLocator.Register<SettingsDialogViewModel, SettingsDialog>();
         viewLocator.Register<TranslationDialogViewModel, TranslationDialog>();
         viewLocator.Register<RecentDialogViewModel, RecentDialog>();
         viewLocator.Register<AboutDialogViewModel, AboutDialog>();
