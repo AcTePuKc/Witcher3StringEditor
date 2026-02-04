@@ -85,6 +85,11 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     public string ActiveEngineDescription => BuildActiveEngineDescription();
 
     /// <summary>
+    ///     Gets a human-readable label for the active translation engine.
+    /// </summary>
+    public string ActiveEngineLabel => BuildActiveEngineDescription();
+
+    /// <summary>
     ///     Switches between single item and batch translation modes
     ///     Cleans up the current view model and creates a new one of the opposite type
     /// </summary>

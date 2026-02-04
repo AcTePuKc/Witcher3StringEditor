@@ -9,6 +9,8 @@
 ### Translation Providers + Model Selection
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
 - **Registry** (future) resolves provider names to `ITranslationProvider` instances.
+- **Pipeline context** lives in `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs` and carries
+  profile/provider/model/terminology/translation memory selections.
 - **Ollama stub** lives in `Witcher3StringEditor.Integrations.Ollama/` with settings + model listing placeholder.
 - **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`, `CachedTranslationModels`).
 
@@ -31,6 +33,8 @@
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.
 - **Profile store** lives in `Witcher3StringEditor.Data/Profiles/` (JSON-backed, AppData).
 - **Resolver stub** lives in `Witcher3StringEditor/Services/` to merge profiles with settings later.
+- **Pipeline context builder** lives in `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs` and
+  produces a read-only context for future routing.
 
 ## Wiring Map (Current → Future)
 - **Settings dialog** should remain the single source of truth for provider/model/profile selection.
@@ -48,6 +52,7 @@
 4. Extend terminology/style loading with prompt injection + validation hooks (TODOs only).
 5. Add profile selection wiring (store + resolver) without altering existing translator flow.
 6. Add minimal settings stubs for translation memory enablement + local database path.
+7. Introduce a translation pipeline context builder to combine settings, profiles, and terminology (TODOs only).
 
 ## Constraints
 - No external services.
