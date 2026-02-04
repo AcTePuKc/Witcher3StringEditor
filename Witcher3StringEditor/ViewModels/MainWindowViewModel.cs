@@ -269,8 +269,7 @@ internal partial class MainWindowViewModel : ObservableObject
         LogApplicationStartupInfo(); // Log application startup information
         await settingsManagerService.CheckSettings(); // Check application settings
         if (appSettings.AutoCheckUpdates) // Check updates if enabled
-            IsUpdateAvailable =
-                await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate(); // Check for updates
+            await PerformUpdateCheckAsync();
     }
 
     /// <summary>
@@ -278,6 +277,11 @@ internal partial class MainWindowViewModel : ObservableObject
     /// </summary>
     [RelayCommand]
     private async Task CheckForUpdates()
+    {
+        await PerformUpdateCheckAsync();
+    }
+
+    private async Task PerformUpdateCheckAsync()
     {
         IsUpdateAvailable =
             await serviceProvider.GetRequiredService<ICheckUpdateService>().CheckUpdate(); // Check for updates

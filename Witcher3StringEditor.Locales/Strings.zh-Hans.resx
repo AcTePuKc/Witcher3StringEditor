@@ -163,7 +163,7 @@
     <value>检测到新版本</value>
   </data>
   <data name="CheckUpdatesBtnLabel" xml:space="preserve">
-    <value>Check for Updates</value>
+    <value>检查更新</value>
   </data>
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>最近打开的文件</value>
