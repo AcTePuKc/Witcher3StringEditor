@@ -21,7 +21,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 /// <param name="dialogService">Dialog service for showing file dialogs</param>
 /// <param name="translators">Collection of available translators</param>
 /// <param name="supportedCultures">Collection of supported cultures for localization</param>
-public partial class SettingDialogViewModel(
+public partial class SettingsDialogViewModel(
     IAppSettings appSettings,
     IDialogService dialogService,
     IEnumerable<string> translators,
