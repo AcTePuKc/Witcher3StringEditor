@@ -80,11 +80,6 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     public bool? DialogResult => true;
 
     /// <summary>
-    ///     Gets a human-readable description of the active translation engine.
-    /// </summary>
-    public string ActiveEngineDescription => BuildActiveEngineDescription();
-
-    /// <summary>
     ///     Gets a human-readable label for the active translation engine.
     /// </summary>
     public string ActiveEngineLabel => BuildActiveEngineDescription();
