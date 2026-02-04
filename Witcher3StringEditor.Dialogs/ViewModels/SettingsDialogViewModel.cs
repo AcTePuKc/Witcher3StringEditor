@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
@@ -167,6 +168,9 @@ public partial class SettingsDialogViewModel(
                     }
                 }
             }
+
+            EnsureSelectedModelOption();
+            CacheModelOptions();
         }
         catch (UriFormatException)
         {
@@ -188,14 +192,43 @@ public partial class SettingsDialogViewModel(
 
     private static IEnumerable<string> InitializeModelOptions(IAppSettings appSettings)
     {
-        var selectedModel = appSettings.TranslationModelName;
+        var options = new List<string>(DefaultModelOptions);
+        var cachedOptions = appSettings.CachedTranslationModels;
 
-        if (string.IsNullOrWhiteSpace(selectedModel) ||
-            DefaultModelOptions.Contains(selectedModel, StringComparer.OrdinalIgnoreCase))
+        if (cachedOptions is { Count: > 0 })
         {
-            return DefaultModelOptions;
+            foreach (var modelName in cachedOptions)
+            {
+                if (!string.IsNullOrWhiteSpace(modelName) &&
+                    !options.Contains(modelName, StringComparer.OrdinalIgnoreCase))
+                {
+                    options.Add(modelName);
+                }
+            }
         }
 
-        return DefaultModelOptions.Append(selectedModel);
+        var selectedModel = appSettings.TranslationModelName;
+        if (!string.IsNullOrWhiteSpace(selectedModel) &&
+            !options.Contains(selectedModel, StringComparer.OrdinalIgnoreCase))
+        {
+            options.Add(selectedModel);
+        }
+
+        return options;
+    }
+
+    private void EnsureSelectedModelOption()
+    {
+        var selectedModel = AppSettings.TranslationModelName;
+        if (!string.IsNullOrWhiteSpace(selectedModel) &&
+            !ModelOptions.Contains(selectedModel, StringComparer.OrdinalIgnoreCase))
+        {
+            ModelOptions.Add(selectedModel);
+        }
+    }
+
+    private void CacheModelOptions()
+    {
+        AppSettings.CachedTranslationModels = new ObservableCollection<string>(ModelOptions);
     }
 }
