@@ -162,6 +162,9 @@
   <data name="UpdateAvailable" xml:space="preserve">
     <value>更新可能</value>
   </data>
+  <data name="CheckUpdatesBtnLabel" xml:space="preserve">
+    <value>更新を確認する</value>
+  </data>
   <data name="RecentBtnLabel" xml:space="preserve">
     <value>最近開いたファイル</value>
   </data>

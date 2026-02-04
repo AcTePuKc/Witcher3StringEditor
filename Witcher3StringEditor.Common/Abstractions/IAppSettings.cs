@@ -34,6 +34,11 @@ public interface IAppSettings
     public string NexusModUrl { get; }
 
     /// <summary>
+    ///     Gets or sets a value indicating whether the app should auto-check for updates on startup
+    /// </summary>
+    public bool AutoCheckUpdates { get; set; }
+
+    /// <summary>
     ///     Gets or sets the preferred translator service
     /// </summary>
     public string Translator { get; set; }
