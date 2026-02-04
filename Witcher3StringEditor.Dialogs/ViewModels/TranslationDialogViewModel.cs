@@ -80,9 +80,9 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     public bool? DialogResult => true;
 
     /// <summary>
-    ///     Gets a human-readable description of the active translation engine.
+    ///     Gets a human-readable label for the active translation engine.
     /// </summary>
-    public string ActiveEngineDescription => BuildActiveEngineDescription();
+    public string ActiveEngineLabel => BuildActiveEngineDescription();
 
     /// <summary>
     ///     Switches between single item and batch translation modes

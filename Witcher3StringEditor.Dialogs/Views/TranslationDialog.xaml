@@ -73,7 +73,7 @@
             <TextBlock
                 FontSize="12"
                 Opacity="0.7"
-                Text="{Binding ActiveEngineDescription}" />
+                Text="{Binding ActiveEngineLabel}" />
         </StackPanel>
         <!-- Content grid containing the switch button and translation view -->
         <Grid Grid.Row="1" Margin="24,16,24,16">

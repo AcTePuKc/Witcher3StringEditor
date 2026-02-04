@@ -135,7 +135,29 @@ Update and expand `docs/integrations.md` with a high-level architecture sketch, 
 
 ---
 
-## Issue 7: Settings UI placeholders for integrations
+## Issue 7: Translation pipeline context builder (settings + profiles + terminology)
+**Description**
+Introduce a small pipeline context builder that combines settings, profile selection, and terminology/style paths into a
+single read-only context object for future translation routing. Keep it unused by default.
+
+**Acceptance Criteria**
+- A context builder returns a `TranslationPipelineContext` populated from settings and the selected profile.
+- No translation routing changes; the context is not consumed yet.
+- TODO markers indicate where translation memory and terminology injection will later occur.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs`
+- `Witcher3StringEditor/Services/*TranslationPipelineContext*.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: launch app and open Translation dialog
+- No regressions: translation still uses existing translator selection
+
+---
+
+## Issue 8: Settings UI placeholders for integrations
 **Description**
 Add minimal settings UI placeholders for provider selection, model selection, terminology packs, and translation profile selection. No behavioral changes; values can be stored but not used.
 
@@ -160,7 +182,7 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 
 ---
 
-## Issue 8: Ollama integration settings + model list stub
+## Issue 9: Ollama integration settings + model list stub
 **Description**
 Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed client, and provide a placeholder `ListModelsAsync` method.
 
@@ -185,7 +207,7 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
 
 ---
 
-## Issue 9: Local translation memory interfaces + SQLite bootstrap
+## Issue 10: Local translation memory interfaces + SQLite bootstrap
 **Description**
 Define translation memory interfaces, provide a minimal SQLite schema, and implement a stub repository that performs no lookups unless explicitly enabled.
 
@@ -210,7 +232,7 @@ Define translation memory interfaces, provide a minimal SQLite schema, and imple
 
 ---
 
-## Issue 10: Terminology + style loading stubs + samples
+## Issue 11: Terminology + style loading stubs + samples
 **Description**
 Add terminology/style models, minimal loaders for TSV/CSV/Markdown, and sample files for validation. Keep behavior read-only and inert.
 
