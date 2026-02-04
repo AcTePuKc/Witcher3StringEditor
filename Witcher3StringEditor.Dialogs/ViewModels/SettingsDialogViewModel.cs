@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -192,15 +193,14 @@ public partial class SettingsDialogViewModel(
 
     private static IEnumerable<string> InitializeModelOptions(IAppSettings appSettings)
     {
-        var options = new List<string>(DefaultModelOptions);
+        var options = new HashSet<string>(DefaultModelOptions, StringComparer.OrdinalIgnoreCase);
         var cachedOptions = appSettings.CachedTranslationModels;
 
         if (cachedOptions is { Count: > 0 })
         {
             foreach (var modelName in cachedOptions)
             {
-                if (!string.IsNullOrWhiteSpace(modelName) &&
-                    !options.Contains(modelName, StringComparer.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(modelName))
                 {
                     options.Add(modelName);
                 }
@@ -208,8 +208,7 @@ public partial class SettingsDialogViewModel(
         }
 
         var selectedModel = appSettings.TranslationModelName;
-        if (!string.IsNullOrWhiteSpace(selectedModel) &&
-            !options.Contains(selectedModel, StringComparer.OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(selectedModel))
         {
             options.Add(selectedModel);
         }
@@ -229,6 +228,7 @@ public partial class SettingsDialogViewModel(
 
     private void CacheModelOptions()
     {
-        AppSettings.CachedTranslationModels = new ObservableCollection<string>(ModelOptions);
+        AppSettings.CachedTranslationModels =
+            new ObservableCollection<string>(ModelOptions.Distinct(StringComparer.OrdinalIgnoreCase));
     }
 }
