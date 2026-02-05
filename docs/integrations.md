@@ -8,8 +8,9 @@
 ## Current Scaffolding Status
 - **Translation memory**: SQLite bootstrap + `ITranslationMemoryStore` exist; lookup/save are inert until enabled.
 - **Ollama provider + model selection**: settings + provider stubs exist with placeholder model listing.
-- **Terminology/style loading**: loaders and sample packs exist; prompt injection/validation remain TODO.
-- **Translation profiles**: JSON-backed profile store + resolver stubs exist; no runtime routing yet.
+- **Terminology/style loading**: loaders, prompt builder interface, and sample packs exist; prompt injection/validation remain TODO.
+- **Translation profiles**: JSON-backed profile store + resolver stubs exist; profiles include terminology/style paths and
+  translation memory flags, but routing is not wired yet.
 - **Issue drafts**: task breakdown lives in `docs/integration-issues.md`.
 
 ## Architecture Overview
@@ -34,10 +35,13 @@
 ### Terminology + Style Packs
 - **Models + loader interface** live in `Witcher3StringEditor.Common/Terminology/`.
 - **Loader implementation** lives in `Witcher3StringEditor/Services/TerminologyLoader.cs`.
+- **Prompt builder interface** lives in `Witcher3StringEditor.Common/Terminology/ITerminologyPromptBuilder.cs` with a
+  no-op implementation in `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`.
 - **Sample fixtures** live under `docs/samples/` for TSV/CSV and Markdown style guides.
 
 ### Translation Profiles
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.
+- Profiles can carry provider/model/base URL plus terminology/style paths and translation memory enablement flags.
 - **Profile store** lives in `Witcher3StringEditor.Data/Profiles/` (JSON-backed, AppData).
 - **Resolver stub** lives in `Witcher3StringEditor/Services/` to merge profiles with settings later.
 - **Pipeline context builder** lives in `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs` and

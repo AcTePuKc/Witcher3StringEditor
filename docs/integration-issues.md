@@ -76,12 +76,14 @@ Keep terminology/style loaders local-only, add TODO hooks for prompt injection a
 
 **Acceptance Criteria**
 - Loader supports TSV/CSV terminology packs and Markdown style guides.
+- Prompt builder interface exists with a no-op implementation for later prompt injection.
 - TODO markers exist for future prompt injection/validation.
 - Samples under `docs/samples/` parse without errors.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Terminology/*`
 - `Witcher3StringEditor/Services/TerminologyLoader.cs`
+- `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`
 - `docs/samples/*`
 - `docs/integrations.md`
 
@@ -99,6 +101,7 @@ Persist profiles locally (JSON) and add a resolver stub that can merge a selecte
 **Acceptance Criteria**
 - JSON-backed profile store returns empty list when file is missing.
 - Resolver stub returns null when no profile is selected.
+- Profile model includes optional terminology/style paths and translation memory enablement.
 - No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**
@@ -165,7 +168,7 @@ single read-only context object for future translation routing. Keep it unused b
 - No regressions: translation still uses existing translator selection
 
 **Current Status / Partial Completion**
-- No context builder exists yet; only planned in the integration spec.
+- A context builder exists, but it is not wired into translation routing yet.
 
 ---
 
@@ -226,51 +229,3 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
   provider registry and settings UI remains.
 
 ---
-
-## Issue 10: Local translation memory interfaces + SQLite bootstrap
-**Description**
-Define translation memory interfaces, provide a minimal SQLite schema, and implement a stub repository that performs no lookups unless explicitly enabled.
-
-**Acceptance Criteria**
-- SQLite schema defined with source/target/lang fields.
-- TM interfaces + stub store compile.
-- Storage path uses local AppData.
-
-**Files to Touch**
-- `Witcher3StringEditor.Common/TranslationMemory/*`
-- `Witcher3StringEditor.Data/TranslationMemory/*`
-- `Witcher3StringEditor.Data/Storage/*`
-- `docs/integrations.md`
-
-**QA Checklist**
-- Build: `dotnet build`
-- Manual: app startup without DB side effects
-- No regressions: translation dialog behaves as before
-
-**Current Status / Partial Completion**
-- SQLite bootstrap and TM interfaces exist; enablement and orchestration wiring remain.
-
----
-
-## Issue 11: Terminology + style loading stubs + samples
-**Description**
-Add terminology/style models, minimal loaders for TSV/CSV/Markdown, and sample files for validation. Keep behavior read-only and inert.
-
-**Acceptance Criteria**
-- Loaders can parse TSV/CSV terminology and Markdown style guides.
-- Samples added under `docs/samples/`.
-- TODO hooks exist for prompt injection/validation.
-
-**Files to Touch**
-- `Witcher3StringEditor.Common/Terminology/*`
-- `Witcher3StringEditor/Services/TerminologyLoader.cs`
-- `docs/samples/*`
-- `docs/integrations.md`
-
-**QA Checklist**
-- Build: `dotnet build`
-- Manual: load a sample pack and confirm no crash
-- No regressions: translation still works without a terminology pack
-
-**Current Status / Partial Completion**
-- Terminology/style loaders and sample files exist; prompt injection and validation hooks remain.

@@ -35,11 +35,10 @@ internal sealed class TranslationPipelineContextBuilder : ITranslationPipelineCo
             ProfileId = profile?.Id,
             ProviderName = providerName,
             ModelName = modelName,
-            // TODO: Populate terminology/style paths when profile settings are expanded.
-            TerminologyPath = null,
-            StyleGuidePath = null,
-            // TODO: Enable translation memory based on future settings.
-            UseTranslationMemory = false
+            TerminologyPath = profile?.TerminologyPath,
+            StyleGuidePath = profile?.StyleGuidePath,
+            // TODO: Allow settings to override the profile for translation memory enablement.
+            UseTranslationMemory = profile?.UseTranslationMemory ?? false
         };
     }
 }
