@@ -249,10 +249,17 @@ public sealed partial class App : IDisposable
 
     private void NotifyMissingSyncfusionLicense()
     {
+        const string syncfusionLicenseUrl = "https://www.syncfusion.com/products/communitylicense";
+        var message = string.Join(
+            Environment.NewLine + Environment.NewLine,
+            "Syncfusion license not configured.",
+            "This application uses Syncfusion controls, which require a free community license.",
+            $"1. Get a license key from: {syncfusionLicenseUrl}",
+            $"2. Set it using the '{SyncfusionLicenseKeyEnvVar}' environment variable, or enter it in the application's Settings dialog.",
+            "The application will now exit.");
+
         MessageBox.Show(
-            $"Syncfusion license not configured.{Environment.NewLine}{Environment.NewLine}" +
-            $"Please follow the README instructions: {SyncfusionLicenseDocsPath}{Environment.NewLine}{Environment.NewLine}" +
-            "The application will now exit.",
+            message,
             "Syncfusion license missing",
             MessageBoxButton.OK,
             MessageBoxImage.Warning);
