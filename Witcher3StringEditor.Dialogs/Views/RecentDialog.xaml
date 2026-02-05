@@ -139,25 +139,28 @@
             <!-- Data grid columns definition -->
             <sf:SfDataGrid.Columns>
                 <!-- File path column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTextColumn
                     ColumnSizer="AutoWithLastColumnFill"
-                    HeaderText="{I18N {x:Static l:LangKeys.Path}}"
+                    HeaderText="Path"
                     MappingName="FilePath"
                     MinimumWidth="700"
                     TextWrapping="WrapWithOverflow" />
                 <!-- Opened time column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridDateTimeColumn
                     ColumnSizer="SizeToHeader"
-                    HeaderText="{I18N {x:Static l:LangKeys.OpenedTime}}"
+                    HeaderText="Opened time"
                     MappingName="OpenedTime"
                     MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <!-- Mark/pin column with custom checkbox template -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTemplateColumn
                     HorizontalAlignment="Center"
                     ColumnSizer="SizeToHeader"
-                    HeaderText="{I18N {x:Static l:LangKeys.Mark}}"
+                    HeaderText="Pinned"
                     MappingName="IsMarked"
                     MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
@@ -170,11 +173,12 @@
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
 
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTemplateColumn
                     HorizontalAlignment="Center"
                     AllowSorting="False"
                     ColumnSizer="SizeToHeader"
-                    HeaderText="{I18N {x:Static l:LangKeys.Open}}"
+                    HeaderText="Open"
                     MappingName="Null"
                     MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>

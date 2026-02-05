@@ -111,24 +111,27 @@
             <!-- Data grid columns definition -->
             <sf:SfDataGrid.Columns>
                 <!-- Timestamp column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridDateTimeColumn
                     ColumnSizer="SizeToHeader"
-                    HeaderText="{I18N {x:Static l:LangKeys.LogTime}}"
+                    HeaderText="Time"
                     MappingName="Timestamp"
                     MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <!-- Log level column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTextColumn
                     ColumnSizer="SizeToHeader"
-                    HeaderText="{I18N {x:Static l:LangKeys.LogLevel}}"
+                    HeaderText="Level"
                     MappingName="Level"
                     MinimumWidth="150"
                     TextAlignment="Center" />
                 <!-- Log message column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTextColumn
                     ColumnSizer="AutoWithLastColumnFill"
-                    HeaderText="{I18N {x:Static l:LangKeys.LogMessage}}"
+                    HeaderText="Message"
                     MappingName="Message"
                     MinimumWidth="700"
                     TextWrapping="WrapWithOverflow" />

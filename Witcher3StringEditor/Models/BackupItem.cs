@@ -1,4 +1,5 @@
-﻿using Witcher3StringEditor.Common.Abstractions;
+﻿using System.Text.Json.Serialization;
+using Witcher3StringEditor.Common.Abstractions;
 
 namespace Witcher3StringEditor.Models;
 
@@ -26,7 +27,8 @@ internal record BackupItem : IBackupItem
     ///     Gets the original path of the file before backup
     ///     This property is required during record initialization
     /// </summary>
-    public required string OrginPath { get; init; }
+    [JsonPropertyName("OrginPath")]
+    public required string OriginPath { get; init; }
 
     /// <summary>
     ///     Gets the path where the backup file is stored

@@ -136,8 +136,10 @@
                 </sf:SfDataGrid.SortComparers>
                 <!-- Package name and version columns -->
                 <sf:SfDataGrid.Columns>
-                    <sf:GridTextColumn HeaderText="{I18N {x:Static l:LangKeys.PackageName}}" MappingName="Name" />
-                    <sf:GridTextColumn HeaderText="{I18N {x:Static l:LangKeys.PackageVersion}}" MappingName="Version"
+                    <!-- TODO(i18n): restore localization when supported -->
+                    <sf:GridTextColumn HeaderText="Package name" MappingName="Name" />
+                    <!-- TODO(i18n): restore localization when supported -->
+                    <sf:GridTextColumn HeaderText="Package version" MappingName="Version"
                                        Width="200" />
                 </sf:SfDataGrid.Columns>
             </sf:SfDataGrid>

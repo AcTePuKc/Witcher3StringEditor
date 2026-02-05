@@ -56,7 +56,7 @@ public partial class BackupDialogViewModel(
         // Send a confirmation request
         if (await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(), MessageTokens.BackupRestore))
         {
-            Log.Information("The restoration of file {Path} has been approved.", backupItem.OrginPath); // Log approval
+            Log.Information("The restoration of file {Path} has been approved.", backupItem.OriginPath); // Log approval
             if (!backupService.Restore(backupItem)) // Attempt restoration
                 _ = await WeakReferenceMessenger.Default.Send(new AsyncRequestMessage<bool>(),
                     MessageTokens.OperationFailed); // Notify if failed
