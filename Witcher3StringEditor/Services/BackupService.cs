@@ -43,7 +43,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
             {
                 FileName = Path.GetFileName(filePath), // Set file name
                 Hash = hash, // Set file hash
-                OrginPath = filePath, // Set original file path
+                OriginPath = filePath, // Set original file path
                 BackupPath = Path.Combine(backupFolderPath, $"{Guid.NewGuid():N}.bak"), // Set backup file path
                 BackupTime = DateTime.Now // Set backup time
             };
@@ -67,17 +67,17 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
         try
         {
             Guard.IsTrue(File.Exists(backupItem.BackupPath)); // Ensure backup file exists
-            var folder = Path.GetDirectoryName(backupItem.OrginPath); // Get directory of original file
+            var folder = Path.GetDirectoryName(backupItem.OriginPath); // Get directory of original file
             Guard.IsNotNullOrWhiteSpace(folder); // Ensure folder path is valid
             if (!Directory.Exists(folder)) // Create directory if it doesn't exist
                 Directory.CreateDirectory(folder);
-            File.Copy(backupItem.BackupPath, backupItem.OrginPath, true); // Copy backup to original location
-            Log.Information("Restore backup file: {FileName}.", backupItem.OrginPath); // Log successful restore
+            File.Copy(backupItem.BackupPath, backupItem.OriginPath, true); // Copy backup to original location
+            Log.Information("Restore backup file: {FileName}.", backupItem.OriginPath); // Log successful restore
             return true; // Return true on success
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Failed to restore backup item: {Path}.", backupItem.OrginPath); // Log any errors
+            Log.Error(ex, "Failed to restore backup item: {Path}.", backupItem.OriginPath); // Log any errors
             return false; // Return false on failure
         }
     }
@@ -136,7 +136,7 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     {
         return appSettings.BackupItems.Any(x => // Check if any existing backup item matches
             x.Hash == backupItem.Hash && // Same hash
-            x.OrginPath == backupItem.OrginPath && // Same original path
+            x.OriginPath == backupItem.OriginPath && // Same original path
             File.Exists(x.BackupPath)); // Backup file still exists
     }
 
@@ -148,9 +148,9 @@ internal class BackupService(IAppSettings appSettings) : IBackupService
     /// <returns>True if the backup was executed successfully</returns>
     private bool ExecuteBackup(BackupItem backupItem)
     {
-        File.Copy(backupItem.OrginPath, backupItem.BackupPath); // Copy file to back up location
+        File.Copy(backupItem.OriginPath, backupItem.BackupPath); // Copy file to back up location
         appSettings.BackupItems.Add(backupItem); // Add backup item to collection
-        Log.Information("Backup file: {Path}.", backupItem.OrginPath); // Log successful backup
+        Log.Information("Backup file: {Path}.", backupItem.OriginPath); // Log successful backup
         return true; // Return true on success
     }
 

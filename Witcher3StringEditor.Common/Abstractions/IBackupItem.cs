@@ -23,7 +23,7 @@ public interface IBackupItem
     /// <summary>
     ///     Gets the original path of the file before backup
     /// </summary>
-    public string OrginPath { get; }
+    public string OriginPath { get; }
 
     /// <summary>
     ///     Gets the path where the backup file is stored

@@ -130,7 +130,7 @@
                 <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTextColumn
                     HeaderText="Original path"
-                    MappingName="OrginPath"
+                    MappingName="OriginPath"
                     MinimumWidth="150"
                     TextWrapping="Wrap" />
                 <!-- Backup path column -->
