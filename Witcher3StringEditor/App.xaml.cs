@@ -168,8 +168,7 @@ public sealed partial class App : IDisposable
         var logDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs");
-        if (!Directory.Exists(logDirectory))
-            Directory.CreateDirectory(logDirectory);
+        Directory.CreateDirectory(logDirectory);
         return Path.Combine(logDirectory, "log.txt");
     }
 
@@ -177,7 +176,7 @@ public sealed partial class App : IDisposable
     ///     Handles startup failures by logging and notifying the user
     /// </summary>
     /// <param name="exception">The exception thrown during startup</param>
-    private static void HandleStartupFailure(Exception exception)
+    private void HandleStartupFailure(Exception exception)
     {
         var logFilePath = GetLogFilePath();
         var logger = Log.Logger;
@@ -202,6 +201,7 @@ public sealed partial class App : IDisposable
             MessageBoxButton.OK,
             MessageBoxImage.Error);
 
+        Dispose();
         Environment.Exit(1);
     }
 
