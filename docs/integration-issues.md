@@ -154,9 +154,9 @@ single read-only context object for future translation routing. Keep it unused b
 - `docs/integrations.md`
 
 **Dependencies**
-- Issue 5 (Translation profile storage + resolver)
-- Issue 4 (Terminology + style pack loading hooks)
 - Issue 3 (Provider registry + model discovery wiring)
+- Issue 4 (Terminology + style pack loading hooks)
+- Issue 5 (Translation profile storage + resolver)
 
 **QA Checklist**
 - Build: `dotnet build`
