@@ -238,6 +238,15 @@ namespace Witcher3StringEditor.Locales {
                 return ResourceManager.GetString("CancelBtnContent", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string CheckUpdatesBtnLabel {
+            get {
+                return ResourceManager.GetString("CheckUpdatesBtnLabel", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Close.
