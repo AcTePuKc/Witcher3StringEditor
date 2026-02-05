@@ -184,17 +184,19 @@ public sealed partial class App : IDisposable
     private void HandleStartupFailure(Exception exception)
     {
         var logFilePath = GetLogFilePath();
-        var logger = Log.Logger;
 
-        if (logger == Log.Silent)
-        {
-            logger = new LoggerConfiguration()
-                .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day,
-                    formatProvider: CultureInfo.InvariantCulture)
-                .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture)
-                .CreateLogger();
-            Log.Logger = logger;
-        }
+        // Always ensure we have a usable logger for the crash path.
+        var logger = Log.Logger ?? new LoggerConfiguration().CreateLogger();
+
+        // Create a dedicated fallback logger for startup failures.
+        logger = new LoggerConfiguration()
+            .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day,
+                formatProvider: CultureInfo.InvariantCulture)
+            .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture)
+            .CreateLogger();
+
+        // Optionally replace global logger so subsequent logs also go somewhere.
+        Log.Logger = logger;
 
         logger.Fatal(exception, "Startup failed");
         Log.CloseAndFlush();
@@ -209,6 +211,7 @@ public sealed partial class App : IDisposable
         Dispose();
         Environment.Exit(1);
     }
+
 
     /// <summary>
     ///     Initializes the application culture (language)
