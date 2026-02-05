@@ -37,6 +37,7 @@ namespace Witcher3StringEditor;
 public sealed partial class App : IDisposable
 {
     private const string SyncfusionLicenseKeyEnvVar = "W3SE_SYNCFUSION_LICENSE_KEY";
+    private const string SyncfusionLicenseDocsPath = "README.md#syncfusion-community-license";
     private IAppSettings? appSettings; // Application settings
     private IConfigService? configService; // Configuration service
     private bool disposedValue; // Flag to indicate whether the object has been disposed
@@ -98,7 +99,11 @@ public sealed partial class App : IDisposable
             InitializeServices(GetAppSettingsPath()); // Initialize dependency injection services
             InitializeAppSettings(); // Load application settings
             InitializeLogging(); // Setup logging system
-            RegisterSyncfusionLicense(appSettings); // Register Syncfusion license for UI components
+            if (!RegisterSyncfusionLicense(appSettings))
+            {
+                NotifyMissingSyncfusionLicense();
+                return;
+            }
             InitializeCulture(); // Set application culture (language)
             new MainWindow().Show(); // Show the main window
         }
@@ -226,7 +231,7 @@ public sealed partial class App : IDisposable
     ///     Registers the Syncfusion license
     ///     Reads the license from embedded resources and registers it with Syncfusion
     /// </summary>
-    private static void RegisterSyncfusionLicense(IAppSettings? settings)
+    private static bool RegisterSyncfusionLicense(IAppSettings? settings)
     {
         var envKey = Environment.GetEnvironmentVariable(SyncfusionLicenseKeyEnvVar);
         var configKey = settings?.SyncfusionLicenseKey;
@@ -235,7 +240,24 @@ public sealed partial class App : IDisposable
         if (!string.IsNullOrWhiteSpace(licenseKey))
         {
             SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+            return true;
         }
+
+        Log.Warning("Syncfusion license not configured. See {DocsPath}", SyncfusionLicenseDocsPath);
+        return false;
+    }
+
+    private void NotifyMissingSyncfusionLicense()
+    {
+        MessageBox.Show(
+            $"Syncfusion license not configured.{Environment.NewLine}{Environment.NewLine}" +
+            $"Please follow the README instructions: {SyncfusionLicenseDocsPath}{Environment.NewLine}{Environment.NewLine}" +
+            "The application will now exit.",
+            "Syncfusion license missing",
+            MessageBoxButton.OK,
+            MessageBoxImage.Warning);
+
+        Shutdown(1);
     }
 
     /// <summary>
