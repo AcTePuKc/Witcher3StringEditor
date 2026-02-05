@@ -125,6 +125,9 @@ Update and expand `docs/integrations.md` with a high-level architecture sketch, 
 **Files to Touch**
 - `docs/integrations.md`
 
+**Dependencies**
+- Issue 1 (Inventory pass for integration entrypoints)
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open `docs/integrations.md` and verify links/paths are accurate
@@ -150,10 +153,18 @@ single read-only context object for future translation routing. Keep it unused b
 - `Witcher3StringEditor/Services/*TranslationPipelineContext*.cs`
 - `docs/integrations.md`
 
+**Dependencies**
+- Issue 5 (Translation profile storage + resolver)
+- Issue 4 (Terminology + style pack loading hooks)
+- Issue 3 (Provider registry + model discovery wiring)
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: launch app and open Translation dialog
 - No regressions: translation still uses existing translator selection
+
+**Current Status / Partial Completion**
+- No context builder exists yet; only planned in the integration spec.
 
 ---
 
@@ -171,6 +182,11 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `Witcher3StringEditor.Common/Settings/*` (if required)
 - `docs/integrations.md`
+
+**Dependencies**
+- Issue 3 (Provider registry + model discovery wiring)
+- Issue 4 (Terminology + style pack loading hooks)
+- Issue 5 (Translation profile storage + resolver)
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -195,6 +211,9 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
 - `Witcher3StringEditor.Integrations.Ollama/*`
 - `Witcher3StringEditor.Common/Translation/*` (if shared models needed)
 - `docs/integrations.md`
+
+**Dependencies**
+- Issue 3 (Provider registry + model discovery wiring)
 
 **QA Checklist**
 - Build: `dotnet build`
