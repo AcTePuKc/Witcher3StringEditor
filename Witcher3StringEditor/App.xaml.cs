@@ -186,7 +186,7 @@ public sealed partial class App : IDisposable
         var logFilePath = GetLogFilePath();
         var logger = Log.Logger;
 
-        if (logger is Serilog.Core.Pipeline.SilentLogger)
+        if (logger.GetType().FullName == "Serilog.Core.Pipeline.SilentLogger")
         {
             logger = new LoggerConfiguration()
                 .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day,
