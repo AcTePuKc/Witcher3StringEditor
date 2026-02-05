@@ -12,5 +12,11 @@ public sealed class TranslationProfile
 
     public string BaseUrl { get; init; } = string.Empty;
 
+    public string? TerminologyPath { get; init; }
+
+    public string? StyleGuidePath { get; init; }
+
+    public bool? UseTranslationMemory { get; init; }
+
     public string? Notes { get; init; }
 }

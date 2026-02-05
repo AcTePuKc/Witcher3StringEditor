@@ -26,6 +26,7 @@ A powerful tool for editing string resources in *The Witcher 3: Wild Hunt*, enab
 dotnet restore
 dotnet tool restore
 dotnet build
+dotnet test
 ```
 
 ## Syncfusion Community License
