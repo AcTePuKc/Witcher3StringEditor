@@ -5,6 +5,12 @@
 - Add safe, inert scaffolding for future features without changing current workflows.
 - Prefer small interfaces and TODO hooks over real implementations.
 
+## Current Scaffolding Status
+- **Translation memory**: SQLite bootstrap + `ITranslationMemoryStore` exist; lookup/save are inert until enabled.
+- **Ollama provider + model selection**: settings + provider stubs exist with placeholder model listing.
+- **Terminology/style loading**: loaders and sample packs exist; prompt injection/validation remain TODO.
+- **Translation profiles**: JSON-backed profile store + resolver stubs exist; no runtime routing yet.
+
 ## Architecture Overview
 ### Translation Providers + Model Selection
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
