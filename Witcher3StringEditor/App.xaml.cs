@@ -92,13 +92,20 @@ public sealed partial class App : IDisposable
     /// </summary>
     private void InitializeApplication()
     {
-        SetupExceptionHandling(); // Setup global exception handling
-        InitializeServices(GetAppSettingsPath()); // Initialize dependency injection services
-        InitializeAppSettings(); // Load application settings
-        InitializeLogging(); // Setup logging system
-        RegisterSyncfusionLicense(appSettings); // Register Syncfusion license for UI components
-        InitializeCulture(); // Set application culture (language)
-        new MainWindow().Show(); // Show the main window
+        try
+        {
+            SetupExceptionHandling(); // Setup global exception handling
+            InitializeServices(GetAppSettingsPath()); // Initialize dependency injection services
+            InitializeAppSettings(); // Load application settings
+            InitializeLogging(); // Setup logging system
+            RegisterSyncfusionLicense(appSettings); // Register Syncfusion license for UI components
+            InitializeCulture(); // Set application culture (language)
+            new MainWindow().Show(); // Show the main window
+        }
+        catch (Exception exception)
+        {
+            HandleStartupFailure(exception);
+        }
     }
 
     /// <summary>
@@ -114,10 +121,9 @@ public sealed partial class App : IDisposable
         logObserver = new AnonymousObserver<LogEvent>(logAccessService.Logs.Add);
 
         // Configure Serilog with multiple outputs: file, debug, and observer
-        Log.Logger = new LoggerConfiguration().WriteTo.File(Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                    , IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs", "log.txt"),
-                rollingInterval: RollingInterval.Day, formatProvider: CultureInfo.InvariantCulture)
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.File(GetLogFilePath(), rollingInterval: RollingInterval.Day,
+                formatProvider: CultureInfo.InvariantCulture)
             .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture)
             .WriteTo.Observers(observable => observable.Subscribe(logObserver))
             .CreateLogger();
@@ -150,6 +156,53 @@ public sealed partial class App : IDisposable
         if (!Directory.Exists(configFolderPath))
             Directory.CreateDirectory(configFolderPath);
         return configPath;
+    }
+
+    /// <summary>
+    ///     Gets the path to the current log file
+    ///     Creates the log directory if it doesn't exist
+    /// </summary>
+    /// <returns>The full path to the log file</returns>
+    private static string GetLogFilePath()
+    {
+        var logDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            IsDebug ? "Witcher3StringEditor_Debug" : "Witcher3StringEditor", "Logs");
+        Directory.CreateDirectory(logDirectory);
+        return Path.Combine(logDirectory, "log.txt");
+    }
+
+    /// <summary>
+    ///     Handles startup failures by logging and notifying the user
+    /// </summary>
+    /// <param name="exception">The exception thrown during startup</param>
+    private void HandleStartupFailure(Exception exception)
+    {
+        var logFilePath = GetLogFilePath();
+        var logger = Log.Logger;
+
+        if (logger is Serilog.Core.Pipeline.SilentLogger)
+        {
+            logger = new LoggerConfiguration()
+                .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day,
+                    formatProvider: CultureInfo.InvariantCulture)
+                .WriteTo.Debug(formatProvider: CultureInfo.InvariantCulture)
+                .CreateLogger();
+            Log.Logger = logger;
+        }
+
+        logger.Fatal(exception, "Startup failed");
+        Log.CloseAndFlush();
+
+        MessageBox.Show(
+            $"Startup failed.{Environment.NewLine}{Environment.NewLine}{exception.Message}" +
+            $"{Environment.NewLine}{Environment.NewLine}Log file: {logFilePath}",
+            "Startup failed",
+            MessageBoxButton.OK,
+            MessageBoxImage.Error);
+
+        Dispose();
+        Environment.Exit(1);
     }
 
     /// <summary>
