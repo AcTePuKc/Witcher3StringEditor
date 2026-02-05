@@ -7,9 +7,9 @@ namespace Witcher3StringEditor.Services;
 internal sealed class NoopTerminologyPromptBuilder : ITerminologyPromptBuilder
 {
     public Task<TerminologyPrompt> BuildAsync(
-        TerminologyPack? terminologyPack,
-        TerminologyPack? styleGuidePack,
-        CancellationToken cancellationToken = default)
+        TerminologyPack? _terminologyPack,
+        TerminologyPack? _styleGuidePack,
+        CancellationToken _cancellationToken = default)
     {
         // TODO: Inject terminology/style guidance into provider prompts once routing is implemented.
         return Task.FromResult(new TerminologyPrompt());

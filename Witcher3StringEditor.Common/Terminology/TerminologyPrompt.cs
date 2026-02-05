@@ -1,6 +1,6 @@
 namespace Witcher3StringEditor.Common.Terminology;
 
-public sealed class TerminologyPrompt
+public sealed record TerminologyPrompt
 {
     public string? SystemPrompt { get; init; }
 
