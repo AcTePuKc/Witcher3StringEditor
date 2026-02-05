@@ -110,46 +110,52 @@
             <!-- Data grid columns definition -->
             <sf:SfDataGrid.Columns>
                 <!-- File name column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTextColumn
                     Width="150"
-                    HeaderText="{I18N {x:Static l:LangKeys.FileName}}"
+                    HeaderText="File name"
                     MappingName="FileName"
                     MinimumWidth="150"
                     TextAlignment="Center" />
                 <!-- Hash column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTextColumn
                     Width="200"
-                    HeaderText="{I18N {x:Static l:LangKeys.Hash}}"
+                    HeaderText="Hash"
                     MappingName="Hash"
                     MinimumWidth="200"
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
                 <!-- Original path column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTextColumn
-                    HeaderText="{I18N {x:Static l:LangKeys.OriginPath}}"
+                    HeaderText="Original path"
                     MappingName="OrginPath"
                     MinimumWidth="150"
                     TextWrapping="Wrap" />
                 <!-- Backup path column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTextColumn
-                    HeaderText="{I18N {x:Static l:LangKeys.BackupPath}}"
+                    HeaderText="Backup path"
                     MappingName="BackupPath"
                     MinimumWidth="150"
                     TextWrapping="Wrap" />
                 <!-- Backup time column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridDateTimeColumn
                     Width="200"
-                    HeaderText="{I18N {x:Static l:LangKeys.BackupTime}}"
+                    HeaderText="Backup time"
                     MappingName="BackupTime"
                     MinimumWidth="200"
                     Pattern="FullDateTime"
                     TextAlignment="Center" />
                 <!-- Restore button column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTemplateColumn
                     Width="100"
                     HorizontalAlignment="Center"
                     AllowSorting="False"
-                    HeaderText="{I18N {x:Static l:LangKeys.RestoreBtnContent}}"
+                    HeaderText="Restore"
                     MappingName="Null"
                     MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
@@ -166,11 +172,12 @@
                     </sf:GridTemplateColumn.CellTemplate>
                 </sf:GridTemplateColumn>
                 <!-- Delete button column -->
+                <!-- TODO(i18n): restore localization when supported -->
                 <sf:GridTemplateColumn
                     Width="100"
                     HorizontalAlignment="Center"
                     AllowSorting="False"
-                    HeaderText="{I18N {x:Static l:LangKeys.DeleteBtnContent}}"
+                    HeaderText="Delete"
                     MappingName="Null"
                     MinimumWidth="100">
                     <sf:GridTemplateColumn.CellTemplate>
