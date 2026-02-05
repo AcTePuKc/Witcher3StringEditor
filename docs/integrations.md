@@ -10,6 +10,7 @@
 - **Ollama provider + model selection**: settings + provider stubs exist with placeholder model listing.
 - **Terminology/style loading**: loaders and sample packs exist; prompt injection/validation remain TODO.
 - **Translation profiles**: JSON-backed profile store + resolver stubs exist; no runtime routing yet.
+- **Issue drafts**: task breakdown lives in `docs/integration-issues.md`.
 
 ## Architecture Overview
 ### Translation Providers + Model Selection
@@ -42,6 +43,10 @@
 - **Pipeline context builder** lives in `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs` and
   produces a read-only context for future routing.
 
+## Inventory/Discovery Notes
+- There is a parallel `Witcher3StringEditor/Integrations/` folder with early integration interfaces.
+  The inventory pass should confirm whether to consolidate on `Witcher3StringEditor.Common/*` or keep both.
+
 ## Wiring Map (Current → Future)
 - **Settings dialog** should remain the single source of truth for provider/model/profile selection.
 - **Main translation flow** (`MainWindowViewModel`) should eventually call the provider registry when
@@ -52,7 +57,7 @@
   provider request metadata, with validation hooks after translation. (TODO: inject + validate.)
 
 ## Planned Tasks (Issue Breakdown Summary)
-1. Inventory pass to confirm settings persistence, translation entry points, and UI hooks.
+1. Inventory pass to confirm settings persistence, translation entry points, UI hooks, and integration namespaces.
 2. Wire provider registry + model discovery (Ollama first) with no behavior changes.
 3. Keep translation memory + QA stores inert until explicitly enabled.
 4. Extend terminology/style loading with prompt injection + validation hooks (TODOs only).

@@ -2,12 +2,13 @@
 
 ## Issue 1: Inventory pass for integration entrypoints
 **Description**
-Confirm where settings are persisted, where translation requests flow, and which dialogs/view models will host provider/model/terminology/profile configuration.
+Confirm where settings are persisted, where translation requests flow, which dialogs/view models will host provider/model/terminology/profile configuration, and which integration namespaces should be the long-term source of truth.
 
 **Acceptance Criteria**
 - Document settings persistence flow and config path.
 - Identify translation entrypoints and extension points for provider/model selection.
 - Identify UI surfaces for settings placeholders.
+- Confirm whether `Witcher3StringEditor.Common/*` or `Witcher3StringEditor/Integrations/*` should own integration abstractions.
 - Summarize risks or constraints.
 
 **Files to Touch**
