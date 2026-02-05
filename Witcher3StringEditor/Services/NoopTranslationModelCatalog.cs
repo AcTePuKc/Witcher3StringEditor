@@ -9,9 +9,6 @@ internal sealed class NoopTranslationModelCatalog : ITranslationModelCatalog
 {
     public Task<IReadOnlyList<ModelInfo>> GetAsync(
         string providerName,
-        CancellationToken cancellationToken = default)
-    {
-        IReadOnlyList<ModelInfo> models = [];
-        return Task.FromResult(models);
-    }
+        CancellationToken cancellationToken = default) =>
+        Task.FromResult<IReadOnlyList<ModelInfo>>(System.Array.Empty<ModelInfo>());
 }
