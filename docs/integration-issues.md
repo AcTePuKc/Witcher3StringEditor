@@ -57,6 +57,7 @@ Add a provider registry abstraction that maps provider names to implementations 
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/*`
+- `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`
 - `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
 - `Witcher3StringEditor.Integrations.Ollama/*`
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
