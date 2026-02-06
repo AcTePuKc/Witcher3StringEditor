@@ -272,7 +272,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         if (translation.IsFailure())
         {
             Log.Error("Translation failed: {Errors}", string.Join(", ", translation.Errors.Select(e => e.Message)));
-            this.NotifyProviderFailureOnce(translation);
+            NotifyProviderFailureOnce(translation);
         }
 
         return translation;
