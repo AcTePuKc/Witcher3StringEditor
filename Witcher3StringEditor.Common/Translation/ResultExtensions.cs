@@ -18,10 +18,12 @@ public static class ResultExtensions
             return null;
         }
 
-        var providerError = result.Errors.FirstOrDefault(error =>
+        bool IsProviderError(IError error) =>
             error.Metadata.TryGetValue(TranslationFailureMetadata.FailureKindKey, out var kind) &&
             string.Equals(kind?.ToString(), TranslationFailureMetadata.ProviderFailureKind,
-                StringComparison.Ordinal));
+                StringComparison.Ordinal);
+
+        var providerError = result.Errors.FirstOrDefault(IsProviderError);
 
         return providerError?.Message;
     }
