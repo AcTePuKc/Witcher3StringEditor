@@ -217,7 +217,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
 
     private static string? GetProviderFailureMessage(Result<string> result)
     {
-        return result.GetProviderError()?.Message;
+        return result.GetProviderError();
     }
 
     /// <summary>
