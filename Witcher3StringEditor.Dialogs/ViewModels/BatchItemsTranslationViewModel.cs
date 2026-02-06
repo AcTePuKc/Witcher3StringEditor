@@ -259,7 +259,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="tLanguage">The target language</param>
     /// <param name="fLanguage">The source language</param>
     /// <returns>A Result containing the translated text if successful</returns>
-    private static async Task<Result<string>> TranslateItem(
+    private async Task<Result<string>> TranslateItem(
         ITranslationRouter translationRouter,
         string text,
         ILanguage tLanguage,
