@@ -251,13 +251,6 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         var modelName = appSettings.TranslationModelName;
         var baseUrl = appSettings.TranslationBaseUrl;
 
-        if (string.IsNullOrWhiteSpace(providerName)
-            && string.IsNullOrWhiteSpace(modelName)
-            && string.IsNullOrWhiteSpace(baseUrl))
-        {
-            return string.Empty;
-        }
-
         var summaryParts = new List<string>();
         if (!string.IsNullOrWhiteSpace(providerName))
         {
