@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentResults;
+using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Translation;
@@ -13,11 +15,15 @@ internal sealed class TranslationRouter : ITranslationRouter
 {
     private readonly IAppSettings appSettings;
     private readonly ITranslationProviderRegistry providerRegistry;
+    private readonly IEnumerable<ITranslator> legacyTranslators;
 
-    public TranslationRouter(IAppSettings appSettings, ITranslationProviderRegistry providerRegistry)
+    public TranslationRouter(IAppSettings appSettings,
+        ITranslationProviderRegistry providerRegistry,
+        IEnumerable<ITranslator> legacyTranslators)
     {
         this.appSettings = appSettings;
         this.providerRegistry = providerRegistry;
+        this.legacyTranslators = legacyTranslators;
     }
 
     public async Task<Result<string>> TranslateAsync(
@@ -59,20 +65,44 @@ internal sealed class TranslationRouter : ITranslationRouter
         return Result.Fail("Translation provider path is not implemented yet.");
     }
 
-    private static async Task<Result<string>> TranslateWithLegacyTranslator(
+    private async Task<Result<string>> TranslateWithLegacyTranslator(
         TranslationRouterRequest request,
         CancellationToken cancellationToken)
     {
         if (cancellationToken.IsCancellationRequested)
             return Result.Fail("Translation was cancelled.");
 
-        var translation = await request.LegacyTranslator
-            .TranslateAsync(request.Text, request.ToLanguage, request.FromLanguage)
-            .ConfigureAwait(false);
+        var translator = ResolveLegacyTranslator();
+        if (translator is null)
+            return Result.Fail("No legacy translators are registered.");
 
-        if (string.IsNullOrWhiteSpace(translation.Translation))
-            return Result.Fail("Translator returned an empty result.");
+        try
+        {
+            var translation = await translator
+                .TranslateAsync(request.Text, request.ToLanguage, request.FromLanguage)
+                .ConfigureAwait(false);
 
-        return Result.Ok(translation.Translation);
+            if (string.IsNullOrWhiteSpace(translation.Translation))
+                return Result.Fail($"Translator '{translator.Name}' returned an empty result.");
+
+            return Result.Ok(translation.Translation);
+        }
+        finally
+        {
+            if (translator is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+        }
+    }
+
+    private ITranslator? ResolveLegacyTranslator()
+    {
+        var translatorName = appSettings.Translator;
+        var translator = string.IsNullOrWhiteSpace(translatorName)
+            ? legacyTranslators.FirstOrDefault()
+            : legacyTranslators.FirstOrDefault(candidate => candidate.Name == translatorName);
+
+        return translator ?? legacyTranslators.FirstOrDefault();
     }
 }

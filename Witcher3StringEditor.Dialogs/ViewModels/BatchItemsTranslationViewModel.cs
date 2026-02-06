@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentResults;
 using GTranslate;
@@ -224,7 +225,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         try
         {
             var translation =
-                await TranslateItem(TranslationRouter, Translator, item.Text, toLanguage,
+                await TranslateItem(TranslationRouter, item.Text, toLanguage,
                     fromLanguage); // Perform translation
             if (translation.IsSuccess) // Check if translation succeeded
             {
@@ -254,38 +255,20 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <returns>A Result containing the translated text if successful</returns>
     private static async Task<Result<string>> TranslateItem(
         ITranslationRouter translationRouter,
-        ITranslator translator,
         string text,
         ILanguage tLanguage,
         ILanguage fLanguage)
     {
         // TODO: Inject terminology/style prompts before batch translation once provider routing supports it.
         var translation =
-            await translationRouter.TranslateAsync(new TranslationRouterRequest(text, tLanguage, fLanguage, translator));
+            await translationRouter.TranslateAsync(new TranslationRouterRequest(text, tLanguage, fLanguage));
         // TODO: Validate translated text against terminology/style rules post-translation.
-        if (translation.IsSuccess && IsTranslationValid(translation.Value))
-            return Result.Ok(translation.Value); // Return success if valid
-        LogEmptyTranslationResult(translator.Name); // Log error if invalid
-        return Result.Fail(string.Empty); // Return failure
-    }
+        if (translation.IsFailure)
+        {
+            Log.Error("Translation failed: {Errors}", string.Join(", ", translation.Errors.Select(e => e.Message)));
+        }
 
-    /// <summary>
-    ///     Checks if a translation result is valid (not null or whitespace)
-    /// </summary>
-    /// <param name="translation">The translation result to check</param>
-    /// <returns>True if the translation is valid, false otherwise</returns>
-    private static bool IsTranslationValid(string translation)
-    {
-        return !string.IsNullOrWhiteSpace(translation);
-    }
-
-    /// <summary>
-    ///     Logs an error when a translation returns empty data
-    /// </summary>
-    /// <param name="translatorName">The name of the translator that returned empty data</param>
-    private static void LogEmptyTranslationResult(string translatorName)
-    {
-        Log.Error("The translator: {Name} returned empty data.", translatorName);
+        return translation;
     }
 
     /// <summary>

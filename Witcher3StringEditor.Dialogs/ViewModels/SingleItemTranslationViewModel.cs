@@ -191,7 +191,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     private async Task<Result<string>> ExecuteTranslationTask(string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
     {
-        var request = new TranslationRouterRequest(text, toLanguage, formLanguage, Translator);
+        var request = new TranslationRouterRequest(text, toLanguage, formLanguage);
         var translateTask = TranslationRouter.TranslateAsync(request, cancellationTokenSource.Token);
         var completedTask = await Task.WhenAny(
             translateTask,
