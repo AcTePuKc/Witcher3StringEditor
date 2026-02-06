@@ -6,6 +6,7 @@ using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Dialogs.Services;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -20,6 +21,11 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     ///     The translation service used for translating text
     /// </summary>
     private protected readonly ITranslator Translator;
+
+    /// <summary>
+    ///     The translation router used to select between legacy and provider flows
+    /// </summary>
+    private protected readonly ITranslationRouter TranslationRouter;
 
     /// <summary>
     ///     The collection of items to translate
@@ -51,12 +57,15 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
+    /// <param name="translationRouter">Translation router service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
+        ITranslationRouter translationRouter,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems)
     {
         W3StringItems = w3StringItems;
         Translator = translator;
+        TranslationRouter = translationRouter;
         Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = GetPreferredLanguage(appSettings);

@@ -16,6 +16,8 @@ using Serilog;
 using Serilog.Events;
 using Syncfusion.Licensing;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Translation;
+using Witcher3StringEditor.Dialogs.Services;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Locales;
@@ -364,6 +366,8 @@ public sealed partial class App : IDisposable
             .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
             .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
+            .AddSingleton<ITranslationProviderRegistry, NoopTranslationProviderRegistry>()
+            .AddSingleton<ITranslationRouter, TranslationRouter>()
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<ILogAccessService, LogAccessService>()

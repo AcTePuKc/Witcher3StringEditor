@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyModel;
 using Serilog;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Dialogs.Services;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Messaging;
@@ -648,11 +649,11 @@ internal partial class MainWindowViewModel : ObservableObject
         var itemsToUse = FilteredW3StringItems ?? W3StringItems!; // Use filtered items if available
         var selectedIndex =
             selectedItem is not null ? itemsToUse.IndexOf(selectedItem) : 0; // Get the index of the selected item
-        // TODO: Route translation through ITranslationProvider registry once providers are selectable/configured.
         var translator = serviceProvider.GetServices<ITranslator>() // Get the configured translator
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this,
-            new TranslationDialogViewModel(appSettings, translator, itemsToUse,
+            new TranslationDialogViewModel(appSettings, translator,
+                serviceProvider.GetRequiredService<ITranslationRouter>(), itemsToUse,
                 selectedIndex)); // Show translation dialog
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
     }
