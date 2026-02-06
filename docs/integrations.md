@@ -37,6 +37,18 @@
 - Model lists are only refreshed from the Settings dialog on explicit user action; translation dialogs do not
   auto-refresh models.
 
+### Legacy Translator Path + Planned Routing (Opt-In)
+- **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
+  logic; provider routing is **not** invoked unless explicitly configured in settings.
+- **Planned provider routing**: the future `ITranslationRouter` will resolve provider settings into a structured
+  request, then invoke the selected provider via the registry. If provider resolution fails, the router will
+  short-circuit to the legacy translator path.
+- **Fallback + error handling**: provider errors return a structured failure (provider name + failure kind) and the
+  router should attempt a configured legacy fallback translator when available. If no fallback is configured, the
+  translation dialog should surface the error without altering existing behavior.
+- **Safety by default**: provider routing is **opt-in** and must remain inert until users explicitly set a provider
+  name/model. Default settings keep the legacy translator path active and stable.
+
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
