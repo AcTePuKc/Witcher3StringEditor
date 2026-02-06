@@ -31,6 +31,9 @@
 - Otherwise, the app falls back to the legacy translator selection.
 - The Translation dialog header now shows a read-only provider/model/base URL summary sourced from app settings to
   surface future provider selection without changing routing.
+- The header display uses `TranslationModelName` directly; when it is empty the UI shows “(none selected)”.
+- Model lists are only refreshed from the Settings dialog on explicit user action; translation dialogs do not
+  auto-refresh models.
 
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.

@@ -21,6 +21,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 /// </summary>
 public partial class TranslationDialogViewModel : ObservableObject, IModalDialogViewModel
 {
+    private const string NoModelSelectedLabel = "(none selected)";
+
     /// <summary>
     ///     The application settings service
     /// </summary>
@@ -233,10 +235,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         var providerName = appSettings.TranslationProviderName;
         if (!string.IsNullOrWhiteSpace(providerName))
         {
-            var modelName = appSettings.TranslationModelName;
-            return string.IsNullOrWhiteSpace(modelName)
-                ? $"{Strings.Provider}: {providerName}"
-                : $"{Strings.Provider}: {providerName} ({Strings.Model}: {modelName})";
+            return $"{Strings.Provider}: {providerName} ({Strings.Model}: {GetModelDisplayName()})";
         }
 
         var translatorName = appSettings.Translator;
@@ -248,18 +247,13 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     private string BuildSelectedProviderSummary()
     {
         var providerName = appSettings.TranslationProviderName;
-        var modelName = appSettings.TranslationModelName;
         var baseUrl = appSettings.TranslationBaseUrl;
 
         var summaryParts = new List<string>();
         if (!string.IsNullOrWhiteSpace(providerName))
         {
             summaryParts.Add($"{Strings.Provider}: {providerName}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(modelName))
-        {
-            summaryParts.Add($"{Strings.Model}: {modelName}");
+            summaryParts.Add($"{Strings.Model}: {GetModelDisplayName()}");
         }
 
         if (!string.IsNullOrWhiteSpace(baseUrl))
@@ -268,6 +262,13 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         }
 
         return string.Join(" · ", summaryParts);
+    }
+
+    private string GetModelDisplayName()
+    {
+        return string.IsNullOrWhiteSpace(appSettings.TranslationModelName)
+            ? NoModelSelectedLabel
+            : appSettings.TranslationModelName;
     }
 
     /// <summary>
