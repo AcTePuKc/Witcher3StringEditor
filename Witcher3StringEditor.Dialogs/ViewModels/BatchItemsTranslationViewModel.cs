@@ -1,10 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using FluentResults;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Translation;
+using Witcher3StringEditor.Dialogs.Services;
+using Witcher3StringEditor.Messaging;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -16,6 +22,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public sealed partial class BatchItemsTranslationViewModel : TranslationViewModelBase
 {
+    private bool hasShownProviderFailure;
+
     /// <summary>
     ///     Gets or sets the end index for batch translation
     /// </summary>
@@ -63,11 +71,13 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
+    /// <param name="translationRouter">Translation router service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="startIndex">Initial start index for translation</param>
     public BatchItemsTranslationViewModel(IAppSettings appSettings, ITranslator translator,
+        ITranslationRouter translationRouter,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator,
-        w3StringItems)
+        translationRouter, w3StringItems)
     {
         StartIndex = startIndex; // Set start index
         EndIndex = MaxValue = W3StringItems.Count; // Set end index and maximum value
@@ -221,7 +231,8 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         try
         {
             var translation =
-                await TranslateItem(Translator, item.Text, toLanguage, fromLanguage); // Perform translation
+                await TranslateItem(TranslationRouter, item.Text, toLanguage,
+                    fromLanguage); // Perform translation
             if (translation.IsSuccess) // Check if translation succeeded
             {
                 item.Text = translation.Value; // Update with translated text
@@ -248,35 +259,43 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="tLanguage">The target language</param>
     /// <param name="fLanguage">The source language</param>
     /// <returns>A Result containing the translated text if successful</returns>
-    private static async Task<Result<string>> TranslateItem(ITranslator translator, string text, ILanguage tLanguage,
+    private static async Task<Result<string>> TranslateItem(
+        ITranslationRouter translationRouter,
+        string text,
+        ILanguage tLanguage,
         ILanguage fLanguage)
     {
         // TODO: Inject terminology/style prompts before batch translation once provider routing supports it.
         var translation =
-            (await translator.TranslateAsync(text, tLanguage, fLanguage)).Translation; // Perform translation
+            await translationRouter.TranslateAsync(new TranslationRouterRequest(text, tLanguage, fLanguage));
         // TODO: Validate translated text against terminology/style rules post-translation.
-        if (IsTranslationValid(translation)) return Result.Ok(translation); // Return success if valid
-        LogEmptyTranslationResult(translator.Name); // Log error if invalid
-        return Result.Fail(string.Empty); // Return failure
+        if (translation.IsFailure)
+        {
+            Log.Error("Translation failed: {Errors}", string.Join(", ", translation.Errors.Select(e => e.Message)));
+            NotifyProviderFailureOnce(translation);
+        }
+
+        return translation;
     }
 
-    /// <summary>
-    ///     Checks if a translation result is valid (not null or whitespace)
-    /// </summary>
-    /// <param name="translation">The translation result to check</param>
-    /// <returns>True if the translation is valid, false otherwise</returns>
-    private static bool IsTranslationValid(string translation)
+    private void NotifyProviderFailureOnce(Result<string> result)
     {
-        return !string.IsNullOrWhiteSpace(translation);
-    }
+        if (hasShownProviderFailure)
+        {
+            return;
+        }
 
-    /// <summary>
-    ///     Logs an error when a translation returns empty data
-    /// </summary>
-    /// <param name="translatorName">The name of the translator that returned empty data</param>
-    private static void LogEmptyTranslationResult(string translatorName)
-    {
-        Log.Error("The translator: {Name} returned empty data.", translatorName);
+        var providerError = result.GetProviderError();
+
+        if (providerError is null)
+        {
+            return;
+        }
+
+        hasShownProviderFailure = true;
+        _ = WeakReferenceMessenger.Default.Send(
+            new ValueChangedMessage<string>(providerError.Message),
+            MessageTokens.TranslateError);
     }
 
     /// <summary>

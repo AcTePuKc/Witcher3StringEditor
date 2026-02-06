@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,7 +11,9 @@ using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Translation;
 using Witcher3StringEditor.Dialogs.Models;
+using Witcher3StringEditor.Dialogs.Services;
 using Witcher3StringEditor.Messaging;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -50,11 +54,13 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
+    /// <param name="translationRouter">Translation router service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="index">Initial index of the item to translate</param>
     public SingleItemTranslationViewModel(IAppSettings appSettings, ITranslator translator,
+        ITranslationRouter translationRouter,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
-        int index) : base(appSettings, translator, w3StringItems)
+        int index) : base(appSettings, translator, translationRouter, w3StringItems)
     {
         CurrentItemIndex = index;
         Log.Information("Initializing SingleItemTranslationViewModel."); // Log initialization
@@ -155,7 +161,18 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 }
                 else
                 {
-                    Log.Error("Translation operation was cancelled."); // Log cancellation of translation
+                    var providerFailureMessage = GetProviderFailureMessage(translationResult);
+                    if (!string.IsNullOrWhiteSpace(providerFailureMessage))
+                    {
+                        _ = WeakReferenceMessenger.Default.Send(
+                            new ValueChangedMessage<string>(providerFailureMessage),
+                            MessageTokens.TranslateError);
+                        Log.Error("Translation failed: {Error}", providerFailureMessage);
+                    }
+                    else
+                    {
+                        Log.Error("Translation operation was cancelled."); // Log cancellation of translation
+                    }
                 }
             }
             else
@@ -188,14 +205,19 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     private async Task<Result<string>> ExecuteTranslationTask(string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
     {
-        var translateTask = Translator.TranslateAsync(text, toLanguage, formLanguage); // Start translation
-        var completedTask = await Task.WhenAny( // Wait for first task to complete
-            translateTask, // Translation task
-            Task.Delay(Timeout.Infinite, cancellationTokenSource.Token) // Cancellation task
-        );
-        return !completedTask.IsCanceled
-            ? Result.Ok((await translateTask).Translation)
-            : Result.Fail(string.Empty); // Return result or failure
+        var request = new TranslationRouterRequest(text, toLanguage, formLanguage);
+        var translateTask = TranslationRouter.TranslateAsync(request, cancellationTokenSource.Token);
+        var completedTask = await Task.WhenAny(
+            translateTask,
+            Task.Delay(Timeout.Infinite, cancellationTokenSource.Token));
+        return completedTask == translateTask
+            ? await translateTask
+            : Result.Fail(string.Empty);
+    }
+
+    private static string? GetProviderFailureMessage(Result<string> result)
+    {
+        return result.GetProviderError()?.Message;
     }
 
     /// <summary>

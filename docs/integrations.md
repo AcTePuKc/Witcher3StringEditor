@@ -17,6 +17,8 @@
 ### Translation Providers + Model Selection
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
 - **Registry** (future) resolves provider names to `ITranslationProvider` instances.
+- **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
+  depending on settings; provider calls are guarded and return structured failures when providers error out.
 - **Model catalog stub** lives in `Witcher3StringEditor.Common/Translation/ITranslationModelCatalog.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`.
 - **Pipeline context** lives in `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs` and carries
@@ -25,8 +27,20 @@
 - **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`, `CachedTranslationModels`).
 
 ### Provider Selection Behavior
-- If a provider is selected **and** provider routing is implemented, the provider wins.
-- Otherwise, the app falls back to the legacy translator selection.
+- **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
+  logic; provider routing is **not** invoked unless explicitly configured in settings.
+- **Planned provider routing**: if a provider is selected **and** the registry can resolve it, the provider path is
+  selected (currently stubbed). If provider resolution fails, the router short-circuits to the legacy translator path.
+- **Fallback + error handling**: provider failures return structured errors (provider name + failure kind), and the
+  router can fall back to the configured legacy translator; if no fallback is configured, the translation dialog
+  surfaces an error message.
+- **Safety by default**: provider routing is **opt-in** and must remain inert until users explicitly set a provider
+  name/model. Default settings keep the legacy translator path active and stable.
+- The Translation dialog header now shows a read-only provider/model/base URL summary sourced from app settings to
+  surface future provider selection without changing routing.
+- The header display uses `TranslationModelName` directly; when it is empty the UI shows “(none selected)”.
+- Model lists are only refreshed from the Settings dialog on explicit user action; translation dialogs do not
+  auto-refresh models.
 
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
