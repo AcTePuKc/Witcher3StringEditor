@@ -93,6 +93,11 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     public string ActiveEngineLabel => BuildActiveEngineDescription();
 
     /// <summary>
+    ///     Gets a summary of the selected provider settings.
+    /// </summary>
+    public string SelectedProviderSummary => BuildSelectedProviderSummary();
+
+    /// <summary>
     ///     Switches between single item and batch translation modes
     ///     Cleans up the current view model and creates a new one of the opposite type
     /// </summary>
@@ -238,6 +243,38 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         return string.IsNullOrWhiteSpace(translatorName)
             ? $"{Strings.Translator}: {Strings.Unknown}"
             : $"{Strings.Translator}: {translatorName}";
+    }
+
+    private string BuildSelectedProviderSummary()
+    {
+        var providerName = appSettings.TranslationProviderName;
+        var modelName = appSettings.TranslationModelName;
+        var baseUrl = appSettings.TranslationBaseUrl;
+
+        if (string.IsNullOrWhiteSpace(providerName)
+            && string.IsNullOrWhiteSpace(modelName)
+            && string.IsNullOrWhiteSpace(baseUrl))
+        {
+            return string.Empty;
+        }
+
+        var summaryParts = new List<string>();
+        if (!string.IsNullOrWhiteSpace(providerName))
+        {
+            summaryParts.Add($"{Strings.Provider}: {providerName}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(modelName))
+        {
+            summaryParts.Add($"{Strings.Model}: {modelName}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(baseUrl))
+        {
+            summaryParts.Add($"{Strings.TranslationProviderBaseUrlLabel}: {baseUrl}");
+        }
+
+        return string.Join(" · ", summaryParts);
     }
 
     /// <summary>
