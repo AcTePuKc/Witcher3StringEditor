@@ -1,12 +1,16 @@
 ﻿using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using FluentResults;
 using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Translation;
 using Witcher3StringEditor.Dialogs.Services;
+using Witcher3StringEditor.Messaging;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -18,6 +22,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public sealed partial class BatchItemsTranslationViewModel : TranslationViewModelBase
 {
+    private bool hasShownProviderFailure;
+
     /// <summary>
     ///     Gets or sets the end index for batch translation
     /// </summary>
@@ -266,9 +272,30 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         if (translation.IsFailure)
         {
             Log.Error("Translation failed: {Errors}", string.Join(", ", translation.Errors.Select(e => e.Message)));
+            NotifyProviderFailureOnce(translation);
         }
 
         return translation;
+    }
+
+    private void NotifyProviderFailureOnce(Result<string> result)
+    {
+        if (hasShownProviderFailure)
+        {
+            return;
+        }
+
+        var providerError = result.GetProviderError();
+
+        if (providerError is null)
+        {
+            return;
+        }
+
+        hasShownProviderFailure = true;
+        _ = WeakReferenceMessenger.Default.Send(
+            new ValueChangedMessage<string>(providerError.Message),
+            MessageTokens.TranslateError);
     }
 
     /// <summary>
