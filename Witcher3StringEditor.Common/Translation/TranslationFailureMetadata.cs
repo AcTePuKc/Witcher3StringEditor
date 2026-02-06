@@ -7,4 +7,6 @@ public static class TranslationFailureMetadata
     public const string ProviderFailureKind = "ProviderFailure";
 
     public const string ProviderNameKey = "ProviderName";
+
+    public const string ExceptionTypeKey = "ExceptionType";
 }

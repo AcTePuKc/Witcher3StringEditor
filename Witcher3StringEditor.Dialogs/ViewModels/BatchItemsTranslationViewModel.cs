@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -286,10 +285,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             return;
         }
 
-        var providerError = result.Errors.FirstOrDefault(error =>
-            error.Metadata.TryGetValue(TranslationFailureMetadata.FailureKindKey, out var kind) &&
-            string.Equals(kind?.ToString(), TranslationFailureMetadata.ProviderFailureKind,
-                StringComparison.Ordinal));
+        var providerError = result.GetProviderError();
 
         if (providerError is null)
         {

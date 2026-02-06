@@ -217,12 +217,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
 
     private static string? GetProviderFailureMessage(Result<string> result)
     {
-        var providerError = result.Errors.FirstOrDefault(error =>
-            error.Metadata.TryGetValue(TranslationFailureMetadata.FailureKindKey, out var kind) &&
-            string.Equals(kind?.ToString(), TranslationFailureMetadata.ProviderFailureKind,
-                StringComparison.Ordinal));
-
-        return providerError?.Message;
+        return result.GetProviderError()?.Message;
     }
 
     /// <summary>

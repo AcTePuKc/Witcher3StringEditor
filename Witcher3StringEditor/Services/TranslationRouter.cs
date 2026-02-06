@@ -160,7 +160,7 @@ internal sealed class TranslationRouter : ITranslationRouter
 
         if (exception is not null)
         {
-            error = error.WithMetadata("ExceptionType", exception.GetType().Name);
+            error = error.WithMetadata(TranslationFailureMetadata.ExceptionTypeKey, exception.GetType().Name);
         }
 
         return error;
