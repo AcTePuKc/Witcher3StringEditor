@@ -269,7 +269,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         var translation =
             await translationRouter.TranslateAsync(new TranslationRouterRequest(text, tLanguage, fLanguage));
         // TODO: Validate translated text against terminology/style rules post-translation.
-        if (translation.IsFailure)
+        if (translation.IsFailure())
         {
             Log.Error("Translation failed: {Errors}", string.Join(", ", translation.Errors.Select(e => e.Message)));
             NotifyProviderFailureOnce(translation);
@@ -294,7 +294,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
 
         hasShownProviderFailure = true;
         _ = WeakReferenceMessenger.Default.Send(
-            new ValueChangedMessage<string>(providerError.Message),
+            new ValueChangedMessage<string>(providerError),
             MessageTokens.TranslateError);
     }
 
