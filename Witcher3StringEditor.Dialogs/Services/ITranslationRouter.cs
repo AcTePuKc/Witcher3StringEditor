@@ -1,0 +1,20 @@
+using System.Threading;
+using System.Threading.Tasks;
+using FluentResults;
+using GTranslate;
+using GTranslate.Translators;
+
+namespace Witcher3StringEditor.Dialogs.Services;
+
+public interface ITranslationRouter
+{
+    Task<Result<string>> TranslateAsync(
+        TranslationRouterRequest request,
+        CancellationToken cancellationToken = default);
+}
+
+public sealed record TranslationRouterRequest(
+    string Text,
+    ILanguage ToLanguage,
+    ILanguage FromLanguage,
+    ITranslator LegacyTranslator);

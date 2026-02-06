@@ -8,6 +8,7 @@ using GTranslate.Translators;
 using HanumanInstitute.MvvmDialogs;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Dialogs.Services;
 using Witcher3StringEditor.Locales;
 using Witcher3StringEditor.Messaging;
 
@@ -36,6 +37,11 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     private readonly ITranslator translator;
 
     /// <summary>
+    ///     The translation router service
+    /// </summary>
+    private readonly ITranslationRouter translationRouter;
+
+    /// <summary>
     ///     The collection of items to translate
     /// </summary>
     private readonly IReadOnlyList<ITrackableW3StringItem> w3StringItems;
@@ -55,21 +61,23 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
+    /// <param name="translationRouter">Translation router service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="index">Starting index for translation</param>
     public TranslationDialogViewModel(IAppSettings appSettings, ITranslator translator,
+        ITranslationRouter translationRouter,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
         int index)
     {
         this.index = index;
         this.translator = translator;
+        this.translationRouter = translationRouter;
         this.appSettings = appSettings;
         this.w3StringItems = w3StringItems;
-        // TODO: Accept ITranslationProvider and provider-specific options alongside ITranslator when routing is added.
         Log.Information("Total items to translate: {Count}.", this.w3StringItems.Count); // Log the number of items
         Log.Information("Starting index: {Index}.", index); // Log the starting index
         CurrentViewModel =
-            new SingleItemTranslationViewModel(appSettings, translator, this.w3StringItems,
+            new SingleItemTranslationViewModel(appSettings, translator, translationRouter, this.w3StringItems,
                 index); // Initialize the current view model
     }
 
@@ -101,8 +109,9 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
                 await DisposeCurrentViewModelAsync(); // Dispose current view model
                 var formLange = CurrentViewModel.FormLanguage; // Save current source language
                 CurrentViewModel = CurrentViewModel is BatchItemsTranslationViewModel // Switch view model type
-                    ? new SingleItemTranslationViewModel(appSettings, translator, w3StringItems, index)
-                    : new BatchItemsTranslationViewModel(appSettings, translator,
+                    ? new SingleItemTranslationViewModel(appSettings, translator, translationRouter, w3StringItems,
+                        index)
+                    : new BatchItemsTranslationViewModel(appSettings, translator, translationRouter,
                         w3StringItems, index + 1);
                 CurrentViewModel.FormLanguage = formLange; // Restore source language
                 Title = CurrentViewModel is BatchItemsTranslationViewModel // Update dialog title
