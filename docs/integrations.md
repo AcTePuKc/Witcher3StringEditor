@@ -29,6 +29,8 @@
 ### Provider Selection Behavior
 - If a provider is selected **and** the registry can resolve it, the provider path is selected (currently stubbed).
 - Otherwise, the app falls back to the legacy translator selection.
+- The Translation dialog header now shows a read-only provider/model/base URL summary sourced from app settings to
+  surface future provider selection without changing routing.
 
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
