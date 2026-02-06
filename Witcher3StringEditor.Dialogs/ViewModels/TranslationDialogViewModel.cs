@@ -235,10 +235,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         var providerName = appSettings.TranslationProviderName;
         if (!string.IsNullOrWhiteSpace(providerName))
         {
-            var modelDisplayName = string.IsNullOrWhiteSpace(appSettings.TranslationModelName)
-                ? NoModelSelectedLabel
-                : appSettings.TranslationModelName;
-            return $"{Strings.Provider}: {providerName} ({Strings.Model}: {modelDisplayName})";
+            return $"{Strings.Provider}: {providerName} ({Strings.Model}: {GetModelDisplayName()})";
         }
 
         var translatorName = appSettings.Translator;
@@ -256,10 +253,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         if (!string.IsNullOrWhiteSpace(providerName))
         {
             summaryParts.Add($"{Strings.Provider}: {providerName}");
-            var modelDisplayName = string.IsNullOrWhiteSpace(appSettings.TranslationModelName)
-                ? NoModelSelectedLabel
-                : appSettings.TranslationModelName;
-            summaryParts.Add($"{Strings.Model}: {modelDisplayName}");
+            summaryParts.Add($"{Strings.Model}: {GetModelDisplayName()}");
         }
 
         if (!string.IsNullOrWhiteSpace(baseUrl))
@@ -268,6 +262,13 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         }
 
         return string.Join(" · ", summaryParts);
+    }
+
+    private string GetModelDisplayName()
+    {
+        return string.IsNullOrWhiteSpace(appSettings.TranslationModelName)
+            ? NoModelSelectedLabel
+            : appSettings.TranslationModelName;
     }
 
     /// <summary>
