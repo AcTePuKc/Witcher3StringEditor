@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using CommunityToolkit.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,6 +11,7 @@ using GTranslate;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Translation;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Dialogs.Services;
 using Witcher3StringEditor.Messaging;
@@ -158,7 +161,18 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 }
                 else
                 {
-                    Log.Error("Translation operation was cancelled."); // Log cancellation of translation
+                    var providerFailureMessage = GetProviderFailureMessage(translationResult);
+                    if (!string.IsNullOrWhiteSpace(providerFailureMessage))
+                    {
+                        _ = WeakReferenceMessenger.Default.Send(
+                            new ValueChangedMessage<string>(providerFailureMessage),
+                            MessageTokens.TranslateError);
+                        Log.Error("Translation failed: {Error}", providerFailureMessage);
+                    }
+                    else
+                    {
+                        Log.Error("Translation operation was cancelled."); // Log cancellation of translation
+                    }
                 }
             }
             else
@@ -199,6 +213,16 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
         return completedTask == translateTask
             ? await translateTask
             : Result.Fail(string.Empty);
+    }
+
+    private static string? GetProviderFailureMessage(Result<string> result)
+    {
+        var providerError = result.Errors.FirstOrDefault(error =>
+            error.Metadata.TryGetValue(TranslationFailureMetadata.FailureKindKey, out var kind) &&
+            string.Equals(kind?.ToString(), TranslationFailureMetadata.ProviderFailureKind,
+                StringComparison.Ordinal));
+
+        return providerError?.Message;
     }
 
     /// <summary>

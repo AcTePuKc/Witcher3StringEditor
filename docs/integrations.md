@@ -18,7 +18,7 @@
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
 - **Registry** (future) resolves provider names to `ITranslationProvider` instances.
 - **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
-  depending on settings; provider calls are currently stubbed and return a safe “not implemented” result.
+  depending on settings; provider calls are guarded and return structured failures when providers error out.
 - **Model catalog stub** lives in `Witcher3StringEditor.Common/Translation/ITranslationModelCatalog.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`.
 - **Pipeline context** lives in `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs` and carries
@@ -29,6 +29,8 @@
 ### Provider Selection Behavior
 - If a provider is selected **and** the registry can resolve it, the provider path is selected (currently stubbed).
 - Otherwise, the app falls back to the legacy translator selection.
+- Provider failures return structured errors (provider name + failure kind), and the router can fall back to the
+  configured legacy translator; if no fallback is configured, the translation dialog surfaces an error message.
 - The Translation dialog header now shows a read-only provider/model/base URL summary sourced from app settings to
   surface future provider selection without changing routing.
 - The header display uses `TranslationModelName` directly; when it is empty the UI shows “(none selected)”.

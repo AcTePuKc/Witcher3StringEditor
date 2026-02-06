@@ -35,7 +35,20 @@ internal sealed class TranslationRouter : ITranslationRouter
 
         if (TryResolveProvider(out var provider))
         {
-            return await TranslateWithProvider(request, provider, cancellationToken).ConfigureAwait(false);
+            var providerResult = await TranslateWithProvider(request, provider, cancellationToken)
+                .ConfigureAwait(false);
+            if (providerResult.IsSuccess)
+            {
+                return providerResult;
+            }
+
+            if (ShouldFallbackToLegacyTranslator())
+            {
+                Log.Warning("Provider {ProviderName} failed; falling back to legacy translator.", provider.Name);
+                return await TranslateWithLegacyTranslator(request, cancellationToken).ConfigureAwait(false);
+            }
+
+            return providerResult;
         }
 
         return await TranslateWithLegacyTranslator(request, cancellationToken).ConfigureAwait(false);
@@ -57,12 +70,40 @@ internal sealed class TranslationRouter : ITranslationRouter
         ITranslationProvider provider,
         CancellationToken cancellationToken)
     {
-        _ = provider;
-        _ = cancellationToken;
+        if (cancellationToken.IsCancellationRequested)
+            return Result.Fail("Translation was cancelled.");
 
-        // TODO: Wire provider requests once translation providers are fully implemented.
-        Log.Warning("Translation provider path is not implemented yet.");
-        return Result.Fail("Translation provider path is not implemented yet.");
+        try
+        {
+            var providerRequest = new TranslationRequest
+            {
+                Text = request.Text,
+                SourceLanguage = request.FromLanguage?.ToString(),
+                TargetLanguage = request.ToLanguage?.ToString(),
+                ModelId = string.IsNullOrWhiteSpace(appSettings.TranslationModelName)
+                    ? null
+                    : appSettings.TranslationModelName
+            };
+
+            var response = await provider.TranslateAsync(providerRequest, cancellationToken).ConfigureAwait(false);
+            if (string.IsNullOrWhiteSpace(response.TranslatedText))
+            {
+                return Result.Fail(BuildProviderFailure(provider.Name,
+                    $"Translation provider '{provider.Name}' returned an empty result."));
+            }
+
+            return Result.Ok(response.TranslatedText);
+        }
+        catch (OperationCanceledException)
+        {
+            return Result.Fail("Translation was cancelled.");
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Translation provider {ProviderName} failed with an exception.", provider.Name);
+            return Result.Fail(BuildProviderFailure(provider.Name,
+                $"Translation provider '{provider.Name}' failed with an exception: {ex.Message}.", ex));
+        }
     }
 
     private async Task<Result<string>> TranslateWithLegacyTranslator(
@@ -104,5 +145,24 @@ internal sealed class TranslationRouter : ITranslationRouter
             : legacyTranslators.FirstOrDefault(candidate => candidate.Name == translatorName);
 
         return translator ?? legacyTranslators.FirstOrDefault();
+    }
+
+    private bool ShouldFallbackToLegacyTranslator()
+    {
+        return !string.IsNullOrWhiteSpace(appSettings.Translator) && legacyTranslators.Any();
+    }
+
+    private static Error BuildProviderFailure(string providerName, string message, Exception? exception = null)
+    {
+        var error = new Error(message)
+            .WithMetadata(TranslationFailureMetadata.FailureKindKey, TranslationFailureMetadata.ProviderFailureKind)
+            .WithMetadata(TranslationFailureMetadata.ProviderNameKey, providerName);
+
+        if (exception is not null)
+        {
+            error = error.WithMetadata("ExceptionType", exception.GetType().Name);
+        }
+
+        return error;
     }
 }
