@@ -10,7 +10,7 @@ using Witcher3StringEditor.Common.Terminology;
 
 namespace Witcher3StringEditor.Services;
 
-internal sealed class TerminologyLoader : ITerminologyLoader
+internal sealed class TerminologyLoader : ITerminologyLoader, IStyleGuideLoader
 {
     private static readonly StringComparer ColumnComparer = StringComparer.OrdinalIgnoreCase;
 
@@ -113,6 +113,21 @@ internal sealed class TerminologyLoader : ITerminologyLoader
             ForbiddenTerms = forbidden,
             ToneNotes = tone
         };
+    }
+
+    public Task<StyleGuide> LoadStyleGuideAsync(string path, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            throw new ArgumentException("Style guide path is required.", nameof(path));
+
+        var extension = Path.GetExtension(path);
+        if (!extension.Equals(".md", StringComparison.OrdinalIgnoreCase) &&
+            !extension.Equals(".markdown", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new NotSupportedException($"Unsupported style guide format: '{extension}'.");
+        }
+
+        return LoadStyleGuideFromMarkdown(path, cancellationToken);
     }
 
     private static TerminologyPack MapStyleGuideToPack(StyleGuide styleGuide)

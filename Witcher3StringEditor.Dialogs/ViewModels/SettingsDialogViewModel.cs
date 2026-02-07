@@ -34,6 +34,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     ];
 
     private readonly IDialogService dialogService;
+    private readonly IStyleGuideLoader styleGuideLoader;
     private readonly ITerminologyLoader terminologyLoader;
 
     /// <summary>
@@ -49,13 +50,15 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         IDialogService dialogService,
         IEnumerable<string> translators,
         IEnumerable<CultureInfo> supportedCultures,
-        ITerminologyLoader terminologyLoader)
+        ITerminologyLoader terminologyLoader,
+        IStyleGuideLoader styleGuideLoader)
     {
         AppSettings = appSettings;
         this.dialogService = dialogService;
         Translators = translators;
         SupportedCultures = supportedCultures;
         this.terminologyLoader = terminologyLoader;
+        this.styleGuideLoader = styleGuideLoader;
         ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
 
         if (appSettings is INotifyPropertyChanged notifyPropertyChanged)
@@ -182,6 +185,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             AppSettings.TerminologyFilePath = storageFile.LocalPath;
             Log.Information("Terminology file path set to {Path}.", storageFile.LocalPath);
+            await UpdateTerminologyStatusAsync();
         }
     }
 
@@ -206,6 +210,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             AppSettings.StyleGuideFilePath = storageFile.LocalPath;
             Log.Information("Style guide file path set to {Path}.", storageFile.LocalPath);
+            await UpdateStyleGuideStatusAsync();
         }
     }
 
@@ -334,20 +339,20 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
     private async Task UpdateTerminologyStatusAsync()
     {
-        if (!AppSettings.UseTerminologyPack)
-        {
-            TerminologyStatusText = "Terminology disabled.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(AppSettings.TerminologyFilePath))
-        {
-            TerminologyStatusText = "No terminology file selected.";
-            return;
-        }
-
         try
         {
+            if (!AppSettings.UseTerminologyPack)
+            {
+                TerminologyStatusText = "Terminology disabled.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(AppSettings.TerminologyFilePath))
+            {
+                TerminologyStatusText = "No terminology file selected.";
+                return;
+            }
+
             await terminologyLoader.LoadAsync(AppSettings.TerminologyFilePath);
             TerminologyStatusText = "Terminology loaded.";
         }
@@ -360,21 +365,21 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
     private async Task UpdateStyleGuideStatusAsync()
     {
-        if (!AppSettings.UseStyleGuide)
-        {
-            StyleGuideStatusText = "Style guide disabled.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(AppSettings.StyleGuideFilePath))
-        {
-            StyleGuideStatusText = "No style guide selected.";
-            return;
-        }
-
         try
         {
-            await terminologyLoader.LoadAsync(AppSettings.StyleGuideFilePath);
+            if (!AppSettings.UseStyleGuide)
+            {
+                StyleGuideStatusText = "Style guide disabled.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(AppSettings.StyleGuideFilePath))
+            {
+                StyleGuideStatusText = "No style guide selected.";
+                return;
+            }
+
+            await styleGuideLoader.LoadStyleGuideAsync(AppSettings.StyleGuideFilePath);
             StyleGuideStatusText = "Style guide loaded.";
         }
         catch (Exception ex)
