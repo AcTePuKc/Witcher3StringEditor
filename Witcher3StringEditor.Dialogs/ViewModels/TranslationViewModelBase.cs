@@ -6,7 +6,7 @@ using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
-using Witcher3StringEditor.Services;
+using Witcher3StringEditor.Common.Translation;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 

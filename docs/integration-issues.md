@@ -213,7 +213,7 @@ app settings. Add a noop router implementation for scenarios where routing shoul
 - Noop router returns a non-success result without performing work.
 
 **Files to Touch**
-- `Witcher3StringEditor/Services/ITranslationRouter.cs`
+- `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`
 - `Witcher3StringEditor/Services/TranslationRouter.cs`
 - `Witcher3StringEditor/Services/NoopTranslationRouter.cs`
 - `docs/integrations.md`

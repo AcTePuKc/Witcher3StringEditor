@@ -81,7 +81,7 @@
   provider request metadata, with validation hooks after translation. (TODO: inject + validate.)
 
 ## Translation Router Reference Map
-- **Interface + request DTO** live in `Witcher3StringEditor/Services/ITranslationRouter.cs`.
+- **Interface + request DTO** live in `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`.
 - **Router implementations** live in `Witcher3StringEditor/Services/TranslationRouter.cs` and
   `Witcher3StringEditor/Services/NoopTranslationRouter.cs`.
 - **View model call sites**:
