@@ -14,7 +14,15 @@ public sealed class TranslationProfile
 
     public string? TerminologyPath { get; init; }
 
+    public string? TerminologyFilePath { get; init; }
+
     public string? StyleGuidePath { get; init; }
+
+    public string? StyleGuideFilePath { get; init; }
+
+    public bool? UseTerminologyPack { get; init; }
+
+    public bool? UseStyleGuide { get; init; }
 
     public bool? UseTranslationMemory { get; init; }
 
