@@ -25,7 +25,8 @@
 - **Pipeline context** lives in `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs` and carries
   profile/provider/model/terminology/translation memory selections.
 - **Ollama stub** lives in `Witcher3StringEditor.Integrations.Ollama/` with settings + model listing placeholder.
-- **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`, `CachedTranslationModels`).
+- **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`,
+  `CachedTranslationModels`, `UseTerminologyPack`, `UseStyleGuide`).
 
 ### Provider Selection Behavior
 - **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
@@ -58,6 +59,8 @@
 - **Prompt builder interface** lives in `Witcher3StringEditor.Common/Terminology/ITerminologyPromptBuilder.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`.
 - **Sample fixtures** live under `docs/samples/` for TSV/CSV and Markdown style guides.
+- Settings now include enablement toggles for terminology and style guide previews; the Settings dialog surfaces
+  load status text without enforcing application behavior.
 
 ### Translation Profiles
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.

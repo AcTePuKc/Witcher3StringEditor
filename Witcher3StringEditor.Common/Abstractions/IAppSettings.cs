@@ -74,9 +74,19 @@ public interface IAppSettings
     public string TerminologyFilePath { get; set; }
 
     /// <summary>
+    ///     Gets or sets a value indicating whether the terminology pack is enabled (future integration)
+    /// </summary>
+    public bool UseTerminologyPack { get; set; }
+
+    /// <summary>
     ///     Gets or sets the style guide file path (future integration)
     /// </summary>
     public string StyleGuideFilePath { get; set; }
+
+    /// <summary>
+    ///     Gets or sets a value indicating whether the style guide is enabled (future integration)
+    /// </summary>
+    public bool UseStyleGuide { get; set; }
 
     /// <summary>
     ///     Gets or sets the optional translation profile id (future integration)
