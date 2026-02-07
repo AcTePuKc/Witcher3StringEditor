@@ -151,16 +151,17 @@ internal sealed class TranslationRouter : ITranslationRouter
 
     private string? ResolveProviderName(TranslationRouterRequest request)
     {
-        return string.IsNullOrWhiteSpace(request.ProviderName)
-            ? appSettings.TranslationProviderName
-            : request.ProviderName;
+        return ResolveOverride(request.ProviderName, appSettings.TranslationProviderName);
     }
 
     private string? ResolveModelName(TranslationRouterRequest request)
     {
-        return string.IsNullOrWhiteSpace(request.ModelName)
-            ? appSettings.TranslationModelName
-            : request.ModelName;
+        return ResolveOverride(request.ModelName, appSettings.TranslationModelName);
+    }
+
+    private static string? ResolveOverride(string? overrideValue, string? fallbackValue)
+    {
+        return string.IsNullOrWhiteSpace(overrideValue) ? fallbackValue : overrideValue;
     }
 
     private static Error BuildProviderFailure(string providerName, string message, Exception? exception = null)
