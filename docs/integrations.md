@@ -49,7 +49,7 @@
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
 - **SQLite storage** lives in `Witcher3StringEditor.Data/TranslationMemory/`.
 - **Database initializer stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
-  with a no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryDatabaseInitializer.cs`.
+  with a no-op implementation in `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`.
 - Data is stored under AppData via `Witcher3StringEditor.Data/Storage/` helpers.
 
 ### Terminology + Style Packs

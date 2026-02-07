@@ -37,7 +37,7 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - `Witcher3StringEditor.Data/Storage/*`
 - `Witcher3StringEditor.Data/TranslationMemory/*`
 - `Witcher3StringEditor.Data/QualityAssurance/*`
-- `Witcher3StringEditor/Services/NoopTranslationMemoryDatabaseInitializer.cs`
+- `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
