@@ -27,6 +27,7 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 
 **Acceptance Criteria**
 - SQLite bootstrap and schemas exist for translation memory + QA.
+- Database initialization is abstracted behind an `ITranslationMemoryDatabaseInitializer` stub for future migrations.
 - Store interfaces remain local-only and inert by default.
 - Storage uses AppData paths only.
 
@@ -36,6 +37,7 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - `Witcher3StringEditor.Data/Storage/*`
 - `Witcher3StringEditor.Data/TranslationMemory/*`
 - `Witcher3StringEditor.Data/QualityAssurance/*`
+- `Witcher3StringEditor/Services/NoopTranslationMemoryDatabaseInitializer.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
@@ -198,12 +200,35 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 - Manual: open Settings dialog and verify placeholders render
 - No regressions: existing translators still listed
 
+---
+
+## Issue 9: Translation router request metadata expansion
+**Description**
+Extend the translation router request DTO to carry optional provider and model names so future call sites can override
+app settings. Add a noop router implementation for scenarios where routing should be disabled without side effects.
+
+**Acceptance Criteria**
+- `TranslationRouterRequest` includes provider + model name fields.
+- Router resolves provider/model names from the request first, falling back to app settings.
+- Noop router returns a non-success result without performing work.
+
+**Files to Touch**
+- `Witcher3StringEditor/Services/ITranslationRouter.cs`
+- `Witcher3StringEditor/Services/TranslationRouter.cs`
+- `Witcher3StringEditor/Services/NoopTranslationRouter.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Translation dialog and confirm no behavior change without provider selection
+- No regressions: existing translators still listed
+
 **Current Status / Partial Completion**
 - Placeholder UI does not exist yet; only issue drafts cover it.
 
 ---
 
-## Issue 9: Ollama integration settings + model list stub
+## Issue 10: Ollama integration settings + model list stub
 **Description**
 Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed client, and provide a placeholder `ListModelsAsync` method.
 

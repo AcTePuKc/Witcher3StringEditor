@@ -19,6 +19,7 @@
 - **Registry** (future) resolves provider names to `ITranslationProvider` instances.
 - **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
   depending on settings; provider calls are guarded and return structured failures when providers error out.
+  The router request now carries optional provider/model names so call sites can override settings when needed.
 - **Model catalog stub** lives in `Witcher3StringEditor.Common/Translation/ITranslationModelCatalog.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`.
 - **Pipeline context** lives in `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs` and carries
@@ -31,6 +32,7 @@
   logic; provider routing is **not** invoked unless explicitly configured in settings.
 - **Planned provider routing**: if a provider is selected **and** the registry can resolve it, the provider path is
   selected (currently stubbed). If provider resolution fails, the router short-circuits to the legacy translator path.
+  Provider/model names are resolved from the router request first, with app settings as fallback.
 - **Fallback + error handling**: provider failures return structured errors (provider name + failure kind), and the
   router can fall back to the configured legacy translator; if no fallback is configured, the translation dialog
   surfaces an error message.
@@ -46,6 +48,8 @@
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
 - **SQLite storage** lives in `Witcher3StringEditor.Data/TranslationMemory/`.
+- **Database initializer stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
+  with a no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryDatabaseInitializer.cs`.
 - Data is stored under AppData via `Witcher3StringEditor.Data/Storage/` helpers.
 
 ### Terminology + Style Packs
@@ -75,6 +79,17 @@
   successful result. (TODO: hook into the translation command path.)
 - **Terminology/style** should be loaded on demand (path in settings or profile) and injected into the
   provider request metadata, with validation hooks after translation. (TODO: inject + validate.)
+
+## Translation Router Reference Map
+- **Interface + request DTO** live in `Witcher3StringEditor/Services/ITranslationRouter.cs`.
+- **Router implementations** live in `Witcher3StringEditor/Services/TranslationRouter.cs` and
+  `Witcher3StringEditor/Services/NoopTranslationRouter.cs`.
+- **View model call sites**:
+  - `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs`
+  - `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
+  - `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+  - `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
+  - `Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs`
 
 ## Planned Tasks (Issue Breakdown Summary)
 1. Inventory pass to confirm settings persistence, translation entry points, UI hooks, and integration namespaces.

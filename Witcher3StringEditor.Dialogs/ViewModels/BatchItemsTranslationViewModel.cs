@@ -9,7 +9,7 @@ using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Translation;
-using Witcher3StringEditor.Dialogs.Services;
+using Witcher3StringEditor.Services;
 using Witcher3StringEditor.Messaging;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -259,7 +259,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="tLanguage">The target language</param>
     /// <param name="fLanguage">The source language</param>
     /// <returns>A Result containing the translated text if successful</returns>
-    private static async Task<Result<string>> TranslateItem(
+    private async Task<Result<string>> TranslateItem(
         ITranslationRouter translationRouter,
         string text,
         ILanguage tLanguage,
@@ -269,7 +269,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         var translation =
             await translationRouter.TranslateAsync(new TranslationRouterRequest(text, tLanguage, fLanguage));
         // TODO: Validate translated text against terminology/style rules post-translation.
-        if (translation.IsFailure)
+        if (translation.IsFailure())
         {
             Log.Error("Translation failed: {Errors}", string.Join(", ", translation.Errors.Select(e => e.Message)));
             NotifyProviderFailureOnce(translation);
@@ -294,7 +294,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
 
         hasShownProviderFailure = true;
         _ = WeakReferenceMessenger.Default.Send(
-            new ValueChangedMessage<string>(providerError.Message),
+            new ValueChangedMessage<string>(providerError),
             MessageTokens.TranslateError);
     }
 
