@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using FluentResults;
 using GTranslate;
 
-namespace Witcher3StringEditor.Services;
+namespace Witcher3StringEditor.Common.Translation;
 
 public interface ITranslationRouter
 {

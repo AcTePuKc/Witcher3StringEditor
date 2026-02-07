@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentResults;
+using Witcher3StringEditor.Common.Translation;
 
 namespace Witcher3StringEditor.Services;
 
