@@ -48,6 +48,8 @@
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
 - **SQLite storage** lives in `Witcher3StringEditor.Data/TranslationMemory/`.
+- **Database initializer stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
+  with a no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryDatabaseInitializer.cs`.
 - Data is stored under AppData via `Witcher3StringEditor.Data/Storage/` helpers.
 
 ### Terminology + Style Packs
@@ -77,6 +79,17 @@
   successful result. (TODO: hook into the translation command path.)
 - **Terminology/style** should be loaded on demand (path in settings or profile) and injected into the
   provider request metadata, with validation hooks after translation. (TODO: inject + validate.)
+
+## Translation Router Reference Map
+- **Interface + request DTO** live in `Witcher3StringEditor/Services/ITranslationRouter.cs`.
+- **Router implementations** live in `Witcher3StringEditor/Services/TranslationRouter.cs` and
+  `Witcher3StringEditor/Services/NoopTranslationRouter.cs`.
+- **View model call sites**:
+  - `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs`
+  - `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
+  - `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+  - `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
+  - `Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs`
 
 ## Planned Tasks (Issue Breakdown Summary)
 1. Inventory pass to confirm settings persistence, translation entry points, UI hooks, and integration namespaces.
