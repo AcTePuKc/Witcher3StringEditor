@@ -214,8 +214,8 @@ app settings. Add a noop router implementation for scenarios where routing shoul
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`
+- `Witcher3StringEditor/Services/LegacyTranslationRouter.cs`
 - `Witcher3StringEditor/Services/TranslationRouter.cs`
-- `Witcher3StringEditor/Services/NoopTranslationRouter.cs`
 - `docs/integrations.md`
 
 **QA Checklist**

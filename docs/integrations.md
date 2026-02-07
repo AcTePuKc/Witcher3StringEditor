@@ -82,8 +82,8 @@
 
 ## Translation Router Reference Map
 - **Interface + request DTO** live in `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`.
-- **Router implementations** live in `Witcher3StringEditor/Services/TranslationRouter.cs` and
-  `Witcher3StringEditor/Services/NoopTranslationRouter.cs`.
+- **Router implementations** live in `Witcher3StringEditor/Services/LegacyTranslationRouter.cs` and
+  `Witcher3StringEditor/Services/TranslationRouter.cs`.
 - **View model call sites**:
   - `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs`
   - `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
