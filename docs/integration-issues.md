@@ -37,7 +37,7 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - `Witcher3StringEditor.Data/Storage/*`
 - `Witcher3StringEditor.Data/TranslationMemory/*`
 - `Witcher3StringEditor.Data/QualityAssurance/*`
-- `Witcher3StringEditor/Services/NoopTranslationMemoryDatabaseInitializer.cs`
+- `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
@@ -213,9 +213,9 @@ app settings. Add a noop router implementation for scenarios where routing shoul
 - Noop router returns a non-success result without performing work.
 
 **Files to Touch**
-- `Witcher3StringEditor/Services/ITranslationRouter.cs`
+- `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`
+- `Witcher3StringEditor/Services/LegacyTranslationRouter.cs`
 - `Witcher3StringEditor/Services/TranslationRouter.cs`
-- `Witcher3StringEditor/Services/NoopTranslationRouter.cs`
 - `docs/integrations.md`
 
 **QA Checklist**

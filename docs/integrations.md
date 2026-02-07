@@ -49,7 +49,7 @@
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
 - **SQLite storage** lives in `Witcher3StringEditor.Data/TranslationMemory/`.
 - **Database initializer stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
-  with a no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryDatabaseInitializer.cs`.
+  with a no-op implementation in `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`.
 - Data is stored under AppData via `Witcher3StringEditor.Data/Storage/` helpers.
 
 ### Terminology + Style Packs
@@ -81,9 +81,9 @@
   provider request metadata, with validation hooks after translation. (TODO: inject + validate.)
 
 ## Translation Router Reference Map
-- **Interface + request DTO** live in `Witcher3StringEditor/Services/ITranslationRouter.cs`.
-- **Router implementations** live in `Witcher3StringEditor/Services/TranslationRouter.cs` and
-  `Witcher3StringEditor/Services/NoopTranslationRouter.cs`.
+- **Interface + request DTO** live in `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`.
+- **Router implementations** live in `Witcher3StringEditor/Services/LegacyTranslationRouter.cs` and
+  `Witcher3StringEditor/Services/TranslationRouter.cs`.
 - **View model call sites**:
   - `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs`
   - `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
