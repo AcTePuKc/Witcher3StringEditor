@@ -15,4 +15,6 @@ public interface ITranslationRouter
 public sealed record TranslationRouterRequest(
     string Text,
     ILanguage ToLanguage,
-    ILanguage FromLanguage);
+    ILanguage FromLanguage,
+    string? ProviderName,
+    string? ModelName);
