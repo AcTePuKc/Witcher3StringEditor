@@ -32,7 +32,7 @@ internal sealed class TranslationRouter : ITranslationRouter
         if (request is null)
             throw new ArgumentNullException(nameof(request));
 
-        if (TryResolveProvider(out var provider))
+        if (TryResolveProvider(request, out var provider))
         {
             var providerResult = await TranslateWithProvider(request, provider, cancellationToken)
                 .ConfigureAwait(false);
@@ -53,10 +53,10 @@ internal sealed class TranslationRouter : ITranslationRouter
         return await TranslateWithLegacyTranslator(request, cancellationToken).ConfigureAwait(false);
     }
 
-    private bool TryResolveProvider(out ITranslationProvider? provider)
+    private bool TryResolveProvider(TranslationRouterRequest request, out ITranslationProvider? provider)
     {
         provider = null;
-        var providerName = appSettings.TranslationProviderName;
+        var providerName = ResolveProviderName(request);
         if (string.IsNullOrWhiteSpace(providerName))
             return false;
 
@@ -79,9 +79,7 @@ internal sealed class TranslationRouter : ITranslationRouter
                 Text = request.Text,
                 SourceLanguage = request.FromLanguage?.ToString(),
                 TargetLanguage = request.ToLanguage?.ToString(),
-                ModelId = string.IsNullOrWhiteSpace(appSettings.TranslationModelName)
-                    ? null
-                    : appSettings.TranslationModelName
+                ModelId = ResolveModelName(request)
             };
 
             var response = await provider.TranslateAsync(providerRequest, cancellationToken).ConfigureAwait(false);
@@ -149,6 +147,20 @@ internal sealed class TranslationRouter : ITranslationRouter
     private bool ShouldFallbackToLegacyTranslator()
     {
         return !string.IsNullOrWhiteSpace(appSettings.Translator) && legacyTranslators.Any();
+    }
+
+    private string? ResolveProviderName(TranslationRouterRequest request)
+    {
+        return string.IsNullOrWhiteSpace(request.ProviderName)
+            ? appSettings.TranslationProviderName
+            : request.ProviderName;
+    }
+
+    private string? ResolveModelName(TranslationRouterRequest request)
+    {
+        return string.IsNullOrWhiteSpace(request.ModelName)
+            ? appSettings.TranslationModelName
+            : request.ModelName;
     }
 
     private static Error BuildProviderFailure(string providerName, string message, Exception? exception = null)
