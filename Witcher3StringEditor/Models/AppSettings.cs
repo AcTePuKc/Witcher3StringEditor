@@ -85,10 +85,22 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private string terminologyFilePath = string.Empty;
 
     /// <summary>
+    ///     Gets or sets a value indicating whether the terminology pack is enabled
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private bool useTerminologyPack;
+
+    /// <summary>
     ///     Gets or sets the style guide file path
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
     [ObservableProperty] private string styleGuideFilePath = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets a value indicating whether the style guide is enabled
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private bool useStyleGuide;
 
     /// <summary>
     ///     Gets or sets the translation provider base URL (alias for TranslationBaseUrl)

@@ -244,25 +244,34 @@
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
                     <ui:SettingsCard.Description>
-                        <Grid>
-                            <TextBlock Text="{Binding AppSettings.TerminologyFilePath}" />
-                            <TextBlock Text="{I18N {x:Static l:LangKeys.TerminologyFilePath}}">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Hidden" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AppSettings.TerminologyFilePath}" Value="">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
+                        <StackPanel>
+                            <Grid>
+                                <TextBlock Text="{Binding AppSettings.TerminologyFilePath}" />
+                                <TextBlock Text="{I18N {x:Static l:LangKeys.TerminologyFilePath}}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AppSettings.TerminologyFilePath}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                            <TextBlock Margin="0,4,0,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       Text="{Binding TerminologyStatusText}" />
+                        </StackPanel>
                     </ui:SettingsCard.Description>
-                    <Button Command="{Binding SetTerminologyFilePathCommand}">
-                        <ui:FontIcon Glyph="&#xe71e;" />
-                    </Button>
+                    <StackPanel>
+                        <CheckBox Content="Enable terminology pack"
+                                  IsChecked="{Binding AppSettings.UseTerminologyPack, Mode=TwoWay}" />
+                        <Button Command="{Binding SetTerminologyFilePathCommand}" Margin="0,6,0,0">
+                            <ui:FontIcon Glyph="&#xe71e;" />
+                        </Button>
+                    </StackPanel>
                 </ui:SettingsCard>
                 <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.StyleGuideSettingsDescription}}"
                                  Header="{I18N {x:Static l:LangKeys.StyleGuideSettingsHeader}}">
@@ -270,25 +279,34 @@
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
                     <ui:SettingsCard.Description>
-                        <Grid>
-                            <TextBlock Text="{Binding AppSettings.StyleGuideFilePath}" />
-                            <TextBlock Text="{I18N {x:Static l:LangKeys.StyleGuideFilePath}}">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Hidden" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AppSettings.StyleGuideFilePath}" Value="">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
+                        <StackPanel>
+                            <Grid>
+                                <TextBlock Text="{Binding AppSettings.StyleGuideFilePath}" />
+                                <TextBlock Text="{I18N {x:Static l:LangKeys.StyleGuideFilePath}}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AppSettings.StyleGuideFilePath}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                            <TextBlock Margin="0,4,0,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                       Text="{Binding StyleGuideStatusText}" />
+                        </StackPanel>
                     </ui:SettingsCard.Description>
-                    <Button Command="{Binding SetStyleGuideFilePathCommand}">
-                        <ui:FontIcon Glyph="&#xe71e;" />
-                    </Button>
+                    <StackPanel>
+                        <CheckBox Content="Enable style guide"
+                                  IsChecked="{Binding AppSettings.UseStyleGuide, Mode=TwoWay}" />
+                        <Button Command="{Binding SetStyleGuideFilePathCommand}" Margin="0,6,0,0">
+                            <ui:FontIcon Glyph="&#xe71e;" />
+                        </Button>
+                    </StackPanel>
                 </ui:SettingsCard>
                 <!-- User interface settings section header -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"

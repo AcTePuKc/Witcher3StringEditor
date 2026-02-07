@@ -198,11 +198,36 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Settings dialog and verify placeholders render
+
+---
+
+## Issue 9: Terminology/style enablement toggles + load status
+**Description**
+Add inert enablement toggles for terminology and style guide preview loading. When toggled on, the Settings dialog
+should attempt to load the selected file and surface a status line (loaded/failed) without enforcing behavior.
+
+**Acceptance Criteria**
+- `IAppSettings` includes `UseTerminologyPack` and `UseStyleGuide` flags.
+- Settings dialog shows enablement toggles and load status text for terminology and style guide.
+- Loader is only invoked when the corresponding toggle is enabled.
+- No translation flow behavior changes.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs`
+- `Witcher3StringEditor/Models/AppSettings.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Settings dialog, toggle terminology/style, and confirm status text updates
+- No regressions: translation dialog still opens
 - No regressions: existing translators still listed
 
 ---
 
-## Issue 9: Translation router request metadata expansion
+## Issue 10: Translation router request metadata expansion
 **Description**
 Extend the translation router request DTO to carry optional provider and model names so future call sites can override
 app settings. Add a noop router implementation for scenarios where routing should be disabled without side effects.
@@ -228,7 +253,7 @@ app settings. Add a noop router implementation for scenarios where routing shoul
 
 ---
 
-## Issue 10: Ollama integration settings + model list stub
+## Issue 11: Ollama integration settings + model list stub
 **Description**
 Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed client, and provide a placeholder `ListModelsAsync` method.
 
