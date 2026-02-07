@@ -166,6 +166,18 @@ namespace Witcher3StringEditor.Locales {
             }
         }
         
+        public static string FileFormatTerminology {
+            get {
+                return ResourceManager.GetString("FileFormatTerminology", resourceCulture);
+            }
+        }
+        
+        public static string FileFormatStyleGuide {
+            get {
+                return ResourceManager.GetString("FileFormatStyleGuide", resourceCulture);
+            }
+        }
+        
         public static string FileFormatWitcher3StringsFile {
             get {
                 return ResourceManager.GetString("FileFormatWitcher3StringsFile", resourceCulture);
@@ -301,6 +313,18 @@ namespace Witcher3StringEditor.Locales {
         public static string SelectGameExe {
             get {
                 return ResourceManager.GetString("SelectGameExe", resourceCulture);
+            }
+        }
+        
+        public static string SelectTerminologyFile {
+            get {
+                return ResourceManager.GetString("SelectTerminologyFile", resourceCulture);
+            }
+        }
+        
+        public static string SelectStyleGuideFile {
+            get {
+                return ResourceManager.GetString("SelectStyleGuideFile", resourceCulture);
             }
         }
         
@@ -835,6 +859,42 @@ namespace Witcher3StringEditor.Locales {
         public static string TranslationProviderBaseUrlLabel {
             get {
                 return ResourceManager.GetString("TranslationProviderBaseUrlLabel", resourceCulture);
+            }
+        }
+        
+        public static string TerminologySettingsHeader {
+            get {
+                return ResourceManager.GetString("TerminologySettingsHeader", resourceCulture);
+            }
+        }
+        
+        public static string TerminologySettingsDescription {
+            get {
+                return ResourceManager.GetString("TerminologySettingsDescription", resourceCulture);
+            }
+        }
+        
+        public static string TerminologyFilePath {
+            get {
+                return ResourceManager.GetString("TerminologyFilePath", resourceCulture);
+            }
+        }
+        
+        public static string StyleGuideSettingsHeader {
+            get {
+                return ResourceManager.GetString("StyleGuideSettingsHeader", resourceCulture);
+            }
+        }
+        
+        public static string StyleGuideSettingsDescription {
+            get {
+                return ResourceManager.GetString("StyleGuideSettingsDescription", resourceCulture);
+            }
+        }
+        
+        public static string StyleGuideFilePath {
+            get {
+                return ResourceManager.GetString("StyleGuideFilePath", resourceCulture);
             }
         }
         

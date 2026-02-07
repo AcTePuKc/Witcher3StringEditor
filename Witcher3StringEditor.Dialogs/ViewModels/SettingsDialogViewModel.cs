@@ -125,6 +125,54 @@ public partial class SettingsDialogViewModel(
     }
 
     /// <summary>
+    ///     Sets the path to the terminology file
+    ///     Opens a file dialog to allow the user to select a .tsv or .csv file
+    /// </summary>
+    [RelayCommand]
+    private async Task SetTerminologyFilePath()
+    {
+        var dialogSettings = new OpenFileDialogSettings
+        {
+            Filters =
+            [
+                new FileFilter(Strings.FileFormatTerminology, [".tsv", ".csv"])
+            ],
+            Title = Strings.SelectTerminologyFile
+        };
+
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
+        if (storageFile is not null)
+        {
+            AppSettings.TerminologyFilePath = storageFile.LocalPath;
+            Log.Information("Terminology file path set to {Path}.", storageFile.LocalPath);
+        }
+    }
+
+    /// <summary>
+    ///     Sets the path to the style guide file
+    ///     Opens a file dialog to allow the user to select a .md file
+    /// </summary>
+    [RelayCommand]
+    private async Task SetStyleGuideFilePath()
+    {
+        var dialogSettings = new OpenFileDialogSettings
+        {
+            Filters =
+            [
+                new FileFilter(Strings.FileFormatStyleGuide, ".md")
+            ],
+            Title = Strings.SelectStyleGuideFile
+        };
+
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
+        if (storageFile is not null)
+        {
+            AppSettings.StyleGuideFilePath = storageFile.LocalPath;
+            Log.Information("Style guide file path set to {Path}.", storageFile.LocalPath);
+        }
+    }
+
+    /// <summary>
     ///     Refreshes the available model list from the Ollama API.
     /// </summary>
     [RelayCommand]
