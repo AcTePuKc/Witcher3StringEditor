@@ -2,9 +2,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Witcher3StringEditor.Common.TranslationMemory;
 
-namespace Witcher3StringEditor.Services;
+namespace Witcher3StringEditor.Data.TranslationMemory;
 
-internal sealed class NoopTranslationMemoryDatabaseInitializer : ITranslationMemoryDatabaseInitializer
+public sealed class NoopTranslationMemoryDatabaseInitializer : ITranslationMemoryDatabaseInitializer
 {
     public Task InitializeAsync(TranslationMemorySettings settings, CancellationToken cancellationToken = default)
     {
