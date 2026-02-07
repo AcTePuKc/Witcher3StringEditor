@@ -104,7 +104,7 @@ Persist profiles locally (JSON) and add a resolver stub that can merge a selecte
 **Acceptance Criteria**
 - JSON-backed profile store returns empty list when file is missing.
 - Resolver stub returns null when no profile is selected.
-- Profile model includes optional terminology/style paths and translation memory enablement.
+- Profile model includes optional terminology/style paths, file path aliases, enablement toggles, and translation memory enablement.
 - No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**

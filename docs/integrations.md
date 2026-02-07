@@ -64,7 +64,8 @@
 
 ### Translation Profiles
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.
-- Profiles can carry provider/model/base URL plus terminology/style paths and translation memory enablement flags.
+- Profiles can carry provider/model/base URL plus terminology/style paths, file path aliases, enablement toggles,
+  and translation memory flags.
 - **Profile store** lives in `Witcher3StringEditor.Data/Profiles/` (JSON-backed, AppData).
 - **Resolver stub** lives in `Witcher3StringEditor/Services/` to merge profiles with settings later.
 - **Pipeline context builder** lives in `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs` and
