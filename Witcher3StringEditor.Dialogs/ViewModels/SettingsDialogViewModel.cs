@@ -182,6 +182,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             AppSettings.TerminologyFilePath = storageFile.LocalPath;
             Log.Information("Terminology file path set to {Path}.", storageFile.LocalPath);
+            await UpdateTerminologyStatusAsync();
         }
     }
 
@@ -206,6 +207,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             AppSettings.StyleGuideFilePath = storageFile.LocalPath;
             Log.Information("Style guide file path set to {Path}.", storageFile.LocalPath);
+            await UpdateStyleGuideStatusAsync();
         }
     }
 
@@ -334,20 +336,20 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
     private async Task UpdateTerminologyStatusAsync()
     {
-        if (!AppSettings.UseTerminologyPack)
-        {
-            TerminologyStatusText = "Terminology disabled.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(AppSettings.TerminologyFilePath))
-        {
-            TerminologyStatusText = "No terminology file selected.";
-            return;
-        }
-
         try
         {
+            if (!AppSettings.UseTerminologyPack)
+            {
+                TerminologyStatusText = "Terminology disabled.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(AppSettings.TerminologyFilePath))
+            {
+                TerminologyStatusText = "No terminology file selected.";
+                return;
+            }
+
             await terminologyLoader.LoadAsync(AppSettings.TerminologyFilePath);
             TerminologyStatusText = "Terminology loaded.";
         }
@@ -360,20 +362,20 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
     private async Task UpdateStyleGuideStatusAsync()
     {
-        if (!AppSettings.UseStyleGuide)
-        {
-            StyleGuideStatusText = "Style guide disabled.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(AppSettings.StyleGuideFilePath))
-        {
-            StyleGuideStatusText = "No style guide selected.";
-            return;
-        }
-
         try
         {
+            if (!AppSettings.UseStyleGuide)
+            {
+                StyleGuideStatusText = "Style guide disabled.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(AppSettings.StyleGuideFilePath))
+            {
+                StyleGuideStatusText = "No style guide selected.";
+                return;
+            }
+
             await terminologyLoader.LoadAsync(AppSettings.StyleGuideFilePath);
             StyleGuideStatusText = "Style guide loaded.";
         }
