@@ -69,6 +69,16 @@ public interface IAppSettings
     public string TranslationBaseUrl { get; set; }
 
     /// <summary>
+    ///     Gets or sets the terminology file path (future integration)
+    /// </summary>
+    public string TerminologyFilePath { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the style guide file path (future integration)
+    /// </summary>
+    public string StyleGuideFilePath { get; set; }
+
+    /// <summary>
     ///     Gets or sets the optional translation profile id (future integration)
     /// </summary>
     public string? TranslationProfileId { get; set; }

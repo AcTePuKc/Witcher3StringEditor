@@ -238,6 +238,58 @@
                                    Text="{Binding ModelStatusText}" />
                     </StackPanel>
                 </ui:SettingsCard>
+                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.TerminologySettingsDescription}}"
+                                 Header="{I18N {x:Static l:LangKeys.TerminologySettingsHeader}}">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <ui:SettingsCard.Description>
+                        <Grid>
+                            <TextBlock Text="{Binding AppSettings.TerminologyFilePath}" />
+                            <TextBlock Text="{I18N {x:Static l:LangKeys.TerminologyFilePath}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AppSettings.TerminologyFilePath}" Value="">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </ui:SettingsCard.Description>
+                    <Button Command="{Binding SetTerminologyFilePathCommand}">
+                        <ui:FontIcon Glyph="&#xe71e;" />
+                    </Button>
+                </ui:SettingsCard>
+                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.StyleGuideSettingsDescription}}"
+                                 Header="{I18N {x:Static l:LangKeys.StyleGuideSettingsHeader}}">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <ui:SettingsCard.Description>
+                        <Grid>
+                            <TextBlock Text="{Binding AppSettings.StyleGuideFilePath}" />
+                            <TextBlock Text="{I18N {x:Static l:LangKeys.StyleGuideFilePath}}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AppSettings.StyleGuideFilePath}" Value="">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </ui:SettingsCard.Description>
+                    <Button Command="{Binding SetStyleGuideFilePathCommand}">
+                        <ui:FontIcon Glyph="&#xe71e;" />
+                    </Button>
+                </ui:SettingsCard>
                 <!-- User interface settings section header -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                            Text="{I18N {x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />
