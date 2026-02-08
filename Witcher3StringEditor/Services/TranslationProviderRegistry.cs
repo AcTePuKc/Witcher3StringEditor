@@ -18,14 +18,23 @@ internal sealed class TranslationProviderRegistry : ITranslationProviderRegistry
 
         providerMap = providerList
             .GroupBy(provider => provider.Name, StringComparer.OrdinalIgnoreCase)
-            .ToDictionary(grouping => grouping.Key, grouping => grouping.First(), StringComparer.OrdinalIgnoreCase);
+            .ToDictionary(grouping => grouping.Key, grouping =>
+            {
+                if (grouping.Skip(1).Any())
+                {
+                    throw new ArgumentException(
+                        $"Duplicate translation provider name '{grouping.Key}' found. Provider names must be unique (case-insensitive).");
+                }
+
+                return grouping.First();
+            }, StringComparer.OrdinalIgnoreCase);
 
         descriptors = providerMap.Values
             .Select(provider => new TranslationProviderDescriptor
             {
                 Name = provider.Name,
                 DisplayName = provider.Name,
-                SupportsModelListing = true
+                SupportsModelListing = false
             })
             .OrderBy(descriptor => descriptor.DisplayName ?? descriptor.Name)
             .ToList();

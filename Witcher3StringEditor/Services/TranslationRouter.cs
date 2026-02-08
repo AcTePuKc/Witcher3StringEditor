@@ -39,6 +39,6 @@ internal sealed class TranslationRouter : ITranslationRouter
             return legacyRouter.TranslateWithLegacyTranslatorAsync(request, cancellationToken);
         }
 
-        return legacyRouter.TranslateAsync(request, cancellationToken);
+        return legacyRouter.TranslateWithProviderAsync(request, provider, cancellationToken);
     }
 }
