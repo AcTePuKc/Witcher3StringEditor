@@ -227,7 +227,9 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             return Result.Ok(cachedTranslation.TargetText);
         }
 
-        var request = new TranslationRouterRequest(text, toLanguage, formLanguage, PipelineContext: pipelineContext);
+        var request = new TranslationRouterRequest(text, toLanguage, formLanguage,
+            UseProviderForTranslation: UseProviderForTranslation,
+            PipelineContext: pipelineContext);
         var translateTask = TranslationRouter.TranslateAsync(request, cancellationTokenSource.Token);
         var completedTask = await Task.WhenAny(
             translateTask,

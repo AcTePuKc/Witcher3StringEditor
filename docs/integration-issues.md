@@ -424,6 +424,33 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
 
 ---
 
+## Issue 15: Translation dialog provider routing toggle
+**Description**
+Add a translation dialog toggle that captures whether provider routing should be used and plumb that intent into
+translation router requests without changing behavior unless the router supports it.
+
+**Acceptance Criteria**
+- Translation view model state exposes a `UseProviderForTranslation` boolean (default false).
+- Translation dialog UI binds a toggle to `UseProviderForTranslation`.
+- Translation router requests carry the toggle value without changing legacy routing behavior by default.
+- Switching between single/batch translation preserves the toggle state.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/Views/TranslationDialog.xaml`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Translation dialog, toggle provider routing on/off, and confirm no translation behavior changes
+- No regressions: legacy translator selection remains the default path
+
+---
+
 ## Issue 13: Output post-processing rules (opt-in)
 **Description**
 Introduce a minimal post-processing pipeline for translation output cleanup (e.g., stripping polite prefixes). Keep

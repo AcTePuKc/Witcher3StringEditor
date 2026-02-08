@@ -18,4 +18,5 @@ public sealed record TranslationRouterRequest(
     ILanguage FromLanguage,
     string? ProviderName = null,
     string? ModelName = null,
+    bool UseProviderForTranslation = false,
     TranslationPipelineContext? PipelineContext = null);

@@ -84,6 +84,11 @@
                 Opacity="0.55"
                 Text="{Binding ProviderReadinessStatus}"
                 TextTrimming="CharacterEllipsis" />
+            <CheckBox
+                Content="Use provider routing"
+                FontSize="11"
+                IsChecked="{Binding CurrentViewModel.UseProviderForTranslation, Mode=TwoWay}"
+                Opacity="0.7" />
         </StackPanel>
         <!-- Content grid containing the switch button and translation view -->
         <Grid Grid.Row="1" Margin="24,16,24,16">
