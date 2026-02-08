@@ -304,6 +304,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             providerName = AppSettings.TranslationProviderName;
             modelName = AppSettings.TranslationModelName;
             baseUrl = AppSettings.TranslationBaseUrl;
+            UpdateProviderRoutingStatus(providerName, modelName);
         }
 
         var translation =
