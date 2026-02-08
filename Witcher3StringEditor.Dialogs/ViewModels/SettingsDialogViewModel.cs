@@ -16,6 +16,7 @@ using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Profiles;
 using Witcher3StringEditor.Common.Terminology;
+using Witcher3StringEditor.Common.Translation;
 using Witcher3StringEditor.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -43,6 +44,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     private readonly ITerminologyLoader terminologyLoader;
     private readonly IStyleGuideLoader styleGuideLoader;
     private readonly ITerminologyValidationService terminologyValidationService;
+    private readonly ITranslationProviderHealthCheck providerHealthCheck;
     /// <summary>
     ///     Initializes a new instance of the SettingsDialogViewModel class
     /// </summary>
@@ -58,6 +60,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         ITerminologyLoader terminologyLoader,
         IStyleGuideLoader styleGuideLoader,
         ITerminologyValidationService terminologyValidationService,
+        ITranslationProviderHealthCheck providerHealthCheck,
         IEnumerable<string> translators,
         IEnumerable<CultureInfo> supportedCultures)
     {
@@ -68,6 +71,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         this.terminologyLoader = terminologyLoader;
         this.styleGuideLoader = styleGuideLoader;
         this.terminologyValidationService = terminologyValidationService;
+        this.providerHealthCheck = providerHealthCheck;
         Translators = translators;
         SupportedCultures = supportedCultures;
         ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
@@ -139,6 +143,11 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     ///     Gets the style guide load status text
     /// </summary>
     [ObservableProperty] private string styleGuideStatusText = string.Empty;
+
+    /// <summary>
+    ///     Gets the provider connection status text
+    /// </summary>
+    [ObservableProperty] private string providerConnectionStatusText = string.Empty;
 
     /// <summary>
     ///     Gets the dialog result value
@@ -316,6 +325,32 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         }
     }
 
+    /// <summary>
+    ///     Tests the selected provider connection by listing available models.
+    /// </summary>
+    [RelayCommand]
+    private async Task TestProviderConnection()
+    {
+        ProviderConnectionStatusText = string.Empty;
+        var providerName = AppSettings.TranslationProviderName;
+        if (string.IsNullOrWhiteSpace(providerName))
+        {
+            ProviderConnectionStatusText = "Select a provider before testing the connection.";
+            return;
+        }
+
+        try
+        {
+            var result = await providerHealthCheck.CheckAsync(providerName);
+            ProviderConnectionStatusText = result.Message;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Provider connection test failed for {ProviderName}.", providerName);
+            ProviderConnectionStatusText = "Connection test failed.";
+        }
+    }
+
     private static IEnumerable<string> InitializeModelOptions(IAppSettings appSettings)
     {
         var options = new HashSet<string>(DefaultModelOptions, StringComparer.OrdinalIgnoreCase);
@@ -396,6 +431,11 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         if (e.PropertyName == nameof(IAppSettings.TranslationProfileId))
         {
             _ = UpdateSelectedProfilePreviewAsync();
+        }
+
+        if (e.PropertyName == nameof(IAppSettings.TranslationProviderName))
+        {
+            ProviderConnectionStatusText = string.Empty;
         }
     }
 

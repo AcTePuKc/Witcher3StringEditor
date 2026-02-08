@@ -573,6 +573,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 serviceProvider.GetRequiredService<ITerminologyLoader>(),
                 serviceProvider.GetRequiredService<IStyleGuideLoader>(),
                 serviceProvider.GetRequiredService<ITerminologyValidationService>(),
+                serviceProvider.GetRequiredService<ITranslationProviderHealthCheck>(),
                 names,
                 supportedCultures)); // Show the settings dialog
     }

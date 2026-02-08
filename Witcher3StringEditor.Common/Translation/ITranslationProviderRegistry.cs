@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Witcher3StringEditor.Common.Translation;
 
@@ -10,6 +12,18 @@ public interface ITranslationProviderRegistry
 
     bool TryGet(string providerName, out ITranslationProvider provider);
 }
+
+public interface ITranslationProviderHealthCheck
+{
+    Task<TranslationProviderHealthCheckResult> CheckAsync(
+        string providerName,
+        CancellationToken cancellationToken = default);
+}
+
+public sealed record TranslationProviderHealthCheckResult(
+    bool IsSuccess,
+    string Message,
+    int? ModelCount = null);
 
 public sealed class TranslationProviderDescriptor
 {

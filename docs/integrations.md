@@ -27,6 +27,9 @@
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
 - **Registry (active)** resolves provider names to `ITranslationProvider` instances via DI-backed
   `Witcher3StringEditor/Services/TranslationProviderRegistry.cs`.
+- **Health check stub** lives in `Witcher3StringEditor.Common/Translation/ITranslationProviderHealthCheck.cs` with a
+  concrete implementation in `Witcher3StringEditor/Services/TranslationProviderHealthCheck.cs` for Settings dialog
+  connection tests.
 - **Registry (legacy)** still exists at `Witcher3StringEditor.Common/Translation/TranslationProviderRegistry.cs` but
   currently has no confirmed call sites and should be treated as a compatibility shim only.
 - **Legacy adapter stub** lives in `Witcher3StringEditor/Services/LegacyTranslationProviderRegistryAdapter.cs` and
@@ -198,7 +201,7 @@
   Provider calls must never execute unless the user has explicitly configured a provider and model **and** enabled the
   opt-in routing toggle.
 - **Model discovery**: cached model lists are refreshed only on explicit user action; translation dialogs do not
-  auto-refresh or perform background calls.
+  auto-refresh or perform background calls. Provider connection tests are user-initiated only.
 - **Translation memory**: the no-op service returns empty results and performs no writes unless enabled, and even then
   the default initializer is inert until a feature flag is added.
 - **Terminology/style**: enablement toggles only affect preview loading and status text. Prompt injection and
