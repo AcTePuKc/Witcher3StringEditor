@@ -259,16 +259,18 @@
                         <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Text="{Binding ProfileStatusText}" />
                     </ui:SettingsCard.Description>
-                    <ComboBox
-                        DisplayMemberPath="DisplayName"
-                        IsEnabled="False"
-                        ItemsSource="{Binding TranslationProfiles}"
-                        SelectedValue="{Binding AppSettings.TranslationProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedValuePath="Id" />
-                    <TextBlock Margin="0,6,0,0"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               Text="{Binding SelectedProfilePreview}"
-                               TextWrapping="Wrap" />
+                    <StackPanel>
+                        <ComboBox
+                            DisplayMemberPath="DisplayName"
+                            IsEnabled="False"
+                            ItemsSource="{Binding TranslationProfiles}"
+                            SelectedValue="{Binding AppSettings.TranslationProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedValuePath="Id" />
+                        <TextBlock Margin="0,6,0,0"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="{Binding SelectedProfilePreview}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="Translation memory">
                     <ui:SettingsCard.HeaderIcon>
