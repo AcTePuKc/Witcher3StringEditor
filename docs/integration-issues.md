@@ -89,11 +89,13 @@ Add a provider registry abstraction that maps provider names to implementations 
 - Settings dialog has placeholders for provider/model/base URL without changing translator behavior.
 - Model discovery uses provider `ListModelsAsync` (stub behavior allowed).
 - Cached model list persists in settings for offline UX.
+- Document which registry type is DI-backed vs. legacy/local, with a TODO to consolidate later.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/*`
 - `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`
 - `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
+- `Witcher3StringEditor/App.xaml.cs`
 - `Witcher3StringEditor.Integrations.Ollama/*`
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
@@ -138,12 +140,14 @@ Persist profiles locally (JSON) and add a resolver stub that can merge a selecte
 - JSON-backed profile store returns empty list when file is missing.
 - Resolver stub returns null when no profile is selected.
 - Profile model includes optional terminology/style paths, file path aliases, enablement toggles, and translation memory enablement.
+- Settings resolver stub can resolve the selected profile from app settings (no-op acceptable).
 - No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Profiles/*`
 - `Witcher3StringEditor.Data/Profiles/*`
 - `Witcher3StringEditor/Services/*TranslationProfileResolver*.cs`
+- `Witcher3StringEditor/Services/*TranslationProfileSettingsResolver*.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
@@ -198,6 +202,11 @@ single read-only context object for future translation routing. Keep it unused b
 - Issue 4 (Terminology + style pack loading hooks)
 - Issue 5 (Translation profile storage + resolver)
 
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: verify the context builder returns defaults without throwing
+- No regressions: translation dialog still opens and legacy translator list is intact
+
 ## Issue 8: Settings UI placeholders for integrations
 **Description**
 Add minimal settings UI placeholders for provider selection, model selection, terminology packs, and translation profile selection. No behavioral changes; values can be stored but not used.
@@ -222,6 +231,52 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 - Build: `dotnet build`
 - Manual: open Settings dialog and verify placeholders render
 - No regressions: translation dialog still opens and legacy translator list is intact
+
+---
+
+## Issue 9: Translation profile selection service (stub)
+**Description**
+Introduce a minimal selection service abstraction so future UI/profile flows can set or clear the active profile without
+directly binding to settings. Keep behavior inert by default.
+
+**Acceptance Criteria**
+- `ITranslationProfileSelectionService` provides get/set methods for the selected profile id.
+- No-op implementation returns null and ignores set requests.
+- No wiring changes to existing translation or settings flows.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Profiles/ITranslationProfileSelectionService.cs`
+- `Witcher3StringEditor/Services/NoopTranslationProfileSelectionService.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: app startup without profile selection side effects
+- No regressions: translation dialog still opens and legacy translator list is intact
+
+---
+
+## Issue 12: TranslationProviderRegistry ownership consolidation
+**Description**
+Confirm that the DI-backed registry in `Witcher3StringEditor.Services` is the only active registry at runtime, then
+retire the legacy `Witcher3StringEditor.Common.Translation.TranslationProviderRegistry` class (or keep a short-lived
+adapter if a legacy call site still exists).
+
+**Acceptance Criteria**
+- A scan of the repo confirms all runtime usage goes through `ITranslationProviderRegistry`.
+- Any remaining legacy registry call sites are migrated to the Services registry or routed through an adapter.
+- The legacy registry class is removed or explicitly marked for removal once usage is eliminated.
+- `docs/integrations.md` reflects the ownership decision and migration steps.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/TranslationProviderRegistry.cs`
+- `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open a translation dialog and confirm provider fallback still logs as expected
+- No regressions: legacy translator selection remains intact
 
 ---
 
