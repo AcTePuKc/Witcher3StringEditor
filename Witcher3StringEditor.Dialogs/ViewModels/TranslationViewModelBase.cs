@@ -80,6 +80,11 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     [ObservableProperty] private string statusMessage = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the latest provider failure message.
+    /// </summary>
+    [ObservableProperty] private string lastProviderError = string.Empty;
+
+    /// <summary>
     ///     Gets or sets whether provider routing should be used for translation.
     /// </summary>
     [ObservableProperty] private bool useProviderForTranslation;
@@ -189,6 +194,24 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         if (!string.IsNullOrWhiteSpace(status))
         {
             StatusMessage = status;
+        }
+    }
+
+    /// <summary>
+    ///     Updates the last provider error message based on translation result metadata.
+    /// </summary>
+    /// <param name="result">The translation result to inspect.</param>
+    private protected void UpdateLastProviderError(Result<string> result)
+    {
+        if (result is null)
+        {
+            return;
+        }
+
+        var providerError = result.GetProviderError();
+        if (!string.IsNullOrWhiteSpace(providerError))
+        {
+            LastProviderError = providerError;
         }
     }
 
