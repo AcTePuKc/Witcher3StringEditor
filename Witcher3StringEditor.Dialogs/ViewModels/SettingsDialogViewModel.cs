@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -38,6 +39,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
     private readonly IDialogService dialogService;
     private readonly ITranslationProfileCatalog profileCatalog;
+    private readonly ITranslationProfileResolver profileResolver;
     private readonly ITerminologyLoader terminologyLoader;
     private readonly IStyleGuideLoader styleGuideLoader;
     private readonly ITerminologyValidationService terminologyValidationService;
@@ -52,6 +54,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         IAppSettings appSettings,
         IDialogService dialogService,
         ITranslationProfileCatalog profileCatalog,
+        ITranslationProfileResolver profileResolver,
         ITerminologyLoader terminologyLoader,
         IStyleGuideLoader styleGuideLoader,
         ITerminologyValidationService terminologyValidationService,
@@ -61,6 +64,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         AppSettings = appSettings;
         this.dialogService = dialogService;
         this.profileCatalog = profileCatalog;
+        this.profileResolver = profileResolver;
         this.terminologyLoader = terminologyLoader;
         this.styleGuideLoader = styleGuideLoader;
         this.terminologyValidationService = terminologyValidationService;
@@ -76,6 +80,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         _ = UpdateTerminologyStatusAsync();
         _ = UpdateStyleGuideStatusAsync();
         _ = LoadTranslationProfilesAsync();
+        _ = UpdateSelectedProfilePreviewAsync();
     }
 
     /// <summary>
@@ -119,6 +124,11 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     ///     Gets the translation profile status text
     /// </summary>
     [ObservableProperty] private string profileStatusText = string.Empty;
+
+    /// <summary>
+    ///     Gets the translation profile preview text
+    /// </summary>
+    [ObservableProperty] private string selectedProfilePreview = string.Empty;
 
     /// <summary>
     ///     Gets the terminology load status text
@@ -382,6 +392,87 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             _ = UpdateStyleGuideStatusAsync();
         }
+
+        if (e.PropertyName == nameof(IAppSettings.TranslationProfileId))
+        {
+            _ = UpdateSelectedProfilePreviewAsync();
+        }
+    }
+
+    private async Task UpdateSelectedProfilePreviewAsync()
+    {
+        var profileId = AppSettings.TranslationProfileId;
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            SelectedProfilePreview = "Select a translation profile to preview its settings.";
+            return;
+        }
+
+        try
+        {
+            var profile = await profileResolver.ResolveAsync(profileId);
+            SelectedProfilePreview = profile is null
+                ? "Translation profile details are not available yet."
+                : BuildProfilePreview(profile);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to load translation profile {ProfileId}.", profileId);
+            SelectedProfilePreview = "Failed to load translation profile details.";
+        }
+    }
+
+    private static string BuildProfilePreview(TranslationProfile profile)
+    {
+        var builder = new StringBuilder();
+
+        AppendPreviewLine(builder, "Name", profile.Name);
+        AppendPreviewLine(builder, "Provider", profile.ProviderName);
+        AppendPreviewLine(builder, "Model", profile.ModelName);
+        AppendPreviewLine(builder, "Base URL", profile.BaseUrl);
+        AppendPreviewLine(builder, "Terminology path",
+            profile.TerminologyFilePath ?? profile.TerminologyPath);
+        AppendPreviewLine(builder, "Style guide path",
+            profile.StyleGuideFilePath ?? profile.StyleGuidePath);
+
+        if (profile.UseTerminologyPack.HasValue)
+        {
+            AppendPreviewLine(builder, "Terminology",
+                profile.UseTerminologyPack.Value ? "Enabled" : "Disabled");
+        }
+
+        if (profile.UseStyleGuide.HasValue)
+        {
+            AppendPreviewLine(builder, "Style guide",
+                profile.UseStyleGuide.Value ? "Enabled" : "Disabled");
+        }
+
+        if (profile.UseTranslationMemory.HasValue)
+        {
+            AppendPreviewLine(builder, "Translation memory",
+                profile.UseTranslationMemory.Value ? "Enabled" : "Disabled");
+        }
+
+        AppendPreviewLine(builder, "Notes", profile.Notes);
+
+        if (builder.Length == 0)
+        {
+            return "Translation profile does not specify any settings.";
+        }
+
+        return builder.ToString().TrimEnd();
+    }
+
+    private static void AppendPreviewLine(StringBuilder builder, string label, string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return;
+        }
+
+        builder.Append(label);
+        builder.Append(": ");
+        builder.AppendLine(value.Trim());
     }
 
     private async Task UpdateTerminologyStatusAsync()
