@@ -18,6 +18,7 @@ using Syncfusion.Licensing;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Common.Translation;
+using Witcher3StringEditor.Common.TranslationMemory;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Locales;
@@ -375,6 +376,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<LegacyTranslationRouter>()
             .AddSingleton<ITranslationRouter, TranslationRouter>()
             .AddSingleton<ITranslationPostProcessor, NoopTranslationPostProcessor>()
+            .AddSingleton<ITranslationMemoryService, NoopTranslationMemoryService>()
             .AddSingleton<ITerminologyLoader, TerminologyLoader>()
             .AddSingleton<IStyleGuideLoader, TerminologyLoader>()
             .AddSingleton<IDialogManager, DialogManager>()

@@ -7,7 +7,7 @@ namespace Witcher3StringEditor.Services;
 
 internal sealed class NoopTranslationMemoryService : ITranslationMemoryService
 {
-    public Task<TranslationMemoryEntry?> FindAsync(
+    public Task<TranslationMemoryEntry?> LookupAsync(
         TranslationMemoryQuery query,
         TranslationPipelineContext context,
         CancellationToken cancellationToken = default)

@@ -9,6 +9,7 @@ using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Translation;
+using Witcher3StringEditor.Common.TranslationMemory;
 using Witcher3StringEditor.Messaging;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -72,13 +73,14 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="translator">Translation service</param>
     /// <param name="translationRouter">Translation router service</param>
     /// <param name="pipelineContextBuilder">Pipeline context builder</param>
+    /// <param name="translationMemoryService">Translation memory service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="startIndex">Initial start index for translation</param>
     public BatchItemsTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
-        ITranslationPipelineContextBuilder pipelineContextBuilder,
+        ITranslationPipelineContextBuilder pipelineContextBuilder, ITranslationMemoryService translationMemoryService,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator,
-        translationRouter, translationPostProcessor, pipelineContextBuilder, w3StringItems)
+        translationRouter, translationPostProcessor, pipelineContextBuilder, translationMemoryService, w3StringItems)
     {
         StartIndex = startIndex; // Set start index
         EndIndex = MaxValue = W3StringItems.Count; // Set end index and maximum value
@@ -213,7 +215,8 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         foreach (var item in items) // Process each item in the collection
             if (!cancellationToken.IsCancellationRequested) // Check if operation has been canceled
             {
-                await ProcessSingleItem(item, toLanguage, fromLanguage, pipelineContext); // Translate the current item
+                await ProcessSingleItem(item, toLanguage, fromLanguage, pipelineContext, cancellationToken);
+                    // Translate the current item
                 PendingCount--; // Decrement the pending items counter
             }
             else
@@ -232,17 +235,36 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="fromLanguage">The source language</param>
     /// <param name="pipelineContext">Read-only pipeline context for routing</param>
     private async Task ProcessSingleItem(ITrackableW3StringItem item, ILanguage toLanguage, ILanguage fromLanguage,
-        TranslationPipelineContext pipelineContext)
+        TranslationPipelineContext pipelineContext,
+        CancellationToken cancellationToken)
     {
         try
         {
+            var sourceText = item.Text;
+            var cachedTranslation = await LookupTranslationMemoryAsync(sourceText, fromLanguage, toLanguage,
+                pipelineContext, cancellationToken);
+            if (cachedTranslation is { TargetText: not null }
+                && !string.IsNullOrWhiteSpace(cachedTranslation.TargetText))
+            {
+                item.Text = ApplyPostProcessing(cachedTranslation.TargetText, fromLanguage, toLanguage);
+                SuccessCount++;
+                return;
+            }
+
             var translation =
-                await TranslateItem(TranslationRouter, item.Text, toLanguage,
+                await TranslateItem(TranslationRouter, sourceText, toLanguage,
                     fromLanguage, pipelineContext); // Perform translation
             UpdateStatusMessage(translation);
             if (translation.IsSuccess) // Check if translation succeeded
             {
-                item.Text = ApplyPostProcessing(translation.Value, fromLanguage, toLanguage);
+                var processedTranslation = ApplyPostProcessing(translation.Value, fromLanguage, toLanguage);
+                item.Text = processedTranslation;
+                await SaveTranslationMemoryAsync(sourceText,
+                    processedTranslation,
+                    fromLanguage,
+                    toLanguage,
+                    pipelineContext,
+                    cancellationToken);
                 SuccessCount++; // Increment success counter
             }
             else
