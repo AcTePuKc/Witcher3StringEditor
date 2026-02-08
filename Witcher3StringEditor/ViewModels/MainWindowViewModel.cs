@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyModel;
 using Serilog;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Profiles;
 using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Common.Translation;
 using Witcher3StringEditor.Common.TranslationMemory;
@@ -567,6 +568,7 @@ internal partial class MainWindowViewModel : ObservableObject
         var supportedCultures = serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures;
         await dialogService.ShowDialogAsync(this,
             new SettingsDialogViewModel(appSettings, dialogService,
+                serviceProvider.GetRequiredService<ITranslationProfileCatalog>(),
                 serviceProvider.GetRequiredService<ITerminologyLoader>(),
                 serviceProvider.GetRequiredService<IStyleGuideLoader>(),
                 names,
