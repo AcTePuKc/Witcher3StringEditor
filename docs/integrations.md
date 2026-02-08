@@ -1,6 +1,14 @@
 # Integrations Plan (TM, Ollama, Terminology, Profiles)
 
 ## Architecture overview
+- **Provider contracts (future-facing, not yet wired into translation flow)**
+  - `ITranslationProvider` defines `ListModelsAsync` + `TranslateAsync` for provider implementations.
+  - DTOs live in `Witcher3StringEditor.Common/Translation/TranslationModels.cs`:
+    - `TranslationRequest` (input text, language info, model id, metadata).
+    - `TranslationResult` (output text, model id, metadata).
+    - `ModelInfo` (model id, display name, metadata).
+  - These contracts are intentionally inert and should not be referenced by the current translation flow until routing
+    is explicitly enabled.
 - **Settings persistence**
   - Settings are stored in `AppSettings.Json` via `ConfigService` and loaded in `App.xaml.cs` at startup.
   - `AppSettings` implements `IAppSettings` and is the binding target for the Settings dialog.

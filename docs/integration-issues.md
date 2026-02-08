@@ -4,6 +4,28 @@
 These issue drafts cover the planned **database-backed translation memory**, **Ollama model selection**, **terminology/style
 loading**, and **translation profile** scaffolding. Each issue stays inert by default and focuses on stubs/interfaces only.
 
+## Issue 00: Translation provider contracts (interfaces + DTOs)
+**Description**
+Add the provider contract interfaces and DTOs that future integrations will implement. Keep them unused by the existing
+translation flow so the current legacy translator path remains the default.
+
+**Acceptance Criteria**
+- `ITranslationProvider` includes `ListModelsAsync` and `TranslateAsync` signatures.
+- Minimal DTOs exist for request/result/model metadata (`TranslationRequest`, `TranslationResult`, `ModelInfo`).
+- No new call sites are introduced in the existing translation flow.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ITranslationProvider.cs`
+- `Witcher3StringEditor.Common/Translation/TranslationModels.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm the translation dialog still defaults to legacy translators
+- No regressions: provider routing remains opt-in/inert
+
+---
+
 ## Issue 0: Translation flow + fallback investigation
 **Description**
 Trace the current single-item and batch translation flows, including how the router picks providers vs legacy translators,
