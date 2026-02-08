@@ -84,6 +84,10 @@
   accepts a `TranslationContext` describing languages, provider/model selection, and profile settings.
 - **No-op implementation** lives in `Witcher3StringEditor/Services/NoopTranslationPostProcessor.cs` and returns the
   original text unchanged.
+- **View model usage**: translation view models call the post-processor before displaying translation results,
+  so future rules are applied consistently in single-item, batch, and translation-memory flows.
+- **Dependency injection**: `ITranslationPostProcessor` is registered in `App.xaml.cs` and injected into
+  `TranslationViewModelBase`, keeping post-processing inert until non-no-op rules are added.
 - **Planned scope**: opt-in, string-level rules for stripping polite prefixes or boilerplate in translation outputs.
   This runs after provider/legacy translation and before results are shown to the user.
 
