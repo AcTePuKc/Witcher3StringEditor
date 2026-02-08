@@ -4,6 +4,7 @@
 - Keep all new integrations **local-only** (SQLite or JSON).
 - Add safe, inert scaffolding for future features without changing current workflows.
 - Prefer small interfaces and TODO hooks over real implementations.
+- Prioritize stubs for translation memory, Ollama model selection, terminology/style loading, and translation profiles.
 
 ## Current Scaffolding Status
 - **Translation memory**: SQLite bootstrap + `ITranslationMemoryStore` exist; lookup/save are inert until enabled.

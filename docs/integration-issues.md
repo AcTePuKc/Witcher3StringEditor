@@ -1,5 +1,9 @@
 # Integration Backlog (GitHub Issue Drafts)
 
+## Scope Overview
+These issue drafts cover the planned **database-backed translation memory**, **Ollama model selection**, **terminology/style
+loading**, and **translation profile** scaffolding. Each issue stays inert by default and focuses on stubs/interfaces only.
+
 ## Issue 1: Inventory pass for integration entrypoints
 **Description**
 Confirm where settings are persisted, where translation requests flow, which dialogs/view models will host provider/model/terminology/profile configuration, and which integration namespaces should be the long-term source of truth.
