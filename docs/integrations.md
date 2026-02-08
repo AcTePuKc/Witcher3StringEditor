@@ -110,6 +110,25 @@
 ## Translation Flow + Fallback Investigation
 See `docs/fallback-investigation.md` for the current single-item/batch flow trace and fallback logic map.
 
+## Fallback Triggers + Scope (Planned)
+- **Scope**: provider fallback policy applies **only** in translation windows (single-item and batch dialogs). It does
+  not apply to background workflows, import/export flows, or any non-translation UI.
+- **Trigger conditions** (planned): The router will fall back to the legacy translator under the following conditions, which are grouped by whether a provider call is attempted.
+  - **Fallback before provider attempt:**
+    - Provider explicitly disabled in settings/profile (treated as opt-out).
+    - Provider resolution fails (unknown name or registry missing provider).
+    - Requested model missing/unavailable (catalog lookup fails or model list is empty).
+  - **Fallback after failed provider attempt:**
+    - Provider returns an error (e.g., network/HTTP failure, invalid response, validation error).
+    - Provider call timeout (configurable timeout expires before response).
+- **Fallback behavior**: if a trigger condition is hit, the router should fall back to the legacy translator when
+  configured; otherwise surface a localized error message in the translation window.
+- **Open questions / telemetry**:
+  - What metrics should be logged for fallback decisions (provider name, model name, failure kind, latency)?
+  - Where should logs be written (local file, existing logging sink, in-memory diagnostics panel)?
+  - Should failures be rate-limited or deduplicated to avoid noisy logs during batch runs?
+  - Do we need per-provider timeout settings vs. global timeout defaults?
+
 ## Planned Tasks (Issue Breakdown Summary)
 1. Inventory pass to confirm settings persistence, translation entry points, UI hooks, and integration namespaces.
 2. Wire provider registry + model discovery (Ollama first) with no behavior changes.
