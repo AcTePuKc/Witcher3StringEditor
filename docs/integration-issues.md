@@ -323,14 +323,14 @@ Introduce a minimal post-processing pipeline for translation output cleanup (e.g
 rules opt-in and default to no-op behavior so translation output remains unchanged unless users enable it.
 
 **Acceptance Criteria**
-- `ITranslationPostProcessor` interface exists with request/result models.
-- A no-op post-processor returns the original text and metadata for future rule hooks.
+- `ITranslationPostProcessor` interface exists with a `Process(string, TranslationContext)` signature.
+- A no-op post-processor returns the original text unchanged.
 - Settings include an opt-in toggle (or profile flag) for post-processing rules (placeholder acceptable).
 - No behavior changes unless the toggle is enabled.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/ITranslationPostProcessor.cs`
-- `Witcher3StringEditor.Common/Translation/TranslationPostProcessingModels.cs`
+- `Witcher3StringEditor.Common/Translation/TranslationContext.cs`
 - `Witcher3StringEditor/Services/NoopTranslationPostProcessor.cs`
 - `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs` (if needed)
 - `Witcher3StringEditor/Models/AppSettings.cs` (if needed)

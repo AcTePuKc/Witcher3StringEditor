@@ -57,9 +57,9 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="index">Initial index of the item to translate</param>
     public SingleItemTranslationViewModel(IAppSettings appSettings, ITranslator translator,
-        ITranslationRouter translationRouter,
+        ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
-        int index) : base(appSettings, translator, translationRouter, w3StringItems)
+        int index) : base(appSettings, translator, translationRouter, translationPostProcessor, w3StringItems)
     {
         CurrentItemIndex = index;
         Log.Information("Initializing SingleItemTranslationViewModel."); // Log initialization
@@ -157,7 +157,8 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 {
                     Guard.IsNotNullOrWhiteSpace(translationResult.Value); // Check if translation result is not empty
                     // TODO: Validate translated text against terminology/style rules post-translation.
-                    CurrentTranslateItemModel.TranslatedText = translationResult.Value; // Set the translation text
+                    CurrentTranslateItemModel.TranslatedText =
+                        ApplyPostProcessing(translationResult.Value, FormLanguage, ToLanguage);
                     Log.Information("Translation completed."); // Log completion of translation
                 }
                 else

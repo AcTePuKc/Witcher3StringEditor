@@ -76,11 +76,11 @@
 
 ### Output Post-Processing (Opt-in)
 - **Post-processing interface** lives in `Witcher3StringEditor.Common/Translation/ITranslationPostProcessor.cs` and
-  is paired with request/result models in `TranslationPostProcessingModels.cs`.
+  accepts a `TranslationContext` describing languages, provider/model selection, and profile settings.
 - **No-op implementation** lives in `Witcher3StringEditor/Services/NoopTranslationPostProcessor.cs` and returns the
-  original text with a TODO metadata marker.
+  original text unchanged.
 - **Planned scope**: opt-in, string-level rules for stripping polite prefixes or boilerplate in translation outputs.
-  This should run after provider/legacy translation and before results are shown to the user.
+  This runs after provider/legacy translation and before results are shown to the user.
 
 ### Translation Profiles
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.
