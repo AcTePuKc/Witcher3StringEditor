@@ -45,6 +45,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     /// <param name="translators">Collection of available translators</param>
     /// <param name="supportedCultures">Collection of supported cultures for localization</param>
     /// <param name="terminologyLoader">Terminology loader for preview validation</param>
+    /// <param name="styleGuideLoader">Style guide loader for preview validation</param>
     public SettingsDialogViewModel(
         IAppSettings appSettings,
         IDialogService dialogService,
