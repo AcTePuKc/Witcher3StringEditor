@@ -54,4 +54,22 @@ internal sealed class TranslationProviderRegistry : ITranslationProviderRegistry
 
         return providerMap.TryGetValue(providerName, out var provider) ? provider : null;
     }
+
+    public bool TryGet(string providerName, out ITranslationProvider provider)
+    {
+        if (string.IsNullOrWhiteSpace(providerName))
+        {
+            provider = null!;
+            return false;
+        }
+
+        if (providerMap.TryGetValue(providerName, out var resolved))
+        {
+            provider = resolved;
+            return true;
+        }
+
+        provider = null!;
+        return false;
+    }
 }
