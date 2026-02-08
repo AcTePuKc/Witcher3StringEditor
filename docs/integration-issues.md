@@ -316,3 +316,28 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
   provider registry and settings UI remains.
 
 ---
+
+## Issue 12: Output post-processing rules (opt-in)
+**Description**
+Introduce a minimal post-processing pipeline for translation output cleanup (e.g., stripping polite prefixes). Keep
+rules opt-in and default to no-op behavior so translation output remains unchanged unless users enable it.
+
+**Acceptance Criteria**
+- `ITranslationPostProcessor` interface exists with request/result models.
+- A no-op post-processor returns the original text and metadata for future rule hooks.
+- Settings include an opt-in toggle (or profile flag) for post-processing rules (placeholder acceptable).
+- No behavior changes unless the toggle is enabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ITranslationPostProcessor.cs`
+- `Witcher3StringEditor.Common/Translation/TranslationPostProcessingModels.cs`
+- `Witcher3StringEditor/Services/NoopTranslationPostProcessor.cs`
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs` (if needed)
+- `Witcher3StringEditor/Models/AppSettings.cs` (if needed)
+- `docs/integrations.md`
+- `docs/ai-output-notes.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Settings dialog and confirm no regressions
+- No regressions: translation output unchanged when post-processing is disabled

@@ -74,6 +74,14 @@
 - **Future enforcement**: prompt injection and post-translation validation remain planned work; enabling the flags
   should not change translation output until those hooks are implemented.
 
+### Output Post-Processing (Opt-in)
+- **Post-processing interface** lives in `Witcher3StringEditor.Common/Translation/ITranslationPostProcessor.cs` and
+  is paired with request/result models in `TranslationPostProcessingModels.cs`.
+- **No-op implementation** lives in `Witcher3StringEditor/Services/NoopTranslationPostProcessor.cs` and returns the
+  original text with a TODO metadata marker.
+- **Planned scope**: opt-in, string-level rules for stripping polite prefixes or boilerplate in translation outputs.
+  This should run after provider/legacy translation and before results are shown to the user.
+
 ### Translation Profiles
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.
 - Profiles can carry provider/model/base URL plus terminology/style paths, file path aliases, enablement toggles,
@@ -137,6 +145,7 @@ See `docs/fallback-investigation.md` for the current single-item/batch flow trac
 5. Add profile selection wiring (store + resolver) without altering existing translator flow.
 6. Add minimal settings stubs for translation memory enablement + local database path.
 7. Introduce a translation pipeline context builder to combine settings, profiles, and terminology (TODOs only).
+8. Add opt-in post-processing rules for AI output cleanup (polite prefix stripping), defaulting to no-op.
 
 ## Constraints
 - No external services.
