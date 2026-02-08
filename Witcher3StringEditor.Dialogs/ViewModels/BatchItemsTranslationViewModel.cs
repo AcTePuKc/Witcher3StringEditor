@@ -215,8 +215,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         foreach (var item in items) // Process each item in the collection
             if (!cancellationToken.IsCancellationRequested) // Check if operation has been canceled
             {
-                await ProcessSingleItem(item, toLanguage, fromLanguage, pipelineContext, cancellationToken);
-                    // Translate the current item
+                await ProcessSingleItem(item, toLanguage, fromLanguage, pipelineContext, cancellationToken); // Translate the current item
                 PendingCount--; // Decrement the pending items counter
             }
             else
