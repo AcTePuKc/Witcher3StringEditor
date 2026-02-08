@@ -79,6 +79,16 @@
 - Model lists are only refreshed from the Settings dialog on explicit user action; translation dialogs do not
   auto-refresh models.
 
+### Translation Mode Selector + Readiness Banner
+- **Translation mode selector**: the translation dialog exposes a read-only mode selector that indicates whether the
+  user has opted into provider routing versus the legacy translator flow. The selector defaults to **Legacy** and
+  only switches to **Provider** when the explicit opt-in toggle is enabled (no auto-switching based on settings).
+- **Readiness banner**: a status banner in the translation dialog surfaces provider readiness (provider name, model,
+  base URL, and validation status). This banner is informational only and must not enable routing or mutate settings.
+- **Fallback transparency**: when provider routing is enabled and a fallback is triggered, the dialog should display
+  a non-blocking status message that indicates which provider failed and why the legacy translator was used instead.
+  The legacy translator remains the default path unless the user explicitly enables provider routing.
+
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
 - **Workflow stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs` with a
@@ -194,6 +204,8 @@
 - **Terminology/style**: enablement toggles only affect preview loading and status text. Prompt injection and
   post-translation validation remain TODO.
 - **Profiles**: selecting a profile only changes read-only summaries until profile resolution is wired into routing.
+- **Legacy default**: all translation flows must continue to default to the legacy translator path unless the user
+  explicitly enables provider routing and selects a provider/model combination.
 
 ## Translation Router Reference Map
 - **Interface + request DTO** live in `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`.
