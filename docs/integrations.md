@@ -19,9 +19,16 @@
 ## Architecture Overview
 ### Translation Providers + Model Selection
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
-- **Registry** resolves provider names to `ITranslationProvider` instances (`Witcher3StringEditor/Services/TranslationProviderRegistry.cs`).
-  A legacy/local registry also exists in `Witcher3StringEditor.Common/Translation/TranslationProviderRegistry.cs` and is
-  slated for consolidation once remaining call sites are confirmed (TODO).
+- **Registry (active)** resolves provider names to `ITranslationProvider` instances via DI-backed
+  `Witcher3StringEditor/Services/TranslationProviderRegistry.cs`.
+- **Registry (legacy)** still exists at `Witcher3StringEditor.Common/Translation/TranslationProviderRegistry.cs` but
+  currently has no confirmed call sites and should be treated as a compatibility shim only.
+- **Legacy adapter stub** lives in `Witcher3StringEditor/Services/LegacyTranslationProviderRegistryAdapter.cs` and
+  can be wired if a legacy call site is discovered.
+- **Usage review (current)**:
+  - `App.xaml.cs` registers the DI-backed registry with `ITranslationProviderRegistry`.
+  - `TranslationRouter` and `LegacyTranslationRouter` resolve providers through `ITranslationProviderRegistry`.
+  - No direct usage of the legacy registry class is currently detected.
 - **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
   depending on settings; provider calls are guarded and return structured failures when providers error out.
   The router request now carries optional provider/model names so call sites can override settings when needed.
@@ -112,6 +119,18 @@
 ## Inventory/Discovery Notes
 - There is a parallel `Witcher3StringEditor/Integrations/` folder with early integration interfaces.
   The inventory pass should confirm whether to consolidate on `Witcher3StringEditor.Common/*` or keep both.
+
+## TranslationProviderRegistry Ownership Decision
+- **Decision**: `Witcher3StringEditor.Services` is the long-term owner of the concrete registry implementation.
+  `Witcher3StringEditor.Common` should retain only interfaces/DTOs shared across layers.
+- **Rationale**:
+  - The active registry is already DI-backed and lives in Services.
+  - All runtime usage goes through `ITranslationProviderRegistry`, and the DI container binds to the Services registry.
+  - Keeping implementations in Services avoids coupling Common to app-level composition and provider lifetimes.
+- **Future steps**:
+  1. Confirm no runtime call sites still instantiate `Common.TranslationProviderRegistry`.
+  2. If legacy usage is found, add a short-lived adapter or migration path in Services.
+  3. Remove the legacy registry class once no call sites remain and update any docs/tests referencing it.
 
 ## Wiring Map (Current → Future)
 - **Settings dialog** should remain the single source of truth for provider/model/profile selection.

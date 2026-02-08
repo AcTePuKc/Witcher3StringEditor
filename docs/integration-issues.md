@@ -256,6 +256,30 @@ directly binding to settings. Keep behavior inert by default.
 
 ---
 
+## Issue 12: TranslationProviderRegistry ownership consolidation
+**Description**
+Confirm that the DI-backed registry in `Witcher3StringEditor.Services` is the only active registry at runtime, then
+retire the legacy `Witcher3StringEditor.Common.Translation.TranslationProviderRegistry` class (or keep a short-lived
+adapter if a legacy call site still exists).
+
+**Acceptance Criteria**
+- A scan of the repo confirms all runtime usage goes through `ITranslationProviderRegistry`.
+- Any remaining legacy registry call sites are migrated to the Services registry or routed through an adapter.
+- The legacy registry class is removed or explicitly marked for removal once usage is eliminated.
+- `docs/integrations.md` reflects the ownership decision and migration steps.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/TranslationProviderRegistry.cs`
+- `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open a translation dialog and confirm provider fallback still logs as expected
+- No regressions: legacy translator selection remains intact
+
+---
+
 ## Tracking Note: GoogleTranslator disposal lifecycle
 **Observation**
 `GoogleTranslator` instances (from `GTranslate.Translators`) are created via DI as `ITranslator` and disposed in two spots:
