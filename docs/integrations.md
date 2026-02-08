@@ -1,75 +1,70 @@
-# Integrations Plan (Translation Memory, Ollama, Terminology, Profiles)
+# Integrations Plan (TM, Ollama, Terminology, Profiles)
 
 ## Architecture overview
-- **Settings/UI**
-  - Settings are surfaced in `SettingsDialog` and bound to `AppSettings` for persistence.
-  - Provider selection, model selection, terminology/style flags, and profile selection should remain inert by default until services are wired.  
-- **Provider pipeline**
-  - Providers implement `ITranslationProvider` and are resolved by `ITranslationProviderRegistry`.
-  - Model discovery flows through `ITranslationModelCatalog` and the provider `ListModelsAsync` call.
-  - `TranslationRouter` handles routing and should remain the orchestration point for provider selection.
-- **Translation memory (TM)**
-  - TM settings are sourced from `ITranslationMemorySettingsProvider`.
-  - Persistence uses local storage (SQLite or JSON) in `Witcher3StringEditor.Data`.
-  - Database initialization should be a lightweight boot step before the TM store is used.
-- **Terminology & style**
-  - Packs are represented by `TerminologyPack` and loaded via `ITerminologyLoader`/`IStyleGuideLoader`.
-  - Validation and prompt injection should remain stubbed until prompt formatting is specified.
-- **Translation profiles**
-  - Profiles are stored locally using a profile store.
-  - The profile catalog provides a summary list for UI selection, while the resolver constructs a concrete profile for pipeline use.
+- **Settings persistence**
+  - Settings are stored in `AppSettings.Json` via `ConfigService` and loaded in `App.xaml.cs` at startup.
+  - `AppSettings` implements `IAppSettings` and is the binding target for the Settings dialog.
+- **Translation entrypoints**
+  - `MainWindowViewModel.ShowTranslateDialog` constructs `TranslationDialogViewModel` and passes routing services.
+  - `TranslationRouter` orchestrates provider routing and falls back to `LegacyTranslationRouter` when needed.
+  - `TranslationPipelineContextBuilder` merges app settings with optional translation profiles.
+- **Local integrations**
+  - Translation memory storage is local (SQLite/JSON) in `Witcher3StringEditor.Data`.
+  - Terminology/style loading is local via `ITerminologyLoader` / `IStyleGuideLoader`.
+  - Profiles are local JSON and resolved through catalog + resolver interfaces.
 
 ## Planned work as GitHub issues
 
 ### Issue 1: Inventory pass for integration entrypoints
-**Description**  
-Confirm where settings persistence, translation routing, and UI binding occur before wiring new integrations. Document entrypoints and any lifecycle constraints.
+**Description**
+Document where settings persistence, translation routing, and integration hooks live so future work can wire in safely.
 
 **Acceptance Criteria**
-- A markdown report lists entrypoints for settings persistence, translation routing, and translation helper usage.
-- Risks and constraints are called out (e.g., startup ordering, service lifetimes).
-- The report includes file paths and class names for each entrypoint.
+- Inventory report lists settings persistence, translation entrypoints, and integration namespaces.
+- Key classes include file paths and responsibilities.
+- Risks/constraints (startup ordering, DI lifetimes, settings binding) are captured.
 
 **Files to touch**
+- `docs/inspections/inventory.md`
 - `docs/integrations.md`
-- `docs/reports/integration-inventory.md` (new)
 
 **QA checklist**
-- Open the report and verify each entry includes a file path and class name.
-- Confirm the report includes a section for settings persistence and translation routing.
+- Build: `dotnet build` (or confirm existing build workflow).
+- Manual: open the inventory report and verify each section has file paths.
+- No regressions: documentation-only change.
 
 ---
 
-### Issue 2: Wire local translation memory storage (SQLite) behind a feature toggle
-**Description**  
-Use the existing SQLite store as the default TM persistence when TM is enabled, but keep it inert by default. Make the database initialization explicit and controlled.
+### Issue 2: Database-backed translation memory bootstrap
+**Description**
+Wire translation memory initialization to local storage (SQLite/JSON) while keeping it disabled by default.
 
 **Acceptance Criteria**
-- TM services use SQLite storage only when TM is enabled in settings.
-- Database initialization runs before the TM store is first accessed.
-- TM remains disabled by default with no behavior change for users who do not opt in.
+- TM initialization is explicit and only runs when TM is enabled.
+- TM storage remains local (SQLite/JSON); no external services.
+- Default experience is unchanged when TM is disabled.
 
 **Files to touch**
-- `Witcher3StringEditor.Data/TranslationMemory/SqliteTranslationMemoryStore.cs`
 - `Witcher3StringEditor.Data/TranslationMemory/SqliteTranslationMemoryDatabaseInitializer.cs`
-- `Witcher3StringEditor/App.xaml.cs`
+- `Witcher3StringEditor.Data/TranslationMemory/SqliteTranslationMemoryStore.cs`
 - `Witcher3StringEditor/Services/TranslationMemorySettingsProvider.cs`
+- `Witcher3StringEditor/App.xaml.cs`
 
 **QA checklist**
-- Build the solution.
-- Toggle the TM setting and confirm no errors are thrown on startup.
-- Verify that disabling TM keeps behavior unchanged.
+- Build: `dotnet build`.
+- Manual: toggle TM in Settings and ensure the app still starts.
+- No regressions: translation flows unchanged with TM off.
 
 ---
 
-### Issue 3: Ollama provider wiring + model selection scaffolding
-**Description**  
-Expose Ollama as a selectable provider with model discovery support. Ensure model list refresh uses the provider model catalog but does not introduce a new workflow.
+### Issue 3: Ollama provider + model selection scaffolding
+**Description**
+Keep Ollama local with model listing and model selection stubs. No new workflow beyond model selection.
 
 **Acceptance Criteria**
-- Ollama provider is registered and visible in provider selection.
-- Model selection uses `ListModelsAsync` and does not block the UI.
-- Provider configuration stays in local settings (BaseUrl, model, timeout).
+- Ollama provider is registered and model list retrieval is wired (async, no UI blocking).
+- Settings store BaseUrl, model name, and timeout locally.
+- No changes to translation behavior until provider routing is explicitly enabled.
 
 **Files to touch**
 - `Witcher3StringEditor.Integrations.Ollama/OllamaTranslationProvider.cs`
@@ -79,20 +74,20 @@ Expose Ollama as a selectable provider with model discovery support. Ensure mode
 - `Witcher3StringEditor/App.xaml.cs`
 
 **QA checklist**
-- Build the solution.
-- Open settings, select Ollama, and refresh models (no crash).
-- Validate that the selected model persists between app restarts.
+- Build: `dotnet build`.
+- Manual: open Settings, select Ollama, and refresh models (no crash).
+- No regressions: existing translators still function.
 
 ---
 
 ### Issue 4: Terminology + style guide loading pipeline
-**Description**  
-Keep terminology/style loading local and lightweight. Add validation hooks and retain existing UI with no workflow change.
+**Description**
+Continue local terminology/style loading with validation hooks and no workflow changes.
 
 **Acceptance Criteria**
-- Terminology/style files load via the existing loader and surface a status message.
-- Validation remains a no-op by default but the hooks are in place.
-- No UI/UX changes beyond existing status text and file selection.
+- Terminology/style files load through existing loaders.
+- Validation hooks exist but remain no-op by default.
+- Settings UI only shows minimal placeholders/status text.
 
 **Files to touch**
 - `Witcher3StringEditor/Services/TerminologyLoader.cs`
@@ -100,20 +95,20 @@ Keep terminology/style loading local and lightweight. Add validation hooks and r
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 
 **QA checklist**
-- Build the solution.
-- Provide a sample terminology file and confirm it loads without crashing.
-- Confirm disabling terminology leaves translation behavior unchanged.
+- Build: `dotnet build`.
+- Manual: load sample terminology/style files and confirm status updates.
+- No regressions: translations behave the same with terminology disabled.
 
 ---
 
 ### Issue 5: Translation profiles storage + resolver wiring
-**Description**  
-Use local profile storage to list and resolve translation profiles. Keep profile selection optional and inert unless chosen.
+**Description**
+Keep translation profiles local and optional. Provide list + resolver wiring without changing default behavior.
 
 **Acceptance Criteria**
-- Profile list is populated from the local store.
-- Selected profile resolves to a concrete `TranslationProfile` instance when requested.
-- No profile selected results in the default app settings behavior.
+- Profiles load from local JSON storage and list in Settings.
+- Selected profile resolves to a concrete `TranslationProfile` for pipeline use.
+- No profile selected = default settings behavior.
 
 **Files to touch**
 - `Witcher3StringEditor.Data/Profiles/JsonTranslationProfileStore.cs`
@@ -123,7 +118,6 @@ Use local profile storage to list and resolve translation profiles. Keep profile
 - `Witcher3StringEditor/App.xaml.cs`
 
 **QA checklist**
-- Build the solution.
-- Open settings and confirm profiles are listed if a profile file exists.
-- Leave profile empty and verify translation flow continues unchanged.
-
+- Build: `dotnet build`.
+- Manual: load a profile file and confirm it appears in Settings.
+- No regressions: leaving profile empty should not change translation results.

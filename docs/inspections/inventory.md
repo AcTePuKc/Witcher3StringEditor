@@ -1,0 +1,72 @@
+# Integration Inventory (Settings, Translation Entry Points, Namespaces)
+
+## Settings persistence
+- **Configuration file path + lifecycle**
+  - `App.xaml.cs` computes the config path (`%AppData%/Witcher3StringEditor[_Debug]/AppSettings.Json`), initializes services, loads `IAppSettings`, and saves on exit.
+  - Key locations: `GetAppSettingsPath`, `InitializeServices`, and `OnExit`.
+  - Files:
+    - `Witcher3StringEditor/App.xaml.cs`
+- **Serialization layer**
+  - `ConfigService` persists settings using JSON (Newtonsoft) with enum conversion support.
+  - Files:
+    - `Witcher3StringEditor/Services/ConfigService.cs`
+- **Settings model + contract**
+  - `AppSettings` implements `IAppSettings` and contains translation provider/model, terminology/style, TM, and profile flags.
+  - Files:
+    - `Witcher3StringEditor/Models/AppSettings.cs`
+    - `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs`
+
+## Translation entry points
+- **Main UI entry**
+  - `MainWindowViewModel.ShowTranslateDialog` constructs `TranslationDialogViewModel` and injects the router, TM service, post-processor, and pipeline builder.
+  - Files:
+    - `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs`
+- **Dialog orchestration**
+  - `TranslationDialogViewModel` owns the translation mode (legacy/provider), creates `SingleItemTranslationViewModel` / `BatchItemsTranslationViewModel`, and binds to provider readiness state.
+  - Files:
+    - `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+- **Routing + pipeline**
+  - `TranslationRouter` validates provider requests, resolves providers, and falls back to `LegacyTranslationRouter` when needed.
+  - `TranslationPipelineContextBuilder` merges `IAppSettings` with optional `TranslationProfile` values to build pipeline context.
+  - Files:
+    - `Witcher3StringEditor/Services/TranslationRouter.cs`
+    - `Witcher3StringEditor/Services/LegacyTranslationRouter.cs`
+    - `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs`
+- **Provider abstractions**
+  - Provider APIs live in `Witcher3StringEditor.Common.Translation` (`ITranslationProvider`, `ITranslationProviderRegistry`, `ITranslationRouter`).
+  - Files:
+    - `Witcher3StringEditor.Common/Translation/ITranslationProvider.cs`
+    - `Witcher3StringEditor.Common/Translation/ITranslationProviderRegistry.cs`
+    - `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`
+
+## Integration namespaces + key classes
+- **Ollama**
+  - Namespace: `Witcher3StringEditor.Integrations.Ollama`
+  - Key classes:
+    - `Witcher3StringEditor.Integrations.Ollama/OllamaSettings.cs`
+    - `Witcher3StringEditor.Integrations.Ollama/OllamaTranslationProvider.cs`
+- **Translation memory (local)**
+  - Namespaces: `Witcher3StringEditor.Common.TranslationMemory`, `Witcher3StringEditor.Data.TranslationMemory`, `Witcher3StringEditor.Services`
+  - Key classes:
+    - `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs`
+    - `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryStore.cs`
+    - `Witcher3StringEditor.Data/TranslationMemory/SqliteTranslationMemoryStore.cs`
+    - `Witcher3StringEditor.Data/TranslationMemory/SqliteTranslationMemoryDatabaseInitializer.cs`
+    - `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`
+- **Terminology + style**
+  - Namespaces: `Witcher3StringEditor.Common.Terminology`, `Witcher3StringEditor.Services`
+  - Key classes:
+    - `Witcher3StringEditor.Common/Terminology/ITerminologyLoader.cs`
+    - `Witcher3StringEditor.Common/Terminology/IStyleGuideLoader.cs`
+    - `Witcher3StringEditor/Services/TerminologyLoader.cs`
+    - `Witcher3StringEditor/Services/NoopTerminologyValidationService.cs`
+  - Note: additional parallel models exist in `Witcher3StringEditor/Integrations/Terminology` and should be reconciled before expansion.
+- **Translation profiles**
+  - Namespaces: `Witcher3StringEditor.Common.Profiles`, `Witcher3StringEditor.Data.Profiles`, `Witcher3StringEditor.Services`
+  - Key classes:
+    - `Witcher3StringEditor.Common/Profiles/TranslationProfile.cs`
+    - `Witcher3StringEditor.Common/Profiles/ITranslationProfileStore.cs`
+    - `Witcher3StringEditor.Data/Profiles/JsonTranslationProfileStore.cs`
+    - `Witcher3StringEditor.Data/Profiles/TranslationProfileCatalog.cs`
+    - `Witcher3StringEditor/Services/NoopTranslationProfileResolver.cs`
+  - Note: a separate `Witcher3StringEditor/Integrations/Profiles` namespace exists; confirm which profile model is authoritative before wiring.
