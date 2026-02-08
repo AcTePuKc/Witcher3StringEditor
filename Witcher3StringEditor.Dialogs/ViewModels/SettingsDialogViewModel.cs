@@ -241,7 +241,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             : AppSettings.BaseUrl;
 
         ModelStatusText = string.Empty;
-        ModelOptions.Clear();
+        var refreshedModels = new List<string>();
 
         try
         {
@@ -271,9 +271,15 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
                     var modelName = nameElement.GetString();
                     if (!string.IsNullOrWhiteSpace(modelName))
                     {
-                        ModelOptions.Add(modelName);
+                        refreshedModels.Add(modelName);
                     }
                 }
+            }
+
+            ModelOptions.Clear();
+            foreach (var modelName in refreshedModels.Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                ModelOptions.Add(modelName);
             }
 
             EnsureSelectedModelOption();
