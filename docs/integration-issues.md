@@ -317,6 +317,33 @@ should attempt to load the selected file and surface a status line (loaded/faile
 
 ---
 
+## Issue 50: Terminology/style validation service stub
+**Description**
+Introduce an inert terminology/style validation service that can be called from the Settings dialog after files are
+selected. The default implementation should always return a "Not validated" status so UI text can be wired without
+changing translation output.
+
+**Acceptance Criteria**
+- Add `ITerminologyValidationService` + `TerminologyValidationResult` to `Common/Terminology`.
+- Register a no-op implementation in DI that always returns a "Not validated" result.
+- Settings dialog calls the validation service after successfully loading terminology and style guide files.
+- Status text reflects the validation result without enforcing translation behavior.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Terminology/ITerminologyValidationService.cs`
+- `Witcher3StringEditor.Common/Terminology/TerminologyValidationResult.cs`
+- `Witcher3StringEditor/Services/NoopTerminologyValidationService.cs`
+- `Witcher3StringEditor/App.xaml.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: select terminology/style files in Settings and confirm validation status shows "Not validated."
+- No regressions: translation dialogs still open
+
+---
+
 ## Issue 10: Translation memory settings toggle + path persistence
 **Description**
 Add inert settings for translation memory enablement and local database path selection. Keep the toggle and path display

@@ -40,6 +40,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     private readonly ITranslationProfileCatalog profileCatalog;
     private readonly ITerminologyLoader terminologyLoader;
     private readonly IStyleGuideLoader styleGuideLoader;
+    private readonly ITerminologyValidationService terminologyValidationService;
     /// <summary>
     ///     Initializes a new instance of the SettingsDialogViewModel class
     /// </summary>
@@ -53,6 +54,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         ITranslationProfileCatalog profileCatalog,
         ITerminologyLoader terminologyLoader,
         IStyleGuideLoader styleGuideLoader,
+        ITerminologyValidationService terminologyValidationService,
         IEnumerable<string> translators,
         IEnumerable<CultureInfo> supportedCultures)
     {
@@ -61,6 +63,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         this.profileCatalog = profileCatalog;
         this.terminologyLoader = terminologyLoader;
         this.styleGuideLoader = styleGuideLoader;
+        this.terminologyValidationService = terminologyValidationService;
         Translators = translators;
         SupportedCultures = supportedCultures;
         ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
@@ -404,7 +407,9 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             }
 
             await terminologyLoader.LoadAsync(AppSettings.TerminologyFilePath);
-            TerminologyStatusText = "Terminology loaded successfully.";
+            var validationResult =
+                await terminologyValidationService.ValidateTerminologyAsync(AppSettings.TerminologyFilePath);
+            TerminologyStatusText = BuildValidationStatus("Terminology loaded successfully.", validationResult);
         }
         catch (Exception ex)
         {
@@ -436,12 +441,24 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             }
 
             await styleGuideLoader.LoadStyleGuideAsync(AppSettings.StyleGuideFilePath);
-            StyleGuideStatusText = "Style guide loaded successfully.";
+            var validationResult =
+                await terminologyValidationService.ValidateStyleGuideAsync(AppSettings.StyleGuideFilePath);
+            StyleGuideStatusText = BuildValidationStatus("Style guide loaded successfully.", validationResult);
         }
         catch (Exception ex)
         {
             Log.Warning(ex, "Failed to load style guide from {Path}.", AppSettings.StyleGuideFilePath);
             StyleGuideStatusText = "Failed to load style guide file.";
         }
+    }
+
+    private static string BuildValidationStatus(string status, TerminologyValidationResult validationResult)
+    {
+        if (string.IsNullOrWhiteSpace(validationResult.Message))
+        {
+            return status;
+        }
+
+        return $"{status} Validation: {validationResult.Message}";
     }
 }
