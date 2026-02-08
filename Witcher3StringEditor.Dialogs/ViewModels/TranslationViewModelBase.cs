@@ -39,6 +39,11 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     private protected readonly ITranslationPostProcessor TranslationPostProcessor;
 
     /// <summary>
+    ///     Builds read-only pipeline context for translation routing.
+    /// </summary>
+    private protected readonly ITranslationPipelineContextBuilder PipelineContextBuilder;
+
+    /// <summary>
     ///     The collection of items to translate
     /// </summary>
     private protected readonly IReadOnlyList<ITrackableW3StringItem> W3StringItems;
@@ -77,6 +82,7 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     /// <param name="w3StringItems">Collection of items to translate</param>
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
         ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
+        ITranslationPipelineContextBuilder pipelineContextBuilder,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems)
     {
         AppSettings = appSettings;
@@ -84,6 +90,7 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         Translator = translator;
         TranslationRouter = translationRouter;
         TranslationPostProcessor = translationPostProcessor;
+        PipelineContextBuilder = pipelineContextBuilder;
         Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = GetPreferredLanguage(appSettings);

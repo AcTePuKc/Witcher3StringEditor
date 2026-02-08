@@ -17,4 +17,5 @@ public sealed record TranslationRouterRequest(
     ILanguage ToLanguage,
     ILanguage FromLanguage,
     string? ProviderName = null,
-    string? ModelName = null);
+    string? ModelName = null,
+    TranslationPipelineContext? PipelineContext = null);
