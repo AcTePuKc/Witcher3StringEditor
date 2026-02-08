@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
@@ -328,6 +329,10 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             UpdateStyleGuideStatus();
         }
     }
+
+    private static Task UpdateTerminologyStatusAsync() => Task.CompletedTask;
+
+    private static Task UpdateStyleGuideStatusAsync() => Task.CompletedTask;
 
     private void UpdateTerminologyStatus()
     {
