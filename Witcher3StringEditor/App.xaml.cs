@@ -374,6 +374,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
             .AddSingleton<ITranslationProviderRegistry, ServicesTranslationProviderRegistry>()
             .AddSingleton<ITranslationProfileCatalog, NoopTranslationProfileCatalog>()
+            .AddSingleton<ITranslationProfilePreviewService, NoopTranslationProfilePreviewService>()
             .AddSingleton<ITranslationProfileResolver, NoopTranslationProfileResolver>()
             .AddSingleton<ITranslationPipelineContextBuilder, TranslationPipelineContextBuilder>()
             .AddSingleton<LegacyTranslationRouter>()

@@ -141,6 +141,7 @@ Persist profiles locally (JSON) and add a resolver stub that can merge a selecte
 - Resolver stub returns null when no profile is selected.
 - Profile model includes optional terminology/style paths, file path aliases, enablement toggles, and translation memory enablement.
 - Settings resolver stub can resolve the selected profile from app settings (no-op acceptable).
+- Preview service stub can generate a read-only summary string for a selected profile (no-op acceptable).
 - No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**
@@ -148,6 +149,7 @@ Persist profiles locally (JSON) and add a resolver stub that can merge a selecte
 - `Witcher3StringEditor.Data/Profiles/*`
 - `Witcher3StringEditor/Services/*TranslationProfileResolver*.cs`
 - `Witcher3StringEditor/Services/*TranslationProfileSettingsResolver*.cs`
+- `Witcher3StringEditor/Services/*TranslationProfilePreview*.cs`
 - `docs/integrations.md`
 
 **QA Checklist**

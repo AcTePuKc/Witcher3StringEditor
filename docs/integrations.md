@@ -56,12 +56,15 @@
   Provider/model names are resolved from the router request first, with app settings as fallback.
 - **Fallback + error handling**: provider failures return structured errors (provider name + failure kind), and the
   router can fall back to the configured legacy translator; if no fallback is configured, the translation dialog
-  surfaces an error message.
+  surfaces an error message. Fallbacks now attach a status message that includes the provider failure reason so the
+  translation dialog can display why a fallback was used.
 - **Safety by default**: provider routing is **opt-in** and must remain inert until users explicitly set a provider
   name/model. Default settings keep the legacy translator path active and stable.
 - **Translation dialog toggle**: the dialog exposes a `Use provider routing` toggle that sets
   `UseProviderForTranslation` on router requests. Routing must remain opt-in: the router should only attempt provider
   calls when this toggle is enabled, even if provider settings are present.
+  In the single-item translation flow, provider routing passes the provider settings from app settings when this
+  toggle is enabled.
 - **Provider validation step (planned)**: before any provider execution, the router should run a pre-flight validation
   step that checks provider name, model, base URL, and cached model availability. Validation failures should surface a
   warning and fall back to legacy translation without throwing.
@@ -71,7 +74,7 @@
 - The translation dialog also includes a read-only provider readiness status line derived from current settings,
   highlighting missing configuration without activating routing.
 - Translation view models surface a status line for provider routing attempts (provider + model) and for legacy
-  fallbacks, so users can confirm which path the router chose without changing behavior.
+  fallbacks (including the failure reason), so users can confirm which path the router chose without changing behavior.
 - Model lists are only refreshed from the Settings dialog on explicit user action; translation dialogs do not
   auto-refresh models.
 
@@ -132,6 +135,9 @@
 - **Catalog stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfileCatalog.cs` with a no-op
   implementation in `Witcher3StringEditor/Services/NoopTranslationProfileCatalog.cs` for lightweight profile
   listings in future settings UI.
+- **Preview service stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfilePreviewService.cs` with a
+  no-op implementation in `Witcher3StringEditor/Services/NoopTranslationProfilePreviewService.cs` so future UI can
+  display a read-only profile summary without changing routing.
 - **Pipeline context builder** lives in `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs` and
   produces a read-only context for future routing.
 
