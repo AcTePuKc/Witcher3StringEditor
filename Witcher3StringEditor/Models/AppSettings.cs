@@ -73,6 +73,12 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private ObservableCollection<string> cachedTranslationModels = [];
 
     /// <summary>
+    ///     Gets or sets the translation provider timeout in seconds
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private int translationProviderTimeoutSeconds = 30;
+
+    /// <summary>
     ///     Gets or sets the translation provider base URL
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>

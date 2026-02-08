@@ -59,6 +59,11 @@ public interface IAppSettings
     public ObservableCollection<string> CachedTranslationModels { get; set; }
 
     /// <summary>
+    ///     Gets or sets the translation provider timeout in seconds (future integration)
+    /// </summary>
+    public int TranslationProviderTimeoutSeconds { get; set; }
+
+    /// <summary>
     ///     Gets or sets the translation provider base URL (alias for TranslationBaseUrl)
     /// </summary>
     public string BaseUrl { get; set; }
