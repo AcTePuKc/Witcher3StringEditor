@@ -88,6 +88,9 @@
   and translation memory flags.
 - **Profile store** lives in `Witcher3StringEditor.Data/Profiles/` (JSON-backed, AppData).
 - **Resolver stub** lives in `Witcher3StringEditor/Services/` to merge profiles with settings later.
+- **Catalog stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfileCatalog.cs` with a no-op
+  implementation in `Witcher3StringEditor/Services/NoopTranslationProfileCatalog.cs` for lightweight profile
+  listings in future settings UI.
 - **Pipeline context builder** lives in `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs` and
   produces a read-only context for future routing.
 
