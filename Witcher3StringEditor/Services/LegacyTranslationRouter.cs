@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentResults;
@@ -117,7 +118,8 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
             if (string.IsNullOrWhiteSpace(response.TranslatedText))
             {
                 return Result.Fail(BuildProviderFailure(provider.Name,
-                    $"Translation provider '{provider.Name}' returned an empty result."));
+                    $"Translation provider '{provider.Name}' returned an empty result.",
+                    TranslationProviderFailureKind.InvalidResponse));
             }
 
             return Result.Ok(response.TranslatedText);
@@ -129,8 +131,11 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         catch (Exception ex)
         {
             Log.Error(ex, "Translation provider {ProviderName} failed with an exception.", provider.Name);
-            return Result.Fail(BuildProviderFailure(provider.Name,
-                $"Translation provider '{provider.Name}' failed with an exception: {ex.Message}.", ex));
+            return Result.Fail(BuildProviderFailure(
+                provider.Name,
+                $"Translation provider '{provider.Name}' failed with an exception: {ex.Message}.",
+                ResolveFailureKind(ex),
+                ex));
         }
     }
 
@@ -247,10 +252,17 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         return string.IsNullOrWhiteSpace(overrideValue) ? fallbackValue : overrideValue;
     }
 
-    private static Error BuildProviderFailure(string providerName, string message, Exception? exception = null)
+    private static Error BuildProviderFailure(
+        string providerName,
+        string message,
+        TranslationProviderFailureKind failureKind,
+        Exception? exception = null)
     {
+        var statusMessage = $"{message} (Failure kind: {failureKind})";
         var error = new Error(message)
             .WithMetadata(TranslationFailureMetadata.FailureKindKey, TranslationFailureMetadata.ProviderFailureKind)
+            .WithMetadata(TranslationFailureMetadata.ProviderFailureReasonKey, failureKind)
+            .WithMetadata(TranslationStatusMetadata.StatusMessageKey, statusMessage)
             .WithMetadata(TranslationFailureMetadata.ProviderNameKey, providerName);
 
         if (exception is not null)
@@ -259,5 +271,15 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         }
 
         return error;
+    }
+
+    private static TranslationProviderFailureKind ResolveFailureKind(Exception exception)
+    {
+        return exception switch
+        {
+            TimeoutException => TranslationProviderFailureKind.Timeout,
+            HttpRequestException => TranslationProviderFailureKind.Network,
+            _ => TranslationProviderFailureKind.Unknown
+        };
     }
 }
