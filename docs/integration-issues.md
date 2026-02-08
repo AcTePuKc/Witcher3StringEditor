@@ -24,7 +24,9 @@ and document all fallback/default/error handling behavior.
 - `docs/fallback-investigation.md`
 
 **QA Checklist**
+- Build: `dotnet build`
 - Manual: confirm referenced files still exist and paths are accurate
+- No regressions: translation dialog still opens and legacy translator list is intact
 
 ---
 
@@ -44,8 +46,8 @@ Confirm where settings are persisted, where translation requests flow, which dia
 
 **QA Checklist**
 - Build: `dotnet build`
-- Manual: open Settings dialog and confirm no UI regressions
-- No regressions: translation dialog still opens
+- Manual: open Settings dialog and confirm the app still launches
+- No regressions: legacy translator-based translation still works
 
 ---
 
@@ -229,6 +231,7 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Settings dialog and verify placeholders render
+- No regressions: translation dialog still opens and legacy translator list is intact
 
 ---
 

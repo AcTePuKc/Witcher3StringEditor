@@ -19,7 +19,7 @@
 ## Architecture Overview
 ### Translation Providers + Model Selection
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
-- **Registry** (future) resolves provider names to `ITranslationProvider` instances.
+- **Registry** resolves provider names to `ITranslationProvider` instances (`Witcher3StringEditor/Services/TranslationProviderRegistry.cs`).
 - **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
   depending on settings; provider calls are guarded and return structured failures when providers error out.
   The router request now carries optional provider/model names so call sites can override settings when needed.
@@ -34,8 +34,9 @@
 ### Provider Selection Behavior
 - **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
   logic; provider routing is **not** invoked unless explicitly configured in settings.
-- **Planned provider routing**: if a provider is selected **and** the registry can resolve it, the provider path is
-  selected (currently stubbed). If provider resolution fails, the router short-circuits to the legacy translator path.
+- **Provider routing**: if a provider is selected **and** the registry can resolve it, the provider path is
+  selected (currently stubbed). If provider resolution fails, the router logs a warning and short-circuits to the
+  legacy translator path.
   Provider/model names are resolved from the router request first, with app settings as fallback.
 - **Fallback + error handling**: provider failures return structured errors (provider name + failure kind), and the
   router can fall back to the configured legacy translator; if no fallback is configured, the translation dialog
@@ -110,7 +111,8 @@
 ## Translation Router Reference Map
 - **Interface + request DTO** live in `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`.
 - **Router implementations** live in `Witcher3StringEditor/Services/LegacyTranslationRouter.cs` and
-  `Witcher3StringEditor/Services/TranslationRouter.cs`.
+  `Witcher3StringEditor/Services/TranslationRouter.cs`, with the latter performing provider-name checks and
+  fallback logging.
 - **View model call sites**:
   - `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs`
   - `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
