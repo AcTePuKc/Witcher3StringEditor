@@ -569,8 +569,10 @@ internal partial class MainWindowViewModel : ObservableObject
         await dialogService.ShowDialogAsync(this,
             new SettingsDialogViewModel(appSettings, dialogService,
                 serviceProvider.GetRequiredService<ITranslationProfileCatalog>(),
+                serviceProvider.GetRequiredService<ITranslationProfileResolver>(),
                 serviceProvider.GetRequiredService<ITerminologyLoader>(),
                 serviceProvider.GetRequiredService<IStyleGuideLoader>(),
+                serviceProvider.GetRequiredService<ITerminologyValidationService>(),
                 names,
                 supportedCultures)); // Show the settings dialog
     }

@@ -61,6 +61,8 @@
 - The Translation dialog header now shows a read-only provider/model/base URL summary sourced from app settings to
   surface future provider selection without changing routing.
 - The header display uses `TranslationModelName` directly; when it is empty the UI shows “(none selected)”.
+- The translation dialog also includes a read-only provider readiness status line derived from current settings,
+  highlighting missing configuration without activating routing.
 - Model lists are only refreshed from the Settings dialog on explicit user action; translation dialogs do not
   auto-refresh models.
 
@@ -88,6 +90,8 @@
   and style guides (`.md`). Selections are stored as file paths and loaded on demand when preview is enabled.
 - **Preview validation**: the Settings dialog view model depends on terminology + style guide loaders to validate
   selections (on file selection and toggle changes) and surface status text without changing translation output.
+- **Validation service stub**: `ITerminologyValidationService` provides async validation hooks for terminology and
+  style guides, with a no-op implementation returning “Not validated.” until real checks are added.
 - **Enablement flags**: `UseTerminologyPack` and `UseStyleGuide` are preview toggles only. The Settings dialog loads
   the selected file and reports status (loaded/failed) but does not enforce terminology or style rules during
   translation yet.

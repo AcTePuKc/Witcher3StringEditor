@@ -317,6 +317,33 @@ should attempt to load the selected file and surface a status line (loaded/faile
 
 ---
 
+## Issue 50: Terminology/style validation service stub
+**Description**
+Introduce an inert terminology/style validation service that can be called from the Settings dialog after files are
+selected. The default implementation should always return a "Not validated" status so UI text can be wired without
+changing translation output.
+
+**Acceptance Criteria**
+- Add `ITerminologyValidationService` + `TerminologyValidationResult` to `Common/Terminology`.
+- Register a no-op implementation in DI that always returns a "Not validated" result.
+- Settings dialog calls the validation service after successfully loading terminology and style guide files.
+- Status text reflects the validation result without enforcing translation behavior.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Terminology/ITerminologyValidationService.cs`
+- `Witcher3StringEditor.Common/Terminology/TerminologyValidationResult.cs`
+- `Witcher3StringEditor/Services/NoopTerminologyValidationService.cs`
+- `Witcher3StringEditor/App.xaml.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: select terminology/style files in Settings and confirm validation status shows "Not validated."
+- No regressions: translation dialogs still open
+
+---
+
 ## Issue 10: Translation memory settings toggle + path persistence
 **Description**
 Add inert settings for translation memory enablement and local database path selection. Keep the toggle and path display
@@ -612,3 +639,108 @@ default.
 - Build: `dotnet build`
 - Manual: verify no behavior change when no profile is selected
 - No regressions: translation dialog still opens and translators list intact
+
+---
+
+## Issue 56: Translation memory SQLite store (exact-match implementation)
+**Description**
+Implement the translation memory store against the local SQLite schema, supporting exact-match lookups and inserts only.
+Keep the service opt-in via the existing enablement flag so default behavior remains unchanged.
+
+**Acceptance Criteria**
+- SQLite-backed store implements exact-match lookup + save operations (no fuzzy matching).
+- Store uses AppData paths and does not create files unless the feature is enabled.
+- The translation memory service can delegate to the SQLite store when enabled.
+- No changes to translation behavior when translation memory is disabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/TranslationMemory/*`
+- `Witcher3StringEditor.Data/TranslationMemory/*`
+- `Witcher3StringEditor/Services/TranslationMemoryService.cs`
+- `Witcher3StringEditor/App.xaml.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: enable translation memory and run a single translation; verify a database file is created locally
+- Manual: re-run the same translation and confirm it pulls from cache
+- No regressions: translation dialog still opens and legacy translators list intact
+
+---
+
+## Issue 57: Ollama translation provider execution (model selection)
+**Description**
+Implement the Ollama provider execution path with model selection and request mapping. Keep network calls behind explicit
+user action and ensure the legacy translator path remains default.
+
+**Acceptance Criteria**
+- Ollama provider accepts model selection from settings or request overrides.
+- Request options include base URL, model, and parameters.
+- Translation router can route to Ollama when explicitly selected.
+- No behavioral changes when Ollama is not selected.
+
+**Files to Touch**
+- `Witcher3StringEditor.Integrations.Ollama/*`
+- `Witcher3StringEditor.Common/Translation/*`
+- `Witcher3StringEditor/Services/TranslationProviderRequestOptionsMapper.cs`
+- `Witcher3StringEditor/Services/TranslationRouter.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: select Ollama in Settings (if available) and confirm model selection persists
+- Manual: run a translation and confirm it routes to Ollama only when explicitly selected
+- No regressions: legacy translator selection remains the default
+
+---
+
+## Issue 58: Terminology/style injection and validation wiring (opt-in)
+**Description**
+Wire terminology and style guide data into the prompt builder and validation pipeline when explicitly enabled. Keep
+behavior unchanged when enablement flags are off.
+
+**Acceptance Criteria**
+- Prompt builder consumes `TerminologyInjectionContext` when enabled.
+- Validation service runs after loading terminology/style inputs and surfaces status in the UI.
+- No translation output changes when terminology/style is disabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Terminology/*`
+- `Witcher3StringEditor/Services/TerminologyInjectionContextBuilder.cs`
+- `Witcher3StringEditor/Services/TerminologyPromptBuilder.cs`
+- `Witcher3StringEditor/Services/TerminologyValidationService.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: enable terminology/style and load sample files; confirm status displays and no crash
+- Manual: disable terminology/style and confirm no prompt injection occurs
+- No regressions: translation dialog still opens and translators list intact
+
+---
+
+## Issue 59: Translation profile management UI + persistence wiring
+**Description**
+Add UI and persistence wiring to create, edit, and delete translation profiles stored locally. Keep profile usage
+opt-in and ensure the selected profile can be cleared to restore default settings.
+
+**Acceptance Criteria**
+- Profiles can be created, edited, and deleted in Settings.
+- Changes persist to the local JSON profile store.
+- Selecting a profile updates the effective settings preview (read-only).
+- Clearing the selected profile reverts to app settings without behavior changes.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Profiles/*`
+- `Witcher3StringEditor.Data/Profiles/*`
+- `Witcher3StringEditor/Services/TranslationProfileResolver.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: create/edit/delete a profile and confirm the JSON store updates
+- Manual: select/clear a profile and confirm the effective settings preview updates
+- No regressions: translation dialog still opens and legacy translators list intact

@@ -98,6 +98,12 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         this.translationMemoryService = translationMemoryService;
         this.appSettings = appSettings;
         this.w3StringItems = w3StringItems;
+
+        if (appSettings is INotifyPropertyChanged notifyPropertyChanged)
+        {
+            notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
+        }
+
         Log.Information("Total items to translate: {Count}.", this.w3StringItems.Count); // Log the number of items
         Log.Information("Starting index: {Index}.", index); // Log the starting index
         CurrentViewModel =
@@ -121,6 +127,11 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     ///     Gets a summary of the selected provider settings.
     /// </summary>
     public string SelectedProviderSummary => BuildSelectedProviderSummary();
+
+    /// <summary>
+    ///     Gets a read-only status line describing provider readiness.
+    /// </summary>
+    public string ProviderReadinessStatus => BuildProviderReadinessStatus();
 
     /// <summary>
     ///     Switches between single item and batch translation modes
@@ -289,11 +300,45 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         return string.Join(" · ", summaryParts);
     }
 
+    private string BuildProviderReadinessStatus()
+    {
+        var providerName = appSettings.TranslationProviderName;
+        if (string.IsNullOrWhiteSpace(providerName))
+        {
+            return "Provider routing is disabled; using legacy translator.";
+        }
+
+        var missingParts = new List<string>();
+        if (string.IsNullOrWhiteSpace(appSettings.TranslationModelName))
+        {
+            missingParts.Add("model");
+        }
+
+        if (string.IsNullOrWhiteSpace(appSettings.TranslationBaseUrl))
+        {
+            missingParts.Add("base URL");
+        }
+
+        if (missingParts.Count > 0)
+        {
+            return $"Provider configured; missing {string.Join(" and ", missingParts)}.";
+        }
+
+        return "Provider configuration looks complete (routing remains preview-only).";
+    }
+
     private string GetModelDisplayName()
     {
         return string.IsNullOrWhiteSpace(appSettings.TranslationModelName)
             ? NoModelSelectedLabel
             : appSettings.TranslationModelName;
+    }
+
+    private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(ActiveEngineLabel));
+        OnPropertyChanged(nameof(SelectedProviderSummary));
+        OnPropertyChanged(nameof(ProviderReadinessStatus));
     }
 
     /// <summary>
