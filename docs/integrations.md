@@ -59,8 +59,13 @@
 - **Prompt builder interface** lives in `Witcher3StringEditor.Common/Terminology/ITerminologyPromptBuilder.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`.
 - **Sample fixtures** live under `docs/samples/` for TSV/CSV and Markdown style guides.
-- Settings now include enablement toggles for terminology and style guide previews; the Settings dialog surfaces
-  load status text without enforcing application behavior.
+- **Settings selection**: the Settings dialog provides separate file pickers for terminology packs (`.tsv`/`.csv`)
+  and style guides (`.md`). Selections are stored as file paths and only loaded on demand when preview is enabled.
+- **Enablement flags**: `UseTerminologyPack` and `UseStyleGuide` are preview toggles only. The Settings dialog loads
+  the selected file and reports status (loaded/failed) but does not enforce terminology or style rules during
+  translation yet.
+- **Future enforcement**: prompt injection and post-translation validation remain planned work; enabling the flags
+  should not change translation output until those hooks are implemented.
 
 ### Translation Profiles
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.
