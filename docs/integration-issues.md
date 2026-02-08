@@ -14,6 +14,12 @@ and document all fallback/default/error handling behavior.
 - File paths, methods, and trigger conditions are listed for each flow step.
 - Fallback/default selection logic and provider error handling are enumerated.
 
+**Note: suspected single-row translation iteration path (current)**
+- `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
+  - `OnCurrentItemIndexChanged` updates the in-memory row model for the selected index.
+  - `Navigate`, `Previous`, and `Next` drive per-row iteration and auto-save checks.
+  - `Translate` triggers the per-row translation execution path.
+
 **Files to Touch**
 - `docs/fallback-investigation.md`
 
