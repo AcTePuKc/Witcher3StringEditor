@@ -396,3 +396,164 @@ translation memory service.
 - Build: `dotnet build`
 - Manual: open the translation dialog and run a single translation to ensure no errors
 - No regressions: legacy translator selection remains the default
+
+---
+
+## Issue 43: Translation memory storage path + bootstrap health check
+**Description**
+Add a lightweight health check that validates the translation memory database path and bootstrap status. Keep the check
+local-only and no-op by default, surfacing warnings in logs or status text only when explicitly invoked.
+
+**Acceptance Criteria**
+- Health check returns a status enum (Ok/Warning/Error) with a localized message.
+- No new database file is created unless the check is explicitly run.
+- The check runs against AppData paths only and never attempts network access.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/TranslationMemory/TranslationMemoryHealthStatus.cs`
+- `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryHealthCheck.cs`
+- `Witcher3StringEditor/Services/NoopTranslationMemoryHealthCheck.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: run the health check via a debug harness (or temporary command) and confirm it returns `Warning` when no DB exists
+- No regressions: translation dialog behavior unchanged
+
+---
+
+## Issue 44: Translation memory settings mapping in pipeline context (no-op)
+**Description**
+Extend the translation pipeline context builder to include translation memory enablement flags and resolved database
+paths, without changing routing behavior. The resulting context is read-only and unused by default.
+
+**Acceptance Criteria**
+- `TranslationPipelineContext` includes `UseTranslationMemory` and `TranslationMemoryPath`.
+- Context builder pulls values from settings/profile, with profile overriding settings when set.
+- No translation routing changes; context is not consumed yet.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs`
+- `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: verify the context builder returns defaults when settings are empty
+- No regressions: legacy translator flow unchanged
+
+---
+
+## Issue 45: Ollama model refresh metadata + cache policy
+**Description**
+Add metadata fields to store the last model refresh time and cache policy (manual vs timed refresh). Keep the refresh
+logic inert by default and only invoked on explicit user action in settings.
+
+**Acceptance Criteria**
+- App settings include `TranslationModelCacheUpdatedUtc` and `TranslationModelCachePolicy`.
+- The settings dialog shows read-only metadata (timestamp + policy).
+- Refresh logic remains a stub and is only called by an explicit command.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs`
+- `Witcher3StringEditor/Models/AppSettings.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Settings dialog and confirm metadata placeholders render
+- No regressions: translation dialog still loads existing translators
+
+---
+
+## Issue 46: Provider request options mapping (Ollama settings → provider request)
+**Description**
+Define a minimal mapping from provider-specific settings (Ollama base URL, model, parameters) into a provider request
+options object. The mapping must be purely structural and not perform any HTTP calls.
+
+**Acceptance Criteria**
+- A `TranslationProviderRequestOptions` model exists with provider name, model, and parameter bag.
+- A mapper converts settings/profile data into options for the provider call.
+- No network calls; options are unused until routing is wired.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/TranslationProviderRequestOptions.cs`
+- `Witcher3StringEditor.Integrations.Ollama/OllamaSettings.cs`
+- `Witcher3StringEditor/Services/TranslationProviderRequestOptionsMapper.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: run a small debug mapping call and verify values are copied
+- No regressions: translation flow unchanged
+
+---
+
+## Issue 47: Terminology/style injection context stub
+**Description**
+Add a small context object that bundles terminology pack and style guide data for future prompt injection. Keep it
+unused by default and only created when enablement flags are true.
+
+**Acceptance Criteria**
+- `TerminologyInjectionContext` includes terminology entries + style guide content.
+- Builder returns `null` when both enablement flags are disabled.
+- No prompt injection or post-processing logic is added.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Terminology/TerminologyInjectionContext.cs`
+- `Witcher3StringEditor/Services/TerminologyInjectionContextBuilder.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: toggle terminology/style flags and confirm builder returns null when disabled
+- No regressions: translation flow unchanged
+
+---
+
+## Issue 48: Translation profile effective settings preview
+**Description**
+Add a read-only preview panel in the Settings dialog that shows the effective provider/model/terminology/tm values
+after merging the selected profile with app settings. The preview is informational only and does not change behavior.
+
+**Acceptance Criteria**
+- Preview fields show the resolved provider/model/base URL and terminology/style paths.
+- Preview indicates when profile overrides are absent (falls back to settings).
+- No routing or settings changes; view-only.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `Witcher3StringEditor/Services/TranslationProfileResolver.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Settings dialog and verify preview fields render
+- No regressions: translation dialog still opens and translators list intact
+
+---
+
+## Issue 49: Profile-aware provider/model override in translation router (no-op)
+**Description**
+Allow the translation router to read provider/model overrides from the pipeline context (profile-aware) while keeping
+behavior unchanged unless a profile is explicitly selected. The router should still fall back to legacy translators by
+default.
+
+**Acceptance Criteria**
+- Router checks context-derived provider/model overrides after request-level overrides.
+- If no profile is selected, router behavior is unchanged.
+- Default settings still use legacy translator path.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`
+- `Witcher3StringEditor/Services/TranslationRouter.cs`
+- `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: verify no behavior change when no profile is selected
+- No regressions: translation dialog still opens and translators list intact

@@ -116,6 +116,31 @@
 - **Terminology/style** should be loaded on demand (path in settings or profile) and injected into the
   provider request metadata, with validation hooks after translation. (TODO: inject + validate.)
 
+## Wiring Sequence (Recommended Order)
+1. **Inventory confirmation**: finalize entrypoints for translation routing, settings persistence, and dialog wiring
+   (Issue 1).
+2. **Provider registry + model catalog**: wire provider resolution and model listing stubs (Issue 3), leaving the
+   legacy translator flow as the default path.
+3. **Settings + UI placeholders**: surface provider/model/terminology/profile selections without changing behavior
+   (Issues 8, 9, 10).
+4. **Pipeline context builder**: collect settings/profile data into a read-only context for future routing (Issue 7).
+5. **Terminology/style loaders**: load packs on demand for preview and future prompt injection (Issue 4).
+6. **Translation memory scaffolding**: finalize TM/QA store and settings stubs, keep no-op workflow (Issue 2).
+7. **Router expansion**: allow request/profile overrides but keep fallbacks and no-op defaults (Issue 11).
+8. **Future activation**: only after explicit feature flagging and QA signoff should providers/TM/terminology affect
+   translation output.
+
+## No-op Behavior Notes (Safety Defaults)
+- **Provider routing**: if no provider is selected, or resolution fails, the router falls back to legacy translators.
+  Provider calls must never execute unless the user has explicitly configured a provider and model.
+- **Model discovery**: cached model lists are refreshed only on explicit user action; translation dialogs do not
+  auto-refresh or perform background calls.
+- **Translation memory**: the no-op service returns empty results and performs no writes unless enabled, and even then
+  the default initializer is inert until a feature flag is added.
+- **Terminology/style**: enablement toggles only affect preview loading and status text. Prompt injection and
+  post-translation validation remain TODO.
+- **Profiles**: selecting a profile only changes read-only summaries until profile resolution is wired into routing.
+
 ## Translation Router Reference Map
 - **Interface + request DTO** live in `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`.
 - **Router implementations** live in `Witcher3StringEditor/Services/LegacyTranslationRouter.cs` and
