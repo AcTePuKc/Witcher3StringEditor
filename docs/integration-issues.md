@@ -201,6 +201,17 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 
 ---
 
+## Tracking Note: GoogleTranslator disposal lifecycle
+**Observation**
+`GoogleTranslator` instances (from `GTranslate.Translators`) are created via DI as `ITranslator` and disposed in two spots:
+- `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs` in `ShowTranslateDialog` after the translation dialog closes.
+- `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs` in `ShowSettingsDialog` after enumerating translator names.
+
+**Suspected Lifecycle Issue**
+If `GoogleTranslator` maintains internal HTTP clients or caches that expect a longer lifetime (e.g., across multiple dialog opens), disposing immediately after each dialog might cause avoidable reinitialization or premature teardown during dialog usage if instances are shared or cached. Follow-up should confirm intended lifetimes in the DI container and whether translators should be scoped for the full app session instead of per-dialog usage.
+
+---
+
 ## Issue 9: Terminology/style enablement toggles + load status
 **Description**
 Add inert enablement toggles for terminology and style guide preview loading. When toggled on, the Settings dialog
