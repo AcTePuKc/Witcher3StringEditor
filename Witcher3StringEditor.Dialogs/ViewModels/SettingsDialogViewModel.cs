@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -11,7 +12,6 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
-using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -34,9 +34,6 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     ];
 
     private readonly IDialogService dialogService;
-    private readonly IStyleGuideLoader styleGuideLoader;
-    private readonly ITerminologyLoader terminologyLoader;
-
     /// <summary>
     ///     Initializes a new instance of the SettingsDialogViewModel class
     /// </summary>
@@ -44,22 +41,16 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     /// <param name="dialogService">Dialog service for showing file dialogs</param>
     /// <param name="translators">Collection of available translators</param>
     /// <param name="supportedCultures">Collection of supported cultures for localization</param>
-    /// <param name="terminologyLoader">Terminology loader for preview validation</param>
-    /// <param name="styleGuideLoader">Style guide loader for preview validation</param>
     public SettingsDialogViewModel(
         IAppSettings appSettings,
         IDialogService dialogService,
         IEnumerable<string> translators,
-        IEnumerable<CultureInfo> supportedCultures,
-        ITerminologyLoader terminologyLoader,
-        IStyleGuideLoader styleGuideLoader)
+        IEnumerable<CultureInfo> supportedCultures)
     {
         AppSettings = appSettings;
         this.dialogService = dialogService;
         Translators = translators;
         SupportedCultures = supportedCultures;
-        this.terminologyLoader = terminologyLoader;
-        this.styleGuideLoader = styleGuideLoader;
         ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
 
         if (appSettings is INotifyPropertyChanged notifyPropertyChanged)
@@ -354,8 +345,9 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
                 return;
             }
 
-            await terminologyLoader.LoadAsync(AppSettings.TerminologyFilePath);
-            TerminologyStatusText = "Terminology loaded.";
+            TerminologyStatusText = File.Exists(AppSettings.TerminologyFilePath)
+                ? "Terminology file found."
+                : "Terminology file not found.";
         }
         catch (Exception ex)
         {
@@ -380,8 +372,9 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
                 return;
             }
 
-            await styleGuideLoader.LoadStyleGuideAsync(AppSettings.StyleGuideFilePath);
-            StyleGuideStatusText = "Style guide loaded.";
+            StyleGuideStatusText = File.Exists(AppSettings.StyleGuideFilePath)
+                ? "Style guide file found."
+                : "Style guide file not found.";
         }
         catch (Exception ex)
         {
