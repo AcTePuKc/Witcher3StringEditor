@@ -24,9 +24,19 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     private protected readonly ITranslator Translator;
 
     /// <summary>
+    ///     Application settings used for translation context.
+    /// </summary>
+    private protected readonly IAppSettings AppSettings;
+
+    /// <summary>
     ///     The translation router used to select between legacy and provider flows
     /// </summary>
     private protected readonly ITranslationRouter TranslationRouter;
+
+    /// <summary>
+    ///     Post-processor for translation output cleanup.
+    /// </summary>
+    private protected readonly ITranslationPostProcessor TranslationPostProcessor;
 
     /// <summary>
     ///     The collection of items to translate
@@ -66,12 +76,14 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     /// <param name="translationRouter">Translation router service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
-        ITranslationRouter translationRouter,
+        ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems)
     {
+        AppSettings = appSettings;
         W3StringItems = w3StringItems;
         Translator = translator;
         TranslationRouter = translationRouter;
+        TranslationPostProcessor = translationPostProcessor;
         Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = GetPreferredLanguage(appSettings);
@@ -158,5 +170,26 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         {
             StatusMessage = status;
         }
+    }
+
+    /// <summary>
+    ///     Applies post-processing to a translated string using the current settings context.
+    /// </summary>
+    /// <param name="input">The translated text to post-process.</param>
+    /// <param name="sourceLanguage">The source language.</param>
+    /// <param name="targetLanguage">The target language.</param>
+    /// <returns>The post-processed text.</returns>
+    private protected string ApplyPostProcessing(string input, ILanguage sourceLanguage, ILanguage targetLanguage)
+    {
+        var context = new TranslationContext(
+            sourceLanguage.Name,
+            targetLanguage.Name,
+            AppSettings.TranslationProviderName,
+            AppSettings.TranslationModelName,
+            AppSettings.TranslationProfileId,
+            AppSettings.UseTerminologyPack,
+            AppSettings.UseStyleGuide);
+        var processed = TranslationPostProcessor.Process(input, context);
+        return string.IsNullOrWhiteSpace(processed) ? input : processed;
     }
 }
