@@ -21,4 +21,12 @@ internal sealed class NoopTranslationProviderRegistry : ITranslationProviderRegi
         _ = providerName;
         return null;
     }
+
+    public bool TryGet(string providerName, out ITranslationProvider provider)
+    {
+        // TODO: Replace with a real registry that maps provider names to implementations.
+        _ = providerName;
+        provider = null!;
+        return false;
+    }
 }

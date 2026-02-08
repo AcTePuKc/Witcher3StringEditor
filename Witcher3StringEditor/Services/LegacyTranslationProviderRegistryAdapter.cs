@@ -28,4 +28,22 @@ internal sealed class LegacyTranslationProviderRegistryAdapter : ITranslationPro
 
         return legacyRegistry.TryGet(providerName, out var provider) ? provider : null;
     }
+
+    public bool TryGet(string providerName, out ITranslationProvider provider)
+    {
+        if (string.IsNullOrWhiteSpace(providerName))
+        {
+            provider = null!;
+            return false;
+        }
+
+        if (legacyRegistry.TryGet(providerName, out var resolved) && resolved is not null)
+        {
+            provider = resolved;
+            return true;
+        }
+
+        provider = null!;
+        return false;
+    }
 }
