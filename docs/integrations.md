@@ -37,7 +37,8 @@
   - No direct usage of the legacy registry class is currently detected.
 - **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
   depending on settings; provider calls are guarded and return structured failures when providers error out.
-  The router request now carries optional provider/model names so call sites can override settings when needed.
+  The router request now carries optional provider/model names plus a `UseProviderForTranslation` flag so call
+  sites can request provider routing when the router supports it.
 - **Model catalog stub** lives in `Witcher3StringEditor.Common/Translation/ITranslationModelCatalog.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`.
 - **Pipeline context** lives in `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs` and carries
@@ -58,6 +59,9 @@
   surfaces an error message.
 - **Safety by default**: provider routing is **opt-in** and must remain inert until users explicitly set a provider
   name/model. Default settings keep the legacy translator path active and stable.
+- **Translation dialog toggle**: the dialog exposes a `Use provider routing` toggle that sets
+  `UseProviderForTranslation` on router requests. The flag is currently informational; routing still follows the
+  existing provider-name checks until the router is updated to honor the toggle.
 - The Translation dialog header now shows a read-only provider/model/base URL summary sourced from app settings to
   surface future provider selection without changing routing.
 - The header display uses `TranslationModelName` directly; when it is empty the UI shows “(none selected)”.

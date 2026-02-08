@@ -80,6 +80,11 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     [ObservableProperty] private string statusMessage = string.Empty;
 
     /// <summary>
+    ///     Gets or sets whether provider routing should be used for translation.
+    /// </summary>
+    [ObservableProperty] private bool useProviderForTranslation;
+
+    /// <summary>
     ///     Initializes a new instance of the TranslationViewModelBase class
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
