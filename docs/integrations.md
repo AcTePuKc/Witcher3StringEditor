@@ -67,6 +67,8 @@
 - The header display uses `TranslationModelName` directly; when it is empty the UI shows “(none selected)”.
 - The translation dialog also includes a read-only provider readiness status line derived from current settings,
   highlighting missing configuration without activating routing.
+- Translation view models surface a status line for provider routing attempts (provider + model) and for legacy
+  fallbacks, so users can confirm which path the router chose without changing behavior.
 - Model lists are only refreshed from the Settings dialog on explicit user action; translation dialogs do not
   auto-refresh models.
 

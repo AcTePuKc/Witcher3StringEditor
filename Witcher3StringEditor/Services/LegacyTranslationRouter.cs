@@ -60,7 +60,7 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
 
                 var legacyResult = await TranslateWithLegacyTranslator(request, legacyTranslator, cancellationToken)
                     .ConfigureAwait(false);
-                return AttachFallbackStatus(legacyResult, legacyTranslator.Name);
+                return AttachFallbackStatus(legacyResult);
             }
 
             return providerResult;
@@ -173,9 +173,9 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         }
     }
 
-    private static Result<string> AttachFallbackStatus(Result<string> result, string translatorName)
+    private static Result<string> AttachFallbackStatus(Result<string> result)
     {
-        var statusMessage = $"Provider failed; using {translatorName}";
+        const string statusMessage = "Provider failed; using legacy translator";
         var fallbackStatus = new Success("Translation provider fallback was used.")
             .WithMetadata(TranslationStatusMetadata.StatusMessageKey, statusMessage);
         return result.WithSuccess(fallbackStatus);

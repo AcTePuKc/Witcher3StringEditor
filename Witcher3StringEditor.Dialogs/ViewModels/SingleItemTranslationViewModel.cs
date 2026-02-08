@@ -236,6 +236,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             providerName = AppSettings.TranslationProviderName;
             modelName = AppSettings.TranslationModelName;
             baseUrl = AppSettings.TranslationBaseUrl;
+            UpdateProviderRoutingStatus(providerName, modelName);
         }
 
         var request = new TranslationRouterRequest(text, toLanguage, formLanguage,

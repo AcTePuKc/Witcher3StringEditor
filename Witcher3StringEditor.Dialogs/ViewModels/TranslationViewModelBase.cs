@@ -193,6 +193,21 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     }
 
     /// <summary>
+    ///     Updates the status message when provider routing is selected.
+    /// </summary>
+    /// <param name="providerName">The provider name.</param>
+    /// <param name="modelName">The provider model name.</param>
+    private protected void UpdateProviderRoutingStatus(string? providerName, string? modelName)
+    {
+        if (string.IsNullOrWhiteSpace(providerName) || string.IsNullOrWhiteSpace(modelName))
+        {
+            return;
+        }
+
+        StatusMessage = $"Using provider: {providerName}/{modelName}";
+    }
+
+    /// <summary>
     ///     Applies post-processing to a translated string using the current settings context.
     /// </summary>
     /// <param name="input">The translated text to post-process.</param>
