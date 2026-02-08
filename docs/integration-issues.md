@@ -4,6 +4,24 @@
 These issue drafts cover the planned **database-backed translation memory**, **Ollama model selection**, **terminology/style
 loading**, and **translation profile** scaffolding. Each issue stays inert by default and focuses on stubs/interfaces only.
 
+## Issue 0: Translation flow + fallback investigation
+**Description**
+Trace the current single-item and batch translation flows, including how the router picks providers vs legacy translators,
+and document all fallback/default/error handling behavior.
+
+**Acceptance Criteria**
+- A Markdown report documents the single-item and batch translation flows.
+- File paths, methods, and trigger conditions are listed for each flow step.
+- Fallback/default selection logic and provider error handling are enumerated.
+
+**Files to Touch**
+- `docs/fallback-investigation.md`
+
+**QA Checklist**
+- Manual: confirm referenced files still exist and paths are accurate
+
+---
+
 ## Issue 1: Inventory pass for integration entrypoints
 **Description**
 Confirm where settings are persisted, where translation requests flow, which dialogs/view models will host provider/model/terminology/profile configuration, and which integration namespaces should be the long-term source of truth.
@@ -33,15 +51,18 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - SQLite bootstrap and schemas exist for translation memory + QA.
 - Database initialization is abstracted behind an `ITranslationMemoryDatabaseInitializer` stub for future migrations.
 - Store interfaces remain local-only and inert by default.
+- Add a translation memory workflow stub (`ITranslationMemoryService`) with a no-op implementation.
 - Storage uses AppData paths only.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/TranslationMemory/*`
+- `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs`
 - `Witcher3StringEditor.Common/QualityAssurance/*`
 - `Witcher3StringEditor.Data/Storage/*`
 - `Witcher3StringEditor.Data/TranslationMemory/*`
 - `Witcher3StringEditor.Data/QualityAssurance/*`
 - `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`
+- `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`
 - `docs/integrations.md`
 
 **QA Checklist**

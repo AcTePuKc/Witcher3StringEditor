@@ -8,6 +8,8 @@
 
 ## Current Scaffolding Status
 - **Translation memory**: SQLite bootstrap + `ITranslationMemoryStore` exist; lookup/save are inert until enabled.
+- **Translation memory workflow**: `ITranslationMemoryService` + no-op implementation exist to coordinate
+  context-driven lookups/saves once routing is wired.
 - **Ollama provider + model selection**: settings + provider stubs exist with placeholder model listing.
 - **Terminology/style loading**: loaders, prompt builder interface, and sample packs exist; prompt injection/validation remain TODO.
 - **Translation profiles**: JSON-backed profile store + resolver stubs exist; profiles include terminology/style paths and
@@ -48,6 +50,8 @@
 
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
+- **Workflow stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs` with a
+  no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`.
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
 - **SQLite storage** lives in `Witcher3StringEditor.Data/TranslationMemory/`.
 - **Database initializer stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
@@ -102,6 +106,9 @@
   - `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
   - `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
   - `Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs`
+
+## Translation Flow + Fallback Investigation
+See `docs/fallback-investigation.md` for the current single-item/batch flow trace and fallback logic map.
 
 ## Planned Tasks (Issue Breakdown Summary)
 1. Inventory pass to confirm settings persistence, translation entry points, UI hooks, and integration namespaces.
