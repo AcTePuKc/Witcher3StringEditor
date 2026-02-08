@@ -3,12 +3,15 @@
 ## Architecture overview
 - **Provider contracts (future-facing, not yet wired into translation flow)**
   - `ITranslationProvider` defines `ListModelsAsync` + `TranslateAsync` for provider implementations.
-  - DTOs live in `Witcher3StringEditor.Common/Translation/TranslationModels.cs`:
+  - Integration-facing DTOs live in `Witcher3StringEditor/Integrations/Providers/TranslationProviderModels.cs`:
     - `TranslationRequest` (input text, language info, model id, metadata).
     - `TranslationResult` (output text, model id, metadata).
-    - `ModelInfo` (model id, display name, metadata).
-  - These contracts are intentionally inert and should not be referenced by the current translation flow until routing
-    is explicitly enabled.
+    - `TranslationProviderModel` (model id, display name, metadata).
+  - An in-memory registry (`ITranslationProviderRegistry` + `InMemoryTranslationProviderRegistry`) exists as a
+    stub; it is not registered in DI and is not used by production code paths yet.
+  - Current production routing still uses the legacy contracts in `Witcher3StringEditor.Common/Translation/`.
+  - These integration contracts are intentionally inert and should not be referenced by the current translation flow
+    until routing is explicitly enabled.
 - **Settings persistence**
   - Settings are stored in `AppSettings.Json` via `ConfigService` and loaded in `App.xaml.cs` at startup.
   - `AppSettings` implements `IAppSettings` and is the binding target for the Settings dialog.
@@ -22,6 +25,27 @@
   - Profiles are local JSON and resolved through catalog + resolver interfaces.
 
 ## Planned work as GitHub issues
+
+### Issue 0: Integration provider registry scaffolding
+**Description**
+Add a minimal interface and in-memory registry for integration providers without wiring it into DI or runtime flows.
+
+**Acceptance Criteria**
+- Registry interface and in-memory implementation compile.
+- No DI registration or runtime usage is added.
+- Provider scaffolding remains inert and future-facing.
+
+**Files to touch**
+- `Witcher3StringEditor/Integrations/Providers/ITranslationProviderRegistry.cs`
+- `Witcher3StringEditor/Integrations/Providers/InMemoryTranslationProviderRegistry.cs`
+- `docs/integrations.md`
+
+**QA checklist**
+- Build: `dotnet build`.
+- Manual: confirm no new settings/UI changes.
+- No regressions: translation flow remains unchanged.
+
+---
 
 ### Issue 1: Inventory pass for integration entrypoints
 **Description**
