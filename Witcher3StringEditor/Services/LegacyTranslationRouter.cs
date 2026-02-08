@@ -60,7 +60,7 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
 
                 var legacyResult = await TranslateWithLegacyTranslator(request, legacyTranslator, cancellationToken)
                     .ConfigureAwait(false);
-                return AttachFallbackStatus(legacyResult);
+                return AttachFallbackStatus(legacyResult, fallbackReason);
             }
 
             return providerResult;
@@ -81,7 +81,7 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         ITranslationProvider provider,
         CancellationToken cancellationToken = default)
     {
-        return TranslateWithProvider(request, provider, cancellationToken);
+        return TranslateWithProviderAndFallbackAsync(request, provider, cancellationToken);
     }
 
     private bool TryResolveProvider(TranslationRouterRequest request, out ITranslationProvider? provider)
@@ -173,12 +173,48 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         }
     }
 
-    private static Result<string> AttachFallbackStatus(Result<string> result)
+    private static Result<string> AttachFallbackStatus(Result<string> result, string fallbackReason)
     {
-        const string statusMessage = "Provider failed; using legacy translator";
+        var statusMessage = $"Provider failed; using legacy translator. Reason: {fallbackReason}";
         var fallbackStatus = new Success("Translation provider fallback was used.")
             .WithMetadata(TranslationStatusMetadata.StatusMessageKey, statusMessage);
         return result.WithSuccess(fallbackStatus);
+    }
+
+    private async Task<Result<string>> TranslateWithProviderAndFallbackAsync(
+        TranslationRouterRequest request,
+        ITranslationProvider provider,
+        CancellationToken cancellationToken)
+    {
+        var providerResult = await TranslateWithProvider(request, provider, cancellationToken).ConfigureAwait(false);
+        if (providerResult.IsSuccess)
+        {
+            return providerResult;
+        }
+
+        if (!ShouldFallbackToLegacyTranslator())
+        {
+            return providerResult;
+        }
+
+        var fallbackReason = providerResult.GetProviderError()
+            ?? providerResult.Errors.FirstOrDefault()?.Message
+            ?? "Provider translation failed.";
+        var legacyTranslator = ResolveLegacyTranslator();
+        if (legacyTranslator is null)
+        {
+            return providerResult;
+        }
+
+        Log.Warning(
+            "Provider {ProviderName} failed; falling back to legacy translator {TranslatorName}. Reason: {Reason}",
+            provider.Name,
+            legacyTranslator.Name,
+            fallbackReason);
+
+        var legacyResult = await TranslateWithLegacyTranslator(request, legacyTranslator, cancellationToken)
+            .ConfigureAwait(false);
+        return AttachFallbackStatus(legacyResult, fallbackReason);
     }
 
     private ITranslator? ResolveLegacyTranslator()
