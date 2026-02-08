@@ -653,7 +653,8 @@ internal partial class MainWindowViewModel : ObservableObject
             .First(x => x.Name == appSettings.Translator);
         await dialogService.ShowDialogAsync(this,
             new TranslationDialogViewModel(appSettings, translator,
-                serviceProvider.GetRequiredService<ITranslationRouter>(), itemsToUse,
+                serviceProvider.GetRequiredService<ITranslationRouter>(),
+                serviceProvider.GetRequiredService<ITranslationPostProcessor>(), itemsToUse,
                 selectedIndex)); // Show translation dialog
         if (translator is IDisposable disposable) disposable.Dispose(); // Dispose of the translator if it's disposable
     }

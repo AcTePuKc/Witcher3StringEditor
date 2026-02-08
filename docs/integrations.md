@@ -8,6 +8,8 @@
 
 ## Current Scaffolding Status
 - **Translation memory**: SQLite bootstrap + `ITranslationMemoryStore` exist; lookup/save are inert until enabled.
+- **Translation memory workflow**: `ITranslationMemoryService` + no-op implementation exist to coordinate
+  context-driven lookups/saves once routing is wired.
 - **Ollama provider + model selection**: settings + provider stubs exist with placeholder model listing.
 - **Terminology/style loading**: loaders, prompt builder interface, and sample packs exist; prompt injection/validation remain TODO.
 - **Translation profiles**: JSON-backed profile store + resolver stubs exist; profiles include terminology/style paths and
@@ -48,6 +50,8 @@
 
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
+- **Workflow stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs` with a
+  no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`.
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
 - **SQLite storage** lives in `Witcher3StringEditor.Data/TranslationMemory/`.
 - **Database initializer stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
@@ -70,12 +74,23 @@
 - **Future enforcement**: prompt injection and post-translation validation remain planned work; enabling the flags
   should not change translation output until those hooks are implemented.
 
+### Output Post-Processing (Opt-in)
+- **Post-processing interface** lives in `Witcher3StringEditor.Common/Translation/ITranslationPostProcessor.cs` and
+  accepts a `TranslationContext` describing languages, provider/model selection, and profile settings.
+- **No-op implementation** lives in `Witcher3StringEditor/Services/NoopTranslationPostProcessor.cs` and returns the
+  original text unchanged.
+- **Planned scope**: opt-in, string-level rules for stripping polite prefixes or boilerplate in translation outputs.
+  This runs after provider/legacy translation and before results are shown to the user.
+
 ### Translation Profiles
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.
 - Profiles can carry provider/model/base URL plus terminology/style paths, file path aliases, enablement toggles,
   and translation memory flags.
 - **Profile store** lives in `Witcher3StringEditor.Data/Profiles/` (JSON-backed, AppData).
 - **Resolver stub** lives in `Witcher3StringEditor/Services/` to merge profiles with settings later.
+- **Catalog stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfileCatalog.cs` with a no-op
+  implementation in `Witcher3StringEditor/Services/NoopTranslationProfileCatalog.cs` for lightweight profile
+  listings in future settings UI.
 - **Pipeline context builder** lives in `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs` and
   produces a read-only context for future routing.
 
@@ -103,6 +118,28 @@
   - `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
   - `Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs`
 
+## Translation Flow + Fallback Investigation
+See `docs/fallback-investigation.md` for the current single-item/batch flow trace and fallback logic map.
+
+## Fallback Triggers + Scope (Planned)
+- **Scope**: provider fallback policy applies **only** in translation windows (single-item and batch dialogs). It does
+  not apply to background workflows, import/export flows, or any non-translation UI.
+- **Trigger conditions** (planned): The router will fall back to the legacy translator under the following conditions, which are grouped by whether a provider call is attempted.
+  - **Fallback before provider attempt:**
+    - Provider explicitly disabled in settings/profile (treated as opt-out).
+    - Provider resolution fails (unknown name or registry missing provider).
+    - Requested model missing/unavailable (catalog lookup fails or model list is empty).
+  - **Fallback after failed provider attempt:**
+    - Provider returns an error (e.g., network/HTTP failure, invalid response, validation error).
+    - Provider call timeout (configurable timeout expires before response).
+- **Fallback behavior**: if a trigger condition is hit, the router should fall back to the legacy translator when
+  configured; otherwise surface a localized error message in the translation window.
+- **Open questions / telemetry**:
+  - What metrics should be logged for fallback decisions (provider name, model name, failure kind, latency)?
+  - Where should logs be written (local file, existing logging sink, in-memory diagnostics panel)?
+  - Should failures be rate-limited or deduplicated to avoid noisy logs during batch runs?
+  - Do we need per-provider timeout settings vs. global timeout defaults?
+
 ## Planned Tasks (Issue Breakdown Summary)
 1. Inventory pass to confirm settings persistence, translation entry points, UI hooks, and integration namespaces.
 2. Wire provider registry + model discovery (Ollama first) with no behavior changes.
@@ -111,6 +148,7 @@
 5. Add profile selection wiring (store + resolver) without altering existing translator flow.
 6. Add minimal settings stubs for translation memory enablement + local database path.
 7. Introduce a translation pipeline context builder to combine settings, profiles, and terminology (TODOs only).
+8. Add opt-in post-processing rules for AI output cleanup (polite prefix stripping), defaulting to no-op.
 
 ## Constraints
 - No external services.

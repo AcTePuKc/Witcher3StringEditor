@@ -27,4 +27,19 @@ public static class ResultExtensions
 
         return providerError?.Message;
     }
+
+    public static string? GetStatusMessage(this IResultBase result)
+    {
+        if (result is null)
+        {
+            return null;
+        }
+
+        var statusReason = result.Reasons
+            .OfType<Success>()
+            .FirstOrDefault(reason =>
+                reason.Metadata.TryGetValue(TranslationStatusMetadata.StatusMessageKey, out _));
+
+        return statusReason?.Metadata[TranslationStatusMetadata.StatusMessageKey]?.ToString();
+    }
 }

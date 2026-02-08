@@ -43,8 +43,24 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
 
             if (ShouldFallbackToLegacyTranslator())
             {
-                Log.Warning("Provider {ProviderName} failed; falling back to legacy translator.", provider.Name);
-                return await TranslateWithLegacyTranslator(request, cancellationToken).ConfigureAwait(false);
+                var fallbackReason = providerResult.GetProviderError()
+                    ?? providerResult.Errors.FirstOrDefault()?.Message
+                    ?? "Provider translation failed.";
+                var legacyTranslator = ResolveLegacyTranslator();
+                if (legacyTranslator is null)
+                {
+                    return providerResult;
+                }
+
+                Log.Warning(
+                    "Provider {ProviderName} failed; falling back to legacy translator {TranslatorName}. Reason: {Reason}",
+                    provider.Name,
+                    legacyTranslator.Name,
+                    fallbackReason);
+
+                var legacyResult = await TranslateWithLegacyTranslator(request, legacyTranslator, cancellationToken)
+                    .ConfigureAwait(false);
+                return AttachFallbackStatus(legacyResult, legacyTranslator.Name);
             }
 
             return providerResult;
@@ -107,12 +123,20 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         TranslationRouterRequest request,
         CancellationToken cancellationToken)
     {
-        if (cancellationToken.IsCancellationRequested)
-            return Result.Fail("Translation was cancelled.");
-
         var translator = ResolveLegacyTranslator();
         if (translator is null)
             return Result.Fail("No legacy translators are registered.");
+
+        return await TranslateWithLegacyTranslator(request, translator, cancellationToken).ConfigureAwait(false);
+    }
+
+    private static async Task<Result<string>> TranslateWithLegacyTranslator(
+        TranslationRouterRequest request,
+        ITranslator translator,
+        CancellationToken cancellationToken)
+    {
+        if (cancellationToken.IsCancellationRequested)
+            return Result.Fail("Translation was cancelled.");
 
         try
         {
@@ -132,6 +156,14 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
                 disposable.Dispose();
             }
         }
+    }
+
+    private static Result<string> AttachFallbackStatus(Result<string> result, string translatorName)
+    {
+        var statusMessage = $"Provider failed; using {translatorName}";
+        var fallbackStatus = new Success("Translation provider fallback was used.")
+            .WithMetadata(TranslationStatusMetadata.StatusMessageKey, statusMessage);
+        return result.WithSuccess(fallbackStatus);
     }
 
     private ITranslator? ResolveLegacyTranslator()

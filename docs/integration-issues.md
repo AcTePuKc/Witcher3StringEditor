@@ -4,6 +4,30 @@
 These issue drafts cover the planned **database-backed translation memory**, **Ollama model selection**, **terminology/style
 loading**, and **translation profile** scaffolding. Each issue stays inert by default and focuses on stubs/interfaces only.
 
+## Issue 0: Translation flow + fallback investigation
+**Description**
+Trace the current single-item and batch translation flows, including how the router picks providers vs legacy translators,
+and document all fallback/default/error handling behavior.
+
+**Acceptance Criteria**
+- A Markdown report documents the single-item and batch translation flows.
+- File paths, methods, and trigger conditions are listed for each flow step.
+- Fallback/default selection logic and provider error handling are enumerated.
+
+**Note: suspected single-row translation iteration path (current)**
+- `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
+  - `OnCurrentItemIndexChanged` updates the in-memory row model for the selected index.
+  - `Navigate`, `Previous`, and `Next` drive per-row iteration and auto-save checks.
+  - `Translate` triggers the per-row translation execution path.
+
+**Files to Touch**
+- `docs/fallback-investigation.md`
+
+**QA Checklist**
+- Manual: confirm referenced files still exist and paths are accurate
+
+---
+
 ## Issue 1: Inventory pass for integration entrypoints
 **Description**
 Confirm where settings are persisted, where translation requests flow, which dialogs/view models will host provider/model/terminology/profile configuration, and which integration namespaces should be the long-term source of truth.
@@ -33,15 +57,18 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - SQLite bootstrap and schemas exist for translation memory + QA.
 - Database initialization is abstracted behind an `ITranslationMemoryDatabaseInitializer` stub for future migrations.
 - Store interfaces remain local-only and inert by default.
+- Add a translation memory workflow stub (`ITranslationMemoryService`) with a no-op implementation.
 - Storage uses AppData paths only.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/TranslationMemory/*`
+- `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs`
 - `Witcher3StringEditor.Common/QualityAssurance/*`
 - `Witcher3StringEditor.Data/Storage/*`
 - `Witcher3StringEditor.Data/TranslationMemory/*`
 - `Witcher3StringEditor.Data/QualityAssurance/*`
 - `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`
+- `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
@@ -295,3 +322,28 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
   provider registry and settings UI remains.
 
 ---
+
+## Issue 12: Output post-processing rules (opt-in)
+**Description**
+Introduce a minimal post-processing pipeline for translation output cleanup (e.g., stripping polite prefixes). Keep
+rules opt-in and default to no-op behavior so translation output remains unchanged unless users enable it.
+
+**Acceptance Criteria**
+- `ITranslationPostProcessor` interface exists with a `Process(string, TranslationContext)` signature.
+- A no-op post-processor returns the original text unchanged.
+- Settings include an opt-in toggle (or profile flag) for post-processing rules (placeholder acceptable).
+- No behavior changes unless the toggle is enabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ITranslationPostProcessor.cs`
+- `Witcher3StringEditor.Common/Translation/TranslationContext.cs`
+- `Witcher3StringEditor/Services/NoopTranslationPostProcessor.cs`
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs` (if needed)
+- `Witcher3StringEditor/Models/AppSettings.cs` (if needed)
+- `docs/integrations.md`
+- `docs/ai-output-notes.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Settings dialog and confirm no regressions
+- No regressions: translation output unchanged when post-processing is disabled

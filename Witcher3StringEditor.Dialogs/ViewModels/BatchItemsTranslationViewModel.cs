@@ -74,9 +74,9 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="startIndex">Initial start index for translation</param>
     public BatchItemsTranslationViewModel(IAppSettings appSettings, ITranslator translator,
-        ITranslationRouter translationRouter,
+        ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator,
-        translationRouter, w3StringItems)
+        translationRouter, translationPostProcessor, w3StringItems)
     {
         StartIndex = startIndex; // Set start index
         EndIndex = MaxValue = W3StringItems.Count; // Set end index and maximum value
@@ -187,6 +187,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     private async Task ExecuteBatchTranslation()
     {
         IsBusy = true; // Set the busy flag to prevent concurrent operations
+        StatusMessage = string.Empty;
         ResetTranslationCounts(); // Reset counters for success, failure, and pending items
         CancellationTokenSource?.Dispose(); // Dispose of any existing cancellation token source
         CancellationTokenSource = new CancellationTokenSource(); // Create a new cancellation token source
@@ -232,9 +233,10 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             var translation =
                 await TranslateItem(TranslationRouter, item.Text, toLanguage,
                     fromLanguage); // Perform translation
+            UpdateStatusMessage(translation);
             if (translation.IsSuccess) // Check if translation succeeded
             {
-                item.Text = translation.Value; // Update with translated text
+                item.Text = ApplyPostProcessing(translation.Value, fromLanguage, toLanguage);
                 SuccessCount++; // Increment success counter
             }
             else
