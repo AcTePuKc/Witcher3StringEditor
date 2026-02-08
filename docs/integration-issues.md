@@ -198,8 +198,6 @@ single read-only context object for future translation routing. Keep it unused b
 - Issue 4 (Terminology + style pack loading hooks)
 - Issue 5 (Translation profile storage + resolver)
 
----
-
 ## Issue 8: Settings UI placeholders for integrations
 **Description**
 Add minimal settings UI placeholders for provider selection, model selection, terminology packs, and translation profile selection. No behavioral changes; values can be stored but not used.
