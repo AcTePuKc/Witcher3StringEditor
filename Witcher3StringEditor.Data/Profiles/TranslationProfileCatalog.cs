@@ -22,7 +22,7 @@ public sealed class TranslationProfileCatalog : ITranslationProfileCatalog
         var profiles = await store.ListAsync(cancellationToken);
 
         return profiles
-            .Select(profile => new TranslationProfileSummary(profile.Id, profile.Name))
+            .Select(profile => new TranslationProfileSummary(profile.Id, profile.Name, false))
             .ToList();
     }
 }
