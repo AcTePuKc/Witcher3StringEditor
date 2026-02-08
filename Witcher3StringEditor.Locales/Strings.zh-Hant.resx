@@ -542,6 +542,36 @@
   <data name="Translator" xml:space="preserve">
     <value>Translator</value>
   </data>
+  <data name="SelectTerminologyFile" xml:space="preserve">
+    <value>Select terminology file</value>
+  </data>
+  <data name="SelectStyleGuideFile" xml:space="preserve">
+    <value>Select style guide file</value>
+  </data>
+  <data name="FileFormatTerminology" xml:space="preserve">
+    <value>Terminology files (*.tsv, *.csv)</value>
+  </data>
+  <data name="FileFormatStyleGuide" xml:space="preserve">
+    <value>Style guide files (*.md)</value>
+  </data>
+  <data name="TerminologySettingsHeader" xml:space="preserve">
+    <value>Terminology File (Preview)</value>
+  </data>
+  <data name="TerminologySettingsDescription" xml:space="preserve">
+    <value>Select a TSV or CSV terminology file for future integrations.</value>
+  </data>
+  <data name="TerminologyFilePath" xml:space="preserve">
+    <value>Please select a terminology file</value>
+  </data>
+  <data name="StyleGuideSettingsHeader" xml:space="preserve">
+    <value>Style Guide File (Preview)</value>
+  </data>
+  <data name="StyleGuideSettingsDescription" xml:space="preserve">
+    <value>Select a Markdown style guide for future integrations.</value>
+  </data>
+  <data name="StyleGuideFilePath" xml:space="preserve">
+    <value>Please select a style guide file</value>
+  </data>
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>

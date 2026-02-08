@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -10,6 +11,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -19,16 +21,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 ///     Manages application settings including paths, translators, and supported cultures
 ///     Implements IModalDialogViewModel to support dialog result handling
 /// </summary>
-/// <param name="appSettings">Application settings service</param>
-/// <param name="dialogService">Dialog service for showing file dialogs</param>
-/// <param name="translators">Collection of available translators</param>
-/// <param name="supportedCultures">Collection of supported cultures for localization</param>
-public partial class SettingsDialogViewModel(
-    IAppSettings appSettings,
-    IDialogService dialogService,
-    IEnumerable<string> translators,
-    IEnumerable<CultureInfo> supportedCultures)
-    : ObservableObject, IModalDialogViewModel
+public partial class SettingsDialogViewModel : ObservableObject, IModalDialogViewModel
 {
     private static readonly HttpClient HttpClient = new();
 
@@ -40,20 +33,57 @@ public partial class SettingsDialogViewModel(
         "Custom (stub)"
     ];
 
+    private readonly IDialogService dialogService;
+    private readonly IStyleGuideLoader styleGuideLoader;
+    private readonly ITerminologyLoader terminologyLoader;
+
+    /// <summary>
+    ///     Initializes a new instance of the SettingsDialogViewModel class
+    /// </summary>
+    /// <param name="appSettings">Application settings service</param>
+    /// <param name="dialogService">Dialog service for showing file dialogs</param>
+    /// <param name="translators">Collection of available translators</param>
+    /// <param name="supportedCultures">Collection of supported cultures for localization</param>
+    /// <param name="terminologyLoader">Terminology loader for preview validation</param>
+    public SettingsDialogViewModel(
+        IAppSettings appSettings,
+        IDialogService dialogService,
+        IEnumerable<string> translators,
+        IEnumerable<CultureInfo> supportedCultures,
+        ITerminologyLoader terminologyLoader,
+        IStyleGuideLoader styleGuideLoader)
+    {
+        AppSettings = appSettings;
+        this.dialogService = dialogService;
+        Translators = translators;
+        SupportedCultures = supportedCultures;
+        this.terminologyLoader = terminologyLoader;
+        this.styleGuideLoader = styleGuideLoader;
+        ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
+
+        if (appSettings is INotifyPropertyChanged notifyPropertyChanged)
+        {
+            notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
+        }
+
+        _ = UpdateTerminologyStatusAsync();
+        _ = UpdateStyleGuideStatusAsync();
+    }
+
     /// <summary>
     ///     Gets the application settings service
     /// </summary>
-    public IAppSettings AppSettings { get; } = appSettings;
+    public IAppSettings AppSettings { get; }
 
     /// <summary>
     ///     Gets the collection of available translators
     /// </summary>
-    public IEnumerable<string> Translators { get; } = translators;
+    public IEnumerable<string> Translators { get; }
 
     /// <summary>
     ///     Gets the collection of supported cultures for localization
     /// </summary>
-    public IEnumerable<CultureInfo> SupportedCultures { get; } = supportedCultures;
+    public IEnumerable<CultureInfo> SupportedCultures { get; }
 
     /// <summary>
     ///     Gets the list of available translation providers (stubbed)
@@ -64,12 +94,22 @@ public partial class SettingsDialogViewModel(
     ///     Gets the list of available translation models (stubbed)
     /// </summary>
     [ObservableProperty]
-    private ObservableCollection<string> modelOptions = new(InitializeModelOptions(appSettings));
+    private ObservableCollection<string> modelOptions = [];
 
     /// <summary>
     ///     Gets the model refresh status text
     /// </summary>
     [ObservableProperty] private string modelStatusText = string.Empty;
+
+    /// <summary>
+    ///     Gets the terminology load status text
+    /// </summary>
+    [ObservableProperty] private string terminologyStatusText = string.Empty;
+
+    /// <summary>
+    ///     Gets the style guide load status text
+    /// </summary>
+    [ObservableProperty] private string styleGuideStatusText = string.Empty;
 
     /// <summary>
     ///     Gets the dialog result value
@@ -121,6 +161,56 @@ public partial class SettingsDialogViewModel(
         {
             AppSettings.GameExePath = storageFile.LocalPath; // Set the path to the file.
             Log.Information("Game path set to {Path}.", storageFile.LocalPath); // Log the path.
+        }
+    }
+
+    /// <summary>
+    ///     Sets the path to the terminology file
+    ///     Opens a file dialog to allow the user to select a .tsv or .csv file
+    /// </summary>
+    [RelayCommand]
+    private async Task SetTerminologyFilePath()
+    {
+        var dialogSettings = new OpenFileDialogSettings
+        {
+            Filters =
+            [
+                new FileFilter(Strings.FileFormatTerminology, [".tsv", ".csv"])
+            ],
+            Title = Strings.SelectTerminologyFile
+        };
+
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
+        if (storageFile is not null)
+        {
+            AppSettings.TerminologyFilePath = storageFile.LocalPath;
+            Log.Information("Terminology file path set to {Path}.", storageFile.LocalPath);
+            await UpdateTerminologyStatusAsync();
+        }
+    }
+
+    /// <summary>
+    ///     Sets the path to the style guide file
+    ///     Opens a file dialog to allow the user to select a .md file
+    /// </summary>
+    [RelayCommand]
+    private async Task SetStyleGuideFilePath()
+    {
+        var dialogSettings = new OpenFileDialogSettings
+        {
+            Filters =
+            [
+                new FileFilter(Strings.FileFormatStyleGuide, ".md")
+            ],
+            Title = Strings.SelectStyleGuideFile
+        };
+
+        using var storageFile = await dialogService.ShowOpenFileDialogAsync(this, dialogSettings);
+        if (storageFile is not null)
+        {
+            AppSettings.StyleGuideFilePath = storageFile.LocalPath;
+            Log.Information("Style guide file path set to {Path}.", storageFile.LocalPath);
+            await UpdateStyleGuideStatusAsync();
         }
     }
 
@@ -230,5 +320,72 @@ public partial class SettingsDialogViewModel(
     {
         AppSettings.CachedTranslationModels =
             new ObservableCollection<string>(ModelOptions.Distinct(StringComparer.OrdinalIgnoreCase));
+    }
+
+    private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IAppSettings.UseTerminologyPack) ||
+            e.PropertyName == nameof(IAppSettings.TerminologyFilePath))
+        {
+            _ = UpdateTerminologyStatusAsync();
+        }
+
+        if (e.PropertyName == nameof(IAppSettings.UseStyleGuide) ||
+            e.PropertyName == nameof(IAppSettings.StyleGuideFilePath))
+        {
+            _ = UpdateStyleGuideStatusAsync();
+        }
+    }
+
+    private async Task UpdateTerminologyStatusAsync()
+    {
+        try
+        {
+            if (!AppSettings.UseTerminologyPack)
+            {
+                TerminologyStatusText = "Terminology disabled.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(AppSettings.TerminologyFilePath))
+            {
+                TerminologyStatusText = "No terminology file selected.";
+                return;
+            }
+
+            await terminologyLoader.LoadAsync(AppSettings.TerminologyFilePath);
+            TerminologyStatusText = "Terminology loaded.";
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to load terminology pack from {Path}.", AppSettings.TerminologyFilePath);
+            TerminologyStatusText = "Failed to load terminology.";
+        }
+    }
+
+    private async Task UpdateStyleGuideStatusAsync()
+    {
+        try
+        {
+            if (!AppSettings.UseStyleGuide)
+            {
+                StyleGuideStatusText = "Style guide disabled.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(AppSettings.StyleGuideFilePath))
+            {
+                StyleGuideStatusText = "No style guide selected.";
+                return;
+            }
+
+            await styleGuideLoader.LoadStyleGuideAsync(AppSettings.StyleGuideFilePath);
+            StyleGuideStatusText = "Style guide loaded.";
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to load style guide from {Path}.", AppSettings.StyleGuideFilePath);
+            StyleGuideStatusText = "Failed to load style guide.";
+        }
     }
 }

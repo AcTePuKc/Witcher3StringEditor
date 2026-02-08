@@ -104,7 +104,7 @@ Persist profiles locally (JSON) and add a resolver stub that can merge a selecte
 **Acceptance Criteria**
 - JSON-backed profile store returns empty list when file is missing.
 - Resolver stub returns null when no profile is selected.
-- Profile model includes optional terminology/style paths and translation memory enablement.
+- Profile model includes optional terminology/style paths, file path aliases, enablement toggles, and translation memory enablement.
 - No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**
@@ -198,11 +198,47 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Settings dialog and verify placeholders render
+
+---
+
+## Tracking Note: GoogleTranslator disposal lifecycle
+**Observation**
+`GoogleTranslator` instances (from `GTranslate.Translators`) are created via DI as `ITranslator` and disposed in two spots:
+- `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs` in `ShowTranslateDialog` after the translation dialog closes.
+- `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs` in `ShowSettingsDialog` after enumerating translator names.
+
+**Suspected Lifecycle Issue**
+If `GoogleTranslator` maintains internal HTTP clients or caches that expect a longer lifetime (e.g., across multiple dialog opens), disposing immediately after each dialog might cause avoidable reinitialization or premature teardown during dialog usage if instances are shared or cached. Follow-up should confirm intended lifetimes in the DI container and whether translators should be scoped for the full app session instead of per-dialog usage.
+
+---
+
+## Issue 9: Terminology/style enablement toggles + load status
+**Description**
+Add inert enablement toggles for terminology and style guide preview loading. When toggled on, the Settings dialog
+should attempt to load the selected file and surface a status line (loaded/failed) without enforcing behavior.
+
+**Acceptance Criteria**
+- `IAppSettings` includes `UseTerminologyPack` and `UseStyleGuide` flags.
+- Settings dialog shows enablement toggles and load status text for terminology and style guide.
+- Loader is only invoked when the corresponding toggle is enabled.
+- No translation flow behavior changes.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs`
+- `Witcher3StringEditor/Models/AppSettings.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Settings dialog, toggle terminology/style, and confirm status text updates
+- No regressions: translation dialog still opens
 - No regressions: existing translators still listed
 
 ---
 
-## Issue 9: Translation router request metadata expansion
+## Issue 10: Translation router request metadata expansion
 **Description**
 Extend the translation router request DTO to carry optional provider and model names so future call sites can override
 app settings. Add a noop router implementation for scenarios where routing should be disabled without side effects.
@@ -228,7 +264,7 @@ app settings. Add a noop router implementation for scenarios where routing shoul
 
 ---
 
-## Issue 10: Ollama integration settings + model list stub
+## Issue 11: Ollama integration settings + model list stub
 **Description**
 Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed client, and provide a placeholder `ListModelsAsync` method.
 

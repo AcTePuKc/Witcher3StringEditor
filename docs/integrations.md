@@ -25,7 +25,8 @@
 - **Pipeline context** lives in `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs` and carries
   profile/provider/model/terminology/translation memory selections.
 - **Ollama stub** lives in `Witcher3StringEditor.Integrations.Ollama/` with settings + model listing placeholder.
-- **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`, `CachedTranslationModels`).
+- **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`,
+  `CachedTranslationModels`, `UseTerminologyPack`, `UseStyleGuide`).
 
 ### Provider Selection Behavior
 - **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
@@ -58,10 +59,18 @@
 - **Prompt builder interface** lives in `Witcher3StringEditor.Common/Terminology/ITerminologyPromptBuilder.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`.
 - **Sample fixtures** live under `docs/samples/` for TSV/CSV and Markdown style guides.
+- **Settings selection**: the Settings dialog provides separate file pickers for terminology packs (`.tsv`/`.csv`)
+  and style guides (`.md`). Selections are stored as file paths and only loaded on demand when preview is enabled.
+- **Enablement flags**: `UseTerminologyPack` and `UseStyleGuide` are preview toggles only. The Settings dialog loads
+  the selected file and reports status (loaded/failed) but does not enforce terminology or style rules during
+  translation yet.
+- **Future enforcement**: prompt injection and post-translation validation remain planned work; enabling the flags
+  should not change translation output until those hooks are implemented.
 
 ### Translation Profiles
 - **Profile models** live in `Witcher3StringEditor.Common/Profiles/`.
-- Profiles can carry provider/model/base URL plus terminology/style paths and translation memory enablement flags.
+- Profiles can carry provider/model/base URL plus terminology/style paths, file path aliases, enablement toggles,
+  and translation memory flags.
 - **Profile store** lives in `Witcher3StringEditor.Data/Profiles/` (JSON-backed, AppData).
 - **Resolver stub** lives in `Witcher3StringEditor/Services/` to merge profiles with settings later.
 - **Pipeline context builder** lives in `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs` and
