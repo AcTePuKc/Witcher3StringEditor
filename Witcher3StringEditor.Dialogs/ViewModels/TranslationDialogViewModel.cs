@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -23,6 +24,8 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class TranslationDialogViewModel : ObservableObject, IModalDialogViewModel
 {
     private const string NoModelSelectedLabel = "(none selected)";
+    private static readonly IReadOnlyList<TranslationMode> TranslationModeOptions =
+        Enum.GetValues<TranslationMode>();
 
     /// <summary>
     ///     The application settings service
@@ -75,6 +78,11 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     [ObservableProperty] private string title = Strings.TranslateDialogTitle;
 
     /// <summary>
+    ///     Gets or sets the translation routing mode (legacy vs provider).
+    /// </summary>
+    [ObservableProperty] private TranslationMode translationMode = TranslationMode.Legacy;
+
+    /// <summary>
     ///     Initializes a new instance of the TranslationDialogViewModel class
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
@@ -109,6 +117,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         CurrentViewModel =
             new SingleItemTranslationViewModel(appSettings, translator, translationRouter, translationPostProcessor,
                 pipelineContextBuilder, translationMemoryService, this.w3StringItems, index);
+        CurrentViewModel.UseProviderForTranslation = TranslationMode == TranslationMode.Provider;
         // Initialize the current view model
     }
 
@@ -134,6 +143,22 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     public string ProviderReadinessStatus => BuildProviderReadinessStatus();
 
     /// <summary>
+    ///     Gets a provider readiness message derived from settings.
+    /// </summary>
+    public string ProviderReadinessMessage => BuildProviderReadinessMessage();
+
+    /// <summary>
+    ///     Gets whether the provider readiness banner should be shown.
+    /// </summary>
+    public bool IsProviderReadinessBannerVisible => TranslationMode == TranslationMode.Provider &&
+                                                    IsProviderSettingsIncomplete();
+
+    /// <summary>
+    ///     Gets the available translation mode options for the UI.
+    /// </summary>
+    public IReadOnlyList<TranslationMode> TranslationModes => TranslationModeOptions;
+
+    /// <summary>
     ///     Switches between single item and batch translation modes
     ///     Cleans up the current view model and creates a new one of the opposite type
     /// </summary>
@@ -149,7 +174,6 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
                 await CleanupCurrentViewModelAsync(); // Clean up current view model
                 await DisposeCurrentViewModelAsync(); // Dispose current view model
                 var formLange = CurrentViewModel.FormLanguage; // Save current source language
-                var useProviderForTranslation = CurrentViewModel.UseProviderForTranslation;
                 CurrentViewModel = CurrentViewModel is BatchItemsTranslationViewModel // Switch view model type
                     ? new SingleItemTranslationViewModel(appSettings, translator, translationRouter,
                         translationPostProcessor, pipelineContextBuilder, translationMemoryService, w3StringItems,
@@ -158,7 +182,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
                         translationPostProcessor, pipelineContextBuilder, translationMemoryService, w3StringItems,
                         index + 1);
                 CurrentViewModel.FormLanguage = formLange; // Restore source language
-                CurrentViewModel.UseProviderForTranslation = useProviderForTranslation;
+                CurrentViewModel.UseProviderForTranslation = TranslationMode == TranslationMode.Provider;
                 Title = CurrentViewModel is BatchItemsTranslationViewModel // Update dialog title
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;
@@ -310,7 +334,37 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
             return "Provider routing is disabled; using legacy translator.";
         }
 
+        var missingParts = GetMissingProviderSettings();
+
+        if (missingParts.Count > 0)
+        {
+            return $"Provider configured; missing {string.Join(" and ", missingParts)}.";
+        }
+
+        return "Provider configuration looks complete (routing remains preview-only).";
+    }
+
+    private string BuildProviderReadinessMessage()
+    {
+        var missingParts = GetMissingProviderSettings();
+        if (missingParts.Count == 0)
+        {
+            return "Provider settings look complete for provider-mode translation.";
+        }
+
+        return missingParts.Count == 1
+            ? $"Provider mode is selected, but {missingParts[0]} is missing."
+            : $"Provider mode is selected, but {string.Join(" and ", missingParts)} are missing.";
+    }
+
+    private List<string> GetMissingProviderSettings()
+    {
         var missingParts = new List<string>();
+        if (string.IsNullOrWhiteSpace(appSettings.TranslationProviderName))
+        {
+            missingParts.Add("provider");
+        }
+
         if (string.IsNullOrWhiteSpace(appSettings.TranslationModelName))
         {
             missingParts.Add("model");
@@ -321,12 +375,12 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
             missingParts.Add("base URL");
         }
 
-        if (missingParts.Count > 0)
-        {
-            return $"Provider configured; missing {string.Join(" and ", missingParts)}.";
-        }
+        return missingParts;
+    }
 
-        return "Provider configuration looks complete (routing remains preview-only).";
+    private bool IsProviderSettingsIncomplete()
+    {
+        return GetMissingProviderSettings().Count > 0;
     }
 
     private string GetModelDisplayName()
@@ -341,6 +395,14 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         OnPropertyChanged(nameof(ActiveEngineLabel));
         OnPropertyChanged(nameof(SelectedProviderSummary));
         OnPropertyChanged(nameof(ProviderReadinessStatus));
+        OnPropertyChanged(nameof(ProviderReadinessMessage));
+        OnPropertyChanged(nameof(IsProviderReadinessBannerVisible));
+    }
+
+    partial void OnTranslationModeChanged(TranslationMode value)
+    {
+        CurrentViewModel.UseProviderForTranslation = value == TranslationMode.Provider;
+        OnPropertyChanged(nameof(IsProviderReadinessBannerVisible));
     }
 
     /// <summary>
