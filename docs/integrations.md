@@ -70,9 +70,9 @@
   no-op implementation in `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`.
 - **Sample fixtures** live under `docs/samples/` for TSV/CSV and Markdown style guides.
 - **Settings selection**: the Settings dialog provides separate file pickers for terminology packs (`.tsv`/`.csv`)
-  and style guides (`.md`). Selections are stored as file paths and only loaded on demand when preview is enabled.
+  and style guides (`.md`). Selections are stored as file paths and loaded on demand when preview is enabled.
 - **Preview validation**: the Settings dialog view model depends on terminology + style guide loaders to validate
-  selections and surface status text without changing translation output.
+  selections (on file selection and toggle changes) and surface status text without changing translation output.
 - **Enablement flags**: `UseTerminologyPack` and `UseStyleGuide` are preview toggles only. The Settings dialog loads
   the selected file and reports status (loaded/failed) but does not enforce terminology or style rules during
   translation yet.
