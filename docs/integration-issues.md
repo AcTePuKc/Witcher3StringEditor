@@ -865,3 +865,94 @@ states, so future implementations do not regress the legacy translator flow.
 - Build: `dotnet build`
 - Manual: review checklist for completeness and clarity
 - No regressions: documentation-only change
+
+---
+
+## Issue 66: Translation mode selector (legacy vs provider)
+**Description**
+Expose a read-only translation mode selector in the translation dialog so users can see whether the flow is using the
+legacy translator or provider routing. This selector reflects the opt-in routing toggle but does not change behavior.
+
+**Acceptance Criteria**
+- Translation dialog shows a mode selector with **Legacy** as the default state.
+- The selector updates to **Provider** only when opt-in routing is enabled.
+- Selector is informational and does not change routing behavior.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/Views/TranslationDialog.xaml`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Translation dialog and confirm Legacy/Provider indicator updates with the routing toggle
+- No regressions: legacy translator selection remains the default path
+
+---
+
+## Issue 67: Provider readiness banner (status summary)
+**Description**
+Add a read-only readiness banner in the translation dialog that summarizes provider configuration (provider name,
+model, base URL, validation status). This banner should be informational only and must not alter routing.
+
+**Acceptance Criteria**
+- Banner displays provider name/model/base URL summary from settings.
+- Banner shows validation status (ok/warning/error) without enabling routing.
+- Banner updates when provider settings change.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/Views/TranslationDialog.xaml`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+- `Witcher3StringEditor/Services/*TranslationProviderValidator*.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: update provider settings and confirm banner text updates
+- No regressions: translation dialog still defaults to legacy translators
+
+---
+
+## Issue 68: Provider fallback status messaging
+**Description**
+Surface a non-blocking status message in the translation dialog when provider routing falls back to the legacy
+translator. The message should include provider/model and a short reason for the fallback.
+
+**Acceptance Criteria**
+- Status line appears when a provider failure or validation warning triggers a fallback.
+- Message includes provider/model and failure reason, without blocking translation results.
+- No routing behavior changes when provider routing is disabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/Views/TranslationDialog.xaml`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: simulate a provider validation warning and confirm fallback message displays
+- No regressions: legacy translator selection remains default when routing is disabled
+
+---
+
+## Issue 69: Legacy default routing guardrails (documentation + QA)
+**Description**
+Add a dedicated QA checklist that verifies the legacy translator path remains the default, even when provider settings
+are configured. This should document checks for translation mode selector state, readiness banner state, and fallback
+behavior messaging.
+
+**Acceptance Criteria**
+- New QA checklist documents build + manual steps for legacy-default guardrails.
+- Checklist calls out translation mode selector, readiness banner, and fallback status messaging.
+- No runtime behavior changes.
+
+**Files to Touch**
+- `docs/qa/legacy-default-routing.md`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: review checklist for completeness and clarity
+- No regressions: documentation-only change
