@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace Witcher3StringEditor.Common.Translation;
 
-// TODO: Consolidate with Witcher3StringEditor.Services.TranslationProviderRegistry once legacy registry usage is retired.
+// TODO: Legacy registry. Long-term ownership lives in Witcher3StringEditor.Services.TranslationProviderRegistry.
+// TODO: Remove once no legacy call sites remain and an adapter is no longer needed.
 public sealed class TranslationProviderRegistry
 {
     private readonly System.Collections.Concurrent.ConcurrentDictionary<string, ITranslationProvider> providers =
