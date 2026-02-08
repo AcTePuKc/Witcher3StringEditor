@@ -89,11 +89,13 @@ Add a provider registry abstraction that maps provider names to implementations 
 - Settings dialog has placeholders for provider/model/base URL without changing translator behavior.
 - Model discovery uses provider `ListModelsAsync` (stub behavior allowed).
 - Cached model list persists in settings for offline UX.
+- Document which registry type is DI-backed vs. legacy/local, with a TODO to consolidate later.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/*`
 - `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`
 - `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
+- `Witcher3StringEditor/App.xaml.cs`
 - `Witcher3StringEditor.Integrations.Ollama/*`
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
@@ -138,12 +140,14 @@ Persist profiles locally (JSON) and add a resolver stub that can merge a selecte
 - JSON-backed profile store returns empty list when file is missing.
 - Resolver stub returns null when no profile is selected.
 - Profile model includes optional terminology/style paths, file path aliases, enablement toggles, and translation memory enablement.
+- Settings resolver stub can resolve the selected profile from app settings (no-op acceptable).
 - No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Profiles/*`
 - `Witcher3StringEditor.Data/Profiles/*`
 - `Witcher3StringEditor/Services/*TranslationProfileResolver*.cs`
+- `Witcher3StringEditor/Services/*TranslationProfileSettingsResolver*.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
@@ -197,6 +201,11 @@ single read-only context object for future translation routing. Keep it unused b
 - Issue 3 (Provider registry + model discovery wiring)
 - Issue 4 (Terminology + style pack loading hooks)
 - Issue 5 (Translation profile storage + resolver)
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: verify the context builder returns defaults without throwing
+- No regressions: translation dialog still opens and legacy translator list is intact
 
 ## Issue 8: Settings UI placeholders for integrations
 **Description**

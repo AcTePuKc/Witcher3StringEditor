@@ -30,6 +30,7 @@ using Witcher3StringEditor.Serializers.Implementation;
 using Witcher3StringEditor.Services;
 using Witcher3StringEditor.ViewModels;
 using Witcher3StringEditor.Views;
+using ServicesTranslationProviderRegistry = Witcher3StringEditor.Services.TranslationProviderRegistry;
 using MessageBox = iNKORE.UI.WPF.Modern.Controls.MessageBox;
 
 namespace Witcher3StringEditor;
@@ -371,7 +372,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<IExcelW3Serializer, ExcelW3Serializer>()
             .AddSingleton<IW3StringsSerializer, W3StringsSerializer>()
             .AddSingleton<IW3Serializer, W3SerializerCoordinator>()
-            .AddSingleton<ITranslationProviderRegistry, TranslationProviderRegistry>()
+            .AddSingleton<ITranslationProviderRegistry, ServicesTranslationProviderRegistry>()
             .AddSingleton<ITranslationProfileCatalog, NoopTranslationProfileCatalog>()
             .AddSingleton<ITranslationProfileResolver, NoopTranslationProfileResolver>()
             .AddSingleton<ITranslationPipelineContextBuilder, TranslationPipelineContextBuilder>()
