@@ -187,6 +187,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     private async Task ExecuteBatchTranslation()
     {
         IsBusy = true; // Set the busy flag to prevent concurrent operations
+        StatusMessage = string.Empty;
         ResetTranslationCounts(); // Reset counters for success, failure, and pending items
         CancellationTokenSource?.Dispose(); // Dispose of any existing cancellation token source
         CancellationTokenSource = new CancellationTokenSource(); // Create a new cancellation token source
@@ -232,6 +233,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             var translation =
                 await TranslateItem(TranslationRouter, item.Text, toLanguage,
                     fromLanguage); // Perform translation
+            UpdateStatusMessage(translation);
             if (translation.IsSuccess) // Check if translation succeeded
             {
                 item.Text = translation.Value; // Update with translated text
