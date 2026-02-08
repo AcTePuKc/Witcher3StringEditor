@@ -238,6 +238,21 @@
                                    Text="{Binding ModelStatusText}" />
                     </StackPanel>
                 </ui:SettingsCard>
+                <ui:SettingsCard Header="Translation profiles">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Contact}" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <ui:SettingsCard.Description>
+                        <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="{Binding ProfileStatusText}" />
+                    </ui:SettingsCard.Description>
+                    <ComboBox
+                        DisplayMemberPath="DisplayName"
+                        IsEnabled="False"
+                        ItemsSource="{Binding TranslationProfiles}"
+                        SelectedValue="{Binding AppSettings.TranslationProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValuePath="Id" />
+                </ui:SettingsCard>
                 <ui:SettingsCard Header="Translation memory">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Save}" />

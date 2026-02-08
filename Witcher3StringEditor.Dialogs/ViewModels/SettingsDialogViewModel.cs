@@ -13,6 +13,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Profiles;
 using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Locales;
 
@@ -36,6 +37,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     ];
 
     private readonly IDialogService dialogService;
+    private readonly ITranslationProfileCatalog profileCatalog;
     private readonly ITerminologyLoader terminologyLoader;
     private readonly IStyleGuideLoader styleGuideLoader;
     /// <summary>
@@ -48,6 +50,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     public SettingsDialogViewModel(
         IAppSettings appSettings,
         IDialogService dialogService,
+        ITranslationProfileCatalog profileCatalog,
         ITerminologyLoader terminologyLoader,
         IStyleGuideLoader styleGuideLoader,
         IEnumerable<string> translators,
@@ -55,6 +58,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     {
         AppSettings = appSettings;
         this.dialogService = dialogService;
+        this.profileCatalog = profileCatalog;
         this.terminologyLoader = terminologyLoader;
         this.styleGuideLoader = styleGuideLoader;
         Translators = translators;
@@ -68,6 +72,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
         _ = UpdateTerminologyStatusAsync();
         _ = UpdateStyleGuideStatusAsync();
+        _ = LoadTranslationProfilesAsync();
     }
 
     /// <summary>
@@ -97,9 +102,20 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     private ObservableCollection<string> modelOptions = [];
 
     /// <summary>
+    ///     Gets the list of available translation profiles (stubbed)
+    /// </summary>
+    [ObservableProperty]
+    private ObservableCollection<TranslationProfileSummary> translationProfiles = [];
+
+    /// <summary>
     ///     Gets the model refresh status text
     /// </summary>
     [ObservableProperty] private string modelStatusText = string.Empty;
+
+    /// <summary>
+    ///     Gets the translation profile status text
+    /// </summary>
+    [ObservableProperty] private string profileStatusText = string.Empty;
 
     /// <summary>
     ///     Gets the terminology load status text
@@ -320,6 +336,28 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     {
         AppSettings.CachedTranslationModels =
             new ObservableCollection<string>(ModelOptions.Distinct(StringComparer.OrdinalIgnoreCase));
+    }
+
+    private async Task LoadTranslationProfilesAsync()
+    {
+        try
+        {
+            var profiles = await profileCatalog.ListSummariesAsync();
+            var orderedProfiles = profiles
+                .OrderBy(profile => profile.DisplayName, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            TranslationProfiles = new ObservableCollection<TranslationProfileSummary>(orderedProfiles);
+            ProfileStatusText = TranslationProfiles.Count == 0
+                ? "No translation profiles available yet."
+                : "Translation profile routing is not enabled yet.";
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to load translation profile summaries.");
+            TranslationProfiles = [];
+            ProfileStatusText = "Failed to load translation profiles.";
+        }
     }
 
     private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
