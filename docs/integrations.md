@@ -121,13 +121,15 @@
    (Issue 1).
 2. **Provider registry + model catalog**: wire provider resolution and model listing stubs (Issue 3), leaving the
    legacy translator flow as the default path.
-3. **Settings + UI placeholders**: surface provider/model/terminology/profile selections without changing behavior
+3. **Terminology/style loaders**: load packs on demand for preview and future prompt injection (Issue 4).
+4. **Translation profile storage + resolver**: persist profiles locally and add a resolver stub for merging with
+   settings (Issue 5).
+5. **Translation memory scaffolding**: finalize TM/QA store and settings stubs, keep no-op workflow (Issue 2).
+6. **Settings + UI placeholders**: surface provider/model/terminology/profile selections without changing behavior
    (Issues 8, 9, 10).
-4. **Pipeline context builder**: collect settings/profile data into a read-only context for future routing (Issue 7).
-5. **Terminology/style loaders**: load packs on demand for preview and future prompt injection (Issue 4).
-6. **Translation memory scaffolding**: finalize TM/QA store and settings stubs, keep no-op workflow (Issue 2).
-7. **Router expansion**: allow request/profile overrides but keep fallbacks and no-op defaults (Issue 11).
-8. **Future activation**: only after explicit feature flagging and QA signoff should providers/TM/terminology affect
+7. **Pipeline context builder**: collect settings/profile data into a read-only context for future routing (Issue 7).
+8. **Router expansion**: allow request/profile overrides but keep fallbacks and no-op defaults (Issue 11).
+9. **Future activation**: only after explicit feature flagging and QA signoff should providers/TM/terminology affect
    translation output.
 
 ## No-op Behavior Notes (Safety Defaults)
