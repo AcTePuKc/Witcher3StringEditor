@@ -113,12 +113,14 @@ See `docs/fallback-investigation.md` for the current single-item/batch flow trac
 ## Fallback Triggers + Scope (Planned)
 - **Scope**: provider fallback policy applies **only** in translation windows (single-item and batch dialogs). It does
   not apply to background workflows, import/export flows, or any non-translation UI.
-- **Trigger conditions** (planned):
-  - Provider explicitly disabled in settings/profile (treated as opt-out, no provider attempt).
-  - Provider resolution fails (unknown name or registry missing provider).
-  - Provider returns an error (e.g., network/HTTP failure, invalid response, validation error).
-  - Requested model missing/unavailable (catalog lookup fails or model list is empty).
-  - Provider call timeout (configurable timeout expires before response).
+- **Trigger conditions** (planned): The router will fall back to the legacy translator under the following conditions, which are grouped by whether a provider call is attempted.
+  - **Fallback before provider attempt:**
+    - Provider explicitly disabled in settings/profile (treated as opt-out).
+    - Provider resolution fails (unknown name or registry missing provider).
+    - Requested model missing/unavailable (catalog lookup fails or model list is empty).
+  - **Fallback after failed provider attempt:**
+    - Provider returns an error (e.g., network/HTTP failure, invalid response, validation error).
+    - Provider call timeout (configurable timeout expires before response).
 - **Fallback behavior**: if a trigger condition is hit, the router should fall back to the legacy translator when
   configured; otherwise surface a localized error message in the translation window.
 - **Open questions / telemetry**:
