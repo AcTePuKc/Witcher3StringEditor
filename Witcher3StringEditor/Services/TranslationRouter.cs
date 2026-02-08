@@ -78,15 +78,23 @@ internal sealed class TranslationRouter : ITranslationRouter
                 ? "Select a translation provider before using provider routing."
                 : "Select a translation model before using provider routing.";
 
-        return Result.Fail(BuildProviderRequestFailure(message));
+        var failureKind = missingModel
+            ? TranslationProviderFailureKind.MissingModel
+            : TranslationProviderFailureKind.Unknown;
+
+        return Result.Fail(BuildProviderRequestFailure(message, failureKind));
     }
 
-    private static Error BuildProviderRequestFailure(string message)
+    private static Error BuildProviderRequestFailure(
+        string message,
+        TranslationProviderFailureKind failureKind)
     {
+        var statusMessage = $"{message} (Failure kind: {failureKind})";
         return new Error(message)
             .WithMetadata(TranslationFailureMetadata.FailureKindKey,
                 TranslationFailureMetadata.RequestValidationFailureKind)
-            .WithMetadata(TranslationStatusMetadata.StatusMessageKey, message);
+            .WithMetadata(TranslationFailureMetadata.ProviderFailureReasonKey, failureKind)
+            .WithMetadata(TranslationStatusMetadata.StatusMessageKey, statusMessage);
     }
 
     private static Result<string> AttachFallbackStatus(Result<string> result, string fallbackReason)

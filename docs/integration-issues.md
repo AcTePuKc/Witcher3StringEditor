@@ -87,18 +87,23 @@ Add a provider registry abstraction that maps provider names to implementations 
 **Acceptance Criteria**
 - Provider registry returns known provider descriptors and resolves providers by name.
 - Settings dialog has placeholders for provider/model/base URL without changing translator behavior.
+- Settings dialog includes a provider timeout setting in seconds (no runtime enforcement yet).
 - Model discovery uses provider `ListModelsAsync` (stub behavior allowed).
+- Settings dialog includes a Test Connection button that reports provider health (success/failure).
 - Cached model list persists in settings for offline UX.
 - Document which registry type is DI-backed vs. legacy/local, with a TODO to consolidate later.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/*`
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs`
 - `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`
 - `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
+- `Witcher3StringEditor/Services/TranslationProviderHealthCheck.cs`
 - `Witcher3StringEditor/App.xaml.cs`
 - `Witcher3StringEditor.Integrations.Ollama/*`
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `Witcher3StringEditor/Models/AppSettings.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
@@ -956,3 +961,94 @@ behavior messaging.
 - Build: `dotnet build`
 - Manual: review checklist for completeness and clarity
 - No regressions: documentation-only change
+
+---
+
+## Issue 71: Translation memory import/export stubs (local-only)
+**Description**
+Add inert-by-default interfaces for translation memory import/export so future tooling can move data between local
+SQLite and portable files without changing runtime behavior.
+
+**Acceptance Criteria**
+- `ITranslationMemoryImportService` and `ITranslationMemoryExportService` interfaces exist with no-op implementations.
+- Import/export operations are local-only (no network access) and remain inert by default.
+- A placeholder DTO for import/export metadata exists (file path, row counts, timestamps).
+- No changes to translation flow or settings behavior.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/TranslationMemory/*`
+- `Witcher3StringEditor/Services/*TranslationMemoryImportService*.cs`
+- `Witcher3StringEditor/Services/*TranslationMemoryExportService*.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm no new UI or runtime behavior changes are visible
+- No regressions: translation dialog still opens and legacy translators remain default
+
+---
+
+## Issue 72: Ollama model selection source-of-truth mapping (inert by default)
+**Description**
+Define a single, inert-by-default mapping between app settings, profile overrides, and the effective Ollama model
+selection so future routing can read it without changing current behavior.
+
+**Acceptance Criteria**
+- A `TranslationModelSelection` read-only model exists with provider name, model, and base URL fields.
+- A resolver returns the effective selection from app settings and selected profile overrides (profile wins).
+- No routing changes; existing translator selection remains the default.
+- A TODO note documents where routing will consume the selection later.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/*`
+- `Witcher3StringEditor/Services/*TranslationModelSelectionResolver*.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: verify resolver returns null or defaults when no profile is selected
+- No regressions: translation dialog still opens and legacy translators remain default
+
+---
+
+## Issue 73: Terminology/style references in translation profiles (settings-only)
+**Description**
+Extend translation profile models with terminology/style references and enablement toggles, keeping behavior inert by
+default and unused until wired into translation routing.
+
+**Acceptance Criteria**
+- Profile model includes optional terminology pack path, style guide path, and enablement flags.
+- Profile store serializes/deserializes the new fields without breaking existing profiles.
+- No changes to translation output or routing (inert by default).
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Profiles/*`
+- `Witcher3StringEditor.Data/Profiles/*`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: load existing profile JSON and confirm no crash
+- No regressions: translation dialog still opens and legacy translators remain default
+
+---
+
+## Issue 74: Translation profile activation guardrails (inert by default)
+**Description**
+Add a no-op guardrail service that validates profile activation state (selected vs. inactive) and surfaces a warning
+message without changing behavior unless a future UI explicitly consumes it.
+
+**Acceptance Criteria**
+- `ITranslationProfileActivationGuard` exists and returns a warning when a profile is selected but missing required fields.
+- Default implementation is inert by default and only returns informational messages.
+- No routing, translation, or settings behavior changes.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Profiles/*`
+- `Witcher3StringEditor/Services/*TranslationProfileActivationGuard*.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm no new UI or behavior changes are visible
+- No regressions: translation dialog still opens and legacy translators remain default

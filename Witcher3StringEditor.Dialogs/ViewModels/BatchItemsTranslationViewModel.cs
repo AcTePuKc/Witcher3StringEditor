@@ -339,6 +339,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         }
 
         hasShownProviderFailure = true;
+        UpdateLastProviderError(result);
         _ = WeakReferenceMessenger.Default.Send(
             new ValueChangedMessage<string>(providerError),
             MessageTokens.TranslateError);

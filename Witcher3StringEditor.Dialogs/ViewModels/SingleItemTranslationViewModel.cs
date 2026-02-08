@@ -178,6 +178,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                     var providerFailureMessage = GetProviderFailureMessage(translationResult);
                     if (!string.IsNullOrWhiteSpace(providerFailureMessage))
                     {
+                        UpdateLastProviderError(translationResult);
                         _ = WeakReferenceMessenger.Default.Send(
                             new ValueChangedMessage<string>(providerFailureMessage),
                             MessageTokens.TranslateError);
