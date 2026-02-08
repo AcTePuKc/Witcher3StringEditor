@@ -20,6 +20,8 @@
 ### Translation Providers + Model Selection
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
 - **Registry** resolves provider names to `ITranslationProvider` instances (`Witcher3StringEditor/Services/TranslationProviderRegistry.cs`).
+  A legacy/local registry also exists in `Witcher3StringEditor.Common/Translation/TranslationProviderRegistry.cs` and is
+  slated for consolidation once remaining call sites are confirmed (TODO).
 - **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
   depending on settings; provider calls are guarded and return structured failures when providers error out.
   The router request now carries optional provider/model names so call sites can override settings when needed.
@@ -97,6 +99,8 @@
   and translation memory flags.
 - **Profile store** lives in `Witcher3StringEditor.Data/Profiles/` (JSON-backed, AppData).
 - **Resolver stub** lives in `Witcher3StringEditor/Services/` to merge profiles with settings later.
+- **Settings resolver stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfileSettingsResolver.cs`
+  with a no-op implementation in `Witcher3StringEditor/Services/NoopTranslationProfileSettingsResolver.cs`.
 - **Catalog stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfileCatalog.cs` with a no-op
   implementation in `Witcher3StringEditor/Services/NoopTranslationProfileCatalog.cs` for lightweight profile
   listings in future settings UI.
