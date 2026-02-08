@@ -18,40 +18,48 @@ internal sealed class TranslationRouter : ITranslationRouter
         this.legacyRouter = legacyRouter ?? throw new ArgumentNullException(nameof(legacyRouter));
     }
 
-    public Task<Result<string>> TranslateAsync(
+    public async Task<Result<string>> TranslateAsync(
         TranslationRouterRequest request,
         CancellationToken cancellationToken = default)
     {
         if (request is null)
             throw new ArgumentNullException(nameof(request));
 
+        if (!request.UseProviderForTranslation)
+        {
+            return await legacyRouter.TranslateAsync(request, cancellationToken).ConfigureAwait(false);
+        }
+
         var validationResult = ValidateProviderRequest(request);
         if (validationResult is not null)
         {
-            return Task.FromResult(validationResult);
+            return validationResult;
         }
 
         if (string.IsNullOrWhiteSpace(request.ProviderName))
         {
-            return legacyRouter.TranslateAsync(request, cancellationToken);
+            return await legacyRouter.TranslateAsync(request, cancellationToken).ConfigureAwait(false);
         }
 
         var provider = providerRegistry.Resolve(request.ProviderName);
         if (provider is null)
         {
+            var fallbackReason = $"Provider '{request.ProviderName}' was not found.";
             Log.Warning(
                 "Translation provider {ProviderName} was not found; falling back to legacy translator.",
                 request.ProviderName);
-            return legacyRouter.TranslateWithLegacyTranslatorAsync(request, cancellationToken);
+            var legacyResult = await legacyRouter.TranslateWithLegacyTranslatorAsync(request, cancellationToken)
+                .ConfigureAwait(false);
+            return AttachFallbackStatus(legacyResult, fallbackReason);
         }
 
-        return legacyRouter.TranslateWithProviderAsync(request, provider, cancellationToken);
+        return await legacyRouter.TranslateWithProviderAsync(request, provider, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     private static Result<string>? ValidateProviderRequest(TranslationRouterRequest request)
     {
-        var shouldValidate = request.UseProviderForTranslation || !string.IsNullOrWhiteSpace(request.ProviderName);
-        if (!shouldValidate)
+        if (!request.UseProviderForTranslation)
         {
             return null;
         }
@@ -79,5 +87,18 @@ internal sealed class TranslationRouter : ITranslationRouter
             .WithMetadata(TranslationFailureMetadata.FailureKindKey,
                 TranslationFailureMetadata.RequestValidationFailureKind)
             .WithMetadata(TranslationStatusMetadata.StatusMessageKey, message);
+    }
+
+    private static Result<string> AttachFallbackStatus(Result<string> result, string fallbackReason)
+    {
+        if (result is null)
+        {
+            return result;
+        }
+
+        var statusMessage = $"Provider fallback used; using legacy translator. Reason: {fallbackReason}";
+        var fallbackStatus = new Success("Translation provider fallback was used.")
+            .WithMetadata(TranslationStatusMetadata.StatusMessageKey, statusMessage);
+        return result.WithSuccess(fallbackStatus);
     }
 }

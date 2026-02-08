@@ -50,14 +50,15 @@
 ### Provider Selection Behavior
 - **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
   logic; provider routing is **not** invoked unless explicitly configured in settings.
-- **Provider routing**: if a provider is selected **and** the registry can resolve it, the provider path is
-  selected (currently stubbed). If provider resolution fails, the router logs a warning and short-circuits to the
-  legacy translator path.
-  Provider/model names are resolved from the router request first, with app settings as fallback.
+- **Provider routing**: provider calls are attempted only when the translation dialog explicitly enables provider
+  routing (`UseProviderForTranslation`). When enabled, the router resolves provider/model names from the request
+  first, with app settings as fallback, and then attempts provider execution.
+  If provider resolution fails, the router logs a warning and short-circuits to the legacy translator path with a
+  non-blocking status message.
 - **Fallback + error handling**: provider failures return structured errors (provider name + failure kind), and the
-  router can fall back to the configured legacy translator; if no fallback is configured, the translation dialog
-  surfaces an error message. Fallbacks now attach a status message that includes the provider failure reason so the
-  translation dialog can display why a fallback was used.
+  router can fall back to the configured legacy translator on a per-item basis; if no fallback is available, the
+  translation dialog surfaces an error message. Fallbacks attach a status message that includes the provider failure
+  reason so the translation dialog can display why a fallback was used.
 - **Safety by default**: provider routing is **opt-in** and must remain inert until users explicitly set a provider
   name/model. Default settings keep the legacy translator path active and stable.
 - **Translation dialog toggle**: the dialog exposes a `Use provider routing` toggle that sets
