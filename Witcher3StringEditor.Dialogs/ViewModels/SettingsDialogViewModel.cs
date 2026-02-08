@@ -58,8 +58,8 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
         }
 
-        _ = UpdateTerminologyStatusAsync();
-        _ = UpdateStyleGuideStatusAsync();
+        UpdateTerminologyStatus();
+        UpdateStyleGuideStatus();
     }
 
     /// <summary>
@@ -319,17 +319,17 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         if (e.PropertyName == nameof(IAppSettings.UseTerminologyPack) ||
             e.PropertyName == nameof(IAppSettings.TerminologyFilePath))
         {
-            _ = UpdateTerminologyStatusAsync();
+            UpdateTerminologyStatus();
         }
 
         if (e.PropertyName == nameof(IAppSettings.UseStyleGuide) ||
             e.PropertyName == nameof(IAppSettings.StyleGuideFilePath))
         {
-            _ = UpdateStyleGuideStatusAsync();
+            UpdateStyleGuideStatus();
         }
     }
 
-    private async Task UpdateTerminologyStatusAsync()
+    private void UpdateTerminologyStatus()
     {
         try
         {
@@ -356,7 +356,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         }
     }
 
-    private async Task UpdateStyleGuideStatusAsync()
+    private void UpdateStyleGuideStatus()
     {
         try
         {
