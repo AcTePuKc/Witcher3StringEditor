@@ -564,12 +564,13 @@ internal partial class MainWindowViewModel : ObservableObject
         var translators = serviceProvider.GetServices<ITranslator>().ToArray(); // Get all available translators
         var names = translators.Select(x => x.Name); // Extract translator names
         translators.ForEach(x => x.Cast<IDisposable>().Dispose()); // Dispose of translator instances
+        var supportedCultures = serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures;
         await dialogService.ShowDialogAsync(this,
             new SettingsDialogViewModel(appSettings, dialogService,
                 serviceProvider.GetRequiredService<ITerminologyLoader>(),
                 serviceProvider.GetRequiredService<IStyleGuideLoader>(),
                 names,
-                serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures)); // Show the settings dialog
+                supportedCultures)); // Show the settings dialog
     }
 
     /// <summary>

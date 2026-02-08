@@ -101,6 +101,8 @@
 - **Resolver stub** lives in `Witcher3StringEditor/Services/` to merge profiles with settings later.
 - **Settings resolver stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfileSettingsResolver.cs`
   with a no-op implementation in `Witcher3StringEditor/Services/NoopTranslationProfileSettingsResolver.cs`.
+- **Selection service stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfileSelectionService.cs`
+  with a no-op implementation in `Witcher3StringEditor/Services/NoopTranslationProfileSelectionService.cs`.
 - **Catalog stub** lives in `Witcher3StringEditor.Common/Profiles/ITranslationProfileCatalog.cs` with a no-op
   implementation in `Witcher3StringEditor/Services/NoopTranslationProfileCatalog.cs` for lightweight profile
   listings in future settings UI.

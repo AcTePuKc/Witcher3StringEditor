@@ -234,6 +234,28 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 
 ---
 
+## Issue 9: Translation profile selection service (stub)
+**Description**
+Introduce a minimal selection service abstraction so future UI/profile flows can set or clear the active profile without
+directly binding to settings. Keep behavior inert by default.
+
+**Acceptance Criteria**
+- `ITranslationProfileSelectionService` provides get/set methods for the selected profile id.
+- No-op implementation returns null and ignores set requests.
+- No wiring changes to existing translation or settings flows.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Profiles/ITranslationProfileSelectionService.cs`
+- `Witcher3StringEditor/Services/NoopTranslationProfileSelectionService.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: app startup without profile selection side effects
+- No regressions: translation dialog still opens and legacy translator list is intact
+
+---
+
 ## Tracking Note: GoogleTranslator disposal lifecycle
 **Observation**
 `GoogleTranslator` instances (from `GTranslate.Translators`) are created via DI as `ITranslator` and disposed in two spots:
