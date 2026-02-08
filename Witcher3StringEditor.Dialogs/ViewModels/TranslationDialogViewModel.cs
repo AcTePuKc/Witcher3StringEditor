@@ -143,6 +143,17 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     public string ProviderReadinessStatus => BuildProviderReadinessStatus();
 
     /// <summary>
+    ///     Gets a provider readiness message derived from settings.
+    /// </summary>
+    public string ProviderReadinessMessage => BuildProviderReadinessMessage();
+
+    /// <summary>
+    ///     Gets whether the provider readiness banner should be shown.
+    /// </summary>
+    public bool IsProviderReadinessBannerVisible => TranslationMode == TranslationMode.Provider &&
+                                                    IsProviderSettingsIncomplete();
+
+    /// <summary>
     ///     Gets the available translation mode options for the UI.
     /// </summary>
     public IReadOnlyList<TranslationMode> TranslationModes => TranslationModeOptions;
@@ -323,7 +334,37 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
             return "Provider routing is disabled; using legacy translator.";
         }
 
+        var missingParts = GetMissingProviderSettings();
+
+        if (missingParts.Count > 0)
+        {
+            return $"Provider configured; missing {string.Join(" and ", missingParts)}.";
+        }
+
+        return "Provider configuration looks complete (routing remains preview-only).";
+    }
+
+    private string BuildProviderReadinessMessage()
+    {
+        var missingParts = GetMissingProviderSettings();
+        if (missingParts.Count == 0)
+        {
+            return "Provider settings look complete for provider-mode translation.";
+        }
+
+        return missingParts.Count == 1
+            ? $"Provider mode is selected, but {missingParts[0]} is missing."
+            : $"Provider mode is selected, but {string.Join(" and ", missingParts)} are missing.";
+    }
+
+    private List<string> GetMissingProviderSettings()
+    {
         var missingParts = new List<string>();
+        if (string.IsNullOrWhiteSpace(appSettings.TranslationProviderName))
+        {
+            missingParts.Add("provider");
+        }
+
         if (string.IsNullOrWhiteSpace(appSettings.TranslationModelName))
         {
             missingParts.Add("model");
@@ -334,12 +375,12 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
             missingParts.Add("base URL");
         }
 
-        if (missingParts.Count > 0)
-        {
-            return $"Provider configured; missing {string.Join(" and ", missingParts)}.";
-        }
+        return missingParts;
+    }
 
-        return "Provider configuration looks complete (routing remains preview-only).";
+    private bool IsProviderSettingsIncomplete()
+    {
+        return GetMissingProviderSettings().Count > 0;
     }
 
     private string GetModelDisplayName()
@@ -354,11 +395,14 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         OnPropertyChanged(nameof(ActiveEngineLabel));
         OnPropertyChanged(nameof(SelectedProviderSummary));
         OnPropertyChanged(nameof(ProviderReadinessStatus));
+        OnPropertyChanged(nameof(ProviderReadinessMessage));
+        OnPropertyChanged(nameof(IsProviderReadinessBannerVisible));
     }
 
     partial void OnTranslationModeChanged(TranslationMode value)
     {
         CurrentViewModel.UseProviderForTranslation = value == TranslationMode.Provider;
+        OnPropertyChanged(nameof(IsProviderReadinessBannerVisible));
     }
 
     /// <summary>
