@@ -771,3 +771,95 @@ opt-in and ensure the selected profile can be cleared to restore default setting
 - Manual: create/edit/delete a profile and confirm the JSON store updates
 - Manual: select/clear a profile and confirm the effective settings preview updates
 - No regressions: translation dialog still opens and legacy translators list intact
+
+---
+
+## Issue 61: Provider routing opt-in gating (toggle enforcement)
+**Description**
+Update the translation router to honor the `UseProviderForTranslation` toggle so provider routing only occurs when the
+user explicitly opts in. Keep the legacy translator path as the default.
+
+**Acceptance Criteria**
+- `TranslationRouter` checks `UseProviderForTranslation` before attempting provider resolution.
+- When the toggle is off, the router always uses the legacy translator path even if provider settings are present.
+- No behavior changes for users who do not enable the toggle.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`
+- `Witcher3StringEditor/Services/TranslationRouter.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs` (if request shaping needs to be adjusted)
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: toggle provider routing on/off in the translation dialog and confirm behavior remains unchanged when off
+- No regressions: legacy translator selection remains the default path
+
+---
+
+## Issue 62: Provider selection validation step (pre-flight)
+**Description**
+Add a pre-flight validation step that checks provider routing inputs (provider name, model, base URL, and cached model
+list) before invoking the provider. The validation should be inert by default and only gate provider routing when the
+opt-in toggle is enabled.
+
+**Acceptance Criteria**
+- A validation result model exists with status + message fields for provider routing readiness.
+- The router (or a validation helper) performs validation before provider execution when opt-in routing is enabled.
+- Validation failures surface a clear warning and fall back to legacy translation without throwing.
+- No network calls or behavioral changes when routing is disabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/TranslationProviderValidationResult.cs`
+- `Witcher3StringEditor.Common/Translation/ITranslationProviderValidator.cs`
+- `Witcher3StringEditor/Services/NoopTranslationProviderValidator.cs`
+- `Witcher3StringEditor/Services/TranslationRouter.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: enable provider routing and confirm validation warnings appear when provider/model is missing
+- No regressions: legacy translator selection remains the default path
+
+---
+
+## Issue 63: Translation dialog provider validation status line
+**Description**
+Expose provider validation status in the translation dialog so users can see readiness before routing. This should be
+read-only and should not change behavior unless routing is explicitly enabled.
+
+**Acceptance Criteria**
+- Translation dialog shows a status line for provider validation results (ok/warning/error).
+- Status updates when provider/model/base URL settings change.
+- No routing behavior changes; the status is informational only.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/Views/TranslationDialog.xaml`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open translation dialog and confirm validation status updates as settings change
+- No regressions: legacy translator selection remains the default path
+
+---
+
+## Issue 64: Provider routing toggle + validation QA checklist
+**Description**
+Define a QA checklist that explicitly covers opt-in routing and validation behaviors, including fallbacks and error
+states, so future implementations do not regress the legacy translator flow.
+
+**Acceptance Criteria**
+- A QA checklist file documents build + manual checks for routing toggle and validation behavior.
+- Checklist covers on/off toggle states, missing provider/model scenarios, and fallback to legacy translators.
+- Checklist calls out that routing must remain opt-in and inert by default.
+
+**Files to Touch**
+- `docs/qa/provider-routing-validation.md`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: review checklist for completeness and clarity
+- No regressions: documentation-only change
