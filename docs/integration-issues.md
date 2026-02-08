@@ -198,14 +198,6 @@ single read-only context object for future translation routing. Keep it unused b
 - Issue 4 (Terminology + style pack loading hooks)
 - Issue 5 (Translation profile storage + resolver)
 
-**QA Checklist**
-- Build: `dotnet build`
-- Manual: launch app and open Translation dialog
-- No regressions: translation still uses existing translator selection
-
-**Current Status / Partial Completion**
-- A context builder exists, but it is not wired into translation routing yet.
-
 ---
 
 ## Issue 8: Settings UI placeholders for integrations
@@ -376,3 +368,33 @@ rules opt-in and default to no-op behavior so translation output remains unchang
 - Build: `dotnet build`
 - Manual: open Settings dialog and confirm no regressions
 - No regressions: translation output unchanged when post-processing is disabled
+
+---
+
+## Issue 14: Translation memory lookup/save wiring in translation dialogs
+**Description**
+Wire translation memory lookups into the single-item and batch translation flows so the dialog can reuse cached
+translations and store new results after successful translations. Keep the default behavior inert via the no-op
+translation memory service.
+
+**Acceptance Criteria**
+- Translation dialog view models call `ITranslationMemoryService.LookupAsync` before provider/legacy translation.
+- Successful translations are saved via `ITranslationMemoryService.SaveAsync`.
+- The no-op translation memory service remains the default registration.
+- No UI/UX changes and no behavior changes when translation memory is disabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
+- `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs`
+- `Witcher3StringEditor/App.xaml.cs`
+- `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs`
+- `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open the translation dialog and run a single translation to ensure no errors
+- No regressions: legacy translator selection remains the default

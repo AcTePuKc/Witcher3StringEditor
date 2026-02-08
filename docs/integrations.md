@@ -52,7 +52,9 @@
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
 - **Workflow stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs` with a
-  no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`.
+  no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`. The translation dialog
+  view models call `LookupAsync` before translation and `SaveAsync` after successful translations, but the default
+  no-op service returns empty results and stores nothing.
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
 - **Settings provider stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemorySettingsProvider.cs`
   with a basic implementation in `Witcher3StringEditor/Services/TranslationMemorySettingsProvider.cs`.
@@ -105,8 +107,8 @@
 - **Settings dialog** should remain the single source of truth for provider/model/profile selection.
 - **Main translation flow** (`MainWindowViewModel`) should eventually call the provider registry when
   `TranslationProviderName` is configured; otherwise it should keep using the existing translator list.
-- **Translation memory** should be queried right before provider/translator execution and saved after a
-  successful result. (TODO: hook into the translation command path.)
+- **Translation memory** is queried right before provider/translator execution and saved after a successful
+  result in the translation dialog view models (single-item and batch). The default service remains inert.
 - **Terminology/style** should be loaded on demand (path in settings or profile) and injected into the
   provider request metadata, with validation hooks after translation. (TODO: inject + validate.)
 
