@@ -17,7 +17,6 @@ using Microsoft.Extensions.DependencyModel;
 using Serilog;
 using Syncfusion.Data.Extensions;
 using Witcher3StringEditor.Common.Abstractions;
-using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Common.Translation;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Locales;
@@ -565,9 +564,7 @@ internal partial class MainWindowViewModel : ObservableObject
         translators.ForEach(x => x.Cast<IDisposable>().Dispose()); // Dispose of translator instances
         await dialogService.ShowDialogAsync(this,
             new SettingsDialogViewModel(appSettings, dialogService, names,
-                serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures,
-                serviceProvider.GetRequiredService<ITerminologyLoader>(),
-                serviceProvider.GetRequiredService<IStyleGuideLoader>())); // Show the settings dialog
+                serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures)); // Show the settings dialog
     }
 
     /// <summary>
