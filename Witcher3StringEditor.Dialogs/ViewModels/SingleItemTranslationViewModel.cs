@@ -142,6 +142,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             if (string.IsNullOrWhiteSpace(CurrentTranslateItemModel
                     ?.TranslatedText)) // Check if translation text is empty
             {
+                StatusMessage = string.Empty;
                 IsBusy = true; // Set busy state
                 Guard.IsNotNullOrWhiteSpace(CurrentTranslateItemModel?.Text);
                 CancellationTokenSource?.Dispose(); // Dispose of the cancellation token source
@@ -151,6 +152,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 // TODO: Inject terminology/style prompts before translation once provider routing supports it.
                 var translationResult = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
                     ToLanguage, FormLanguage, CancellationTokenSource); // Execute the translation task
+                UpdateStatusMessage(translationResult);
                 if (translationResult.IsSuccess) // Check if translation was successful
                 {
                     Guard.IsNotNullOrWhiteSpace(translationResult.Value); // Check if translation result is not empty

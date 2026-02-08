@@ -3,6 +3,7 @@ using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
 using GTranslate;
 using GTranslate.Translators;
+using FluentResults;
 using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
@@ -51,6 +52,11 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     ///     Gets or sets the target language for translation
     /// </summary>
     [ObservableProperty] private ILanguage toLanguage;
+
+    /// <summary>
+    ///     Gets or sets the latest translation status message.
+    /// </summary>
+    [ObservableProperty] private string statusMessage = string.Empty;
 
     /// <summary>
     ///     Initializes a new instance of the TranslationViewModelBase class
@@ -134,5 +140,23 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     partial void OnToLanguageChanged(ILanguage value)
     {
         Log.Information("The target language has been changed to: {Name}.", value.Name);
+    }
+
+    /// <summary>
+    ///     Updates the status message based on translation result metadata.
+    /// </summary>
+    /// <param name="result">The translation result to inspect.</param>
+    private protected void UpdateStatusMessage(Result<string> result)
+    {
+        if (result is null)
+        {
+            return;
+        }
+
+        var status = result.GetStatusMessage();
+        if (!string.IsNullOrWhiteSpace(status))
+        {
+            StatusMessage = status;
+        }
     }
 }
