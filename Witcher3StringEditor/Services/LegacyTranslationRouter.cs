@@ -229,7 +229,7 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
 
     private bool ShouldFallbackToLegacyTranslator()
     {
-        return !string.IsNullOrWhiteSpace(appSettings.Translator) && legacyTranslators.Any();
+        return legacyTranslators.Any();
     }
 
     private string? ResolveProviderName(TranslationRouterRequest request)
