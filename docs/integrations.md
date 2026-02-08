@@ -60,8 +60,11 @@
 - **Safety by default**: provider routing is **opt-in** and must remain inert until users explicitly set a provider
   name/model. Default settings keep the legacy translator path active and stable.
 - **Translation dialog toggle**: the dialog exposes a `Use provider routing` toggle that sets
-  `UseProviderForTranslation` on router requests. The flag is currently informational; routing still follows the
-  existing provider-name checks until the router is updated to honor the toggle.
+  `UseProviderForTranslation` on router requests. Routing must remain opt-in: the router should only attempt provider
+  calls when this toggle is enabled, even if provider settings are present.
+- **Provider validation step (planned)**: before any provider execution, the router should run a pre-flight validation
+  step that checks provider name, model, base URL, and cached model availability. Validation failures should surface a
+  warning and fall back to legacy translation without throwing.
 - The Translation dialog header now shows a read-only provider/model/base URL summary sourced from app settings to
   surface future provider selection without changing routing.
 - The header display uses `TranslationModelName` directly; when it is empty the UI shows “(none selected)”.
@@ -175,7 +178,8 @@
 
 ## No-op Behavior Notes (Safety Defaults)
 - **Provider routing**: if no provider is selected, or resolution fails, the router falls back to legacy translators.
-  Provider calls must never execute unless the user has explicitly configured a provider and model.
+  Provider calls must never execute unless the user has explicitly configured a provider and model **and** enabled the
+  opt-in routing toggle.
 - **Model discovery**: cached model lists are refreshed only on explicit user action; translation dialogs do not
   auto-refresh or perform background calls.
 - **Translation memory**: the no-op service returns empty results and performs no writes unless enabled, and even then
