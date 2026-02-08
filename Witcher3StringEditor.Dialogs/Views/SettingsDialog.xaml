@@ -238,6 +238,35 @@
                                    Text="{Binding ModelStatusText}" />
                     </StackPanel>
                 </ui:SettingsCard>
+                <ui:SettingsCard Header="Translation memory">
+                    <ui:SettingsCard.HeaderIcon>
+                        <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Save}" />
+                    </ui:SettingsCard.HeaderIcon>
+                    <ui:SettingsCard.Description>
+                        <Grid>
+                            <TextBlock Text="{Binding AppSettings.TranslationMemoryPath}" />
+                            <TextBlock Text="No translation memory path set.">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AppSettings.TranslationMemoryPath}" Value="">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </ui:SettingsCard.Description>
+                    <StackPanel>
+                        <CheckBox Content="Enable translation memory"
+                                  IsChecked="{Binding AppSettings.UseTranslationMemory, Mode=TwoWay}" />
+                        <TextBlock Margin="0,8,0,4" Text="Translation memory path" />
+                        <TextBox
+                            Text="{Binding AppSettings.TranslationMemoryPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </ui:SettingsCard>
                 <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.TerminologySettingsHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />

@@ -29,7 +29,7 @@
   profile/provider/model/terminology/translation memory selections.
 - **Ollama stub** lives in `Witcher3StringEditor.Integrations.Ollama/` with settings + model listing placeholder.
 - **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`,
-  `CachedTranslationModels`, `UseTerminologyPack`, `UseStyleGuide`).
+  `CachedTranslationModels`, `UseTerminologyPack`, `UseStyleGuide`, `UseTranslationMemory`, `TranslationMemoryPath`).
 
 ### Provider Selection Behavior
 - **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
@@ -54,6 +54,8 @@
 - **Workflow stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`.
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
+- **Settings provider stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemorySettingsProvider.cs`
+  with a basic implementation in `Witcher3StringEditor/Services/TranslationMemorySettingsProvider.cs`.
 - **SQLite storage** lives in `Witcher3StringEditor.Data/TranslationMemory/`.
 - **Database initializer stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
   with a no-op implementation in `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`.
@@ -148,7 +150,8 @@ See `docs/fallback-investigation.md` for the current single-item/batch flow trac
 3. Keep translation memory + QA stores inert until explicitly enabled.
 4. Extend terminology/style loading with prompt injection + validation hooks (TODOs only).
 5. Add profile selection wiring (store + resolver) without altering existing translator flow.
-6. Add minimal settings stubs for translation memory enablement + local database path.
+6. Validate translation memory settings wiring (UseTranslationMemory + TranslationMemoryPath now exist, but they
+   are not consumed by the translation flow yet).
 7. Introduce a translation pipeline context builder to combine settings, profiles, and terminology (TODOs only).
 8. Add opt-in post-processing rules for AI output cleanup (polite prefix stripping), defaulting to no-op.
 

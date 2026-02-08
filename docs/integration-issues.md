@@ -272,7 +272,33 @@ should attempt to load the selected file and surface a status line (loaded/faile
 
 ---
 
-## Issue 10: Translation router request metadata expansion
+## Issue 10: Translation memory settings toggle + path persistence
+**Description**
+Add inert settings for translation memory enablement and local database path selection. Keep the toggle and path display
+in the Settings dialog without wiring translation flow logic.
+
+**Acceptance Criteria**
+- `IAppSettings` includes `UseTranslationMemory` and `TranslationMemoryPath`.
+- Settings dialog shows a translation memory card with a toggle and path display field.
+- Provide a settings provider stub that maps app settings to `TranslationMemorySettings`.
+- No translation flow behavior changes.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs`
+- `Witcher3StringEditor/Models/AppSettings.cs`
+- `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemorySettingsProvider.cs`
+- `Witcher3StringEditor/Services/TranslationMemorySettingsProvider.cs`
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open Settings dialog and confirm the translation memory card renders
+- No regressions: legacy translator selection remains unchanged
+
+---
+
+## Issue 11: Translation router request metadata expansion
 **Description**
 Extend the translation router request DTO to carry optional provider and model names so future call sites can override
 app settings. Add a noop router implementation for scenarios where routing should be disabled without side effects.
@@ -298,7 +324,7 @@ app settings. Add a noop router implementation for scenarios where routing shoul
 
 ---
 
-## Issue 11: Ollama integration settings + model list stub
+## Issue 12: Ollama integration settings + model list stub
 **Description**
 Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed client, and provide a placeholder `ListModelsAsync` method.
 
@@ -326,7 +352,7 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
 
 ---
 
-## Issue 12: Output post-processing rules (opt-in)
+## Issue 13: Output post-processing rules (opt-in)
 **Description**
 Introduce a minimal post-processing pipeline for translation output cleanup (e.g., stripping polite prefixes). Keep
 rules opt-in and default to no-op behavior so translation output remains unchanged unless users enable it.

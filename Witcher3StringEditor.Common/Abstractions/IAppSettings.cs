@@ -89,6 +89,16 @@ public interface IAppSettings
     public bool UseStyleGuide { get; set; }
 
     /// <summary>
+    ///     Gets or sets a value indicating whether translation memory is enabled (future integration)
+    /// </summary>
+    public bool UseTranslationMemory { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the translation memory database path (future integration)
+    /// </summary>
+    public string TranslationMemoryPath { get; set; }
+
+    /// <summary>
     ///     Gets or sets the optional translation profile id (future integration)
     /// </summary>
     public string? TranslationProfileId { get; set; }
