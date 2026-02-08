@@ -567,15 +567,17 @@ internal partial class MainWindowViewModel : ObservableObject
         translators.ForEach(x => x.Cast<IDisposable>().Dispose()); // Dispose of translator instances
         var supportedCultures = serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures;
         await dialogService.ShowDialogAsync(this,
-            new SettingsDialogViewModel(appSettings, dialogService,
-                serviceProvider.GetRequiredService<ITranslationProfileCatalog>(),
-                serviceProvider.GetRequiredService<ITranslationProfileResolver>(),
-                serviceProvider.GetRequiredService<ITerminologyLoader>(),
-                serviceProvider.GetRequiredService<IStyleGuideLoader>(),
-                serviceProvider.GetRequiredService<ITerminologyValidationService>(),
-                serviceProvider.GetRequiredService<ITranslationProviderHealthCheck>(),
-                names,
-                supportedCultures)); // Show the settings dialog
+            new SettingsDialogViewModel(
+                appSettings: appSettings,
+                dialogService: dialogService,
+                profileCatalog: serviceProvider.GetRequiredService<ITranslationProfileCatalog>(),
+                profileResolver: serviceProvider.GetRequiredService<ITranslationProfileResolver>(),
+                terminologyLoader: serviceProvider.GetRequiredService<ITerminologyLoader>(),
+                styleGuideLoader: serviceProvider.GetRequiredService<IStyleGuideLoader>(),
+                terminologyValidationService: serviceProvider.GetRequiredService<ITerminologyValidationService>(),
+                providerHealthCheck: serviceProvider.GetRequiredService<ITranslationProviderHealthCheck>(),
+                translators: names,
+                supportedCultures: supportedCultures)); // Show the settings dialog
     }
 
     /// <summary>
