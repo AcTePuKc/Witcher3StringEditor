@@ -272,8 +272,7 @@
                         </Button>
                     </StackPanel>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.StyleGuideSettingsDescription}}"
-                                 Header="{I18N {x:Static l:LangKeys.StyleGuideSettingsHeader}}">
+                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.StyleGuideSettingsHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
