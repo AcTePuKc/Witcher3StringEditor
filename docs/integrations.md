@@ -48,7 +48,8 @@
   profile/provider/model/terminology/translation memory selections.
 - **Ollama stub** lives in `Witcher3StringEditor.Integrations.Ollama/` with settings + model listing placeholder.
 - **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`,
-  `CachedTranslationModels`, `UseTerminologyPack`, `UseStyleGuide`, `UseTranslationMemory`, `TranslationMemoryPath`).
+  `CachedTranslationModels`, `TranslationProviderTimeoutSeconds`, `UseTerminologyPack`, `UseStyleGuide`,
+  `UseTranslationMemory`, `TranslationMemoryPath`).
 
 ### Provider Selection Behavior
 - **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
@@ -236,6 +237,7 @@ See `docs/fallback-investigation.md` for the current single-item/batch flow trac
   - **Fallback after failed provider attempt:**
     - Provider returns an error (e.g., network/HTTP failure, invalid response, validation error).
     - Provider call timeout (configurable timeout expires before response).
+      - Settings placeholder: `TranslationProviderTimeoutSeconds` (not enforced yet).
 - **Fallback behavior**: if a trigger condition is hit, the router should fall back to the legacy translator when
   configured; otherwise surface a localized error message in the translation window.
 - **Open questions / telemetry**:
