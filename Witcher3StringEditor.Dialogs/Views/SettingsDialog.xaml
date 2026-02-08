@@ -238,8 +238,7 @@
                                    Text="{Binding ModelStatusText}" />
                     </StackPanel>
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.TerminologySettingsDescription}}"
-                                 Header="{I18N {x:Static l:LangKeys.TerminologySettingsHeader}}">
+                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.TerminologySettingsHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
