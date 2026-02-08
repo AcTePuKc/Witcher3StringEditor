@@ -88,6 +88,7 @@ Add a provider registry abstraction that maps provider names to implementations 
 - Provider registry returns known provider descriptors and resolves providers by name.
 - Settings dialog has placeholders for provider/model/base URL without changing translator behavior.
 - Model discovery uses provider `ListModelsAsync` (stub behavior allowed).
+- Settings dialog includes a Test Connection button that reports provider health (success/failure).
 - Cached model list persists in settings for offline UX.
 - Document which registry type is DI-backed vs. legacy/local, with a TODO to consolidate later.
 
@@ -95,6 +96,7 @@ Add a provider registry abstraction that maps provider names to implementations 
 - `Witcher3StringEditor.Common/Translation/*`
 - `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`
 - `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
+- `Witcher3StringEditor/Services/TranslationProviderHealthCheck.cs`
 - `Witcher3StringEditor/App.xaml.cs`
 - `Witcher3StringEditor.Integrations.Ollama/*`
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
