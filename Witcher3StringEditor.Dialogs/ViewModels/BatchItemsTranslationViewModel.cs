@@ -295,8 +295,24 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         TranslationPipelineContext pipelineContext)
     {
         // TODO: Inject terminology/style prompts before batch translation once provider routing supports it.
+        string? providerName = null;
+        string? modelName = null;
+        string? baseUrl = null;
+
+        if (UseProviderForTranslation)
+        {
+            providerName = AppSettings.TranslationProviderName;
+            modelName = AppSettings.TranslationModelName;
+            baseUrl = AppSettings.TranslationBaseUrl;
+            UpdateProviderRoutingStatus(providerName, modelName);
+        }
+
         var translation =
             await translationRouter.TranslateAsync(new TranslationRouterRequest(text, tLanguage, fLanguage,
+                ProviderName: providerName,
+                ModelName: modelName,
+                BaseUrl: baseUrl,
+                UseProviderForTranslation: UseProviderForTranslation,
                 PipelineContext: pipelineContext));
         // TODO: Validate translated text against terminology/style rules post-translation.
         if (translation.IsFailure())

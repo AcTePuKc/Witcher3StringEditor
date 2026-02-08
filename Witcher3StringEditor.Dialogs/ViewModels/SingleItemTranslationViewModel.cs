@@ -227,7 +227,24 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             return Result.Ok(cachedTranslation.TargetText);
         }
 
-        var request = new TranslationRouterRequest(text, toLanguage, formLanguage, PipelineContext: pipelineContext);
+        string? providerName = null;
+        string? modelName = null;
+        string? baseUrl = null;
+
+        if (UseProviderForTranslation)
+        {
+            providerName = AppSettings.TranslationProviderName;
+            modelName = AppSettings.TranslationModelName;
+            baseUrl = AppSettings.TranslationBaseUrl;
+            UpdateProviderRoutingStatus(providerName, modelName);
+        }
+
+        var request = new TranslationRouterRequest(text, toLanguage, formLanguage,
+            ProviderName: providerName,
+            ModelName: modelName,
+            BaseUrl: baseUrl,
+            UseProviderForTranslation: UseProviderForTranslation,
+            PipelineContext: pipelineContext);
         var translateTask = TranslationRouter.TranslateAsync(request, cancellationTokenSource.Token);
         var completedTask = await Task.WhenAny(
             translateTask,

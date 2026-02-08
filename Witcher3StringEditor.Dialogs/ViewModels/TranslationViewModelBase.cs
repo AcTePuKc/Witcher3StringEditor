@@ -80,6 +80,11 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     [ObservableProperty] private string statusMessage = string.Empty;
 
     /// <summary>
+    ///     Gets or sets whether provider routing should be used for translation.
+    /// </summary>
+    [ObservableProperty] private bool useProviderForTranslation;
+
+    /// <summary>
     ///     Initializes a new instance of the TranslationViewModelBase class
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
@@ -185,6 +190,21 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         {
             StatusMessage = status;
         }
+    }
+
+    /// <summary>
+    ///     Updates the status message when provider routing is selected.
+    /// </summary>
+    /// <param name="providerName">The provider name.</param>
+    /// <param name="modelName">The provider model name.</param>
+    private protected void UpdateProviderRoutingStatus(string? providerName, string? modelName)
+    {
+        if (string.IsNullOrWhiteSpace(providerName) || string.IsNullOrWhiteSpace(modelName))
+        {
+            return;
+        }
+
+        StatusMessage = $"Using provider: {providerName}/{modelName}";
     }
 
     /// <summary>

@@ -37,7 +37,8 @@
   - No direct usage of the legacy registry class is currently detected.
 - **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
   depending on settings; provider calls are guarded and return structured failures when providers error out.
-  The router request now carries optional provider/model names so call sites can override settings when needed.
+  The router request now carries optional provider/model names plus a `UseProviderForTranslation` flag so call
+  sites can request provider routing when the router supports it.
 - **Model catalog stub** lives in `Witcher3StringEditor.Common/Translation/ITranslationModelCatalog.cs` with a
   no-op implementation in `Witcher3StringEditor/Services/NoopTranslationModelCatalog.cs`.
 - **Pipeline context** lives in `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs` and carries
@@ -58,11 +59,19 @@
   surfaces an error message.
 - **Safety by default**: provider routing is **opt-in** and must remain inert until users explicitly set a provider
   name/model. Default settings keep the legacy translator path active and stable.
+- **Translation dialog toggle**: the dialog exposes a `Use provider routing` toggle that sets
+  `UseProviderForTranslation` on router requests. Routing must remain opt-in: the router should only attempt provider
+  calls when this toggle is enabled, even if provider settings are present.
+- **Provider validation step (planned)**: before any provider execution, the router should run a pre-flight validation
+  step that checks provider name, model, base URL, and cached model availability. Validation failures should surface a
+  warning and fall back to legacy translation without throwing.
 - The Translation dialog header now shows a read-only provider/model/base URL summary sourced from app settings to
   surface future provider selection without changing routing.
 - The header display uses `TranslationModelName` directly; when it is empty the UI shows “(none selected)”.
 - The translation dialog also includes a read-only provider readiness status line derived from current settings,
   highlighting missing configuration without activating routing.
+- Translation view models surface a status line for provider routing attempts (provider + model) and for legacy
+  fallbacks, so users can confirm which path the router chose without changing behavior.
 - Model lists are only refreshed from the Settings dialog on explicit user action; translation dialogs do not
   auto-refresh models.
 
@@ -169,7 +178,8 @@
 
 ## No-op Behavior Notes (Safety Defaults)
 - **Provider routing**: if no provider is selected, or resolution fails, the router falls back to legacy translators.
-  Provider calls must never execute unless the user has explicitly configured a provider and model.
+  Provider calls must never execute unless the user has explicitly configured a provider and model **and** enabled the
+  opt-in routing toggle.
 - **Model discovery**: cached model lists are refreshed only on explicit user action; translation dialogs do not
   auto-refresh or perform background calls.
 - **Translation memory**: the no-op service returns empty results and performs no writes unless enabled, and even then

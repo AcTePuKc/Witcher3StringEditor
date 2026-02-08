@@ -36,7 +36,6 @@ public static class ResultExtensions
         }
 
         var statusReason = result.Reasons
-            .OfType<Success>()
             .FirstOrDefault(reason =>
                 reason.Metadata.TryGetValue(TranslationStatusMetadata.StatusMessageKey, out _));
 
