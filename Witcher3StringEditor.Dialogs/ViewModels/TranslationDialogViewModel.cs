@@ -49,6 +49,11 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     private readonly ITranslationPostProcessor translationPostProcessor;
 
     /// <summary>
+    ///     Builds read-only translation pipeline context.
+    /// </summary>
+    private readonly ITranslationPipelineContextBuilder pipelineContextBuilder;
+
+    /// <summary>
     ///     The collection of items to translate
     /// </summary>
     private readonly IReadOnlyList<ITrackableW3StringItem> w3StringItems;
@@ -69,10 +74,12 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
     /// <param name="translationRouter">Translation router service</param>
+    /// <param name="pipelineContextBuilder">Translation pipeline context builder</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="index">Starting index for translation</param>
     public TranslationDialogViewModel(IAppSettings appSettings, ITranslator translator,
         ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
+        ITranslationPipelineContextBuilder pipelineContextBuilder,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
         int index)
     {
@@ -80,13 +87,14 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         this.translator = translator;
         this.translationRouter = translationRouter;
         this.translationPostProcessor = translationPostProcessor;
+        this.pipelineContextBuilder = pipelineContextBuilder;
         this.appSettings = appSettings;
         this.w3StringItems = w3StringItems;
         Log.Information("Total items to translate: {Count}.", this.w3StringItems.Count); // Log the number of items
         Log.Information("Starting index: {Index}.", index); // Log the starting index
         CurrentViewModel =
             new SingleItemTranslationViewModel(appSettings, translator, translationRouter, translationPostProcessor,
-                this.w3StringItems, index); // Initialize the current view model
+                pipelineContextBuilder, this.w3StringItems, index); // Initialize the current view model
     }
 
     /// <summary>
@@ -123,9 +131,9 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
                 var formLange = CurrentViewModel.FormLanguage; // Save current source language
                 CurrentViewModel = CurrentViewModel is BatchItemsTranslationViewModel // Switch view model type
                     ? new SingleItemTranslationViewModel(appSettings, translator, translationRouter,
-                        translationPostProcessor, w3StringItems, index)
+                        translationPostProcessor, pipelineContextBuilder, w3StringItems, index)
                     : new BatchItemsTranslationViewModel(appSettings, translator, translationRouter,
-                        translationPostProcessor, w3StringItems, index + 1);
+                        translationPostProcessor, pipelineContextBuilder, w3StringItems, index + 1);
                 CurrentViewModel.FormLanguage = formLange; // Restore source language
                 Title = CurrentViewModel is BatchItemsTranslationViewModel // Update dialog title
                     ? Strings.BatchTranslateDialogTitle

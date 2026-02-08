@@ -54,12 +54,15 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
     /// <param name="translationRouter">Translation router service</param>
+    /// <param name="pipelineContextBuilder">Pipeline context builder</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="index">Initial index of the item to translate</param>
     public SingleItemTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
+        ITranslationPipelineContextBuilder pipelineContextBuilder,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
-        int index) : base(appSettings, translator, translationRouter, translationPostProcessor, w3StringItems)
+        int index) : base(appSettings, translator, translationRouter, translationPostProcessor,
+        pipelineContextBuilder, w3StringItems)
     {
         CurrentItemIndex = index;
         Log.Information("Initializing SingleItemTranslationViewModel."); // Log initialization
@@ -207,7 +210,8 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     private async Task<Result<string>> ExecuteTranslationTask(string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
     {
-        var request = new TranslationRouterRequest(text, toLanguage, formLanguage);
+        var pipelineContext = await PipelineContextBuilder.BuildAsync(cancellationTokenSource.Token);
+        var request = new TranslationRouterRequest(text, toLanguage, formLanguage, PipelineContext: pipelineContext);
         var translateTask = TranslationRouter.TranslateAsync(request, cancellationTokenSource.Token);
         var completedTask = await Task.WhenAny(
             translateTask,
