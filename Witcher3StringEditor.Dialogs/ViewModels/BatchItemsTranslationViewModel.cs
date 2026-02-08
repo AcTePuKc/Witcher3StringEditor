@@ -9,6 +9,7 @@ using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Translation;
+using Witcher3StringEditor.Common.TranslationMemory;
 using Witcher3StringEditor.Messaging;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -71,12 +72,15 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
     /// <param name="translationRouter">Translation router service</param>
+    /// <param name="pipelineContextBuilder">Pipeline context builder</param>
+    /// <param name="translationMemoryService">Translation memory service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="startIndex">Initial start index for translation</param>
     public BatchItemsTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
+        ITranslationPipelineContextBuilder pipelineContextBuilder, ITranslationMemoryService translationMemoryService,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems, int startIndex) : base(appSettings, translator,
-        translationRouter, translationPostProcessor, w3StringItems)
+        translationRouter, translationPostProcessor, pipelineContextBuilder, translationMemoryService, w3StringItems)
     {
         StartIndex = startIndex; // Set start index
         EndIndex = MaxValue = W3StringItems.Count; // Set end index and maximum value
@@ -191,8 +195,9 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         ResetTranslationCounts(); // Reset counters for success, failure, and pending items
         CancellationTokenSource?.Dispose(); // Dispose of any existing cancellation token source
         CancellationTokenSource = new CancellationTokenSource(); // Create a new cancellation token source
+        var pipelineContext = await PipelineContextBuilder.BuildAsync(CancellationTokenSource.Token);
         await ProcessTranslationItems(W3StringItems.Skip(StartIndex - 1).Take(PendingCount), // Process selected items
-            ToLanguage, FormLanguage, CancellationTokenSource.Token);
+            ToLanguage, FormLanguage, CancellationTokenSource.Token, pipelineContext);
     }
 
     /// <summary>
@@ -204,12 +209,13 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="cancellationToken">Cancellation token to cancel the operation</param>
     private async Task ProcessTranslationItems(IEnumerable<ITrackableW3StringItem> items, ILanguage toLanguage,
         ILanguage fromLanguage,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        TranslationPipelineContext pipelineContext)
     {
         foreach (var item in items) // Process each item in the collection
             if (!cancellationToken.IsCancellationRequested) // Check if operation has been canceled
             {
-                await ProcessSingleItem(item, toLanguage, fromLanguage); // Translate the current item
+                await ProcessSingleItem(item, toLanguage, fromLanguage, pipelineContext, cancellationToken); // Translate the current item
                 PendingCount--; // Decrement the pending items counter
             }
             else
@@ -226,17 +232,38 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="item">The item to translate</param>
     /// <param name="toLanguage">The target language</param>
     /// <param name="fromLanguage">The source language</param>
-    private async Task ProcessSingleItem(ITrackableW3StringItem item, ILanguage toLanguage, ILanguage fromLanguage)
+    /// <param name="pipelineContext">Read-only pipeline context for routing</param>
+    private async Task ProcessSingleItem(ITrackableW3StringItem item, ILanguage toLanguage, ILanguage fromLanguage,
+        TranslationPipelineContext pipelineContext,
+        CancellationToken cancellationToken)
     {
         try
         {
+            var sourceText = item.Text;
+            var cachedTranslation = await LookupTranslationMemoryAsync(sourceText, fromLanguage, toLanguage,
+                pipelineContext, cancellationToken);
+            if (cachedTranslation is { TargetText: not null }
+                && !string.IsNullOrWhiteSpace(cachedTranslation.TargetText))
+            {
+                item.Text = ApplyPostProcessing(cachedTranslation.TargetText, fromLanguage, toLanguage);
+                SuccessCount++;
+                return;
+            }
+
             var translation =
-                await TranslateItem(TranslationRouter, item.Text, toLanguage,
-                    fromLanguage); // Perform translation
+                await TranslateItem(TranslationRouter, sourceText, toLanguage,
+                    fromLanguage, pipelineContext); // Perform translation
             UpdateStatusMessage(translation);
             if (translation.IsSuccess) // Check if translation succeeded
             {
-                item.Text = ApplyPostProcessing(translation.Value, fromLanguage, toLanguage);
+                var processedTranslation = ApplyPostProcessing(translation.Value, fromLanguage, toLanguage);
+                item.Text = processedTranslation;
+                await SaveTranslationMemoryAsync(sourceText,
+                    processedTranslation,
+                    fromLanguage,
+                    toLanguage,
+                    pipelineContext,
+                    cancellationToken);
                 SuccessCount++; // Increment success counter
             }
             else
@@ -264,11 +291,13 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         ITranslationRouter translationRouter,
         string text,
         ILanguage tLanguage,
-        ILanguage fLanguage)
+        ILanguage fLanguage,
+        TranslationPipelineContext pipelineContext)
     {
         // TODO: Inject terminology/style prompts before batch translation once provider routing supports it.
         var translation =
-            await translationRouter.TranslateAsync(new TranslationRouterRequest(text, tLanguage, fLanguage));
+            await translationRouter.TranslateAsync(new TranslationRouterRequest(text, tLanguage, fLanguage,
+                PipelineContext: pipelineContext));
         // TODO: Validate translated text against terminology/style rules post-translation.
         if (translation.IsFailure())
         {

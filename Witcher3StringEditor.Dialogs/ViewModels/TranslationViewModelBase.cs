@@ -8,6 +8,7 @@ using Serilog;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Translation;
+using Witcher3StringEditor.Common.TranslationMemory;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
 
@@ -37,6 +38,16 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     ///     Post-processor for translation output cleanup.
     /// </summary>
     private protected readonly ITranslationPostProcessor TranslationPostProcessor;
+
+    /// <summary>
+    ///     Builds read-only pipeline context for translation routing.
+    /// </summary>
+    private protected readonly ITranslationPipelineContextBuilder PipelineContextBuilder;
+
+    /// <summary>
+    ///     Translation memory service for lookup/save coordination.
+    /// </summary>
+    private protected readonly ITranslationMemoryService TranslationMemoryService;
 
     /// <summary>
     ///     The collection of items to translate
@@ -74,9 +85,11 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
     /// <param name="translationRouter">Translation router service</param>
+    /// <param name="translationMemoryService">Translation memory service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     protected TranslationViewModelBase(IAppSettings appSettings, ITranslator translator,
         ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
+        ITranslationPipelineContextBuilder pipelineContextBuilder, ITranslationMemoryService translationMemoryService,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems)
     {
         AppSettings = appSettings;
@@ -84,6 +97,8 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         Translator = translator;
         TranslationRouter = translationRouter;
         TranslationPostProcessor = translationPostProcessor;
+        PipelineContextBuilder = pipelineContextBuilder;
+        TranslationMemoryService = translationMemoryService;
         Languages = GetSupportedLanguages(translator);
         FormLanguage = Language.GetLanguage("en");
         ToLanguage = GetPreferredLanguage(appSettings);
@@ -191,5 +206,39 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
             AppSettings.UseStyleGuide);
         var processed = TranslationPostProcessor.Process(input, context);
         return string.IsNullOrWhiteSpace(processed) ? input : processed;
+    }
+
+    private protected Task<TranslationMemoryEntry?> LookupTranslationMemoryAsync(
+        string sourceText,
+        ILanguage sourceLanguage,
+        ILanguage targetLanguage,
+        TranslationPipelineContext pipelineContext,
+        CancellationToken cancellationToken)
+    {
+        var query = new TranslationMemoryQuery
+        {
+            SourceText = sourceText,
+            SourceLanguage = sourceLanguage.Name,
+            TargetLanguage = targetLanguage.Name
+        };
+        return TranslationMemoryService.LookupAsync(query, pipelineContext, cancellationToken);
+    }
+
+    private protected Task SaveTranslationMemoryAsync(
+        string sourceText,
+        string targetText,
+        ILanguage sourceLanguage,
+        ILanguage targetLanguage,
+        TranslationPipelineContext pipelineContext,
+        CancellationToken cancellationToken)
+    {
+        var entry = new TranslationMemoryEntry
+        {
+            SourceText = sourceText,
+            TargetText = targetText,
+            SourceLanguage = sourceLanguage.Name,
+            TargetLanguage = targetLanguage.Name
+        };
+        return TranslationMemoryService.SaveAsync(entry, pipelineContext, cancellationToken);
     }
 }

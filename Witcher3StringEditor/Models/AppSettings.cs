@@ -103,6 +103,18 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private bool useStyleGuide;
 
     /// <summary>
+    ///     Gets or sets a value indicating whether translation memory is enabled
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private bool useTranslationMemory;
+
+    /// <summary>
+    ///     Gets or sets the translation memory database path
+    ///     This property supports data binding through the ObservableObject base class
+    /// </summary>
+    [ObservableProperty] private string translationMemoryPath = string.Empty;
+
+    /// <summary>
     ///     Gets or sets the translation provider base URL (alias for TranslationBaseUrl)
     /// </summary>
     public string BaseUrl

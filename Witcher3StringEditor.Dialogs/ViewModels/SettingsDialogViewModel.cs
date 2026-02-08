@@ -13,6 +13,8 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Profiles;
+using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Locales;
 
 namespace Witcher3StringEditor.Dialogs.ViewModels;
@@ -35,6 +37,9 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     ];
 
     private readonly IDialogService dialogService;
+    private readonly ITranslationProfileCatalog profileCatalog;
+    private readonly ITerminologyLoader terminologyLoader;
+    private readonly IStyleGuideLoader styleGuideLoader;
     /// <summary>
     ///     Initializes a new instance of the SettingsDialogViewModel class
     /// </summary>
@@ -45,11 +50,17 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     public SettingsDialogViewModel(
         IAppSettings appSettings,
         IDialogService dialogService,
+        ITranslationProfileCatalog profileCatalog,
+        ITerminologyLoader terminologyLoader,
+        IStyleGuideLoader styleGuideLoader,
         IEnumerable<string> translators,
         IEnumerable<CultureInfo> supportedCultures)
     {
         AppSettings = appSettings;
         this.dialogService = dialogService;
+        this.profileCatalog = profileCatalog;
+        this.terminologyLoader = terminologyLoader;
+        this.styleGuideLoader = styleGuideLoader;
         Translators = translators;
         SupportedCultures = supportedCultures;
         ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
@@ -59,8 +70,9 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
         }
 
-        UpdateTerminologyStatus();
-        UpdateStyleGuideStatus();
+        _ = UpdateTerminologyStatusAsync();
+        _ = UpdateStyleGuideStatusAsync();
+        _ = LoadTranslationProfilesAsync();
     }
 
     /// <summary>
@@ -90,9 +102,20 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     private ObservableCollection<string> modelOptions = [];
 
     /// <summary>
+    ///     Gets the list of available translation profiles (stubbed)
+    /// </summary>
+    [ObservableProperty]
+    private ObservableCollection<TranslationProfileSummary> translationProfiles = [];
+
+    /// <summary>
     ///     Gets the model refresh status text
     /// </summary>
     [ObservableProperty] private string modelStatusText = string.Empty;
+
+    /// <summary>
+    ///     Gets the translation profile status text
+    /// </summary>
+    [ObservableProperty] private string profileStatusText = string.Empty;
 
     /// <summary>
     ///     Gets the terminology load status text
@@ -315,26 +338,44 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             new ObservableCollection<string>(ModelOptions.Distinct(StringComparer.OrdinalIgnoreCase));
     }
 
+    private async Task LoadTranslationProfilesAsync()
+    {
+        try
+        {
+            var profiles = await profileCatalog.ListSummariesAsync();
+            var orderedProfiles = profiles
+                .OrderBy(profile => profile.DisplayName, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            TranslationProfiles = new ObservableCollection<TranslationProfileSummary>(orderedProfiles);
+            ProfileStatusText = TranslationProfiles.Count == 0
+                ? "No translation profiles available yet."
+                : "Translation profile routing is not enabled yet.";
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to load translation profile summaries.");
+            TranslationProfiles = [];
+            ProfileStatusText = "Failed to load translation profiles.";
+        }
+    }
+
     private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(IAppSettings.UseTerminologyPack) ||
             e.PropertyName == nameof(IAppSettings.TerminologyFilePath))
         {
-            UpdateTerminologyStatus();
+            _ = UpdateTerminologyStatusAsync();
         }
 
         if (e.PropertyName == nameof(IAppSettings.UseStyleGuide) ||
             e.PropertyName == nameof(IAppSettings.StyleGuideFilePath))
         {
-            UpdateStyleGuideStatus();
+            _ = UpdateStyleGuideStatusAsync();
         }
     }
 
-    private static Task UpdateTerminologyStatusAsync() => Task.CompletedTask;
-
-    private static Task UpdateStyleGuideStatusAsync() => Task.CompletedTask;
-
-    private void UpdateTerminologyStatus()
+    private async Task UpdateTerminologyStatusAsync()
     {
         try
         {
@@ -350,18 +391,23 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
                 return;
             }
 
-            TerminologyStatusText = File.Exists(AppSettings.TerminologyFilePath)
-                ? "Terminology file found."
-                : "Terminology file not found.";
+            if (!File.Exists(AppSettings.TerminologyFilePath))
+            {
+                TerminologyStatusText = "Terminology file not found.";
+                return;
+            }
+
+            await terminologyLoader.LoadAsync(AppSettings.TerminologyFilePath);
+            TerminologyStatusText = "Terminology loaded successfully.";
         }
         catch (Exception ex)
         {
             Log.Warning(ex, "Failed to load terminology pack from {Path}.", AppSettings.TerminologyFilePath);
-            TerminologyStatusText = "Failed to load terminology.";
+            TerminologyStatusText = "Failed to load terminology file.";
         }
     }
 
-    private void UpdateStyleGuideStatus()
+    private async Task UpdateStyleGuideStatusAsync()
     {
         try
         {
@@ -377,14 +423,19 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
                 return;
             }
 
-            StyleGuideStatusText = File.Exists(AppSettings.StyleGuideFilePath)
-                ? "Style guide file found."
-                : "Style guide file not found.";
+            if (!File.Exists(AppSettings.StyleGuideFilePath))
+            {
+                StyleGuideStatusText = "Style guide file not found.";
+                return;
+            }
+
+            await styleGuideLoader.LoadStyleGuideAsync(AppSettings.StyleGuideFilePath);
+            StyleGuideStatusText = "Style guide loaded successfully.";
         }
         catch (Exception ex)
         {
             Log.Warning(ex, "Failed to load style guide from {Path}.", AppSettings.StyleGuideFilePath);
-            StyleGuideStatusText = "Failed to load style guide.";
+            StyleGuideStatusText = "Failed to load style guide file.";
         }
     }
 }

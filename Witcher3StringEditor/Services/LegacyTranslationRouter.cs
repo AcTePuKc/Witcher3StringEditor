@@ -69,6 +69,21 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         return await TranslateWithLegacyTranslator(request, cancellationToken).ConfigureAwait(false);
     }
 
+    internal Task<Result<string>> TranslateWithLegacyTranslatorAsync(
+        TranslationRouterRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        return TranslateWithLegacyTranslator(request, cancellationToken);
+    }
+
+    internal Task<Result<string>> TranslateWithProviderAsync(
+        TranslationRouterRequest request,
+        ITranslationProvider provider,
+        CancellationToken cancellationToken = default)
+    {
+        return TranslateWithProvider(request, provider, cancellationToken);
+    }
+
     private bool TryResolveProvider(TranslationRouterRequest request, out ITranslationProvider? provider)
     {
         provider = null;

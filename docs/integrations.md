@@ -19,7 +19,7 @@
 ## Architecture Overview
 ### Translation Providers + Model Selection
 - **Interfaces** live in `Witcher3StringEditor.Common/Translation/`.
-- **Registry** (future) resolves provider names to `ITranslationProvider` instances.
+- **Registry** resolves provider names to `ITranslationProvider` instances (`Witcher3StringEditor/Services/TranslationProviderRegistry.cs`).
 - **Translation router** (`ITranslationRouter`) routes between the legacy `ITranslator` flow and provider flow
   depending on settings; provider calls are guarded and return structured failures when providers error out.
   The router request now carries optional provider/model names so call sites can override settings when needed.
@@ -29,13 +29,14 @@
   profile/provider/model/terminology/translation memory selections.
 - **Ollama stub** lives in `Witcher3StringEditor.Integrations.Ollama/` with settings + model listing placeholder.
 - **Settings bridge** lives in `IAppSettings` (`TranslationProviderName`, `TranslationModelName`, `TranslationBaseUrl`,
-  `CachedTranslationModels`, `UseTerminologyPack`, `UseStyleGuide`).
+  `CachedTranslationModels`, `UseTerminologyPack`, `UseStyleGuide`, `UseTranslationMemory`, `TranslationMemoryPath`).
 
 ### Provider Selection Behavior
 - **Current legacy path**: the translation flow still uses the existing `ITranslator` selection and execution
   logic; provider routing is **not** invoked unless explicitly configured in settings.
-- **Planned provider routing**: if a provider is selected **and** the registry can resolve it, the provider path is
-  selected (currently stubbed). If provider resolution fails, the router short-circuits to the legacy translator path.
+- **Provider routing**: if a provider is selected **and** the registry can resolve it, the provider path is
+  selected (currently stubbed). If provider resolution fails, the router logs a warning and short-circuits to the
+  legacy translator path.
   Provider/model names are resolved from the router request first, with app settings as fallback.
 - **Fallback + error handling**: provider failures return structured errors (provider name + failure kind), and the
   router can fall back to the configured legacy translator; if no fallback is configured, the translation dialog
@@ -51,8 +52,12 @@
 ### Translation Memory (Database-Backed)
 - **Interfaces/models** live in `Witcher3StringEditor.Common/TranslationMemory/`.
 - **Workflow stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryService.cs` with a
-  no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`.
+  no-op implementation in `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`. The translation dialog
+  view models call `LookupAsync` before translation and `SaveAsync` after successful translations, but the default
+  no-op service returns empty results and stores nothing.
 - **Settings stub** lives in `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`.
+- **Settings provider stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemorySettingsProvider.cs`
+  with a basic implementation in `Witcher3StringEditor/Services/TranslationMemorySettingsProvider.cs`.
 - **SQLite storage** lives in `Witcher3StringEditor.Data/TranslationMemory/`.
 - **Database initializer stub** lives in `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
   with a no-op implementation in `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`.
@@ -65,9 +70,9 @@
   no-op implementation in `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`.
 - **Sample fixtures** live under `docs/samples/` for TSV/CSV and Markdown style guides.
 - **Settings selection**: the Settings dialog provides separate file pickers for terminology packs (`.tsv`/`.csv`)
-  and style guides (`.md`). Selections are stored as file paths and only loaded on demand when preview is enabled.
+  and style guides (`.md`). Selections are stored as file paths and loaded on demand when preview is enabled.
 - **Preview validation**: the Settings dialog view model depends on terminology + style guide loaders to validate
-  selections and surface status text without changing translation output.
+  selections (on file selection and toggle changes) and surface status text without changing translation output.
 - **Enablement flags**: `UseTerminologyPack` and `UseStyleGuide` are preview toggles only. The Settings dialog loads
   the selected file and reports status (loaded/failed) but does not enforce terminology or style rules during
   translation yet.
@@ -79,6 +84,10 @@
   accepts a `TranslationContext` describing languages, provider/model selection, and profile settings.
 - **No-op implementation** lives in `Witcher3StringEditor/Services/NoopTranslationPostProcessor.cs` and returns the
   original text unchanged.
+- **View model usage**: translation view models call the post-processor before displaying translation results,
+  so future rules are applied consistently in single-item, batch, and translation-memory flows.
+- **Dependency injection**: `ITranslationPostProcessor` is registered in `App.xaml.cs` and injected into
+  `TranslationViewModelBase`, keeping post-processing inert until non-no-op rules are added.
 - **Planned scope**: opt-in, string-level rules for stripping polite prefixes or boilerplate in translation outputs.
   This runs after provider/legacy translation and before results are shown to the user.
 
@@ -102,15 +111,43 @@
 - **Settings dialog** should remain the single source of truth for provider/model/profile selection.
 - **Main translation flow** (`MainWindowViewModel`) should eventually call the provider registry when
   `TranslationProviderName` is configured; otherwise it should keep using the existing translator list.
-- **Translation memory** should be queried right before provider/translator execution and saved after a
-  successful result. (TODO: hook into the translation command path.)
+- **Translation memory** is queried right before provider/translator execution and saved after a successful
+  result in the translation dialog view models (single-item and batch). The default service remains inert.
 - **Terminology/style** should be loaded on demand (path in settings or profile) and injected into the
   provider request metadata, with validation hooks after translation. (TODO: inject + validate.)
+
+## Wiring Sequence (Recommended Order)
+1. **Inventory confirmation**: finalize entrypoints for translation routing, settings persistence, and dialog wiring
+   (Issue 1).
+2. **Provider registry + model catalog**: wire provider resolution and model listing stubs (Issue 3), leaving the
+   legacy translator flow as the default path.
+3. **Terminology/style loaders**: load packs on demand for preview and future prompt injection (Issue 4).
+4. **Translation profile storage + resolver**: persist profiles locally and add a resolver stub for merging with
+   settings (Issue 5).
+5. **Translation memory scaffolding**: finalize TM/QA store and settings stubs, keep no-op workflow (Issue 2).
+6. **Settings + UI placeholders**: surface provider/model/terminology/profile selections without changing behavior
+   (Issues 8, 9, 10).
+7. **Pipeline context builder**: collect settings/profile data into a read-only context for future routing (Issue 7).
+8. **Router expansion**: allow request/profile overrides but keep fallbacks and no-op defaults (Issue 11).
+9. **Future activation**: only after explicit feature flagging and QA signoff should providers/TM/terminology affect
+   translation output.
+
+## No-op Behavior Notes (Safety Defaults)
+- **Provider routing**: if no provider is selected, or resolution fails, the router falls back to legacy translators.
+  Provider calls must never execute unless the user has explicitly configured a provider and model.
+- **Model discovery**: cached model lists are refreshed only on explicit user action; translation dialogs do not
+  auto-refresh or perform background calls.
+- **Translation memory**: the no-op service returns empty results and performs no writes unless enabled, and even then
+  the default initializer is inert until a feature flag is added.
+- **Terminology/style**: enablement toggles only affect preview loading and status text. Prompt injection and
+  post-translation validation remain TODO.
+- **Profiles**: selecting a profile only changes read-only summaries until profile resolution is wired into routing.
 
 ## Translation Router Reference Map
 - **Interface + request DTO** live in `Witcher3StringEditor.Common/Translation/ITranslationRouter.cs`.
 - **Router implementations** live in `Witcher3StringEditor/Services/LegacyTranslationRouter.cs` and
-  `Witcher3StringEditor/Services/TranslationRouter.cs`.
+  `Witcher3StringEditor/Services/TranslationRouter.cs`, with the latter performing provider-name checks and
+  fallback logging.
 - **View model call sites**:
   - `Witcher3StringEditor/ViewModels/MainWindowViewModel.cs`
   - `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
@@ -146,7 +183,8 @@ See `docs/fallback-investigation.md` for the current single-item/batch flow trac
 3. Keep translation memory + QA stores inert until explicitly enabled.
 4. Extend terminology/style loading with prompt injection + validation hooks (TODOs only).
 5. Add profile selection wiring (store + resolver) without altering existing translator flow.
-6. Add minimal settings stubs for translation memory enablement + local database path.
+6. Validate translation memory settings wiring (UseTranslationMemory + TranslationMemoryPath now exist, but they
+   are not consumed by the translation flow yet).
 7. Introduce a translation pipeline context builder to combine settings, profiles, and terminology (TODOs only).
 8. Add opt-in post-processing rules for AI output cleanup (polite prefix stripping), defaulting to no-op.
 

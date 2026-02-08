@@ -12,6 +12,7 @@ using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Translation;
+using Witcher3StringEditor.Common.TranslationMemory;
 using Witcher3StringEditor.Dialogs.Models;
 using Witcher3StringEditor.Messaging;
 
@@ -54,12 +55,16 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// <param name="appSettings">Application settings service</param>
     /// <param name="translator">Translation service</param>
     /// <param name="translationRouter">Translation router service</param>
+    /// <param name="pipelineContextBuilder">Pipeline context builder</param>
+    /// <param name="translationMemoryService">Translation memory service</param>
     /// <param name="w3StringItems">Collection of items to translate</param>
     /// <param name="index">Initial index of the item to translate</param>
     public SingleItemTranslationViewModel(IAppSettings appSettings, ITranslator translator,
         ITranslationRouter translationRouter, ITranslationPostProcessor translationPostProcessor,
+        ITranslationPipelineContextBuilder pipelineContextBuilder, ITranslationMemoryService translationMemoryService,
         IReadOnlyList<ITrackableW3StringItem> w3StringItems,
-        int index) : base(appSettings, translator, translationRouter, translationPostProcessor, w3StringItems)
+        int index) : base(appSettings, translator, translationRouter, translationPostProcessor,
+        pipelineContextBuilder, translationMemoryService, w3StringItems)
     {
         CurrentItemIndex = index;
         Log.Information("Initializing SingleItemTranslationViewModel."); // Log initialization
@@ -150,8 +155,9 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 CurrentTranslateItemModel.TranslatedText = string.Empty; // Clear the translation text
                 Log.Information("Starting translation."); // Log start of translation
                 // TODO: Inject terminology/style prompts before translation once provider routing supports it.
+                var pipelineContext = await PipelineContextBuilder.BuildAsync(CancellationTokenSource.Token);
                 var translationResult = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
-                    ToLanguage, FormLanguage, CancellationTokenSource); // Execute the translation task
+                    ToLanguage, FormLanguage, CancellationTokenSource, pipelineContext); // Execute the translation task
                 UpdateStatusMessage(translationResult);
                 if (translationResult.IsSuccess) // Check if translation was successful
                 {
@@ -159,6 +165,12 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                     // TODO: Validate translated text against terminology/style rules post-translation.
                     CurrentTranslateItemModel.TranslatedText =
                         ApplyPostProcessing(translationResult.Value, FormLanguage, ToLanguage);
+                    await SaveTranslationMemoryAsync(CurrentTranslateItemModel.Text,
+                        CurrentTranslateItemModel.TranslatedText,
+                        FormLanguage,
+                        ToLanguage,
+                        pipelineContext,
+                        CancellationTokenSource.Token);
                     Log.Information("Translation completed."); // Log completion of translation
                 }
                 else
@@ -205,9 +217,17 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// <param name="cancellationTokenSource">The cancellation token source</param>
     /// <returns>A Result containing the translated text if successful</returns>
     private async Task<Result<string>> ExecuteTranslationTask(string text,
-        ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource)
+        ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource,
+        TranslationPipelineContext pipelineContext)
     {
-        var request = new TranslationRouterRequest(text, toLanguage, formLanguage);
+        var cachedTranslation = await LookupTranslationMemoryAsync(text, formLanguage, toLanguage,
+            pipelineContext, cancellationTokenSource.Token);
+        if (cachedTranslation is { TargetText: not null } && !string.IsNullOrWhiteSpace(cachedTranslation.TargetText))
+        {
+            return Result.Ok(cachedTranslation.TargetText);
+        }
+
+        var request = new TranslationRouterRequest(text, toLanguage, formLanguage, PipelineContext: pipelineContext);
         var translateTask = TranslationRouter.TranslateAsync(request, cancellationTokenSource.Token);
         var completedTask = await Task.WhenAny(
             translateTask,

@@ -9,7 +9,7 @@ namespace Witcher3StringEditor.Common.TranslationMemory;
 /// </summary>
 public interface ITranslationMemoryService
 {
-    Task<TranslationMemoryEntry?> FindAsync(
+    Task<TranslationMemoryEntry?> LookupAsync(
         TranslationMemoryQuery query,
         TranslationPipelineContext context,
         CancellationToken cancellationToken = default);
