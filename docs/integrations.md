@@ -90,6 +90,8 @@
   and style guides (`.md`). Selections are stored as file paths and loaded on demand when preview is enabled.
 - **Preview validation**: the Settings dialog view model depends on terminology + style guide loaders to validate
   selections (on file selection and toggle changes) and surface status text without changing translation output.
+- **Validation service stub**: `ITerminologyValidationService` provides async validation hooks for terminology and
+  style guides, with a no-op implementation returning “Not validated.” until real checks are added.
 - **Enablement flags**: `UseTerminologyPack` and `UseStyleGuide` are preview toggles only. The Settings dialog loads
   the selected file and reports status (loaded/failed) but does not enforce terminology or style rules during
   translation yet.

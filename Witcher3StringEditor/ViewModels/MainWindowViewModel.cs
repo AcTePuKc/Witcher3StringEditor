@@ -571,6 +571,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 serviceProvider.GetRequiredService<ITranslationProfileCatalog>(),
                 serviceProvider.GetRequiredService<ITerminologyLoader>(),
                 serviceProvider.GetRequiredService<IStyleGuideLoader>(),
+                serviceProvider.GetRequiredService<ITerminologyValidationService>(),
                 names,
                 supportedCultures)); // Show the settings dialog
     }

@@ -382,6 +382,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<ITranslationMemoryService, NoopTranslationMemoryService>()
             .AddSingleton<ITerminologyLoader, TerminologyLoader>()
             .AddSingleton<IStyleGuideLoader, TerminologyLoader>()
+            .AddSingleton<ITerminologyValidationService, NoopTerminologyValidationService>()
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()
             .AddSingleton<ILogAccessService, LogAccessService>()
