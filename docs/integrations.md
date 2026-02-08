@@ -6,6 +6,12 @@
 - Prefer small interfaces and TODO hooks over real implementations.
 - Prioritize stubs for translation memory, Ollama model selection, terminology/style loading, and translation profiles.
 
+## Requested Focus Areas
+- Database-backed translation memory (local-only, SQLite).
+- Ollama integration with model selection (local-only; stubbed HTTP).
+- Terminology and style pack loading (file-based loaders only).
+- Translation profiles for local settings overrides (JSON-backed).
+
 ## Current Scaffolding Status
 - **Translation memory**: SQLite bootstrap + `ITranslationMemoryStore` exist; lookup/save are inert until enabled.
 - **Translation memory workflow**: `ITranslationMemoryService` + no-op implementation exist to coordinate

@@ -29,11 +29,18 @@ public sealed class TranslationProviderRegistry
         throw new KeyNotFoundException($"Translation provider '{name}' was not found.");
     }
 
-    public bool TryGet(string name, out ITranslationProvider? provider)
+    public bool TryGet(string name, out ITranslationProvider provider)
     {
         if (name is null)
             throw new ArgumentNullException(nameof(name));
 
-        return providers.TryGetValue(name, out provider);
+        if (providers.TryGetValue(name, out var resolved))
+        {
+            provider = resolved;
+            return true;
+        }
+
+        provider = null!;
+        return false;
     }
 }

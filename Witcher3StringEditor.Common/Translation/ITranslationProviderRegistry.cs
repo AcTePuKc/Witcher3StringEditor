@@ -7,6 +7,8 @@ public interface ITranslationProviderRegistry
     IReadOnlyList<TranslationProviderDescriptor> GetProviders();
 
     ITranslationProvider? Resolve(string providerName);
+
+    bool TryGet(string providerName, out ITranslationProvider provider);
 }
 
 public sealed class TranslationProviderDescriptor
