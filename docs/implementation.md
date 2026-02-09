@@ -38,3 +38,15 @@ implementation and keeps all changes compile-safe and inert by default.
 - Build succeeds (`dotnet build`).
 - No new UI behavior or routing changes.
 - No external network calls or services introduced.
+
+## Phase 0 Exit Criteria
+Phase 0 is complete only when **all items below are checked**. Phase 1 is **blocked** until then.
+
+**Required stubs/checks**
+- [ ] Provider interfaces (translation provider contracts + request/response DTOs).
+- [ ] Provider registry/resolver (inert by default; no routing changes).
+- [ ] Translation profiles stubs (models + local catalog/loader placeholders).
+- [ ] Translation memory (TM) stubs (interfaces + local storage placeholders).
+- [ ] Terminology/style stubs (models + loaders or parsers; no enforcement).
+- [ ] `SafeFireAndForget` placeholder (centralized helper with TODO behavior).
+- [ ] Inspections scaffolding (inspection models + TODO hooks, no runtime changes).
