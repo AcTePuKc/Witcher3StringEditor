@@ -137,16 +137,19 @@ Add a provider registry abstraction that maps provider names to implementations 
 
 ## Issue 4: Terminology + style pack loading hooks
 **Description**
-Keep terminology/style loaders local-only, add TODO hooks for prompt injection and post-translation validation, and validate parsing against sample files.
+Keep terminology/style loaders local-only, add TODO hooks for prompt injection and post-translation validation, and validate
+parsing against sample files. The Integrations layer includes minimal parsing stubs (TSV/CSV + Markdown) without UI wiring.
 
 **Acceptance Criteria**
-- Loader supports TSV/CSV terminology packs and Markdown style guides.
+- Loader supports TSV/CSV terminology packs and Markdown style guides with minimal parsing.
 - Prompt builder interface exists with a no-op implementation for later prompt injection.
 - TODO markers exist for future prompt injection/validation.
 - Samples under `docs/samples/` parse without errors.
+- No UI/translation flow wiring is introduced.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Terminology/*`
+- `Witcher3StringEditor/Integrations/Terminology/*`
 - `Witcher3StringEditor/Services/TerminologyLoader.cs`
 - `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`
 - `docs/samples/*`
