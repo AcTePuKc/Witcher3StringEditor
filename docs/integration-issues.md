@@ -14,6 +14,7 @@ Add a minimal, local-only translation memory database bootstrap path and leave a
 - Translation memory settings describe a local database path and provider name (no external services).
 - SQLite bootstrap logic is isolated behind an initializer interface.
 - A translation memory store factory stub is available for future wiring (no runtime usage yet).
+- Store/service interfaces include async `LookupAsync` and `UpsertAsync` methods (stubs only).
 - No DI or UI wiring is added in this issue.
 
 **Files to Touch**
