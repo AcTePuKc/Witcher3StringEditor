@@ -9,7 +9,8 @@
   - No external services are introduced; local file paths are used for configuration.
 - **Terminology + style packs**
   - Loader interfaces live under `Witcher3StringEditor.Integrations.Terminology` and return in-memory packs.
-  - A stub loader provides empty packs until real parsers are introduced.
+  - A minimal parsing stub supports TSV/CSV terminology and Markdown style guides (no UI/DI wiring).
+  - Sample files live under `docs/samples/` to validate parsing without integration wiring.
 - **No UI/DI wiring**
   - Integration scaffolding stays inert: no DI registration and no UI changes.
 
@@ -78,24 +79,26 @@ Add local-only translation memory scaffolding (interfaces + stubs) without runti
 
 ---
 
-### Issue 3: Terminology + style pack loader scaffolding
+### Issue 3: Terminology + style pack loader scaffolding (minimal parsing)
 **Description**
-Provide stub loaders for terminology and style guides that return empty packs.
+Provide minimal parsing stubs for terminology and style guides with TSV/CSV and Markdown support.
 
 **Acceptance Criteria**
 - Stub loaders implement `ITerminologyLoader` and `IStyleGuideLoader`.
-- Loaders return empty packs and do not parse files yet.
+- Loaders parse basic TSV/CSV terminology rows and Markdown style guide sections.
+- Sample files under `docs/samples/` parse without runtime wiring or UI changes.
 - No UI or runtime wiring is added.
 
 **Files to touch**
 - `Witcher3StringEditor/Integrations/Terminology/ITerminologyLoader.cs`
 - `Witcher3StringEditor/Integrations/Terminology/IStyleGuideLoader.cs`
 - `Witcher3StringEditor/Integrations/Terminology/StubTerminologyLoader.cs`
+- `docs/samples/*`
 - `docs/integrations.md`
 
 **QA checklist**
 - Build: `dotnet build`.
-- Manual: inspect the stub loader to confirm it is no-op.
+- Manual: inspect the stub loader to confirm parsing is minimal and TODOs remain.
 - No regressions: terminology usage remains unchanged.
 
 ---
