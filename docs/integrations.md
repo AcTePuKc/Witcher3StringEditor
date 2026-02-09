@@ -27,6 +27,7 @@ profiles without large refactors.
 ### Terminology & Style Loading
 - Define loader interfaces and no-op stubs for local files (`.csv`, `.tsv`, `.md`).
 - Keep parsing deterministic and local-only.
+- Use a `TerminologyEntry` model with `Term`, `Translation`, `Notes`, and `Mode` fields to support future validation.
 - Add placeholder validation interfaces for later enforcement logic.
 
 ### Translation Profiles
