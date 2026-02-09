@@ -45,9 +45,12 @@ See `docs/integration-issues.md` for full issue drafts and QA checklists. The cu
 2. **Ollama model selection scaffolding**
 3. **Terminology/style loading scaffolding**
 4. **Translation profile scaffolding**
+5. **Local loader stubs for profiles and translation memory**
+6. **Sample TSV/MD assets for terminology/style testing**
 
 ## Integration handoff notes
 - **Settings**: `App.xaml.cs` and `Models/AppSettings.cs` are the persistence entry points.
 - **Routing**: `Services/TranslationRouter.cs` and `Services/TranslationPipelineContextBuilder.cs` remain the safe
   injection points for future wiring.
 - **UI**: Settings dialog and translation dialog placeholders should remain minimal and inert by default.
+- **Samples**: test assets live under `docs/samples/` (TSV terminology packs, Markdown style guides).

@@ -94,6 +94,52 @@ selection.
 - Manual: confirm loading a missing JSON file returns an empty list
 - No regressions: translation flow remains unchanged
 
+---
+
+### Issue E: Loader interfaces + stub implementations (profiles + translation memory)
+**Description**
+Add minimal loader interfaces and stub implementations for profile imports and translation memory imports. These stay
+local-only and unused by default.
+
+**Acceptance Criteria**
+- Profile loader interface exists and returns empty results in the stub implementation.
+- Translation memory loader interface exists and returns empty results in the stub implementation.
+- Loaders are not wired into settings or translation flow.
+
+**Files to Touch**
+- `Witcher3StringEditor/Integrations/Profiles/ITranslationProfileLoader.cs`
+- `Witcher3StringEditor/Integrations/Profiles/StubTranslationProfileLoader.cs`
+- `Witcher3StringEditor/Integrations/Storage/ITranslationMemoryLoader.cs`
+- `Witcher3StringEditor/Integrations/Storage/StubTranslationMemoryLoader.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm no new UI or settings wiring was introduced
+- No regressions: translation flow remains unchanged
+
+---
+
+### Issue F: Sample terminology/style assets for future tests
+**Description**
+Add additional TSV and Markdown sample files for terminology and style guide parsing tests. Keep assets local and
+documentation-only.
+
+**Acceptance Criteria**
+- New TSV sample file exists for terminology packs.
+- New Markdown sample file exists for style guide parsing.
+- No runtime behavior changes (documentation-only assets).
+
+**Files to Touch**
+- `docs/samples/terminology.future.sample.tsv`
+- `docs/samples/style-guide.future.sample.md`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open the sample files and confirm expected headings and fields
+- No regressions: documentation-only change
+
 
 ## Phase 0: compile-safe scaffolding
 Phase 0 issues are limited to compile-safe scaffolding and documentation updates only.
