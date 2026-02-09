@@ -46,10 +46,10 @@ No new stubs beyond checklist items.
 Phase 0 is complete only when **all items below are checked**. Phase 1 is **blocked** until then.
 
 **Required stubs/checks (Scope Freeze: no new stubs beyond checklist items)**
-- [ ] Provider interfaces (translation provider contracts + request/response DTOs).
-- [ ] Provider registry/resolver (inert by default; no routing changes).
-- [ ] Translation profiles stubs (models + local catalog/loader placeholders).
-- [ ] Translation memory (TM) stubs (interfaces + local storage placeholders).
-- [ ] Terminology/style stubs (models + loaders or parsers; no enforcement).
+- [x] Provider interfaces (translation provider contracts + request/response DTOs). (2026-02-09: `ITranslationProvider` and DTOs in `Witcher3StringEditor.Common/Translation` plus provider stubs in `Witcher3StringEditor/Integrations/Providers`.)
+- [x] Provider registry/resolver (inert by default; no routing changes). (2026-02-09: registry interfaces + stubs in `Witcher3StringEditor.Common/Translation` and `Witcher3StringEditor/Services`.)
+- [x] Translation profiles stubs (models + local catalog/loader placeholders). (2026-02-09: profiles models/interfaces in `Witcher3StringEditor.Common/Profiles` with JSON store stubs in `Witcher3StringEditor.Data/Profiles` and loader stubs in `Witcher3StringEditor/Integrations/Profiles`.)
+- [x] Translation memory (TM) stubs (interfaces + local storage placeholders). (2026-02-09: TM interfaces in `Witcher3StringEditor.Common/TranslationMemory` with SQLite and no-op stubs in `Witcher3StringEditor.Data/TranslationMemory` and `Witcher3StringEditor/Services`.)
+- [x] Terminology/style stubs (models + loaders or parsers; no enforcement). (2026-02-09: models in `Witcher3StringEditor.Common/Terminology` with loader stubs in `Witcher3StringEditor/Services` and `Witcher3StringEditor/Integrations/Terminology`.)
 - [ ] `SafeFireAndForget` placeholder (centralized helper with TODO behavior).
 - [ ] Inspections scaffolding (inspection models + TODO hooks, no runtime changes).
