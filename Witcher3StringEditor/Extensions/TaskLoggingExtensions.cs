@@ -7,6 +7,26 @@ namespace Witcher3StringEditor.Extensions;
 
 public static class TaskLoggingExtensions
 {
+    public static void SafeFireAndForget(this Task task, string? context = null)
+    {
+        ArgumentNullException.ThrowIfNull(task);
+
+        _ = task.ContinueWith(
+            t => LogException(t.Exception, context),
+            CancellationToken.None,
+            TaskContinuationOptions.OnlyOnFaulted,
+            TaskScheduler.Default);
+    }
+
+    public static void SafeFireAndForget(this ValueTask task, string? context = null)
+    {
+        _ = task.AsTask().ContinueWith(
+            t => LogException(t.Exception, context),
+            CancellationToken.None,
+            TaskContinuationOptions.OnlyOnFaulted,
+            TaskScheduler.Default);
+    }
+
     public static Task LogExceptions(this Task task, string? context = null)
     {
         ArgumentNullException.ThrowIfNull(task);

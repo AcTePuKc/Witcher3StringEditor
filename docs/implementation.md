@@ -17,12 +17,14 @@ No new stubs beyond checklist items.
 - Keep all integrations inert by default; defer wiring and behavior changes.
 - Prefer local-only storage paths (AppData, local JSON, or SQLite).
 - Add minimal placeholders for settings panels if absolutely necessary.
+- Use `SafeFireAndForget` only for background tasks where you want to log failures but intentionally do not await.
 
 **Don’t**
 - Do not change translation routing behavior.
 - Do not change UI behavior (placeholders only, no workflow changes).
 - Do not introduce external services or network dependencies.
 - Do not refactor existing translation flows.
+- Do not use `SafeFireAndForget` when the caller must observe failures, return results, or control cancellation.
 
 ## Suggested Placement (if unsure, create an inventory task)
 - **Contracts**: `Witcher3StringEditor.Common/*`
@@ -51,5 +53,5 @@ Phase 0 is complete only when **all items below are checked**. Phase 1 is **bloc
 - [x] Translation profiles stubs (models + local catalog/loader placeholders). (2026-02-09: profiles models/interfaces in `Witcher3StringEditor.Common/Profiles` with JSON store stubs in `Witcher3StringEditor.Data/Profiles` and loader stubs in `Witcher3StringEditor/Integrations/Profiles`.)
 - [x] Translation memory (TM) stubs (interfaces + local storage placeholders). (2026-02-09: TM interfaces in `Witcher3StringEditor.Common/TranslationMemory` with SQLite and no-op stubs in `Witcher3StringEditor.Data/TranslationMemory` and `Witcher3StringEditor/Services`.)
 - [x] Terminology/style stubs (models + loaders or parsers; no enforcement). (2026-02-09: models in `Witcher3StringEditor.Common/Terminology` with loader stubs in `Witcher3StringEditor/Services` and `Witcher3StringEditor/Integrations/Terminology`.)
-- [ ] `SafeFireAndForget` placeholder (centralized helper with TODO behavior).
+- [x] `SafeFireAndForget` helper (logs exceptions only; no runtime wiring).
 - [ ] Inspections scaffolding (inspection models + TODO hooks, no runtime changes).
