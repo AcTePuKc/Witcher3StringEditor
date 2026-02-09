@@ -9,7 +9,7 @@ internal sealed class NoopTranslationMemoryService : ITranslationMemoryService
 {
     public Task<TranslationMemoryEntry?> LookupAsync(
         TranslationMemoryQuery query,
-        TranslationPipelineContext context,
+        TranslationPipelineContext? context,
         CancellationToken cancellationToken = default)
     {
         _ = query;
@@ -19,7 +19,7 @@ internal sealed class NoopTranslationMemoryService : ITranslationMemoryService
 
     public Task SaveAsync(
         TranslationMemoryEntry entry,
-        TranslationPipelineContext context,
+        TranslationPipelineContext? context,
         CancellationToken cancellationToken = default)
     {
         _ = entry;
