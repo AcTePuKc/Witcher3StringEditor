@@ -54,4 +54,5 @@ Phase 0 is complete only when **all items below are checked**. Phase 1 is **bloc
 - [x] Translation memory (TM) stubs (interfaces + local storage placeholders). (2026-02-09: TM interfaces in `Witcher3StringEditor.Common/TranslationMemory` with SQLite and no-op stubs in `Witcher3StringEditor.Data/TranslationMemory` and `Witcher3StringEditor/Services`.)
 - [x] Terminology/style stubs (models + loaders or parsers; no enforcement). (2026-02-09: models in `Witcher3StringEditor.Common/Terminology` with loader stubs in `Witcher3StringEditor/Services` and `Witcher3StringEditor/Integrations/Terminology`.)
 - [x] `SafeFireAndForget` helper (logs exceptions only; no runtime wiring).
+- [ ] Model ownership inspection complete (see `docs/inspections/model-ownership.md`). **Blocker for Phase 1.**
 - [ ] Inspections scaffolding (inspection models + TODO hooks, no runtime changes).
