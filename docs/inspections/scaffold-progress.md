@@ -2,6 +2,10 @@
 
 Last updated: 2026-02-09
 
+## How to update
+- When checking an item, include the completion date and a short note in parentheses (e.g., `[x] Define ... (2026-02-10: stubbed interfaces added)`).
+- Update the `Last updated` date when any item changes.
+
 ## Providers
 - [ ] Define translation provider contracts (interfaces + request/response DTOs).
 - [ ] Add inert provider registry/resolver scaffolding.
