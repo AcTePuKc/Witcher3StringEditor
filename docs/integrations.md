@@ -40,6 +40,11 @@ profiles without large refactors.
 - Provide preview and selection abstractions without changing core translation behavior.
 - Keep profile storage local (JSON) and inert by default.
 
+### UI Placeholders & Settings Surfaces (No Wiring)
+- Settings dialog already includes placeholders for profile selection, translation memory toggles, terminology packs,
+  and style guide file paths; keep these as the primary UI surfaces for future wiring.
+- Provider/model selection UI exists in the same settings view, but model discovery should remain inert until Phase 1.
+
 ### Provider Failure Reporting (DTO-only)
 - Capture provider failure metadata in a DTO for future diagnostics.
 - Keep this data model unused until a logging/telemetry path is approved.
