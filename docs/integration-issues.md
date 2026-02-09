@@ -154,17 +154,21 @@ Phase 0 issues are limited to compile-safe scaffolding and documentation updates
 
 ## Issue 00: Translation provider contracts (interfaces + DTOs)
 **Description**
-Add the provider contract interfaces and DTOs that future integrations will implement. Keep them unused by the existing
-translation flow so the current legacy translator path remains the default.
+Add the provider contract interfaces and DTOs that future integrations will implement, plus a minimal in-memory registry
+stub for local usage. Keep everything unused by the existing translation flow so the current legacy translator path
+remains the default.
 
 **Acceptance Criteria**
 - `ITranslationProvider` includes `ListModelsAsync` and `TranslateAsync` signatures.
-- Minimal DTOs exist for request/result/model metadata (`TranslationRequest`, `TranslationResult`, `ModelInfo`).
+- Minimal DTOs exist for request/result/model metadata (`TranslationRequest`, `TranslationResult`, `ModelInfo`), including
+  optional glossary/style/profile fields.
+- A stub in-memory registry exists for non-DI usage (no runtime wiring).
 - No new call sites are introduced in the existing translation flow.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/ITranslationProvider.cs`
 - `Witcher3StringEditor.Common/Translation/TranslationModels.cs`
+- `Witcher3StringEditor.Common/Translation/InMemoryTranslationProviderRegistry.cs`
 - `docs/integrations.md`
 
 
