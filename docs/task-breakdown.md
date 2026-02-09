@@ -37,12 +37,14 @@ Add a concrete schema definition document and a minimal database bootstrapper st
 **Acceptance Criteria**
 - A schema document describes tables/indices and initial migration steps.
 - A new bootstrapper interface + stub is added without wiring into runtime flows.
+- A SQLite store factory stub can build a store from settings without runtime wiring.
 - All changes compile.
 
 **Files to touch**
 - `docs/integrations/translation-memory-schema.md` (new)
 - `Witcher3StringEditor.Common/TranslationMemory` (new interface)
 - `Witcher3StringEditor.Data/TranslationMemory` (new stub)
+  - `SqliteTranslationMemoryStoreFactory.cs` (new)
 
 **Build command**
 - `dotnet build Witcher3StringEditor.slnx`
