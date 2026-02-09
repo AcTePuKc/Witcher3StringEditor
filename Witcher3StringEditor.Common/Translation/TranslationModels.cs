@@ -12,6 +12,12 @@ public sealed class TranslationRequest
 
     public string? ModelId { get; init; }
 
+    public string? GlossaryPath { get; init; }
+
+    public string? StyleGuidePath { get; init; }
+
+    public string? ProfileId { get; init; }
+
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
 }
 
@@ -19,7 +25,11 @@ public sealed class TranslationResult
 {
     public string TranslatedText { get; init; } = string.Empty;
 
+    public string? ProviderName { get; init; }
+
     public string? ModelId { get; init; }
+
+    public string? Notes { get; init; }
 
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
 }
