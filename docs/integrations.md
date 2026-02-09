@@ -50,6 +50,7 @@ See `docs/integration-issues.md` for full issue drafts and QA checklists. The cu
 5. **Translation profile scaffolding**
 6. **Local loader stubs for profiles and translation memory**
 7. **Sample TSV/MD assets for terminology/style testing**
+8. **Settings placeholders for provider/model/profile selection**
 
 ## Integration handoff notes
 - **Settings**: `App.xaml.cs` and `Models/AppSettings.cs` are the persistence entry points.
