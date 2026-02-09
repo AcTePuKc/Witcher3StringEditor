@@ -22,7 +22,11 @@ Every inspection report must include the following sections in this order:
    - File paths, classes, methods, and risks.
    - Notes about uncertainty or conflicts.
 
-3. **Next steps**
+3. **Files**
+   - Explicit list of files reviewed or added for the inspection.
+   - Use relative paths from the repo root.
+
+4. **Next steps**
    - Follow-up tasks or validation steps.
    - Links to issue drafts when available.
 
@@ -35,6 +39,9 @@ Every inspection report must include the following sections in this order:
 - ...
 
 ## Findings
+- ...
+
+## Files
 - ...
 
 ## Next steps

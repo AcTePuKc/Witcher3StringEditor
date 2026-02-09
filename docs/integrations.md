@@ -16,11 +16,28 @@ Prepare **local-only**, compile-safe scaffolding for:
   - Ollama provider + model catalog, terminology loaders, profile store stubs.
 - **Runtime wiring lives in `Witcher3StringEditor/Services`**
   - No-op implementations remain the default until explicitly wired.
+  - Factory stubs (for example, translation memory store creation) live here to keep wiring inert.
 
 **Constraints**
 - No external services; storage is local only.
 - No large refactors.
 - No behavior changes unless explicitly flagged as placeholders.
+
+## Phase 0: Compile-Safe Scaffolding
+Phase 0 focuses on **compile-safe scaffolding only** (interfaces, stubs, TODO markers) with zero runtime behavior
+changes. It exists to prepare the codebase for future integrations without altering routing or UI behavior.
+
+**Do**
+- Add compile-safe interfaces, DTOs, and stub implementations.
+- Keep all new integrations inert by default (no runtime wiring).
+- Document follow-up wiring steps explicitly and defer them to later issues.
+
+**Don’t**
+- Do not change translation routing behavior.
+- Do not change UI behavior (placeholders only, no workflow changes).
+- Do not introduce external services or network dependencies (local-only storage).
+
+For detailed implementation notes, see `docs/implementation.md`.
 
 ## Planned tasks (issue drafts)
 See `docs/integration-issues.md` for full issue drafts and QA checklists. The current focus is:
