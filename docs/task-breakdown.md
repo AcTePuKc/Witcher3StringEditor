@@ -38,6 +38,7 @@ Add a concrete schema definition document and a minimal database bootstrapper st
 - A schema document describes tables/indices and initial migration steps.
 - A new bootstrapper interface + stub is added without wiring into runtime flows.
 - A SQLite store factory stub can build a store from settings without runtime wiring.
+- `TranslationMemorySettings` exposes `Enabled` and `DatabasePath` for local configuration.
 - All changes compile.
 
 **Files to touch**

@@ -5,10 +5,25 @@ namespace Witcher3StringEditor.Common.TranslationMemory;
 /// </summary>
 public sealed class TranslationMemorySettings
 {
+    private readonly bool isEnabled;
+
     /// <summary>
     ///     Gets a value indicating whether translation memory is enabled.
     /// </summary>
-    public bool IsEnabled { get; init; }
+    public bool Enabled
+    {
+        get => isEnabled;
+        init => isEnabled = value;
+    }
+
+    /// <summary>
+    ///     Gets a value indicating whether translation memory is enabled.
+    /// </summary>
+    public bool IsEnabled
+    {
+        get => isEnabled;
+        init => isEnabled = value;
+    }
 
     /// <summary>
     ///     Gets the path to the local translation memory database.
