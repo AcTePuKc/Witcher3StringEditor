@@ -13,6 +13,29 @@ profiles without large refactors.
 - Favor compile-safe placeholders over functional parsing or runtime logic.
 - Represent style guides with explicit sections/rule lists to support future validation.
 
+## Authoritative Locations (Confirmed)
+Use the Common project for contracts and DTOs so Services, Data, UI, and Integrations all share a single source of
+truth. Keep implementations/stubs in Services or Data as needed, but do not duplicate models outside Common.
+
+| Model group | Authoritative namespace/folder | Rationale |
+| --- | --- | --- |
+| Translation providers | `Witcher3StringEditor.Common.Translation` (`Witcher3StringEditor.Common/Translation`) | Provider contracts and DTOs already live here and flow through registries/routers, preventing parallel schemas. |
+| Terminology & style | `Witcher3StringEditor.Common.Terminology` (`Witcher3StringEditor.Common/Terminology`) | Common hosts terminology and style models consumed by Services; keeping them here prevents drift. |
+| Translation profiles | `Witcher3StringEditor.Common.Profiles` (`Witcher3StringEditor.Common/Profiles`) | Centralizes profile models for UI and pipeline context builders, avoiding duplicate definitions. |
+| Translation memory (TM) | `Witcher3StringEditor.Common.TranslationMemory` (`Witcher3StringEditor.Common/TranslationMemory`) | Common already defines TM interfaces/settings used by Services/Data stubs. |
+
+### Do Not Use (Duplicate or Legacy Locations)
+Do not introduce new models in these locations; use them only for inventory or migration work.
+
+- `Witcher3StringEditor.Integrations.Providers` (`Witcher3StringEditor/Integrations/Providers`)
+  - **Rationale:** Duplicates provider DTOs/registry contracts that already exist in Common, risking split schemas.
+- `Witcher3StringEditor.Integrations.Terminology` (`Witcher3StringEditor/Integrations/Terminology`)
+  - **Rationale:** Overlaps terminology pack models/loader surfaces in Common, increasing drift risk.
+- `Witcher3StringEditor.Integrations.Profiles` (`Witcher3StringEditor/Integrations/Profiles`)
+  - **Rationale:** Parallel profile surfaces conflict with Common profile models used by UI and Services.
+- `Witcher3StringEditor.Integrations.Storage` (`Witcher3StringEditor/Integrations/Storage`)
+  - **Rationale:** Duplicates TM model surfaces already defined in `Common.TranslationMemory`.
+
 ## Planned Components
 ### Translation Memory (SQLite-backed)
 - Use a local SQLite schema for translation memory entries.
