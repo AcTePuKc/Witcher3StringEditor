@@ -13,12 +13,15 @@ Add a minimal, local-only translation memory database bootstrap path and leave a
 **Acceptance Criteria**
 - Translation memory settings describe a local database path and provider name (no external services).
 - SQLite bootstrap logic is isolated behind an initializer interface.
+- A translation memory store factory stub is available for future wiring (no runtime usage yet).
 - No DI or UI wiring is added in this issue.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`
 - `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
+- `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryStoreFactory.cs`
 - `Witcher3StringEditor.Data/TranslationMemory/SqliteTranslationMemoryDatabaseInitializer.cs`
+- `Witcher3StringEditor/Services/NoopTranslationMemoryStoreFactory.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
