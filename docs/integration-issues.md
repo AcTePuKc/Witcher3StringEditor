@@ -81,7 +81,7 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - SQLite bootstrap and schemas exist for translation memory + QA.
 - Database initialization is abstracted behind an `ITranslationMemoryDatabaseInitializer` stub for future migrations.
 - Store interfaces remain local-only and inert by default.
-- Add a translation memory workflow stub (`ITranslationMemoryService`) with a no-op implementation.
+- Add translation memory workflow stubs (`ITranslationMemoryService`) with a no-op implementation.
 - Storage uses AppData paths only.
 
 **Files to Touch**
@@ -93,6 +93,8 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - `Witcher3StringEditor.Data/QualityAssurance/*`
 - `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`
 - `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`
+- `Witcher3StringEditor/Integrations/Storage/ITranslationMemoryService.cs`
+- `Witcher3StringEditor/Integrations/Storage/StubTranslationMemoryService.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
