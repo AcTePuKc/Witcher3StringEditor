@@ -18,6 +18,18 @@
 - **No UI/DI wiring**
   - Integration scaffolding stays inert: no DI registration and no UI changes.
 
+
+## Phase 0: compile-safe scaffolding
+Phase 0 focuses on compile-safe scaffolding and documentation updates only.
+
+**Phase 0 constraints**
+- No full feature implementation.
+- No large refactors.
+- No behavior changes unless explicitly marked as placeholders.
+- No external services; local-only storage (e.g., SQLite/JSON) when applicable.
+- UI/UX changes must be minimal placeholders for settings panels.
+- Changes must compile (or be explicitly deferred to a follow-up issue).
+
 ## Planned work as GitHub issues
 
 ### Issue 0: Inventory pass for authoritative integration models
@@ -33,6 +45,18 @@ before wiring any runtime flows.
 **Files to touch**
 - `docs/inspections/inventory.md`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA checklist**
 - Build: `dotnet build`.
@@ -54,6 +78,18 @@ Provide a stub Ollama provider and a settings model with BaseUrl, ModelName, and
 - `Witcher3StringEditor.Integrations.Ollama/OllamaTranslationProvider.cs`
 - `Witcher3StringEditor.Integrations.Ollama/OllamaSettings.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA checklist**
 - Build: `dotnet build`.
@@ -79,6 +115,18 @@ Add local-only translation memory scaffolding (interfaces + stubs) without runti
 - `Witcher3StringEditor/Integrations/Storage/StubTranslationMemoryService.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA checklist**
 - Build: `dotnet build`.
 - Manual: confirm the stub store is not registered in DI.
@@ -103,6 +151,18 @@ Provide minimal parsing stubs for terminology and style guides with TSV/CSV and 
 - `docs/samples/*`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA checklist**
 - Build: `dotnet build`.
 - Manual: inspect the stub loader to confirm parsing is minimal and TODOs remain.
@@ -124,6 +184,18 @@ Keep the store inert by default (no DI/UI wiring).
 - `Witcher3StringEditor/Integrations/Profiles/TranslationProfile.cs`
 - `Witcher3StringEditor/Integrations/Profiles/JsonTranslationProfileStore.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA checklist**
 - Build: `dotnet build`.
