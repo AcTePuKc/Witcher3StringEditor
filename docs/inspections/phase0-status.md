@@ -18,3 +18,14 @@ The following items were added as scaffolding only and are **unused in runtime**
 ## Notes
 - These additions are strictly scaffolding. Runtime behavior remains unchanged.
 - Follow-up tasks should define concrete implementations and then wire them into DI, UI settings, and translation flows as approved.
+
+## Checklist Status (Phase 0)
+- ✅ Database-backed translation memory scaffolding: interfaces + SQLite store + settings stubs are present and unused.
+- ✅ Ollama model selection scaffolding: model DTOs + catalog stub are present and unused.
+- ✅ Terminology/style loading scaffolding: models + loaders + prompt/validation stubs are present and unused.
+- ✅ Translation profiles scaffolding: profile models + catalog/preview/selection stubs are present and unused.
+- ⚠️ SafeFireAndForget placeholder remains pending (not required for current integrations but tracked in P0 checklist).
+
+## Remaining Blockers
+- Decide the authoritative profile/terminology models before Phase 1 wiring (both `Common` and `Integrations` namespaces exist).
+- Add the SafeFireAndForget helper placeholder and document intended usage sites (P0-35).
