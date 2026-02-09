@@ -1,6 +1,6 @@
 # Phase 0 Scaffold Progress
 
-Last updated: 2026-02-10
+Last updated: 2026-02-11
 
 ## How to update
 - When checking an item, include the completion date and a short note in parentheses (e.g., `[x] Define ... (2026-02-10: stubbed interfaces added)`).
@@ -40,3 +40,6 @@ Last updated: 2026-02-10
 - [ ] P0-29: Add Ollama model catalog + selection placeholders (DTOs/stubs only).
 - [ ] P0-30: Provide terminology/style pack loader placeholders (CSV/TSV/Markdown).
 - [ ] P0-31: Define translation profile persistence + selection stubs (local-only, inert).
+- [ ] P0-33: Add provider failure DTO scaffolding for diagnostics (metadata only).
+- [ ] P0-34: Add QA diagnostic DTO scaffolding (code, message, severity, location).
+- [ ] P0-35: Add SafeFireAndForget helper placeholder + usage notes (no behavior change).
