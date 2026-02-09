@@ -4,12 +4,21 @@
 **Description**
 Locate and document the translation workflow entrypoints, settings persistence, and UI surfaces where integrations should eventually plug in. This is a read-only pass to avoid guessing integration points.
 
+**Behavior impact**
+- None. Documentation-only inventory.
+
 **Acceptance Criteria**
 - A markdown report lists relevant classes, methods, and settings paths.
 - No production code changes are required.
 
 **Files to touch**
 - `docs/inventory/integration-entrypoints.md` (new report)
+
+**Build command**
+- `dotnet build Witcher3StringEditor.slnx`
+
+**Reminder**
+- Keep this read-only: do not add hooks or runtime wiring during the inventory pass.
 
 **QA Checklist**
 - Build: not required (docs-only).
@@ -22,6 +31,9 @@ Locate and document the translation workflow entrypoints, settings persistence, 
 **Description**
 Add a concrete schema definition document and a minimal database bootstrapper stub to align with the local-only storage requirement. Keep implementations inert and compile-safe.
 
+**Behavior impact**
+- None. Interfaces/stubs only, no runtime wiring.
+
 **Acceptance Criteria**
 - A schema document describes tables/indices and initial migration steps.
 - A new bootstrapper interface + stub is added without wiring into runtime flows.
@@ -31,6 +43,12 @@ Add a concrete schema definition document and a minimal database bootstrapper st
 - `docs/integrations/translation-memory-schema.md` (new)
 - `Witcher3StringEditor.Common/TranslationMemory` (new interface)
 - `Witcher3StringEditor.Data/TranslationMemory` (new stub)
+
+**Build command**
+- `dotnet build Witcher3StringEditor.slnx`
+
+**Reminder**
+- Do not register the store or initializer with production services yet.
 
 **QA Checklist**
 - ✅ Build: solution builds.
@@ -43,6 +61,9 @@ Add a concrete schema definition document and a minimal database bootstrapper st
 **Description**
 Extend the Ollama integration with model-selection request/response DTOs and a stubbed catalog method. No UI wiring or HTTP calls yet.
 
+**Behavior impact**
+- None. DTOs and stub interfaces only.
+
 **Acceptance Criteria**
 - DTOs exist for model listing and selection.
 - A stub method returns placeholder data when configured.
@@ -51,6 +72,12 @@ Extend the Ollama integration with model-selection request/response DTOs and a s
 **Files to touch**
 - `Witcher3StringEditor.Integrations.Ollama` (new DTOs and stub methods)
 - `docs/integrations/ollama.md` (new)
+
+**Build command**
+- `dotnet build Witcher3StringEditor.slnx`
+
+**Reminder**
+- Do not add HTTP calls or inject the provider into runtime flows.
 
 **QA Checklist**
 - ✅ Build: solution builds.
@@ -61,17 +88,26 @@ Extend the Ollama integration with model-selection request/response DTOs and a s
 
 ## Issue 4: Terminology & style loaders (local assets)
 **Description**
-Add local file loader stubs for terminology and style resources, with minimal parsing logic and TODOs for validation. Keep logic isolated.
+Add terminology and style loader interfaces plus no-op stubs for local assets. Skip parsing and runtime logic for now; keep only compile-safe placeholders.
+
+**Behavior impact**
+- None. Interfaces/stubs only, no parsing or runtime wiring.
 
 **Acceptance Criteria**
-- Loaders accept `.csv`, `.tsv`, and `.md` inputs with basic parsing.
-- Output models align with current terminology abstractions.
+- Loader interfaces and no-op stubs compile.
+- Source descriptors include file type hints (`.csv`, `.tsv`, `.md`) without parsing.
 - No runtime wiring or enforcement.
 
 **Files to touch**
 - `Witcher3StringEditor.Common/Terminology` (models if needed)
 - `Witcher3StringEditor.Data/Terminology` (new loader stubs)
-- `docs/samples/` (sample assets)
+- `docs/samples/` (sample assets, static)
+
+**Build command**
+- `dotnet build Witcher3StringEditor.slnx`
+
+**Reminder**
+- Avoid adding any parsing or validation logic until runtime wiring is approved.
 
 **QA Checklist**
 - ✅ Build: solution builds.
@@ -82,19 +118,27 @@ Add local file loader stubs for terminology and style resources, with minimal pa
 
 ## Issue 5: Translation profiles persistence and preview stubs
 **Description**
-Create minimal preview/selection stubs that read local JSON profiles without changing core flows. Keep implementations inert by default.
+Create minimal preview/selection interfaces and no-op stubs for profiles. Keep implementations inert and avoid JSON parsing for now.
+
+**Behavior impact**
+- None. Interfaces/stubs only, no runtime wiring.
 
 **Acceptance Criteria**
 - Stub preview and selection services compile.
-- JSON catalog loading is read-only and local.
 - A profile summary listing interface exists for lightweight catalog views.
-- No settings or UI wiring.
+- No settings, UI, or pipeline wiring.
 
 **Files to touch**
 - `Witcher3StringEditor.Common/Profiles` (new interfaces if required)
 - `Witcher3StringEditor/Integrations/Profiles` (summary catalog interface)
 - `Witcher3StringEditor.Data/Profiles` (stub services)
 - `docs/integrations/translation-profiles.md` (new)
+
+**Build command**
+- `dotnet build Witcher3StringEditor.slnx`
+
+**Reminder**
+- Do not add JSON parsing or persistence until runtime wiring is approved.
 
 **QA Checklist**
 - ✅ Build: solution builds.
