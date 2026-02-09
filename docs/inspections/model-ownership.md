@@ -13,6 +13,28 @@ used for new work, along with rationale so future changes stay consistent and co
 | Translation providers | `Witcher3StringEditor.Common.Translation` (`Witcher3StringEditor.Common/Translation`) | Provider contracts, request/response DTOs, and model discovery DTOs live in Common and are wired through registries and routers. New provider-related models should extend these types to avoid fragmentation. |
 | Translation memory (TM) | `Witcher3StringEditor.Common.TranslationMemory` (`Witcher3StringEditor.Common/TranslationMemory`) | Common defines the TM interfaces and settings used across Services and Data stubs. This keeps storage wiring compile-safe and prevents duplicate store/entry definitions. |
 
+## Current duplicate model locations (profiles & terminology)
+These duplicates exist today and should not be extended. Use them only for inventory or migration tasks.
+
+### Profiles
+- **Authoritative**
+  - `Witcher3StringEditor.Common/Profiles/TranslationProfile.cs`
+  - `Witcher3StringEditor.Common/Profiles/TranslationProfileSummary.cs`
+  - `Witcher3StringEditor.Common/Profiles/ITranslationProfileStore.cs`
+- **Duplicate (non-authoritative)**
+  - `Witcher3StringEditor/Integrations/Profiles/TranslationProfile.cs`
+  - `Witcher3StringEditor/Integrations/Profiles/TranslationProfileSummary.cs`
+  - `Witcher3StringEditor/Integrations/Profiles/ITranslationProfileStore.cs`
+
+### Terminology & style
+- **Authoritative**
+  - `Witcher3StringEditor.Common/Terminology/TerminologyModels.cs`
+  - `Witcher3StringEditor.Common/Terminology/ITerminologyLoader.cs`
+  - `Witcher3StringEditor.Common/Terminology/IStyleGuideLoader.cs`
+- **Duplicate (non-authoritative)**
+  - `Witcher3StringEditor/Integrations/Terminology/TerminologyModels.cs`
+  - `Witcher3StringEditor/Integrations/Terminology/ITerminologyLoader.cs`
+
 ## Do not use (duplicate or legacy locations)
 Use these only for inventory or migration tasks; do not introduce new models here.
 
@@ -34,3 +56,7 @@ Use these only for inventory or migration tasks; do not introduce new models her
   can agree on a single schema without runtime wiring changes.
 - **Services** and **Data** should continue to host runtime implementations and storage stubs, but they should only
   consume Common models rather than redefine them.
+- **Rationale to prevent re-duplication:** All new profile and terminology work must reference the Common namespaces
+  above. If additional data is required, extend the Common models and update services to consume them rather than
+  creating parallel DTOs in `Integrations/*`. This keeps serialization, settings, and pipeline context aligned to a
+  single schema and prevents conflicting defaults or mismatched fields.
