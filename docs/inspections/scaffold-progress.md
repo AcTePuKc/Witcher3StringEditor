@@ -1,6 +1,6 @@
 # Phase 0 Scaffold Progress
 
-Last updated: 2026-02-09
+Last updated: 2026-02-10
 
 ## How to update
 - When checking an item, include the completion date and a short note in parentheses (e.g., `[x] Define ... (2026-02-10: stubbed interfaces added)`).
@@ -34,3 +34,9 @@ Last updated: 2026-02-09
 - [x] Update `docs/integrations.md` with architecture notes and planned tasks. (2026-02-09: roadmap and sequencing captured.)
 - [x] Update `docs/task-breakdown.md` with issue-level breakdowns. (2026-02-09: issue list and acceptance criteria captured.)
 - [x] Add inspection notes and inventory findings in `docs/inspections/`. (2026-02-09: inventory + inspection notes present.)
+
+## Pending P0 checklist additions
+- [ ] P0-28: Document translation memory database settings + initializer stubs (no runtime wiring).
+- [ ] P0-29: Add Ollama model catalog + selection placeholders (DTOs/stubs only).
+- [ ] P0-30: Provide terminology/style pack loader placeholders (CSV/TSV/Markdown).
+- [ ] P0-31: Define translation profile persistence + selection stubs (local-only, inert).
