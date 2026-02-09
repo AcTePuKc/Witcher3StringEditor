@@ -24,6 +24,12 @@ truth. Keep implementations/stubs in Services or Data as needed, but do not dupl
 | Translation profiles | `Witcher3StringEditor.Common.Profiles` (`Witcher3StringEditor.Common/Profiles`) | Centralizes profile models for UI and pipeline context builders, avoiding duplicate definitions. |
 | Translation memory (TM) | `Witcher3StringEditor.Common.TranslationMemory` (`Witcher3StringEditor.Common/TranslationMemory`) | Common already defines TM interfaces/settings used by Services/Data stubs. |
 
+### Authoritative Folders for Profiles and Terminology
+Use these folders exclusively for profile and terminology/style contracts. Do not create parallel schemas elsewhere.
+
+- Profiles: `Witcher3StringEditor.Common/Profiles` (`Witcher3StringEditor.Common.Profiles`)
+- Terminology & style: `Witcher3StringEditor.Common/Terminology` (`Witcher3StringEditor.Common.Terminology`)
+
 ### Do Not Use (Duplicate or Legacy Locations)
 Do not introduce new models in these locations; use them only for inventory or migration work.
 
@@ -64,9 +70,10 @@ Do not introduce new models in these locations; use them only for inventory or m
 - Keep profile storage local (JSON) and inert by default.
 
 ### UI Placeholders & Settings Surfaces (No Wiring)
-- Settings dialog already includes placeholders for profile selection, translation memory toggles, terminology packs,
-  and style guide file paths; keep these as the primary UI surfaces for future wiring.
-- Provider/model selection UI exists in the same settings view, but model discovery should remain inert until Phase 1.
+- Add placeholders in the Settings dialog for profile selection, translation memory toggles, terminology packs, and
+  style guide file paths; keep these as the primary UI surfaces for future wiring.
+- Add provider/model selection placeholders in the same Settings dialog section; keep model discovery inert until
+  Phase 1.
 
 ### Provider Failure Reporting (DTO-only)
 - Capture provider failure metadata in a DTO for future diagnostics.
@@ -84,7 +91,8 @@ Do not introduce new models in these locations; use them only for inventory or m
 ## Decision Log (P0)
 **Decision (Model ownership):** The Common project is the authoritative home for translation-related contracts and DTOs
 (profiles, terminology/style, providers, translation memory). Duplicate `Integrations/*` model surfaces are legacy only
-and should not be extended for new work. See `docs/inspections/model-ownership.md` for details.
+and should not be extended for new work. See
+[docs/inspections/model-ownership.md](docs/inspections/model-ownership.md) for details.
 
 ## Next Steps
 - Execute the remaining issue drafts in `docs/task-breakdown.md` in order, keeping changes compile-safe and inert.
