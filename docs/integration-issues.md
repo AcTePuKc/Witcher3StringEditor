@@ -184,7 +184,7 @@ remains the default.
 **Acceptance Criteria**
 - `ITranslationProvider` includes `ListModelsAsync` and `TranslateAsync` signatures.
 - Minimal DTOs exist for request/result/model metadata (`TranslationRequest`, `TranslationResult`, `ModelInfo`), including
-  optional glossary/style/profile fields.
+  summary fields (`Id`, `DisplayName`, `IsDefault`) and optional glossary/style/profile fields.
 - A stub in-memory registry exists for non-DI usage (no runtime wiring).
 - No new call sites are introduced in the existing translation flow.
 
