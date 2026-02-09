@@ -34,6 +34,10 @@ profiles without large refactors.
 - Provide preview and selection abstractions without changing core translation behavior.
 - Keep profile storage local (JSON) and inert by default.
 
+### Provider Failure Reporting (DTO-only)
+- Capture provider failure metadata in a DTO for future diagnostics.
+- Keep this data model unused until a logging/telemetry path is approved.
+
 ## Deliverables & Sequencing
 - See `docs/task-breakdown.md` for issue-level tasks, acceptance criteria, and QA checklists.
 - Phase 0 scaffolding status: `docs/inspections/phase0-status.md`.
