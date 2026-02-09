@@ -146,3 +146,33 @@ Create minimal preview/selection interfaces and no-op stubs for profiles. Keep i
 - ✅ Build: solution builds.
 - Manual: optional catalog load in isolation.
 - Regression: no settings or translation pipeline wiring.
+
+---
+
+## Issue 6: Provider failure DTO scaffolding
+**Description**
+Introduce a DTO to capture provider failure metadata (provider name, failure kind, message) so future diagnostics can
+standardize error reporting. Keep this unused by runtime flows for now.
+
+**Behavior impact**
+- None. DTO-only scaffolding, no runtime wiring.
+
+**Acceptance Criteria**
+- DTO exists with provider name, failure kind, and message fields.
+- DTO is not referenced by any runtime services yet.
+- All changes compile.
+
+**Files to touch**
+- `Witcher3StringEditor.Common/Translation/TranslationProviderFailureDto.cs`
+- `docs/integrations.md`
+
+**Build command**
+- `dotnet build Witcher3StringEditor.slnx`
+
+**Reminder**
+- Do not wire the DTO into logging or UI until diagnostics requirements are defined.
+
+**QA Checklist**
+- ✅ Build: solution builds.
+- Manual: none (model-only change).
+- Regression: translation flow remains unchanged.
