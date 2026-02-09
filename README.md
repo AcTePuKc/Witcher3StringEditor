@@ -2,6 +2,10 @@
 
 A powerful tool for editing string resources in *The Witcher 3: Wild Hunt*, enabling modification of in-game text such as dialogues, quest descriptions, and UI elements.
 
+## Scaffold Status
+
+This repository includes read-only, informational scaffolding for future integrations. No new runtime behavior is enabled by these stubs; they exist to document planned work and keep the app safe by default. For the current QA checklist and issue breakdown, see [docs/task-breakdown.md](docs/task-breakdown.md).
+
 ## Features
 
 - **String Editing**: Add, modify, or delete entries in Witcher 3 string files.
