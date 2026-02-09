@@ -27,4 +27,5 @@ The following items were added as scaffolding only and are **unused in runtime**
 - ✅ SafeFireAndForget placeholder added with diagnostics-only usage notes (no runtime wiring).
 
 ## Remaining Blockers
-- Decide the authoritative profile/terminology models before Phase 1 wiring (both `Common` and `Integrations` namespaces exist).
+- None. Model ownership is confirmed in `docs/inspections/model-ownership.md`, with Common as the authoritative contract
+  location for profiles, terminology, providers, and translation memory.

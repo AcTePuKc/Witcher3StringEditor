@@ -79,3 +79,15 @@ Do not introduce new models in these locations; use them only for inventory or m
 ## Deliverables & Sequencing
 - See `docs/task-breakdown.md` for issue-level tasks, acceptance criteria, and QA checklists.
 - Phase 0 scaffolding status: `docs/inspections/phase0-status.md`.
+- Scaffold checklist (Phase 0): `docs/inspections/scaffold-progress.md`.
+
+## Decision Log (P0)
+**Decision (Model ownership):** The Common project is the authoritative home for translation-related contracts and DTOs
+(profiles, terminology/style, providers, translation memory). Duplicate `Integrations/*` model surfaces are legacy only
+and should not be extended for new work. See `docs/inspections/model-ownership.md` for details.
+
+## Next Steps
+- Execute the remaining issue drafts in `docs/task-breakdown.md` in order, keeping changes compile-safe and inert.
+- When moving into Phase 1 wiring, start by removing reliance on legacy `Integrations/*` models and use the Common
+  contracts exclusively.
+- Reconfirm the scaffold checklist in `docs/inspections/scaffold-progress.md` before any runtime wiring begins.
