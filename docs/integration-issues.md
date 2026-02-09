@@ -140,6 +140,29 @@ documentation-only.
 - Manual: open the sample files and confirm expected headings and fields
 - No regressions: documentation-only change
 
+---
+
+### Issue G: Settings placeholders for provider/model/profile selection
+**Description**
+Introduce minimal settings dialog placeholders for selecting a translation provider, model, and profile without wiring
+them into translation routing or runtime behavior.
+
+**Acceptance Criteria**
+- Settings placeholders exist for provider/model/profile selection (UI-only, inert by default).
+- Settings values are persisted via existing settings mechanisms without changing translation routing.
+- No new translation flow wiring is introduced.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `Witcher3StringEditor/Models/AppSettings.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open the settings dialog and confirm placeholders render without side effects
+- No regressions: translation flow remains unchanged
+
 
 ## Phase 0: compile-safe scaffolding
 Phase 0 issues are limited to compile-safe scaffolding and documentation updates only.
