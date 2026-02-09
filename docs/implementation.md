@@ -8,6 +8,9 @@ implementation and keeps all changes compile-safe and inert by default.
 - Local-only storage (SQLite/JSON) where persistence is needed.
 - Documentation updates that clarify future wiring without changing behavior.
 
+## Scope Freeze
+No new stubs beyond checklist items.
+
 ## Explicit Do/Don’t Rules
 **Do**
 - Add compile-safe interfaces, DTOs, and stubs with TODO markers.
@@ -42,7 +45,7 @@ implementation and keeps all changes compile-safe and inert by default.
 ## Phase 0 Exit Criteria
 Phase 0 is complete only when **all items below are checked**. Phase 1 is **blocked** until then.
 
-**Required stubs/checks**
+**Required stubs/checks (Scope Freeze: no new stubs beyond checklist items)**
 - [ ] Provider interfaces (translation provider contracts + request/response DTOs).
 - [ ] Provider registry/resolver (inert by default; no routing changes).
 - [ ] Translation profiles stubs (models + local catalog/loader placeholders).
