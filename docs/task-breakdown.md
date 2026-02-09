@@ -21,9 +21,9 @@ Locate and document the translation workflow entrypoints, settings persistence, 
 - Keep this read-only: do not add hooks or runtime wiring during the inventory pass.
 
 **QA Checklist**
-- Build: not required (docs-only).
-- Manual: confirm report lists UI entrypoints and settings storage.
-- Regression: none expected.
+- Build: optional (docs-only).
+- Manual: confirm the report lists UI entrypoints, settings storage, and translation flow hooks.
+- Regression: no behavior changes expected.
 
 ---
 
@@ -54,7 +54,7 @@ Add a concrete schema definition document and a minimal database bootstrapper st
 
 **QA Checklist**
 - ✅ Build: solution builds.
-- Manual: none (stubs only).
+- Manual: run the initializer in isolation (no runtime wiring).
 - Regression: ensure no settings or translation pipeline wiring.
 
 ---
@@ -83,7 +83,7 @@ Extend the Ollama integration with model-selection request/response DTOs and a s
 
 **QA Checklist**
 - ✅ Build: solution builds.
-- Manual: none (stubs only).
+- Manual: call the model-listing stub in isolation (no HTTP calls).
 - Regression: no settings or translation pipeline wiring.
 
 ---
@@ -98,6 +98,7 @@ Add terminology and style loader interfaces plus no-op stubs for local assets. S
 **Acceptance Criteria**
 - Loader interfaces and no-op stubs compile.
 - Source descriptors include file type hints (`.csv`, `.tsv`, `.md`) without parsing.
+- `TerminologyEntry` includes `Term`, `Translation`, `Notes`, and `Mode` fields.
 - No runtime wiring or enforcement.
 
 **Files to touch**
@@ -113,7 +114,7 @@ Add terminology and style loader interfaces plus no-op stubs for local assets. S
 
 **QA Checklist**
 - ✅ Build: solution builds.
-- Manual: optional run of loader in isolation.
+- Manual: run loader stubs against sample files in isolation.
 - Regression: no settings or translation pipeline wiring.
 
 ---
@@ -144,7 +145,7 @@ Create minimal preview/selection interfaces and no-op stubs for profiles. Keep i
 
 **QA Checklist**
 - ✅ Build: solution builds.
-- Manual: optional catalog load in isolation.
+- Manual: call the profile catalog stub in isolation.
 - Regression: no settings or translation pipeline wiring.
 
 ---
@@ -174,5 +175,5 @@ standardize error reporting. Keep this unused by runtime flows for now.
 
 **QA Checklist**
 - ✅ Build: solution builds.
-- Manual: none (model-only change).
+- Manual: inspect the DTO model in isolation (no runtime usage).
 - Regression: translation flow remains unchanged.
