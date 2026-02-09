@@ -14,6 +14,7 @@ internal sealed class TranslationMemorySettingsProvider(IAppSettings appSettings
     {
         return new TranslationMemorySettings
         {
+            Enabled = appSettings.UseTranslationMemory,
             IsEnabled = appSettings.UseTranslationMemory,
             DatabasePath = string.IsNullOrWhiteSpace(appSettings.TranslationMemoryPath)
                 ? null

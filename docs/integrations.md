@@ -19,6 +19,7 @@ profiles without large refactors.
 - Keep initialization and data access behind `ITranslationMemoryStore` and related abstractions.
 - Add a store factory stub to construct a SQLite-backed store without runtime wiring.
 - Track schema evolution via a migration plan interface.
+- Represent feature toggles and storage configuration via `TranslationMemorySettings` (`Enabled`, `DatabasePath`).
 
 ### Ollama Provider & Model Selection
 - Build on the existing provider stub to list models when enabled.
