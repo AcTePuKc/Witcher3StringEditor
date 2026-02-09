@@ -4,6 +4,139 @@
 These issue drafts cover the planned **database-backed translation memory**, **Ollama model selection**, **terminology/style
 loading**, and **translation profile** scaffolding. Each issue stays inert by default and focuses on stubs/interfaces only.
 
+## Current focus (near-term issue drafts)
+
+### Issue A: Local translation memory database scaffolding
+**Description**
+Add a minimal, local-only translation memory database bootstrap path and leave all runtime wiring inert by default.
+
+**Acceptance Criteria**
+- Translation memory settings describe a local database path and provider name (no external services).
+- SQLite bootstrap logic is isolated behind an initializer interface.
+- No DI or UI wiring is added in this issue.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`
+- `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
+- `Witcher3StringEditor.Data/TranslationMemory/SqliteTranslationMemoryDatabaseInitializer.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm no database file is created during normal app startup
+- No regressions: translation dialog works as before
+
+---
+
+### Issue B: Ollama model selection scaffolding
+**Description**
+Add a model catalog stub for Ollama so model selection can be wired later without changing behavior now.
+
+**Acceptance Criteria**
+- Model catalog returns empty results for non-Ollama provider names.
+- Model catalog delegates to the Ollama provider stub for model listing.
+- No DI or UI wiring is added in this issue.
+
+**Files to Touch**
+- `Witcher3StringEditor.Integrations.Ollama/OllamaModelCatalog.cs`
+- `Witcher3StringEditor.Integrations.Ollama/OllamaTranslationProvider.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm no settings UI changes were introduced
+- No regressions: translation flow remains unchanged
+
+---
+
+### Issue C: Terminology + style loading scaffolding
+**Description**
+Keep terminology/style loaders local-only and confirm minimal parsing stubs are present for TSV/CSV/Markdown sources.
+
+**Acceptance Criteria**
+- Terminology loader supports TSV/CSV terminology packs.
+- Style guide loader supports Markdown sections for required/forbidden terms.
+- Loaders remain unused by default (no wiring).
+
+**Files to Touch**
+- `Witcher3StringEditor/Integrations/Terminology/StubTerminologyLoader.cs`
+- `Witcher3StringEditor.Common/Terminology/ITerminologyLoader.cs`
+- `Witcher3StringEditor.Common/Terminology/IStyleGuideLoader.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: load sample files from `docs/samples/` in an isolated test harness if needed
+- No regressions: translation dialog behaves unchanged
+
+---
+
+### Issue D: Translation profile scaffolding
+**Description**
+Define a minimal translation profile model and local JSON store to persist profiles without wiring them into runtime
+selection.
+
+**Acceptance Criteria**
+- Profile model contains provider/model fields plus optional terminology/style references.
+- JSON store returns empty lists when the file is missing.
+- No DI or UI wiring is added in this issue.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Profiles/TranslationProfile.cs`
+- `Witcher3StringEditor.Data/Profiles/JsonTranslationProfileStore.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm loading a missing JSON file returns an empty list
+- No regressions: translation flow remains unchanged
+
+
+## Phase 0: compile-safe scaffolding
+Phase 0 issues are limited to compile-safe scaffolding and documentation updates only.
+
+**Phase 0 constraints**
+- No full feature implementation.
+- No large refactors.
+- No behavior changes unless explicitly marked as placeholders.
+- No external services; local-only storage (e.g., SQLite/JSON) when applicable.
+- UI/UX changes must be minimal placeholders for settings panels.
+- Changes must compile (or be explicitly deferred to a follow-up issue).
+
+## Issue 00: Translation provider contracts (interfaces + DTOs)
+**Description**
+Add the provider contract interfaces and DTOs that future integrations will implement. Keep them unused by the existing
+translation flow so the current legacy translator path remains the default.
+
+**Acceptance Criteria**
+- `ITranslationProvider` includes `ListModelsAsync` and `TranslateAsync` signatures.
+- Minimal DTOs exist for request/result/model metadata (`TranslationRequest`, `TranslationResult`, `ModelInfo`).
+- No new call sites are introduced in the existing translation flow.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ITranslationProvider.cs`
+- `Witcher3StringEditor.Common/Translation/TranslationModels.cs`
+- `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm the translation dialog still defaults to legacy translators
+- No regressions: provider routing remains opt-in/inert
+
+---
+
 ## Issue 0: Translation flow + fallback investigation
 **Description**
 Trace the current single-item and batch translation flows, including how the router picks providers vs legacy translators,
@@ -22,6 +155,18 @@ and document all fallback/default/error handling behavior.
 
 **Files to Touch**
 - `docs/fallback-investigation.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -44,6 +189,18 @@ Confirm where settings are persisted, where translation requests flow, which dia
 **Files to Touch**
 - `docs/inventory-report.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Settings dialog and confirm the app still launches
@@ -59,7 +216,7 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - SQLite bootstrap and schemas exist for translation memory + QA.
 - Database initialization is abstracted behind an `ITranslationMemoryDatabaseInitializer` stub for future migrations.
 - Store interfaces remain local-only and inert by default.
-- Add a translation memory workflow stub (`ITranslationMemoryService`) with a no-op implementation.
+- Add translation memory workflow stubs (`ITranslationMemoryService`) with a no-op implementation.
 - Storage uses AppData paths only.
 
 **Files to Touch**
@@ -71,7 +228,21 @@ Ensure local translation memory and QA stores use a minimal SQLite schema and Ap
 - `Witcher3StringEditor.Data/QualityAssurance/*`
 - `Witcher3StringEditor.Data/TranslationMemory/NoopTranslationMemoryDatabaseInitializer.cs`
 - `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`
+- `Witcher3StringEditor/Integrations/Storage/ITranslationMemoryService.cs`
+- `Witcher3StringEditor/Integrations/Storage/StubTranslationMemoryService.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -106,6 +277,18 @@ Add a provider registry abstraction that maps provider names to implementations 
 - `Witcher3StringEditor/Models/AppSettings.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Settings dialog and confirm provider/model placeholders render
@@ -115,20 +298,35 @@ Add a provider registry abstraction that maps provider names to implementations 
 
 ## Issue 4: Terminology + style pack loading hooks
 **Description**
-Keep terminology/style loaders local-only, add TODO hooks for prompt injection and post-translation validation, and validate parsing against sample files.
+Keep terminology/style loaders local-only, add TODO hooks for prompt injection and post-translation validation, and validate
+parsing against sample files. The Integrations layer includes minimal parsing stubs (TSV/CSV + Markdown) without UI wiring.
 
 **Acceptance Criteria**
-- Loader supports TSV/CSV terminology packs and Markdown style guides.
+- Loader supports TSV/CSV terminology packs and Markdown style guides with minimal parsing.
 - Prompt builder interface exists with a no-op implementation for later prompt injection.
 - TODO markers exist for future prompt injection/validation.
 - Samples under `docs/samples/` parse without errors.
+- No UI/translation flow wiring is introduced.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Terminology/*`
+- `Witcher3StringEditor/Integrations/Terminology/*`
 - `Witcher3StringEditor/Services/TerminologyLoader.cs`
 - `Witcher3StringEditor/Services/NoopTerminologyPromptBuilder.cs`
 - `docs/samples/*`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -137,29 +335,36 @@ Keep terminology/style loaders local-only, add TODO hooks for prompt injection a
 
 ---
 
-## Issue 5: Translation profile storage + resolver
+## Issue 5: Translation profile model + JSON store
 **Description**
-Persist profiles locally (JSON) and add a resolver stub that can merge a selected profile into current settings later.
+Define a minimal translation profile model and persist profiles locally (JSON), leaving resolver wiring for a follow-up
+task once selection is hooked up.
 
 **Acceptance Criteria**
+- Translation profile model includes core identifiers, provider/model, and optional terminology/style/tm fields.
 - JSON-backed profile store returns empty list when file is missing.
-- Resolver stub returns null when no profile is selected.
-- Profile model includes optional terminology/style paths, file path aliases, enablement toggles, and translation memory enablement.
-- Settings resolver stub can resolve the selected profile from app settings (no-op acceptable).
-- Preview service stub can generate a read-only summary string for a selected profile (no-op acceptable).
 - No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**
-- `Witcher3StringEditor.Common/Profiles/*`
-- `Witcher3StringEditor.Data/Profiles/*`
-- `Witcher3StringEditor/Services/*TranslationProfileResolver*.cs`
-- `Witcher3StringEditor/Services/*TranslationProfileSettingsResolver*.cs`
-- `Witcher3StringEditor/Services/*TranslationProfilePreview*.cs`
+- `Witcher3StringEditor/Integrations/Profiles/TranslationProfile.cs`
+- `Witcher3StringEditor/Integrations/Profiles/JsonTranslationProfileStore.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
-- Manual: app startup and Settings dialog open
+- Manual: inspect the JSON store to confirm missing-file behavior
 - No regressions: existing translation flow unchanged
 
 ---
@@ -175,6 +380,18 @@ Update and expand `docs/integrations.md` with a high-level architecture sketch, 
 
 **Files to Touch**
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **Dependencies**
 - Issue 1 (Inventory pass for integration entrypoints)
@@ -204,6 +421,18 @@ single read-only context object for future translation routing. Keep it unused b
 - `Witcher3StringEditor/Services/*TranslationPipelineContext*.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **Dependencies**
 - Issue 3 (Provider registry + model discovery wiring)
 - Issue 4 (Terminology + style pack loading hooks)
@@ -228,6 +457,18 @@ Add minimal settings UI placeholders for provider selection, model selection, te
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `Witcher3StringEditor.Common/Settings/*` (if required)
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **Dependencies**
 - Issue 3 (Provider registry + model discovery wiring)
@@ -256,6 +497,18 @@ directly binding to settings. Keep behavior inert by default.
 - `Witcher3StringEditor/Services/NoopTranslationProfileSelectionService.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: app startup without profile selection side effects
@@ -279,6 +532,18 @@ adapter if a legacy call site still exists).
 - `Witcher3StringEditor.Common/Translation/TranslationProviderRegistry.cs`
 - `Witcher3StringEditor/Services/*TranslationProviderRegistry*.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -316,6 +581,18 @@ should attempt to load the selected file and surface a status line (loaded/faile
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Settings dialog, toggle terminology/style, and confirm status text updates
@@ -344,6 +621,18 @@ changing translation output.
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: select terminology/style files in Settings and confirm validation status shows "Not validated."
@@ -370,6 +659,18 @@ in the Settings dialog without wiring translation flow logic.
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Settings dialog and confirm the translation memory card renders
@@ -392,6 +693,18 @@ app settings. Add a noop router implementation for scenarios where routing shoul
 - `Witcher3StringEditor/Services/LegacyTranslationRouter.cs`
 - `Witcher3StringEditor/Services/TranslationRouter.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -416,6 +729,18 @@ Create an Ollama settings model (BaseUrl, Model, parameters), add a stubbed clie
 - `Witcher3StringEditor.Integrations.Ollama/*`
 - `Witcher3StringEditor.Common/Translation/*` (if shared models needed)
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **Dependencies**
 - Issue 3 (Provider registry + model discovery wiring)
@@ -451,6 +776,18 @@ translation router requests without changing behavior unless the router supports
 - `Witcher3StringEditor.Dialogs/Views/TranslationDialog.xaml`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Translation dialog, toggle provider routing on/off, and confirm no translation behavior changes
@@ -477,6 +814,18 @@ rules opt-in and default to no-op behavior so translation output remains unchang
 - `Witcher3StringEditor/Models/AppSettings.cs` (if needed)
 - `docs/integrations.md`
 - `docs/ai-output-notes.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -508,6 +857,18 @@ translation memory service.
 - `Witcher3StringEditor/Services/NoopTranslationMemoryService.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open the translation dialog and run a single translation to ensure no errors
@@ -531,6 +892,18 @@ local-only and no-op by default, surfacing warnings in logs or status text only 
 - `Witcher3StringEditor/Services/NoopTranslationMemoryHealthCheck.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: run the health check via a debug harness (or temporary command) and confirm it returns `Warning` when no DB exists
@@ -552,6 +925,18 @@ paths, without changing routing behavior. The resulting context is read-only and
 - `Witcher3StringEditor.Common/Translation/TranslationPipelineContext.cs`
 - `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -577,6 +962,18 @@ logic inert by default and only invoked on explicit user action in settings.
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Settings dialog and confirm metadata placeholders render
@@ -600,6 +997,18 @@ options object. The mapping must be purely structural and not perform any HTTP c
 - `Witcher3StringEditor/Services/TranslationProviderRequestOptionsMapper.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: run a small debug mapping call and verify values are copied
@@ -621,6 +1030,18 @@ unused by default and only created when enablement flags are true.
 - `Witcher3StringEditor.Common/Terminology/TerminologyInjectionContext.cs`
 - `Witcher3StringEditor/Services/TerminologyInjectionContextBuilder.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -644,6 +1065,18 @@ after merging the selected profile with app settings. The preview is information
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `Witcher3StringEditor/Services/TranslationProfileResolver.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -669,6 +1102,18 @@ default.
 - `Witcher3StringEditor/Services/TranslationPipelineContextBuilder.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: verify no behavior change when no profile is selected
@@ -693,6 +1138,18 @@ Keep the service opt-in via the existing enablement flag so default behavior rem
 - `Witcher3StringEditor/Services/TranslationMemoryService.cs`
 - `Witcher3StringEditor/App.xaml.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -720,6 +1177,18 @@ user action and ensure the legacy translator path remains default.
 - `Witcher3StringEditor/Services/TranslationRouter.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: select Ollama in Settings (if available) and confirm model selection persists
@@ -745,6 +1214,18 @@ behavior unchanged when enablement flags are off.
 - `Witcher3StringEditor/Services/TerminologyValidationService.cs`
 - `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -773,6 +1254,18 @@ opt-in and ensure the selected profile can be cleared to restore default setting
 - `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: create/edit/delete a profile and confirm the JSON store updates
@@ -796,6 +1289,18 @@ user explicitly opts in. Keep the legacy translator path as the default.
 - `Witcher3StringEditor/Services/TranslationRouter.cs`
 - `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs` (if request shaping needs to be adjusted)
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -823,6 +1328,18 @@ opt-in toggle is enabled.
 - `Witcher3StringEditor/Services/TranslationRouter.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: enable provider routing and confirm validation warnings appear when provider/model is missing
@@ -845,6 +1362,18 @@ read-only and should not change behavior unless routing is explicitly enabled.
 - `Witcher3StringEditor.Dialogs/Views/TranslationDialog.xaml`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open translation dialog and confirm validation status updates as settings change
@@ -865,6 +1394,18 @@ states, so future implementations do not regress the legacy translator flow.
 **Files to Touch**
 - `docs/qa/provider-routing-validation.md`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -889,6 +1430,18 @@ legacy translator or provider routing. This selector reflects the opt-in routing
 - `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: open Translation dialog and confirm Legacy/Provider indicator updates with the routing toggle
@@ -911,6 +1464,18 @@ model, base URL, validation status). This banner should be informational only an
 - `Witcher3StringEditor.Dialogs/ViewModels/TranslationDialogViewModel.cs`
 - `Witcher3StringEditor/Services/*TranslationProviderValidator*.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -935,6 +1500,18 @@ translator. The message should include provider/model and a short reason for the
 - `Witcher3StringEditor.Dialogs/Views/TranslationDialog.xaml`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: simulate a provider validation warning and confirm fallback message displays
@@ -956,6 +1533,18 @@ behavior messaging.
 **Files to Touch**
 - `docs/qa/legacy-default-routing.md`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
@@ -981,6 +1570,18 @@ SQLite and portable files without changing runtime behavior.
 - `Witcher3StringEditor/Services/*TranslationMemoryExportService*.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: confirm no new UI or runtime behavior changes are visible
@@ -1004,6 +1605,18 @@ selection so future routing can read it without changing current behavior.
 - `Witcher3StringEditor/Services/*TranslationModelSelectionResolver*.cs`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: verify resolver returns null or defaults when no profile is selected
@@ -1026,6 +1639,18 @@ default and unused until wired into translation routing.
 - `Witcher3StringEditor.Data/Profiles/*`
 - `docs/integrations.md`
 
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
+
 **QA Checklist**
 - Build: `dotnet build`
 - Manual: load existing profile JSON and confirm no crash
@@ -1047,6 +1672,18 @@ message without changing behavior unless a future UI explicitly consumes it.
 - `Witcher3StringEditor.Common/Profiles/*`
 - `Witcher3StringEditor/Services/*TranslationProfileActivationGuard*.cs`
 - `docs/integrations.md`
+
+
+**Behavior Impact**
+- Default: no runtime behavior change; scaffolding only.
+- UI: placeholders only when explicitly called out (no workflow changes).
+
+**Build Commands**
+- `dotnet build`
+
+**Reminder (Phase 0)**
+- Keep changes compile-safe scaffolding only (stubs/interfaces/TODOs).
+- No full feature implementation, no external services, local-only storage.
 
 **QA Checklist**
 - Build: `dotnet build`
