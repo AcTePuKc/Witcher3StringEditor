@@ -18,9 +18,15 @@ public interface ITranslationMemoryStore
 {
     Task SaveAsync(TranslationMemoryEntry entry, CancellationToken cancellationToken = default);
 
+    Task UpsertAsync(TranslationMemoryEntry entry, CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<TranslationMemoryEntry>> FindExactAsync(
         string sourceText,
         string sourceLanguage,
         string targetLanguage,
+        CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<TranslationMemoryEntry>> LookupAsync(
+        TranslationMemoryLookupRequest request,
         CancellationToken cancellationToken = default);
 }

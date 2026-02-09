@@ -9,6 +9,10 @@ namespace Witcher3StringEditor.Integrations.Storage;
 /// </summary>
 public interface ITranslationMemoryService
 {
+    Task<IReadOnlyList<TranslationMemoryEntry>> LookupAsync(
+        TranslationMemoryLookupRequest request,
+        CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<TranslationMemoryEntry>> LookupExactAsync(
         string sourceText,
         string sourceLanguage,
@@ -16,4 +20,6 @@ public interface ITranslationMemoryService
         CancellationToken cancellationToken = default);
 
     Task SaveAsync(TranslationMemoryEntry entry, CancellationToken cancellationToken = default);
+
+    Task UpsertAsync(TranslationMemoryEntry entry, CancellationToken cancellationToken = default);
 }
