@@ -184,3 +184,33 @@ standardize error reporting. Keep this unused by runtime flows for now.
 - ✅ Build: solution builds.
 - Manual: inspect the DTO model in isolation (no runtime usage).
 - Regression: translation flow remains unchanged.
+
+---
+
+## Issue 7: QA diagnostic message DTO scaffolding
+**Description**
+Introduce a DTO for QA diagnostics with code, message, severity, and location fields. Keep this unused by runtime flows
+for now.
+
+**Behavior impact**
+- None. DTO-only scaffolding, no runtime wiring.
+
+**Acceptance Criteria**
+- DTO exists with `Code`, `Message`, `Severity`, and `Location` fields.
+- DTO is not referenced by any runtime services yet.
+- All changes compile.
+
+**Files to touch**
+- `Witcher3StringEditor.Common/QualityAssurance/QualityAssuranceDiagnosticDto.cs`
+- `docs/integrations.md`
+
+**Build command**
+- `dotnet build Witcher3StringEditor.slnx`
+
+**Reminder**
+- Do not wire the DTO into logging or UI until diagnostics requirements are defined.
+
+**QA Checklist**
+- ✅ Build: solution builds.
+- Manual: inspect the DTO model in isolation (no runtime usage).
+- Regression: QA flows remain unchanged.
