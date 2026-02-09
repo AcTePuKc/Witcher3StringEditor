@@ -24,8 +24,7 @@ The following items were added as scaffolding only and are **unused in runtime**
 - ✅ Ollama model selection scaffolding: model DTOs + catalog stub are present and unused.
 - ✅ Terminology/style loading scaffolding: models + loaders + prompt/validation stubs are present and unused.
 - ✅ Translation profiles scaffolding: profile models + catalog/preview/selection stubs are present and unused.
-- ⚠️ SafeFireAndForget placeholder remains pending (not required for current integrations but tracked in P0 checklist).
+- ✅ SafeFireAndForget placeholder added with diagnostics-only usage notes (no runtime wiring).
 
 ## Remaining Blockers
 - Decide the authoritative profile/terminology models before Phase 1 wiring (both `Common` and `Integrations` namespaces exist).
-- Add the SafeFireAndForget helper placeholder and document intended usage sites (P0-35).

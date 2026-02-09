@@ -17,7 +17,7 @@ No new stubs beyond checklist items.
 - Keep all integrations inert by default; defer wiring and behavior changes.
 - Prefer local-only storage paths (AppData, local JSON, or SQLite).
 - Add minimal placeholders for settings panels if absolutely necessary.
-- Use `SafeFireAndForget` only for background tasks where you want to log failures but intentionally do not await.
+- Use `SafeFireAndForget` only for diagnostics-only background tasks where you want to log failures but intentionally do not await.
 
 **Don’t**
 - Do not change translation routing behavior.
