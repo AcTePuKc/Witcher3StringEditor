@@ -19,6 +19,9 @@ Prepare **local-only**, compile-safe scaffolding for:
 - **Runtime wiring lives in `Witcher3StringEditor/Services`**
   - No-op implementations remain the default until explicitly wired.
   - Factory stubs (for example, translation memory store creation) live here to keep wiring inert.
+- **Pipeline context lives in `Witcher3StringEditor.Common/Translation`**
+  - `TranslationPipelineContext` captures provider/model/profile identifiers and terminology paths for future routing.
+  - Context data is a read-only snapshot that should remain unused in runtime flows until explicitly wired.
 
 **Constraints**
 - No external services; storage is local only.

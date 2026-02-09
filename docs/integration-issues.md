@@ -489,6 +489,7 @@ single read-only context object for future translation routing. Keep it unused b
 
 **Acceptance Criteria**
 - A context builder returns a `TranslationPipelineContext` populated from settings and the selected profile.
+- Context includes provider/model/profile identifiers and terminology paths for future routing.
 - No translation routing changes; the context is not consumed yet.
 - TODO markers indicate where translation memory and terminology injection will later occur.
 

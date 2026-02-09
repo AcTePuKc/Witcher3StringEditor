@@ -255,9 +255,14 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         string sourceText,
         ILanguage sourceLanguage,
         ILanguage targetLanguage,
-        TranslationPipelineContext pipelineContext,
+        TranslationPipelineContext? pipelineContext,
         CancellationToken cancellationToken)
     {
+        if (pipelineContext is null)
+        {
+            return Task.FromResult<TranslationMemoryEntry?>(null);
+        }
+
         var query = new TranslationMemoryQuery
         {
             SourceText = sourceText,
@@ -272,9 +277,14 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         string targetText,
         ILanguage sourceLanguage,
         ILanguage targetLanguage,
-        TranslationPipelineContext pipelineContext,
+        TranslationPipelineContext? pipelineContext,
         CancellationToken cancellationToken)
     {
+        if (pipelineContext is null)
+        {
+            return Task.CompletedTask;
+        }
+
         var entry = new TranslationMemoryEntry
         {
             SourceText = sourceText,
