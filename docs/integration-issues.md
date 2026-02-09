@@ -162,29 +162,24 @@ parsing against sample files. The Integrations layer includes minimal parsing st
 
 ---
 
-## Issue 5: Translation profile storage + resolver
+## Issue 5: Translation profile model + JSON store
 **Description**
-Persist profiles locally (JSON) and add a resolver stub that can merge a selected profile into current settings later.
+Define a minimal translation profile model and persist profiles locally (JSON), leaving resolver wiring for a follow-up
+task once selection is hooked up.
 
 **Acceptance Criteria**
+- Translation profile model includes core identifiers, provider/model, and optional terminology/style/tm fields.
 - JSON-backed profile store returns empty list when file is missing.
-- Resolver stub returns null when no profile is selected.
-- Profile model includes optional terminology/style paths, file path aliases, enablement toggles, and translation memory enablement.
-- Settings resolver stub can resolve the selected profile from app settings (no-op acceptable).
-- Preview service stub can generate a read-only summary string for a selected profile (no-op acceptable).
 - No UI wiring or behavior changes to existing translator selection.
 
 **Files to Touch**
-- `Witcher3StringEditor.Common/Profiles/*`
-- `Witcher3StringEditor.Data/Profiles/*`
-- `Witcher3StringEditor/Services/*TranslationProfileResolver*.cs`
-- `Witcher3StringEditor/Services/*TranslationProfileSettingsResolver*.cs`
-- `Witcher3StringEditor/Services/*TranslationProfilePreview*.cs`
+- `Witcher3StringEditor/Integrations/Profiles/TranslationProfile.cs`
+- `Witcher3StringEditor/Integrations/Profiles/JsonTranslationProfileStore.cs`
 - `docs/integrations.md`
 
 **QA Checklist**
 - Build: `dotnet build`
-- Manual: app startup and Settings dialog open
+- Manual: inspect the JSON store to confirm missing-file behavior
 - No regressions: existing translation flow unchanged
 
 ---

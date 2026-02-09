@@ -11,6 +11,9 @@
   - Loader interfaces live under `Witcher3StringEditor.Integrations.Terminology` and return in-memory packs.
   - A minimal parsing stub supports TSV/CSV terminology and Markdown style guides (no UI/DI wiring).
   - Sample files live under `docs/samples/` to validate parsing without integration wiring.
+- **Translation profiles**
+  - Profile models live under `Witcher3StringEditor/Integrations/Profiles`.
+  - JSON-backed profile storage remains local-only and returns empty lists when missing files are present.
 - **No UI/DI wiring**
   - Integration scaffolding stays inert: no DI registration and no UI changes.
 
@@ -103,21 +106,22 @@ Provide minimal parsing stubs for terminology and style guides with TSV/CSV and 
 
 ---
 
-### Issue 4: Translation profile storage scaffolding
+### Issue 4: Translation profile model + JSON store scaffolding
 **Description**
-Provide a stub profile store so profile persistence can be added later.
+Define a minimal translation profile model and add a JSON-backed store that returns empty lists when the file is missing.
+Keep the store inert by default (no DI/UI wiring).
 
 **Acceptance Criteria**
-- Stub profile store returns an empty list and accepts saves.
+- Translation profile model includes core identifiers, provider/model, and optional terminology/style/tm fields.
+- JSON-backed profile store returns empty lists when the file is missing.
 - No runtime wiring or UI additions are introduced.
-- Profile model remains local and future-facing.
 
 **Files to touch**
-- `Witcher3StringEditor/Integrations/Profiles/ITranslationProfileStore.cs`
-- `Witcher3StringEditor/Integrations/Profiles/StubTranslationProfileStore.cs`
+- `Witcher3StringEditor/Integrations/Profiles/TranslationProfile.cs`
+- `Witcher3StringEditor/Integrations/Profiles/JsonTranslationProfileStore.cs`
 - `docs/integrations.md`
 
 **QA checklist**
 - Build: `dotnet build`.
-- Manual: verify the stub store is unused in the app.
+- Manual: inspect the JSON store to confirm missing-file behavior.
 - No regressions: default translation flow remains unchanged.

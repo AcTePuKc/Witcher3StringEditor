@@ -18,4 +18,10 @@ public sealed class StubTranslationProfileStore : ITranslationProfileStore
         _ = profile ?? throw new ArgumentNullException(nameof(profile));
         return Task.CompletedTask;
     }
+
+    public Task DeleteAsync(string profileId, CancellationToken cancellationToken = default)
+    {
+        _ = profileId ?? throw new ArgumentNullException(nameof(profileId));
+        return Task.CompletedTask;
+    }
 }
