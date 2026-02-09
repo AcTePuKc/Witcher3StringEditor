@@ -69,6 +69,9 @@ internal sealed class TerminologyLoader : ITerminologyLoader, IStyleGuideLoader
         var required = new List<string>();
         var forbidden = new List<string>();
         var tone = new List<string>();
+        var sectionOrder = new List<string>();
+        var sectionRules = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+        string? currentSectionName = null;
         var section = StyleGuideSection.None;
 
         foreach (var rawLine in lines)
@@ -81,6 +84,13 @@ internal sealed class TerminologyLoader : ITerminologyLoader, IStyleGuideLoader
             if (line.StartsWith('#'))
             {
                 section = ResolveSection(line);
+                currentSectionName = ExtractHeadingTitle(line);
+                if (!string.IsNullOrWhiteSpace(currentSectionName) &&
+                    !sectionRules.ContainsKey(currentSectionName))
+                {
+                    sectionRules[currentSectionName] = new List<string>();
+                    sectionOrder.Add(currentSectionName);
+                }
                 continue;
             }
 
@@ -90,6 +100,12 @@ internal sealed class TerminologyLoader : ITerminologyLoader, IStyleGuideLoader
             var bulletText = ExtractBulletText(line);
             if (string.IsNullOrWhiteSpace(bulletText))
                 continue;
+
+            if (!string.IsNullOrWhiteSpace(currentSectionName) &&
+                sectionRules.TryGetValue(currentSectionName, out var rules))
+            {
+                rules.Add(bulletText);
+            }
 
             switch (section)
             {
@@ -109,6 +125,13 @@ internal sealed class TerminologyLoader : ITerminologyLoader, IStyleGuideLoader
         {
             Name = Path.GetFileNameWithoutExtension(path),
             SourcePath = path,
+            Sections = sectionOrder
+                .Select(name => new StyleGuideSection
+                {
+                    Name = name,
+                    Rules = sectionRules[name]
+                })
+                .ToList(),
             RequiredTerms = required,
             ForbiddenTerms = forbidden,
             ToneNotes = tone
@@ -312,6 +335,12 @@ internal sealed class TerminologyLoader : ITerminologyLoader, IStyleGuideLoader
         if (normalized.Contains("TONE"))
             return StyleGuideSection.Tone;
         return StyleGuideSection.None;
+    }
+
+    private static string? ExtractHeadingTitle(string heading)
+    {
+        var title = heading.Trim().TrimStart('#').Trim();
+        return string.IsNullOrWhiteSpace(title) ? null : title;
     }
 
     private static bool IsBullet(string line)

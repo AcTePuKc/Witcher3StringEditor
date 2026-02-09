@@ -28,9 +28,18 @@ public sealed class StyleGuide
 
     public string SourcePath { get; init; } = string.Empty;
 
+    public IReadOnlyList<StyleGuideSection> Sections { get; init; } = new List<StyleGuideSection>();
+
     public IReadOnlyList<string> RequiredTerms { get; init; } = new List<string>();
 
     public IReadOnlyList<string> ForbiddenTerms { get; init; } = new List<string>();
 
     public IReadOnlyList<string> ToneNotes { get; init; } = new List<string>();
+}
+
+public sealed class StyleGuideSection
+{
+    public string Name { get; init; } = string.Empty;
+
+    public IReadOnlyList<string> Rules { get; init; } = new List<string>();
 }

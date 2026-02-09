@@ -11,6 +11,7 @@ profiles without large refactors.
 - Store all data locally (SQLite/JSON).
 - Avoid wiring into Settings or translation flows until the related issue is complete.
 - Favor compile-safe placeholders over functional parsing or runtime logic.
+- Represent style guides with explicit sections/rule lists to support future validation.
 
 ## Planned Components
 ### Translation Memory (SQLite-backed)
@@ -28,6 +29,7 @@ profiles without large refactors.
 - Define loader interfaces and no-op stubs for local files (`.csv`, `.tsv`, `.md`).
 - Keep parsing deterministic and local-only.
 - Use a `TerminologyEntry` model with `Term`, `Translation`, `Notes`, and `Mode` fields to support future validation.
+- Extend `StyleGuide` to include section/rule lists alongside required/forbidden/tone buckets.
 - Add placeholder validation interfaces for later enforcement logic.
 
 ### Translation Profiles

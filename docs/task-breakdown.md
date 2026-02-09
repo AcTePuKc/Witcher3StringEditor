@@ -61,7 +61,8 @@ Add a concrete schema definition document and a minimal database bootstrapper st
 
 ## Issue 3: Ollama model selection scaffolding
 **Description**
-Extend the Ollama integration with model-selection request/response DTOs and a stubbed catalog method. No UI wiring or HTTP calls yet.
+Extend the Ollama integration with model-selection request/response DTOs and a stubbed catalog method. No Settings
+or translation flow wiring; no HTTP calls yet.
 
 **Behavior impact**
 - None. DTOs and stub interfaces only.
@@ -90,19 +91,23 @@ Extend the Ollama integration with model-selection request/response DTOs and a s
 
 ## Issue 4: Terminology & style loaders (local assets)
 **Description**
-Add terminology and style loader interfaces plus no-op stubs for local assets. Skip parsing and runtime logic for now; keep only compile-safe placeholders.
+Add terminology and style loader interfaces plus no-op stubs for local assets. Expand the style guide model to include
+section/rule lists for future validation. Skip runtime wiring and enforcement for now; keep only compile-safe
+placeholders.
 
 **Behavior impact**
 - None. Interfaces/stubs only, no parsing or runtime wiring.
 
 **Acceptance Criteria**
 - Loader interfaces and no-op stubs compile.
+- Style guide model includes section/rule lists for future validation.
 - Source descriptors include file type hints (`.csv`, `.tsv`, `.md`) without parsing.
 - `TerminologyEntry` includes `Term`, `Translation`, `Notes`, and `Mode` fields.
 - No runtime wiring or enforcement.
 
 **Files to touch**
 - `Witcher3StringEditor.Common/Terminology` (models if needed)
+- `Witcher3StringEditor/Integrations/Terminology` (stubs/models)
 - `Witcher3StringEditor.Data/Terminology` (new loader stubs)
 - `docs/samples/` (sample assets, static)
 
@@ -121,7 +126,8 @@ Add terminology and style loader interfaces plus no-op stubs for local assets. S
 
 ## Issue 5: Translation profiles persistence and preview stubs
 **Description**
-Create minimal preview/selection interfaces and no-op stubs for profiles. Keep implementations inert and avoid JSON parsing for now.
+Create minimal preview/selection interfaces and no-op stubs for profiles. Keep implementations inert and avoid runtime
+wire-ups or UI/Settings connections for now.
 
 **Behavior impact**
 - None. Interfaces/stubs only, no runtime wiring.
