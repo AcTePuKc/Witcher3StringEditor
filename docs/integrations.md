@@ -43,6 +43,10 @@ profiles without large refactors.
 - Capture provider failure metadata in a DTO for future diagnostics.
 - Keep this data model unused until a logging/telemetry path is approved.
 
+### QA Diagnostics Reporting (DTO-only)
+- Capture QA diagnostics as a DTO with `Code`, `Message`, `Severity`, and `Location`.
+- Keep this data model unused until QA reporting requirements are defined.
+
 ## Deliverables & Sequencing
 - See `docs/task-breakdown.md` for issue-level tasks, acceptance criteria, and QA checklists.
 - Phase 0 scaffolding status: `docs/inspections/phase0-status.md`.
