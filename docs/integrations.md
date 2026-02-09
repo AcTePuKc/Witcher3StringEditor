@@ -24,6 +24,7 @@ profiles without large refactors.
 - Build on the existing provider stub to list models when enabled.
 - Keep HTTP integrations behind the Ollama provider with no cross-cutting dependencies.
 - Track model selection as an opt-in setting (UI placeholders only).
+- Model summaries include `Id`, `DisplayName`, and `IsDefault` for future default selection behavior.
 
 ### Terminology & Style Loading
 - Define loader interfaces and no-op stubs for local files (`.csv`, `.tsv`, `.md`).
