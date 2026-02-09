@@ -31,15 +31,15 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
     {
         if (string.IsNullOrWhiteSpace(path))
         {
-            return new StyleGuide("Stub Style Guide", string.Empty, Array.Empty<string>(), Array.Empty<string>(),
-                Array.Empty<string>());
+            return new StyleGuide("Stub Style Guide", string.Empty, Array.Empty<StyleGuideSection>(),
+                Array.Empty<string>(), Array.Empty<string>(), Array.Empty<string>());
         }
 
         var extension = Path.GetExtension(path).ToLowerInvariant();
         if (extension is not ".md" and not ".markdown")
         {
-            return new StyleGuide(Path.GetFileNameWithoutExtension(path), path, Array.Empty<string>(),
-                Array.Empty<string>(), Array.Empty<string>());
+            return new StyleGuide(Path.GetFileNameWithoutExtension(path), path, Array.Empty<StyleGuideSection>(),
+                Array.Empty<string>(), Array.Empty<string>(), Array.Empty<string>());
         }
 
         var lines = await ReadAllLinesAsync(path, cancellationToken);
@@ -112,6 +112,9 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
         var required = new List<string>();
         var forbidden = new List<string>();
         var tone = new List<string>();
+        var sectionOrder = new List<string>();
+        var sectionRules = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+        string? currentSectionName = null;
         var section = StyleGuideSection.None;
 
         foreach (var rawLine in lines)
@@ -123,6 +126,13 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
             if (line.StartsWith('#'))
             {
                 section = ResolveSection(line);
+                currentSectionName = ExtractHeadingTitle(line);
+                if (!string.IsNullOrWhiteSpace(currentSectionName) &&
+                    !sectionRules.ContainsKey(currentSectionName))
+                {
+                    sectionRules[currentSectionName] = new List<string>();
+                    sectionOrder.Add(currentSectionName);
+                }
                 continue;
             }
 
@@ -132,6 +142,12 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
             var bulletText = ExtractBulletText(line);
             if (string.IsNullOrWhiteSpace(bulletText))
                 continue;
+
+            if (!string.IsNullOrWhiteSpace(currentSectionName) &&
+                sectionRules.TryGetValue(currentSectionName, out var rules))
+            {
+                rules.Add(bulletText);
+            }
 
             switch (section)
             {
@@ -147,7 +163,11 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
             }
         }
 
-        return new StyleGuide(Path.GetFileNameWithoutExtension(path), path, required, forbidden, tone);
+        var sections = sectionOrder
+            .Select(name => new StyleGuideSection(name, sectionRules[name]))
+            .ToList();
+
+        return new StyleGuide(Path.GetFileNameWithoutExtension(path), path, sections, required, forbidden, tone);
     }
 
     private static async Task<IReadOnlyList<string>> ReadAllLinesAsync(string path,
@@ -223,6 +243,12 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
         if (normalized.Contains("tone"))
             return StyleGuideSection.Tone;
         return StyleGuideSection.None;
+    }
+
+    private static string? ExtractHeadingTitle(string heading)
+    {
+        var title = heading.Trim().TrimStart('#').Trim();
+        return string.IsNullOrWhiteSpace(title) ? null : title;
     }
 
     private enum StyleGuideSection
