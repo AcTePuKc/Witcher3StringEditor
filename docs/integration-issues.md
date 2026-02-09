@@ -4,6 +4,93 @@
 These issue drafts cover the planned **database-backed translation memory**, **Ollama model selection**, **terminology/style
 loading**, and **translation profile** scaffolding. Each issue stays inert by default and focuses on stubs/interfaces only.
 
+## Current focus (near-term issue drafts)
+
+### Issue A: Local translation memory database scaffolding
+**Description**
+Add a minimal, local-only translation memory database bootstrap path and leave all runtime wiring inert by default.
+
+**Acceptance Criteria**
+- Translation memory settings describe a local database path and provider name (no external services).
+- SQLite bootstrap logic is isolated behind an initializer interface.
+- No DI or UI wiring is added in this issue.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/TranslationMemory/TranslationMemorySettings.cs`
+- `Witcher3StringEditor.Common/TranslationMemory/ITranslationMemoryDatabaseInitializer.cs`
+- `Witcher3StringEditor.Data/TranslationMemory/SqliteTranslationMemoryDatabaseInitializer.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm no database file is created during normal app startup
+- No regressions: translation dialog works as before
+
+---
+
+### Issue B: Ollama model selection scaffolding
+**Description**
+Add a model catalog stub for Ollama so model selection can be wired later without changing behavior now.
+
+**Acceptance Criteria**
+- Model catalog returns empty results for non-Ollama provider names.
+- Model catalog delegates to the Ollama provider stub for model listing.
+- No DI or UI wiring is added in this issue.
+
+**Files to Touch**
+- `Witcher3StringEditor.Integrations.Ollama/OllamaModelCatalog.cs`
+- `Witcher3StringEditor.Integrations.Ollama/OllamaTranslationProvider.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm no settings UI changes were introduced
+- No regressions: translation flow remains unchanged
+
+---
+
+### Issue C: Terminology + style loading scaffolding
+**Description**
+Keep terminology/style loaders local-only and confirm minimal parsing stubs are present for TSV/CSV/Markdown sources.
+
+**Acceptance Criteria**
+- Terminology loader supports TSV/CSV terminology packs.
+- Style guide loader supports Markdown sections for required/forbidden terms.
+- Loaders remain unused by default (no wiring).
+
+**Files to Touch**
+- `Witcher3StringEditor/Integrations/Terminology/StubTerminologyLoader.cs`
+- `Witcher3StringEditor.Common/Terminology/ITerminologyLoader.cs`
+- `Witcher3StringEditor.Common/Terminology/IStyleGuideLoader.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: load sample files from `docs/samples/` in an isolated test harness if needed
+- No regressions: translation dialog behaves unchanged
+
+---
+
+### Issue D: Translation profile scaffolding
+**Description**
+Define a minimal translation profile model and local JSON store to persist profiles without wiring them into runtime
+selection.
+
+**Acceptance Criteria**
+- Profile model contains provider/model fields plus optional terminology/style references.
+- JSON store returns empty lists when the file is missing.
+- No DI or UI wiring is added in this issue.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Profiles/TranslationProfile.cs`
+- `Witcher3StringEditor.Data/Profiles/JsonTranslationProfileStore.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm loading a missing JSON file returns an empty list
+- No regressions: translation flow remains unchanged
+
 
 ## Phase 0: compile-safe scaffolding
 Phase 0 issues are limited to compile-safe scaffolding and documentation updates only.
