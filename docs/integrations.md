@@ -25,6 +25,7 @@ The integration roadmap focuses on adding local, opt-in capabilities without cha
 ### Translation Profiles
 - Maintain a catalog of profiles stored locally (JSON).
 - Provide preview and selection services without changing core translation behavior.
+- Add a summary catalog interface to support lightweight profile listing for settings or selection flows.
 
 ## Deliverables & Sequencing
 - See `docs/task-breakdown.md` for issue-level tasks, acceptance criteria, and QA checklists.
