@@ -87,10 +87,12 @@ Create minimal preview/selection stubs that read local JSON profiles without cha
 **Acceptance Criteria**
 - Stub preview and selection services compile.
 - JSON catalog loading is read-only and local.
+- A profile summary listing interface exists for lightweight catalog views.
 - No settings or UI wiring.
 
 **Files to touch**
 - `Witcher3StringEditor.Common/Profiles` (new interfaces if required)
+- `Witcher3StringEditor/Integrations/Profiles` (summary catalog interface)
 - `Witcher3StringEditor.Data/Profiles` (stub services)
 - `docs/integrations/translation-profiles.md` (new)
 
