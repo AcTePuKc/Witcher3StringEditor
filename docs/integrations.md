@@ -9,7 +9,9 @@ Prepare **local-only**, compile-safe scaffolding for:
 
 ## Architecture overview (stub-first)
 - **Contracts live in `Witcher3StringEditor.Common`**
-  - Providers, model catalogs, terminology loaders, profile stores, and translation memory interfaces.
+  - Providers, model catalogs, terminology loaders, profile stores, translation memory interfaces, and request DTOs
+    for glossary/style/profile references.
+  - In-memory provider registry stub (`InMemoryTranslationProviderRegistry`) is available for future wiring.
 - **Local storage lives in `Witcher3StringEditor.Data`**
   - SQLite/JSON implementations and database bootstrap logic.
 - **Integration stubs live in `Witcher3StringEditor.Integrations.*`**
@@ -41,13 +43,18 @@ For detailed implementation notes, see `docs/implementation.md`.
 
 ## Planned tasks (issue drafts)
 See `docs/integration-issues.md` for full issue drafts and QA checklists. The current focus is:
-1. **Translation memory (local DB) scaffolding**
-2. **Ollama model selection scaffolding**
-3. **Terminology/style loading scaffolding**
-4. **Translation profile scaffolding**
+1. **Provider contracts + registry stubs (interfaces + DTOs)**
+2. **Translation memory (local DB) scaffolding**
+3. **Ollama model selection scaffolding**
+4. **Terminology/style loading scaffolding**
+5. **Translation profile scaffolding**
+6. **Local loader stubs for profiles and translation memory**
+7. **Sample TSV/MD assets for terminology/style testing**
+8. **Settings placeholders for provider/model/profile selection**
 
 ## Integration handoff notes
 - **Settings**: `App.xaml.cs` and `Models/AppSettings.cs` are the persistence entry points.
 - **Routing**: `Services/TranslationRouter.cs` and `Services/TranslationPipelineContextBuilder.cs` remain the safe
   injection points for future wiring.
 - **UI**: Settings dialog and translation dialog placeholders should remain minimal and inert by default.
+- **Samples**: test assets live under `docs/samples/` (TSV terminology packs, Markdown style guides).

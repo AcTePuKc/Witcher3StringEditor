@@ -20,6 +20,32 @@ public static class TaskLoggingExtensions
         return task;
     }
 
+    public static async ValueTask LogExceptions(this ValueTask task, string? context = null)
+    {
+        try
+        {
+            await task;
+        }
+        catch (Exception exception)
+        {
+            LogException(exception, context);
+            throw;
+        }
+    }
+
+    public static async ValueTask<T> LogExceptions<T>(this ValueTask<T> task, string? context = null)
+    {
+        try
+        {
+            return await task;
+        }
+        catch (Exception exception)
+        {
+            LogException(exception, context);
+            throw;
+        }
+    }
+
     private static void LogException(AggregateException? exception, string? context)
     {
         if (exception is null)
@@ -27,6 +53,11 @@ public static class TaskLoggingExtensions
             return;
         }
 
+        LogException((Exception)exception, context);
+    }
+
+    private static void LogException(Exception exception, string? context)
+    {
         if (string.IsNullOrWhiteSpace(context))
         {
             Log.Error(exception, "Background task failed with an exception.");

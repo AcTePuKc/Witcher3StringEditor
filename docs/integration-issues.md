@@ -94,6 +94,75 @@ selection.
 - Manual: confirm loading a missing JSON file returns an empty list
 - No regressions: translation flow remains unchanged
 
+---
+
+### Issue E: Loader interfaces + stub implementations (profiles + translation memory)
+**Description**
+Add minimal loader interfaces and stub implementations for profile imports and translation memory imports. These stay
+local-only and unused by default.
+
+**Acceptance Criteria**
+- Profile loader interface exists and returns empty results in the stub implementation.
+- Translation memory loader interface exists and returns empty results in the stub implementation.
+- Loaders are not wired into settings or translation flow.
+
+**Files to Touch**
+- `Witcher3StringEditor/Integrations/Profiles/ITranslationProfileLoader.cs`
+- `Witcher3StringEditor/Integrations/Profiles/StubTranslationProfileLoader.cs`
+- `Witcher3StringEditor/Integrations/Storage/ITranslationMemoryLoader.cs`
+- `Witcher3StringEditor/Integrations/Storage/StubTranslationMemoryLoader.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: confirm no new UI or settings wiring was introduced
+- No regressions: translation flow remains unchanged
+
+---
+
+### Issue F: Sample terminology/style assets for future tests
+**Description**
+Add additional TSV and Markdown sample files for terminology and style guide parsing tests. Keep assets local and
+documentation-only.
+
+**Acceptance Criteria**
+- New TSV sample file exists for terminology packs.
+- New Markdown sample file exists for style guide parsing.
+- No runtime behavior changes (documentation-only assets).
+
+**Files to Touch**
+- `docs/samples/terminology.future.sample.tsv`
+- `docs/samples/style-guide.future.sample.md`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open the sample files and confirm expected headings and fields
+- No regressions: documentation-only change
+
+---
+
+### Issue G: Settings placeholders for provider/model/profile selection
+**Description**
+Introduce minimal settings dialog placeholders for selecting a translation provider, model, and profile without wiring
+them into translation routing or runtime behavior.
+
+**Acceptance Criteria**
+- Settings placeholders exist for provider/model/profile selection (UI-only, inert by default).
+- Settings values are persisted via existing settings mechanisms without changing translation routing.
+- No new translation flow wiring is introduced.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `Witcher3StringEditor/Models/AppSettings.cs`
+- `docs/integrations.md`
+
+**QA Checklist**
+- Build: `dotnet build`
+- Manual: open the settings dialog and confirm placeholders render without side effects
+- No regressions: translation flow remains unchanged
+
 
 ## Phase 0: compile-safe scaffolding
 Phase 0 issues are limited to compile-safe scaffolding and documentation updates only.
@@ -108,17 +177,21 @@ Phase 0 issues are limited to compile-safe scaffolding and documentation updates
 
 ## Issue 00: Translation provider contracts (interfaces + DTOs)
 **Description**
-Add the provider contract interfaces and DTOs that future integrations will implement. Keep them unused by the existing
-translation flow so the current legacy translator path remains the default.
+Add the provider contract interfaces and DTOs that future integrations will implement, plus a minimal in-memory registry
+stub for local usage. Keep everything unused by the existing translation flow so the current legacy translator path
+remains the default.
 
 **Acceptance Criteria**
 - `ITranslationProvider` includes `ListModelsAsync` and `TranslateAsync` signatures.
-- Minimal DTOs exist for request/result/model metadata (`TranslationRequest`, `TranslationResult`, `ModelInfo`).
+- Minimal DTOs exist for request/result/model metadata (`TranslationRequest`, `TranslationResult`, `ModelInfo`), including
+  optional glossary/style/profile fields.
+- A stub in-memory registry exists for non-DI usage (no runtime wiring).
 - No new call sites are introduced in the existing translation flow.
 
 **Files to Touch**
 - `Witcher3StringEditor.Common/Translation/ITranslationProvider.cs`
 - `Witcher3StringEditor.Common/Translation/TranslationModels.cs`
+- `Witcher3StringEditor.Common/Translation/InMemoryTranslationProviderRegistry.cs`
 - `docs/integrations.md`
 
 
