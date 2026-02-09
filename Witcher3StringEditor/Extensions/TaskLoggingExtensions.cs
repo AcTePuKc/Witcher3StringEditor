@@ -7,6 +7,10 @@ namespace Witcher3StringEditor.Extensions;
 
 public static class TaskLoggingExtensions
 {
+    /// <summary>
+    /// Fire-and-forget helper for diagnostics-only usage. Logs exceptions and does not rethrow or propagate results.
+    /// Use only when failures are intentionally ignored and must be logged for troubleshooting.
+    /// </summary>
     public static void SafeFireAndForget(this Task task, string? context = null)
     {
         ArgumentNullException.ThrowIfNull(task);
@@ -18,6 +22,10 @@ public static class TaskLoggingExtensions
             TaskScheduler.Default);
     }
 
+    /// <summary>
+    /// Fire-and-forget helper for diagnostics-only usage. Logs exceptions and does not rethrow or propagate results.
+    /// Use only when failures are intentionally ignored and must be logged for troubleshooting.
+    /// </summary>
     public static void SafeFireAndForget(this ValueTask task, string? context = null)
     {
         _ = task.AsTask().ContinueWith(

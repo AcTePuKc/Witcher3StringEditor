@@ -1,6 +1,6 @@
 # Phase 0 Scaffold Progress
 
-Last updated: 2026-02-14
+Last updated: 2026-02-15
 
 ## How to update
 - When checking an item, include the completion date and a short note in parentheses (e.g., `[x] Define ... (2026-02-10: stubbed interfaces added)`).
@@ -27,13 +27,13 @@ Last updated: 2026-02-14
 - [x] Add TODO placeholders for prompt injection and QA checks. (2026-02-09: terminology prompt builder stub includes TODO for injection.)
 
 ## SafeFireAndForget
-- [ ] Add centralized helper placeholder with TODO behavior. (Pending: add a stub helper class and note expected usage.)
-- [ ] Document intended usage sites (no behavior changes). (Pending: add a short inventory note listing candidate call sites.)
+- [x] Add centralized helper placeholder with TODO behavior. (2026-02-15: helper logs exceptions only and remains unwired.)
+- [x] Document intended usage sites (no behavior changes). (2026-02-15: diagnostics-only usage documented in `docs/implementation.md`.)
 
 ## Docs
 - [x] Update `docs/integrations.md` with architecture notes and planned tasks. (2026-02-09: roadmap and sequencing captured.)
 - [x] Update `docs/task-breakdown.md` with issue-level breakdowns. (2026-02-09: issue list and acceptance criteria captured.)
 - [x] Add inspection notes and inventory findings in `docs/inspections/`. (2026-02-09: inventory + inspection notes present.)
 
-## Pending P0 checklist additions
-- [ ] P0-35: Add SafeFireAndForget helper placeholder + usage notes (no behavior change).
+## Completed P0 checklist additions
+- [x] P0-35: Add SafeFireAndForget helper placeholder + usage notes (no behavior change).
