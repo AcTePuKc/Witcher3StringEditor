@@ -7,6 +7,7 @@
 - **Local-only storage**
   - Translation memory and profiles remain local (SQLite/JSON) when implemented.
   - No external services are introduced; local file paths are used for configuration.
+  - Translation memory service/store interfaces live in `Witcher3StringEditor/Integrations/Storage` and remain unused.
 - **Terminology + style packs**
   - Loader interfaces live under `Witcher3StringEditor.Integrations.Terminology` and return in-memory packs.
   - A minimal parsing stub supports TSV/CSV terminology and Markdown style guides (no UI/DI wiring).
@@ -67,12 +68,15 @@ Add local-only translation memory scaffolding (interfaces + stubs) without runti
 
 **Acceptance Criteria**
 - A stub translation memory store returns empty results and accepts saves.
+- A stub translation memory service returns empty results and accepts saves.
 - No runtime wiring; the store remains unused by production code.
 - All new types are documented in the integrations plan.
 
 **Files to touch**
 - `Witcher3StringEditor/Integrations/Storage/ITranslationMemoryStore.cs`
+- `Witcher3StringEditor/Integrations/Storage/ITranslationMemoryService.cs`
 - `Witcher3StringEditor/Integrations/Storage/StubTranslationMemoryStore.cs`
+- `Witcher3StringEditor/Integrations/Storage/StubTranslationMemoryService.cs`
 - `docs/integrations.md`
 
 **QA checklist**
