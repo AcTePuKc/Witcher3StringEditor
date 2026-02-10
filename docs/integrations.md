@@ -101,6 +101,17 @@ and should not be extended for new work. See
   contracts exclusively.
 - Reconfirm the scaffold checklist in `docs/inspections/scaffold-progress.md` before any runtime wiring begins.
 
+## Settings Startup Behavior (Non-blocking Contract)
+- Settings dialog constructors must stay lightweight (no file parsing, profile scans, model refresh HTTP calls, or DB work).
+- Expensive startup checks should run either:
+  - from explicit user actions (button-triggered), or
+  - from deferred async startup hooks that do not block UI rendering.
+- Provider/model refresh remains user-triggered only; opening Settings must not auto-refresh provider models.
+
+## Issue Plan (Current Draft)
+- Active issue drafts for the next integration slices are maintained in `docs/issues/future-integration-issues.md`.
+- Each draft includes acceptance criteria, suggested files to touch, and a QA checklist.
+
 
 ## Reliability Integration Notes (Provider Routing)
 This slice adds only minimal behavior around provider routing reliability while preserving existing architecture:
