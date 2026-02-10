@@ -5,13 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:g="clr-namespace:System.Globalization;assembly=mscorlib"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
+    xmlns:i18n="clr-namespace:Microsoft.CodeAnalysis;assembly=Antelcat.I18N.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:sd="clr-namespace:Syncfusion.Data;assembly=Syncfusion.Data.WPF"
     xmlns:c="clr-namespace:Witcher3StringEditor.Dialogs.Comparers"
-    Title="{I18N {x:Static l:LangKeys.AboutDialogTitle}}"
+    Title="{i18n:I18N {x:Static l:LangKeys.AboutDialogTitle}}"
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:AboutDialogViewModel}"
@@ -41,7 +42,7 @@
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
-            Text="{I18N {x:Static l:LangKeys.AboutDialogTitle}}" />
+            Text="{i18n:I18N {x:Static l:LangKeys.AboutDialogTitle}}" />
         <!-- Content grid containing application information -->
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -83,7 +84,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <!-- Version label and value -->
-                <TextBlock HorizontalAlignment="Right" Text="{I18N {x:Static l:LangKeys.Version}}" />
+                <TextBlock HorizontalAlignment="Right" Text="{i18n:I18N {x:Static l:LangKeys.Version}}" />
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="2"
@@ -93,7 +94,7 @@
                     Grid.Row="2"
                     Grid.Column="0"
                     HorizontalAlignment="Right"
-                    Text="{I18N {x:Static l:LangKeys.AppBuildTime}}" />
+                    Text="{i18n:I18N {x:Static l:LangKeys.AppBuildTime}}" />
                 <TextBlock
                     Grid.Row="2"
                     Grid.Column="2"
@@ -103,7 +104,7 @@
                     Grid.Row="4"
                     Grid.Column="0"
                     HorizontalAlignment="Right"
-                    Text="{I18N {x:Static l:LangKeys.OS}}" />
+                    Text="{i18n:I18N {x:Static l:LangKeys.OS}}" />
                 <TextBlock
                     Grid.Row="4"
                     Grid.Column="2"
@@ -113,7 +114,7 @@
                     Grid.Row="6"
                     Grid.Column="0"
                     HorizontalAlignment="Right"
-                    Text="{I18N {x:Static l:LangKeys.Runtime}}" />
+                    Text="{i18n:I18N {x:Static l:LangKeys.Runtime}}" />
                 <TextBlock
                     Grid.Row="6"
                     Grid.Column="2"

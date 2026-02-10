@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
+    xmlns:i18n="clr-namespace:Microsoft.CodeAnalysis;assembly=Antelcat.I18N.WPF"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels">
     <!-- 
@@ -27,21 +28,21 @@
                 <!-- Source language selection combobox -->
                 <ComboBox
                     HorizontalAlignment="Stretch"
-                    ui:ControlHelper.Header="{I18N {x:Static l:LangKeys.TextLanguage}}"
+                    ui:ControlHelper.Header="{i18n:I18N {x:Static l:LangKeys.TextLanguage}}"
                     DisplayMemberPath="NativeName"
                     ItemsSource="{Binding Languages}"
                     SelectedValue="{Binding FormLanguage}" />
                 <!-- Target language selection combobox -->
                 <ComboBox
                     HorizontalAlignment="Stretch"
-                    ui:ControlHelper.Header="{I18N {x:Static l:LangKeys.TargetLanguage}}"
+                    ui:ControlHelper.Header="{i18n:I18N {x:Static l:LangKeys.TargetLanguage}}"
                     DisplayMemberPath="NativeName"
                     ItemsSource="{Binding Languages}"
                     SelectedValue="{Binding ToLanguage}" />
                 <!-- Start index input control -->
                 <ui:NumberBox
                     x:Name="StartIndexInput"
-                    ui:ControlHelper.Header="{I18N {x:Static l:LangKeys.StartIndex}}"
+                    ui:ControlHelper.Header="{i18n:I18N {x:Static l:LangKeys.StartIndex}}"
                     Maximum="{Binding MaxValue, Mode=OneTime}"
                     Minimum="1"
                     SmallChange="1"
@@ -50,7 +51,7 @@
                 <!-- End index input control -->
                 <ui:NumberBox
                     x:Name="EndIndexInput"
-                    ui:ControlHelper.Header="{I18N {x:Static l:LangKeys.EndIndex}}"
+                    ui:ControlHelper.Header="{i18n:I18N {x:Static l:LangKeys.EndIndex}}"
                     Maximum="{Binding MaxValue, Mode=OneTime}"
                     Minimum="{Binding EndIndexMin}"
                     SmallChange="1"
@@ -69,7 +70,7 @@
                     Width="35"
                     Height="35"
                     Fill="Green"
-                    ToolTip="{I18N {x:Static l:LangKeys.Success}}" />
+                    ToolTip="{i18n:I18N {x:Static l:LangKeys.Success}}" />
                 <TextBlock
                     Width="Auto"
                     MinWidth="70"
@@ -83,7 +84,7 @@
                     Width="35"
                     Height="35"
                     Fill="Red"
-                    ToolTip="{I18N {x:Static l:LangKeys.Failure}}" />
+                    ToolTip="{i18n:I18N {x:Static l:LangKeys.Failure}}" />
                 <TextBlock
                     Width="Auto"
                     MinWidth="70"
@@ -97,7 +98,7 @@
                     Width="35"
                     Height="35"
                     Fill="Orange"
-                    ToolTip="{I18N {x:Static l:LangKeys.Pending}}" />
+                    ToolTip="{i18n:I18N {x:Static l:LangKeys.Pending}}" />
                 <TextBlock
                     Width="Auto"
                     MinWidth="70"
@@ -126,7 +127,7 @@
                 <Button
                     MinWidth="100"
                     Command="{Binding StartCommand}"
-                    Content="{I18N {x:Static l:LangKeys.TranslateBtnContent}}">
+                    Content="{i18n:I18N {x:Static l:LangKeys.TranslateBtnContent}}">
                     <Button.Style>
                         <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
                         <Style BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
@@ -153,7 +154,7 @@
                 <Button
                     MinWidth="100"
                     Command="{Binding CancelCommand}"
-                    Content="{I18N {x:Static l:LangKeys.CancelBtnContent}}" />
+                    Content="{i18n:I18N {x:Static l:LangKeys.CancelBtnContent}}" />
             </iwk:SimpleStackPanel>
         </Grid>
     </DataTemplate>
