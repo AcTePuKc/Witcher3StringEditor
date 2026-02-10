@@ -1,6 +1,6 @@
 # Phase 0 Scaffold Progress
 
-Last updated: 2026-02-15
+Last updated: 2026-02-16
 
 ## How to update
 - When checking an item, include the completion date and a short note in parentheses (e.g., `[x] Define ... (2026-02-10: stubbed interfaces added)`).
@@ -34,6 +34,7 @@ Last updated: 2026-02-15
 - [x] Update `docs/integrations.md` with architecture notes and planned tasks. (2026-02-09: roadmap and sequencing captured.)
 - [x] Update `docs/task-breakdown.md` with issue-level breakdowns. (2026-02-09: issue list and acceptance criteria captured.)
 - [x] Add inspection notes and inventory findings in `docs/inspections/`. (2026-02-09: inventory + inspection notes present.)
+- [x] Record model ownership decision in `docs/inspections/model-ownership.md`. (2026-02-16: confirmed Common as the authoritative home for translation contracts.)
 
 ## Completed P0 checklist additions
 - [x] P0-35: Add SafeFireAndForget helper placeholder + usage notes (no behavior change).
