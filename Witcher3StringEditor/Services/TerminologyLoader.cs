@@ -126,7 +126,7 @@ internal sealed class TerminologyLoader : ITerminologyLoader, IStyleGuideLoader
             Name = Path.GetFileNameWithoutExtension(path),
             SourcePath = path,
             Sections = sectionOrder
-                .Select(name => new StyleGuideSection
+                .Select(name => new Common.Terminology.StyleGuideSection
                 {
                     Name = name,
                     Rules = sectionRules[name]
