@@ -4,7 +4,7 @@
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:c="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
-    xmlns:i18n="clr-namespace:Microsoft.CodeAnalysis;assembly=Antelcat.I18N.WPF"
+    xmlns:i18n="clr-namespace:System.Windows;assembly=Antelcat.I18N.WPF"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels">
     <!-- 
@@ -44,12 +44,12 @@
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="0"
-                Text="{i18n:I18N {x:Static l:LangKeys.SrcTxt}}" />
+                Text="{i18n:I18N Key={x:Static l:LangKeys.SrcTxt}}" />
             <!-- Translated text label -->
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="2"
-                Text="{i18n:I18N {x:Static l:LangKeys.TranslatedTxt}}" />
+                Text="{i18n:I18N Key={x:Static l:LangKeys.TranslatedTxt}}" />
             <!-- Source language selection combobox -->
             <ComboBox
                 Grid.Row="2"
@@ -120,25 +120,25 @@
                     MinWidth="100"
                     HorizontalAlignment="Right"
                     Command="{Binding PreviousCommand}"
-                    Content="{i18n:I18N {x:Static l:LangKeys.PreviousBtnContent}}" />
+                    Content="{i18n:I18N Key={x:Static l:LangKeys.PreviousBtnContent}}" />
                 <!-- Translate button -->
                 <Button
                     MinWidth="100"
                     HorizontalAlignment="Right"
                     Command="{Binding TranslateCommand}"
-                    Content="{i18n:I18N {x:Static l:LangKeys.TranslateBtnContent}}" />
+                    Content="{i18n:I18N Key={x:Static l:LangKeys.TranslateBtnContent}}" />
                 <!-- Save translation button -->
                 <Button
                     MinWidth="100"
                     HorizontalAlignment="Left"
                     Command="{Binding SaveCommand}"
-                    Content="{i18n:I18N {x:Static l:LangKeys.SaveBtnContent}}" />
+                    Content="{i18n:I18N Key={x:Static l:LangKeys.SaveBtnContent}}" />
                 <!-- Next item button -->
                 <Button
                     MinWidth="100"
                     HorizontalAlignment="Left"
                     Command="{Binding NextCommand}"
-                    Content="{i18n:I18N {x:Static l:LangKeys.NextBtnContent}}" />
+                    Content="{i18n:I18N Key={x:Static l:LangKeys.NextBtnContent}}" />
             </iwk:SimpleStackPanel>
         </Grid>
     </DataTemplate>

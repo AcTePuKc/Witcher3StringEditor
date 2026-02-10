@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
-    xmlns:i18n="clr-namespace:Microsoft.CodeAnalysis;assembly=Antelcat.I18N.WPF"
+    xmlns:i18n="clr-namespace:System.Windows;assembly=Antelcat.I18N.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     xmlns:com="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
     xmlns:con="clr-namespace:Witcher3StringEditor.Dialogs.Converters"
-    Title="{i18n:I18N {x:Static l:LangKeys.SaveDialogTitle}}"
+    Title="{i18n:I18N Key={x:Static l:LangKeys.SaveDialogTitle}}"
     Width="800"
     Height="500"
     d:DataContext="{d:DesignInstance Type=vm:SaveDialogViewModel}"
@@ -72,7 +72,7 @@
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
-            Text="{i18n:I18N {x:Static l:LangKeys.SaveDialogTitle}}" />
+            Text="{i18n:I18N Key={x:Static l:LangKeys.SaveDialogTitle}}" />
         <!-- Content grid containing save settings and action buttons -->
         <Grid Grid.Row="1" Margin="24,24,16,24">
             <Grid.RowDefinitions>
@@ -91,7 +91,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <!-- File type label -->
-                        <TextBlock VerticalAlignment="Center" Text="{i18n:I18N {x:Static l:LangKeys.TargetFiletype}}" />
+                        <TextBlock VerticalAlignment="Center" Text="{i18n:I18N Key={x:Static l:LangKeys.TargetFiletype}}" />
                         <!-- File type selection combobox -->
                         <ComboBox
                             Grid.Column="1"
@@ -125,7 +125,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <!-- Target language label -->
-                        <TextBlock VerticalAlignment="Center" Text="{i18n:I18N {x:Static l:LangKeys.TargetLanguage}}" />
+                        <TextBlock VerticalAlignment="Center" Text="{i18n:I18N Key={x:Static l:LangKeys.TargetLanguage}}" />
                         <!-- Target language selection combobox -->
                         <ComboBox
                             Grid.Row="0"
@@ -157,21 +157,21 @@
                             <TextBlock
                                 Margin="0,16,0,0"
                                 VerticalAlignment="Center"
-                                Text="{i18n:I18N {x:Static l:LangKeys.IgnoreIDSpaceCheck}}" />
+                                Text="{i18n:I18N Key={x:Static l:LangKeys.IgnoreIDSpaceCheck}}" />
                             <!-- Toggle switch for ignoring ID space check -->
                             <ui:ToggleSwitch
                                 MinWidth="0"
                                 Margin="0,16,0,0"
                                 HorizontalAlignment="Right"
                                 IsOn="{Binding IsIgnoreIdSpaceCheck}"
-                                OffContent="{i18n:I18N {x:Static l:LangKeys.IsOff}}"
-                                OnContent="{i18n:I18N {x:Static l:LangKeys.IsOn}}" />
+                                OffContent="{i18n:I18N Key={x:Static l:LangKeys.IsOff}}"
+                                OnContent="{i18n:I18N Key={x:Static l:LangKeys.IsOn}}" />
                         </Grid>
                         <!-- ID space input control (only visible for W3Strings file type and when not ignoring ID space check) -->
                         <ui:NumberBox
                             Grid.Row="2"
                             Margin="0,16,0,0"
-                            ui:ControlHelper.Header="{i18n:I18N {x:Static l:LangKeys.IDSpace}}"
+                            ui:ControlHelper.Header="{i18n:I18N Key={x:Static l:LangKeys.IDSpace}}"
                             Maximum="9999"
                             Minimum="-1"
                             SmallChange="1"
@@ -195,7 +195,7 @@
                             </ui:NumberBox.Style>
                             <!-- Tooltip for ID space input -->
                             <ui:NumberBox.ToolTip>
-                                <ToolTip Content="{i18n:I18N {x:Static l:LangKeys.IdSpaceToolTip}}" />
+                                <ToolTip Content="{i18n:I18N Key={x:Static l:LangKeys.IdSpaceToolTip}}" />
                             </ui:NumberBox.ToolTip>
                         </ui:NumberBox>
                     </Grid>
@@ -213,12 +213,12 @@
                 <Button
                     MinWidth="100"
                     Command="{Binding SaveCommand}"
-                    Content="{i18n:I18N {x:Static l:LangKeys.SaveBtnContent}}" />
+                    Content="{i18n:I18N Key={x:Static l:LangKeys.SaveBtnContent}}" />
                 <!-- Cancel button -->
                 <Button
                     MinWidth="100"
                     Command="{Binding CancelCommand}"
-                    Content="{i18n:I18N {x:Static l:LangKeys.CancelBtnContent}}" />
+                    Content="{i18n:I18N Key={x:Static l:LangKeys.CancelBtnContent}}" />
             </iwk:SimpleStackPanel>
         </Grid>
     </Grid>
