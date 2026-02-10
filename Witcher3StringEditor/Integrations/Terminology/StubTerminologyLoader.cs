@@ -31,14 +31,14 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
     {
         if (string.IsNullOrWhiteSpace(path))
         {
-            return new StyleGuide("Stub Style Guide", string.Empty, Array.Empty<StyleGuideSection>(),
+            return new StyleGuide("Stub Style Guide", string.Empty, new List<StyleGuideSection>(),
                 Array.Empty<string>(), Array.Empty<string>(), Array.Empty<string>());
         }
 
         var extension = Path.GetExtension(path).ToLowerInvariant();
         if (extension is not ".md" and not ".markdown")
         {
-            return new StyleGuide(Path.GetFileNameWithoutExtension(path), path, Array.Empty<StyleGuideSection>(),
+            return new StyleGuide(Path.GetFileNameWithoutExtension(path), path, new List<StyleGuideSection>(),
                 Array.Empty<string>(), Array.Empty<string>(), Array.Empty<string>());
         }
 
@@ -115,7 +115,7 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
         var sectionOrder = new List<string>();
         var sectionRules = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
         string? currentSectionName = null;
-        var section = StyleGuideSection.None;
+        var section = StyleGuideSectionKind.None;
 
         foreach (var rawLine in lines)
         {
@@ -151,13 +151,13 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
 
             switch (section)
             {
-                case StyleGuideSection.Required:
+                case StyleGuideSectionKind.Required:
                     required.AddRange(ExtractPrimaryTerms(bulletText));
                     break;
-                case StyleGuideSection.Forbidden:
+                case StyleGuideSectionKind.Forbidden:
                     forbidden.AddRange(ExtractPrimaryTerms(bulletText));
                     break;
-                case StyleGuideSection.Tone:
+                case StyleGuideSectionKind.Tone:
                     tone.Add(bulletText);
                     break;
             }
@@ -233,16 +233,16 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
             .Where(value => !string.IsNullOrWhiteSpace(value));
     }
 
-    private static StyleGuideSection ResolveSection(string heading)
+    private static StyleGuideSectionKind ResolveSection(string heading)
     {
         var normalized = heading.ToLowerInvariant();
         if (normalized.Contains("required"))
-            return StyleGuideSection.Required;
+            return StyleGuideSectionKind.Required;
         if (normalized.Contains("forbidden"))
-            return StyleGuideSection.Forbidden;
+            return StyleGuideSectionKind.Forbidden;
         if (normalized.Contains("tone"))
-            return StyleGuideSection.Tone;
-        return StyleGuideSection.None;
+            return StyleGuideSectionKind.Tone;
+        return StyleGuideSectionKind.None;
     }
 
     private static string? ExtractHeadingTitle(string heading)
@@ -251,7 +251,7 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
         return string.IsNullOrWhiteSpace(title) ? null : title;
     }
 
-    private enum StyleGuideSection
+    private enum StyleGuideSectionKind
     {
         None,
         Required,
