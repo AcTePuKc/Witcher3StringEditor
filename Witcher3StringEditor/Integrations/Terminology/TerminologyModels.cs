@@ -13,9 +13,12 @@ public sealed record TerminologyPack(
     string SourcePath,
     IReadOnlyList<TerminologyEntry> Entries);
 
-public sealed record StyleGuideSection(
-    string Name,
-    IReadOnlyList<string> Rules);
+public sealed class StyleGuideSection
+{
+    public string Name { get; init; } = string.Empty;
+
+    public IReadOnlyList<string> Rules { get; init; } = new List<string>();
+}
 
 public sealed record StyleGuide(
     string Name,
