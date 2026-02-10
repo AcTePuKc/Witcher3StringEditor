@@ -161,8 +161,13 @@
                     </Button>
                 </ui:SettingsCard>
                 <!-- Preferred file type settings card -->
-                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.PreferredFileTypeDescription}}"
-                                 Header="{I18N {x:Static l:LangKeys.PreferredFileType}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Description>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.PreferredFileTypeDescription}}" />
+                    </ui:SettingsCard.Description>
+                    <ui:SettingsCard.Header>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.PreferredFileType}}" />
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Type}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -184,8 +189,13 @@
                     </ComboBox>
                 </ui:SettingsCard>
                 <!-- Preferred language settings card -->
-                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.PreferredLanguageDescription}}"
-                                 Header="{I18N {x:Static l:LangKeys.PreferredLanguage}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Description>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.PreferredLanguageDescription}}" />
+                    </ui:SettingsCard.Description>
+                    <ui:SettingsCard.Header>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.PreferredLanguage}}" />
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.LocaleLanguage}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -199,8 +209,13 @@
                     </ComboBox>
                 </ui:SettingsCard>
                 <!-- Translator selection settings card -->
-                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.TranslatorSelectionDescription}}"
-                                 Header="{I18N {x:Static l:LangKeys.TranslatorSelection}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Description>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.TranslatorSelectionDescription}}" />
+                    </ui:SettingsCard.Description>
+                    <ui:SettingsCard.Header>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.TranslatorSelection}}" />
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.PenPalette}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -208,8 +223,13 @@
                         ItemsSource="{Binding Translators}"
                         SelectedItem="{Binding AppSettings.Translator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </ui:SettingsCard>
-                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.TranslationProviderSettingsDescription}}"
-                                 Header="{I18N {x:Static l:LangKeys.TranslationProviderSettingsHeader}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Description>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.TranslationProviderSettingsDescription}}" />
+                    </ui:SettingsCard.Description>
+                    <ui:SettingsCard.Header>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.TranslationProviderSettingsHeader}}" />
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.CloudDownload}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -306,7 +326,10 @@
                             Text="{Binding AppSettings.TranslationMemoryPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </ui:SettingsCard>
-                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.TerminologySettingsHeader}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Header>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.TerminologySettingsHeader}}" />
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -345,7 +368,10 @@
                         </DockPanel>
                     </StackPanel>
                 </ui:SettingsCard>
-                <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.StyleGuideSettingsHeader}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Header>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.StyleGuideSettingsHeader}}" />
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -388,8 +414,13 @@
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
                            Text="{I18N {x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />
                 <!-- Application language settings card -->
-                <ui:SettingsCard Description="{I18N  {x:Static l:LangKeys.LanguageDescription}}"
-                                 Header="{I18N {x:Static l:LangKeys.LanguageHelpText}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Description>
+                        <TextBlock Text="{I18N  {x:Static l:LangKeys.LanguageDescription}}" />
+                    </ui:SettingsCard.Description>
+                    <ui:SettingsCard.Header>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.LanguageHelpText}}" />
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Globe}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -400,8 +431,13 @@
                 </ui:SettingsCard>
                 <!-- Page size settings card -->
                 <!-- Allows users to select the number of items displayed per page in data grids -->
-                <ui:SettingsCard Description="{I18N {x:Static l:LangKeys.PageSizeDescription}}"
-                                 Header="{I18N {x:Static l:LangKeys.PageSize}}">
+                <ui:SettingsCard>
+                    <ui:SettingsCard.Description>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.PageSizeDescription}}" />
+                    </ui:SettingsCard.Description>
+                    <ui:SettingsCard.Header>
+                        <TextBlock Text="{I18N {x:Static l:LangKeys.PageSize}}" />
+                    </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
