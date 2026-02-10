@@ -102,6 +102,11 @@ and should not be extended for new work. See
 - Reconfirm the scaffold checklist in `docs/inspections/scaffold-progress.md` before any runtime wiring begins.
 
 ## Settings Startup Behavior (Non-blocking Contract)
+- Settings status panels for provider models, profiles, terminology, and style guides should initialize with the explicit placeholder text `Not loaded yet.`
+- No constructor-time or property-change-triggered auto-load is allowed for these panels.
+- Refresh/load actions must be user-triggered via existing Refresh buttons in Settings.
+- File picker actions may update paths only; validation/loading should occur when Refresh is clicked.
+
 - Settings dialog constructors must stay lightweight (no file parsing, profile scans, model refresh HTTP calls, or DB work).
 - Expensive startup checks should run either:
   - from explicit user actions (button-triggered), or
