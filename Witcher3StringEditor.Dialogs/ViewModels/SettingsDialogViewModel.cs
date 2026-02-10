@@ -40,7 +40,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
     private readonly IDialogService dialogService;
     private readonly ITranslationProfileCatalog profileCatalog;
-    private readonly ITranslationProfileResolver profileResolver;
+    private readonly ITranslationProfileSettingsResolver profileSettingsResolver;
     private readonly ITerminologyLoader terminologyLoader;
     private readonly IStyleGuideLoader styleGuideLoader;
     private readonly ITerminologyValidationService terminologyValidationService;
@@ -56,7 +56,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         IAppSettings appSettings,
         IDialogService dialogService,
         ITranslationProfileCatalog profileCatalog,
-        ITranslationProfileResolver profileResolver,
+        ITranslationProfileSettingsResolver profileSettingsResolver,
         ITerminologyLoader terminologyLoader,
         IStyleGuideLoader styleGuideLoader,
         ITerminologyValidationService terminologyValidationService,
@@ -67,7 +67,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         AppSettings = appSettings;
         this.dialogService = dialogService;
         this.profileCatalog = profileCatalog;
-        this.profileResolver = profileResolver;
+        this.profileSettingsResolver = profileSettingsResolver;
         this.terminologyLoader = terminologyLoader;
         this.styleGuideLoader = styleGuideLoader;
         this.terminologyValidationService = terminologyValidationService;
@@ -450,10 +450,10 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
         try
         {
-            var profile = await profileResolver.ResolveAsync(profileId);
-            SelectedProfilePreview = profile is null
+            var previewProfile = await profileSettingsResolver.ResolveAsync(AppSettings);
+            SelectedProfilePreview = previewProfile is null
                 ? "Translation profile details are not available yet."
-                : BuildProfilePreview(profile);
+                : BuildProfilePreview(previewProfile);
         }
         catch (Exception ex)
         {
