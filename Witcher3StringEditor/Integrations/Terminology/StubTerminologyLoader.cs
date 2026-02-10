@@ -164,7 +164,11 @@ public sealed class StubTerminologyLoader : ITerminologyLoader, IStyleGuideLoade
         }
 
         var sections = sectionOrder
-            .Select(name => new StyleGuideSection(name, sectionRules[name]))
+            .Select(name => new StyleGuideSection
+            {
+                Name = name,
+                Rules = sectionRules[name]
+            })
             .ToList();
 
         return new StyleGuide(Path.GetFileNameWithoutExtension(path), path, sections, required, forbidden, tone);
