@@ -63,6 +63,7 @@ Do not introduce new models in these locations; use them only for inventory or m
 - Use a `TerminologyEntry` model with `Term`, `Translation`, `Notes`, and `Mode` fields to support future validation.
 - Extend `StyleGuide` to include section/rule lists alongside required/forbidden/tone buckets.
 - Add placeholder validation interfaces for later enforcement logic.
+- When provider routing is enabled, attach a terminology prompt block to provider request metadata (no enforcement yet).
 
 ### Translation Profiles
 - Define interfaces and no-op stubs for a local profile catalog.

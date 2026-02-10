@@ -214,3 +214,37 @@ for now.
 - ✅ Build: solution builds.
 - Manual: inspect the DTO model in isolation (no runtime usage).
 - Regression: QA flows remain unchanged.
+
+---
+
+## Issue 8: Terminology prompt metadata (provider routing only)
+**Description**
+Build a terminology prompt block from loaded terminology/style packs and attach it to translation provider request
+metadata when provider routing is enabled. Keep this limited to metadata wiring only, with no enforcement or UI changes.
+
+**Behavior impact**
+- Provider requests include optional terminology prompt metadata when provider routing is enabled.
+
+**Acceptance Criteria**
+- Terminology/style packs are loaded via existing loaders and merged as needed.
+- A prompt block is generated and stored in provider request metadata keys.
+- Metadata is only attached when provider routing is enabled.
+- Translation flow remains unchanged when routing is disabled.
+- All changes compile.
+
+**Files to touch**
+- `Witcher3StringEditor/Services/LegacyTranslationRouter.cs`
+- `Witcher3StringEditor/Services/TerminologyPromptBuilder.cs` (new)
+- `Witcher3StringEditor.Common/Terminology/TerminologyPromptMetadata.cs` (new)
+- `docs/integrations.md`
+
+**Build command**
+- `dotnet build Witcher3StringEditor.slnx`
+
+**Reminder**
+- Do not enforce terminology rules or modify UI flows.
+
+**QA Checklist**
+- ✅ Build: solution builds.
+- Manual: run a provider-routed translation and confirm metadata is present in the provider request (debug only).
+- Regression: routing disabled behaves as before.
