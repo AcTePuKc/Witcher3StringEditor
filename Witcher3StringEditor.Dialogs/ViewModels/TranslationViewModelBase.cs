@@ -258,7 +258,7 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         TranslationPipelineContext? pipelineContext,
         CancellationToken cancellationToken)
     {
-        if (pipelineContext is null)
+        if (!ShouldUseTranslationMemory(pipelineContext))
         {
             return Task.FromResult<TranslationMemoryEntry?>(null);
         }
@@ -280,7 +280,7 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
         TranslationPipelineContext? pipelineContext,
         CancellationToken cancellationToken)
     {
-        if (pipelineContext is null)
+        if (!ShouldUseTranslationMemory(pipelineContext))
         {
             return Task.CompletedTask;
         }
@@ -293,5 +293,21 @@ public abstract partial class TranslationViewModelBase : ObservableObject, IAsyn
             TargetLanguage = targetLanguage.Name
         };
         return TranslationMemoryService.SaveAsync(entry, pipelineContext, cancellationToken);
+    }
+
+    private protected async Task<TranslationPipelineContext?> BuildPipelineContextAsync(
+        CancellationToken cancellationToken)
+    {
+        if (!AppSettings.UseTranslationMemory)
+        {
+            return null;
+        }
+
+        return await PipelineContextBuilder.BuildAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private static bool ShouldUseTranslationMemory(TranslationPipelineContext? pipelineContext)
+    {
+        return pipelineContext is not null && pipelineContext.UseTranslationMemory;
     }
 }

@@ -195,7 +195,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         ResetTranslationCounts(); // Reset counters for success, failure, and pending items
         CancellationTokenSource?.Dispose(); // Dispose of any existing cancellation token source
         CancellationTokenSource = new CancellationTokenSource(); // Create a new cancellation token source
-        TranslationPipelineContext? pipelineContext = null;
+        var pipelineContext = await BuildPipelineContextAsync(CancellationTokenSource.Token);
         await ProcessTranslationItems(W3StringItems.Skip(StartIndex - 1).Take(PendingCount), // Process selected items
             ToLanguage, FormLanguage, CancellationTokenSource.Token, pipelineContext);
     }

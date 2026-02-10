@@ -155,7 +155,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 CurrentTranslateItemModel.TranslatedText = string.Empty; // Clear the translation text
                 Log.Information("Starting translation."); // Log start of translation
                 // TODO: Inject terminology/style prompts before translation once provider routing supports it.
-                TranslationPipelineContext? pipelineContext = null;
+                var pipelineContext = await BuildPipelineContextAsync(CancellationTokenSource.Token);
                 var translationResult = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
                     ToLanguage, FormLanguage, CancellationTokenSource, pipelineContext); // Execute the translation task
                 UpdateStatusMessage(translationResult);
