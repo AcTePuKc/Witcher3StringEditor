@@ -74,27 +74,18 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         this.providerHealthCheck = providerHealthCheck;
         Translators = translators;
         SupportedCultures = supportedCultures;
-        try
-        {
-            ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Settings initialization failed during model cache hydrate.");
-            ModelOptions = new ObservableCollection<string>(DefaultModelOptions);
-            ModelStatusText = "Model cache could not be loaded from settings.";
-        }
-
         if (appSettings is INotifyPropertyChanged notifyPropertyChanged)
         {
             notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
         }
 
+        ModelOptions = new ObservableCollection<string>(DefaultModelOptions);
         ModelStatusText = "Not loaded yet.";
         ProfileStatusText = "Not loaded yet.";
         SelectedProfilePreview = "Not loaded yet.";
         TerminologyStatusText = "Not loaded yet.";
         StyleGuideStatusText = "Not loaded yet.";
+        ProviderConnectionStatusText = "Not loaded yet.";
     }
 
     /// <summary>
@@ -277,6 +268,27 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     private async Task RefreshStyleGuideStatus()
     {
         await UpdateStyleGuideStatusAsync();
+    }
+
+    /// <summary>
+    ///     Loads cached model options from local settings without performing network requests.
+    /// </summary>
+    [RelayCommand]
+    private void LoadCachedModels()
+    {
+        try
+        {
+            ModelOptions = new ObservableCollection<string>(InitializeModelOptions(AppSettings));
+            ModelStatusText = ModelOptions.Count == 0
+                ? "No cached model entries found."
+                : "Loaded model options from local cache.";
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Settings model cache load failed.");
+            ModelOptions = new ObservableCollection<string>(DefaultModelOptions);
+            ModelStatusText = "Model cache could not be loaded from settings.";
+        }
     }
 
     /// <summary>

@@ -258,9 +258,14 @@
                                    Text="{I18N {x:Static l:LangKeys.TranslationProviderRoutingHint}}" />
                         <TextBlock Margin="0,8,0,4" Text="{I18N {x:Static l:LangKeys.Model}}" />
                         <DockPanel LastChildFill="True">
-                            <Button Command="{Binding RefreshModelsCommand}" DockPanel.Dock="Right" Margin="6,0,0,0">
-                                <TextBlock Text="{I18N {x:Static l:LangKeys.Refresh}}" />
-                            </Button>
+                            <StackPanel DockPanel.Dock="Right" Margin="6,0,0,0" Orientation="Horizontal">
+                                <Button Command="{Binding LoadCachedModelsCommand}">
+                                    <TextBlock Text="Load cached" />
+                                </Button>
+                                <Button Command="{Binding RefreshModelsCommand}" Margin="6,0,0,0">
+                                    <TextBlock Text="{I18N {x:Static l:LangKeys.Refresh}}" />
+                                </Button>
+                            </StackPanel>
                             <ComboBox
                                 ItemsSource="{Binding ModelOptions}"
                                 SelectedItem="{Binding AppSettings.TranslationModelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

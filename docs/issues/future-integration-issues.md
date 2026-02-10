@@ -134,3 +134,46 @@ Keep profile listing/preview local (JSON) and inert by default. Add only compile
 - Build: solution compiles.
 - Manual: settings profile list/preview loads without blocking window open.
 - Regression: default translation behavior unchanged when no profile is selected.
+
+---
+
+## Issue 6: Constructor audit and deferred-load guardrails for Settings surfaces
+**Description**
+Audit constructors and startup paths for hidden file/network/profile/model loading. Ensure Settings constructor remains lightweight and all expensive work is command-triggered.
+
+**Acceptance Criteria**
+- Audit report exists listing constructor/startup paths and load triggers.
+- Settings constructor performs no model/profile/terminology/style loading work.
+- Explicit commands exist for all deferred settings loads.
+- Default status text remains `Not loaded yet.` until the user triggers a load.
+
+**Files to touch**
+- `docs/inspections/constructor-loading-audit.md`
+- `Witcher3StringEditor.Dialogs/ViewModels/SettingsDialogViewModel.cs`
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+
+**QA Checklist**
+- Build: solution compiles.
+- Manual: open Settings; verify status panels read `Not loaded yet.` with no background refresh.
+- Manual: click load/refresh actions; verify statuses change only after user action.
+- Regression: opening Settings remains responsive and does not trigger unexpected network calls.
+
+---
+
+## Issue 7: Deferred settings-load service scaffolding (interface + no-op implementation)
+**Description**
+Add compile-safe interface and no-op service to centralize future command-triggered loading behavior without wiring runtime features yet.
+
+**Acceptance Criteria**
+- New shared interface defines explicit deferred-load methods for cached models, profiles, terminology, and style guide.
+- No-op implementation compiles and returns inert results.
+- No behavior change unless future issues wire the service into view models.
+
+**Files to touch**
+- `Witcher3StringEditor.Common/Settings/ISettingsDeferredLoadService.cs`
+- `Witcher3StringEditor/Services/NoopSettingsDeferredLoadService.cs`
+
+**QA Checklist**
+- Build: solution compiles.
+- Manual: no visible behavior changes expected.
+- Regression: no startup/runtime load regressions.

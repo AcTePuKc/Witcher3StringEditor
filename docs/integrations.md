@@ -129,3 +129,14 @@ This slice adds only minimal behavior around provider routing reliability while 
 1. Add a Settings toggle for `UseLegacyTranslationFallback` (UI placeholder only).
 2. Localize new status/error strings used by provider routing paths.
 3. Add automated tests around `ResultExtensions.GetProviderFailure` and fallback-gating behavior once test project scaffolding is available.
+
+## Deferred Loading Contract (Settings)
+- Settings constructors should only set defaults and bind dependencies.
+- Model/profile/terminology/style loading must be behind explicit user commands.
+- Added scaffolding contract: `Witcher3StringEditor.Common/Settings/ISettingsDeferredLoadService.cs` with a no-op placeholder implementation at `Witcher3StringEditor/Services/NoopSettingsDeferredLoadService.cs`.
+- Current Settings UX includes explicit commands for:
+  - cached model load (`LoadCachedModelsCommand`)
+  - Ollama model refresh (`RefreshModelsCommand`)
+  - profile refresh (`RefreshTranslationProfilesCommand`)
+  - terminology refresh (`RefreshTerminologyStatusCommand`)
+  - style guide refresh (`RefreshStyleGuideStatusCommand`)
