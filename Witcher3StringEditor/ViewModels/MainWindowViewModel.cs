@@ -571,7 +571,7 @@ internal partial class MainWindowViewModel : ObservableObject
                 appSettings: appSettings,
                 dialogService: dialogService,
                 profileCatalog: serviceProvider.GetRequiredService<ITranslationProfileCatalog>(),
-                profileResolver: serviceProvider.GetRequiredService<ITranslationProfileResolver>(),
+                profileSettingsResolver: serviceProvider.GetRequiredService<ITranslationProfileSettingsResolver>(),
                 terminologyLoader: serviceProvider.GetRequiredService<ITerminologyLoader>(),
                 styleGuideLoader: serviceProvider.GetRequiredService<IStyleGuideLoader>(),
                 terminologyValidationService: serviceProvider.GetRequiredService<ITerminologyValidationService>(),
