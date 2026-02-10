@@ -6,11 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
+    xmlns:i18n="clr-namespace:System.Windows;assembly=Antelcat.I18N.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
-    Title="{I18N {x:Static l:LangKeys.BackupDialogTitle}}"
+    Title="{i18n:I18N {x:Static l:LangKeys.BackupDialogTitle}}"
     Width="1200"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:BackupDialogViewModel}"
@@ -46,12 +47,12 @@
                 Grid.Column="0"
                 Margin="20,0,0,0"
                 VerticalAlignment="Center"
-                Text="{I18N {x:Static l:LangKeys.BackupDialogTitle}}" />
+                Text="{i18n:I18N {x:Static l:LangKeys.BackupDialogTitle}}" />
             <!-- Search box for filtering backup items -->
             <ui:AutoSuggestBox
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                PlaceholderText="{I18N {x:Static l:LangKeys.SearchBoxPlaceholderText}}"
+                PlaceholderText="{i18n:I18N {x:Static l:LangKeys.SearchBoxPlaceholderText}}"
                 QuerySubmitted="SearchBox_QuerySubmitted"
                 TextChanged="SearchBox_TextChanged">
                 <ui:AutoSuggestBox.QueryIcon>

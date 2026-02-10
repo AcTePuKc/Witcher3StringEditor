@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
+    xmlns:i18n="clr-namespace:System.Windows;assembly=Antelcat.I18N.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
@@ -71,12 +72,12 @@
                 <Button
                     MinWidth="100"
                     Command="{Binding SubmitCommand}"
-                    Content="{I18N {x:Static l:LangKeys.SubmitBtnContent}}" />
+                    Content="{i18n:I18N {x:Static l:LangKeys.SubmitBtnContent}}" />
                 <!-- Cancel button to discard changes -->
                 <Button
                     MinWidth="100"
                     Command="{Binding CancelCommand}"
-                    Content="{I18N {x:Static l:LangKeys.CancelBtnContent}}" />
+                    Content="{i18n:I18N {x:Static l:LangKeys.CancelBtnContent}}" />
             </iwk:SimpleStackPanel>
         </Grid>
     </Grid>
