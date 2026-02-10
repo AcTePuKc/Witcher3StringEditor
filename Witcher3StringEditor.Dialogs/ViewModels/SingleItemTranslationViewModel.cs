@@ -175,18 +175,26 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 }
                 else
                 {
-                    var providerFailureMessage = GetProviderFailureMessage(translationResult);
-                    if (!string.IsNullOrWhiteSpace(providerFailureMessage))
+                    var providerFailure = GetProviderFailure(translationResult);
+                    if (providerFailure is not null)
                     {
                         UpdateLastProviderError(translationResult);
-                        _ = WeakReferenceMessenger.Default.Send(
-                            new ValueChangedMessage<string>(providerFailureMessage),
-                            MessageTokens.TranslateError);
-                        Log.Error("Translation failed: {Error}", providerFailureMessage);
+                        if (string.IsNullOrWhiteSpace(StatusMessage))
+                        {
+                            StatusMessage = providerFailure.Message;
+                        }
+
+                        Log.Error("Translation failed: {ProviderName}/{FailureKind} - {Error}",
+                            providerFailure.ProviderName,
+                            providerFailure.FailureKind,
+                            providerFailure.Message);
                     }
                     else
                     {
-                        Log.Error("Translation operation was cancelled."); // Log cancellation of translation
+                        _ = WeakReferenceMessenger.Default.Send(
+                            new ValueChangedMessage<string>("Translation operation failed."),
+                            MessageTokens.TranslateError);
+                        Log.Error("Translation operation failed without provider metadata.");
                     }
                 }
             }
@@ -255,9 +263,9 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             : Result.Fail(string.Empty);
     }
 
-    private static string? GetProviderFailureMessage(Result<string> result)
+    private static TranslationProviderFailureDto? GetProviderFailure(Result<string> result)
     {
-        return result.GetProviderError();
+        return result.GetProviderFailure();
     }
 
     /// <summary>

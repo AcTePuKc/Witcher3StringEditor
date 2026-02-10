@@ -1767,3 +1767,67 @@ message without changing behavior unless a future UI explicitly consumes it.
 - Build: `dotnet build`
 - Manual: confirm no new UI or behavior changes are visible
 - No regressions: translation dialog still opens and legacy translators remain default
+
+
+## Reliability Slice: Provider failure handling (current request)
+
+### Issue R1: Return structured provider failures from translation results
+**Description**
+Standardize provider error metadata extraction so UI and logs can consume a typed failure object instead of raw strings.
+
+**Acceptance Criteria**
+- A helper returns a typed provider failure DTO (`provider`, `failure kind`, `message`) from `FluentResults` metadata.
+- The helper handles both provider call failures and provider request-validation failures.
+- Existing string-based error lookups remain compatible for incremental migration.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ResultExtensions.cs`
+- `Witcher3StringEditor.Common/Translation/TranslationProviderFailureDto.cs`
+
+**QA Checklist**
+- Build: `dotnet build Witcher3StringEditor.slnx`
+- Manual: verify provider failure metadata can be read as typed DTO in debugger/log output
+- No regressions: existing error text handling still works
+
+---
+
+### Issue R2: Configurable fallback to legacy translator
+**Description**
+Gate provider-to-legacy fallback behind an explicit app setting so fallback behavior is configurable instead of always on.
+
+**Acceptance Criteria**
+- `IAppSettings` and concrete settings expose `UseLegacyTranslationFallback`.
+- Legacy fallback is only attempted when the setting is enabled.
+- Missing provider path returns provider-validation failure when fallback is disabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs`
+- `Witcher3StringEditor/Models/AppSettings.cs`
+- `Witcher3StringEditor/Services/LegacyTranslationRouter.cs`
+- `Witcher3StringEditor/Services/TranslationRouter.cs`
+
+**QA Checklist**
+- Build: `dotnet build Witcher3StringEditor.slnx`
+- Manual: test with fallback enabled/disabled and verify provider failure behavior changes accordingly
+- No regressions: legacy-only translation path still works
+
+---
+
+### Issue R3: Non-blocking provider status in translation dialogs
+**Description**
+Display provider failure/fallback feedback through status text instead of blocking message boxes when provider metadata is available.
+
+**Acceptance Criteria**
+- Single-item translation surfaces provider failures in `StatusMessage` when metadata exists.
+- Batch translation surfaces first provider failure in `StatusMessage` and logs structured details.
+- Blocking error dialogs remain only for non-provider/unstructured failures.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
+
+**QA Checklist**
+- Build: `dotnet build Witcher3StringEditor.slnx`
+- Manual: trigger provider error and confirm dialog remains usable while status text updates
+- No regressions: successful translations and existing save flow remain unchanged

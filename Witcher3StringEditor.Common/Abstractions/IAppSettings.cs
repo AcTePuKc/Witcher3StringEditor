@@ -44,6 +44,11 @@ public interface IAppSettings
     public string Translator { get; set; }
 
     /// <summary>
+    ///     Gets or sets a value indicating whether provider failures should fall back to legacy translators
+    /// </summary>
+    public bool UseLegacyTranslationFallback { get; set; }
+
+    /// <summary>
     ///     Gets or sets the translation provider name (future integration)
     /// </summary>
     public string TranslationProviderName { get; set; }
