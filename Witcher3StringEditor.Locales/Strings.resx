@@ -574,4 +574,46 @@
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
+  <data name="TranslationModeLabel" xml:space="preserve">
+    <value>Translation mode:</value>
+  </data>
+  <data name="LoadCached" xml:space="preserve">
+    <value>Load cached</value>
+  </data>
+  <data name="ProviderTimeoutSeconds" xml:space="preserve">
+    <value>Provider timeout (seconds)</value>
+  </data>
+  <data name="TestConnection" xml:space="preserve">
+    <value>Test Connection</value>
+  </data>
+  <data name="TranslationProfilesHeader" xml:space="preserve">
+    <value>Translation profiles</value>
+  </data>
+  <data name="TranslationMemoryHeader" xml:space="preserve">
+    <value>Translation memory</value>
+  </data>
+  <data name="NoTranslationMemoryPathSet" xml:space="preserve">
+    <value>No translation memory path set.</value>
+  </data>
+  <data name="EnableTranslationMemory" xml:space="preserve">
+    <value>Enable translation memory</value>
+  </data>
+  <data name="TranslationMemoryPath" xml:space="preserve">
+    <value>Translation memory path</value>
+  </data>
+  <data name="EnableTerminologyPack" xml:space="preserve">
+    <value>Enable terminology pack</value>
+  </data>
+  <data name="EnableStyleGuide" xml:space="preserve">
+    <value>Enable style guide</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="KeyHex" xml:space="preserve">
+    <value>Key(Hex)</value>
+  </data>
+  <data name="KeyString" xml:space="preserve">
+    <value>Key(String)</value>
+  </data>
 </root>
