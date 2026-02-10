@@ -20,4 +20,14 @@ public sealed record TranslationRouterRequest(
     string? ModelName = null,
     string? BaseUrl = null,
     bool UseProviderForTranslation = false,
-    TranslationPipelineContext? PipelineContext = null);
+    TranslationPipelineContext? PipelineContext = null)
+{
+    public string? Source { get; init; }
+    public string? Target { get; init; }
+    public string? Provider { get; init; }
+    public string? Model { get; init; }
+}
+
+public sealed record TranslationRouterResult(
+    string Status,
+    string? Error = null);

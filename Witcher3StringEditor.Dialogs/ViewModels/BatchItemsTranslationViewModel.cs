@@ -195,7 +195,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         ResetTranslationCounts(); // Reset counters for success, failure, and pending items
         CancellationTokenSource?.Dispose(); // Dispose of any existing cancellation token source
         CancellationTokenSource = new CancellationTokenSource(); // Create a new cancellation token source
-        var pipelineContext = await PipelineContextBuilder.BuildAsync(CancellationTokenSource.Token);
+        var pipelineContext = await BuildPipelineContextAsync(CancellationTokenSource.Token);
         await ProcessTranslationItems(W3StringItems.Skip(StartIndex - 1).Take(PendingCount), // Process selected items
             ToLanguage, FormLanguage, CancellationTokenSource.Token, pipelineContext);
     }
@@ -210,7 +210,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     private async Task ProcessTranslationItems(IEnumerable<ITrackableW3StringItem> items, ILanguage toLanguage,
         ILanguage fromLanguage,
         CancellationToken cancellationToken,
-        TranslationPipelineContext pipelineContext)
+        TranslationPipelineContext? pipelineContext)
     {
         foreach (var item in items) // Process each item in the collection
             if (!cancellationToken.IsCancellationRequested) // Check if operation has been canceled
@@ -234,7 +234,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
     /// <param name="fromLanguage">The source language</param>
     /// <param name="pipelineContext">Read-only pipeline context for routing</param>
     private async Task ProcessSingleItem(ITrackableW3StringItem item, ILanguage toLanguage, ILanguage fromLanguage,
-        TranslationPipelineContext pipelineContext,
+        TranslationPipelineContext? pipelineContext,
         CancellationToken cancellationToken)
     {
         try
@@ -292,7 +292,7 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
         string text,
         ILanguage tLanguage,
         ILanguage fLanguage,
-        TranslationPipelineContext pipelineContext)
+        TranslationPipelineContext? pipelineContext)
     {
         // TODO: Inject terminology/style prompts before batch translation once provider routing supports it.
         string? providerName = null;
@@ -331,18 +331,24 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             return;
         }
 
-        var providerError = result.GetProviderError();
+        var providerFailure = result.GetProviderFailure();
 
-        if (providerError is null)
+        if (providerFailure is null)
         {
             return;
         }
 
         hasShownProviderFailure = true;
         UpdateLastProviderError(result);
-        _ = WeakReferenceMessenger.Default.Send(
-            new ValueChangedMessage<string>(providerError),
-            MessageTokens.TranslateError);
+        if (string.IsNullOrWhiteSpace(StatusMessage))
+        {
+            StatusMessage = providerFailure.Message;
+        }
+
+        Log.Warning("Batch translation provider failure: {ProviderName}/{FailureKind} - {Message}",
+            providerFailure.ProviderName,
+            providerFailure.FailureKind,
+            providerFailure.Message);
     }
 
     /// <summary>

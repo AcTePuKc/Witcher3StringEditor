@@ -20,6 +20,7 @@ using Witcher3StringEditor.Common.Profiles;
 using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Common.Translation;
 using Witcher3StringEditor.Common.TranslationMemory;
+using Witcher3StringEditor.Data.TranslationMemory;
 using Witcher3StringEditor.Dialogs.ViewModels;
 using Witcher3StringEditor.Dialogs.Views;
 using Witcher3StringEditor.Locales;
@@ -377,14 +378,19 @@ public sealed partial class App : IDisposable
             .AddSingleton<ITranslationProfileCatalog, NoopTranslationProfileCatalog>()
             .AddSingleton<ITranslationProfilePreviewService, NoopTranslationProfilePreviewService>()
             .AddSingleton<ITranslationProfileResolver, NoopTranslationProfileResolver>()
+            .AddSingleton<ITranslationProfileSettingsResolver, TranslationProfileSettingsResolver>()
             .AddSingleton<ITranslationPipelineContextBuilder, TranslationPipelineContextBuilder>()
             .AddSingleton<LegacyTranslationRouter>()
             .AddSingleton<ITranslationRouter, TranslationRouter>()
             .AddSingleton<ITranslationPostProcessor, NoopTranslationPostProcessor>()
-            .AddSingleton<ITranslationMemoryService, NoopTranslationMemoryService>()
+            .AddSingleton<ITranslationMemorySettingsProvider, TranslationMemorySettingsProvider>()
+            .AddSingleton<ITranslationMemoryStoreFactory, SqliteTranslationMemoryStoreFactory>()
+            .AddSingleton<ITranslationMemoryDatabaseInitializer, SqliteTranslationMemoryDatabaseInitializer>()
+            .AddSingleton<ITranslationMemoryService, TranslationMemoryService>()
             .AddSingleton<ITranslationMemoryImportService, NoopTranslationMemoryImportService>()
             .AddSingleton<ITerminologyLoader, TerminologyLoader>()
             .AddSingleton<IStyleGuideLoader, TerminologyLoader>()
+            .AddSingleton<ITerminologyPromptBuilder, TerminologyPromptBuilder>()
             .AddSingleton<ITerminologyValidationService, NoopTerminologyValidationService>()
             .AddSingleton<IDialogManager, DialogManager>()
             .AddSingleton<IDialogService, DialogService>()

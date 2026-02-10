@@ -8,13 +8,6 @@ namespace Witcher3StringEditor.Data.TranslationMemory;
 
 public sealed class SqliteTranslationMemoryDatabaseInitializer : ITranslationMemoryDatabaseInitializer
 {
-    private readonly SqliteBootstrap bootstrap;
-
-    public SqliteTranslationMemoryDatabaseInitializer(SqliteBootstrap bootstrap)
-    {
-        this.bootstrap = bootstrap ?? throw new ArgumentNullException(nameof(bootstrap));
-    }
-
     public Task InitializeAsync(TranslationMemorySettings settings, CancellationToken cancellationToken = default)
     {
         if (settings is null)
@@ -22,7 +15,7 @@ public sealed class SqliteTranslationMemoryDatabaseInitializer : ITranslationMem
             throw new ArgumentNullException(nameof(settings));
         }
 
-        // TODO: Allow the database path to be overridden by settings when wiring TM configuration.
+        var bootstrap = new SqliteBootstrap(settings.DatabasePath);
         return bootstrap.InitializeAsync(cancellationToken);
     }
 }

@@ -40,5 +40,7 @@ public sealed class ModelInfo
 
     public string? DisplayName { get; init; }
 
+    public bool IsDefault { get; init; }
+
     public IReadOnlyDictionary<string, string>? Metadata { get; init; }
 }

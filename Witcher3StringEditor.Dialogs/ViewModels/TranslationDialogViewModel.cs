@@ -83,6 +83,11 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     [ObservableProperty] private TranslationMode translationMode = TranslationMode.Legacy;
 
     /// <summary>
+    ///     Gets or sets whether provider routing is enabled for this dialog session.
+    /// </summary>
+    [ObservableProperty] private bool isProviderRoutingEnabled = true;
+
+    /// <summary>
     ///     Initializes a new instance of the TranslationDialogViewModel class
     /// </summary>
     /// <param name="appSettings">Application settings service</param>
@@ -117,7 +122,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
         CurrentViewModel =
             new SingleItemTranslationViewModel(appSettings, translator, translationRouter, translationPostProcessor,
                 pipelineContextBuilder, translationMemoryService, this.w3StringItems, index);
-        CurrentViewModel.UseProviderForTranslation = TranslationMode == TranslationMode.Provider;
+        CurrentViewModel.UseProviderForTranslation = ShouldUseProviderRouting();
         // Initialize the current view model
     }
 
@@ -150,8 +155,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
     /// <summary>
     ///     Gets whether the provider readiness banner should be shown.
     /// </summary>
-    public bool IsProviderReadinessBannerVisible => TranslationMode == TranslationMode.Provider &&
-                                                    IsProviderSettingsIncomplete();
+    public bool IsProviderReadinessBannerVisible => ShouldUseProviderRouting() && IsProviderSettingsIncomplete();
 
     /// <summary>
     ///     Gets the available translation mode options for the UI.
@@ -182,7 +186,7 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
                         translationPostProcessor, pipelineContextBuilder, translationMemoryService, w3StringItems,
                         index + 1);
                 CurrentViewModel.FormLanguage = formLange; // Restore source language
-                CurrentViewModel.UseProviderForTranslation = TranslationMode == TranslationMode.Provider;
+                CurrentViewModel.UseProviderForTranslation = ShouldUseProviderRouting();
                 Title = CurrentViewModel is BatchItemsTranslationViewModel // Update dialog title
                     ? Strings.BatchTranslateDialogTitle
                     : Strings.TranslateDialogTitle;
@@ -401,8 +405,19 @@ public partial class TranslationDialogViewModel : ObservableObject, IModalDialog
 
     partial void OnTranslationModeChanged(TranslationMode value)
     {
-        CurrentViewModel.UseProviderForTranslation = value == TranslationMode.Provider;
+        CurrentViewModel.UseProviderForTranslation = ShouldUseProviderRouting();
         OnPropertyChanged(nameof(IsProviderReadinessBannerVisible));
+    }
+
+    partial void OnIsProviderRoutingEnabledChanged(bool value)
+    {
+        CurrentViewModel.UseProviderForTranslation = ShouldUseProviderRouting();
+        OnPropertyChanged(nameof(IsProviderReadinessBannerVisible));
+    }
+
+    private bool ShouldUseProviderRouting()
+    {
+        return isProviderRoutingEnabled && TranslationMode == TranslationMode.Provider;
     }
 
     /// <summary>

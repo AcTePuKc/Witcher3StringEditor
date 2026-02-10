@@ -1,3 +1,5 @@
+> Archived: This issue draft is superseded by [../integrations.md](../integrations.md) and [../inspections/scaffold-progress.md](../inspections/scaffold-progress.md).
+
 # Integration Backlog (GitHub Issue Drafts)
 
 ## Scope Overview
@@ -14,6 +16,7 @@ Add a minimal, local-only translation memory database bootstrap path and leave a
 - Translation memory settings describe a local database path and provider name (no external services).
 - SQLite bootstrap logic is isolated behind an initializer interface.
 - A translation memory store factory stub is available for future wiring (no runtime usage yet).
+- Store/service interfaces include async `LookupAsync` and `UpsertAsync` methods (stubs only).
 - No DI or UI wiring is added in this issue.
 
 **Files to Touch**
@@ -184,7 +187,7 @@ remains the default.
 **Acceptance Criteria**
 - `ITranslationProvider` includes `ListModelsAsync` and `TranslateAsync` signatures.
 - Minimal DTOs exist for request/result/model metadata (`TranslationRequest`, `TranslationResult`, `ModelInfo`), including
-  optional glossary/style/profile fields.
+  summary fields (`Id`, `DisplayName`, `IsDefault`) and optional glossary/style/profile fields.
 - A stub in-memory registry exists for non-DI usage (no runtime wiring).
 - No new call sites are introduced in the existing translation flow.
 
@@ -230,7 +233,7 @@ and document all fallback/default/error handling behavior.
   - `Translate` triggers the per-row translation execution path.
 
 **Files to Touch**
-- `docs/fallback-investigation.md`
+- `docs/archive/fallback-investigation.md`
 
 
 **Behavior Impact**
@@ -489,6 +492,7 @@ single read-only context object for future translation routing. Keep it unused b
 
 **Acceptance Criteria**
 - A context builder returns a `TranslationPipelineContext` populated from settings and the selected profile.
+- Context includes provider/model/profile identifiers and terminology paths for future routing.
 - No translation routing changes; the context is not consumed yet.
 - TODO markers indicate where translation memory and terminology injection will later occur.
 
@@ -889,7 +893,7 @@ rules opt-in and default to no-op behavior so translation output remains unchang
 - `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs` (if needed)
 - `Witcher3StringEditor/Models/AppSettings.cs` (if needed)
 - `docs/integrations.md`
-- `docs/ai-output-notes.md`
+- `docs/archive/ai-output-notes.md`
 
 
 **Behavior Impact**
@@ -1765,3 +1769,67 @@ message without changing behavior unless a future UI explicitly consumes it.
 - Build: `dotnet build`
 - Manual: confirm no new UI or behavior changes are visible
 - No regressions: translation dialog still opens and legacy translators remain default
+
+
+## Reliability Slice: Provider failure handling (current request)
+
+### Issue R1: Return structured provider failures from translation results
+**Description**
+Standardize provider error metadata extraction so UI and logs can consume a typed failure object instead of raw strings.
+
+**Acceptance Criteria**
+- A helper returns a typed provider failure DTO (`provider`, `failure kind`, `message`) from `FluentResults` metadata.
+- The helper handles both provider call failures and provider request-validation failures.
+- Existing string-based error lookups remain compatible for incremental migration.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Translation/ResultExtensions.cs`
+- `Witcher3StringEditor.Common/Translation/TranslationProviderFailureDto.cs`
+
+**QA Checklist**
+- Build: `dotnet build Witcher3StringEditor.slnx`
+- Manual: verify provider failure metadata can be read as typed DTO in debugger/log output
+- No regressions: existing error text handling still works
+
+---
+
+### Issue R2: Configurable fallback to legacy translator
+**Description**
+Gate provider-to-legacy fallback behind an explicit app setting so fallback behavior is configurable instead of always on.
+
+**Acceptance Criteria**
+- `IAppSettings` and concrete settings expose `UseLegacyTranslationFallback`.
+- Legacy fallback is only attempted when the setting is enabled.
+- Missing provider path returns provider-validation failure when fallback is disabled.
+
+**Files to Touch**
+- `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs`
+- `Witcher3StringEditor/Models/AppSettings.cs`
+- `Witcher3StringEditor/Services/LegacyTranslationRouter.cs`
+- `Witcher3StringEditor/Services/TranslationRouter.cs`
+
+**QA Checklist**
+- Build: `dotnet build Witcher3StringEditor.slnx`
+- Manual: test with fallback enabled/disabled and verify provider failure behavior changes accordingly
+- No regressions: legacy-only translation path still works
+
+---
+
+### Issue R3: Non-blocking provider status in translation dialogs
+**Description**
+Display provider failure/fallback feedback through status text instead of blocking message boxes when provider metadata is available.
+
+**Acceptance Criteria**
+- Single-item translation surfaces provider failures in `StatusMessage` when metadata exists.
+- Batch translation surfaces first provider failure in `StatusMessage` and logs structured details.
+- Blocking error dialogs remain only for non-provider/unstructured failures.
+
+**Files to Touch**
+- `Witcher3StringEditor.Dialogs/ViewModels/SingleItemTranslationViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/BatchItemsTranslationViewModel.cs`
+- `Witcher3StringEditor.Dialogs/ViewModels/TranslationViewModelBase.cs`
+
+**QA Checklist**
+- Build: `dotnet build Witcher3StringEditor.slnx`
+- Manual: trigger provider error and confirm dialog remains usable while status text updates
+- No regressions: successful translations and existing save flow remain unchanged

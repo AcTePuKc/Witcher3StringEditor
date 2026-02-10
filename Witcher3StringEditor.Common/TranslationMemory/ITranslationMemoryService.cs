@@ -11,11 +11,11 @@ public interface ITranslationMemoryService
 {
     Task<TranslationMemoryEntry?> LookupAsync(
         TranslationMemoryQuery query,
-        TranslationPipelineContext context,
+        TranslationPipelineContext? context,
         CancellationToken cancellationToken = default);
 
     Task SaveAsync(
         TranslationMemoryEntry entry,
-        TranslationPipelineContext context,
+        TranslationPipelineContext? context,
         CancellationToken cancellationToken = default);
 }

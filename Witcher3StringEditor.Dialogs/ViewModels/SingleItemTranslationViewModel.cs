@@ -155,7 +155,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 CurrentTranslateItemModel.TranslatedText = string.Empty; // Clear the translation text
                 Log.Information("Starting translation."); // Log start of translation
                 // TODO: Inject terminology/style prompts before translation once provider routing supports it.
-                var pipelineContext = await PipelineContextBuilder.BuildAsync(CancellationTokenSource.Token);
+                var pipelineContext = await BuildPipelineContextAsync(CancellationTokenSource.Token);
                 var translationResult = await ExecuteTranslationTask(CurrentTranslateItemModel.Text,
                     ToLanguage, FormLanguage, CancellationTokenSource, pipelineContext); // Execute the translation task
                 UpdateStatusMessage(translationResult);
@@ -175,18 +175,26 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
                 }
                 else
                 {
-                    var providerFailureMessage = GetProviderFailureMessage(translationResult);
-                    if (!string.IsNullOrWhiteSpace(providerFailureMessage))
+                    var providerFailure = GetProviderFailure(translationResult);
+                    if (providerFailure is not null)
                     {
                         UpdateLastProviderError(translationResult);
-                        _ = WeakReferenceMessenger.Default.Send(
-                            new ValueChangedMessage<string>(providerFailureMessage),
-                            MessageTokens.TranslateError);
-                        Log.Error("Translation failed: {Error}", providerFailureMessage);
+                        if (string.IsNullOrWhiteSpace(StatusMessage))
+                        {
+                            StatusMessage = providerFailure.Message;
+                        }
+
+                        Log.Error("Translation failed: {ProviderName}/{FailureKind} - {Error}",
+                            providerFailure.ProviderName,
+                            providerFailure.FailureKind,
+                            providerFailure.Message);
                     }
                     else
                     {
-                        Log.Error("Translation operation was cancelled."); // Log cancellation of translation
+                        _ = WeakReferenceMessenger.Default.Send(
+                            new ValueChangedMessage<string>("Translation operation failed."),
+                            MessageTokens.TranslateError);
+                        Log.Error("Translation operation failed without provider metadata.");
                     }
                 }
             }
@@ -219,7 +227,7 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
     /// <returns>A Result containing the translated text if successful</returns>
     private async Task<Result<string>> ExecuteTranslationTask(string text,
         ILanguage toLanguage, ILanguage formLanguage, CancellationTokenSource cancellationTokenSource,
-        TranslationPipelineContext pipelineContext)
+        TranslationPipelineContext? pipelineContext)
     {
         var cachedTranslation = await LookupTranslationMemoryAsync(text, formLanguage, toLanguage,
             pipelineContext, cancellationTokenSource.Token);
@@ -255,9 +263,9 @@ public sealed partial class SingleItemTranslationViewModel : TranslationViewMode
             : Result.Fail(string.Empty);
     }
 
-    private static string? GetProviderFailureMessage(Result<string> result)
+    private static TranslationProviderFailureDto? GetProviderFailure(Result<string> result)
     {
-        return result.GetProviderError();
+        return result.GetProviderFailure();
     }
 
     /// <summary>

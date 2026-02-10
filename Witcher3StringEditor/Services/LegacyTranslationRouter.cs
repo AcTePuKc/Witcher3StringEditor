@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -7,6 +8,7 @@ using FluentResults;
 using GTranslate.Translators;
 using Serilog;
 using Witcher3StringEditor.Common.Abstractions;
+using Witcher3StringEditor.Common.Terminology;
 using Witcher3StringEditor.Common.Translation;
 
 namespace Witcher3StringEditor.Services;
@@ -14,14 +16,20 @@ namespace Witcher3StringEditor.Services;
 internal sealed class LegacyTranslationRouter : ITranslationRouter
 {
     private readonly IAppSettings appSettings;
+    private readonly ITerminologyLoader terminologyLoader;
+    private readonly ITerminologyPromptBuilder terminologyPromptBuilder;
     private readonly ITranslationProviderRegistry providerRegistry;
     private readonly IEnumerable<ITranslator> legacyTranslators;
 
     public LegacyTranslationRouter(IAppSettings appSettings,
+        ITerminologyLoader terminologyLoader,
+        ITerminologyPromptBuilder terminologyPromptBuilder,
         ITranslationProviderRegistry providerRegistry,
         IEnumerable<ITranslator> legacyTranslators)
     {
         this.appSettings = appSettings;
+        this.terminologyLoader = terminologyLoader;
+        this.terminologyPromptBuilder = terminologyPromptBuilder;
         this.providerRegistry = providerRegistry;
         this.legacyTranslators = legacyTranslators;
     }
@@ -106,12 +114,14 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
 
         try
         {
+            var metadata = await BuildTerminologyMetadataAsync(request, cancellationToken).ConfigureAwait(false);
             var providerRequest = new TranslationRequest
             {
                 Text = request.Text,
                 SourceLanguage = request.FromLanguage?.ToString(),
                 TargetLanguage = request.ToLanguage?.ToString(),
-                ModelId = ResolveModelName(request)
+                ModelId = ResolveModelName(request),
+                Metadata = metadata
             };
 
             var response = await provider.TranslateAsync(providerRequest, cancellationToken).ConfigureAwait(false);
@@ -186,6 +196,104 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
         return result.WithSuccess(fallbackStatus);
     }
 
+    private async Task<IReadOnlyDictionary<string, string>?> BuildTerminologyMetadataAsync(
+        TranslationRouterRequest request,
+        CancellationToken cancellationToken)
+    {
+        if (!request.UseProviderForTranslation)
+        {
+            return null;
+        }
+
+        var context = request.PipelineContext;
+        if (context is null)
+        {
+            return null;
+        }
+
+        if (context.TerminologyPaths.Count == 0 && string.IsNullOrWhiteSpace(context.StyleGuidePath))
+        {
+            return null;
+        }
+
+        TerminologyPack? terminologyPack = null;
+        TerminologyPack? styleGuidePack = null;
+
+        try
+        {
+            if (context.TerminologyPaths.Count > 0)
+            {
+                var loadedPacks = new List<TerminologyPack>();
+                foreach (var path in context.TerminologyPaths.Where(path => !string.IsNullOrWhiteSpace(path)))
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    loadedPacks.Add(await terminologyLoader.LoadAsync(path, cancellationToken).ConfigureAwait(false));
+                }
+
+                terminologyPack = MergeTerminologyPacks(loadedPacks);
+            }
+
+            if (!string.IsNullOrWhiteSpace(context.StyleGuidePath))
+            {
+                styleGuidePack = await terminologyLoader.LoadAsync(context.StyleGuidePath, cancellationToken)
+                    .ConfigureAwait(false);
+            }
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            Log.Warning(ex, "Failed to build terminology prompt metadata for provider routing.");
+            return null;
+        }
+
+        var prompt = await terminologyPromptBuilder.BuildAsync(
+            terminologyPack,
+            styleGuidePack,
+            cancellationToken).ConfigureAwait(false);
+
+        if (string.IsNullOrWhiteSpace(prompt.SystemPrompt) && string.IsNullOrWhiteSpace(prompt.UserPrompt))
+        {
+            return null;
+        }
+
+        var metadata = new Dictionary<string, string>();
+        if (!string.IsNullOrWhiteSpace(prompt.SystemPrompt))
+        {
+            metadata[TerminologyPromptMetadata.SystemPromptKey] = prompt.SystemPrompt;
+        }
+
+        if (!string.IsNullOrWhiteSpace(prompt.UserPrompt))
+        {
+            metadata[TerminologyPromptMetadata.UserPromptKey] = prompt.UserPrompt;
+        }
+
+        return metadata;
+    }
+
+    private static TerminologyPack? MergeTerminologyPacks(IReadOnlyList<TerminologyPack> packs)
+    {
+        if (packs.Count == 0)
+        {
+            return null;
+        }
+
+        if (packs.Count == 1)
+        {
+            return packs[0];
+        }
+
+        var entries = packs
+            .SelectMany(pack => pack.Entries ?? Array.Empty<TerminologyEntry>())
+            .ToList();
+        var sourcePath = string.Join(";", packs.Select(pack => pack.SourcePath).Where(path => !string.IsNullOrWhiteSpace(path)));
+
+        return new TerminologyPack
+        {
+            Name = "Combined terminology",
+            SourcePath = sourcePath,
+            Entries = entries
+        };
+    }
+
     private async Task<Result<string>> TranslateWithProviderAndFallbackAsync(
         TranslationRouterRequest request,
         ITranslationProvider provider,
@@ -234,7 +342,7 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
 
     private bool ShouldFallbackToLegacyTranslator()
     {
-        return legacyTranslators.Any();
+        return appSettings.UseLegacyTranslationFallback && legacyTranslators.Any();
     }
 
     private string? ResolveProviderName(TranslationRouterRequest request)

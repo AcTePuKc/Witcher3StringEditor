@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace Witcher3StringEditor.Common.Translation;
 
 /// <summary>
@@ -11,19 +14,19 @@ public sealed class TranslationPipelineContext
     public string? ProfileId { get; init; }
 
     /// <summary>
-    ///     Gets the selected provider name (if any).
+    ///     Gets the selected provider identifier (if any).
     /// </summary>
-    public string? ProviderName { get; init; }
+    public string? ProviderId { get; init; }
 
     /// <summary>
-    ///     Gets the selected model name (if any).
+    ///     Gets the selected model identifier (if any).
     /// </summary>
-    public string? ModelName { get; init; }
+    public string? ModelId { get; init; }
 
     /// <summary>
-    ///     Gets the terminology pack path (if any).
+    ///     Gets the terminology pack paths (if any).
     /// </summary>
-    public string? TerminologyPath { get; init; }
+    public IReadOnlyList<string> TerminologyPaths { get; init; } = Array.Empty<string>();
 
     /// <summary>
     ///     Gets the style guide path (if any).

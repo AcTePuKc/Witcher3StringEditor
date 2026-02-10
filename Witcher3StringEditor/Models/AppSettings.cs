@@ -55,6 +55,11 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     [ObservableProperty] private string translator = "MicrosoftTranslator";
 
     /// <summary>
+    ///     Gets or sets a value indicating whether provider failures should fall back to legacy translators
+    /// </summary>
+    [ObservableProperty] private bool useLegacyTranslationFallback = true;
+
+    /// <summary>
     ///     Gets or sets the translation provider name
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
@@ -112,7 +117,7 @@ internal partial class AppSettings : ObservableObject, IAppSettings
     ///     Gets or sets a value indicating whether translation memory is enabled
     ///     This property supports data binding through the ObservableObject base class
     /// </summary>
-    [ObservableProperty] private bool useTranslationMemory;
+    [ObservableProperty] private bool useTranslationMemory = false;
 
     /// <summary>
     ///     Gets or sets the translation memory database path
