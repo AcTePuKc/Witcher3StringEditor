@@ -10,4 +10,6 @@ namespace Witcher3StringEditor.Locales;
 /// </summary>
 [ResourceKeysOf(typeof(Strings))]
 [UsedImplicitly]
-public static partial class LangKeys;
+public static partial class LangKeys
+{
+}
