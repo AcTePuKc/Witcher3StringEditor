@@ -38,3 +38,33 @@ If any of these behavior types are renamed/removed later, keep one of the follow
 
 1. Add compile-safe no-op compatibility stubs with the original names in `Witcher3StringEditor.Dialogs.Behaviors`, or
 2. Update all affected XAML tags to the new behavior type names in a single compatibility PR.
+
+
+## 2026-02-10 Namespace Mapping Recheck
+Requested verification completed without requiring XAML mapping changes.
+
+### 1) Locales mapping (`xmlns:l`)
+Verified all dialog and main-window XAML files continue to use:
+
+- `xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"`
+
+No mismatches found.
+
+### 2) Behaviors mapping (`xmlns:b`)
+Verified behavior namespace mappings are correct for each scope:
+
+- Main app XAML uses cross-assembly mapping:
+  - `xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors;assembly=Witcher3StringEditor.Dialogs"`
+- Dialog project XAML uses same-assembly mapping:
+  - `xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors"`
+
+Both mappings resolve to the actual behavior namespace in `Witcher3StringEditor.Dialogs`.
+
+### 3) Mapping updates
+No assembly or CLR namespace changes were detected, so no mapping edits were applied.
+
+### 4) Post-check for `x:Static` and behavior tags
+A repository-wide XAML scan confirmed:
+
+- `x:Static l:LangKeys.*` references remain consistent with the verified `xmlns:l` mapping.
+- `b:*Behavior` tags remain consistent with the verified behavior mappings and known behavior types.
