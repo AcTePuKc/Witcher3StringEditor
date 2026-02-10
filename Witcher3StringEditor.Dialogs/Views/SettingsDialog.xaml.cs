@@ -15,16 +15,6 @@ public partial class SettingsDialog
     public SettingsDialog()
     {
         InitializeComponent();
-        Loaded += OnLoaded;
     }
 
-    private async void OnLoaded(object sender, System.Windows.RoutedEventArgs e)
-    {
-        if (DataContext is not SettingsDialogViewModel viewModel)
-        {
-            return;
-        }
-
-        await viewModel.InitializeOnOpenCommand.ExecuteAsync(null);
-    }
 }

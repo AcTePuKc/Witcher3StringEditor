@@ -45,7 +45,6 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     private readonly IStyleGuideLoader styleGuideLoader;
     private readonly ITerminologyValidationService terminologyValidationService;
     private readonly ITranslationProviderHealthCheck providerHealthCheck;
-    private bool startupTasksInitialized;
     /// <summary>
     ///     Initializes a new instance of the SettingsDialogViewModel class
     /// </summary>
@@ -91,69 +90,11 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
         }
 
-        ProfileStatusText = "Translation profiles are loaded when the dialog finishes opening.";
-        SelectedProfilePreview = "Select a translation profile to preview its settings.";
-        TerminologyStatusText = appSettings.UseTerminologyPack
-            ? "Terminology status will be checked after the dialog opens."
-            : "Terminology disabled.";
-        StyleGuideStatusText = appSettings.UseStyleGuide
-            ? "Style guide status will be checked after the dialog opens."
-            : "Style guide disabled.";
-    }
-
-    /// <summary>
-    ///     Runs deferred startup work after the dialog has opened.
-    /// </summary>
-    [RelayCommand]
-    private async Task InitializeOnOpen()
-    {
-        if (startupTasksInitialized)
-        {
-            return;
-        }
-
-        startupTasksInitialized = true;
-
-        try
-        {
-            await UpdateTerminologyStatusAsync();
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Settings deferred load failed during terminology preview load.");
-            TerminologyStatusText = "Failed to load terminology preview.";
-        }
-
-        try
-        {
-            await UpdateStyleGuideStatusAsync();
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Settings deferred load failed during style guide preview load.");
-            StyleGuideStatusText = "Failed to load style guide preview.";
-        }
-
-        try
-        {
-            await LoadTranslationProfilesAsync();
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Settings deferred load failed during profile load.");
-            TranslationProfiles = [];
-            ProfileStatusText = "Failed to load translation profiles.";
-        }
-
-        try
-        {
-            await UpdateSelectedProfilePreviewAsync();
-        }
-        catch (Exception ex)
-        {
-            Log.Warning(ex, "Settings deferred load failed during profile preview load.");
-            SelectedProfilePreview = "Failed to load translation profile details.";
-        }
+        ModelStatusText = "Not loaded yet.";
+        ProfileStatusText = "Not loaded yet.";
+        SelectedProfilePreview = "Not loaded yet.";
+        TerminologyStatusText = "Not loaded yet.";
+        StyleGuideStatusText = "Not loaded yet.";
     }
 
     /// <summary>
@@ -292,7 +233,6 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             AppSettings.TerminologyFilePath = storageFile.LocalPath;
             Log.Information("Terminology file path set to {Path}.", storageFile.LocalPath);
-            await UpdateTerminologyStatusAsync();
         }
     }
 
@@ -317,8 +257,26 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             AppSettings.StyleGuideFilePath = storageFile.LocalPath;
             Log.Information("Style guide file path set to {Path}.", storageFile.LocalPath);
-            await UpdateStyleGuideStatusAsync();
         }
+    }
+
+    [RelayCommand]
+    private async Task RefreshTranslationProfiles()
+    {
+        await LoadTranslationProfilesAsync();
+        await UpdateSelectedProfilePreviewAsync();
+    }
+
+    [RelayCommand]
+    private async Task RefreshTerminologyStatus()
+    {
+        await UpdateTerminologyStatusAsync();
+    }
+
+    [RelayCommand]
+    private async Task RefreshStyleGuideStatus()
+    {
+        await UpdateStyleGuideStatusAsync();
     }
 
     /// <summary>
@@ -485,23 +443,6 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
 
     private void OnAppSettingsPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(IAppSettings.UseTerminologyPack) ||
-            e.PropertyName == nameof(IAppSettings.TerminologyFilePath))
-        {
-            _ = UpdateTerminologyStatusAsync();
-        }
-
-        if (e.PropertyName == nameof(IAppSettings.UseStyleGuide) ||
-            e.PropertyName == nameof(IAppSettings.StyleGuideFilePath))
-        {
-            _ = UpdateStyleGuideStatusAsync();
-        }
-
-        if (e.PropertyName == nameof(IAppSettings.TranslationProfileId))
-        {
-            _ = UpdateSelectedProfilePreviewAsync();
-        }
-
         if (e.PropertyName == nameof(IAppSettings.TranslationProviderName))
         {
             ProviderConnectionStatusText = string.Empty;

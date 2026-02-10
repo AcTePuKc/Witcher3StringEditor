@@ -260,12 +260,17 @@
                                    Text="{Binding ProfileStatusText}" />
                     </ui:SettingsCard.Description>
                     <StackPanel>
-                        <ComboBox
-                            DisplayMemberPath="DisplayName"
-                            IsEnabled="False"
-                            ItemsSource="{Binding TranslationProfiles}"
-                            SelectedValue="{Binding AppSettings.TranslationProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            SelectedValuePath="Id" />
+                        <DockPanel LastChildFill="True">
+                            <Button Command="{Binding RefreshTranslationProfilesCommand}" DockPanel.Dock="Right" Margin="6,0,0,0">
+                                <TextBlock Text="{I18N {x:Static l:LangKeys.Refresh}}" />
+                            </Button>
+                            <ComboBox
+                                DisplayMemberPath="DisplayName"
+                                IsEnabled="False"
+                                ItemsSource="{Binding TranslationProfiles}"
+                                SelectedValue="{Binding AppSettings.TranslationProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValuePath="Id" />
+                        </DockPanel>
                         <TextBlock Margin="0,6,0,0"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Text="{Binding SelectedProfilePreview}"
@@ -330,9 +335,14 @@
                     <StackPanel>
                         <CheckBox Content="Enable terminology pack"
                                   IsChecked="{Binding AppSettings.UseTerminologyPack, Mode=TwoWay}" />
-                        <Button Command="{Binding SetTerminologyFilePathCommand}" Margin="0,6,0,0">
-                            <ui:FontIcon Glyph="&#xe71e;" />
-                        </Button>
+                        <DockPanel LastChildFill="False" Margin="0,6,0,0">
+                            <Button Command="{Binding SetTerminologyFilePathCommand}">
+                                <ui:FontIcon Glyph="&#xe71e;" />
+                            </Button>
+                            <Button Command="{Binding RefreshTerminologyStatusCommand}" Margin="6,0,0,0">
+                                <TextBlock Text="{I18N {x:Static l:LangKeys.Refresh}}" />
+                            </Button>
+                        </DockPanel>
                     </StackPanel>
                 </ui:SettingsCard>
                 <ui:SettingsCard Header="{I18N {x:Static l:LangKeys.StyleGuideSettingsHeader}}">
@@ -364,9 +374,14 @@
                     <StackPanel>
                         <CheckBox Content="Enable style guide"
                                   IsChecked="{Binding AppSettings.UseStyleGuide, Mode=TwoWay}" />
-                        <Button Command="{Binding SetStyleGuideFilePathCommand}" Margin="0,6,0,0">
-                            <ui:FontIcon Glyph="&#xe71e;" />
-                        </Button>
+                        <DockPanel LastChildFill="False" Margin="0,6,0,0">
+                            <Button Command="{Binding SetStyleGuideFilePathCommand}">
+                                <ui:FontIcon Glyph="&#xe71e;" />
+                            </Button>
+                            <Button Command="{Binding RefreshStyleGuideStatusCommand}" Margin="6,0,0,0">
+                                <TextBlock Text="{I18N {x:Static l:LangKeys.Refresh}}" />
+                            </Button>
+                        </DockPanel>
                     </StackPanel>
                 </ui:SettingsCard>
                 <!-- User interface settings section header -->
