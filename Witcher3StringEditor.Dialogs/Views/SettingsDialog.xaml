@@ -123,9 +123,11 @@
                             </TextBlock>
                         </Grid>
                     </ui:SettingsCard.Description>
-                    <Button Command="{Binding SetW3StringsPathCommand}">
-                        <ui:FontIcon Glyph="&#xe71e;" />
-                    </Button>
+                    <StackPanel>
+                        <Button Command="{Binding SetW3StringsPathCommand}">
+                            <ui:FontIcon Glyph="&#xe71e;" />
+                        </Button>
+                    </StackPanel>
                 </ui:SettingsCard>
                 <!-- Game executable path settings card -->
                 <ui:SettingsCard>
@@ -156,9 +158,11 @@
                             </TextBlock>
                         </Grid>
                     </ui:SettingsCard.Description>
-                    <Button Command="{Binding SetGameExePathCommand}">
-                        <ui:FontIcon Glyph="&#xe71e;" />
-                    </Button>
+                    <StackPanel>
+                        <Button Command="{Binding SetGameExePathCommand}">
+                            <ui:FontIcon Glyph="&#xe71e;" />
+                        </Button>
+                    </StackPanel>
                 </ui:SettingsCard>
                 <!-- Preferred file type settings card -->
                 <ui:SettingsCard>
@@ -171,22 +175,24 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Type}" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}"
-                              SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <TextBlock.Text>
-                                        <MultiBinding Converter="{StaticResource W3FileTypeToLocalizedStringConverter}">
-                                            <Binding />
-                                            <Binding Path="DataContext.AppSettings.Language"
-                                                     RelativeSource="{RelativeSource AncestorType=ComboBox}" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    <StackPanel>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}"
+                                  SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource W3FileTypeToLocalizedStringConverter}">
+                                                <Binding />
+                                                <Binding Path="DataContext.AppSettings.Language"
+                                                         RelativeSource="{RelativeSource AncestorType=ComboBox}" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
                 </ui:SettingsCard>
                 <!-- Preferred language settings card -->
                 <ui:SettingsCard>
@@ -199,14 +205,16 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.LocaleLanguage}" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}"
-                              SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource W3LanguageToNativeNameConverter}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    <StackPanel>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}"
+                                  SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource W3LanguageToNativeNameConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
                 </ui:SettingsCard>
                 <!-- Translator selection settings card -->
                 <ui:SettingsCard>
@@ -219,9 +227,11 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.PenPalette}" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox
-                        ItemsSource="{Binding Translators}"
-                        SelectedItem="{Binding AppSettings.Translator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel>
+                        <ComboBox
+                            ItemsSource="{Binding Translators}"
+                            SelectedItem="{Binding AppSettings.Translator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
                 </ui:SettingsCard>
                 <ui:SettingsCard>
                     <ui:SettingsCard.Description>
@@ -424,10 +434,12 @@
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Globe}" />
                     </ui:SettingsCard.HeaderIcon>
-                    <ComboBox
-                        DisplayMemberPath="NativeName"
-                        ItemsSource="{Binding SupportedCultures}"
-                        SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}" />
+                    <StackPanel>
+                        <ComboBox
+                            DisplayMemberPath="NativeName"
+                            ItemsSource="{Binding SupportedCultures}"
+                            SelectedItem="{Binding AppSettings.Language, Converter={StaticResource StringToCultureInfoConverter}}" />
+                    </StackPanel>
                 </ui:SettingsCard>
                 <!-- Page size settings card -->
                 <!-- Allows users to select the number of items displayed per page in data grids -->
@@ -442,9 +454,11 @@
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
                     </ui:SettingsCard.HeaderIcon>
                     <!-- Binds to AppSettings.PageSize property with two-way binding -->
-                    <ComboBox
-                        ItemsSource="{Binding Source={StaticResource PageSizes}}"
-                        SelectedItem="{Binding AppSettings.PageSize,Mode=TwoWay}" />
+                    <StackPanel>
+                        <ComboBox
+                            ItemsSource="{Binding Source={StaticResource PageSizes}}"
+                            SelectedItem="{Binding AppSettings.PageSize,Mode=TwoWay}" />
+                    </StackPanel>
                 </ui:SettingsCard>
             </iwk:SimpleStackPanel>
         </ScrollViewer>
