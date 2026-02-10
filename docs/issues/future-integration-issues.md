@@ -2,6 +2,28 @@
 
 The following issue drafts intentionally keep implementation scope small and compile-safe. They focus on local storage (SQLite/JSON), interfaces, and TODO-marked scaffolding.
 
+## Issue 0: Behavior namespace compatibility guard for Dialog XAML
+**Description**
+Create and maintain a lightweight compatibility check that validates XAML behavior type resolution against `Witcher3StringEditor.Dialogs.Behaviors` and ensures the main app keeps a project reference to `Witcher3StringEditor.Dialogs`.
+
+**Acceptance Criteria**
+- The four historical behavior class names remain resolvable to public types (or explicit no-op stubs if renamed later).
+- `Witcher3StringEditor.csproj` keeps a direct `ProjectReference` to `Witcher3StringEditor.Dialogs`.
+- No runtime logic changes are introduced.
+
+**Files to touch**
+- `docs/inspections/behavior-compatibility-check.md`
+- `Witcher3StringEditor.Dialogs/Behaviors/*` (only if a compatibility stub is required)
+- `Witcher3StringEditor/Views/MainWindow.xaml` (only if tags must be renamed)
+- `Witcher3StringEditor/Witcher3StringEditor.csproj` (only if reference is missing)
+
+**QA Checklist**
+- Build: solution compiles and XAML loads with no behavior type lookup errors.
+- Manual: open MainWindow and a dialog using grid behaviors; verify no startup parse/type errors.
+- Regression: behavior changes remain inert/no-op unless explicitly implemented in a future issue.
+
+---
+
 ## Issue 1: Inventory pass - confirm extension points for TM, Ollama, terminology/style, and profiles
 **Description**
 Run a read-only inventory pass to confirm the concrete attachment points before adding behavior. This avoids guessing and prevents misplaced wiring.
