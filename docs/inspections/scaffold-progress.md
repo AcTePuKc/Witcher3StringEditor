@@ -38,4 +38,4 @@ Last updated: 2026-02-10
 
 ## Completed P0 checklist additions
 - [x] P0-35: Add SafeFireAndForget helper placeholder + usage notes (no behavior change).
-- [x] P0-36: Stabilize Settings startup behavior with explicit refresh-only contract (2026-02-10: investigation captured in `docs/inspections/settings-dialog-investigation.md`).
+- [x] P0-36: Stabilize Settings startup behavior with explicit refresh-only contract (2026-02-10: investigation captured in `docs/inspections/settings-dialog-investigation.md`; report: [Settings Dialog Startup Investigation](settings-dialog-investigation.md)).
