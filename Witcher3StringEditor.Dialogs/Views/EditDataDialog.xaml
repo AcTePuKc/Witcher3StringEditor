@@ -48,17 +48,17 @@
             <!-- Input fields for ID and key information -->
             <iwk:SimpleStackPanel Spacing="16">
                 <!-- String ID input field -->
-                <TextBox ui:ControlHelper.Header="ID" Text="{Binding Item.StrId, FallbackValue=''}" />
+                <TextBox ui:ControlHelper.Header="{i18n:I18N Key={x:Static l:LangKeys.ID}}" Text="{Binding Item.StrId, FallbackValue=''}" />
                 <!-- Key in hexadecimal format input field -->
-                <TextBox ui:ControlHelper.Header="Key(Hex)" Text="{Binding Item.KeyHex, FallbackValue=''}" />
+                <TextBox ui:ControlHelper.Header="{i18n:I18N Key={x:Static l:LangKeys.KeyHex}}" Text="{Binding Item.KeyHex, FallbackValue=''}" />
                 <!-- Key name input field -->
-                <TextBox ui:ControlHelper.Header="Key(String)" Text="{Binding Item.KeyName, FallbackValue=''}" />
+                <TextBox ui:ControlHelper.Header="{i18n:I18N Key={x:Static l:LangKeys.KeyString}}" Text="{Binding Item.KeyName, FallbackValue=''}" />
             </iwk:SimpleStackPanel>
             <!-- Text content input field -->
             <TextBox
                 Grid.Row="1"
                 Margin="0,16,0,0"
-                ui:ControlHelper.Header="Text"
+                ui:ControlHelper.Header="{i18n:I18N Key={x:Static l:LangKeys.SrcTxt}}"
                 Text="{Binding Item.Text, FallbackValue=''}"
                 TextWrapping="WrapWithOverflow" />
             <!-- Action buttons for submitting or canceling the edit operation -->

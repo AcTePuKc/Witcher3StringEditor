@@ -263,7 +263,7 @@
                         <DockPanel LastChildFill="True">
                             <StackPanel DockPanel.Dock="Right" Margin="6,0,0,0" Orientation="Horizontal">
                                 <Button Command="{Binding LoadCachedModelsCommand}">
-                                    <TextBlock Text="Load cached" />
+                                    <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.LoadCached}}" />
                                 </Button>
                                 <Button Command="{Binding RefreshModelsCommand}" Margin="6,0,0,0">
                                     <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.Refresh}}" />
@@ -279,7 +279,7 @@
                         <TextBlock Margin="0,8,0,4" Text="{i18n:I18N Key={x:Static l:LangKeys.TranslationProviderBaseUrlLabel}}" />
                         <TextBox
                             Text="{Binding AppSettings.BaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Margin="0,8,0,4" Text="Provider timeout (seconds)" />
+                        <TextBlock Margin="0,8,0,4" Text="{i18n:I18N Key={x:Static l:LangKeys.ProviderTimeoutSeconds}}" />
                         <ui:NumberBox
                             Maximum="600"
                             Minimum="1"
@@ -287,14 +287,14 @@
                             SpinButtonPlacementMode="Inline"
                             Value="{Binding AppSettings.TranslationProviderTimeoutSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Button Command="{Binding TestProviderConnectionCommand}" Margin="0,8,0,0">
-                            <TextBlock Text="Test Connection" />
+                            <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.TestConnection}}" />
                         </Button>
                         <TextBlock Margin="0,6,0,0"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Text="{Binding ProviderConnectionStatusText}" />
                     </StackPanel>
                 </ui:SettingsCard>
-                <ui:SettingsCard Header="Translation profiles">
+                <ui:SettingsCard Header="{i18n:I18N Key={x:Static l:LangKeys.TranslationProfilesHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Contact}" />
                     </ui:SettingsCard.HeaderIcon>
@@ -321,14 +321,14 @@
                                    TextWrapping="Wrap" />
                     </StackPanel>
                 </ui:SettingsCard>
-                <ui:SettingsCard Header="Translation memory">
+                <ui:SettingsCard Header="{i18n:I18N Key={x:Static l:LangKeys.TranslationMemoryHeader}}">
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Save}" />
                     </ui:SettingsCard.HeaderIcon>
                     <ui:SettingsCard.Description>
                         <Grid>
                             <TextBlock Text="{Binding AppSettings.TranslationMemoryPath}" />
-                            <TextBlock Text="No translation memory path set.">
+                            <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.NoTranslationMemoryPathSet}}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Hidden" />
@@ -343,9 +343,9 @@
                         </Grid>
                     </ui:SettingsCard.Description>
                     <StackPanel>
-                        <CheckBox Content="Enable translation memory"
+                        <CheckBox Content="{i18n:I18N Key={x:Static l:LangKeys.EnableTranslationMemory}}"
                                   IsChecked="{Binding AppSettings.UseTranslationMemory, Mode=TwoWay}" />
-                        <TextBlock Margin="0,8,0,4" Text="Translation memory path" />
+                        <TextBlock Margin="0,8,0,4" Text="{i18n:I18N Key={x:Static l:LangKeys.TranslationMemoryPath}}" />
                         <TextBox
                             Text="{Binding AppSettings.TranslationMemoryPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
@@ -380,7 +380,7 @@
                         </StackPanel>
                     </ui:SettingsCard.Description>
                     <StackPanel>
-                        <CheckBox Content="Enable terminology pack"
+                        <CheckBox Content="{i18n:I18N Key={x:Static l:LangKeys.EnableTerminologyPack}}"
                                   IsChecked="{Binding AppSettings.UseTerminologyPack, Mode=TwoWay}" />
                         <DockPanel LastChildFill="False" Margin="0,6,0,0">
                             <Button Command="{Binding SetTerminologyFilePathCommand}">
@@ -422,7 +422,7 @@
                         </StackPanel>
                     </ui:SettingsCard.Description>
                     <StackPanel>
-                        <CheckBox Content="Enable style guide"
+                        <CheckBox Content="{i18n:I18N Key={x:Static l:LangKeys.EnableStyleGuide}}"
                                   IsChecked="{Binding AppSettings.UseStyleGuide, Mode=TwoWay}" />
                         <DockPanel LastChildFill="False" Margin="0,6,0,0">
                             <Button Command="{Binding SetStyleGuideFilePathCommand}">
