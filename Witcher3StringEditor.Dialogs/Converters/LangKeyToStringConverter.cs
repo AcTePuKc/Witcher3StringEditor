@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Witcher3StringEditor.Dialogs.Converters;
@@ -17,16 +16,16 @@ public class LangKeyToStringConverter : IValueConverter
     /// <param name="targetType">The type of the binding target property (not used in this implementation)</param>
     /// <param name="parameter">An optional parameter to be used in the converter logic (not used in this implementation)</param>
     /// <param name="culture">The culture to use in the converter (not used in this implementation)</param>
-    /// <returns>The localized string corresponding to the key, or DependencyProperty.UnsetValue if conversion fails</returns>
+    /// <returns>The localized string corresponding to the key, or an empty string if conversion fails</returns>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         try
         {
-            return value is not string key ? DependencyProperty.UnsetValue : I18NExtension.Translate(key);
+            return value is string key ? I18NExtension.Translate(key) : string.Empty;
         }
         catch (Exception)
         {
-            return DependencyProperty.UnsetValue;
+            return string.Empty;
         }
     }
 

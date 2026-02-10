@@ -105,7 +105,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{I18N {x:Static l:LangKeys.EncoderSettingCardHeader}}" />
                             <TextBlock Text="{I18N {x:Static l:LangKeys.PathInvalidIndicatorText}}" Margin="5,0,0,0"
-                                       Visibility="{Binding AppSettings.W3StringsPath,Converter={StaticResource FileExistsToCollapsedConverter}}" />
+                                       Visibility="{Binding AppSettings.W3StringsPath, Converter={StaticResource FileExistsToCollapsedConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
                         </StackPanel>
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
@@ -140,7 +140,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{I18N {x:Static l:LangKeys.GameSettingCardHeader}}" />
                             <TextBlock Text="{I18N {x:Static l:LangKeys.PathInvalidIndicatorText}}" Margin="5,0,0,0"
-                                       Visibility="{Binding AppSettings.GameExePath,Converter={StaticResource FileExistsToCollapsedConverter}}" />
+                                       Visibility="{Binding AppSettings.GameExePath, Converter={StaticResource FileExistsToCollapsedConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
                         </StackPanel>
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
@@ -182,15 +182,17 @@
                     </ui:SettingsCard.HeaderIcon>
                     <StackPanel>
                         <ComboBox ItemsSource="{Binding Source={StaticResource FileType}}"
-                                  SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay}">
+                                  SelectedItem="{Binding AppSettings.PreferredW3FileType, Mode=TwoWay, FallbackValue={x:Static common:W3FileType.Csv}, TargetNullValue={x:Static common:W3FileType.Csv}}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock>
                                         <TextBlock.Text>
                                             <MultiBinding Converter="{StaticResource W3FileTypeToLocalizedStringConverter}">
-                                                <Binding />
+                                                <Binding FallbackValue="" TargetNullValue="" />
                                                 <Binding Path="DataContext.AppSettings.Language"
-                                                         RelativeSource="{RelativeSource AncestorType=ComboBox}" />
+                                                         RelativeSource="{RelativeSource AncestorType=ComboBox}"
+                                                         FallbackValue=""
+                                                         TargetNullValue="" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
@@ -212,10 +214,10 @@
                     </ui:SettingsCard.HeaderIcon>
                     <StackPanel>
                         <ComboBox ItemsSource="{Binding Source={StaticResource W3Language}}"
-                                  SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay}">
+                                  SelectedItem="{Binding AppSettings.PreferredLanguage, Mode=TwoWay, FallbackValue={x:Static common:W3Language.En}, TargetNullValue={x:Static common:W3Language.En}}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource W3LanguageToNativeNameConverter}}" />
+                                    <TextBlock Text="{Binding Converter={StaticResource W3LanguageToNativeNameConverter}, FallbackValue='', TargetNullValue=''}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

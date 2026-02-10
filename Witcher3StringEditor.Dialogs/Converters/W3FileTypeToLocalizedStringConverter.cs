@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 using Witcher3StringEditor.Common;
 using Witcher3StringEditor.Locales;
@@ -20,16 +19,16 @@ internal class W3FileTypeToLocalizedStringConverter : IMultiValueConverter
     /// <param name="targetType">The type of the binding target property (not used in this implementation)</param>
     /// <param name="parameter">An optional parameter to be used in the converter logic (not used in this implementation)</param>
     /// <param name="culture">The culture to use in the converter (not used in this implementation)</param>
-    /// <returns>The localized string representation of the file type, or DependencyProperty.UnsetValue if conversion fails</returns>
+    /// <returns>The localized string representation of the file type, or an empty string if conversion fails</returns>
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values[0] is not W3FileType fileType) return DependencyProperty.UnsetValue;
+        if (values.Length == 0 || values[0] is not W3FileType fileType) return string.Empty;
         return fileType switch
         {
             W3FileType.Csv => Strings.FileFormatTextFile,
             W3FileType.W3Strings => Strings.FileFormatWitcher3StringsFile,
             W3FileType.Excel => Strings.FileFormatExcelWorkbook,
-            _ => DependencyProperty.UnsetValue
+            _ => string.Empty
         };
     }
 

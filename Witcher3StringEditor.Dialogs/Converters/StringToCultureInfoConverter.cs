@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace Witcher3StringEditor.Dialogs.Converters;
@@ -17,17 +16,17 @@ internal class StringToCultureInfoConverter : IValueConverter
     /// <param name="targetType">The type of the binding target property (not used in this implementation)</param>
     /// <param name="parameter">An optional parameter to be used in the converter logic (not used in this implementation)</param>
     /// <param name="culture">The culture to use in the converter (not used in this implementation)</param>
-    /// <returns>A CultureInfo object corresponding to the string, or DependencyProperty.UnsetValue if conversion fails</returns>
+    /// <returns>A CultureInfo object corresponding to the string, or CultureInfo.InvariantCulture if conversion fails</returns>
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         try
         {
-            if (value is not string ci) return DependencyProperty.UnsetValue;
-            return !string.IsNullOrWhiteSpace(ci) ? new CultureInfo(ci) : DependencyProperty.UnsetValue;
+            if (value is not string ci) return CultureInfo.InvariantCulture;
+            return !string.IsNullOrWhiteSpace(ci) ? new CultureInfo(ci) : CultureInfo.InvariantCulture;
         }
         catch (CultureNotFoundException)
         {
-            return DependencyProperty.UnsetValue;
+            return CultureInfo.InvariantCulture;
         }
     }
 
@@ -38,9 +37,9 @@ internal class StringToCultureInfoConverter : IValueConverter
     /// <param name="targetType">The type to convert to (not used in this implementation)</param>
     /// <param name="parameter">An optional parameter to be used in the converter logic (not used in this implementation)</param>
     /// <param name="culture">The culture to use in the converter (not used in this implementation)</param>
-    /// <returns>The name of the CultureInfo as a string, or DependencyProperty.UnsetValue if conversion fails</returns>
+    /// <returns>The name of the CultureInfo as a string, or an empty string if conversion fails</returns>
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return value is CultureInfo ci ? ci.Name : DependencyProperty.UnsetValue;
+        return value is CultureInfo ci ? ci.Name : string.Empty;
     }
 }

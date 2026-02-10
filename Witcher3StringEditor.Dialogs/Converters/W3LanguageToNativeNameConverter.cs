@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Data;
 using Witcher3StringEditor.Common;
 
@@ -21,17 +20,24 @@ public class W3LanguageToNativeNameConverter : IValueConverter
     /// <param name="targetType">The type of the binding target property (not used in this implementation)</param>
     /// <param name="parameter">An optional parameter to be used in the converter logic (not used in this implementation)</param>
     /// <param name="culture">The culture to use in the converter (not used in this implementation)</param>
-    /// <returns>The native name of the language, or DependencyProperty.UnsetValue if conversion fails</returns>
+    /// <returns>The native name of the language, or an empty string if conversion fails</returns>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         // Check if the value is a valid W3Language enum, if not return UnsetValue
-        if (value is not W3Language language) return DependencyProperty.UnsetValue;
+        if (value is not W3Language language) return string.Empty;
 
         // Get the field info for the language enum value
         // Retrieve the DescriptionAttribute from the field
         // Create a CultureInfo from the description and return its native name
-        return new CultureInfo(typeof(W3Language).GetField(language.ToString())!
-            .GetCustomAttribute<DescriptionAttribute>()!.Description).NativeName;
+        try
+        {
+            return new CultureInfo(typeof(W3Language).GetField(language.ToString())!
+                .GetCustomAttribute<DescriptionAttribute>()!.Description).NativeName;
+        }
+        catch (CultureNotFoundException)
+        {
+            return string.Empty;
+        }
     }
 
     /// <summary>
