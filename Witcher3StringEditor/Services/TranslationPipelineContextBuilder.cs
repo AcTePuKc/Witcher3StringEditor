@@ -50,7 +50,7 @@ internal sealed class TranslationPipelineContextBuilder : ITranslationPipelineCo
             TerminologyPaths = terminologyPaths,
             StyleGuidePath = profile?.StyleGuidePath,
             // TODO: Allow settings to override the profile for translation memory enablement.
-            UseTranslationMemory = profile?.UseTranslationMemory ?? false
+            UseTranslationMemory = profile?.UseTranslationMemory ?? appSettings.UseTranslationMemory
         };
     }
 }
