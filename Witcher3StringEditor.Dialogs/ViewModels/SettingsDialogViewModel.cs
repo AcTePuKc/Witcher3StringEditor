@@ -75,7 +75,16 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         this.providerHealthCheck = providerHealthCheck;
         Translators = translators;
         SupportedCultures = supportedCultures;
-        ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
+        try
+        {
+            ModelOptions = new ObservableCollection<string>(InitializeModelOptions(appSettings));
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Settings initialization failed during model cache hydrate.");
+            ModelOptions = new ObservableCollection<string>(DefaultModelOptions);
+            ModelStatusText = "Model cache could not be loaded from settings.";
+        }
 
         if (appSettings is INotifyPropertyChanged notifyPropertyChanged)
         {
@@ -104,10 +113,47 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         }
 
         startupTasksInitialized = true;
-        await UpdateTerminologyStatusAsync();
-        await UpdateStyleGuideStatusAsync();
-        await LoadTranslationProfilesAsync();
-        await UpdateSelectedProfilePreviewAsync();
+
+        try
+        {
+            await UpdateTerminologyStatusAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Settings deferred load failed during terminology preview load.");
+            TerminologyStatusText = "Failed to load terminology preview.";
+        }
+
+        try
+        {
+            await UpdateStyleGuideStatusAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Settings deferred load failed during style guide preview load.");
+            StyleGuideStatusText = "Failed to load style guide preview.";
+        }
+
+        try
+        {
+            await LoadTranslationProfilesAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Settings deferred load failed during profile load.");
+            TranslationProfiles = [];
+            ProfileStatusText = "Failed to load translation profiles.";
+        }
+
+        try
+        {
+            await UpdateSelectedProfilePreviewAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Settings deferred load failed during profile preview load.");
+            SelectedProfilePreview = "Failed to load translation profile details.";
+        }
     }
 
     /// <summary>
