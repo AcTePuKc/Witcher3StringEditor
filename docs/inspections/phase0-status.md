@@ -29,3 +29,14 @@ The following items were added as scaffolding only and are **unused in runtime**
 ## Remaining Blockers
 - None. Model ownership is confirmed in `docs/inspections/model-ownership.md`, with Common as the authoritative contract
   location for profiles, terminology, providers, and translation memory.
+
+## Ownership Decision
+- ✅ **Complete.** The authoritative location for translation-related contracts is confirmed in
+  [`docs/inspections/model-ownership.md`](docs/inspections/model-ownership.md).
+
+## Readiness Memo (Go/No-Go)
+- **Decision: GO.** Phase 0 scaffolding is complete, ownership is confirmed, and there are no remaining blockers.
+- **Checklist:** Re-verify against the scaffold checklist before any runtime wiring:
+  [`docs/inspections/scaffold-progress.md`](docs/inspections/scaffold-progress.md).
+- **Ownership reference:** Keep the model ownership map as the single source of truth:
+  [`docs/inspections/model-ownership.md`](docs/inspections/model-ownership.md).
