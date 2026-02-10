@@ -68,3 +68,35 @@ A repository-wide XAML scan confirmed:
 
 - `x:Static l:LangKeys.*` references remain consistent with the verified `xmlns:l` mapping.
 - `b:*Behavior` tags remain consistent with the verified behavior mappings and known behavior types.
+
+## 2026-02-10 MainWindow behavior investigation (missing-type report)
+
+Investigated the `MainWindow.xaml` behavior tags reported as potentially missing:
+
+- `b:SfDataGridSizeChangedBehavior`
+- `b:SfDataGridQueryRowHeightBehavior`
+- `b:SfDataGridCurrentCellEndEditBehavior`
+- `b:FrameworkElementDropFileBehavior`
+
+### Findings
+
+All four behavior classes already exist in `Witcher3StringEditor.Dialogs/Behaviors` with matching type names and public visibility:
+
+- `SfDataGridSizeChangedBehavior : Behavior<SfDataGrid>`
+- `SfDataGridQueryRowHeightBehavior : Behavior<SfDataGrid>`
+- `SfDataGridCurrentCellEndEditBehavior : Behavior<SfDataGrid>`
+- `FrameworkElementDropFileBehavior : Behavior<FrameworkElement>`
+
+The `MainWindow.xaml` namespace mapping is already correct for these types:
+
+- `xmlns:b="clr-namespace:Witcher3StringEditor.Dialogs.Behaviors;assembly=Witcher3StringEditor.Dialogs"`
+
+And the main project already references the dialogs project in `Witcher3StringEditor.csproj`, so no additional wiring changes were needed.
+
+### Outcome
+
+No XAML updates were applied because the file already points to the real existing behavior implementations.
+
+### Follow-up if this regresses
+
+If future refactors remove or rename these behaviors, add minimal compatibility stubs in `Witcher3StringEditor.Dialogs.Behaviors` (original type names, no-op handlers) and then migrate XAML references in a dedicated cleanup PR.
