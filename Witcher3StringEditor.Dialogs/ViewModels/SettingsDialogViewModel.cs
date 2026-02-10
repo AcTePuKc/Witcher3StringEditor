@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -29,6 +30,7 @@ namespace Witcher3StringEditor.Dialogs.ViewModels;
 public partial class SettingsDialogViewModel : ObservableObject, IModalDialogViewModel
 {
     private static readonly HttpClient HttpClient = new();
+    private const int NetworkRequestTimeoutSeconds = 5;
 
     private static readonly IReadOnlyList<string> DefaultModelOptions = [];
 
@@ -254,20 +256,47 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     [RelayCommand]
     private async Task RefreshTranslationProfiles()
     {
-        await LoadTranslationProfilesAsync();
-        await UpdateSelectedProfilePreviewAsync();
+        try
+        {
+            await LoadTranslationProfilesAsync();
+            await UpdateSelectedProfilePreviewAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Translation profile refresh command failed.");
+            ProfileStatusText = "Could not refresh translation profiles right now.";
+            return;
+        }
     }
 
     [RelayCommand]
     private async Task RefreshTerminologyStatus()
     {
-        await UpdateTerminologyStatusAsync();
+        try
+        {
+            await UpdateTerminologyStatusAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Terminology status refresh command failed.");
+            TerminologyStatusText = "Could not validate terminology right now.";
+            return;
+        }
     }
 
     [RelayCommand]
     private async Task RefreshStyleGuideStatus()
     {
-        await UpdateStyleGuideStatusAsync();
+        try
+        {
+            await UpdateStyleGuideStatusAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Style guide status refresh command failed.");
+            StyleGuideStatusText = "Could not validate style guide right now.";
+            return;
+        }
     }
 
     /// <summary>
@@ -308,15 +337,16 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             var baseUri = new Uri(baseUrl, UriKind.Absolute);
             var requestUri = new Uri(baseUri, "api/tags");
-            using var response = await HttpClient.GetAsync(requestUri);
+            using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(NetworkRequestTimeoutSeconds));
+            using var response = await HttpClient.GetAsync(requestUri, timeoutCts.Token);
             if (!response.IsSuccessStatusCode)
             {
                 ModelStatusText = $"Could not connect to Ollama at {baseUrl}";
                 return;
             }
 
-            await using var responseStream = await response.Content.ReadAsStreamAsync();
-            using var jsonDocument = await JsonDocument.ParseAsync(responseStream);
+            await using var responseStream = await response.Content.ReadAsStreamAsync(timeoutCts.Token);
+            using var jsonDocument = await JsonDocument.ParseAsync(responseStream, cancellationToken: timeoutCts.Token);
 
             if (!jsonDocument.RootElement.TryGetProperty("models", out var modelsElement) ||
                 modelsElement.ValueKind != JsonValueKind.Array)
@@ -354,13 +384,21 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
         {
             ModelStatusText = $"Could not connect to Ollama at {baseUrl}";
         }
-        catch (TaskCanceledException)
+        catch (OperationCanceledException)
         {
-            ModelStatusText = $"Could not connect to Ollama at {baseUrl}";
+            ModelStatusText = $"The Ollama request timed out after {NetworkRequestTimeoutSeconds} seconds.";
+            return;
         }
         catch (JsonException)
         {
             ModelStatusText = $"Received an unexpected response from Ollama at {baseUrl}";
+            return;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Model refresh failed for {BaseUrl}.", baseUrl);
+            ModelStatusText = "Could not refresh models right now.";
+            return;
         }
     }
 
