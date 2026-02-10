@@ -1,4 +1,6 @@
-﻿namespace Witcher3StringEditor.Dialogs.Views;
+﻿using Witcher3StringEditor.Dialogs.ViewModels;
+
+namespace Witcher3StringEditor.Dialogs.Views;
 
 /// <summary>
 ///     Interaction logic for SettingsDialog.xaml
@@ -13,5 +15,16 @@ public partial class SettingsDialog
     public SettingsDialog()
     {
         InitializeComponent();
+        Loaded += OnLoaded;
+    }
+
+    private async void OnLoaded(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (DataContext is not SettingsDialogViewModel viewModel)
+        {
+            return;
+        }
+
+        await viewModel.InitializeOnOpenCommand.ExecuteAsync(null);
     }
 }
