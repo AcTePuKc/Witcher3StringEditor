@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
-    xmlns:i18n="clr-namespace:System.Windows;assembly=Antelcat.I18N.WPF"
+    xmlns:i18n="clr-namespace:Microsoft.CodeAnalysis;assembly=Antelcat.I18N.WPF"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels">
     <!-- 
