@@ -562,12 +562,15 @@ internal partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private async Task ShowSettingsDialog()
     {
-        var translators = serviceProvider.GetServices<ITranslator>().ToArray(); // Get all available translators
-        var names = translators.Select(x => x.Name); // Extract translator names
-        translators.ForEach(x => x.Cast<IDisposable>().Dispose()); // Dispose of translator instances
-        var supportedCultures = serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures;
-        await dialogService.ShowDialogAsync(this,
-            new SettingsDialogViewModel(
+        try
+        {
+            var translators = serviceProvider.GetServices<ITranslator>().ToArray(); // Get all available translators
+            var names = translators.Select(x => x.Name); // Extract translator names
+            translators.ForEach(x => x.Cast<IDisposable>().Dispose()); // Dispose of translator instances
+            var supportedCultures = serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures;
+
+            Log.Information("Preparing SettingsDialogViewModel for settings dialog.");
+            var settingsDialogViewModel = new SettingsDialogViewModel(
                 appSettings: appSettings,
                 dialogService: dialogService,
                 profileCatalog: serviceProvider.GetRequiredService<ITranslationProfileCatalog>(),
@@ -577,7 +580,17 @@ internal partial class MainWindowViewModel : ObservableObject
                 terminologyValidationService: serviceProvider.GetRequiredService<ITerminologyValidationService>(),
                 providerHealthCheck: serviceProvider.GetRequiredService<ITranslationProviderHealthCheck>(),
                 translators: names,
-                supportedCultures: supportedCultures)); // Show the settings dialog
+                supportedCultures: supportedCultures);
+
+            Log.Information("Opening settings dialog.");
+            await dialogService.ShowDialogAsync(this, settingsDialogViewModel); // Show the settings dialog
+            Log.Information("Settings dialog closed.");
+        }
+        catch (Exception exception)
+        {
+            Log.Error(exception, "Failed to open settings dialog.");
+            throw;
+        }
     }
 
     /// <summary>
