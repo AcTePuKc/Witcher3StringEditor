@@ -377,6 +377,7 @@ public sealed partial class App : IDisposable
             .AddSingleton<ITranslationProfileCatalog, NoopTranslationProfileCatalog>()
             .AddSingleton<ITranslationProfilePreviewService, NoopTranslationProfilePreviewService>()
             .AddSingleton<ITranslationProfileResolver, NoopTranslationProfileResolver>()
+            .AddSingleton<ITranslationProfileSettingsResolver, TranslationProfileSettingsResolver>()
             .AddSingleton<ITranslationPipelineContextBuilder, TranslationPipelineContextBuilder>()
             .AddSingleton<LegacyTranslationRouter>()
             .AddSingleton<ITranslationRouter, TranslationRouter>()
