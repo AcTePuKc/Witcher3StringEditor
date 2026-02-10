@@ -1,6 +1,6 @@
 # Phase 0 Scaffold Progress
 
-Last updated: 2026-02-16
+Last updated: 2026-02-10
 
 ## How to update
 - When checking an item, include the completion date and a short note in parentheses (e.g., `[x] Define ... (2026-02-10: stubbed interfaces added)`).
@@ -38,3 +38,4 @@ Last updated: 2026-02-16
 
 ## Completed P0 checklist additions
 - [x] P0-35: Add SafeFireAndForget helper placeholder + usage notes (no behavior change).
+- [x] P0-36: Stabilize Settings startup behavior with explicit refresh-only contract (2026-02-10: investigation captured in `docs/inspections/settings-dialog-investigation.md`).
