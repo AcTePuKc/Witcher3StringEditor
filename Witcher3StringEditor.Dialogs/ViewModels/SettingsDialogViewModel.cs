@@ -45,6 +45,7 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
     private readonly IStyleGuideLoader styleGuideLoader;
     private readonly ITerminologyValidationService terminologyValidationService;
     private readonly ITranslationProviderHealthCheck providerHealthCheck;
+    private bool startupTasksInitialized;
     /// <summary>
     ///     Initializes a new instance of the SettingsDialogViewModel class
     /// </summary>
@@ -81,10 +82,32 @@ public partial class SettingsDialogViewModel : ObservableObject, IModalDialogVie
             notifyPropertyChanged.PropertyChanged += OnAppSettingsPropertyChanged;
         }
 
-        _ = UpdateTerminologyStatusAsync();
-        _ = UpdateStyleGuideStatusAsync();
-        _ = LoadTranslationProfilesAsync();
-        _ = UpdateSelectedProfilePreviewAsync();
+        ProfileStatusText = "Translation profiles are loaded when the dialog finishes opening.";
+        SelectedProfilePreview = "Select a translation profile to preview its settings.";
+        TerminologyStatusText = appSettings.UseTerminologyPack
+            ? "Terminology status will be checked after the dialog opens."
+            : "Terminology disabled.";
+        StyleGuideStatusText = appSettings.UseStyleGuide
+            ? "Style guide status will be checked after the dialog opens."
+            : "Style guide disabled.";
+    }
+
+    /// <summary>
+    ///     Runs deferred startup work after the dialog has opened.
+    /// </summary>
+    [RelayCommand]
+    private async Task InitializeOnOpen()
+    {
+        if (startupTasksInitialized)
+        {
+            return;
+        }
+
+        startupTasksInitialized = true;
+        await UpdateTerminologyStatusAsync();
+        await UpdateStyleGuideStatusAsync();
+        await LoadTranslationProfilesAsync();
+        await UpdateSelectedProfilePreviewAsync();
     }
 
     /// <summary>
