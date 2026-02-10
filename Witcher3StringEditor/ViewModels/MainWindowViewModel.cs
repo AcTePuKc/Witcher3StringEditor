@@ -569,7 +569,7 @@ internal partial class MainWindowViewModel : ObservableObject
             translators.ForEach(x => x.Cast<IDisposable>().Dispose()); // Dispose of translator instances
             var supportedCultures = serviceProvider.GetRequiredService<ICultureResolver>().SupportedCultures;
 
-            Log.Information("Preparing SettingsDialogViewModel for settings dialog.");
+            Log.Information("Before creating SettingsDialogViewModel for settings dialog.");
             var settingsDialogViewModel = new SettingsDialogViewModel(
                 appSettings: appSettings,
                 dialogService: dialogService,
@@ -581,10 +581,11 @@ internal partial class MainWindowViewModel : ObservableObject
                 providerHealthCheck: serviceProvider.GetRequiredService<ITranslationProviderHealthCheck>(),
                 translators: names,
                 supportedCultures: supportedCultures);
+            Log.Information("After creating SettingsDialogViewModel for settings dialog.");
 
-            Log.Information("Opening settings dialog.");
+            Log.Information("Before ShowDialogAsync for settings dialog.");
             await dialogService.ShowDialogAsync(this, settingsDialogViewModel); // Show the settings dialog
-            Log.Information("Settings dialog closed.");
+            Log.Information("After ShowDialogAsync returns for settings dialog.");
         }
         catch (Exception exception)
         {
