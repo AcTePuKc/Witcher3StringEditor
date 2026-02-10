@@ -28,7 +28,7 @@ public sealed class JsonTranslationProfileStore : ITranslationProfileStore
             SerializerOptions,
             cancellationToken);
 
-        return data?.Profiles ?? Array.Empty<TranslationProfile>();
+        return data?.Profiles ?? (IReadOnlyList<TranslationProfile>)Array.Empty<TranslationProfile>();
     }
 
     public async Task SaveAsync(TranslationProfile profile, CancellationToken cancellationToken = default)
@@ -87,7 +87,7 @@ public sealed class JsonTranslationProfileStore : ITranslationProfileStore
             SerializerOptions,
             cancellationToken);
 
-        return data?.Profiles ?? Array.Empty<TranslationProfile>();
+        return data?.Profiles ?? (IReadOnlyList<TranslationProfile>)Array.Empty<TranslationProfile>();
     }
 
     private static async Task SaveProfilesAsync(
