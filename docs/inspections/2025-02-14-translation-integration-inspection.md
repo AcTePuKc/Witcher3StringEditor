@@ -30,7 +30,7 @@
 - `Witcher3StringEditor.Data/Profiles/*`
 
 ## Next steps
-- Use the issue drafts in `docs/integration-issues.md` to drive the next scaffolding pass (Issue A-D cover translation
+- Use the issue drafts in `docs/archive/integration-issues.md` to drive the next scaffolding pass (Issue A-D cover translation
   memory, Ollama model selection, terminology/style loading, and translation profiles).
 - Confirm whether `Common` or `Integrations` namespaces should be the canonical home for terminology and profile models
   before wiring to settings or UI.

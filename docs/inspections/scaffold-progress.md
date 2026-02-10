@@ -32,7 +32,7 @@ Last updated: 2026-02-16
 
 ## Docs
 - [x] Update `docs/integrations.md` with architecture notes and planned tasks. (2026-02-09: roadmap and sequencing captured.)
-- [x] Update `docs/task-breakdown.md` with issue-level breakdowns. (2026-02-09: issue list and acceptance criteria captured.)
+- [x] Update `docs/archive/task-breakdown.md` with issue-level breakdowns. (2026-02-09: issue list and acceptance criteria captured.)
 - [x] Add inspection notes and inventory findings in `docs/inspections/`. (2026-02-09: inventory + inspection notes present.)
 - [x] Record model ownership decision in `docs/inspections/model-ownership.md`. (2026-02-16: confirmed Common as the authoritative home for translation contracts.)
 

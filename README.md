@@ -4,7 +4,7 @@ A powerful tool for editing string resources in *The Witcher 3: Wild Hunt*, enab
 
 ## Scaffold Status
 
-This repository includes read-only, informational scaffolding for future integrations. No new runtime behavior is enabled by these stubs; they exist to document planned work and keep the app safe by default. For the current QA checklist and issue breakdown, see [docs/task-breakdown.md](docs/task-breakdown.md).
+This repository includes read-only, informational scaffolding for future integrations. No new runtime behavior is enabled by these stubs; they exist to document planned work and keep the app safe by default. For the current QA checklist and issue breakdown, see [docs/index.md](docs/index.md).
 
 ## Features
 

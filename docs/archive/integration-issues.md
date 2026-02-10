@@ -1,3 +1,5 @@
+> Archived: This issue draft is superseded by [../integrations.md](../integrations.md) and [../inspections/scaffold-progress.md](../inspections/scaffold-progress.md).
+
 # Integration Backlog (GitHub Issue Drafts)
 
 ## Scope Overview
@@ -231,7 +233,7 @@ and document all fallback/default/error handling behavior.
   - `Translate` triggers the per-row translation execution path.
 
 **Files to Touch**
-- `docs/fallback-investigation.md`
+- `docs/archive/fallback-investigation.md`
 
 
 **Behavior Impact**
@@ -891,7 +893,7 @@ rules opt-in and default to no-op behavior so translation output remains unchang
 - `Witcher3StringEditor.Common/Abstractions/IAppSettings.cs` (if needed)
 - `Witcher3StringEditor/Models/AppSettings.cs` (if needed)
 - `docs/integrations.md`
-- `docs/ai-output-notes.md`
+- `docs/archive/ai-output-notes.md`
 
 
 **Behavior Impact**

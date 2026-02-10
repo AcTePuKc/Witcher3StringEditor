@@ -1,3 +1,5 @@
+> Archived: This investigation is superseded by [../integrations.md](../integrations.md).
+
 # Translation Flow + Fallback Investigation
 
 ## Scope
