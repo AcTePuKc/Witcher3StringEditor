@@ -308,7 +308,7 @@
                                 DisplayMemberPath="DisplayName"
                                 IsEnabled="False"
                                 ItemsSource="{Binding TranslationProfiles}"
-                                MinWidth="220"
+                                Width="220"
                                 SelectedValue="{Binding AppSettings.TranslationProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedValuePath="Id" />
                         </DockPanel>

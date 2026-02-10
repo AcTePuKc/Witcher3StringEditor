@@ -1,5 +1,25 @@
 # Integrations Architecture & Roadmap
 
+## Short Integration Spec (Phase 0)
+
+### Scope (non-functional scaffolding only)
+- Translation memory remains local-only (SQLite/JSON), inert by default.
+- Ollama support remains command-triggered with explicit model selection placeholders.
+- Terminology/style remains local-file based (`.tsv`/`.csv`/`.md`) with validation hooks only.
+- Translation profiles remain local JSON-backed with list/preview/selection scaffolding.
+
+### Architectural boundaries
+- **Contracts/DTOs:** `Witcher3StringEditor.Common/*`.
+- **Local persistence:** `Witcher3StringEditor.Data/*`.
+- **UI placeholders:** `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml` and its view model.
+- **Runtime orchestration:** `Witcher3StringEditor/Services/*`.
+
+### Planned tasks
+1. Confirm entrypoints (inventory pass) before wiring.
+2. Keep all expensive work deferred behind user-triggered commands.
+3. Keep behavior opt-in and local-only until each slice is implemented.
+4. Add tests/checklists per issue to prevent regressions.
+
 ## Overview
 The integration roadmap focuses on adding local, opt-in capabilities without changing the existing translation flow. The
 current plan relies on small, compile-safe abstractions so future work can plug in concrete implementations for

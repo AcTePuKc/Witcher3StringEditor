@@ -177,3 +177,22 @@ Add compile-safe interface and no-op service to centralize future command-trigge
 - Build: solution compiles.
 - Manual: no visible behavior changes expected.
 - Regression: no startup/runtime load regressions.
+
+---
+
+## Issue 8: SettingsCard structure hardening for deterministic layout
+**Description**
+Ensure each `SettingsCard` body keeps exactly one root content container (`StackPanel` or `Grid`) and replace unstable `MinWidth` usage with deterministic sizing values.
+
+**Acceptance Criteria**
+- Every `SettingsCard` content body has exactly one root container node.
+- No `MinWidth` binding/resource remains in settings surfaces where deterministic width is required.
+- Visual design remains unchanged except structural validity fixes.
+
+**Files to touch**
+- `Witcher3StringEditor.Dialogs/Views/SettingsDialog.xaml`
+
+**QA Checklist**
+- Build: solution compiles and XAML parses.
+- Manual: open Settings dialog and verify card spacing/alignment unchanged.
+- Regression: no command bindings or settings persistence behavior changes.
