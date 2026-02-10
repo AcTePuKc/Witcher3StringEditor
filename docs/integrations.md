@@ -100,3 +100,16 @@ and should not be extended for new work. See
 - When moving into Phase 1 wiring, start by removing reliance on legacy `Integrations/*` models and use the Common
   contracts exclusively.
 - Reconfirm the scaffold checklist in `docs/inspections/scaffold-progress.md` before any runtime wiring begins.
+
+
+## Reliability Integration Notes (Provider Routing)
+This slice adds only minimal behavior around provider routing reliability while preserving existing architecture:
+
+- **Structured failure extraction:** `FluentResults` provider metadata can now be projected as `TranslationProviderFailureDto` for typed diagnostics and UI decisions.
+- **Configurable fallback:** provider->legacy fallback is controlled by `IAppSettings.UseLegacyTranslationFallback`.
+- **Non-blocking status updates:** translation dialogs prefer status-bar style messages for provider failures/fallbacks when metadata is present.
+
+### Planned follow-up tasks
+1. Add a Settings toggle for `UseLegacyTranslationFallback` (UI placeholder only).
+2. Localize new status/error strings used by provider routing paths.
+3. Add automated tests around `ResultExtensions.GetProviderFailure` and fallback-gating behavior once test project scaffolding is available.

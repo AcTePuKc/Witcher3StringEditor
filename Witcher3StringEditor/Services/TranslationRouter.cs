@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentResults;
 using Serilog;
+using Witcher3StringEditor.Common.Abstractions;
 using Witcher3StringEditor.Common.Translation;
 
 namespace Witcher3StringEditor.Services;
@@ -11,11 +12,16 @@ internal sealed class TranslationRouter : ITranslationRouter
 {
     private readonly ITranslationProviderRegistry providerRegistry;
     private readonly LegacyTranslationRouter legacyRouter;
+    private readonly IAppSettings appSettings;
 
-    public TranslationRouter(ITranslationProviderRegistry providerRegistry, LegacyTranslationRouter legacyRouter)
+    public TranslationRouter(
+        ITranslationProviderRegistry providerRegistry,
+        LegacyTranslationRouter legacyRouter,
+        IAppSettings appSettings)
     {
         this.providerRegistry = providerRegistry ?? throw new ArgumentNullException(nameof(providerRegistry));
         this.legacyRouter = legacyRouter ?? throw new ArgumentNullException(nameof(legacyRouter));
+        this.appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
     }
 
     public async Task<Result<string>> TranslateAsync(
@@ -45,6 +51,14 @@ internal sealed class TranslationRouter : ITranslationRouter
         if (provider is null)
         {
             var fallbackReason = $"Provider '{request.ProviderName}' was not found.";
+            if (!appSettings.UseLegacyTranslationFallback)
+            {
+                return Result.Fail(BuildProviderRequestFailure(
+                    $"Translation provider '{request.ProviderName}' is not available and legacy fallback is disabled.",
+                    TranslationProviderFailureKind.Unknown,
+                    request.ProviderName));
+            }
+
             Log.Warning(
                 "Translation provider {ProviderName} was not found; falling back to legacy translator.",
                 request.ProviderName);
@@ -87,14 +101,22 @@ internal sealed class TranslationRouter : ITranslationRouter
 
     private static Error BuildProviderRequestFailure(
         string message,
-        TranslationProviderFailureKind failureKind)
+        TranslationProviderFailureKind failureKind,
+        string? providerName = null)
     {
         var statusMessage = $"{message} (Failure kind: {failureKind})";
-        return new Error(message)
+        var error = new Error(message)
             .WithMetadata(TranslationFailureMetadata.FailureKindKey,
                 TranslationFailureMetadata.RequestValidationFailureKind)
             .WithMetadata(TranslationFailureMetadata.ProviderFailureReasonKey, failureKind)
             .WithMetadata(TranslationStatusMetadata.StatusMessageKey, statusMessage);
+
+        if (!string.IsNullOrWhiteSpace(providerName))
+        {
+            error = error.WithMetadata(TranslationFailureMetadata.ProviderNameKey, providerName);
+        }
+
+        return error;
     }
 
     private static Result<string> AttachFallbackStatus(Result<string> result, string fallbackReason)

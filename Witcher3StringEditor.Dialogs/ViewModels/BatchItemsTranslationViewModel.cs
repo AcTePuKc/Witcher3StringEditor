@@ -331,18 +331,24 @@ public sealed partial class BatchItemsTranslationViewModel : TranslationViewMode
             return;
         }
 
-        var providerError = result.GetProviderError();
+        var providerFailure = result.GetProviderFailure();
 
-        if (providerError is null)
+        if (providerFailure is null)
         {
             return;
         }
 
         hasShownProviderFailure = true;
         UpdateLastProviderError(result);
-        _ = WeakReferenceMessenger.Default.Send(
-            new ValueChangedMessage<string>(providerError),
-            MessageTokens.TranslateError);
+        if (string.IsNullOrWhiteSpace(StatusMessage))
+        {
+            StatusMessage = providerFailure.Message;
+        }
+
+        Log.Warning("Batch translation provider failure: {ProviderName}/{FailureKind} - {Message}",
+            providerFailure.ProviderName,
+            providerFailure.FailureKind,
+            providerFailure.Message);
     }
 
     /// <summary>

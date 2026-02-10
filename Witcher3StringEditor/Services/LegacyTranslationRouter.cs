@@ -342,7 +342,7 @@ internal sealed class LegacyTranslationRouter : ITranslationRouter
 
     private bool ShouldFallbackToLegacyTranslator()
     {
-        return legacyTranslators.Any();
+        return appSettings.UseLegacyTranslationFallback && legacyTranslators.Any();
     }
 
     private string? ResolveProviderName(TranslationRouterRequest request)
