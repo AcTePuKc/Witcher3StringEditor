@@ -26,6 +26,11 @@
     -->
     <Window.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Ensure WinUI theme/style keys (e.g. BodyStrongTextBlockStyle, TextFillColorSecondaryBrush) are available in this dialog scope -->
+                <ui:ThemeResources />
+                <ui:XamlControlsResources />
+            </ResourceDictionary.MergedDictionaries>
             <!-- Data provider for The Witcher 3 file types enumeration -->
             <ObjectDataProvider
                 x:Key="FileType"
