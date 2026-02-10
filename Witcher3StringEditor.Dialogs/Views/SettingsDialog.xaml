@@ -6,13 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iwk="http://schemas.inkore.net/lib/ui/wpf"
     xmlns:l="clr-namespace:Witcher3StringEditor.Locales;assembly=Witcher3StringEditor.Locales"
-    xmlns:i18n="clr-namespace:Microsoft.CodeAnalysis;assembly=Antelcat.I18N.WPF"
+    xmlns:i18n="clr-namespace:System.Windows;assembly=Antelcat.I18N.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.inkore.net/lib/ui/wpf/modern"
     xmlns:vm="clr-namespace:Witcher3StringEditor.Dialogs.ViewModels"
     xmlns:common="clr-namespace:Witcher3StringEditor.Common;assembly=Witcher3StringEditor.Common"
-    Title="{i18n:I18N {x:Static l:LangKeys.SettingsDialogTitle}}"
+    Title="{i18n:I18N Key={x:Static l:LangKeys.SettingsDialogTitle}}"
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type=vm:SettingsDialogViewModel}"
@@ -93,19 +93,19 @@
         <TextBlock
             Margin="20,0,0,0"
             VerticalAlignment="Center"
-            Text="{i18n:I18N {x:Static l:LangKeys.SettingsDialogTitle}}" />
+            Text="{i18n:I18N Key={x:Static l:LangKeys.SettingsDialogTitle}}" />
         <!-- Scrollable content area containing all settings cards -->
         <ScrollViewer Grid.Row="1">
             <iwk:SimpleStackPanel Margin="36,0" Spacing="4">
                 <!-- General settings section header -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
-                           Text="{i18n:I18N {x:Static l:LangKeys.GeneralSettingsHeader}}" />
+                           Text="{i18n:I18N Key={x:Static l:LangKeys.GeneralSettingsHeader}}" />
                 <!-- W3Strings encoder path settings card -->
                 <ui:SettingsCard>
                     <ui:SettingsCard.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.EncoderSettingCardHeader}}" />
-                            <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.PathInvalidIndicatorText}}" Margin="5,0,0,0"
+                            <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.EncoderSettingCardHeader}}" />
+                            <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.PathInvalidIndicatorText}}" Margin="5,0,0,0"
                                        Visibility="{Binding AppSettings.W3StringsPath, Converter={StaticResource FileExistsToCollapsedConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
                         </StackPanel>
                     </ui:SettingsCard.Header>
@@ -115,7 +115,7 @@
                     <ui:SettingsCard.Description>
                         <Grid>
                             <TextBlock Text="{Binding AppSettings.W3StringsPath}" />
-                            <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.W3StringsPath}}">
+                            <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.W3StringsPath}}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Hidden" />
@@ -139,8 +139,8 @@
                 <ui:SettingsCard>
                     <ui:SettingsCard.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.GameSettingCardHeader}}" />
-                            <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.PathInvalidIndicatorText}}" Margin="5,0,0,0"
+                            <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.GameSettingCardHeader}}" />
+                            <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.PathInvalidIndicatorText}}" Margin="5,0,0,0"
                                        Visibility="{Binding AppSettings.GameExePath, Converter={StaticResource FileExistsToCollapsedConverter}, FallbackValue=Collapsed, TargetNullValue=Collapsed}" />
                         </StackPanel>
                     </ui:SettingsCard.Header>
@@ -150,7 +150,7 @@
                     <ui:SettingsCard.Description>
                         <Grid>
                             <TextBlock Text="{Binding AppSettings.GameExePath}" />
-                            <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.GameExePath}}">
+                            <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.GameExePath}}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Hidden" />
@@ -173,10 +173,10 @@
                 <!-- Preferred file type settings card -->
                 <ui:SettingsCard>
                     <ui:SettingsCard.Description>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.PreferredFileTypeDescription}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.PreferredFileTypeDescription}}" />
                     </ui:SettingsCard.Description>
                     <ui:SettingsCard.Header>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.PreferredFileType}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.PreferredFileType}}" />
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Type}" />
@@ -205,10 +205,10 @@
                 <!-- Preferred language settings card -->
                 <ui:SettingsCard>
                     <ui:SettingsCard.Description>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.PreferredLanguageDescription}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.PreferredLanguageDescription}}" />
                     </ui:SettingsCard.Description>
                     <ui:SettingsCard.Header>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.PreferredLanguage}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.PreferredLanguage}}" />
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.LocaleLanguage}" />
@@ -227,10 +227,10 @@
                 <!-- Translator selection settings card -->
                 <ui:SettingsCard>
                     <ui:SettingsCard.Description>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.TranslatorSelectionDescription}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.TranslatorSelectionDescription}}" />
                     </ui:SettingsCard.Description>
                     <ui:SettingsCard.Header>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.TranslatorSelection}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.TranslatorSelection}}" />
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.PenPalette}" />
@@ -243,30 +243,30 @@
                 </ui:SettingsCard>
                 <ui:SettingsCard>
                     <ui:SettingsCard.Description>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.TranslationProviderSettingsDescription}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.TranslationProviderSettingsDescription}}" />
                     </ui:SettingsCard.Description>
                     <ui:SettingsCard.Header>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.TranslationProviderSettingsHeader}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.TranslationProviderSettingsHeader}}" />
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.CloudDownload}" />
                     </ui:SettingsCard.HeaderIcon>
                     <StackPanel>
-                        <TextBlock Margin="0,0,0,4" Text="{i18n:I18N {x:Static l:LangKeys.Provider}}" />
+                        <TextBlock Margin="0,0,0,4" Text="{i18n:I18N Key={x:Static l:LangKeys.Provider}}" />
                         <ComboBox
                             ItemsSource="{Binding ProviderOptions}"
                             SelectedItem="{Binding AppSettings.TranslationProviderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Margin="0,4,0,0"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   Text="{i18n:I18N {x:Static l:LangKeys.TranslationProviderRoutingHint}}" />
-                        <TextBlock Margin="0,8,0,4" Text="{i18n:I18N {x:Static l:LangKeys.Model}}" />
+                                   Text="{i18n:I18N Key={x:Static l:LangKeys.TranslationProviderRoutingHint}}" />
+                        <TextBlock Margin="0,8,0,4" Text="{i18n:I18N Key={x:Static l:LangKeys.Model}}" />
                         <DockPanel LastChildFill="True">
                             <StackPanel DockPanel.Dock="Right" Margin="6,0,0,0" Orientation="Horizontal">
                                 <Button Command="{Binding LoadCachedModelsCommand}">
                                     <TextBlock Text="Load cached" />
                                 </Button>
                                 <Button Command="{Binding RefreshModelsCommand}" Margin="6,0,0,0">
-                                    <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.Refresh}}" />
+                                    <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.Refresh}}" />
                                 </Button>
                             </StackPanel>
                             <ComboBox
@@ -276,7 +276,7 @@
                         <TextBlock Margin="0,6,0,0"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                    Text="{Binding ModelStatusText}" />
-                        <TextBlock Margin="0,8,0,4" Text="{i18n:I18N {x:Static l:LangKeys.TranslationProviderBaseUrlLabel}}" />
+                        <TextBlock Margin="0,8,0,4" Text="{i18n:I18N Key={x:Static l:LangKeys.TranslationProviderBaseUrlLabel}}" />
                         <TextBox
                             Text="{Binding AppSettings.BaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Margin="0,8,0,4" Text="Provider timeout (seconds)" />
@@ -305,7 +305,7 @@
                     <StackPanel>
                         <DockPanel LastChildFill="True">
                             <Button Command="{Binding RefreshTranslationProfilesCommand}" DockPanel.Dock="Right" Margin="6,0,0,0">
-                                <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.Refresh}}" />
+                                <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.Refresh}}" />
                             </Button>
                             <ComboBox
                                 DisplayMemberPath="DisplayName"
@@ -352,7 +352,7 @@
                 </ui:SettingsCard>
                 <ui:SettingsCard>
                     <ui:SettingsCard.Header>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.TerminologySettingsHeader}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.TerminologySettingsHeader}}" />
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
@@ -361,7 +361,7 @@
                         <StackPanel>
                             <Grid>
                                 <TextBlock Text="{Binding AppSettings.TerminologyFilePath}" />
-                                <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.TerminologyFilePath}}">
+                                <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.TerminologyFilePath}}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Hidden" />
@@ -387,14 +387,14 @@
                                 <ui:FontIcon Glyph="&#xe71e;" />
                             </Button>
                             <Button Command="{Binding RefreshTerminologyStatusCommand}" Margin="6,0,0,0">
-                                <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.Refresh}}" />
+                                <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.Refresh}}" />
                             </Button>
                         </DockPanel>
                     </StackPanel>
                 </ui:SettingsCard>
                 <ui:SettingsCard>
                     <ui:SettingsCard.Header>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.StyleGuideSettingsHeader}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.StyleGuideSettingsHeader}}" />
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
@@ -403,7 +403,7 @@
                         <StackPanel>
                             <Grid>
                                 <TextBlock Text="{Binding AppSettings.StyleGuideFilePath}" />
-                                <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.StyleGuideFilePath}}">
+                                <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.StyleGuideFilePath}}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Hidden" />
@@ -429,21 +429,21 @@
                                 <ui:FontIcon Glyph="&#xe71e;" />
                             </Button>
                             <Button Command="{Binding RefreshStyleGuideStatusCommand}" Margin="6,0,0,0">
-                                <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.Refresh}}" />
+                                <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.Refresh}}" />
                             </Button>
                         </DockPanel>
                     </StackPanel>
                 </ui:SettingsCard>
                 <!-- User interface settings section header -->
                 <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}"
-                           Text="{i18n:I18N {x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />
+                           Text="{i18n:I18N Key={x:Static l:LangKeys.UserInterfaceSettingsHeader}}" />
                 <!-- Application language settings card -->
                 <ui:SettingsCard>
                     <ui:SettingsCard.Description>
-                        <TextBlock Text="{i18n:I18N  {x:Static l:LangKeys.LanguageDescription}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.LanguageDescription}}" />
                     </ui:SettingsCard.Description>
                     <ui:SettingsCard.Header>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.LanguageHelpText}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.LanguageHelpText}}" />
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Globe}" />
@@ -459,10 +459,10 @@
                 <!-- Allows users to select the number of items displayed per page in data grids -->
                 <ui:SettingsCard>
                     <ui:SettingsCard.Description>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.PageSizeDescription}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.PageSizeDescription}}" />
                     </ui:SettingsCard.Description>
                     <ui:SettingsCard.Header>
-                        <TextBlock Text="{i18n:I18N {x:Static l:LangKeys.PageSize}}" />
+                        <TextBlock Text="{i18n:I18N Key={x:Static l:LangKeys.PageSize}}" />
                     </ui:SettingsCard.Header>
                     <ui:SettingsCard.HeaderIcon>
                         <ui:FontIcon Icon="{x:Static ui:SegoeFluentIcons.Document}" />
