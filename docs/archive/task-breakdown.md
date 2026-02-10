@@ -1,3 +1,5 @@
+> Archived: This task list is superseded by [../integrations.md](../integrations.md), [../implementation.md](../implementation.md), and [../inspections/scaffold-progress.md](../inspections/scaffold-progress.md).
+
 # Task Breakdown (GitHub Issues)
 
 ## Issue 1: Inventory pass for integration entrypoints

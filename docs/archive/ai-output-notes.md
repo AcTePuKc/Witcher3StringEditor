@@ -1,3 +1,5 @@
+> Archived: This sampling note is historical; implementation constraints now live in [../implementation.md](../implementation.md).
+
 # AI Output Notes (Bulgarian + English Prompt Sampling)
 
 ## Scope

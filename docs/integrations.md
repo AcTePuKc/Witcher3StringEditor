@@ -85,7 +85,7 @@ Do not introduce new models in these locations; use them only for inventory or m
 - Keep this data model unused until QA reporting requirements are defined.
 
 ## Deliverables & Sequencing
-- See `docs/task-breakdown.md` for issue-level tasks, acceptance criteria, and QA checklists.
+- See `docs/archive/task-breakdown.md` for issue-level tasks, acceptance criteria, and QA checklists.
 - Phase 0 scaffolding status: `docs/inspections/phase0-status.md`.
 - Scaffold checklist (Phase 0): `docs/inspections/scaffold-progress.md`.
 
@@ -96,7 +96,7 @@ and should not be extended for new work. See
 [docs/inspections/model-ownership.md](docs/inspections/model-ownership.md) for details.
 
 ## Next Steps
-- Execute the remaining issue drafts in `docs/task-breakdown.md` in order, keeping changes compile-safe and inert.
+- Execute the remaining issue drafts in `docs/archive/task-breakdown.md` in order, keeping changes compile-safe and inert.
 - When moving into Phase 1 wiring, start by removing reliance on legacy `Integrations/*` models and use the Common
   contracts exclusively.
 - Reconfirm the scaffold checklist in `docs/inspections/scaffold-progress.md` before any runtime wiring begins.
